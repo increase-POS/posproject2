@@ -1,0 +1,66 @@
+D:\VSproject\POS\POS\bin\Debug\POS.exe.config
+D:\VSproject\POS\POS\bin\Debug\POS.exe
+D:\VSproject\POS\POS\bin\Debug\POS.pdb
+D:\VSproject\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+D:\VSproject\POS\POS\obj\Debug\MainWindow.g.cs
+D:\VSproject\POS\POS\obj\Debug\App.g.cs
+D:\VSproject\POS\POS\obj\Debug\POS_MarkupCompile.cache
+D:\VSproject\POS\POS\obj\Debug\POS_MarkupCompile.lref
+D:\VSproject\POS\POS\obj\Debug\MainWindow.baml
+D:\VSproject\POS\POS\obj\Debug\POS.g.resources
+D:\VSproject\POS\POS\obj\Debug\POS.Properties.Resources.resources
+D:\VSproject\POS\POS\obj\Debug\POS.csproj.GenerateResource.cache
+D:\VSproject\POS\POS\obj\Debug\POS.csproj.CoreCompileInputs.cache
+D:\VSproject\POS\POS\obj\Debug\POS.exe
+D:\VSproject\POS\POS\obj\Debug\POS.pdb
+D:\VSproject\POS\POS\obj\Debug\POS.ar_file.resources
+D:\VSproject\POS\POS\obj\Debug\POS.en_file.resources
+D:\VSproject\POS\POS\bin\Debug\Newtonsoft.Json.dll
+D:\VSproject\POS\POS\bin\Debug\Zen.Barcode.Core.dll
+D:\VSproject\POS\POS\bin\Debug\Newtonsoft.Json.xml
+D:\VSproject\POS\POS\obj\Debug\POS.csproj.CopyComplete
+D:\VSproject\POS\POS\bin\Debug\MaterialDesignColors.dll
+D:\VSproject\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.dll
+D:\VSproject\POS\POS\bin\Debug\MaterialDesignColors.pdb
+D:\VSproject\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.pdb
+D:\VSproject\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.xml
+D:\VSproject\POS\POS\obj\Debug\App.baml
+D:\VSproject\POS\POS\obj\Debug\View\UC_customer.g.cs
+D:\VSproject\POS\POS\obj\Debug\View\UC_sectionData.g.cs
+D:\VSproject\POS\POS\obj\Debug\View\UC_customer.baml
+D:\VSproject\POS\POS\obj\Debug\View\UC_sectionData.baml
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\bin\Debug\POS.exe.config
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\bin\Debug\POS.exe
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\bin\Debug\POS.pdb
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\bin\Debug\MaterialDesignColors.dll
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\bin\Debug\Newtonsoft.Json.dll
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\bin\Debug\Zen.Barcode.Core.dll
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\bin\Debug\MaterialDesignColors.pdb
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\bin\Debug\Newtonsoft.Json.xml
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\MainWindow.g.cs
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\View\UC_customer.g.cs
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\View\UC_sectionData.g.cs
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\App.g.cs
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\POS_MarkupCompile.cache
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\POS_MarkupCompile.lref
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\App.baml
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\MainWindow.baml
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\View\UC_customer.baml
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\View\UC_sectionData.baml
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\POS.g.resources
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\POS.ar_file.resources
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\POS.en_file.resources
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\POS.Properties.Resources.resources
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\POS.csproj.GenerateResource.cache
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\POS.csproj.CoreCompileInputs.cache
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\POS.csproj.CopyComplete
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\POS.exe
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\POS.pdb
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\View\UC_supplier.g.cs
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\View\UC_users.g.cs
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\View\UC_supplier.baml
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\View\UC_users.baml
+C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
