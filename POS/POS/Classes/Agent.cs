@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace POS.Classes
 {
-    public class Agent
+     class Agent
     {
-        public int agentId { get; set; }
+        public  int agentId { get; set; }        
         public string name { get; set; }
         public string code { get; set; }
         public string company { get; set; }
@@ -27,14 +28,12 @@ namespace POS.Classes
         public string accType { get; set; }
         public float balance { get; set; }
         public int isDefault { get; set; }
-        public DateTime createDate { get; set; }
-        public DateTime updateDate { get; set; }
+        public DateTime createDate = DateTime.Now;
+        public DateTime updateDate = DateTime.Now;
         public int createUserId { get; set; }
         public int updateUserId { get; set; }
         public string notes { get; set; }
         public int isActive { get; set; }
-
-
         public async Task<List<Agent>> GetAgentsAsync(string type)
         {
             List<Agent> agents = null;
@@ -66,7 +65,10 @@ namespace POS.Classes
                         Converters = new List<JsonConverter> { new BadDateFixingConverter() },
                         DateParseHandling = DateParseHandling.None
                     };
+//                    jsonString = "[{\"agentId\":1,\"name\":\"Ahmad\",\"code\":\"01\",\"company\":\"a1\",\"address\":\"a12\",\"details\":\"qwer\",\"email\":\"Ahmad@gmail.com\",\"phone\":\"09875641\",\"mobile\":\"032156478\",\"image\":\"a\",\"type\":\"V\",\"accType\":\"S\",\"balance\":12.0000,\"isDefault\":1,\"createDate\":\"2013-01-20T00:00:00Z\",\"updateDate\":\"2013-01-20T00:00:00Z\",\"createUserId\":11,\"updateUserId\":11,\"notes\":\"aa\",\"isActive\":1}]";
                     agents = JsonConvert.DeserializeObject<List<Agent>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+
+
                     return agents;
                 }
                 else //web api sent error response 
@@ -77,8 +79,7 @@ namespace POS.Classes
             }
 
         }
-        // adding or editing  agent by calling API metod "saveAgent"
-        // if agentId = 0 will call save else call edit
+        // adding vendor by calling API metod "saveAgent"
         public async Task<Boolean> saveAgent(Agent agent)
         {
             // ... Use HttpClient.
@@ -110,7 +111,6 @@ namespace POS.Classes
             }
         }
 
-        // delete agent
         public async Task<Boolean> deleteAgent(int agentId)
         {
             // ... Use HttpClient.
@@ -140,6 +140,7 @@ namespace POS.Classes
                 return false;
             }
         }
+
 
     }
 
