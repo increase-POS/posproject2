@@ -41,7 +41,7 @@ namespace POS.View
         private void Btn_suppliers_Click(object sender, RoutedEventArgs e)
         {
             GRID_Main.Children.Clear();
-            UC_supplier uc = new UC_supplier();
+            UC_vendors uc = new UC_vendors();
             GRID_Main.Children.Add(uc);
         }
 
@@ -64,6 +64,13 @@ namespace POS.View
             btn_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
             btn_banks.Content = MainWindow.resourcemanager.GetString("trBanks");
             btn_units.Content = MainWindow.resourcemanager.GetString("trUnits");
+        }
+
+        private void Btn_users_Click(object sender, RoutedEventArgs e)
+        {
+            GRID_Main.Children.Clear();
+            UC_users uc = new UC_users();
+            GRID_Main.Children.Add(uc);
         }
     }
 }
