@@ -110,7 +110,7 @@ namespace POS.View
             dg_users.Columns[3].Header = MainWindow.resourcemanager.GetString("trDetails");
         }
 
-        private  void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucUsers.FlowDirection = FlowDirection.LeftToRight; }
