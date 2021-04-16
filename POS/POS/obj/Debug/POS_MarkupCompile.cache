@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-D:\VSproject\POS\POS\obj\Debug\
+D:\myproj\vs2019\posproject2\POS\POS\obj\Debug\
 POS
 none
 false
 DEBUG;TRACE
-D:\VSproject\POS\POS\App.xaml
+D:\myproj\vs2019\posproject2\POS\POS\App.xaml
 5863322923
 
 15-893528120
-17227121084
+17-551746244
 MainWindow.xaml;View\UC_customer.xaml;View\UC_sectionData.xaml;View\UC_supplier.xaml;View\UC_users.xaml;
 
 True
