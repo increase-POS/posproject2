@@ -129,8 +129,8 @@
   <data name="trAdressHint" xml:space="preserve">
     <value>Address...</value>
   </data>
-  <data name="trAnotherInfomation" xml:space="preserve">
-    <value>Another Infomation</value>
+  <data name="trAnotherInformation" xml:space="preserve">
+    <value>Another Information</value>
   </data>
   <data name="trAreaHint" xml:space="preserve">
     <value>Area...</value>
@@ -142,7 +142,7 @@
     <value>Banks</value>
   </data>
   <data name="trBaseInformation" xml:space="preserve">
-    <value>Base Infomation</value>
+    <value>Base Information</value>
   </data>
   <data name="trBranches" xml:space="preserve">
     <value>Branches</value>
@@ -157,7 +157,7 @@
     <value>Increase POS</value>
   </data>
   <data name="trContactInformation" xml:space="preserve">
-    <value>Contact Infomation</value>
+    <value>Contact Information</value>
   </data>
   <data name="trCustomers" xml:space="preserve">
     <value>Customers</value>
@@ -236,5 +236,56 @@
   </data>
   <data name="trUserType" xml:space="preserve">
     <value>User Type</value>
+  </data>
+  <data name="trBalance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="trCompany" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="trDetails" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="trMobile" xml:space="preserve">
+    <value>Mobile</value>
+  </data>
+  <data name="trName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="trFirstNameHint" xml:space="preserve">
+    <value>First Name...</value>
+  </data>
+  <data name="trJobHint" xml:space="preserve">
+    <value>Job..</value>
+  </data>
+  <data name="trLastNameHint" xml:space="preserve">
+    <value>Last Name...</value>
+  </data>
+  <data name="trPasswordHint" xml:space="preserve">
+    <value>Password...</value>
+  </data>
+  <data name="trUserInformation" xml:space="preserve">
+    <value>User Infomration</value>
+  </data>
+  <data name="trUserNameHint" xml:space="preserve">
+    <value>User Name...</value>
+  </data>
+  <data name="trWorkHoursHint" xml:space="preserve">
+    <value>Work Hours...</value>
+  </data>
+  <data name="trWorkInformation" xml:space="preserve">
+    <value>Work Information</value>
+  </data>
+  <data name="trJob" xml:space="preserve">
+    <value>Job</value>
+  </data>
+  <data name="trLoginInformation" xml:space="preserve">
+    <value>Login Information</value>
+  </data>
+  <data name="trSelectJobHint" xml:space="preserve">
+    <value>Select Job ...</value>
+  </data>
+  <data name="trWorkHours" xml:space="preserve">
+    <value>Work Hours</value>
   </data>
 </root>
