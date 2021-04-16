@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\myproj\vs2019\posproject2\POS\POS\App.xaml
-5863322923
+5-357434015
 
-14496843766
+14-119797608
 17-551746244
-MainWindow.xaml;View\UC_customer.xaml;View\UC_sectionData.xaml;View\UC_supplier.xaml;View\UC_users.xaml;
+MainWindow.xaml;View\UC_customer.xaml;View\UC_sectionData.xaml;View\UC_vendors.xaml;View\UC_users.xaml;
 
-True
+False
 
