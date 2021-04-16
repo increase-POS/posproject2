@@ -59,7 +59,7 @@ namespace POS.View
             dg_customer.ItemsSource = customers;
         }
 
-        private void DG_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        pub void DG_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Agent agent = new Agent();
             if (dg_customer.SelectedIndex != -1)
@@ -166,5 +166,51 @@ namespace POS.View
             btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
         }
+
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {
+            string acc = cb_accType.Text;
+
+            if (acc == "Cash") acc = "c";
+            else if (acc == "Debt") acc = "d";
+            else acc = "c";
+
+            Agent customer = new Agent
+            {
+                agentId= AgentId,
+                name = tb_name.Text,
+                code = "",
+                company = tb_company.Text,
+                address = tb_address.Text,
+                details = tb_details.Text,
+                email = tb_email.Text,
+                phone = tb_phone.Text,
+                mobile = tb_mobile.Text,
+                image = "",
+                type = "c",
+                accType = acc,
+                balance = Single.Parse(tb_balance.Text),
+                isDefault = 0,
+                createDate = DateTime.Now,
+                updateDate = DateTime.Now,
+                createUserId = 1,
+                updateUserId = 1,
+                notes = tb_notes.Text,
+                isActive = 1,
+
+            };
+            await agentModel.saveAgent(customer);
+
+            //pass parameter type (V for vendors, C for Clients , B for Both)
+            var agents = await agentModel.GetAgentsAsync("c");
+            dg_customer.ItemsSource = agents;
+
+        }
+
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {
+            await agentModel.deleteAgent(AgentId);
+        }
     }
+}
 }
