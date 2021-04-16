@@ -26,8 +26,10 @@ namespace POS.View
     {
         public int AgentId;
         Agent agentModel = new Agent();
+
         public UC_Customer()
         {
+           
             InitializeComponent();
 
            
