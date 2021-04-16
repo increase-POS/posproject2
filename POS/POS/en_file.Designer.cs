@@ -97,11 +97,11 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Another Infomation.
+        ///   Looks up a localized string similar to Another Information.
         /// </summary>
-        internal static string trAnotherInfomation {
+        internal static string trAnotherInformation {
             get {
-                return ResourceManager.GetString("trAnotherInfomation", resourceCulture);
+                return ResourceManager.GetString("trAnotherInformation", resourceCulture);
             }
         }
         
@@ -111,6 +111,15 @@ namespace POS {
         internal static string trAreaHint {
             get {
                 return ResourceManager.GetString("trAreaHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Balance.
+        /// </summary>
+        internal static string trBalance {
+            get {
+                return ResourceManager.GetString("trBalance", resourceCulture);
             }
         }
         
@@ -133,7 +142,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Base Infomation.
+        ///   Looks up a localized string similar to Base Information.
         /// </summary>
         internal static string trBaseInformation {
             get {
@@ -160,6 +169,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Company.
+        /// </summary>
+        internal static string trCompany {
+            get {
+                return ResourceManager.GetString("trCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company....
         /// </summary>
         internal static string trCompanyHint {
@@ -178,7 +196,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contact Infomation.
+        ///   Looks up a localized string similar to Contact Information.
         /// </summary>
         internal static string trContactInformation {
             get {
@@ -205,6 +223,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Details.
+        /// </summary>
+        internal static string trDetails {
+            get {
+                return ResourceManager.GetString("trDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Details....
         /// </summary>
         internal static string trDetailsHint {
@@ -223,11 +250,56 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First Name....
+        /// </summary>
+        internal static string trFirstNameHint {
+            get {
+                return ResourceManager.GetString("trFirstNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         internal static string trHome {
             get {
                 return ResourceManager.GetString("trHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job.
+        /// </summary>
+        internal static string trJob {
+            get {
+                return ResourceManager.GetString("trJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job...
+        /// </summary>
+        internal static string trJobHint {
+            get {
+                return ResourceManager.GetString("trJobHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Name....
+        /// </summary>
+        internal static string trLastNameHint {
+            get {
+                return ResourceManager.GetString("trLastNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login Information.
+        /// </summary>
+        internal static string trLoginInformation {
+            get {
+                return ResourceManager.GetString("trLoginInformation", resourceCulture);
             }
         }
         
@@ -241,11 +313,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mobile.
+        /// </summary>
+        internal static string trMobile {
+            get {
+                return ResourceManager.GetString("trMobile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mobile....
         /// </summary>
         internal static string trMobileHint {
             get {
                 return ResourceManager.GetString("trMobileHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string trName {
+            get {
+                return ResourceManager.GetString("trName", resourceCulture);
             }
         }
         
@@ -273,6 +363,15 @@ namespace POS {
         internal static string trPamentMethodHint {
             get {
                 return ResourceManager.GetString("trPamentMethodHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password....
+        /// </summary>
+        internal static string trPasswordHint {
+            get {
+                return ResourceManager.GetString("trPasswordHint", resourceCulture);
             }
         }
         
@@ -340,6 +439,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Job ....
+        /// </summary>
+        internal static string trSelectJobHint {
+            get {
+                return ResourceManager.GetString("trSelectJobHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         internal static string trSettings {
@@ -394,11 +502,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User Infomration.
+        /// </summary>
+        internal static string trUserInformation {
+            get {
+                return ResourceManager.GetString("trUserInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Name.
         /// </summary>
         internal static string trUserName {
             get {
                 return ResourceManager.GetString("trUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Name....
+        /// </summary>
+        internal static string trUserNameHint {
+            get {
+                return ResourceManager.GetString("trUserNameHint", resourceCulture);
             }
         }
         
@@ -417,6 +543,33 @@ namespace POS {
         internal static string trUserType {
             get {
                 return ResourceManager.GetString("trUserType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work Hours.
+        /// </summary>
+        internal static string trWorkHours {
+            get {
+                return ResourceManager.GetString("trWorkHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work Hours....
+        /// </summary>
+        internal static string trWorkHoursHint {
+            get {
+                return ResourceManager.GetString("trWorkHoursHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work Information.
+        /// </summary>
+        internal static string trWorkInformation {
+            get {
+                return ResourceManager.GetString("trWorkInformation", resourceCulture);
             }
         }
     }
