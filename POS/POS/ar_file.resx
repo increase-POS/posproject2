@@ -237,4 +237,55 @@
   <data name="trUserType" xml:space="preserve">
     <value>نوع المستخدم</value>
   </data>
+  <data name="trBalance" xml:space="preserve">
+    <value>الرصيد</value>
+  </data>
+  <data name="trCompany" xml:space="preserve">
+    <value>الشركة</value>
+  </data>
+  <data name="trDetails" xml:space="preserve">
+    <value>تفاصيل</value>
+  </data>
+  <data name="trMobile" xml:space="preserve">
+    <value>الجوال</value>
+  </data>
+  <data name="trName" xml:space="preserve">
+    <value>الاسم</value>
+  </data>
+  <data name="trFirstNameHint" xml:space="preserve">
+    <value>الاسم الأول ...</value>
+  </data>
+  <data name="trJobHint" xml:space="preserve">
+    <value>العمل ...</value>
+  </data>
+  <data name="trLastNameHint" xml:space="preserve">
+    <value>الكنية ...</value>
+  </data>
+  <data name="trPasswordHint" xml:space="preserve">
+    <value>كلمة المرور ...</value>
+  </data>
+  <data name="trUserInformation" xml:space="preserve">
+    <value>معلومات المستخدم</value>
+  </data>
+  <data name="trUserNameHint" xml:space="preserve">
+    <value>اسم المستخدم ...</value>
+  </data>
+  <data name="trWorkHoursHint" xml:space="preserve">
+    <value>ساعات العمل ...</value>
+  </data>
+  <data name="trWorkInformation" xml:space="preserve">
+    <value>معلومات العمل</value>
+  </data>
+  <data name="trJob" xml:space="preserve">
+    <value>العمل</value>
+  </data>
+  <data name="trLoginInformation" xml:space="preserve">
+    <value>معلومات التسجيل</value>
+  </data>
+  <data name="trSelectJobHint" xml:space="preserve">
+    <value>اختر عمل ...</value>
+  </data>
+  <data name="trWorkHours" xml:space="preserve">
+    <value>ساعات العمل</value>
+  </data>
 </root>
