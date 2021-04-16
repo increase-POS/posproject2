@@ -70,8 +70,8 @@
     <Compile Include="Classes\BadDateFixingConverter.cs" />
     <Compile Include="View\UC_customer.xaml.cs" />
     <Compile Include="View\UC_sectionData.xaml.cs" />
-    <Compile Include="View\UC_supplier.xaml.cs">
-      <DependentUpon>UC_supplier.xaml</DependentUpon>
+    <Compile Include="View\UC_vendors.xaml.cs">
+      <DependentUpon>UC_vendors.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UC_users.xaml.cs">
       <DependentUpon>UC_users.xaml</DependentUpon>
@@ -108,7 +108,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\UC_supplier.xaml">
+    <Page Include="View\UC_vendors.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
