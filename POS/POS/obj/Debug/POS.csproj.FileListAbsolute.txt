@@ -64,3 +64,14 @@ C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\View\UC_users.g.c
 C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\View\UC_supplier.baml
 C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\View\UC_users.baml
 C:\Users\YasmineNjr\Desktop\Increase Company\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+D:\myproj\vs2019\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+D:\myproj\vs2019\posproject2\POS\POS\obj\Debug\MainWindow.g.cs
+D:\myproj\vs2019\posproject2\POS\POS\obj\Debug\View\UC_customer.g.cs
+D:\myproj\vs2019\posproject2\POS\POS\obj\Debug\View\UC_sectionData.g.cs
+D:\myproj\vs2019\posproject2\POS\POS\obj\Debug\View\UC_supplier.g.cs
+D:\myproj\vs2019\posproject2\POS\POS\obj\Debug\View\UC_users.g.cs
+D:\myproj\vs2019\posproject2\POS\POS\obj\Debug\App.g.cs
+D:\myproj\vs2019\posproject2\POS\POS\obj\Debug\POS_MarkupCompile.cache
+D:\myproj\vs2019\posproject2\POS\POS\obj\Debug\POS_MarkupCompile.lref
+D:\myproj\vs2019\posproject2\POS\POS\obj\Debug\POS.exe
+D:\myproj\vs2019\posproject2\POS\POS\obj\Debug\POS.pdb
