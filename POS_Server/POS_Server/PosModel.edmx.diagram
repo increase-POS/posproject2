@@ -136,6 +136,9 @@
         <AssociationConnector Association="incposdbModel.FK_units_units" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_units_users" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_units_users1" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="incposdbModel.banks" Width="1.5" PointX="3.375" PointY="4" />
+        <AssociationConnector Association="incposdbModel.FK_operations_banks" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_operations" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
