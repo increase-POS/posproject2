@@ -14,6 +14,12 @@ namespace POS_Server
     
     public partial class operations
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public operations()
+        {
+            this.cashTransfer = new HashSet<cashTransfer>();
+        }
+    
         public int operationId { get; set; }
         public string type { get; set; }
         public string side { get; set; }
@@ -21,8 +27,12 @@ namespace POS_Server
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
+        public Nullable<int> bankId { get; set; }
     
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
+        public virtual banks banks { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cashTransfer> cashTransfer { get; set; }
     }
 }
