@@ -53,5 +53,6 @@ namespace POS_Server
         public virtual DbSet<serials> serials { get; set; }
         public virtual DbSet<units> units { get; set; }
         public virtual DbSet<users> users { get; set; }
+        public virtual DbSet<banks> banks { get; set; }
     }
 }
