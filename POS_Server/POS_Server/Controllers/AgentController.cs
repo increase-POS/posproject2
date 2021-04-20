@@ -26,9 +26,9 @@ namespace POS_Server.Controllers
             }
             if (headers.Contains("type"))
             {
-                // type = V mean vendor
-                // type = C means Client
-                // type = B means both of brevious types
+                // type = v mean vendor
+                // type = c means Client
+                // type = b means both of brevious types
                 type = headers.GetValues("type").First();
             }
             Validation validation = new Validation();
@@ -53,7 +53,6 @@ namespace POS_Server.Controllers
             }
             else
                 return NotFound();
-
         }
         // GET api/agent/5
         [HttpGet]
@@ -170,6 +169,7 @@ namespace POS_Server.Controllers
             var headers = re.Headers;
             string token = "";
             int agentId = 0;
+            int userId = 0;
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -177,6 +177,10 @@ namespace POS_Server.Controllers
             if (headers.Contains("agentId"))
             {
                 agentId = Convert.ToInt32(headers.GetValues("agentId").First());
+            }
+            if (headers.Contains("userId"))
+            {
+                userId = Convert.ToInt32(headers.GetValues("userId").First());
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
@@ -188,6 +192,9 @@ namespace POS_Server.Controllers
                     {
                         var tmpAgent = entity.agents.Where(p => p.agentId == agentId).First();
                         tmpAgent.isActive = 0;
+                        tmpAgent.updateDate = DateTime.Now;
+                        tmpAgent.updateUserId = userId;
+                       
                         entity.SaveChanges();
                     }
 
