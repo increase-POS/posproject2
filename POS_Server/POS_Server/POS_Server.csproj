@@ -182,6 +182,10 @@
     </Compile>
     <Compile Include="Controllers\AgentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PropertiesController.cs" />
+    <Compile Include="Controllers\propertiesItemsController.cs" />
+    <Compile Include="Controllers\UnitsController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\Validation.cs" />
     <Compile Include="Expenses.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
