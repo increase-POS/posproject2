@@ -29,7 +29,8 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var usersList = entity.users.Select(u => new
+                    var usersList = entity.users.Where( u => u.isActive == 1)
+                    .Select(u => new
                     {
                         u.userId,
                         u.username,
@@ -150,30 +151,30 @@ namespace POS_Server.Controllers
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-                        var userEntity = entity.Set<users>();
+                        var unitEntity = entity.Set<users>();
                         if (userObject.userId == 0)
                         {
-                            userEntity.Add(userObject);
+                            unitEntity.Add(userObject);
                             message = "User Is Added Successfully";
                         }
                         else
                         {
-                            var tmpUser = entity.users.Where(p => p.userId == userObject.userId).FirstOrDefault();
-                            tmpUser.name = userObject.name;
-                            tmpUser.username = userObject.username;
-                            tmpUser.password = userObject.password;
-                            tmpUser.name = userObject.name;
-                            tmpUser.lastname = userObject.lastname;
-                            tmpUser.job = userObject.job;
-                            tmpUser.workHours = userObject.workHours;
-                            tmpUser.details = userObject.details;
-                            tmpUser.updateDate = userObject.updateDate;
-                            tmpUser.updateUserId = userObject.updateUserId;
-                            tmpUser.phone = userObject.phone;
-                            tmpUser.mobile = userObject.mobile;
-                            tmpUser.email = userObject.email;
-                            tmpUser.notes = userObject.notes;
-                            tmpUser.address = userObject.address;
+                            var tmpUnit = entity.users.Where(p => p.userId == userObject.userId).FirstOrDefault();
+                            tmpUnit.name = userObject.name;
+                            tmpUnit.username = userObject.username;
+                            tmpUnit.password = userObject.password;
+                            tmpUnit.name = userObject.name;
+                            tmpUnit.lastname = userObject.lastname;
+                            tmpUnit.job = userObject.job;
+                            tmpUnit.workHours = userObject.workHours;
+                            tmpUnit.details = userObject.details;
+                            tmpUnit.updateDate = userObject.updateDate;
+                            tmpUnit.updateUserId = userObject.updateUserId;
+                            tmpUnit.phone = userObject.phone;
+                            tmpUnit.mobile = userObject.mobile;
+                            tmpUnit.email = userObject.email;
+                            tmpUnit.notes = userObject.notes;
+                            tmpUnit.address = userObject.address;
 
                             message = "User Is Updated Successfully";
                         }
@@ -197,9 +198,14 @@ namespace POS_Server.Controllers
             var headers = re.Headers;
             string token = "";
             int userId = 0;
+            int delUserId = 0;
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
+            }
+            if (headers.Contains("delUserId"))
+            {
+                delUserId = Convert.ToInt32(headers.GetValues("delUserId").First());
             }
             if (headers.Contains("userId"))
             {
@@ -213,9 +219,13 @@ namespace POS_Server.Controllers
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {                     
-                        users userDelete = entity.users.Find(userId);
-                        entity.users.Remove(userDelete);
+                        users userDelete = entity.users.Find(delUserId);
+                        
+                        userDelete.isActive = 0;
+                        userDelete.updateDate = DateTime.Now;
+                        userDelete.updateUserId = userId;
                         entity.SaveChanges();
+
                         return Ok("User is Deleted Successfully");
                     }
                 }
