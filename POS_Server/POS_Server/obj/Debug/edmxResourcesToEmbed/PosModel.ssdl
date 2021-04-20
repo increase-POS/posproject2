@@ -25,6 +25,18 @@
     <Property Name="notes" Type="text" />
     <Property Name="isActive" Type="tinyint" />
   </EntityType>
+  <EntityType Name="banks">
+    <Key>
+      <PropertyRef Name="bankId" />
+    </Key>
+    <Property Name="bankId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" />
+    <Property Name="phone" Type="nvarchar" MaxLength="100" />
+    <Property Name="mobile" Type="nvarchar" MaxLength="100" />
+    <Property Name="address" Type="nvarchar" MaxLength="100" />
+    <Property Name="accNumber" Type="nvarchar" MaxLength="100" />
+    <Property Name="notes" Type="nvarchar" MaxLength="100" />
+  </EntityType>
   <EntityType Name="barcodes">
     <Key>
       <PropertyRef Name="barcodeId" />
@@ -45,13 +57,13 @@
       <PropertyRef Name="branchId" />
     </Key>
     <Property Name="branchId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="code" Type="varchar" MaxLength="100" />
-    <Property Name="name" Type="varchar" MaxLength="100" />
+    <Property Name="code" Type="nvarchar" MaxLength="100" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" />
     <Property Name="details" Type="text" />
     <Property Name="address" Type="text" />
-    <Property Name="email" Type="varchar" MaxLength="200" />
-    <Property Name="phone" Type="varchar" MaxLength="100" />
-    <Property Name="mobile" Type="varchar" MaxLength="100" />
+    <Property Name="email" Type="nvarchar" MaxLength="200" />
+    <Property Name="phone" Type="nvarchar" MaxLength="100" />
+    <Property Name="mobile" Type="nvarchar" MaxLength="100" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
@@ -77,20 +89,21 @@
     <Property Name="userId" Type="int" />
     <Property Name="agentId" Type="int" />
     <Property Name="invId" Type="int" />
-    <Property Name="transNum" Type="varchar" MaxLength="50" />
+    <Property Name="transNum" Type="nvarchar" MaxLength="50" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="cash" Type="decimal" Precision="20" Scale="4" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="createUserId" Type="int" />
+    <Property Name="operationId" Type="int" />
   </EntityType>
   <EntityType Name="categories">
     <Key>
       <PropertyRef Name="categoryId" />
     </Key>
     <Property Name="categoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="categoryCode" Type="varchar" MaxLength="100" />
-    <Property Name="name" Type="varchar" MaxLength="100" />
+    <Property Name="categoryCode" Type="nvarchar" MaxLength="100" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" />
     <Property Name="details" Type="text" />
     <Property Name="image" Type="text" />
     <Property Name="isActive" Type="smallint" />
@@ -115,10 +128,10 @@
       <PropertyRef Name="invoiceId" />
     </Key>
     <Property Name="invoiceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="invNumber" Type="varchar" MaxLength="100" />
+    <Property Name="invNumber" Type="nvarchar" MaxLength="100" />
     <Property Name="agentId" Type="int" />
     <Property Name="createUserId" Type="int" />
-    <Property Name="invType" Type="varchar" MaxLength="50" />
+    <Property Name="invType" Type="nvarchar" MaxLength="50" />
     <Property Name="total" Type="decimal" Precision="20" Scale="4" />
     <Property Name="totalNet" Type="decimal" Precision="20" Scale="4" />
     <Property Name="paid" Type="decimal" Precision="20" Scale="4" />
@@ -128,7 +141,7 @@
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="invoiceMainId" Type="int" />
-    <Property Name="invCase" Type="varchar" MaxLength="50" />
+    <Property Name="invCase" Type="nvarchar" MaxLength="50" />
     <Property Name="invTime" Type="datetime2" Precision="7" />
     <Property Name="notes" Type="text" />
   </EntityType>
@@ -137,10 +150,10 @@
       <PropertyRef Name="itemId" />
     </Key>
     <Property Name="itemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="code" Type="varchar" MaxLength="50" />
-    <Property Name="name" Type="varchar" MaxLength="200" />
+    <Property Name="code" Type="nvarchar" MaxLength="50" />
+    <Property Name="name" Type="nvarchar" MaxLength="200" />
     <Property Name="details" Type="text" />
-    <Property Name="type" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="image" Type="text" />
     <Property Name="taxes" Type="decimal" Precision="20" Scale="4" />
     <Property Name="isActive" Type="tinyint" />
@@ -149,7 +162,7 @@
     <Property Name="categoryId" Type="int" />
     <Property Name="parentId" Type="int" />
     <Property Name="barcodeId" Type="int" />
-    <Property Name="serialnum" Type="varchar" MaxLength="200" />
+    <Property Name="serialnum" Type="nvarchar" MaxLength="200" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
@@ -217,7 +230,7 @@
     <Property Name="itemsTransId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="itemId" Type="int" />
     <Property Name="quantity" Type="bigint" />
-    <Property Name="type" Type="varchar" MaxLength="50" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" />
     <Property Name="invoiceId" Type="int" />
     <Property Name="discount" Type="decimal" Precision="20" Scale="4" />
     <Property Name="discountType" Type="smallint" />
@@ -251,9 +264,9 @@
       <PropertyRef Name="locationId" />
     </Key>
     <Property Name="locationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="x" Type="varchar" MaxLength="100" />
-    <Property Name="y" Type="varchar" MaxLength="100" />
-    <Property Name="z" Type="varchar" MaxLength="100" />
+    <Property Name="x" Type="nvarchar" MaxLength="100" />
+    <Property Name="y" Type="nvarchar" MaxLength="100" />
+    <Property Name="z" Type="nvarchar" MaxLength="100" />
     <Property Name="branchId" Type="int" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -265,19 +278,20 @@
       <PropertyRef Name="offerId" />
     </Key>
     <Property Name="offerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="offerType" Type="varchar" MaxLength="50" />
+    <Property Name="offerType" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="operations">
     <Key>
       <PropertyRef Name="operationId" />
     </Key>
     <Property Name="operationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="type" Type="varchar" MaxLength="50" />
-    <Property Name="side" Type="varchar" MaxLength="50" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" />
+    <Property Name="side" Type="nvarchar" MaxLength="50" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
+    <Property Name="bankId" Type="int" />
   </EntityType>
   <EntityType Name="orders">
     <Key>
@@ -285,7 +299,7 @@
     </Key>
     <Property Name="orderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="invoiceId" Type="int" />
-    <Property Name="ordercase" Type="varchar" MaxLength="100" />
+    <Property Name="ordercase" Type="nvarchar" MaxLength="100" />
     <Property Name="userId" Type="int" />
     <Property Name="prior" Type="int" />
     <Property Name="type" Type="smallint" />
@@ -313,8 +327,8 @@
       <PropertyRef Name="posId" />
     </Key>
     <Property Name="posId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="code" Type="varchar" MaxLength="100" />
-    <Property Name="name" Type="varchar" MaxLength="100" />
+    <Property Name="code" Type="nvarchar" MaxLength="100" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" />
     <Property Name="balance" Type="decimal" Precision="20" Scale="4" />
     <Property Name="branchId" Type="int" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
@@ -339,9 +353,9 @@
       <PropertyRef Name="priceId" />
     </Key>
     <Property Name="priceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="name" Type="varchar" MaxLength="100" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" />
     <Property Name="price" Type="decimal" Precision="20" Scale="4" />
-    <Property Name="type" Type="varchar" MaxLength="50" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" />
     <Property Name="itemUnitId" Type="int" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -354,7 +368,7 @@
       <PropertyRef Name="propertyId" />
     </Key>
     <Property Name="propertyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="name" Type="varchar" MaxLength="100" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
@@ -365,7 +379,7 @@
       <PropertyRef Name="propertyItemId" />
     </Key>
     <Property Name="propertyItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="name" Type="varchar" MaxLength="100" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" />
     <Property Name="propertyId" Type="int" />
     <Property Name="isDefault" Type="smallint" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
@@ -379,14 +393,14 @@
     </Key>
     <Property Name="serialId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="itemId" Type="int" />
-    <Property Name="serialNum" Type="varchar" MaxLength="200" />
+    <Property Name="serialNum" Type="nvarchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="units">
     <Key>
       <PropertyRef Name="unitId" />
     </Key>
     <Property Name="unitId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="name" Type="varchar" MaxLength="100" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" />
     <Property Name="isSmallest" Type="smallint" />
     <Property Name="smallestId" Type="int" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
@@ -411,9 +425,9 @@
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
-    <Property Name="phone" Type="varchar" MaxLength="50" />
-    <Property Name="mobile" Type="varchar" MaxLength="50" />
-    <Property Name="email" Type="varchar" MaxLength="100" />
+    <Property Name="phone" Type="nvarchar" MaxLength="50" />
+    <Property Name="mobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="email" Type="nvarchar" MaxLength="100" />
     <Property Name="address" Type="text" />
     <Property Name="isActive" Type="smallint" />
     <Property Name="notes" Type="text" />
@@ -584,6 +598,18 @@
       </Principal>
       <Dependent Role="cashTransfer">
         <PropertyRef Name="invId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_cashTransfer_operations">
+    <End Role="operations" Type="Self.operations" Multiplicity="0..1" />
+    <End Role="cashTransfer" Type="Self.cashTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="operations">
+        <PropertyRef Name="operationId" />
+      </Principal>
+      <Dependent Role="cashTransfer">
+        <PropertyRef Name="operationId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1307,6 +1333,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_operations_banks">
+    <End Role="banks" Type="Self.banks" Multiplicity="0..1" />
+    <End Role="operations" Type="Self.operations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="banks">
+        <PropertyRef Name="bankId" />
+      </Principal>
+      <Dependent Role="operations">
+        <PropertyRef Name="bankId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_operations_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="operations" Type="Self.operations" Multiplicity="*" />
@@ -1621,6 +1659,7 @@
   </Association>
   <EntityContainer Name="incposdbModelStoreContainer">
     <EntitySet Name="agents" EntityType="Self.agents" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="banks" EntityType="Self.banks" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="barcodes" EntityType="Self.barcodes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="branches" EntityType="Self.branches" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="branchesUsers" EntityType="Self.branchesUsers" Schema="dbo" store:Type="Tables" />
@@ -1702,6 +1741,10 @@
     </AssociationSet>
     <AssociationSet Name="FK_cashTransfer_invoices" Association="Self.FK_cashTransfer_invoices">
       <End Role="invoices" EntitySet="invoices" />
+      <End Role="cashTransfer" EntitySet="cashTransfer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_cashTransfer_operations" Association="Self.FK_cashTransfer_operations">
+      <End Role="operations" EntitySet="operations" />
       <End Role="cashTransfer" EntitySet="cashTransfer" />
     </AssociationSet>
     <AssociationSet Name="FK_cashTransfer_pos" Association="Self.FK_cashTransfer_pos">
@@ -1943,6 +1986,10 @@
     <AssociationSet Name="FK_locations_users1" Association="Self.FK_locations_users1">
       <End Role="users" EntitySet="users" />
       <End Role="locations" EntitySet="locations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_operations_banks" Association="Self.FK_operations_banks">
+      <End Role="banks" EntitySet="banks" />
+      <End Role="operations" EntitySet="operations" />
     </AssociationSet>
     <AssociationSet Name="FK_operations_users" Association="Self.FK_operations_users">
       <End Role="users" EntitySet="users" />
