@@ -10,9 +10,9 @@
             <PropertyRef Name="agentId" />
           </Key>
           <Property Name="agentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="varchar" MaxLength="100" />
-          <Property Name="code" Type="varchar" MaxLength="100" />
-          <Property Name="company" Type="varchar" MaxLength="100" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" />
+          <Property Name="code" Type="nvarchar" MaxLength="100" />
+          <Property Name="company" Type="nvarchar" MaxLength="100" />
           <Property Name="address" Type="text" />
           <Property Name="details" Type="text" />
           <Property Name="email" Type="varchar" MaxLength="200" />
@@ -40,8 +40,8 @@
           <Property Name="invoiceId" Type="int" />
           <Property Name="coponeId" Type="int" />
           <Property Name="codeType" Type="tinyint" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
@@ -57,8 +57,8 @@
           <Property Name="email" Type="varchar" MaxLength="200" />
           <Property Name="phone" Type="varchar" MaxLength="100" />
           <Property Name="mobile" Type="varchar" MaxLength="100" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="notes" Type="text" />
@@ -83,8 +83,8 @@
           <Property Name="agentId" Type="int" />
           <Property Name="invId" Type="int" />
           <Property Name="transNum" Type="varchar" MaxLength="50" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="cash" Type="decimal" Precision="20" Scale="4" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="createUserId" Type="int" />
@@ -101,8 +101,8 @@
           <Property Name="isActive" Type="smallint" />
           <Property Name="taxes" Type="decimal" Precision="20" Scale="4" />
           <Property Name="parentId" Type="int" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="notes" Type="text" />
@@ -130,11 +130,11 @@
           <Property Name="deserved" Type="decimal" Precision="20" Scale="4" />
           <Property Name="deservedDate" Type="date" />
           <Property Name="invDate" Type="date" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="invoiceMainId" Type="int" />
           <Property Name="invCase" Type="varchar" MaxLength="50" />
-          <Property Name="invTime" Type="datetime" />
+          <Property Name="invTime" Type="datetime2" Precision="7" />
           <Property Name="notes" Type="text" />
         </EntityType>
         <EntityType Name="items">
@@ -155,8 +155,8 @@
           <Property Name="parentId" Type="int" />
           <Property Name="barcodeId" Type="int" />
           <Property Name="serialnum" Type="varchar" MaxLength="200" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="minUnitId" Type="int" />
@@ -171,8 +171,8 @@
           <Property Name="startDate" Type="date" />
           <Property Name="endDate" Type="date" />
           <Property Name="locationId" Type="int" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
@@ -185,8 +185,8 @@
           <Property Name="locationId" Type="int" />
           <Property Name="quantity" Type="bigint" />
           <Property Name="quantityMod" Type="int" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="barcodeId" Type="int" />
@@ -210,8 +210,8 @@
           <Property Name="propertyItemId" Type="int" />
           <Property Name="itemId" Type="int" />
           <Property Name="barcodeId" Type="int" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
@@ -228,8 +228,8 @@
           <Property Name="discountType" Type="smallint" />
           <Property Name="locationIdNew" Type="int" />
           <Property Name="locationIdOld" Type="int" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="notes" Type="text" />
@@ -246,8 +246,8 @@
           <Property Name="defaultPurchase" Type="smallint" />
           <Property Name="priceId" Type="int" />
           <Property Name="barcodeId" Type="int" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
@@ -260,8 +260,8 @@
           <Property Name="y" Type="varchar" MaxLength="100" />
           <Property Name="z" Type="varchar" MaxLength="100" />
           <Property Name="branchId" Type="int" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
@@ -279,8 +279,8 @@
           <Property Name="operationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="type" Type="varchar" MaxLength="50" />
           <Property Name="side" Type="varchar" MaxLength="50" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
@@ -294,8 +294,8 @@
           <Property Name="userId" Type="int" />
           <Property Name="prior" Type="int" />
           <Property Name="type" Type="smallint" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
@@ -308,8 +308,8 @@
           <Property Name="itemId" Type="int" />
           <Property Name="quantity" Type="decimal" Precision="20" Scale="4" />
           <Property Name="invoiceId" Type="int" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
@@ -322,8 +322,8 @@
           <Property Name="name" Type="varchar" MaxLength="100" />
           <Property Name="balance" Type="decimal" Precision="20" Scale="4" />
           <Property Name="branchId" Type="int" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
@@ -334,8 +334,8 @@
           <Property Name="posUserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="userId" Type="int" />
           <Property Name="posId" Type="int" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
@@ -348,8 +348,8 @@
           <Property Name="price" Type="decimal" Precision="20" Scale="4" />
           <Property Name="type" Type="varchar" MaxLength="50" />
           <Property Name="itemUnitId" Type="int" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="barcodeId" Type="int" />
@@ -360,8 +360,8 @@
           </Key>
           <Property Name="propertyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="100" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
@@ -373,8 +373,8 @@
           <Property Name="name" Type="varchar" MaxLength="100" />
           <Property Name="propertyId" Type="int" />
           <Property Name="isDefault" Type="smallint" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
@@ -394,10 +394,10 @@
           <Property Name="name" Type="varchar" MaxLength="100" />
           <Property Name="isSmallest" Type="smallint" />
           <Property Name="smallestId" Type="int" />
-          <Property Name="createDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="parentid" Type="int" />
         </EntityType>
         <EntityType Name="users">
@@ -412,8 +412,8 @@
           <Property Name="job" Type="nchar" MaxLength="100" />
           <Property Name="workHours" Type="nchar" MaxLength="100" />
           <Property Name="details" Type="text" />
-          <Property Name="createDate" Type="datetime" />
-          <Property Name="updateDate" Type="datetime" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="phone" Type="varchar" MaxLength="50" />
@@ -664,18 +664,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_categories_categories">
-          <End Role="categories" Type="Self.categories" Multiplicity="0..1" />
-          <End Role="categories1" Type="Self.categories" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="categories">
-              <PropertyRef Name="categoryId" />
-            </Principal>
-            <Dependent Role="categories1">
-              <PropertyRef Name="parentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_categories_users">
           <End Role="users" Type="Self.users" Multiplicity="0..1" />
           <End Role="categories" Type="Self.categories" Multiplicity="*" />
@@ -793,18 +781,6 @@
             </Principal>
             <Dependent Role="items">
               <PropertyRef Name="categoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_items_items">
-          <End Role="items" Type="Self.items" Multiplicity="0..1" />
-          <End Role="items1" Type="Self.items" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="items">
-              <PropertyRef Name="itemId" />
-            </Principal>
-            <Dependent Role="items1">
-              <PropertyRef Name="parentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1624,18 +1600,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_units_units">
-          <End Role="units" Type="Self.units" Multiplicity="0..1" />
-          <End Role="units1" Type="Self.units" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="units">
-              <PropertyRef Name="unitId" />
-            </Principal>
-            <Dependent Role="units1">
-              <PropertyRef Name="parentid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_units_users">
           <End Role="users" Type="Self.users" Multiplicity="0..1" />
           <End Role="units" Type="Self.units" Multiplicity="*" />
@@ -1769,10 +1733,6 @@
             <End Role="users" EntitySet="users" />
             <End Role="cashTransfer" EntitySet="cashTransfer" />
           </AssociationSet>
-          <AssociationSet Name="FK_categories_categories" Association="Self.FK_categories_categories">
-            <End Role="categories" EntitySet="categories" />
-            <End Role="categories1" EntitySet="categories" />
-          </AssociationSet>
           <AssociationSet Name="FK_categories_users" Association="Self.FK_categories_users">
             <End Role="users" EntitySet="users" />
             <End Role="categories" EntitySet="categories" />
@@ -1812,10 +1772,6 @@
           <AssociationSet Name="FK_items_categories" Association="Self.FK_items_categories">
             <End Role="categories" EntitySet="categories" />
             <End Role="items" EntitySet="items" />
-          </AssociationSet>
-          <AssociationSet Name="FK_items_items" Association="Self.FK_items_items">
-            <End Role="items" EntitySet="items" />
-            <End Role="items1" EntitySet="items" />
           </AssociationSet>
           <AssociationSet Name="FK_items_units" Association="Self.FK_items_units">
             <End Role="units" EntitySet="units" />
@@ -2089,10 +2045,6 @@
             <End Role="items" EntitySet="items" />
             <End Role="serials" EntitySet="serials" />
           </AssociationSet>
-          <AssociationSet Name="FK_units_units" Association="Self.FK_units_units">
-            <End Role="units" EntitySet="units" />
-            <End Role="units1" EntitySet="units" />
-          </AssociationSet>
           <AssociationSet Name="FK_units_users" Association="Self.FK_units_users">
             <End Role="users" EntitySet="users" />
             <End Role="units" EntitySet="units" />
@@ -2111,9 +2063,9 @@
             <PropertyRef Name="agentId" />
           </Key>
           <Property Name="agentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="company" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="company" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
@@ -2145,8 +2097,8 @@
           <Property Name="invoiceId" Type="Int32" />
           <Property Name="coponeId" Type="Int32" />
           <Property Name="codeType" Type="Byte" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <NavigationProperty Name="invoices" Relationship="Self.FK_barcodes_invoices" FromRole="barcodes" ToRole="invoices" />
@@ -2173,8 +2125,8 @@
           <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -2206,8 +2158,8 @@
           <Property Name="agentId" Type="Int32" />
           <Property Name="invId" Type="Int32" />
           <Property Name="transNum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="cash" Type="Decimal" Precision="20" Scale="4" />
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="createUserId" Type="Int32" />
@@ -2232,8 +2184,8 @@
           <Property Name="isActive" Type="Int16" />
           <Property Name="taxes" Type="Decimal" Precision="20" Scale="4" />
           <Property Name="parentId" Type="Int32" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -2266,11 +2218,11 @@
           <Property Name="deserved" Type="Decimal" Precision="20" Scale="4" />
           <Property Name="deservedDate" Type="DateTime" Precision="0" />
           <Property Name="invDate" Type="DateTime" Precision="0" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="invoiceMainId" Type="Int32" />
           <Property Name="invCase" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="invTime" Type="DateTime" Precision="3" />
+          <Property Name="invTime" Type="DateTime" Precision="7" />
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="agents" Relationship="Self.FK_invoices_agents" FromRole="invoices" ToRole="agents" />
           <NavigationProperty Name="barcodes" Relationship="Self.FK_barcodes_invoices" FromRole="invoices" ToRole="barcodes" />
@@ -2303,8 +2255,8 @@
           <Property Name="parentId" Type="Int32" />
           <Property Name="barcodeId" Type="Int32" />
           <Property Name="serialnum" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="minUnitId" Type="Int32" />
@@ -2339,8 +2291,8 @@
           <Property Name="startDate" Type="DateTime" Precision="0" />
           <Property Name="endDate" Type="DateTime" Precision="0" />
           <Property Name="locationId" Type="Int32" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <NavigationProperty Name="items" Relationship="Self.FK_itemsDates_items" FromRole="itemsDates" ToRole="items" />
@@ -2361,8 +2313,8 @@
           <Property Name="locationId" Type="Int32" />
           <Property Name="quantity" Type="Int64" />
           <Property Name="quantityMod" Type="Int32" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="barcodeId" Type="Int32" />
@@ -2396,8 +2348,8 @@
           <Property Name="propertyItemId" Type="Int32" />
           <Property Name="itemId" Type="Int32" />
           <Property Name="barcodeId" Type="Int32" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <NavigationProperty Name="barcodes" Relationship="Self.FK_itemsProp_barcodes" FromRole="itemsProp" ToRole="barcodes" />
@@ -2419,8 +2371,8 @@
           <Property Name="discountType" Type="Int16" />
           <Property Name="locationIdNew" Type="Int32" />
           <Property Name="locationIdOld" Type="Int32" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -2443,8 +2395,8 @@
           <Property Name="defaultPurchase" Type="Int16" />
           <Property Name="priceId" Type="Int32" />
           <Property Name="barcodeId" Type="Int32" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <NavigationProperty Name="barcodes" Relationship="Self.FK_itemsUnits_barcodes" FromRole="itemsUnits" ToRole="barcodes" />
@@ -2464,8 +2416,8 @@
           <Property Name="y" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="z" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="branchId" Type="Int32" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <NavigationProperty Name="branches" Relationship="Self.FK_locations_branches" FromRole="locations" ToRole="branches" />
@@ -2490,8 +2442,8 @@
           <Property Name="operationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="side" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <NavigationProperty Name="users" Relationship="Self.FK_operations_users" FromRole="operations" ToRole="users" />
@@ -2507,8 +2459,8 @@
           <Property Name="userId" Type="Int32" />
           <Property Name="prior" Type="Int32" />
           <Property Name="type" Type="Int16" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <NavigationProperty Name="invoices" Relationship="Self.FK_orders_invoices" FromRole="orders" ToRole="invoices" />
@@ -2526,8 +2478,8 @@
           <Property Name="itemId" Type="Int32" />
           <Property Name="quantity" Type="Decimal" Precision="20" Scale="4" />
           <Property Name="invoiceId" Type="Int32" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <NavigationProperty Name="invoices" Relationship="Self.FK_orderscontents_invoices" FromRole="orderscontents" ToRole="invoices" />
@@ -2545,8 +2497,8 @@
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="balance" Type="Decimal" Precision="20" Scale="4" />
           <Property Name="branchId" Type="Int32" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <NavigationProperty Name="branches" Relationship="Self.FK_pos_branches" FromRole="pos" ToRole="branches" />
@@ -2561,8 +2513,8 @@
           <Property Name="posUserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="userId" Type="Int32" />
           <Property Name="posId" Type="Int32" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
         </EntityType>
@@ -2575,8 +2527,8 @@
           <Property Name="price" Type="Decimal" Precision="20" Scale="4" />
           <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="itemUnitId" Type="Int32" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="barcodeId" Type="Int32" />
@@ -2592,8 +2544,8 @@
           </Key>
           <Property Name="propertyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <NavigationProperty Name="users" Relationship="Self.FK_properties_users" FromRole="properties" ToRole="users" />
@@ -2608,8 +2560,8 @@
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="propertyId" Type="Int32" />
           <Property Name="isDefault" Type="Int16" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <NavigationProperty Name="itemsProp" Relationship="Self.FK_itemsProp_propertiesItems" FromRole="propertiesItems" ToRole="itemsProp" />
@@ -2634,10 +2586,10 @@
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="isSmallest" Type="Int16" />
           <Property Name="smallestId" Type="Int32" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="parentid" Type="Int32" />
           <NavigationProperty Name="items" Relationship="Self.FK_items_units" FromRole="units" ToRole="items" />
           <NavigationProperty Name="items1" Relationship="Self.FK_items_units1" FromRole="units" ToRole="items" />
@@ -2660,8 +2612,8 @@
           <Property Name="job" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
           <Property Name="workHours" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
           <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="createDate" Type="DateTime" Precision="3" />
-          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
