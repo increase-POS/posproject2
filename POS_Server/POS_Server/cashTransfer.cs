@@ -26,6 +26,7 @@ namespace POS_Server
         public Nullable<decimal> cash { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> createUserId { get; set; }
+        public Nullable<int> operationId { get; set; }
     
         public virtual agents agents { get; set; }
         public virtual invoices invoices { get; set; }
@@ -35,5 +36,6 @@ namespace POS_Server
         public virtual users users2 { get; set; }
         public virtual users users3 { get; set; }
         public virtual users users4 { get; set; }
+        public virtual operations operations { get; set; }
     }
 }
