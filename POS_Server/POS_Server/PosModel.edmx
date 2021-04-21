@@ -41,6 +41,10 @@
           <Property Name="address" Type="nvarchar" MaxLength="100" />
           <Property Name="accNumber" Type="nvarchar" MaxLength="100" />
           <Property Name="notes" Type="nvarchar" MaxLength="100" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
+          <Property Name="createUserId" Type="int" />
+          <Property Name="updateUserId" Type="int" />
         </EntityType>
         <EntityType Name="barcodes">
           <Key>
@@ -4434,6 +4438,10 @@
           <Property Name="accNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="notes" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="operations" Relationship="incposdbModel.FK_operations_banks" FromRole="banks" ToRole="operations" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
+          <Property Name="createUserId" Type="Int32" />
+          <Property Name="updateUserId" Type="Int32" />
         </EntityType>
         <Association Name="FK_operations_banks">
           <End Type="incposdbModel.banks" Role="banks" Multiplicity="0..1" />
@@ -4917,6 +4925,10 @@
           <EntitySetMapping Name="banks">
             <EntityTypeMapping TypeName="incposdbModel.banks">
               <MappingFragment StoreEntitySet="banks">
+                <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+                <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="createDate" ColumnName="createDate" />
                 <ScalarProperty Name="notes" ColumnName="notes" />
                 <ScalarProperty Name="accNumber" ColumnName="accNumber" />
                 <ScalarProperty Name="address" ColumnName="address" />
