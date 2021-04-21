@@ -36,6 +36,10 @@
     <Property Name="address" Type="nvarchar" MaxLength="100" />
     <Property Name="accNumber" Type="nvarchar" MaxLength="100" />
     <Property Name="notes" Type="nvarchar" MaxLength="100" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
   </EntityType>
   <EntityType Name="barcodes">
     <Key>
