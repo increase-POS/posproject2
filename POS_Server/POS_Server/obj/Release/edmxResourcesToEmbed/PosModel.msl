@@ -453,6 +453,10 @@
     <EntitySetMapping Name="banks">
       <EntityTypeMapping TypeName="incposdbModel.banks">
         <MappingFragment StoreEntitySet="banks">
+          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+          <ScalarProperty Name="createDate" ColumnName="createDate" />
           <ScalarProperty Name="notes" ColumnName="notes" />
           <ScalarProperty Name="accNumber" ColumnName="accNumber" />
           <ScalarProperty Name="address" ColumnName="address" />
