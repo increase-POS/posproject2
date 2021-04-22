@@ -288,4 +288,46 @@
   <data name="trWorkHours" xml:space="preserve">
     <value>ساعات العمل</value>
   </data>
+  <data name="trAddress" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
+  <data name="trBranchCodeHint" xml:space="preserve">
+    <value>شيفرة الفرع ...</value>
+  </data>
+  <data name="trBranchNameHint" xml:space="preserve">
+    <value>اسم الفرع ...</value>
+  </data>
+  <data name="trCode" xml:space="preserve">
+    <value>الشيفرة</value>
+  </data>
+  <data name="trMoreInformation" xml:space="preserve">
+    <value>معلومات أكثر</value>
+  </data>
+  <data name="trSelectBranchHint" xml:space="preserve">
+    <value>اختر اسم الفرع</value>
+  </data>
+  <data name="trSelectStoreHint" xml:space="preserve">
+    <value>اختر اسم المخزن</value>
+  </data>
+  <data name="trStoreCodeHint" xml:space="preserve">
+    <value>شيفرة المخزن ...</value>
+  </data>
+  <data name="trStoreNameHint" xml:space="preserve">
+    <value>اسم المخزن ...</value>
+  </data>
+  <data name="trEmptyBalanceToolTip" xml:space="preserve">
+    <value>الرصيد لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trErrorEmailToolTip" xml:space="preserve">
+    <value>عنوان البريد غير صالح</value>
+  </data>
+  <data name="trEmptyNameToolTip" xml:space="preserve">
+    <value>الاسم لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyAreaToolTip" xml:space="preserve">
+    <value>اختر منطقة</value>
+  </data>
+  <data name="trEmptyMobileToolTip" xml:space="preserve">
+    <value>أدخل رقم الجوال</value>
+  </data>
 </root>
