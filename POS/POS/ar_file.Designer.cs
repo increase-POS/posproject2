@@ -88,6 +88,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to العنوان.
+        /// </summary>
+        internal static string trAddress {
+            get {
+                return ResourceManager.GetString("trAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العنوان....
         /// </summary>
         internal static string trAdressHint {
@@ -151,6 +160,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to شيفرة الفرع ....
+        /// </summary>
+        internal static string trBranchCodeHint {
+            get {
+                return ResourceManager.GetString("trBranchCodeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الفروع.
         /// </summary>
         internal static string trBranches {
@@ -160,11 +178,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to اسم الفرع ....
+        /// </summary>
+        internal static string trBranchNameHint {
+            get {
+                return ResourceManager.GetString("trBranchNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الفهرس.
         /// </summary>
         internal static string trCatalog {
             get {
                 return ResourceManager.GetString("trCatalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الشيفرة.
+        /// </summary>
+        internal static string trCode {
+            get {
+                return ResourceManager.GetString("trCode", resourceCulture);
             }
         }
         
@@ -250,6 +286,51 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to اختر منطقة.
+        /// </summary>
+        internal static string trEmptyAreaToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyAreaToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الرصيد لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyBalanceToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyBalanceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to أدخل رقم الجوال.
+        /// </summary>
+        internal static string trEmptyMobileToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyMobileToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الاسم لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyNameToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عنوان البريد غير صالح.
+        /// </summary>
+        internal static string trErrorEmailToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmailToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الاسم الأول ....
         /// </summary>
         internal static string trFirstNameHint {
@@ -327,6 +408,15 @@ namespace POS {
         internal static string trMobileHint {
             get {
                 return ResourceManager.GetString("trMobileHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to معلومات أكثر.
+        /// </summary>
+        internal static string trMoreInformation {
+            get {
+                return ResourceManager.GetString("trMoreInformation", resourceCulture);
             }
         }
         
@@ -439,11 +529,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to اختر اسم الفرع.
+        /// </summary>
+        internal static string trSelectBranchHint {
+            get {
+                return ResourceManager.GetString("trSelectBranchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اختر عمل ....
         /// </summary>
         internal static string trSelectJobHint {
             get {
                 return ResourceManager.GetString("trSelectJobHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اختر اسم المخزن.
+        /// </summary>
+        internal static string trSelectStoreHint {
+            get {
+                return ResourceManager.GetString("trSelectStoreHint", resourceCulture);
             }
         }
         
@@ -462,6 +570,24 @@ namespace POS {
         internal static string trStorage {
             get {
                 return ResourceManager.GetString("trStorage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to شيفرة المخزن ....
+        /// </summary>
+        internal static string trStoreCodeHint {
+            get {
+                return ResourceManager.GetString("trStoreCodeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اسم المخزن ....
+        /// </summary>
+        internal static string trStoreNameHint {
+            get {
+                return ResourceManager.GetString("trStoreNameHint", resourceCulture);
             }
         }
         
