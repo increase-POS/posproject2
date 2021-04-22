@@ -196,6 +196,10 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style x:Key="ToolTipError" TargetType="{x:Type ToolTip}" BasedOn="{StaticResource {x:Type ToolTip}}">
+                                <Setter Property="Foreground" Value="Red"/>
+                                <Setter Property="Background" Value="#15FF0000"/>
+                            </Style>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
