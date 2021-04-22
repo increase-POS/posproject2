@@ -72,5 +72,40 @@ namespace POS.View
             UC_users uc = new UC_users();
             GRID_Main.Children.Add(uc);
         }
+
+        private void Btn_branches_Click(object sender, RoutedEventArgs e)
+        {
+            GRID_Main.Children.Clear();
+            UC_branch uc = new UC_branch();
+            GRID_Main.Children.Add(uc);
+        }
+
+        private void Btn_stores_Click(object sender, RoutedEventArgs e)
+        {
+            GRID_Main.Children.Clear();
+            UC_store uc = new UC_store();
+            GRID_Main.Children.Add(uc);
+        }
+
+        private void Btn_pos_Click(object sender, RoutedEventArgs e)
+        {
+            GRID_Main.Children.Clear();
+            UC_pos uc = new UC_pos();
+            GRID_Main.Children.Add(uc);
+        }
+
+        private void Btn_banks_Click(object sender, RoutedEventArgs e)
+        {
+            GRID_Main.Children.Clear();
+            UC_bank uc = new UC_bank();
+            GRID_Main.Children.Add(uc);
+        }
+
+        private void Btn_units_Click(object sender, RoutedEventArgs e)
+        {
+            GRID_Main.Children.Clear();
+            UC_unit uc = new UC_unit();
+            GRID_Main.Children.Add(uc);
+        }
     }
 }

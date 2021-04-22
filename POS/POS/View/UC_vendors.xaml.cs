@@ -31,6 +31,7 @@ namespace POS.View
         public UC_vendors()
         {
             InitializeComponent();
+
             /* List<Agent> suppliers = new List<Agent>();
 
              for (int i = 0; i < 50; i++)
@@ -69,6 +70,14 @@ namespace POS.View
 
         private void DG_supplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            p_errorName.Visibility    = Visibility.Collapsed;
+            p_errorBalance.Visibility = Visibility.Collapsed;
+            p_errorEmail.Visibility   = Visibility.Collapsed;
+            var bc = new BrushConverter();
+            tb_name.Background    = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_balance.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_email.Background   = (Brush)bc.ConvertFrom("#f8f8f8");
+
             Agent agent = new Agent();
             if (dg_vendor.SelectedIndex != -1)
             {
@@ -81,6 +90,29 @@ namespace POS.View
                 {
                     AgentId = agent.agentId;
                 }
+                if (agent.accType != null)
+                {
+                    if (agent.accType.Equals("c"))      cb_accType.SelectedIndex = 0;
+                    else if (agent.accType.Equals("d")) cb_accType.SelectedIndex = 1;
+                    else                                cb_accType.SelectedIndex = 0;
+                }
+                else cb_accType.SelectedIndex = -1;
+
+                if ((agent.mobile != null) && (agent.mobile.ToArray().Length > 4))
+                {
+                    string area = new string(agent.mobile.Take(4).ToArray());
+                    var mobile = agent.mobile.Substring(4, agent.mobile.Length - 4);
+
+                    cb_area.Text = area;
+                    tb_mobile.Text = mobile.ToString();
+                }
+                else
+                {
+                    cb_area.SelectedIndex = -1;
+                    tb_mobile.Clear();
+                }
+
+                //MessageBox.Show(agent.mobile);
             }
         }
 
@@ -122,95 +154,161 @@ namespace POS.View
             translate();
 
             //pass parameter type (V for vendors, C for Clients , B for Both)
-            //try
-            //{
-                var agents = await agentModel.GetAgentsAsync("v");
-                dg_vendor.ItemsSource = agents;
-            //}
-            //catch { }
+
+            var agents = await agentModel.GetAgentsAsync("v");
+            dg_vendor.ItemsSource = agents;
+
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            string acc = cb_accType.Text;
-
-            if (acc == "Cash")      acc = "c";
-            else if (acc == "Debt") acc = "d";
-            else acc = "c";
-
-            Agent vendor = new Agent
+            
+            if (tb_name.Text.Equals(""))
             {
-                name         = tb_name.Text,
-                code         = "",
-                company      = tb_company.Text,
-                address      = tb_address.Text,
-                details      = tb_details.Text,
-                email        = tb_email.Text,
-                phone        = tb_phone.Text,
-                mobile       = tb_mobile.Text,
-                image        = "",
-                type         = "v",
-                accType      = acc,
-                balance      = Single.Parse(tb_balance.Text),
-                isDefault    = 0,
-                createDate   = DateTime.Now,
-                updateDate   = DateTime.Now,
-                createUserId = 1,
-                updateUserId = 1,
-                notes        = tb_notes.Text,
-                isActive     = 1,
-            };
-            await agentModel.saveAgent(vendor);
+                p_errorName.Visibility = Visibility.Visible;
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+            }
+            if (tb_balance.Text.Equals(""))
+            {
+                p_errorBalance.Visibility = Visibility.Visible;
+                tt_errorBalance.Content = MainWindow.resourcemanager.GetString("trEmptyBalanceToolTip");
+            }
+            else
+            {
+                p_errorBalance.Visibility = Visibility.Collapsed;
 
-            //pass parameter type (V for vendors, C for Clients , B for Both)
-            var agents = await agentModel.GetAgentsAsync("v");
-            dg_vendor.ItemsSource = agents;
+            }
+            if (!tb_email.Text.Equals(""))
+            {
+                if (!ValidatorExtensions.IsValid(tb_email.Text))
+                {
+                    p_errorEmail.Visibility = Visibility.Visible;
+                    tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
+                }
+                else
+                {
+                    p_errorEmail.Visibility = Visibility.Collapsed;
+                }
+            }
+            if ((!tb_name.Text.Equals("")) && (!tb_balance.Text.Equals("")))
+            {
+                string acc = cb_accType.Text;
+
+                if (acc == "Cash") acc = "c";
+                else if (acc == "Debt") acc = "d";
+                else acc = "c";
+
+                Agent vendor = new Agent
+                {
+                    name = tb_name.Text,
+                    code = "",
+                    company = tb_company.Text,
+                    address = tb_address.Text,
+                    details = tb_details.Text,
+                    email = tb_email.Text,
+                    phone = tb_phone.Text,
+                    mobile = cb_area.Text + tb_mobile.Text,
+                    image = "",
+                    type = "v",
+                    accType = acc,
+                    balance = Single.Parse(tb_balance.Text),
+                    isDefault = 0,
+                    createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                    updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                    createUserId = 1,
+                    updateUserId = 1,
+                    notes = tb_notes.Text,
+                    isActive = 1,
+                };
+                await agentModel.saveAgent(vendor);
+
+                //pass parameter type (V for vendors, C for Clients , B for Both)
+                var agents = await agentModel.GetAgentsAsync("v");
+                dg_vendor.ItemsSource = agents;
+            }
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            string acc = cb_accType.Text;
-
-            if (acc == "Cash")      acc = "c";
-            else if (acc == "Debt") acc = "d";
-            else acc = "c";
-
-            Agent vendor = new Agent
+            if (tb_name.Text.Equals(""))
             {
-                agentId      = AgentId,
-                name         = tb_name.Text,
-                code         = "",
-                company      = tb_company.Text,
-                address      = tb_address.Text,
-                details      = tb_details.Text,
-                email        = tb_email.Text,
-                phone        = tb_phone.Text,
-                mobile       = tb_mobile.Text,
-                image        = "",
-                type         = "v",
-                accType      = acc,
-                balance      = Single.Parse(tb_balance.Text),
-                isDefault    = 0,
-                createDate   = DateTime.Now,
-                updateDate   = DateTime.Now,
-                createUserId = 1,
-                updateUserId = 1,
-                notes        = tb_notes.Text,
-                isActive     = 1,
+                p_errorName.Visibility = Visibility.Visible;
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+            }
+            if (tb_balance.Text.Equals(""))
+            {
+                p_errorBalance.Visibility = Visibility.Visible;
+                tt_errorBalance.Content = MainWindow.resourcemanager.GetString("trEmptyBalanceToolTip");
+            }
+            else
+            {
+                p_errorBalance.Visibility = Visibility.Collapsed;
 
-            };
+            }
+            if (!tb_email.Text.Equals(""))
+            {
+                if (!ValidatorExtensions.IsValid(tb_email.Text))
+                {
+                    p_errorEmail.Visibility = Visibility.Visible;
+                    tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
+                }
+                else
+                {
+                    p_errorEmail.Visibility = Visibility.Collapsed;
+                }
+            }
+            if ((!tb_name.Text.Equals("")) && (!tb_balance.Text.Equals("")))
+            {
+                string acc = cb_accType.Text;
 
-            await agentModel.saveAgent(vendor);
+                if (acc == "Cash")      acc = "c";
+                else if (acc == "Debt") acc = "d";
+                else                    acc = "c";
 
-            //pass parameter type (V for vendors, C for Clients , B for Both)
-            var agents = await agentModel.GetAgentsAsync("v");
-            dg_vendor.ItemsSource = agents;
+                Agent vendor = new Agent
+                {
+                    agentId = AgentId,
+                    name = tb_name.Text,
+                    code = "",
+                    company = tb_company.Text,
+                    address = tb_address.Text,
+                    details = tb_details.Text,
+                    email = tb_email.Text,
+                    phone = tb_phone.Text,
+                    mobile = cb_area.Text + tb_mobile.Text,
+                    image = "",
+                    type = "v",
+                    accType = acc,
+                    balance = Single.Parse(tb_balance.Text),
+                    isDefault = 0,
+                    createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                    updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                    createUserId = 1,
+                    updateUserId = 1,
+                    notes = tb_notes.Text,
+                    isActive = 1,
 
+                };
 
+                await agentModel.saveAgent(vendor);
+
+                //pass parameter type (V for vendors, C for Clients , B for Both)
+                var agents = await agentModel.GetAgentsAsync("v");
+                dg_vendor.ItemsSource = agents;
+            }
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
+
             await agentModel.deleteAgent(AgentId);
 
             //pass parameter type (V for vendors, C for Clients , B for Both)
@@ -231,6 +329,69 @@ namespace POS.View
             tb_notes.Clear();
 
 
+        }
+
+        private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var bc = new BrushConverter();
+
+            if (tb_name.Text.Equals(""))
+            {
+                p_errorName.Visibility = Visibility.Visible;
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                //<!--15FF0000-->
+                //var bc = new BrushConverter();
+                //tt_errorEmail.Background = (Brush)bc.ConvertFrom("#15FF0000");
+
+                //tt_errorEmail.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#082049");
+
+                //tt_errorEmail.Background = new SolidColorBrush(Colors.Red);
+                //Use the following code to remove the background you set on it.
+                //tb_name.ClearValue(TextBox.BackgroundProperty);
+                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+        }
+
+        private void Tb_balance_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var bc = new BrushConverter();
+
+            if (tb_balance.Text.Equals(""))
+            {
+                p_errorBalance.Visibility = Visibility.Visible;
+                tt_errorBalance.Content = MainWindow.resourcemanager.GetString("trEmptyBalanceToolTip");
+                tb_balance.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorBalance.Visibility = Visibility.Collapsed;
+                tb_balance.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+        }
+
+        private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var bc = new BrushConverter();
+
+            if (!tb_email.Text.Equals(""))
+            {
+                if (!ValidatorExtensions.IsValid(tb_email.Text))
+                {
+                    p_errorEmail.Visibility = Visibility.Visible;
+                    tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
+                    tb_email.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                }
+                else
+                {
+                    p_errorEmail.Visibility = Visibility.Collapsed;
+                    tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                }
+            }
         }
     }
 }

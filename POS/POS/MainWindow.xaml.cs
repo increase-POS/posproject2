@@ -115,7 +115,7 @@ namespace POS
 
         }
 
-        public static string lang = "en";
+        public static string lang = "ar";
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (lang.Equals("en"))

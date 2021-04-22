@@ -288,4 +288,46 @@
   <data name="trWorkHours" xml:space="preserve">
     <value>Work Hours</value>
   </data>
+  <data name="trAddress" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="trBranchCodeHint" xml:space="preserve">
+    <value>Branch Code...</value>
+  </data>
+  <data name="trBranchNameHint" xml:space="preserve">
+    <value>Branch Name...</value>
+  </data>
+  <data name="trCode" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="trMoreInformation" xml:space="preserve">
+    <value>More Information</value>
+  </data>
+  <data name="trSelectBranchHint" xml:space="preserve">
+    <value>Select Branch Name</value>
+  </data>
+  <data name="trSelectStoreHint" xml:space="preserve">
+    <value>Select Store Name</value>
+  </data>
+  <data name="trStoreCodeHint" xml:space="preserve">
+    <value>Store Code...</value>
+  </data>
+  <data name="trStoreNameHint" xml:space="preserve">
+    <value>Store Name...</value>
+  </data>
+  <data name="trEmptyBalanceToolTip" xml:space="preserve">
+    <value>Balance can not be empty</value>
+  </data>
+  <data name="trErrorEmailToolTip" xml:space="preserve">
+    <value>Email address is not valid</value>
+  </data>
+  <data name="trEmptyNameToolTip" xml:space="preserve">
+    <value>Name can not be empty</value>
+  </data>
+  <data name="trEmptyAreaToolTip" xml:space="preserve">
+    <value>Select area</value>
+  </data>
+  <data name="trEmptyMobileToolTip" xml:space="preserve">
+    <value>Enter the mobile number</value>
+  </data>
 </root>

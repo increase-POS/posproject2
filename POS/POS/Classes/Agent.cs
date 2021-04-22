@@ -47,6 +47,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
+
                 request.RequestUri = new Uri(Global.APIUri + "Agent/Get");
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Headers.Add("type", type);
@@ -95,9 +96,10 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Agent/Save");
+                // set unicode
+                request.Content = new StringContent(myContent, System.Text.Encoding.UTF8, "text/xml");
+                request.RequestUri = new Uri(Global.APIUri + "Agent/Save?agentObject="+ myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("agentObject", myContent);
                 request.Method = HttpMethod.Post;
                 //set content type
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
