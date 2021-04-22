@@ -125,56 +125,62 @@ namespace POS_Server.Controllers
         // add or update unit
         [HttpPost]
         [Route("Save")]
-        public string Save()
+        public string Save(string userObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            string jsonObject = "";
             string message = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
             }
-            if (headers.Contains("userObject"))
-            {
-                jsonObject = headers.GetValues("userObject").First();
-                jsonObject = jsonObject.Replace("\\", string.Empty);
-                jsonObject = jsonObject.Trim('"');
-            }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-            users userObject = JsonConvert.DeserializeObject<users>(jsonObject);
+            
             if (valid)
             {
+                userObject = userObject.Replace("\\", string.Empty);
+                userObject = userObject.Trim('"');
+                users newObject = JsonConvert.DeserializeObject<users>(userObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                if (newObject.updateUserId == 0 || newObject.updateUserId == null)
+                {
+                    Nullable<int> id = null;
+                    newObject.updateUserId = id;
+                }
+                if (newObject.createUserId == 0 || newObject.createUserId == null)
+                {
+                    Nullable<int> id = null;
+                    newObject.createUserId = id;
+                }
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var unitEntity = entity.Set<users>();
-                        if (userObject.userId == 0)
+                        if (newObject.userId == 0)
                         {
-                            unitEntity.Add(userObject);
+                            unitEntity.Add(newObject);
                             message = "User Is Added Successfully";
                         }
                         else
                         {
-                            var tmpUnit = entity.users.Where(p => p.userId == userObject.userId).FirstOrDefault();
-                            tmpUnit.name = userObject.name;
-                            tmpUnit.username = userObject.username;
-                            tmpUnit.password = userObject.password;
-                            tmpUnit.name = userObject.name;
-                            tmpUnit.lastname = userObject.lastname;
-                            tmpUnit.job = userObject.job;
-                            tmpUnit.workHours = userObject.workHours;
-                            tmpUnit.details = userObject.details;
-                            tmpUnit.updateDate = userObject.updateDate;
-                            tmpUnit.updateUserId = userObject.updateUserId;
-                            tmpUnit.phone = userObject.phone;
-                            tmpUnit.mobile = userObject.mobile;
-                            tmpUnit.email = userObject.email;
-                            tmpUnit.notes = userObject.notes;
-                            tmpUnit.address = userObject.address;
+                            var tmpUnit = entity.users.Where(p => p.userId == newObject.userId).FirstOrDefault();
+                            tmpUnit.name = newObject.name;
+                            tmpUnit.username = newObject.username;
+                            tmpUnit.password = newObject.password;
+                            tmpUnit.name = newObject.name;
+                            tmpUnit.lastname = newObject.lastname;
+                            tmpUnit.job = newObject.job;
+                            tmpUnit.workHours = newObject.workHours;
+                            tmpUnit.details = newObject.details;
+                            tmpUnit.updateDate = newObject.updateDate;
+                            tmpUnit.updateUserId = newObject.updateUserId;
+                            tmpUnit.phone = newObject.phone;
+                            tmpUnit.mobile = newObject.mobile;
+                            tmpUnit.email = newObject.email;
+                            tmpUnit.notes = newObject.notes;
+                            tmpUnit.address = newObject.address;
 
                             message = "User Is Updated Successfully";
                         }

@@ -21,7 +21,6 @@ namespace POS_Server
             this.items1 = new HashSet<items>();
             this.itemsMaterials = new HashSet<itemsMaterials>();
             this.itemsUnits = new HashSet<itemsUnits>();
-            this.units1 = new HashSet<units>();
         }
     
         public int unitId { get; set; }
@@ -42,9 +41,6 @@ namespace POS_Server
         public virtual ICollection<itemsMaterials> itemsMaterials { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsUnits> itemsUnits { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<units> units1 { get; set; }
-        public virtual units units2 { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
     }

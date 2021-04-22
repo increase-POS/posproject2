@@ -1,9 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Web.Http;
 
 namespace POS_Server.Controllers
@@ -38,10 +41,43 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
+                    var agentsList = entity.agents
+                   .Where(p => p.type == type)
+                   .Select(p => new { p.agentId, p.name, p.code, p.company, p.address, p.details, p.email, p.phone, p.mobile, p.image, p.type, p.accType, p.balance, p.isDefault, p.notes, p.isActive ,p.createDate})
+                   .ToList();
+
+                    if (agentsList == null)
+                        return NotFound();
+                    else
+                        return Ok(agentsList);
+
+                }
+            }
+            else
+                return NotFound();
+        }
+        [HttpGet]
+        [Route("GetActive")]
+        public IHttpActionResult GetActive(string type)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
 
                     var agentsList = entity.agents
-                   .Where(p => p.type == type && p.isActive==1)
-                   .Select(p => new { p.agentId, p.name, p.code, p.company, p.address, p.details, p.email, p.phone, p.mobile, p.image, p.type, p.accType, p.balance, p.isDefault, p.notes, p.isActive ,p.createDate})
+                   .Where(p => p.type == type && p.isActive == 1)
+                   .Select(p => new { p.agentId, p.name, p.code, p.company, p.address, p.details, p.email, p.phone, p.mobile, p.image, p.type, p.accType, p.balance, p.isDefault, p.notes, p.isActive, p.createDate })
                    .ToList();
 
                     if (agentsList == null)
@@ -98,25 +134,32 @@ namespace POS_Server.Controllers
         // add or update agent
         [HttpPost]
         [Route("Save")]
-        public bool Save()
+        public bool Save(string agentObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            string agentObject = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
             }
-            if (headers.Contains("agentObject"))
-            {
-                agentObject = headers.GetValues("agentObject").First();
-                agentObject = agentObject.Replace("\\", string.Empty);
-                agentObject = agentObject.Trim('"');
-            }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-            POS_Server.agents agentObj = JsonConvert.DeserializeObject<POS_Server.agents>(agentObject);
+            
+            agentObject = agentObject.Replace("\\", string.Empty);
+            agentObject = agentObject.Trim('"');
+
+            agents agentObj = JsonConvert.DeserializeObject<agents>(agentObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+            if (agentObj.updateUserId == 0 || agentObj.updateUserId == null)
+            {
+                Nullable<int> id = null;
+                agentObj.updateUserId = id;
+            }
+            if (agentObj.createUserId == 0 || agentObj.createUserId == null)
+            {
+                Nullable<int> id = null;
+                agentObj.createUserId = id;
+            }
             if (valid)
             {
                 try

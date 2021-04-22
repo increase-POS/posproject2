@@ -18,7 +18,6 @@ namespace POS_Server
         public items()
         {
             this.barcodes = new HashSet<barcodes>();
-            this.items1 = new HashSet<items>();
             this.itemsDates = new HashSet<itemsDates>();
             this.itemsLocations = new HashSet<itemsLocations>();
             this.itemsMaterials = new HashSet<itemsMaterials>();
@@ -55,9 +54,6 @@ namespace POS_Server
         public virtual ICollection<barcodes> barcodes { get; set; }
         public virtual barcodes barcodes1 { get; set; }
         public virtual categories categories { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<items> items1 { get; set; }
-        public virtual items items2 { get; set; }
         public virtual units units { get; set; }
         public virtual units units1 { get; set; }
         public virtual users users { get; set; }

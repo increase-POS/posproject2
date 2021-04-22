@@ -98,44 +98,51 @@ namespace POS_Server.Controllers
         // add or update property
         [HttpPost]
         [Route("Save")]
-        public string Save()
+        public string Save(string propertyObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            string jsonObject = "";
+
             string message = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
             }
-            if (headers.Contains("propertyObject"))
-            {
-                jsonObject = headers.GetValues("propertyObject").First();
-                jsonObject = jsonObject.Replace("\\", string.Empty);
-                jsonObject = jsonObject.Trim('"');
-            }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-            properties propertyObject = JsonConvert.DeserializeObject<properties>(jsonObject);
+             
             if (valid)
             {
+                propertyObject = propertyObject.Replace("\\", string.Empty);
+                propertyObject = propertyObject.Trim('"');
+                properties propertiesObject = JsonConvert.DeserializeObject<properties>(propertyObject , new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                if (propertiesObject.updateUserId == 0 || propertiesObject.updateUserId == null)
+                {
+                    Nullable<int> id = null;
+                    propertiesObject.updateUserId = id;
+                }
+                if (propertiesObject.createUserId == 0 || propertiesObject.createUserId == null)
+                {
+                    Nullable<int> id = null;
+                    propertiesObject.createUserId = id;
+                }
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var propEntity = entity.Set<properties>();
-                        if (propertyObject.propertyId == 0)
+                        if (propertiesObject.propertyId == 0)
                         {
-                            propEntity.Add(propertyObject);
+                            propEntity.Add(propertiesObject);
                             message = "Property Is Added Successfully";
                         }
                         else
                         {
-                            var tmpProperty = entity.properties.Where(p => p.propertyId == propertyObject.propertyId).FirstOrDefault();
-                            tmpProperty.name = propertyObject.name;
-                            tmpProperty.updateDate = propertyObject.updateDate;
-                            tmpProperty.updateUserId = propertyObject.updateUserId;
+                            var tmpProperty = entity.properties.Where(p => p.propertyId == propertiesObject.propertyId).FirstOrDefault();
+                            tmpProperty.name = propertiesObject.name;
+                            tmpProperty.updateDate = propertiesObject.updateDate;
+                            tmpProperty.updateUserId = propertiesObject.updateUserId;
 
                             message = "Property Is Updated Successfully";
                         }

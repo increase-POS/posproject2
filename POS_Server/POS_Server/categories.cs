@@ -17,7 +17,6 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public categories()
         {
-            this.categories1 = new HashSet<categories>();
             this.items = new HashSet<items>();
         }
     
@@ -35,9 +34,6 @@ namespace POS_Server
         public Nullable<int> updateUserId { get; set; }
         public string notes { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<categories> categories1 { get; set; }
-        public virtual categories categories2 { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

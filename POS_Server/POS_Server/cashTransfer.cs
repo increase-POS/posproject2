@@ -30,12 +30,12 @@ namespace POS_Server
     
         public virtual agents agents { get; set; }
         public virtual invoices invoices { get; set; }
+        public virtual operations operations { get; set; }
         public virtual pos pos { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
         public virtual users users2 { get; set; }
         public virtual users users3 { get; set; }
         public virtual users users4 { get; set; }
-        public virtual operations operations { get; set; }
     }
 }

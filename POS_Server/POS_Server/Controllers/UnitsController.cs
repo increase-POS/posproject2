@@ -105,47 +105,43 @@ namespace POS_Server.Controllers
         // add or update unit
         [HttpPost]
         [Route("Save")]
-        public string Save()
+        public string Save(string unitObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            string jsonObject = "";
             string message = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
             }
-            if (headers.Contains("unitObject"))
-            {
-                jsonObject = headers.GetValues("unitObject").First();
-                jsonObject = jsonObject.Replace("\\", string.Empty);
-                jsonObject = jsonObject.Trim('"');
-            }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-            POS_Server.units unitObject = JsonConvert.DeserializeObject<POS_Server.units>(jsonObject);
+            
             if (valid)
             {
-               try
+                unitObject = unitObject.Replace("\\", string.Empty);
+                unitObject = unitObject.Trim('"');
+                units Object = JsonConvert.DeserializeObject<units>(unitObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var unitEntity = entity.Set<units>();
-                        if (unitObject.unitId == 0)
+                        if (Object.unitId == 0)
                         {
-                            unitEntity.Add(unitObject);
+                            unitEntity.Add(Object);
                             message = "Unit Is Added Successfully";
                         }
                         else
                         {
-                            var tmpUnit = entity.units.Where(p => p.unitId == unitObject.unitId).FirstOrDefault();
-                            tmpUnit.name = unitObject.name;
-                            tmpUnit.isSmallest = unitObject.isSmallest;
-                            tmpUnit.smallestId = unitObject.smallestId;
-                            tmpUnit.updateDate = unitObject.updateDate;
-                            tmpUnit.updateUserId = unitObject.updateUserId;
-                            tmpUnit.parentid = unitObject.parentid;
+                            var tmpUnit = entity.units.Where(p => p.unitId == Object.unitId).FirstOrDefault();
+                            tmpUnit.name = Object.name;
+                            tmpUnit.isSmallest = Object.isSmallest;
+                            tmpUnit.smallestId = Object.smallestId;
+                            tmpUnit.updateDate = Object.updateDate;
+                            tmpUnit.updateUserId = Object.updateUserId;
+                            tmpUnit.parentid = Object.parentid;
                             message = "Unit Is Updated Successfully";
                         }
                         entity.SaveChanges();

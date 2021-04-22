@@ -29,6 +29,23 @@
     <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_agents" FromRole="agents" ToRole="cashTransfer" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_agents" FromRole="agents" ToRole="invoices" />
   </EntityType>
+  <EntityType Name="banks">
+    <Key>
+      <PropertyRef Name="bankId" />
+    </Key>
+    <Property Name="bankId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="accNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="notes" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="operations" Relationship="Self.FK_operations_banks" FromRole="banks" ToRole="operations" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+  </EntityType>
   <EntityType Name="barcodes">
     <Key>
       <PropertyRef Name="barcodeId" />
@@ -105,16 +122,16 @@
     <Property Name="cash" Type="Decimal" Precision="20" Scale="4" />
     <Property Name="updateUserId" Type="Int32" />
     <Property Name="createUserId" Type="Int32" />
+    <Property Name="operationId" Type="Int32" />
     <NavigationProperty Name="agents" Relationship="Self.FK_cashTransfer_agents" FromRole="cashTransfer" ToRole="agents" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_cashTransfer_invoices" FromRole="cashTransfer" ToRole="invoices" />
+    <NavigationProperty Name="operations" Relationship="Self.FK_cashTransfer_operations" FromRole="cashTransfer" ToRole="operations" />
     <NavigationProperty Name="pos" Relationship="Self.FK_cashTransfer_pos" FromRole="cashTransfer" ToRole="pos" />
     <NavigationProperty Name="users" Relationship="Self.FK_cashTransfer_users" FromRole="cashTransfer" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_cashTransfer_users1" FromRole="cashTransfer" ToRole="users" />
     <NavigationProperty Name="users2" Relationship="Self.FK_cashTransfer_users2" FromRole="cashTransfer" ToRole="users" />
     <NavigationProperty Name="users3" Relationship="Self.FK_cashTransfer_users3" FromRole="cashTransfer" ToRole="users" />
     <NavigationProperty Name="users4" Relationship="Self.FK_cashTransfer_users4" FromRole="cashTransfer" ToRole="users" />
-    <Property Name="operationId" Type="Int32" />
-    <NavigationProperty Name="operations" Relationship="incposdbModel.FK_cashTransfer_operations" FromRole="cashTransfer" ToRole="operations" />
   </EntityType>
   <EntityType Name="categories">
     <Key>
@@ -133,8 +150,6 @@
     <Property Name="createUserId" Type="Int32" />
     <Property Name="updateUserId" Type="Int32" />
     <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="categories1" Relationship="Self.FK_categories_categories" FromRole="categories" ToRole="categories1" />
-    <NavigationProperty Name="categories2" Relationship="Self.FK_categories_categories" FromRole="categories1" ToRole="categories" />
     <NavigationProperty Name="users" Relationship="Self.FK_categories_users" FromRole="categories" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_categories_users1" FromRole="categories" ToRole="users" />
     <NavigationProperty Name="items" Relationship="Self.FK_items_categories" FromRole="categories" ToRole="items" />
@@ -208,8 +223,6 @@
     <NavigationProperty Name="barcodes" Relationship="Self.FK_barcodes_items" FromRole="items" ToRole="barcodes" />
     <NavigationProperty Name="barcodes1" Relationship="Self.FK_items_barcodes" FromRole="items" ToRole="barcodes" />
     <NavigationProperty Name="categories" Relationship="Self.FK_items_categories" FromRole="items" ToRole="categories" />
-    <NavigationProperty Name="items1" Relationship="Self.FK_items_items" FromRole="items" ToRole="items1" />
-    <NavigationProperty Name="items2" Relationship="Self.FK_items_items" FromRole="items1" ToRole="items" />
     <NavigationProperty Name="units" Relationship="Self.FK_items_units" FromRole="items" ToRole="units" />
     <NavigationProperty Name="units1" Relationship="Self.FK_items_units1" FromRole="items" ToRole="units" />
     <NavigationProperty Name="users" Relationship="Self.FK_items_users" FromRole="items" ToRole="users" />
@@ -390,11 +403,11 @@
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="createUserId" Type="Int32" />
     <Property Name="updateUserId" Type="Int32" />
+    <Property Name="bankId" Type="Int32" />
+    <NavigationProperty Name="banks" Relationship="Self.FK_operations_banks" FromRole="operations" ToRole="banks" />
+    <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_operations" FromRole="operations" ToRole="cashTransfer" />
     <NavigationProperty Name="users" Relationship="Self.FK_operations_users" FromRole="operations" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_operations_users1" FromRole="operations" ToRole="users" />
-    <Property Name="bankId" Type="Int32" />
-    <NavigationProperty Name="banks" Relationship="incposdbModel.FK_operations_banks" FromRole="operations" ToRole="banks" />
-    <NavigationProperty Name="cashTransfer" Relationship="incposdbModel.FK_cashTransfer_operations" FromRole="operations" ToRole="cashTransfer" />
   </EntityType>
   <EntityType Name="orders">
     <Key>
@@ -542,8 +555,6 @@
     <NavigationProperty Name="items1" Relationship="Self.FK_items_units1" FromRole="units" ToRole="items" />
     <NavigationProperty Name="itemsMaterials" Relationship="Self.FK_itemsMaterials_units" FromRole="units" ToRole="itemsMaterials" />
     <NavigationProperty Name="itemsUnits" Relationship="Self.FK_itemsUnits_units" FromRole="units" ToRole="itemsUnits" />
-    <NavigationProperty Name="units1" Relationship="Self.FK_units_units" FromRole="units" ToRole="units1" />
-    <NavigationProperty Name="units2" Relationship="Self.FK_units_units" FromRole="units1" ToRole="units" />
     <NavigationProperty Name="users" Relationship="Self.FK_units_users" FromRole="units" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_units_users1" FromRole="units" ToRole="users" />
   </EntityType>
@@ -675,6 +686,18 @@
       </Principal>
       <Dependent Role="invoices">
         <PropertyRef Name="agentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_operations_banks">
+    <End Role="banks" Type="Self.banks" Multiplicity="0..1" />
+    <End Role="operations" Type="Self.operations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="banks">
+        <PropertyRef Name="bankId" />
+      </Principal>
+      <Dependent Role="operations">
+        <PropertyRef Name="bankId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -894,6 +917,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_cashTransfer_operations">
+    <End Role="operations" Type="Self.operations" Multiplicity="0..1" />
+    <End Role="cashTransfer" Type="Self.cashTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="operations">
+        <PropertyRef Name="operationId" />
+      </Principal>
+      <Dependent Role="cashTransfer">
+        <PropertyRef Name="operationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_cashTransfer_pos">
     <End Role="pos" Type="Self.pos" Multiplicity="0..1" />
     <End Role="cashTransfer" Type="Self.cashTransfer" Multiplicity="*" />
@@ -963,18 +998,6 @@
       </Principal>
       <Dependent Role="cashTransfer">
         <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_categories_categories">
-    <End Role="categories" Type="Self.categories" Multiplicity="0..1" />
-    <End Role="categories1" Type="Self.categories" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="categories">
-        <PropertyRef Name="categoryId" />
-      </Principal>
-      <Dependent Role="categories1">
-        <PropertyRef Name="parentId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1107,18 +1130,6 @@
       </Principal>
       <Dependent Role="orderscontents">
         <PropertyRef Name="invoiceId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_items_items">
-    <End Role="items" Type="Self.items" Multiplicity="0..1" />
-    <End Role="items1" Type="Self.items" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="items">
-        <PropertyRef Name="itemId" />
-      </Principal>
-      <Dependent Role="items1">
-        <PropertyRef Name="parentId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1830,18 +1841,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_units_units">
-    <End Role="units" Type="Self.units" Multiplicity="0..1" />
-    <End Role="units1" Type="Self.units" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="units">
-        <PropertyRef Name="unitId" />
-      </Principal>
-      <Dependent Role="units1">
-        <PropertyRef Name="parentid" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_units_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="units" Type="Self.units" Multiplicity="*" />
@@ -1868,6 +1867,7 @@
   </Association>
   <EntityContainer Name="incposdbEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="agents" EntityType="Self.agents" />
+    <EntitySet Name="banks" EntityType="Self.banks" />
     <EntitySet Name="barcodes" EntityType="Self.barcodes" />
     <EntitySet Name="branches" EntityType="Self.branches" />
     <EntitySet Name="branchesUsers" EntityType="Self.branchesUsers" />
@@ -1910,6 +1910,10 @@
     <AssociationSet Name="FK_invoices_agents" Association="Self.FK_invoices_agents">
       <End Role="agents" EntitySet="agents" />
       <End Role="invoices" EntitySet="invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_operations_banks" Association="Self.FK_operations_banks">
+      <End Role="banks" EntitySet="banks" />
+      <End Role="operations" EntitySet="operations" />
     </AssociationSet>
     <AssociationSet Name="FK_barcodes_invoices" Association="Self.FK_barcodes_invoices">
       <End Role="invoices" EntitySet="invoices" />
@@ -1983,6 +1987,10 @@
       <End Role="invoices" EntitySet="invoices" />
       <End Role="cashTransfer" EntitySet="cashTransfer" />
     </AssociationSet>
+    <AssociationSet Name="FK_cashTransfer_operations" Association="Self.FK_cashTransfer_operations">
+      <End Role="operations" EntitySet="operations" />
+      <End Role="cashTransfer" EntitySet="cashTransfer" />
+    </AssociationSet>
     <AssociationSet Name="FK_cashTransfer_pos" Association="Self.FK_cashTransfer_pos">
       <End Role="pos" EntitySet="pos" />
       <End Role="cashTransfer" EntitySet="cashTransfer" />
@@ -2006,10 +2014,6 @@
     <AssociationSet Name="FK_cashTransfer_users4" Association="Self.FK_cashTransfer_users4">
       <End Role="users" EntitySet="users" />
       <End Role="cashTransfer" EntitySet="cashTransfer" />
-    </AssociationSet>
-    <AssociationSet Name="FK_categories_categories" Association="Self.FK_categories_categories">
-      <End Role="categories" EntitySet="categories" />
-      <End Role="categories1" EntitySet="categories" />
     </AssociationSet>
     <AssociationSet Name="FK_categories_users" Association="Self.FK_categories_users">
       <End Role="users" EntitySet="users" />
@@ -2054,10 +2058,6 @@
     <AssociationSet Name="FK_orderscontents_invoices" Association="Self.FK_orderscontents_invoices">
       <End Role="invoices" EntitySet="invoices" />
       <End Role="orderscontents" EntitySet="orderscontents" />
-    </AssociationSet>
-    <AssociationSet Name="FK_items_items" Association="Self.FK_items_items">
-      <End Role="items" EntitySet="items" />
-      <End Role="items1" EntitySet="items" />
     </AssociationSet>
     <AssociationSet Name="FK_items_units" Association="Self.FK_items_units">
       <End Role="units" EntitySet="units" />
@@ -2295,10 +2295,6 @@
       <End Role="users" EntitySet="users" />
       <End Role="propertiesItems" EntitySet="propertiesItems" />
     </AssociationSet>
-    <AssociationSet Name="FK_units_units" Association="Self.FK_units_units">
-      <End Role="units" EntitySet="units" />
-      <End Role="units1" EntitySet="units" />
-    </AssociationSet>
     <AssociationSet Name="FK_units_users" Association="Self.FK_units_users">
       <End Role="users" EntitySet="users" />
       <End Role="units" EntitySet="units" />
@@ -2307,55 +2303,5 @@
       <End Role="users" EntitySet="users" />
       <End Role="units" EntitySet="units" />
     </AssociationSet>
-    <EntitySet Name="banks" EntityType="incposdbModel.banks" />
-    <AssociationSet Name="FK_operations_banks" Association="incposdbModel.FK_operations_banks">
-      <End Role="banks" EntitySet="banks" />
-      <End Role="operations" EntitySet="operations" />
-    </AssociationSet>
-    <AssociationSet Name="FK_cashTransfer_operations" Association="incposdbModel.FK_cashTransfer_operations">
-      <End Role="operations" EntitySet="operations" />
-      <End Role="cashTransfer" EntitySet="cashTransfer" />
-    </AssociationSet>
   </EntityContainer>
-  <EntityType Name="banks">
-    <Key>
-      <PropertyRef Name="bankId" />
-    </Key>
-    <Property Name="bankId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="accNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="notes" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="operations" Relationship="incposdbModel.FK_operations_banks" FromRole="banks" ToRole="operations" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <Property Name="updateDate" Type="DateTime" Precision="7" />
-    <Property Name="createUserId" Type="Int32" />
-    <Property Name="updateUserId" Type="Int32" />
-  </EntityType>
-  <Association Name="FK_operations_banks">
-    <End Type="incposdbModel.banks" Role="banks" Multiplicity="0..1" />
-    <End Type="incposdbModel.operations" Role="operations" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="banks">
-        <PropertyRef Name="bankId" />
-      </Principal>
-      <Dependent Role="operations">
-        <PropertyRef Name="bankId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_cashTransfer_operations">
-    <End Type="incposdbModel.operations" Role="operations" Multiplicity="0..1" />
-    <End Type="incposdbModel.cashTransfer" Role="cashTransfer" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="operations">
-        <PropertyRef Name="operationId" />
-      </Principal>
-      <Dependent Role="cashTransfer">
-        <PropertyRef Name="operationId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

@@ -26,6 +26,7 @@ namespace POS_Server
         }
     
         public virtual DbSet<agents> agents { get; set; }
+        public virtual DbSet<banks> banks { get; set; }
         public virtual DbSet<barcodes> barcodes { get; set; }
         public virtual DbSet<branches> branches { get; set; }
         public virtual DbSet<branchesUsers> branchesUsers { get; set; }
@@ -53,6 +54,5 @@ namespace POS_Server
         public virtual DbSet<serials> serials { get; set; }
         public virtual DbSet<units> units { get; set; }
         public virtual DbSet<users> users { get; set; }
-        public virtual DbSet<banks> banks { get; set; }
     }
 }

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace POS_Server
 {
     public static class WebApiConfig
     {
+        private static MediaTypeHeaderValue appXmlType;
+
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
@@ -19,6 +22,8 @@ namespace POS_Server
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+          
         }
     }
 }

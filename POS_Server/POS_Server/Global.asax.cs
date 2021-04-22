@@ -10,7 +10,7 @@ using System.Web.Routing;
 namespace POS_Server
 {
     public class WebApiApplication : System.Web.HttpApplication
-    {
+    { 
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();

@@ -29,10 +29,10 @@ namespace POS_Server
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> bankId { get; set; }
     
-        public virtual users users { get; set; }
-        public virtual users users1 { get; set; }
         public virtual banks banks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cashTransfer> cashTransfer { get; set; }
+        public virtual users users { get; set; }
+        public virtual users users1 { get; set; }
     }
 }

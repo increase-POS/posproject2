@@ -75,7 +75,6 @@
     <EntitySetMapping Name="cashTransfer">
       <EntityTypeMapping TypeName="incposdbModel.cashTransfer">
         <MappingFragment StoreEntitySet="cashTransfer">
-          <ScalarProperty Name="operationId" ColumnName="operationId" />
           <ScalarProperty Name="cashTransId" ColumnName="cashTransId" />
           <ScalarProperty Name="transType" ColumnName="transType" />
           <ScalarProperty Name="posId" ColumnName="posId" />
@@ -289,7 +288,6 @@
     <EntitySetMapping Name="operations">
       <EntityTypeMapping TypeName="incposdbModel.operations">
         <MappingFragment StoreEntitySet="operations">
-          <ScalarProperty Name="bankId" ColumnName="bankId" />
           <ScalarProperty Name="operationId" ColumnName="operationId" />
           <ScalarProperty Name="type" ColumnName="type" />
           <ScalarProperty Name="side" ColumnName="side" />
@@ -447,19 +445,6 @@
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="notes" ColumnName="notes" />
           <ScalarProperty Name="isOnline" ColumnName="isOnline" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="banks">
-      <EntityTypeMapping TypeName="incposdbModel.banks">
-        <MappingFragment StoreEntitySet="banks">
-          <ScalarProperty Name="notes" ColumnName="notes" />
-          <ScalarProperty Name="accNumber" ColumnName="accNumber" />
-          <ScalarProperty Name="address" ColumnName="address" />
-          <ScalarProperty Name="mobile" ColumnName="mobile" />
-          <ScalarProperty Name="phone" ColumnName="phone" />
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="bankId" ColumnName="bankId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

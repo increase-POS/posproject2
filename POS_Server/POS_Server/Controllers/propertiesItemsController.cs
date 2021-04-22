@@ -102,28 +102,35 @@ namespace POS_Server.Controllers
         // add or update property
         [HttpPost]
         [Route("Save")]
-        public string Save()
+        public string Save(string propItemObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            string jsonObject = "";
             string message = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
             }
-            if (headers.Contains("propItemObject"))
-            {
-                jsonObject = headers.GetValues("propItemObject").First();
-                jsonObject = jsonObject.Replace("\\", string.Empty);
-                jsonObject = jsonObject.Trim('"');
-            }
+
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-            propertiesItems propertyItemObject = JsonConvert.DeserializeObject<propertiesItems>(jsonObject);
+           
             if (valid)
             {
+                propItemObject = propItemObject.Replace("\\", string.Empty);
+                propItemObject = propItemObject.Trim('"');
+                propertiesItems propertyItemObject = JsonConvert.DeserializeObject<propertiesItems>(propItemObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                if (propertyItemObject.updateUserId == 0 || propertyItemObject.updateUserId == null)
+                {
+                    Nullable<int> id = null;
+                    propertyItemObject.updateUserId = id;
+                }
+                if (propertyItemObject.createUserId == 0 || propertyItemObject.createUserId == null)
+                {
+                    Nullable<int> id = null;
+                    propertyItemObject.createUserId = id;
+                }
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
