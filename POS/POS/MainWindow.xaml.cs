@@ -108,6 +108,7 @@ namespace POS
             GRID_Main.Children.Clear();
             UC_SectionData uc = new UC_SectionData();
             GRID_Main.Children.Add(uc);
+
         }
 
         private void BTN_catalog_Click(object sender, RoutedEventArgs e)
