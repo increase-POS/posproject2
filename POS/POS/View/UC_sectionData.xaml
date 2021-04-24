@@ -25,8 +25,8 @@
             </Grid.RowDefinitions>
             <Button  Click="BTN_Customers_Click" x:Name="btn_customers"
                 Style="{StaticResource SmallButton}"   Grid.Row="0" Grid.Column="0"
-                Height="75" Width="75" Background="#178DD2" Margin="0,5"
-                  Content="Customers"   BorderBrush="#FFAFA7FF"
+                Height="75" Width="75" Background="White" Margin="0,5"
+                  Content="Customers"   BorderBrush="#67686D"
                 DataContext="M32.1,21.7v1.9C32,23.8,32,23.9,31.9,24c-0.1,0.1-0.2,0.1-0.4,0.1h-2.6H25v2.5v0.1c0,0.2-0.2,0.4-0.5,0.4h-4.1h-8.8H7.5
 	c-0.3,0-0.5-0.2-0.5-0.5v-2.5H3.1H0.5c-0.3,0-0.5-0.2-0.5-0.5v-1.9c0-0.1,0-0.3,0-0.4c0,0,0,0,0,0c0-0.1,0.1-0.3,0.1-0.4
 	c0,0,0,0,0-0.1c0-0.1,0.1-0.2,0.1-0.2c0.3-0.7,0.9-1.2,1.7-1.5L4,18.4v-0.8C3.1,17,2.5,16,2.5,14.8v-0.7L2,12.8
@@ -39,7 +39,7 @@
 	c0.1,0,0.2,0.1,0.3,0.2C32,20.7,32.1,21.2,32.1,21.7z"/>
             <Button  Style="{StaticResource SmallButton}" x:Name="btn_suppliers" Click="Btn_suppliers_Click"   Grid.Row="1" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5"
-                  Content="Suppliers"    BorderBrush="#FFAFA7FF"
+                  Content="Suppliers"    BorderBrush="#67686D"
                 DataContext="M127,120.6h-22.8l-3.1-21.2l3.3-4.4h1c0,0,12,4,17.4,6.7c1.6,0.8,2.8,2.4,3.1,4.2
 	C126.6,110.7,126.9,115.6,127,120.6z M109.3,82.3l1.6-8.5c0.8-6.2-3.5-11.9-9.7-12.8c-0.5-0.1-1-0.1-1.5-0.1h-2
 	c-6.3,0-11.3,5.1-11.3,11.3c0,0.5,0,1,0.1,1.5l1.6,8.5c1.1,5.8,6.8,9.6,12.6,8.5C105.1,90,108.5,86.6,109.3,82.3z M71.9,96
@@ -49,7 +49,7 @@
 	h22.8l3.1-21.2L93,94.9H92z"/>
             <Button  Style="{StaticResource SmallButton}"   Grid.Row="2" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5"
-                  Content="Users"    BorderBrush="#FFAFA7FF" x:Name="btn_users"
+                  Content="Users"    BorderBrush="#67686D" x:Name="btn_users"
                 DataContext="M106.5,12.6h-28C75.9,4.5,67.3,0.1,59.2,2.7c-4.7,1.5-8.4,5.2-9.9,9.9H21.5c-2.6,0-4.8,2.1-4.8,4.8v103.8
 	c0,2.6,2.1,4.8,4.8,4.8h85c2.6,0,4.8-2.1,4.8-4.8V17.4C111.3,14.8,109.1,12.6,106.5,12.6z M63.9,9.3c4.4,0,8,3.6,8,8s-3.6,8-8,8
 	s-8-3.6-8-8C55.9,12.9,59.5,9.3,63.9,9.3z M64.1,112.9H47.9c-1.1,0-1.9-0.9-1.9-1.9s0.9-1.9,1.9-1.9h16.1c1.1,0,1.9,0.9,1.9,1.9
@@ -62,7 +62,7 @@
 	c0.6,4.1,0.9,8.3,0.9,12.4L40,92.9z" Click="Btn_users_Click"/>
             <Button  Style="{StaticResource SmallButton}"   Grid.Row="3" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5"
-                  Content="Branches"    BorderBrush="#FFAFA7FF" x:Name="btn_branches"
+                  Content="Branches"    BorderBrush="#67686D" x:Name="btn_branches"
                 DataContext="M72.1,67.2h21.4c1.3,0,2.3,1,2.3,2.3v12.8c0,1.3-1,2.3-2.3,2.3H72.1c-1.3,0-2.3-1-2.3-2.3V69.5
 	C69.8,68.2,70.8,67.2,72.1,67.2C72.1,67.2,72.1,67.2,72.1,67.2z M105.8,59.1c-0.5,0-1,0-1.5-0.1v12.4h0v31.4c0,0.2,0,0.4,0,0.6H58.3
 	c0-4.3,0-31.5,0-35.9l-23.2,0.3v35.6H23.6c0-0.2,0-0.4,0-0.6V71.5h0V59.1c-0.5,0-1,0.1-1.5,0.1c-2.4,0-4.9-0.5-7.1-1.4L15,110.9
@@ -72,7 +72,7 @@
 	C126.4,45.3,126.2,45.3,126.2,45.3z" Click="Btn_branches_Click"/>
             <Button  Style="{StaticResource SmallButton}"   Grid.Row="4" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5"
-                  Content="Stores"    BorderBrush="#FFAFA7FF"  x:Name="btn_stores"
+                  Content="Stores"    BorderBrush="#67686D"  x:Name="btn_stores"
                 DataContext="M787.5,484.5c-0.2-86.7-0.3-173.3-0.6-260c0-3-0.8-6.3-2.1-9c-14.2-28.8-34.9-52.7-57.2-75.3C640.3,51.5,535-3.7,413.1-27.8
 	c-30.4-6-61.2-9.5-92.2-10.5c-2-0.1-3.9-0.5-5.9-0.8h-38c-7.8,0.6-15.5,1.2-23.3,1.8C119-26.8,0.7,23-101.5,111.2
 	c-30.6,26.4-57.9,55.9-80.2,89.9c-6.7,10.2-7.5,21.5-8.2,32.9c-0.8,13.8-1,27.6-1.4,41.4c-0.1,2.5-0.4,4.9-0.7,7.4v598h160V339.6
@@ -91,7 +91,7 @@
 	c17.7,0,34.5-0.1,51.3,0.1c10.8,0.1,21.7,0.1,32.4,1.2c12.2,1.2,23.9,12.1,24.8,21.9C286.4,667.3,286.8,671.8,286.8,676.3z" Click="Btn_stores_Click"/>
             <Button  Style="{StaticResource SmallButton}"   Grid.Row="5" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5"
-                  Content="POS"    BorderBrush="#FFAFA7FF"  x:Name="btn_pos"
+                  Content="POS"    BorderBrush="#67686D"  x:Name="btn_pos"
                 DataContext="M33,12c0-0.6,0.4-1,1-1h5c0.6,0,1,0.4,1,1c0,0.6-0.4,1-1,1h-5C33.4,13,33,12.6,33,12z M34,17h5c0.6,0,1-0.4,1-1
 	c0-0.6-0.4-1-1-1h-5c-0.6,0-1,0.4-1,1C33,16.6,33.4,17,34,17z M58,50v8H0v-8H58z M20,54c0-0.6-0.4-1-1-1H5c-0.6,0-1,0.4-1,1
 	s0.4,1,1,1h14C19.6,55,20,54.6,20,54z M55,54c0-0.6-0.4-1-1-1h-1c-0.6,0-1,0.4-1,1s0.4,1,1,1h1C54.6,55,55,54.6,55,54z M4,50h50v-4
@@ -113,11 +113,11 @@
 	C6.5,5.9,6.7,6,7,6z M25,0v13H3V0H25z M23,2H5v9h18V2z" Click="Btn_pos_Click"/>
             <Button  Style="{StaticResource SmallButton}"   Grid.Row="6" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5"
-                  Content="Banks"    BorderBrush="#FFAFA7FF" x:Name="btn_banks"
+                  Content="Banks"    BorderBrush="#67686D" x:Name="btn_banks"
                 DataContext="M4,10h3v7H4V10z M10.5,10h3v7h-3V10z M2,19h20v3H2V19z M17,10h3v7h-3V10z M12,1L2,6v2h20V6L12,1z" Click="Btn_banks_Click"/>
             <Button  Style="{StaticResource SmallButton}"   Grid.Row="7" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5"
-                  Content="Units"    BorderBrush="#FFAFA7FF" x:Name="btn_units"
+                  Content="Units"    BorderBrush="#67686D" x:Name="btn_units"
                 DataContext="M7,4v40h34V4H7z M17,38h-4v-4h4V38z M17,30h-4v-4h4V30z M17,22h-4v-4h4V22z M17,14h-4v-4h4V14z M35,38H21v-4h14
 	V38z M35,30H21v-4h14V30z M35,22H21v-4h14V22z M35,14H21v-4h14V14z" Click="Btn_units_Click" />
         </Grid>
