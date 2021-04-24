@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="POS.controlTemplate.UC_squareCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:POS.controlTemplate"
+             mc:Ignorable="d" 
+            d:DesignHeight="120" d:DesignWidth="100" 
+             Loaded="UserControl_Loaded" >
+    <UserControl.Resources>
+        <Storyboard x:Key="Storyboard1">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="rectangle">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0.3"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="rectangle">
+            <BeginStoryboard x:Name="Storyboard1_BeginStoryboard" Storyboard="{StaticResource Storyboard1}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="rectangle">
+            <RemoveStoryboard BeginStoryboardName="Storyboard1_BeginStoryboard"/>
+        </EventTrigger>
+    </UserControl.Triggers>
+        <Grid Height="120" Width="100"  x:Name="grid"
+              ForceCursor="true" Cursor="Hand">
+            <Grid.RowDefinitions >
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+            <Grid  Grid.Row="0" >
+                <Border 
+                    CornerRadius="10" BorderBrush="{Binding squareCardBorderBrush }" BorderThickness="1.3"
+                    Background="White">
+                    <Image Source="{Binding squareCardImageSource}" Margin="5" x:Name="BImage"/>
+                </Border>
+                <Rectangle x:Name="rectangle" Grid.RowSpan="2" 
+                       Fill="#99F0F8FF" Opacity="0" 
+                       RadiusX="10" RadiusY="10" />
+            </Grid>
+            <TextBlock Grid.Row="1" Margin="0,01,0,0"
+                   x:Name="BTextBlock" 
+                   FontFamily="{StaticResource Font-cairo-light}" 
+                    Text="{Binding squareCardText}" Foreground="#6e6e6e"
+              HorizontalAlignment="Center" VerticalAlignment="Center"
+              FontWeight="Bold"  FontSize="12"/>
+        </Grid>
+</UserControl>
