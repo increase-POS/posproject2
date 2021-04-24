@@ -8,21 +8,21 @@
     <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="company" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="accType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="accType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="balance" Type="Decimal" Precision="20" Scale="4" />
     <Property Name="isDefault" Type="Byte" />
     <Property Name="createDate" Type="DateTime" Precision="7" />
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="createUserId" Type="Int32" />
     <Property Name="updateUserId" Type="Int32" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="isActive" Type="Byte" />
     <NavigationProperty Name="users" Relationship="Self.FK_agents_users" FromRole="agents" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_agents_users1" FromRole="agents" ToRole="users" />
@@ -51,7 +51,7 @@
       <PropertyRef Name="barcodeId" />
     </Key>
     <Property Name="barcodeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="barcode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="barcode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="itemId" Type="Int32" />
     <Property Name="invoiceId" Type="Int32" />
     <Property Name="coponeId" Type="Int32" />
@@ -79,8 +79,8 @@
     <Property Name="branchId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -88,7 +88,7 @@
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="createUserId" Type="Int32" />
     <Property Name="updateUserId" Type="Int32" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="parentId" Type="Int32" />
     <NavigationProperty Name="users" Relationship="Self.FK_branches_users" FromRole="branches" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_branches_users1" FromRole="branches" ToRole="users" />
@@ -140,8 +140,8 @@
     <Property Name="categoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="categoryCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="isActive" Type="Int16" />
     <Property Name="taxes" Type="Decimal" Precision="20" Scale="4" />
     <Property Name="parentId" Type="Int32" />
@@ -149,7 +149,7 @@
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="createUserId" Type="Int32" />
     <Property Name="updateUserId" Type="Int32" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="users" Relationship="Self.FK_categories_users" FromRole="categories" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_categories_users1" FromRole="categories" ToRole="users" />
     <NavigationProperty Name="items" Relationship="Self.FK_items_categories" FromRole="categories" ToRole="items" />
@@ -159,8 +159,8 @@
       <PropertyRef Name="exId" />
     </Key>
     <Property Name="exId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="expense" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="expense" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="invoices">
     <Key>
@@ -182,7 +182,7 @@
     <Property Name="invoiceMainId" Type="Int32" />
     <Property Name="invCase" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="invTime" Type="DateTime" Precision="7" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="agents" Relationship="Self.FK_invoices_agents" FromRole="invoices" ToRole="agents" />
     <NavigationProperty Name="barcodes" Relationship="Self.FK_barcodes_invoices" FromRole="invoices" ToRole="barcodes" />
     <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_invoices" FromRole="invoices" ToRole="cashTransfer" />
@@ -203,9 +203,9 @@
     <Property Name="itemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="taxes" Type="Decimal" Precision="20" Scale="4" />
     <Property Name="isActive" Type="Byte" />
     <Property Name="min" Type="Int32" />
@@ -332,7 +332,7 @@
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="createUserId" Type="Int32" />
     <Property Name="updateUserId" Type="Int32" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_itemsTransfer_invoices" FromRole="itemsTransfer" ToRole="invoices" />
     <NavigationProperty Name="items" Relationship="Self.FK_itemsTransfer_items" FromRole="itemsTransfer" ToRole="items" />
     <NavigationProperty Name="locations" Relationship="Self.FK_itemsTransfer_locations" FromRole="itemsTransfer" ToRole="locations" />
@@ -569,7 +569,7 @@
     <Property Name="lastname" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
     <Property Name="job" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
     <Property Name="workHours" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
-    <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="createDate" Type="DateTime" Precision="7" />
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="createUserId" Type="Int32" />
@@ -577,9 +577,9 @@
     <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="isActive" Type="Int16" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="isOnline" Type="Byte" />
     <NavigationProperty Name="agents" Relationship="Self.FK_agents_users" FromRole="users" ToRole="agents" />
     <NavigationProperty Name="agents1" Relationship="Self.FK_agents_users1" FromRole="users" ToRole="agents" />
@@ -640,6 +640,7 @@
     <NavigationProperty Name="propertiesItems1" Relationship="Self.FK_propertiesItems_users1" FromRole="users" ToRole="propertiesItems" />
     <NavigationProperty Name="units" Relationship="Self.FK_units_users" FromRole="users" ToRole="units" />
     <NavigationProperty Name="units1" Relationship="Self.FK_units_users1" FromRole="users" ToRole="units" />
+    <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK_agents_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />

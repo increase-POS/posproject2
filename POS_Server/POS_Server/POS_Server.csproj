@@ -222,6 +222,8 @@
     <Compile Include="Controllers\BranchesController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LocationsController.cs" />
+    <Compile Include="Controllers\PosController.cs" />
     <Compile Include="Controllers\PropertiesController.cs" />
     <Compile Include="Controllers\propertiesItemsController.cs" />
     <Compile Include="Controllers\UnitsController.cs" />

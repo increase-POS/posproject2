@@ -97,6 +97,7 @@ namespace POS_Server
         public Nullable<short> isActive { get; set; }
         public string notes { get; set; }
         public Nullable<byte> isOnline { get; set; }
+        public string role { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<agents> agents { get; set; }
