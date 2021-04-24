@@ -233,7 +233,7 @@
                 Height="35" Width="60"  
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" 
-                            FontFamily="{StaticResource MyFontFamily}"   
+                            FontFamily="{StaticResource Font-cairo-light}"   
                              Grid.Row="2"
                            Text="{Binding Gender, Mode=TwoWay}"  >
                                 <ListBoxItem>
