@@ -70,7 +70,17 @@
     <Compile Include="Classes\BadDateFixingConverter.cs" />
     <Compile Include="Classes\Bank.cs" />
     <Compile Include="Classes\Branch.cs" />
+    <Compile Include="Classes\CatigoriesAndItemsView.cs" />
     <Compile Include="Classes\User.cs" />
+    <Compile Include="controlTemplate\UC_rectangleCardPrice.xaml.cs">
+      <DependentUpon>UC_rectangleCardPrice.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controlTemplate\UC_rectangleCardPrice_ar.xaml.cs">
+      <DependentUpon>UC_rectangleCardPrice_ar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controlTemplate\UC_squareCard.xaml.cs">
+      <DependentUpon>UC_squareCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ValidatorExtensions.cs" />
     <Compile Include="View\UC_bank.xaml.cs">
       <DependentUpon>UC_bank.xaml</DependentUpon>
@@ -78,7 +88,16 @@
     <Compile Include="View\UC_branch.xaml.cs">
       <DependentUpon>UC_branch.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\UC_catalog.xaml.cs">
+      <DependentUpon>UC_catalog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\uc_categorie.xaml.cs">
+      <DependentUpon>uc_categorie.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UC_customer.xaml.cs" />
+    <Compile Include="View\UC_item.xaml.cs">
+      <DependentUpon>UC_item.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UC_pos.xaml.cs">
       <DependentUpon>UC_pos.xaml</DependentUpon>
     </Compile>
@@ -95,6 +114,18 @@
     <Compile Include="View\UC_users.xaml.cs">
       <DependentUpon>UC_users.xaml</DependentUpon>
     </Compile>
+    <Page Include="controlTemplate\UC_rectangleCardPrice.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controlTemplate\UC_rectangleCardPrice_ar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controlTemplate\UC_squareCard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -127,7 +158,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\UC_catalog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\uc_categorie.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\UC_customer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UC_item.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -182,8 +225,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="fonts\cairo bold.ttf" />
-    <Resource Include="fonts\cairo-light.ttf" />
+    <Resource Include="fonts\cairo-font\cairo bold.ttf" />
+    <Resource Include="fonts\cairo-font\cairo-light.ttf" />
+    <Resource Include="fonts\en-fonts\SF-Pro-Display-Light.otf" />
+    <Resource Include="fonts\en-fonts\SF-Pro-Display-Medium.otf" />
+    <Resource Include="fonts\en-fonts\SF-Pro-Display-Regular.otf" />
+    <Resource Include="fonts\en-fonts\sf-ui-display-bold.otf" />
+    <Resource Include="fonts\NotoKufiArabic\NotoKufiArabic-Bold.ttf" />
+    <Resource Include="fonts\NotoKufiArabic\NotoKufiArabic-Regular.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -203,6 +252,45 @@
     <Resource Include="pic\Sewoo-thermal-printer.png" />
     <Resource Include="pic\VisualLogo.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="pic\barcode-printer\barcode-printer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pic\BarcodeReader\datalogic-barcode-scanner4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pic\CashDrawer\cash-drawer6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pic\POS\POZONE-POS2.png" />
+    <Resource Include="pic\POS\POZONE-t820-POS.png" />
+    <Resource Include="pic\POS\POZONE-t835-POS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pic\POSAccessories\Thermal-rolls-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pic\Programs\laundry-casheir-program.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pic\ThermalPrinters\EPSON-thermal-printer.png" />
+    <Resource Include="pic\ThermalPrinters\EPSON-thermal-printer2.png" />
+    <Resource Include="pic\ThermalPrinters\EPSON-thermal-printer3.png" />
+    <Resource Include="pic\ThermalPrinters\EPSON-thermal-printer4.png" />
+    <Resource Include="pic\ThermalPrinters\POZONE-PP610-USB.png" />
+    <Resource Include="pic\ThermalPrinters\POZONE-thermal-printer.png" />
+    <Resource Include="pic\ThermalPrinters\rio-thermal-printer.png" />
+    <Resource Include="pic\ThermalPrinters\Sewoo-thermal-printer.png" />
+    <Resource Include="pic\ThermalPrinters\Zebra-ZD200D.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pic\barcode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pic\profilePhotos_1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pic\profilePhotos_2.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
