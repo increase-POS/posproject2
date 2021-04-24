@@ -45,13 +45,13 @@
                     <Border BorderThickness="0"   Grid.Column="1" Margin="0,0,0,0"
                     CornerRadius="0,7,7,0" BorderBrush="Black" Background="White" Padding="0">
 
-                        <Grid Grid.Column="1"  >
+                        <Grid Grid.Column="1"  Margin="7.5,0" >
 
                             <Grid.RowDefinitions >
-                                <RowDefinition Height="20"/>
-                                <RowDefinition Height="137"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="130"/>
                             </Grid.RowDefinitions>
-                            <Grid Grid.ColumnSpan="10"  Margin="15,0,0,0">
+                            <Grid Grid.ColumnSpan="10" VerticalAlignment="Top" Height="20" Margin="15,0,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="auto"/>
@@ -95,7 +95,7 @@
 
 
                             </Grid>
-                            <ScrollViewer  Grid.Row="1"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0"
+                            <ScrollViewer  Grid.Row="1"  VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Margin="0"
                                           ScrollViewer.CanContentScroll="True">
                                 <Grid  x:Name="Grid_categorie" Grid.Row="1"   Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -480,7 +480,7 @@
                             materialDesign:ButtonAssist.CornerRadius="5"  />
                             <Button Grid.Row="0" Grid.Column="1"  Width="110"
                          BorderThickness="0" Background="#178DD2" Content="Update"
-                    Padding="0" Height="33"
+                    Padding="0" Height="33" 
                             materialDesign:ButtonAssist.CornerRadius="5"  />
                             <Button Grid.Row="1" Grid.Column="2"  Width="110"
                          BorderThickness="0" Background="#178DD2" Content="Delete"

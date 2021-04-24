@@ -94,14 +94,14 @@ namespace POS.View
             if (CB_type.SelectedIndex == 1)
             {
                 grid_serial.Visibility = Visibility.Collapsed;
-                //grid_expirationDate.Visibility = Visibility.Visible;
+                grid_expirationDate.Visibility = Visibility.Visible;
             }
-            //else if (CB_type.SelectedIndex == 2)
-            //{
-            //    //grid_expirationDate.Visibility = Visibility.Collapsed;
-            //    grid_serial.Visibility = Visibility.Visible;
+            else if (CB_type.SelectedIndex == 2)
+            {
+                grid_expirationDate.Visibility = Visibility.Collapsed;
+                grid_serial.Visibility = Visibility.Visible;
 
-            //} 
+            }
             else
             {
                 grid_serial.Visibility = Visibility.Collapsed;
