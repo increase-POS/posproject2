@@ -265,7 +265,7 @@
                     </Grid>
 
                 </Grid>
-                <Grid Grid.Row="1" >
+                <Grid Grid.Row="1" Margin="5,0"  >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
