@@ -89,7 +89,7 @@ namespace POS
                 menuState = false;
             }
 
-            #region
+            #region tooltipVisibility
             FN_tooltipVisibility(BTN_menu);
             FN_tooltipVisibility(BTN_home);
             FN_tooltipVisibility(BTN_sectionData);
@@ -112,10 +112,12 @@ namespace POS
 
         private void BTN_catalog_Click(object sender, RoutedEventArgs e)
         {
-
+            GRID_Main.Children.Clear();
+            UC_catalog uc = new UC_catalog();
+            GRID_Main.Children.Add(uc);
         }
 
-        public static string lang = "ar";
+        public static string lang = "en";
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (lang.Equals("en"))
