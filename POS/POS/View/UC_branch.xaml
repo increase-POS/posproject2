@@ -239,7 +239,7 @@
                 Height="35" Width="60"  
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" 
-                            FontFamily="{StaticResource MyFontFamily}"   
+                            FontFamily="{StaticResource Font-cairo-light}"   
                              Grid.Row="0"
                            Text="{Binding Gender, Mode=TwoWay}"  >
                                 <ListBoxItem>
@@ -379,7 +379,7 @@
                     </Grid>
 
                 </Grid>
-                <Grid Grid.Row="1" >
+                <Grid Grid.Row="1" Margin="5,0"  >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
