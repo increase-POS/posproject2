@@ -8,15 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pic/epson-thermal-printer3.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pic/epson-thermal-printer4.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pic/increase-logo.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pic/profilephotos.jpg")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pic/profilephotos_1.jpg")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pic/profilephotos_2.jpg")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pic/profilephotos_3.jpg")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pic/rio-thermal-printer.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pic/sewoo-thermal-printer.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pic/visuallogo.png")]
 
 
