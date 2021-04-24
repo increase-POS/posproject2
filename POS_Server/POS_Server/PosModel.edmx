@@ -13,21 +13,21 @@
           <Property Name="name" Type="nvarchar" MaxLength="100" />
           <Property Name="code" Type="nvarchar" MaxLength="100" />
           <Property Name="company" Type="nvarchar" MaxLength="100" />
-          <Property Name="address" Type="text" />
-          <Property Name="details" Type="text" />
-          <Property Name="email" Type="varchar" MaxLength="200" />
-          <Property Name="phone" Type="varchar" MaxLength="100" />
-          <Property Name="mobile" Type="varchar" MaxLength="100" />
-          <Property Name="image" Type="text" />
-          <Property Name="type" Type="varchar" MaxLength="50" />
-          <Property Name="accType" Type="varchar" MaxLength="50" />
+          <Property Name="address" Type="ntext" />
+          <Property Name="details" Type="ntext" />
+          <Property Name="email" Type="nvarchar" MaxLength="200" />
+          <Property Name="phone" Type="nvarchar" MaxLength="100" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="100" />
+          <Property Name="image" Type="ntext" />
+          <Property Name="type" Type="nvarchar" MaxLength="50" />
+          <Property Name="accType" Type="nvarchar" MaxLength="50" />
           <Property Name="balance" Type="decimal" Precision="20" Scale="4" />
           <Property Name="isDefault" Type="tinyint" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
-          <Property Name="notes" Type="text" />
+          <Property Name="notes" Type="ntext" />
           <Property Name="isActive" Type="tinyint" />
         </EntityType>
         <EntityType Name="banks">
@@ -51,7 +51,7 @@
             <PropertyRef Name="barcodeId" />
           </Key>
           <Property Name="barcodeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="barcode" Type="varchar" MaxLength="200" />
+          <Property Name="barcode" Type="nvarchar" MaxLength="200" />
           <Property Name="itemId" Type="int" />
           <Property Name="invoiceId" Type="int" />
           <Property Name="coponeId" Type="int" />
@@ -68,8 +68,8 @@
           <Property Name="branchId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="code" Type="nvarchar" MaxLength="100" />
           <Property Name="name" Type="nvarchar" MaxLength="100" />
-          <Property Name="details" Type="text" />
-          <Property Name="address" Type="text" />
+          <Property Name="details" Type="ntext" />
+          <Property Name="address" Type="ntext" />
           <Property Name="email" Type="nvarchar" MaxLength="200" />
           <Property Name="phone" Type="nvarchar" MaxLength="100" />
           <Property Name="mobile" Type="nvarchar" MaxLength="100" />
@@ -77,7 +77,7 @@
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
-          <Property Name="notes" Type="text" />
+          <Property Name="notes" Type="ntext" />
           <Property Name="parentId" Type="int" />
         </EntityType>
         <EntityType Name="branchesUsers">
@@ -113,8 +113,8 @@
           <Property Name="categoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="categoryCode" Type="nvarchar" MaxLength="100" />
           <Property Name="name" Type="nvarchar" MaxLength="100" />
-          <Property Name="details" Type="text" />
-          <Property Name="image" Type="text" />
+          <Property Name="details" Type="ntext" />
+          <Property Name="image" Type="ntext" />
           <Property Name="isActive" Type="smallint" />
           <Property Name="taxes" Type="decimal" Precision="20" Scale="4" />
           <Property Name="parentId" Type="int" />
@@ -122,15 +122,15 @@
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
-          <Property Name="notes" Type="text" />
+          <Property Name="notes" Type="ntext" />
         </EntityType>
         <EntityType Name="Expenses">
           <Key>
             <PropertyRef Name="exId" />
           </Key>
           <Property Name="exId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="expense" Type="text" />
-          <Property Name="note" Type="text" />
+          <Property Name="expense" Type="ntext" />
+          <Property Name="note" Type="ntext" />
         </EntityType>
         <EntityType Name="invoices">
           <Key>
@@ -152,7 +152,7 @@
           <Property Name="invoiceMainId" Type="int" />
           <Property Name="invCase" Type="nvarchar" MaxLength="50" />
           <Property Name="invTime" Type="datetime2" Precision="7" />
-          <Property Name="notes" Type="text" />
+          <Property Name="notes" Type="ntext" />
         </EntityType>
         <EntityType Name="items">
           <Key>
@@ -161,9 +161,9 @@
           <Property Name="itemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="code" Type="nvarchar" MaxLength="50" />
           <Property Name="name" Type="nvarchar" MaxLength="200" />
-          <Property Name="details" Type="text" />
+          <Property Name="details" Type="ntext" />
           <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="image" Type="text" />
+          <Property Name="image" Type="ntext" />
           <Property Name="taxes" Type="decimal" Precision="20" Scale="4" />
           <Property Name="isActive" Type="tinyint" />
           <Property Name="min" Type="int" />
@@ -249,7 +249,7 @@
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
-          <Property Name="notes" Type="text" />
+          <Property Name="notes" Type="ntext" />
         </EntityType>
         <EntityType Name="itemsUnits">
           <Key>
@@ -429,7 +429,7 @@
           <Property Name="lastname" Type="nchar" MaxLength="100" />
           <Property Name="job" Type="nchar" MaxLength="100" />
           <Property Name="workHours" Type="nchar" MaxLength="100" />
-          <Property Name="details" Type="text" />
+          <Property Name="details" Type="ntext" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
@@ -437,10 +437,11 @@
           <Property Name="phone" Type="nvarchar" MaxLength="50" />
           <Property Name="mobile" Type="nvarchar" MaxLength="50" />
           <Property Name="email" Type="nvarchar" MaxLength="100" />
-          <Property Name="address" Type="text" />
+          <Property Name="address" Type="ntext" />
           <Property Name="isActive" Type="smallint" />
-          <Property Name="notes" Type="text" />
+          <Property Name="notes" Type="ntext" />
           <Property Name="isOnline" Type="tinyint" />
+          <Property Name="role" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_agents_users">
           <End Role="users" Type="Self.users" Multiplicity="0..1" />
@@ -910,55 +911,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_itemsDates_users">
-          <End Role="users" Type="Self.users" Multiplicity="0..1" />
-          <End Role="itemsDates" Type="Self.itemsDates" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="itemsDates">
-              <PropertyRef Name="createUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_itemsDates_users1">
-          <End Role="users" Type="Self.users" Multiplicity="0..1" />
-          <End Role="itemsDates" Type="Self.itemsDates" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="itemsDates">
-              <PropertyRef Name="updateUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_itemsDates_users2">
-          <End Role="users" Type="Self.users" Multiplicity="0..1" />
-          <End Role="itemsDates" Type="Self.itemsDates" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="itemsDates">
-              <PropertyRef Name="createUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_itemsDates_users3">
-          <End Role="users" Type="Self.users" Multiplicity="0..1" />
-          <End Role="itemsDates" Type="Self.itemsDates" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="itemsDates">
-              <PropertyRef Name="updateUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_itemsDates_users4">
           <End Role="users" Type="Self.users" Multiplicity="0..1" />
           <End Role="itemsDates" Type="Self.itemsDates" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1207,30 +1160,6 @@
             </Principal>
             <Dependent Role="itemsTransfer">
               <PropertyRef Name="locationIdOld" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_itemsTransfer_users">
-          <End Role="users" Type="Self.users" Multiplicity="0..1" />
-          <End Role="itemsTransfer" Type="Self.itemsTransfer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="itemsTransfer">
-              <PropertyRef Name="createUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_itemsTransfer_users1">
-          <End Role="users" Type="Self.users" Multiplicity="0..1" />
-          <End Role="itemsTransfer" Type="Self.itemsTransfer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="itemsTransfer">
-              <PropertyRef Name="updateUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1852,23 +1781,7 @@
             <End Role="locations" EntitySet="locations" />
             <End Role="itemsDates" EntitySet="itemsDates" />
           </AssociationSet>
-          <AssociationSet Name="FK_itemsDates_users" Association="Self.FK_itemsDates_users">
-            <End Role="users" EntitySet="users" />
-            <End Role="itemsDates" EntitySet="itemsDates" />
-          </AssociationSet>
-          <AssociationSet Name="FK_itemsDates_users1" Association="Self.FK_itemsDates_users1">
-            <End Role="users" EntitySet="users" />
-            <End Role="itemsDates" EntitySet="itemsDates" />
-          </AssociationSet>
           <AssociationSet Name="FK_itemsDates_users2" Association="Self.FK_itemsDates_users2">
-            <End Role="users" EntitySet="users" />
-            <End Role="itemsDates" EntitySet="itemsDates" />
-          </AssociationSet>
-          <AssociationSet Name="FK_itemsDates_users3" Association="Self.FK_itemsDates_users3">
-            <End Role="users" EntitySet="users" />
-            <End Role="itemsDates" EntitySet="itemsDates" />
-          </AssociationSet>
-          <AssociationSet Name="FK_itemsDates_users4" Association="Self.FK_itemsDates_users4">
             <End Role="users" EntitySet="users" />
             <End Role="itemsDates" EntitySet="itemsDates" />
           </AssociationSet>
@@ -1950,14 +1863,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_itemsTransfer_locations1" Association="Self.FK_itemsTransfer_locations1">
             <End Role="locations" EntitySet="locations" />
-            <End Role="itemsTransfer" EntitySet="itemsTransfer" />
-          </AssociationSet>
-          <AssociationSet Name="FK_itemsTransfer_users" Association="Self.FK_itemsTransfer_users">
-            <End Role="users" EntitySet="users" />
-            <End Role="itemsTransfer" EntitySet="itemsTransfer" />
-          </AssociationSet>
-          <AssociationSet Name="FK_itemsTransfer_users1" Association="Self.FK_itemsTransfer_users1">
-            <End Role="users" EntitySet="users" />
             <End Role="itemsTransfer" EntitySet="itemsTransfer" />
           </AssociationSet>
           <AssociationSet Name="FK_itemsUnits_barcodes" Association="Self.FK_itemsUnits_barcodes">
@@ -2117,21 +2022,21 @@
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="company" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="accType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="accType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="balance" Type="Decimal" Precision="20" Scale="4" />
           <Property Name="isDefault" Type="Byte" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
-          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Byte" />
           <NavigationProperty Name="users" Relationship="Self.FK_agents_users" FromRole="agents" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_agents_users1" FromRole="agents" ToRole="users" />
@@ -2160,7 +2065,7 @@
             <PropertyRef Name="barcodeId" />
           </Key>
           <Property Name="barcodeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="barcode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="barcode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="itemId" Type="Int32" />
           <Property Name="invoiceId" Type="Int32" />
           <Property Name="coponeId" Type="Int32" />
@@ -2188,8 +2093,8 @@
           <Property Name="branchId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -2197,7 +2102,7 @@
           <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
-          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="parentId" Type="Int32" />
           <NavigationProperty Name="users" Relationship="Self.FK_branches_users" FromRole="branches" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_branches_users1" FromRole="branches" ToRole="users" />
@@ -2249,8 +2154,8 @@
           <Property Name="categoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="categoryCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Int16" />
           <Property Name="taxes" Type="Decimal" Precision="20" Scale="4" />
           <Property Name="parentId" Type="Int32" />
@@ -2258,7 +2163,7 @@
           <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
-          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="users" Relationship="Self.FK_categories_users" FromRole="categories" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_categories_users1" FromRole="categories" ToRole="users" />
           <NavigationProperty Name="items" Relationship="Self.FK_items_categories" FromRole="categories" ToRole="items" />
@@ -2268,8 +2173,8 @@
             <PropertyRef Name="exId" />
           </Key>
           <Property Name="exId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="expense" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="expense" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="invoices">
           <Key>
@@ -2291,7 +2196,7 @@
           <Property Name="invoiceMainId" Type="Int32" />
           <Property Name="invCase" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="invTime" Type="DateTime" Precision="7" />
-          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="agents" Relationship="Self.FK_invoices_agents" FromRole="invoices" ToRole="agents" />
           <NavigationProperty Name="barcodes" Relationship="Self.FK_barcodes_invoices" FromRole="invoices" ToRole="barcodes" />
           <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_invoices" FromRole="invoices" ToRole="cashTransfer" />
@@ -2312,9 +2217,9 @@
           <Property Name="itemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="taxes" Type="Decimal" Precision="20" Scale="4" />
           <Property Name="isActive" Type="Byte" />
           <Property Name="min" Type="Int32" />
@@ -2441,7 +2346,7 @@
           <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
-          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="invoices" Relationship="Self.FK_itemsTransfer_invoices" FromRole="itemsTransfer" ToRole="invoices" />
           <NavigationProperty Name="items" Relationship="Self.FK_itemsTransfer_items" FromRole="itemsTransfer" ToRole="items" />
           <NavigationProperty Name="locations" Relationship="Self.FK_itemsTransfer_locations" FromRole="itemsTransfer" ToRole="locations" />
@@ -2678,7 +2583,7 @@
           <Property Name="lastname" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
           <Property Name="job" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
           <Property Name="workHours" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
-          <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
@@ -2686,9 +2591,9 @@
           <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Int16" />
-          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isOnline" Type="Byte" />
           <NavigationProperty Name="agents" Relationship="Self.FK_agents_users" FromRole="users" ToRole="agents" />
           <NavigationProperty Name="agents1" Relationship="Self.FK_agents_users1" FromRole="users" ToRole="agents" />
@@ -2749,6 +2654,7 @@
           <NavigationProperty Name="propertiesItems1" Relationship="Self.FK_propertiesItems_users1" FromRole="users" ToRole="propertiesItems" />
           <NavigationProperty Name="units" Relationship="Self.FK_units_users" FromRole="users" ToRole="units" />
           <NavigationProperty Name="units1" Relationship="Self.FK_units_users1" FromRole="users" ToRole="units" />
+          <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_agents_users">
           <End Role="users" Type="Self.users" Multiplicity="0..1" />
@@ -4863,6 +4769,7 @@
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="incposdbModel.users">
               <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="role" ColumnName="role" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="password" ColumnName="password" />
