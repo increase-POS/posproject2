@@ -61,7 +61,7 @@ namespace POS.View
         
         private void Btn_itemData_Click(object sender, RoutedEventArgs e)
         {
-             grid_barcode.Visibility = grid_properties.Visibility = Visibility.Collapsed;
+            grid_barcode.Visibility = grid_properties.Visibility = Visibility.Collapsed;
             grid_itemData.Visibility = Visibility.Visible;
             btn_barcodeTab.BorderBrush = brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
             brd_itemDataTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
@@ -71,7 +71,7 @@ namespace POS.View
         {
             grid_itemData.Visibility   = grid_properties.Visibility = Visibility.Collapsed;
             grid_barcode.Visibility = Visibility.Visible;
-            brd_itemDataTab.BorderBrush = brd_propertiesTab.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            brd_itemDataTab.BorderBrush = brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
             btn_barcodeTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         } 
 
@@ -94,13 +94,18 @@ namespace POS.View
             if (CB_type.SelectedIndex == 1)
             {
                 grid_serial.Visibility = Visibility.Collapsed;
-                grid_expirationDate.Visibility = Visibility.Visible;
+                //grid_expirationDate.Visibility = Visibility.Visible;
             }
-            else if (CB_type.SelectedIndex == 2)
-            {
-                grid_expirationDate.Visibility = Visibility.Collapsed;
-                grid_serial.Visibility = Visibility.Visible;
+            //else if (CB_type.SelectedIndex == 2)
+            //{
+            //    //grid_expirationDate.Visibility = Visibility.Collapsed;
+            //    grid_serial.Visibility = Visibility.Visible;
 
+            //} 
+            else
+            {
+                grid_serial.Visibility = Visibility.Collapsed;
+                grid_expirationDate.Visibility = Visibility.Collapsed;
             }
 
             if (CB_type.SelectedIndex == 3)
