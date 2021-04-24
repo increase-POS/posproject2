@@ -1,7 +1,7 @@
-﻿<Application x:Class="POSSystem.App"
+﻿<Application x:Class="POS.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:POSSystem"
+             xmlns:local="clr-namespace:POS"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -13,17 +13,17 @@
             <FontFamily x:Key="FontTest2" >/Cairo-Bold_0;Component/Fonts/#Cairo-Bold_0 </FontFamily>-->
             <!--value="/MyAssembly;Component/Fonts/#FontAwesome" />-->
 
-            <FontFamily x:Key="Font-NotoKufiArabic-Bold" >Noto Kufi Arabic, /POSSystem;component/fonts/NotoKufiArabic/#NotoKufiArabic-Bold</FontFamily>
-            <FontFamily x:Key="Font-NotoKufiArabic-Regular" >Noto Kufi Arabic, /POSSystem;component/fonts/NotoKufiArabic/#NotoKufiArabic-Regular</FontFamily>
+            <FontFamily x:Key="Font-NotoKufiArabic-Bold" >Noto Kufi Arabic, /POS;component/fonts/NotoKufiArabic/#NotoKufiArabic-Bold</FontFamily>
+            <FontFamily x:Key="Font-NotoKufiArabic-Regular" >Noto Kufi Arabic, /POS;component/fonts/NotoKufiArabic/#NotoKufiArabic-Regular</FontFamily>
 
-            <FontFamily x:Key="Font-cairo-light" >cairo light, /YFS;component/Fonts/#cairo light, Arial</FontFamily>
-            <FontFamily x:Key="Font-cairo-bold" >cairo bold , /YFS;component/Fonts/#cairo bold, Arial</FontFamily>
+            <FontFamily x:Key="Font-cairo-light" >cairo light, /POS;component/fonts/cairo-font/#cairo light, Arial</FontFamily>
+            <FontFamily x:Key="Font-cairo-bold" >cairo bold , /POS;component/fonts/cairo-font/#cairo bold, Arial</FontFamily>
 
 
-            <FontFamily x:Key="Font-SF-Pro-Display-Light" >SF Pro Display, /POSSystem;component/fonts/en-fonts/#SF-Pro-Display-Light</FontFamily>
-            <FontFamily x:Key="Font-SF-Pro-Display-Medium" >SF-Pro-Display , /POSSystem;component/fonts/en-fonts/#SF-Pro-Display-Medium</FontFamily>
-            <FontFamily x:Key="Font-SF-Pro-Display-Regular" >SF-Pro-Display , /POSSystem;component/fonts/en-fonts/#SF-Pro-Display-Regular</FontFamily>
-            <FontFamily x:Key="Font-sf-ui-display-bold" >SF-UI-Display  /POSSystem;component/fonts/en-fonts/#sf-ui-display-bold</FontFamily>
+            <FontFamily x:Key="Font-SF-Pro-Display-Light" >SF Pro Display, /POS;component/fonts/en-fonts/#SF-Pro-Display-Light</FontFamily>
+            <FontFamily x:Key="Font-SF-Pro-Display-Medium" >SF-Pro-Display , /POS;component/fonts/en-fonts/#SF-Pro-Display-Medium</FontFamily>
+            <FontFamily x:Key="Font-SF-Pro-Display-Regular" >SF-Pro-Display , /POS;component/fonts/en-fonts/#SF-Pro-Display-Regular</FontFamily>
+            <FontFamily x:Key="Font-sf-ui-display-bold" >SF-UI-Display  /POS;component/fonts/en-fonts/#sf-ui-display-bold</FontFamily>
                                                                              
             <!--#endregion-->
           
