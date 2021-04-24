@@ -36,6 +36,9 @@ namespace POS.View
             GRID_Main.Children.Clear();
             UC_Customer uc = new UC_Customer();
             GRID_Main.Children.Add(uc);
+
+            btn_customers.Background= (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            btn_customers.BorderBrush= (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
 
         private void Btn_suppliers_Click(object sender, RoutedEventArgs e)
