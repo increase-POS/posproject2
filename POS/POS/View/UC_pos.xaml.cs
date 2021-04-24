@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -70,7 +72,7 @@ namespace POS.View
             if (tb_code.Text.Equals(""))
             {
                 p_errorCode.Visibility = Visibility.Visible;
-                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyCodeToolTip");
                 tb_code.Background = (Brush)bc.ConvertFrom("#15FF0000");
             }
             else
@@ -87,7 +89,7 @@ namespace POS.View
             if (tb_code.Text.Equals(""))
             {
                 p_errorCode.Visibility = Visibility.Visible;
-                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyCodeToolTip");
                 tb_code.Background = (Brush)bc.ConvertFrom("#15FF0000");
             }
             else
@@ -138,7 +140,7 @@ namespace POS.View
             if (tb_balance.Text.Equals(""))
             {
                 p_errorBalance.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyBalanceToolTip");
                 tb_balance.Background = (Brush)bc.ConvertFrom("#15FF0000");
             }
             else
@@ -155,7 +157,7 @@ namespace POS.View
             if (tb_balance.Text.Equals(""))
             {
                 p_errorBalance.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyBalanceToolTip");
                 tb_balance.Background = (Brush)bc.ConvertFrom("#15FF0000");
             }
             else
@@ -172,7 +174,7 @@ namespace POS.View
             if (cb_branchId.Text.Equals(""))
             {
                 p_errorSelectBranch.Visibility = Visibility.Visible;
-                tt_errorSelectBranch.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tt_errorSelectBranch.Content = MainWindow.resourcemanager.GetString("trEmptyBalanceToolTip");
                 cb_branchId.Background = (Brush)bc.ConvertFrom("#15FF0000");
             }
             else
@@ -180,6 +182,42 @@ namespace POS.View
                 p_errorSelectBranch.Visibility = Visibility.Collapsed;
                 cb_branchId.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
+        }
+        private void translate()
+        {
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectPosNameHint"));
+            txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trPosNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trPosCodeHint"));
+            txt_moreInformation.Text = MainWindow.resourcemanager.GetString("trMoreInformation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branchId, MainWindow.resourcemanager.GetString("trSelectPosBranchHint"));
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_balance, MainWindow.resourcemanager.GetString("trBalanceHint"));
+            btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
+            btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+            dg_pos.Columns[0].Header = MainWindow.resourcemanager.GetString("trPosName");
+            dg_pos.Columns[1].Header = MainWindow.resourcemanager.GetString("trPosCode");
+            dg_pos.Columns[2].Header = MainWindow.resourcemanager.GetString("trBranchName");
+            dg_pos.Columns[3].Header = MainWindow.resourcemanager.GetString("trBalance");
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_ucPos.FlowDirection = FlowDirection.LeftToRight;
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_ucPos.FlowDirection = FlowDirection.RightToLeft;
+            }
+
+            translate();
+
         }
     }
 }

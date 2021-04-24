@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -104,6 +106,40 @@ namespace POS.View
                 p_errorName.Visibility = Visibility.Collapsed;
                 tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
+        }
+        private void translate()
+        {
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelestUnitNameHint"));
+            txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trUnitNameHint"));
+            tb_isSmallest.Text = MainWindow.resourcemanager.GetString("trIsSmallestHint");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_smallestUnitId, MainWindow.resourcemanager.GetString("trSelectSmallestUnitHint"));
+            btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
+            btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+            dg_unit.Columns[0].Header = MainWindow.resourcemanager.GetString("trUnitName");
+            dg_unit.Columns[1].Header = MainWindow.resourcemanager.GetString("trIsSmallest");
+            dg_unit.Columns[2].Header = MainWindow.resourcemanager.GetString("trSmallestUnit");
+          //  dg_unit.Columns[2].Header = MainWindow.resourcemanager.GetString("trMobile");
+
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_ucUnit.FlowDirection = FlowDirection.LeftToRight;
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_ucUnit.FlowDirection = FlowDirection.RightToLeft;
+            }
+
+            translate();
         }
     }
 }

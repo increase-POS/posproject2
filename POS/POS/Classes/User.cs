@@ -13,13 +13,13 @@ namespace POS.Classes
 {
     class User
     {
-        public int usertId { get; set; }
+        public int userId { get; set; }
         public string userName { get; set; }
         public string password { get; set; }
         public string name { get; set; }
         public string lastname { get; set; }
         public string job { get; set; }
-        public int workHours { get; set; }
+        public string workHours { get; set; }
         public string details { get; set; }
         public string phone { get; set; }
         public string mobile { get; set; }

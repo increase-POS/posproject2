@@ -517,7 +517,7 @@
                     <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0"  Width="110"
                          BorderThickness="0" Background="#178DD2" Content="Add"
                     Padding="0" Height="33"
-                            materialDesign:ButtonAssist.CornerRadius="5" Click="Btn_add_Click" Margin="0,0,10,3" VerticalAlignment="Bottom"  />
+                            materialDesign:ButtonAssist.CornerRadius="5" Click="Btn_add_Click" Margin="5,0,5,3" VerticalAlignment="Bottom"  />
                     <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"  Width="110"
                          BorderThickness="0" Background="#178DD2" Content="Update"
                     Padding="0" Height="33"
