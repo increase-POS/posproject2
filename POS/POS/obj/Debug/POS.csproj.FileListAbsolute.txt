@@ -237,3 +237,7 @@ D:\POS\POS\obj\Debug\POS.Properties.Resources.resources
 D:\POS\POS\obj\Debug\POS.csproj.GenerateResource.cache
 D:\POS\POS\obj\Debug\POS.csproj.CoreCompileInputs.cache
 D:\POS\POS\obj\Debug\POS.csproj.CopyComplete
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_payInvoice.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_purchases.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_payInvoice.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_purchases.baml

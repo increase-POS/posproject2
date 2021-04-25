@@ -58,7 +58,8 @@ namespace POS.View
             MessageBox.Show("Hello World!!  CategorieItems Id");
         }
 
-        
+
+        #region Tab
         private void Btn_itemData_Click(object sender, RoutedEventArgs e)
         {
             grid_barcode.Visibility = grid_properties.Visibility = Visibility.Collapsed;
@@ -69,25 +70,27 @@ namespace POS.View
 
         private void Btn_barcode_Click(object sender, RoutedEventArgs e)
         {
-            grid_itemData.Visibility   = grid_properties.Visibility = Visibility.Collapsed;
+            grid_itemData.Visibility = grid_properties.Visibility = Visibility.Collapsed;
             grid_barcode.Visibility = Visibility.Visible;
             brd_itemDataTab.BorderBrush = brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
             brd_barcodeTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-        } 
+        }
 
         private void Btn_properties_Click(object sender, RoutedEventArgs e)
         {
             grid_itemData.Visibility = grid_barcode.Visibility = Visibility.Collapsed;
             grid_properties.Visibility = Visibility.Visible;
-            brd_barcodeTab.BorderBrush = brd_itemDataTab.BorderBrush =  (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            brd_barcodeTab.BorderBrush = brd_itemDataTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
             brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
+        #endregion
 
-         //0Normal Item
-         //1Have Expiration date
-         //2Have Serial number
-         //3Service
-         //4Package items
+
+        //0Normal Item
+        //1Have Expiration date
+        //2Have Serial number
+        //3Service
+        //4Package items
         private void CB_type_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
