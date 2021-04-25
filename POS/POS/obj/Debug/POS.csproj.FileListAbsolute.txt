@@ -237,6 +237,7 @@ D:\POS\POS\obj\Debug\POS.Properties.Resources.resources
 D:\POS\POS\obj\Debug\POS.csproj.GenerateResource.cache
 D:\POS\POS\obj\Debug\POS.csproj.CoreCompileInputs.cache
 D:\POS\POS\obj\Debug\POS.csproj.CopyComplete
+<<<<<<< HEAD
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\bin\Debug\POS.exe.config
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\bin\Debug\POS.exe
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\bin\Debug\POS.pdb
@@ -294,3 +295,9 @@ C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\POS.csproj.CoreCompil
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\POS.csproj.CopyComplete
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\POS.exe
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\POS.pdb
+=======
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_payInvoice.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_purchases.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_payInvoice.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_purchases.baml
+>>>>>>> 28b6284d5a3f103f852b7da5d50c3f18b8ca6967

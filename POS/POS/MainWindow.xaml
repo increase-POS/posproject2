@@ -309,7 +309,7 @@
                               Grid.Column="1"      Margin="10,0,0,0"/>
                     </Grid>
                 </Button>
-                <Button  Width="200" Height="50" Grid.Row="4"
+                <Button  Width="200" Height="50" Grid.Row="4" Click="BTN_purchases_Click"
                         HorizontalAlignment="Left" x:Name="BTN_purchases"
                     Background="{x:Null}" BorderBrush="{x:Null}"   
                     Padding="0" >

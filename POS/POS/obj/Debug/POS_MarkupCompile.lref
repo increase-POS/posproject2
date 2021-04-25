@@ -1,4 +1,5 @@
 ﻿
+<<<<<<< HEAD
 FC:\Users\HP\Documents\GitHub\posproject2\POS\POS\App.xaml;;
 FC:\Users\HP\Documents\GitHub\posproject2\POS\POS\controlTemplate\UC_rectangleCardPrice.xaml;;
 FC:\Users\HP\Documents\GitHub\posproject2\POS\POS\controlTemplate\UC_rectangleCardPrice_ar.xaml;;
@@ -16,4 +17,25 @@ FC:\Users\HP\Documents\GitHub\posproject2\POS\POS\View\UC_store.xaml;;
 FC:\Users\HP\Documents\GitHub\posproject2\POS\POS\View\UC_unit.xaml;;
 FC:\Users\HP\Documents\GitHub\posproject2\POS\POS\View\UC_vendors.xaml;;
 FC:\Users\HP\Documents\GitHub\posproject2\POS\POS\View\UC_users.xaml;;
+=======
+FE:\GitHub\posproject2\POS\POS\App.xaml;;
+FE:\GitHub\posproject2\POS\POS\controlTemplate\UC_rectangleCardPrice.xaml;;
+FE:\GitHub\posproject2\POS\POS\controlTemplate\UC_rectangleCardPrice_ar.xaml;;
+FE:\GitHub\posproject2\POS\POS\controlTemplate\UC_squareCard.xaml;;
+FE:\GitHub\posproject2\POS\POS\MainWindow.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\UC_bank.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\UC_branch.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\UC_catalog.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\uc_categorie.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\UC_customer.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\UC_item.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\UC_pos.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\UC_sectionData.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\UC_store.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\UC_unit.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\UC_vendors.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\UC_users.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\uc_payInvoice.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\uc_purchases.xaml;;
+>>>>>>> 28b6284d5a3f103f852b7da5d50c3f18b8ca6967
 
