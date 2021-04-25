@@ -63,7 +63,7 @@ namespace POS.View
         {
             grid_barcode.Visibility = grid_properties.Visibility = Visibility.Collapsed;
             grid_itemData.Visibility = Visibility.Visible;
-            btn_barcodeTab.BorderBrush = brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            brd_barcodeTab.BorderBrush = brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
             brd_itemDataTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
 
@@ -72,14 +72,14 @@ namespace POS.View
             grid_itemData.Visibility   = grid_properties.Visibility = Visibility.Collapsed;
             grid_barcode.Visibility = Visibility.Visible;
             brd_itemDataTab.BorderBrush = brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
-            btn_barcodeTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            brd_barcodeTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         } 
 
         private void Btn_properties_Click(object sender, RoutedEventArgs e)
         {
             grid_itemData.Visibility = grid_barcode.Visibility = Visibility.Collapsed;
             grid_properties.Visibility = Visibility.Visible;
-            btn_barcodeTab.BorderBrush = brd_itemDataTab.BorderBrush =  (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            brd_barcodeTab.BorderBrush = brd_itemDataTab.BorderBrush =  (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
             brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
 
@@ -91,32 +91,28 @@ namespace POS.View
         private void CB_type_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            if (CB_type.SelectedIndex == 1)
+           if (CB_type.SelectedIndex == 2)
+            {
+                grid_service.Visibility = Visibility.Collapsed;
+                grid_serial.Visibility = Visibility.Visible;
+                line_topService.Visibility = Visibility.Collapsed;
+
+
+            }
+            else if(CB_type.SelectedIndex == 3)
             {
                 grid_serial.Visibility = Visibility.Collapsed;
-                grid_expirationDate.Visibility = Visibility.Visible;
-            }
-            else if (CB_type.SelectedIndex == 2)
-            {
-                grid_expirationDate.Visibility = Visibility.Collapsed;
-                grid_serial.Visibility = Visibility.Visible;
-
+                grid_service.Visibility = Visibility.Visible;
+                line_topService.Visibility = Visibility.Collapsed;
             }
             else
             {
                 grid_serial.Visibility = Visibility.Collapsed;
-                grid_expirationDate.Visibility = Visibility.Collapsed;
-            }
-
-            if (CB_type.SelectedIndex == 3)
-            {
-                grid_service.Visibility = Visibility.Visible;
-                line_topService.Visibility = Visibility.Collapsed;
-            } else
-            {
                 grid_service.Visibility = Visibility.Collapsed;
                 line_topService.Visibility = Visibility.Visible;
             }
+
+           
 
 
         }

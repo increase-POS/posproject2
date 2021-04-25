@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -170,6 +172,41 @@ namespace POS.View
                 p_errorCode.Visibility = Visibility.Collapsed;
                 tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
+        }
+
+
+        private void translate()
+        {
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectStoreHint"));
+            txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trStoreNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trStoreCodeHint"));
+            txt_contentInformatin.Text = MainWindow.resourcemanager.GetString("trMoreInformation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_address, MainWindow.resourcemanager.GetString("trAdressHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_area, MainWindow.resourcemanager.GetString("trAreaHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_mobile, MainWindow.resourcemanager.GetString("trMobileHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_phone, MainWindow.resourcemanager.GetString("trPhoneHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_email, MainWindow.resourcemanager.GetString("trEmailHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_details, MainWindow.resourcemanager.GetString("trDetailsHint"));
+            btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
+            btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+            dg_store.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
+            dg_store.Columns[1].Header = MainWindow.resourcemanager.GetString("trCode");
+            dg_store.Columns[2].Header = MainWindow.resourcemanager.GetString("trAddress");
+            dg_store.Columns[3].Header = MainWindow.resourcemanager.GetString("trDetails");
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.lang.Equals("en"))
+            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucStore.FlowDirection = FlowDirection.LeftToRight; }
+            else
+            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucStore.FlowDirection = FlowDirection.RightToLeft; }
+
+            translate();
+
         }
     }
 }

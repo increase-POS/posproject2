@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="trAccNumber" xml:space="preserve">
+    <value>Account Number</value>
+  </data>
+  <data name="trAccNumberHint" xml:space="preserve">
+    <value>Account Number...</value>
+  </data>
   <data name="trAccounting" xml:space="preserve">
     <value>Accounting</value>
   </data>
@@ -126,6 +132,9 @@
   <data name="trAdd" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="trAddress" xml:space="preserve">
+    <value>Address</value>
+  </data>
   <data name="trAdressHint" xml:space="preserve">
     <value>Address...</value>
   </data>
@@ -133,10 +142,19 @@
     <value>Another Information</value>
   </data>
   <data name="trAreaHint" xml:space="preserve">
-    <value>Area...</value>
+    <value>+963</value>
+  </data>
+  <data name="trBalance" xml:space="preserve">
+    <value>Balance</value>
   </data>
   <data name="trBalanceHint" xml:space="preserve">
     <value>Balance...</value>
+  </data>
+  <data name="trBankName" xml:space="preserve">
+    <value>Bank Name</value>
+  </data>
+  <data name="trBankNameHint" xml:space="preserve">
+    <value>Bank Name...</value>
   </data>
   <data name="trBanks" xml:space="preserve">
     <value>Banks</value>
@@ -144,11 +162,26 @@
   <data name="trBaseInformation" xml:space="preserve">
     <value>Base Information</value>
   </data>
+  <data name="trBranchCodeHint" xml:space="preserve">
+    <value>Branch Code...</value>
+  </data>
   <data name="trBranches" xml:space="preserve">
     <value>Branches</value>
   </data>
+  <data name="trBranchName" xml:space="preserve">
+    <value>Branch Name</value>
+  </data>
+  <data name="trBranchNameHint" xml:space="preserve">
+    <value>Branch Name...</value>
+  </data>
   <data name="trCatalog" xml:space="preserve">
     <value>Catalog</value>
+  </data>
+  <data name="trCode" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="trCompany" xml:space="preserve">
+    <value>Company</value>
   </data>
   <data name="trCompanyHint" xml:space="preserve">
     <value>Company...</value>
@@ -165,20 +198,86 @@
   <data name="trDelete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="trDetails" xml:space="preserve">
+    <value>Details</value>
+  </data>
   <data name="trDetailsHint" xml:space="preserve">
     <value>Details...</value>
   </data>
   <data name="trEmailHint" xml:space="preserve">
     <value>Email...</value>
   </data>
+  <data name="trEmptyAccNumToolTip" xml:space="preserve">
+    <value>Account Number can't be empty!</value>
+  </data>
+  <data name="trEmptyAreaToolTip" xml:space="preserve">
+    <value>Select area</value>
+  </data>
+  <data name="trEmptyBalanceToolTip" xml:space="preserve">
+    <value>Balance can not be empty</value>
+  </data>
+  <data name="trEmptyCodeToolTip" xml:space="preserve">
+    <value>Code can't be empty!</value>
+  </data>
+  <data name="trEmptyLastNameToolTip" xml:space="preserve">
+    <value>Last Name can't be empty!</value>
+  </data>
+  <data name="trEmptyMobileToolTip" xml:space="preserve">
+    <value>Enter the mobile number</value>
+  </data>
+  <data name="trEmptyNameToolTip" xml:space="preserve">
+    <value>Name can not be empty</value>
+  </data>
+  <data name="trEmptyPasswordToolTip" xml:space="preserve">
+    <value>Password can't be empty!</value>
+  </data>
+  <data name="trEmptyUserNameToolTip" xml:space="preserve">
+    <value>Username can't be empty!</value>
+  </data>
+  <data name="trErrorEmailToolTip" xml:space="preserve">
+    <value>Email address is not valid</value>
+  </data>
+  <data name="trFirstNameHint" xml:space="preserve">
+    <value>First Name...</value>
+  </data>
   <data name="trHome" xml:space="preserve">
     <value>Home</value>
+  </data>
+  <data name="trIsSmallest" xml:space="preserve">
+    <value>Is Smallest</value>
+  </data>
+  <data name="trIsSmallestHint" xml:space="preserve">
+    <value>Is Smallest</value>
+  </data>
+  <data name="trJob" xml:space="preserve">
+    <value>Job</value>
+  </data>
+  <data name="trJobHint" xml:space="preserve">
+    <value>Job..</value>
+  </data>
+  <data name="trLastName" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="trLastNameHint" xml:space="preserve">
+    <value>Last Name...</value>
+  </data>
+  <data name="trLoginInformation" xml:space="preserve">
+    <value>Login Information</value>
   </data>
   <data name="trMenu" xml:space="preserve">
     <value>Menu</value>
   </data>
+  <data name="trMobile" xml:space="preserve">
+    <value>Mobile</value>
+  </data>
   <data name="trMobileHint" xml:space="preserve">
     <value>Mobile...</value>
+  </data>
+  <data name="trMoreInformation" xml:space="preserve">
+    <value>More Information</value>
+  </data>
+  <data name="trName" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="trNameHint" xml:space="preserve">
     <value>Name...</value>
@@ -189,11 +288,26 @@
   <data name="trPamentMethodHint" xml:space="preserve">
     <value>Select Payment method...</value>
   </data>
+  <data name="trPasswordHint" xml:space="preserve">
+    <value>Password...</value>
+  </data>
   <data name="trPhoneHint" xml:space="preserve">
     <value>Phone...</value>
   </data>
   <data name="trPOS" xml:space="preserve">
     <value>POS</value>
+  </data>
+  <data name="trPosCode" xml:space="preserve">
+    <value>POS Code</value>
+  </data>
+  <data name="trPosCodeHint" xml:space="preserve">
+    <value>POS Code...</value>
+  </data>
+  <data name="trPosName" xml:space="preserve">
+    <value>POS Name</value>
+  </data>
+  <data name="trPosNameHint" xml:space="preserve">
+    <value>POS Name...</value>
   </data>
   <data name="trPurchases" xml:space="preserve">
     <value>Purchases</value>
@@ -210,104 +324,38 @@
   <data name="trSectionData" xml:space="preserve">
     <value>Section Data</value>
   </data>
-  <data name="trSettings" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="trStorage" xml:space="preserve">
-    <value>Storage</value>
-  </data>
-  <data name="trStores" xml:space="preserve">
-    <value>Stores</value>
-  </data>
-  <data name="trSuppliers" xml:space="preserve">
-    <value>Suppliers</value>
-  </data>
-  <data name="trUnits" xml:space="preserve">
-    <value>Units</value>
-  </data>
-  <data name="trUpdate" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="trUserName" xml:space="preserve">
-    <value>User Name</value>
-  </data>
-  <data name="trUsers" xml:space="preserve">
-    <value>Users</value>
-  </data>
-  <data name="trUserType" xml:space="preserve">
-    <value>User Type</value>
-  </data>
-  <data name="trBalance" xml:space="preserve">
-    <value>Balance</value>
-  </data>
-  <data name="trCompany" xml:space="preserve">
-    <value>Company</value>
-  </data>
-  <data name="trDetails" xml:space="preserve">
-    <value>Details</value>
-  </data>
-  <data name="trMobile" xml:space="preserve">
-    <value>Mobile</value>
-  </data>
-  <data name="trName" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="trFirstNameHint" xml:space="preserve">
-    <value>First Name...</value>
-  </data>
-  <data name="trJobHint" xml:space="preserve">
-    <value>Job..</value>
-  </data>
-  <data name="trLastNameHint" xml:space="preserve">
-    <value>Last Name...</value>
-  </data>
-  <data name="trPasswordHint" xml:space="preserve">
-    <value>Password...</value>
-  </data>
-  <data name="trUserInformation" xml:space="preserve">
-    <value>User Infomration</value>
-  </data>
-  <data name="trUserNameHint" xml:space="preserve">
-    <value>User Name...</value>
-  </data>
-  <data name="trWorkHoursHint" xml:space="preserve">
-    <value>Work Hours...</value>
-  </data>
-  <data name="trWorkInformation" xml:space="preserve">
-    <value>Work Information</value>
-  </data>
-  <data name="trJob" xml:space="preserve">
-    <value>Job</value>
-  </data>
-  <data name="trLoginInformation" xml:space="preserve">
-    <value>Login Information</value>
-  </data>
-  <data name="trSelectJobHint" xml:space="preserve">
-    <value>Select Job ...</value>
-  </data>
-  <data name="trWorkHours" xml:space="preserve">
-    <value>Work Hours</value>
-  </data>
-  <data name="trAddress" xml:space="preserve">
-    <value>Address</value>
-  </data>
-  <data name="trBranchCodeHint" xml:space="preserve">
-    <value>Branch Code...</value>
-  </data>
-  <data name="trBranchNameHint" xml:space="preserve">
-    <value>Branch Name...</value>
-  </data>
-  <data name="trCode" xml:space="preserve">
-    <value>Code</value>
-  </data>
-  <data name="trMoreInformation" xml:space="preserve">
-    <value>More Information</value>
+  <data name="trSelectBankNameHint" xml:space="preserve">
+    <value>Select Bank Name</value>
   </data>
   <data name="trSelectBranchHint" xml:space="preserve">
     <value>Select Branch Name</value>
   </data>
+  <data name="trSelectJobHint" xml:space="preserve">
+    <value>Select Job ...</value>
+  </data>
+  <data name="trSelectPosBranchHint" xml:space="preserve">
+    <value>Select Branch...</value>
+  </data>
+  <data name="trSelectPosNameHint" xml:space="preserve">
+    <value>Select POS Name</value>
+  </data>
+  <data name="trSelectSmallestUnitHint" xml:space="preserve">
+    <value>Select Smallest Unit...</value>
+  </data>
   <data name="trSelectStoreHint" xml:space="preserve">
     <value>Select Store Name</value>
+  </data>
+  <data name="trSelestUnitNameHint" xml:space="preserve">
+    <value>Select Unit Name</value>
+  </data>
+  <data name="trSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="trSmallestUnit" xml:space="preserve">
+    <value>Smallest Unit</value>
+  </data>
+  <data name="trStorage" xml:space="preserve">
+    <value>Storage</value>
   </data>
   <data name="trStoreCodeHint" xml:space="preserve">
     <value>Store Code...</value>
@@ -315,19 +363,46 @@
   <data name="trStoreNameHint" xml:space="preserve">
     <value>Store Name...</value>
   </data>
-  <data name="trEmptyBalanceToolTip" xml:space="preserve">
-    <value>Balance can not be empty</value>
+  <data name="trStores" xml:space="preserve">
+    <value>Stores</value>
   </data>
-  <data name="trErrorEmailToolTip" xml:space="preserve">
-    <value>Email address is not valid</value>
+  <data name="trSuppliers" xml:space="preserve">
+    <value>Suppliers</value>
   </data>
-  <data name="trEmptyNameToolTip" xml:space="preserve">
-    <value>Name can not be empty</value>
+  <data name="trUnitName" xml:space="preserve">
+    <value>Unit Name</value>
   </data>
-  <data name="trEmptyAreaToolTip" xml:space="preserve">
-    <value>Select area</value>
+  <data name="trUnitNameHint" xml:space="preserve">
+    <value>Unit Name...</value>
   </data>
-  <data name="trEmptyMobileToolTip" xml:space="preserve">
-    <value>Enter the mobile number</value>
+  <data name="trUnits" xml:space="preserve">
+    <value>Units</value>
+  </data>
+  <data name="trUpdate" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="trUserInformation" xml:space="preserve">
+    <value>User Infomration</value>
+  </data>
+  <data name="trUserName" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="trUserNameHint" xml:space="preserve">
+    <value>User Name...</value>
+  </data>
+  <data name="trUsers" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="trUserType" xml:space="preserve">
+    <value>User Type</value>
+  </data>
+  <data name="trWorkHours" xml:space="preserve">
+    <value>Work Hours</value>
+  </data>
+  <data name="trWorkHoursHint" xml:space="preserve">
+    <value>Work Hours...</value>
+  </data>
+  <data name="trWorkInformation" xml:space="preserve">
+    <value>Work Information</value>
   </data>
 </root>

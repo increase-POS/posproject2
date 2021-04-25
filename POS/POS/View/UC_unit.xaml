@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d" 
 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="675" d:DesignWidth="985" >
+             d:DesignHeight="675" d:DesignWidth="985" Loaded="UserControl_Loaded" >
 
     <Grid x:Name="grid_ucUnit" >
         <Grid.ColumnDefinitions>
@@ -129,7 +129,7 @@ xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Unit Name..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" LostFocus="Tb_name_LostFocus" TextChanged="Tb_name_TextChanged"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
@@ -154,7 +154,7 @@ xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                         <WrapPanel Grid.Row="2"  Height="35" Width="340" 
                                    Background="#f8f8f8" HorizontalAlignment="Left"  VerticalAlignment="Center"
                                    Margin="10,5" >
-                            <TextBlock  Text ="Is Smallest"  Foreground="#4E4E4E" VerticalAlignment="Center"
+                            <TextBlock  Text ="Is Smallest" x:Name="tb_isSmallest"  Foreground="#4E4E4E" VerticalAlignment="Center"
                                         Margin="5,2,0,0" Padding="10,5,5,5"/>
                             <ToggleButton x:Name="tbtn_isSmallest" VerticalAlignment="Center" Padding="10,15,5,5"
                                           Margin="5,5,0,0" Height="13" Width="28" Checked="Tbtn_isSmallest_Checked" Unchecked="Tbtn_isSmallest_unckecked"/>
@@ -184,7 +184,7 @@ xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 
                 </Grid>
 
-                <Grid Grid.Row="1" Margin="5,0"  >
+                <Grid Grid.Row="1" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
