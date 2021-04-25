@@ -8,7 +8,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="675" d:DesignWidth="1150"
              Loaded="UserControl_Loaded">
-    <Grid >
+    <Grid x:Name="grid_ucCategorie">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="380"/>
@@ -269,7 +269,7 @@
 	c0.5,0.2,0.9,0.5,1.4,0.6C426.1-29.9,438-15.7,438,9.3c0,64.3,0,128.6,0,192.9c0,26.4-16.5,42.9-43.1,43c-18.8,0-37.7,0-56.5,0
 	c-1.7,0-3.5,0.2-5.1,0.2v139.8h7.2c101.3,0,202.6,0,303.9,0c24.2,0,38.5,14.4,38.5,38.5c0,55.2,0,110.3,0,165.5v6h58.2
 	c26.5,0,38.3,8.4,46.4,33.3C787.7,628.7,787.9,628.8,788,628.9z"/>
-                                <TextBlock Text="categorie"  Foreground="#E8E8E8" 
+                                <TextBlock Text="categorie" x:Name="txt_categorie" Foreground="#E8E8E8" 
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="5"/>
                             </Grid>
@@ -311,7 +311,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Base Infomation" Foreground="#737373"
-                                 FontSize="10"       VerticalAlignment="Center"
+                                 FontSize="10"   x:Name="txt_baseInformation"    VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
                                     <Separator Background="#999999"   Width="274"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
@@ -328,20 +328,22 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox x:Name="TB_categoryCode"  Text="{Binding categoryCode, Mode=OneWay}"
-                                         Grid.Row="1" Padding="10,5,5,5" 
+                                    <TextBox x:Name="tb_categoryCode"  Text="{Binding categoryCode, Mode=OneWay}"
+                                         Grid.Row="1" Padding="10,5,5,5" MaxLength="20" LostFocus="Tb_categoryCode_LostFocus"
+                                             TextChanged="Tb_categoryCode_TextChanged"
+                                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Code..."   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" 
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35" Width="195"  Margin="10,5" >
                                     </TextBox>
-                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorCode"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                         <Path.ToolTip>
-                                            <ToolTip x:Name="tt_errorCategoryCode" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                            <ToolTip x:Name="tt_errorCode" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                         </Path.ToolTip>
                                     </Path>
                                 </Grid>
@@ -349,13 +351,14 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox x:Name="TB_Name"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5"
-                                 Grid.Row="2" BorderThickness="1"  materialDesign:HintAssist.Hint="name..."  
+                                    <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5"
+                                 Grid.Row="2" BorderThickness="1"  materialDesign:HintAssist.Hint="Name..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="#f8f8f8"
+                                 BorderBrush="#f8f8f8" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                             LostFocus="Tb_name_LostFocus" TextChanged="Tb_name_TextChanged"
                          HorizontalAlignment="Left" VerticalAlignment="Center" 
                          Height="35" Width="195"  Margin="10,5" />
-                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -369,11 +372,11 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox x:Name="TB_details"  Text="{Binding details, Mode=OneWay}"  Padding="10,5,5,5"
+                                    <TextBox x:Name="tb_details"  Text="{Binding details, Mode=OneWay}"  Padding="10,5,5,5"
                                  Grid.Row="3" BorderThickness="1"   
                                  materialDesign:HintAssist.Hint="Details..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="#f8f8f8"
+                                 BorderBrush="#f8f8f8" MaxLength="100" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35" Width="195"  Margin="10,5" />
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
@@ -404,7 +407,7 @@
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Secondary Infomation" Foreground="#737373"
+                                    <TextBlock Text="Secondary Infomation" x:Name="txt_secondaryInformation" Foreground="#737373"
                                  FontSize="10"      VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
                                     <Separator Background="#999999"   Width="260"  Margin="5,0,5,0"
@@ -415,7 +418,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <ComboBox x:Name="CB_parentCategorie"  Grid.Row="1"
+                                    <ComboBox x:Name="cb_parentCategorie"  Grid.Row="1"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
                              materialDesign:HintAssist.Hint="Select Parent Item "  
                            TextBlock.FontSize="12"   Background="#f8f8f8" 
@@ -444,8 +447,10 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox x:Name="TB_taxes"  Text="{Binding taxes, Mode=OneWay}"
-                                             Grid.Row="2" Padding="10,5,5,5"
+                                    <TextBox x:Name="tb_taxes"  Text="{Binding taxes, Mode=OneWay}"
+                                             Grid.Row="2" Padding="10,5,5,5" MaxLength="15" PreviewTextInput="NumberValidationTextBox"
+                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Taxes..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                              BorderBrush="#f8f8f8"
@@ -474,18 +479,18 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <Button Grid.Row="0" Grid.Column="0"  Width="110"
+                            <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0"  Width="110"
                          BorderThickness="0" Background="#178DD2" Content="Add"
                     Padding="0" Height="33"
                             materialDesign:ButtonAssist.CornerRadius="5"  />
-                            <Button Grid.Row="0" Grid.Column="1"  Width="110"
+                            <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"  Width="110"
                          BorderThickness="0" Background="#178DD2" Content="Update"
                     Padding="0" Height="33" 
                             materialDesign:ButtonAssist.CornerRadius="5"  />
-                            <Button Grid.Row="1" Grid.Column="2"  Width="110"
+                            <Button x:Name="btn_delete"  Grid.Row="1" Grid.Column="2"  Width="110"
                          BorderThickness="0" Background="#178DD2" Content="Delete"
                     Padding="0" Height="33"
-                            materialDesign:ButtonAssist.CornerRadius="5"  />
+                            materialDesign:ButtonAssist.CornerRadius="5" Click="Button_Click"  />
 
                         </Grid>
                     </Grid>

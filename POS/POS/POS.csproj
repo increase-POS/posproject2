@@ -46,6 +46,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -98,14 +99,11 @@
     <Compile Include="View\UC_item.xaml.cs">
       <DependentUpon>UC_item.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\uc_payInvoice.xaml.cs">
-      <DependentUpon>uc_payInvoice.xaml</DependentUpon>
+    <Compile Include="View\UC_porperty.xaml.cs">
+      <DependentUpon>UC_porperty.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UC_pos.xaml.cs">
       <DependentUpon>UC_pos.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\uc_purchases.xaml.cs">
-      <DependentUpon>uc_purchases.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UC_sectionData.xaml.cs" />
     <Compile Include="View\UC_store.xaml.cs">
@@ -180,17 +178,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\uc_payInvoice.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="View\UC_porperty.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\UC_pos.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\uc_purchases.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UC_sectionData.xaml">
       <Generator>MSBuild:Compile</Generator>

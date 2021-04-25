@@ -31,7 +31,7 @@ namespace POS
         {
             InitializeComponent();
         }
-        void FN_tooltipVisibility(Button btn)
+         void FN_tooltipVisibility(Button btn)
         {
             ToolTip T = btn.ToolTip as ToolTip;
             if (T.Visibility == Visibility.Visible)
@@ -79,8 +79,16 @@ namespace POS
                 Storyboard sb = this.FindResource("Storyboard1") as Storyboard;
                 sb.Begin();
                 menuState = true;
-
-
+                //tt_menu.Visibility = Visibility.Collapsed;
+                //tt_home.Visibility = Visibility.Collapsed;
+                //tt_catalog.Visibility = Visibility.Collapsed;
+                //tt_storage.Visibility = Visibility.Collapsed;
+                //tt_purchases.Visibility = Visibility.Collapsed;
+                //tt_sales.Visibility = Visibility.Collapsed;
+                //tt_accounting.Visibility = Visibility.Collapsed;
+                //tt_reports.Visibility = Visibility.Collapsed;
+                //tt_sectiondata.Visibility = Visibility.Collapsed;
+                //tt_settings.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -92,7 +100,14 @@ namespace POS
             #region tooltipVisibility
             FN_tooltipVisibility(BTN_menu);
             FN_tooltipVisibility(BTN_home);
+            FN_tooltipVisibility(BTN_catalog);
+            FN_tooltipVisibility(BTN_storage);
+            FN_tooltipVisibility(BTN_purchases);
+            FN_tooltipVisibility(BTN_sales);
+            FN_tooltipVisibility(BTN_reports);
+            FN_tooltipVisibility(BTN_accounts);
             FN_tooltipVisibility(BTN_sectionData);
+            FN_tooltipVisibility(BTN_settings);
             #endregion
 
 
@@ -117,13 +132,8 @@ namespace POS
             UC_catalog uc = new UC_catalog();
             GRID_Main.Children.Add(uc);
         }
-        private void BTN_purchases_Click(object sender, RoutedEventArgs e)
-        {
-            GRID_Main.Children.Clear();
-            uc_purchases uc = new uc_purchases();
-            GRID_Main.Children.Add(uc);
-        }
-        public static string lang = "en";
+
+        public static string lang = "ar";
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (lang.Equals("en"))
@@ -133,7 +143,5 @@ namespace POS
             translate();
 
         }
-
-        
     }
 }

@@ -18,13 +18,11 @@ namespace POS.Classes
 
         public uc_categorie ucCategorie;
         public UC_item ucCategorieItem;
-        public uc_payInvoice ucPayInvoice;
 
         public Grid gridCatigories;
         public Grid gridCatigorieItems;
         private int _idCatigories;
         private int _idCatigorieItems;
-        private int _idPayInvoice;
         public int idCatigories
         {
             get => _idCatigories; set
@@ -32,24 +30,6 @@ namespace POS.Classes
 
                 _idCatigories = value;
                 INotifyPropertyChangedIdCatigories();
-            }
-        }
-        public int idCatigorieItems
-        {
-            get => _idCatigorieItems; set
-            {
-
-                _idCatigorieItems = value;
-                INotifyPropertyChangedIdCatigorieItems();
-            }
-        }
-        public int idPayInvoice
-        {
-            get => _idPayInvoice; set
-            {
-
-                _idPayInvoice = value;
-                INotifyPropertyChangedIdCatigorieItems();
             }
         }
         private void INotifyPropertyChangedIdCatigories()
@@ -64,10 +44,17 @@ namespace POS.Classes
                 ucCategorieItem.testChangeCategorieIdEvent();
             }
             
-
         }
 
-        
+        public int idCatigorieItems
+        {
+            get => _idCatigorieItems; set
+            {
+
+                _idCatigorieItems = value;
+                INotifyPropertyChangedIdCatigorieItems();
+            }
+        }
         private void INotifyPropertyChangedIdCatigorieItems()
         {
 

@@ -121,7 +121,7 @@
     <value>رقم الحساب</value>
   </data>
   <data name="trAccNumberHint" xml:space="preserve">
-    <value>رقم الحساب ...</value>
+    <value>رقم الحساب...</value>
   </data>
   <data name="trAccounting" xml:space="preserve">
     <value>المحاسبة</value>
@@ -154,7 +154,7 @@
     <value>اسم البنك</value>
   </data>
   <data name="trBankNameHint" xml:space="preserve">
-    <value>اسم البنك ...</value>
+    <value>اسم البنك...</value>
   </data>
   <data name="trBanks" xml:space="preserve">
     <value>البنوك</value>
@@ -163,7 +163,7 @@
     <value>المعلومات الأساسية</value>
   </data>
   <data name="trBranchCodeHint" xml:space="preserve">
-    <value>شيفرة الفرع ...</value>
+    <value>شيفرة الفرع...</value>
   </data>
   <data name="trBranches" xml:space="preserve">
     <value>الفروع</value>
@@ -172,7 +172,7 @@
     <value>اسم الفرع</value>
   </data>
   <data name="trBranchNameHint" xml:space="preserve">
-    <value>اسم الفرع ...</value>
+    <value>اسم الفرع...</value>
   </data>
   <data name="trCatalog" xml:space="preserve">
     <value>الفهرس</value>
@@ -238,7 +238,7 @@
     <value>عنوان البريد غير صالح</value>
   </data>
   <data name="trFirstNameHint" xml:space="preserve">
-    <value>الاسم الأول ...</value>
+    <value>الاسم الأول...</value>
   </data>
   <data name="trHome" xml:space="preserve">
     <value>الرئيسية</value>
@@ -253,13 +253,13 @@
     <value>العمل</value>
   </data>
   <data name="trJobHint" xml:space="preserve">
-    <value>العمل ...</value>
+    <value>العمل...</value>
   </data>
   <data name="trLastName" xml:space="preserve">
     <value>الاسم الاخير</value>
   </data>
   <data name="trLastNameHint" xml:space="preserve">
-    <value>الكنية ...</value>
+    <value>الكنية...</value>
   </data>
   <data name="trLoginInformation" xml:space="preserve">
     <value>معلومات التسجيل</value>
@@ -289,7 +289,7 @@
     <value>اختر طريقة الدفع...</value>
   </data>
   <data name="trPasswordHint" xml:space="preserve">
-    <value>كلمة المرور ...</value>
+    <value>كلمة المرور...</value>
   </data>
   <data name="trPhoneHint" xml:space="preserve">
     <value>الهاتف...</value>
@@ -301,13 +301,13 @@
     <value>رمز نقطة البيع</value>
   </data>
   <data name="trPosCodeHint" xml:space="preserve">
-    <value>رمز نقطة البيع ...</value>
+    <value>رمز نقطة البيع...</value>
   </data>
   <data name="trPosName" xml:space="preserve">
     <value>اسم نقطة البيع</value>
   </data>
   <data name="trPosNameHint" xml:space="preserve">
-    <value>اسم نقطة البيع ...</value>
+    <value>اسم نقطة البيع...</value>
   </data>
   <data name="trPurchases" xml:space="preserve">
     <value>المشتريات</value>
@@ -331,7 +331,7 @@
     <value>اختر اسم الفرع</value>
   </data>
   <data name="trSelectJobHint" xml:space="preserve">
-    <value>اختر عمل ...</value>
+    <value>اختر عمل...</value>
   </data>
   <data name="trSelectPosBranchHint" xml:space="preserve">
     <value>اختر الفرع</value>
@@ -358,10 +358,10 @@
     <value>التخزين</value>
   </data>
   <data name="trStoreCodeHint" xml:space="preserve">
-    <value>شيفرة المخزن ...</value>
+    <value>شيفرة المخزن...</value>
   </data>
   <data name="trStoreNameHint" xml:space="preserve">
-    <value>اسم المخزن ...</value>
+    <value>اسم المخزن...</value>
   </data>
   <data name="trStores" xml:space="preserve">
     <value>المخازن</value>
@@ -373,7 +373,7 @@
     <value>اسم الوحدة</value>
   </data>
   <data name="trUnitNameHint" xml:space="preserve">
-    <value>اسم الوحدة ...</value>
+    <value>اسم الوحدة...</value>
   </data>
   <data name="trUnits" xml:space="preserve">
     <value>الوحدات</value>
@@ -388,7 +388,7 @@
     <value>اسم المستخدم</value>
   </data>
   <data name="trUserNameHint" xml:space="preserve">
-    <value>اسم المستخدم ...</value>
+    <value>اسم المستخدم...</value>
   </data>
   <data name="trUsers" xml:space="preserve">
     <value>المستخدمون</value>
@@ -400,9 +400,48 @@
     <value>ساعات العمل</value>
   </data>
   <data name="trWorkHoursHint" xml:space="preserve">
-    <value>ساعات العمل ...</value>
+    <value>ساعات العمل...</value>
   </data>
   <data name="trWorkInformation" xml:space="preserve">
     <value>معلومات العمل</value>
+  </data>
+  <data name="trCategorie" xml:space="preserve">
+    <value>الفئة</value>
+  </data>
+  <data name="trCodeHint" xml:space="preserve">
+    <value>الكود...</value>
+  </data>
+  <data name="trMainProperty" xml:space="preserve">
+    <value>الخاصية الأساسية</value>
+  </data>
+  <data name="trMainPropertyHint" xml:space="preserve">
+    <value>ادخل الخاصية الأساسية</value>
+  </data>
+  <data name="trParentCategorieHint" xml:space="preserve">
+    <value>اختر العنصر الأب</value>
+  </data>
+  <data name="trSecondaryInformation" xml:space="preserve">
+    <value>المعلوامات الثانوية</value>
+  </data>
+  <data name="trSelectPropertyNameHint" xml:space="preserve">
+    <value>اختر اسم الخاصية</value>
+  </data>
+  <data name="trSubProperties" xml:space="preserve">
+    <value>الخواص الفرعية</value>
+  </data>
+  <data name="trSubPropertiesHint" xml:space="preserve">
+    <value>ادخل الخاصية الفرعية</value>
+  </data>
+  <data name="trTaxesHint" xml:space="preserve">
+    <value>الضرائب...</value>
+  </data>
+  <data name="trCategories" xml:space="preserve">
+    <value>الفئات</value>
+  </data>
+  <data name="trItems" xml:space="preserve">
+    <value>العناصر</value>
+  </data>
+  <data name="trProperties" xml:space="preserve">
+    <value>الخصائص</value>
   </data>
 </root>

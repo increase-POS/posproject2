@@ -1,4 +1,5 @@
 ﻿
+using client_app.Classes;
 using POS.Classes;
 using System;
 using System.Collections.Generic;
@@ -61,10 +62,11 @@ namespace POS.View
             }
             if (user != null)
             {
-
                 if (user.userId != 0)
                 {
                     UserId = user.userId;
+                  
+                    pb_password.Password = tb_password.Text.Trim();
                 }
 
 
@@ -136,7 +138,7 @@ namespace POS.View
         {//add
             User user = new User
             {
-                userName     = tb_userName.Text,
+                username = tb_userName.Text,
                 password     = tb_password.Text,
                 name         = tb_firstName.Text,
                 lastname     = tb_lastName.Text,
@@ -169,7 +171,7 @@ namespace POS.View
             User user = new User
             {
                 userId     = UserId,
-                userName   = tb_userName.Text,
+                username   = tb_userName.Text,
                 password   = tb_password.Text,
                 name       = tb_firstName.Text,
                 lastname   = tb_lastName.Text,
@@ -307,6 +309,18 @@ namespace POS.View
                     tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                 }
             }
+        }
+
+        private void P_showPassword_MouseEnter(object sender, MouseEventArgs e)
+        {
+            tb_password.Visibility = Visibility.Visible;
+            pb_password.Visibility = Visibility.Collapsed;
+        }
+
+        private void P_showPassword_MouseLeave(object sender, MouseEventArgs e)
+        {
+            tb_password.Visibility = Visibility.Collapsed;
+            pb_password.Visibility = Visibility.Visible;
         }
     }
 }

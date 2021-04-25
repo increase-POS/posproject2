@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using client_app.Classes;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +35,6 @@ namespace POS.View
 
 
             List<Branch> stores = new List<Branch>();
-
-
 
             for (int i = 1; i < 50; i++)
             {

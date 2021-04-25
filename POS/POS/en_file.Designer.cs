@@ -241,11 +241,38 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Categorie.
+        /// </summary>
+        internal static string trCategorie {
+            get {
+                return ResourceManager.GetString("trCategorie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categories.
+        /// </summary>
+        internal static string trCategories {
+            get {
+                return ResourceManager.GetString("trCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Code.
         /// </summary>
         internal static string trCode {
             get {
                 return ResourceManager.GetString("trCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code....
+        /// </summary>
+        internal static string trCodeHint {
+            get {
+                return ResourceManager.GetString("trCodeHint", resourceCulture);
             }
         }
         
@@ -376,6 +403,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Main Property Name can not be empty.
+        /// </summary>
+        internal static string trEmptyMainPropNameToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyMainPropNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the mobile number.
         /// </summary>
         internal static string trEmptyMobileToolTip {
@@ -457,6 +493,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Items.
+        /// </summary>
+        internal static string trItems {
+            get {
+                return ResourceManager.GetString("trItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job.
         /// </summary>
         internal static string trJob {
@@ -498,6 +543,24 @@ namespace POS {
         internal static string trLoginInformation {
             get {
                 return ResourceManager.GetString("trLoginInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Main Property.
+        /// </summary>
+        internal static string trMainProperty {
+            get {
+                return ResourceManager.GetString("trMainProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Main Property.
+        /// </summary>
+        internal static string trMainPropertyHint {
+            get {
+                return ResourceManager.GetString("trMainPropertyHint", resourceCulture);
             }
         }
         
@@ -574,6 +637,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Parent Item.
+        /// </summary>
+        internal static string trParentCategorieHint {
+            get {
+                return ResourceManager.GetString("trParentCategorieHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password....
         /// </summary>
         internal static string trPasswordHint {
@@ -637,6 +709,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Properties.
+        /// </summary>
+        internal static string trProperties {
+            get {
+                return ResourceManager.GetString("trProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Purchases.
         /// </summary>
         internal static string trPurchases {
@@ -669,6 +750,15 @@ namespace POS {
         internal static string trSearchHint {
             get {
                 return ResourceManager.GetString("trSearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secondary Information.
+        /// </summary>
+        internal static string trSecondaryInformation {
+            get {
+                return ResourceManager.GetString("trSecondaryInformation", resourceCulture);
             }
         }
         
@@ -723,6 +813,15 @@ namespace POS {
         internal static string trSelectPosNameHint {
             get {
                 return ResourceManager.GetString("trSelectPosNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Property Name.
+        /// </summary>
+        internal static string trSelectPropertyNameHint {
+            get {
+                return ResourceManager.GetString("trSelectPropertyNameHint", resourceCulture);
             }
         }
         
@@ -808,11 +907,38 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sub Properties.
+        /// </summary>
+        internal static string trSubProperties {
+            get {
+                return ResourceManager.GetString("trSubProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Sub Property.
+        /// </summary>
+        internal static string trSubPropertiesHint {
+            get {
+                return ResourceManager.GetString("trSubPropertiesHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Suppliers.
         /// </summary>
         internal static string trSuppliers {
             get {
                 return ResourceManager.GetString("trSuppliers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taxes....
+        /// </summary>
+        internal static string trTaxesHint {
+            get {
+                return ResourceManager.GetString("trTaxesHint", resourceCulture);
             }
         }
         

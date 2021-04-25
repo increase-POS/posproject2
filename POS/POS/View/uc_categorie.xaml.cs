@@ -3,7 +3,10 @@ using POS.controlTemplate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,10 +29,39 @@ namespace POS.View
         {
             InitializeComponent();
         }
+        private void translate()
+        {
+            txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_categoryCode, MainWindow.resourcemanager.GetString("trCodeHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_details, MainWindow.resourcemanager.GetString("trDetailsHint"));
+            txt_secondaryInformation.Text = MainWindow.resourcemanager.GetString("trSecondaryInformation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_parentCategorie, MainWindow.resourcemanager.GetString("trParentCategorieHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_taxes, MainWindow.resourcemanager.GetString("trTaxesHint"));
+         //   MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_categorie, MainWindow.resourcemanager.GetString("trCategorie"));
+            txt_categorie.Text = MainWindow.resourcemanager.GetString("trCategorie");
+
+            btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
+            btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+           
+        }
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             catigoriesAndItemsView.ucCategorie = this;
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_ucCategorie.FlowDirection = FlowDirection.LeftToRight;
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_ucCategorie.FlowDirection = FlowDirection.RightToLeft;
+            }
 
+            translate();
             #region Generate catigorie
             catigoriesAndItemsView.gridCatigories = Grid_categorie;
             Categorie categorie = new Categorie();
@@ -43,6 +75,8 @@ namespace POS.View
             catigoriesAndItemsView.FN_refrishCatalogItem(CategorieItem.getCategorieItems());
             #endregion
         }
+
+
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
 
         public void testChangeCategorieIdEvent()
@@ -253,10 +287,88 @@ namespace POS.View
                 return CategorieItems;
             }
         }
+
+
+
         #endregion
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
 
+        private void Tb_categoryCode_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var bc = new BrushConverter();
 
+            if (tb_categoryCode.Text.Equals(""))
+            {
+                p_errorCode.Visibility = Visibility.Visible;
+                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_categoryCode.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                tt_errorCode.Visibility = Visibility.Collapsed;
+                tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+        }
+
+        private void Tb_categoryCode_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var bc = new BrushConverter();
+
+            if (tb_categoryCode.Text.Equals(""))
+            {
+                p_errorCode.Visibility = Visibility.Visible;
+                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_categoryCode.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                tt_errorCode.Visibility = Visibility.Collapsed;
+                tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+        }
+
+        private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var bc = new BrushConverter();
+
+            if (tb_name.Text.Equals(""))
+            {
+                p_errorName.Visibility = Visibility.Visible;
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+
+        }
+
+        private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
+        {
+   var bc = new BrushConverter();
+
+            if (tb_name.Text.Equals(""))
+            {
+                p_errorName.Visibility = Visibility.Visible;
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+        }
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
     }
 }

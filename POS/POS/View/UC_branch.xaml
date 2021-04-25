@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d" 
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="675" d:DesignWidth="985" >
+             d:DesignHeight="675" d:DesignWidth="985" Loaded="UserControl_Loaded" >
 
     <Grid x:Name="grid_ucBranch" >
         <Grid.ColumnDefinitions>
@@ -66,15 +66,14 @@
                 <Border Background="White" CornerRadius="7" />
                 <DataGrid  Margin="5,5,5,17.5"  Grid.Row="1"  IsReadOnly="True"  Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
-                       
                        x:Name="dg_branch"
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"    >
+                        ColumnWidth="SizeToHeader" SelectionChanged="Dg_branch_SelectionChanged"    >
                     <DataGrid.Columns>
-                        <DataGridTextColumn MinWidth="150"  Header="Name" Binding="{Binding Path=name}"/>
-                        <DataGridTextColumn MinWidth="150"  Header="Code"   Binding="{Binding Path=code}"/>
+                        <DataGridTextColumn MinWidth="150"  Header="Name"    Binding="{Binding Path=name}"/>
+                        <DataGridTextColumn MinWidth="150"  Header="Code"    Binding="{Binding Path=code}"/>
                         <DataGridTextColumn MinWidth="150"  Header="Address" Binding="{Binding Path=address}"/>
-                        <DataGridTextColumn MinWidth="125"  Header="Details"     Binding="{Binding Path=details}"/>
+                        <DataGridTextColumn MinWidth="125"  Header="Details" Binding="{Binding Path=details}"/>
 
                     </DataGrid.Columns>
                 </DataGrid>
@@ -268,14 +267,15 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBox x:Name="tb_mobile"  Text="{Binding mobile, Mode=OneWay}"  Padding="10,5,5,5" 
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                     BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                     Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
                                 <Path Fill="#E81123" Stretch="Fill" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"  
-                         VerticalAlignment="Center" Width="15"  Height="15" Margin="5,5,15,5"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                      HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"  
+                                      VerticalAlignment="Center" Width="15"  Height="15" Margin="5,5,15,5"
+                                      Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                     <Path.ToolTip>
                                         <ToolTip x:Name="tt_error_mobile" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                     </Path.ToolTip>
@@ -370,11 +370,27 @@
                                     <ToolTip  x:Name="tt_error_details"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
+                            <TextBox x:Name="tb_notes"  Text="{Binding notes, Mode=OneWay}" Padding="10,5,5,5"   
+                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Notes..."    
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                     BorderBrush="AliceBlue" MaxLength="100"
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                     Height="70" Width="340"  Margin="5,86,0,-76" />
+
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,45" x:Name="p_errorNotes"
+                                       HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"   
+                                       VerticalAlignment="Center" Width="15"  Height="15" 
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorNotes"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
                         </Grid>
-                        
+
                         <Separator Grid.Row="6"
-                            Background="#999999"   Width="340"  Margin="10,5,10,2"
-                         VerticalAlignment="Center" Grid.ColumnSpan="3" />
+                            Background="#999999"   Width="340"  Margin="5,39,15,-131"
+                         VerticalAlignment="Center" Height="100" />
 
                     </Grid>
 
@@ -389,19 +405,20 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    
+
                     <Button x:Name="btn_add" Grid.Row="1" Grid.Column="0"  Width="110"
                          BorderThickness="0" Background="#178DD2" Content="Add"
                     Padding="0" Height="33"
-                            materialDesign:ButtonAssist.CornerRadius="5"  Margin="6,0,4,1" VerticalAlignment="Bottom"  />
+                            materialDesign:ButtonAssist.CornerRadius="5"  Margin="6,0,4,1" 
+                            VerticalAlignment="Bottom" Click="Btn_add_Click"  />
                     <Button x:Name="btn_update" Grid.Row="1" Grid.Column="1"  Width="110"
                          BorderThickness="0" Background="#178DD2" Content="Update"
                     Padding="0" Height="33"
-                            materialDesign:ButtonAssist.CornerRadius="5"  />
+                            materialDesign:ButtonAssist.CornerRadius="5" Click="Btn_update_Click"  />
                     <Button x:Name="btn_delete" Grid.Row="1" Grid.Column="2"  Width="110"
                          BorderThickness="0" Background="#178DD2" Content="Delete"
                     Padding="0" Height="33"
-                            materialDesign:ButtonAssist.CornerRadius="5"  />
+                            materialDesign:ButtonAssist.CornerRadius="5" Click="Btn_delete_Click"  />
 
                 </Grid>
             </Grid>

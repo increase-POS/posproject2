@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="700" d:DesignWidth="1100"
              Loaded="UserControl_Loaded">
-    <Grid  >
+    <Grid  x:Name="grid_ucCatalog">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="*"/>
@@ -18,9 +19,9 @@
                 <RowDefinition Height="95"/>
                 <RowDefinition Height="95"/>
             </Grid.RowDefinitions>
-            <Button x:Name="btn_categorie" Click="Btn_categorie_Click" Style="{StaticResource SmallButton}"   Grid.Row="0" Grid.Column="0"
+            <Button x:Name="btn_categories" Click="Btn_categorie_Click" Style="{StaticResource SmallButton}"   Grid.Row="0" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5"
-                  Content="Categorie"    BorderBrush="#67686D" 
+                  Content="Categories"    BorderBrush="#67686D" 
                 DataContext="M788,628.9v212c-0.3,0.6-0.6,1.2-0.8,1.8c-5.6,21.4-19.7,32.5-41.9,32.5c-64.8,0-129.7,0-194.5,0
 	c-26.4,0-42.8-16.6-42.8-43.2c0-64.5,0-129,0-193.5c0-26.7,16.6-43.2,43.4-43.3c18.7,0,37.3,0,56,0h5.3V455.6H333.3v139.6h5.7
 	c18.8,0,37.7-0.1,56.5,0c25.7,0.1,42.5,17,42.5,42.7c0,65,0,130,0,195c0,25.4-16.7,42.3-42.3,42.3c-65.2,0.1-130.3,0.1-195.5,0
@@ -39,7 +40,7 @@
                   Content="Items"    BorderBrush="#67686D" 
                 DataContext="M7,4v40h34V4H7z M17,38h-4v-4h4V38z M17,30h-4v-4h4V30z M17,22h-4v-4h4V22z M17,14h-4v-4h4V14z M35,38H21v-4h14
 	V38z M35,30H21v-4h14V30z M35,22H21v-4h14V22z M35,14H21v-4h14V14z"/>
-            <Button x:Name="btn_properties" Click="BTN_item_Click" Style="{StaticResource SmallButton}" 
+            <Button x:Name="btn_properties" Click="Btn_properties_Click" Style="{StaticResource SmallButton}" 
                     Grid.Row="2" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5"
                   Content="Properties"    BorderBrush="#67686D" 

@@ -405,4 +405,46 @@
   <data name="trWorkInformation" xml:space="preserve">
     <value>Work Information</value>
   </data>
+  <data name="trCategorie" xml:space="preserve">
+    <value>Categorie</value>
+  </data>
+  <data name="trCodeHint" xml:space="preserve">
+    <value>Code...</value>
+  </data>
+  <data name="trEmptyMainPropNameToolTip" xml:space="preserve">
+    <value>Main Property Name can not be empty</value>
+  </data>
+  <data name="trMainProperty" xml:space="preserve">
+    <value>Main Property</value>
+  </data>
+  <data name="trMainPropertyHint" xml:space="preserve">
+    <value>Enter Main Property</value>
+  </data>
+  <data name="trParentCategorieHint" xml:space="preserve">
+    <value>Select Parent Item</value>
+  </data>
+  <data name="trSecondaryInformation" xml:space="preserve">
+    <value>Secondary Information</value>
+  </data>
+  <data name="trSelectPropertyNameHint" xml:space="preserve">
+    <value>Select Property Name</value>
+  </data>
+  <data name="trSubProperties" xml:space="preserve">
+    <value>Sub Properties</value>
+  </data>
+  <data name="trSubPropertiesHint" xml:space="preserve">
+    <value>Enter Sub Property</value>
+  </data>
+  <data name="trTaxesHint" xml:space="preserve">
+    <value>Taxes...</value>
+  </data>
+  <data name="trCategories" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="trItems" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="trProperties" xml:space="preserve">
+    <value>Properties</value>
+  </data>
 </root>

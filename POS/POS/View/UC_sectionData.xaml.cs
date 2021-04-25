@@ -30,22 +30,58 @@ namespace POS.View
             UC_Customer uc = new UC_Customer();
             GRID_Main.Children.Add(uc);
         }
+        void refreashBackground()
+        {
+
+            btn_customers.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_customers.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_suppliers.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_suppliers.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_users.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_users.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_branches.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_branches.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_stores.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_stores.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_pos.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_pos.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_banks.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_banks.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_units.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_units.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+        }
+
+        void refreashBachgroundClick(Button btn)
+        {
+            refreashBackground();
+            btn.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+        }
 
         private void BTN_Customers_Click(object sender, RoutedEventArgs e)
         {
             GRID_Main.Children.Clear();
             UC_Customer uc = new UC_Customer();
             GRID_Main.Children.Add(uc);
-
-            btn_customers.Background= (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            btn_customers.BorderBrush= (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            refreashBachgroundClick(btn_customers);
         }
 
         private void Btn_suppliers_Click(object sender, RoutedEventArgs e)
         {
+            refreashBachgroundClick(btn_suppliers);
+
+
             GRID_Main.Children.Clear();
             UC_vendors uc = new UC_vendors();
             GRID_Main.Children.Add(uc);
+
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -59,7 +95,6 @@ namespace POS.View
 
         private void translate()
         {
-            btn_customers.Content = MainWindow.resourcemanager.GetString("trCustomers");
             btn_suppliers.Content = MainWindow.resourcemanager.GetString("trSuppliers");
             btn_users.Content = MainWindow.resourcemanager.GetString("trUsers");
             btn_branches.Content = MainWindow.resourcemanager.GetString("trBranches");
@@ -71,6 +106,9 @@ namespace POS.View
 
         private void Btn_users_Click(object sender, RoutedEventArgs e)
         {
+            refreashBachgroundClick(btn_users);
+
+
             GRID_Main.Children.Clear();
             UC_users uc = new UC_users();
             GRID_Main.Children.Add(uc);
@@ -78,6 +116,9 @@ namespace POS.View
 
         private void Btn_branches_Click(object sender, RoutedEventArgs e)
         {
+            refreashBachgroundClick(btn_branches);
+
+
             GRID_Main.Children.Clear();
             UC_branch uc = new UC_branch();
             GRID_Main.Children.Add(uc);
@@ -85,6 +126,9 @@ namespace POS.View
 
         private void Btn_stores_Click(object sender, RoutedEventArgs e)
         {
+            refreashBachgroundClick(btn_stores);
+
+
             GRID_Main.Children.Clear();
             UC_store uc = new UC_store();
             GRID_Main.Children.Add(uc);
@@ -92,6 +136,9 @@ namespace POS.View
 
         private void Btn_pos_Click(object sender, RoutedEventArgs e)
         {
+            refreashBachgroundClick(btn_pos);
+
+
             GRID_Main.Children.Clear();
             UC_pos uc = new UC_pos();
             GRID_Main.Children.Add(uc);
@@ -99,6 +146,9 @@ namespace POS.View
 
         private void Btn_banks_Click(object sender, RoutedEventArgs e)
         {
+            refreashBachgroundClick(btn_banks);
+
+
             GRID_Main.Children.Clear();
             UC_bank uc = new UC_bank();
             GRID_Main.Children.Add(uc);
@@ -106,6 +156,9 @@ namespace POS.View
 
         private void Btn_units_Click(object sender, RoutedEventArgs e)
         {
+            refreashBachgroundClick(btn_units);
+
+
             GRID_Main.Children.Clear();
             UC_unit uc = new UC_unit();
             GRID_Main.Children.Add(uc);

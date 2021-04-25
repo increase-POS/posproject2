@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,9 +27,29 @@ namespace POS.View
             InitializeComponent();
            
         }
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void translate()
+        {
+            btn_categories.Content = MainWindow.resourcemanager.GetString("trCategories");
+            btn_properties.Content = MainWindow.resourcemanager.GetString("trProperties");
+            btn_item.Content = MainWindow.resourcemanager.GetString("trItems");
+
+        }
+            private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             Btn_categorie_Click(null, null);
+
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_ucCatalog.FlowDirection = FlowDirection.LeftToRight;
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_ucCatalog.FlowDirection = FlowDirection.RightToLeft;
+            }
+
+            translate();
         }
 
         private void Btn_categorie_Click(object sender, RoutedEventArgs e)
@@ -41,12 +63,19 @@ namespace POS.View
         private   void BTN_item_Click(object sender, RoutedEventArgs e)
         {
             grid_main.Children.Clear();
-            UC_item uc = new UC_item();
+            UC_item uc= new UC_item();
             grid_main.Children.Add(uc);
 
 
         }
 
-        
+        private void Btn_properties_Click(object sender, RoutedEventArgs e)
+        { 
+            grid_main.Children.Clear();
+            UC_porperty uc = new UC_porperty();
+            grid_main.Children.Add(uc);
+        }
+
+
     }
 }
