@@ -35,7 +35,7 @@ namespace POS.View
 
             for (int i = 1; i < 50; i++)
             {
-                banks.Add(new Bank() 
+                banks.Add(new Bank()
                 {
                     Id = i,
                     name = "branch name " + i,
@@ -70,10 +70,10 @@ namespace POS.View
         private void translate()
         {
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectBankHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectBankNameHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trBankNameHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_accNumber, MainWindow.resourcemanager.GetString("trAccNumHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_accNumber, MainWindow.resourcemanager.GetString("trAccNumberHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_area, MainWindow.resourcemanager.GetString("trAreaHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_mobile, MainWindow.resourcemanager.GetString("trMobileHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_phone, MainWindow.resourcemanager.GetString("trPhoneHint"));
@@ -84,14 +84,13 @@ namespace POS.View
             btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
             dg_bank.Columns[0].Header = MainWindow.resourcemanager.GetString("trBankName");
-            dg_bank.Columns[1].Header = MainWindow.resourcemanager.GetString("trAccNum");
+            dg_bank.Columns[1].Header = MainWindow.resourcemanager.GetString("trAccNumber");
             dg_bank.Columns[3].Header = MainWindow.resourcemanager.GetString("trAddress");
             dg_bank.Columns[2].Header = MainWindow.resourcemanager.GetString("trMobile");
 
-            //dg_bank.Columns[4].Header = MainWindow.resourcemanager.GetString("trBalance");
         }
 
-        private void UserControl_Loaded_1(object sender, RoutedEventArgs e)
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
             {
@@ -148,7 +147,7 @@ namespace POS.View
             if (tb_accNumber.Text.Equals(""))
             {
                 p_errorAccNum.Visibility = Visibility.Visible;
-                tt_errorAccNum.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tt_errorAccNum.Content = MainWindow.resourcemanager.GetString("trEmptyAccNumToolTip");
                 tb_accNumber.Background = (Brush)bc.ConvertFrom("#15FF0000");
             }
             else
@@ -166,7 +165,7 @@ namespace POS.View
             if (tb_accNumber.Text.Equals(""))
             {
                 p_errorAccNum.Visibility = Visibility.Visible;
-                tt_errorAccNum.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tt_errorAccNum.Content = MainWindow.resourcemanager.GetString("trEmptyAccNumToolTip");
                 tb_accNumber.Background = (Brush)bc.ConvertFrom("#15FF0000");
             }
             else
@@ -181,5 +180,41 @@ namespace POS.View
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-    }
+
+        //private void translate()
+        //{
+        //    MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+        //    MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectPosNameHint"));
+        //    txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
+        //    MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trPosNameHint"));
+        //    MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trPosCodeHint"));
+        //    txt_moreInformation.Text = MainWindow.resourcemanager.GetString("trMoreInformation");
+        //    MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branchId, MainWindow.resourcemanager.GetString("trSelectPosBranchHint"));
+
+        //    MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_balance, MainWindow.resourcemanager.GetString("trBalanceHint"));
+        //    btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
+        //    btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
+        //    btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+        //    dg_pos.Columns[0].Header = MainWindow.resourcemanager.GetString("trPosName");
+        //    dg_pos.Columns[1].Header = MainWindow.resourcemanager.GetString("trPosCode");
+        //    dg_pos.Columns[2].Header = MainWindow.resourcemanager.GetString("trBranchName");
+        //    dg_pos.Columns[3].Header = MainWindow.resourcemanager.GetString("trBalance");
+        //}
+
+        //private void UserControl_Loaded(object sender, RoutedEventArgs e) { 
+        //{
+        //    if (MainWindow.lang.Equals("en"))
+        //    {
+        //        MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+        //        grid_ucBank.FlowDirection = FlowDirection.LeftToRight;
+        //    }
+        //    else
+        //    {
+        //        MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+        //        grid_ucBank.FlowDirection = FlowDirection.RightToLeft;
+        //    }
+
+        //    translate();
+      //  }
+}
 }

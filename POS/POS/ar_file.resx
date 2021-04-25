@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="trAccNumber" xml:space="preserve">
+    <value>رقم الحساب</value>
+  </data>
+  <data name="trAccNumberHint" xml:space="preserve">
+    <value>رقم الحساب ...</value>
+  </data>
   <data name="trAccounting" xml:space="preserve">
     <value>المحاسبة</value>
   </data>
@@ -126,6 +132,9 @@
   <data name="trAdd" xml:space="preserve">
     <value>إضافة</value>
   </data>
+  <data name="trAddress" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
   <data name="trAdressHint" xml:space="preserve">
     <value>العنوان...</value>
   </data>
@@ -133,10 +142,19 @@
     <value>معلومات أخرى</value>
   </data>
   <data name="trAreaHint" xml:space="preserve">
-    <value>المنطقة...</value>
+    <value>963+</value>
+  </data>
+  <data name="trBalance" xml:space="preserve">
+    <value>الرصيد</value>
   </data>
   <data name="trBalanceHint" xml:space="preserve">
     <value>الرصيد...</value>
+  </data>
+  <data name="trBankName" xml:space="preserve">
+    <value>اسم البنك</value>
+  </data>
+  <data name="trBankNameHint" xml:space="preserve">
+    <value>اسم البنك ...</value>
   </data>
   <data name="trBanks" xml:space="preserve">
     <value>البنوك</value>
@@ -144,11 +162,26 @@
   <data name="trBaseInformation" xml:space="preserve">
     <value>المعلومات الأساسية</value>
   </data>
+  <data name="trBranchCodeHint" xml:space="preserve">
+    <value>شيفرة الفرع ...</value>
+  </data>
   <data name="trBranches" xml:space="preserve">
     <value>الفروع</value>
   </data>
+  <data name="trBranchName" xml:space="preserve">
+    <value>اسم الفرع</value>
+  </data>
+  <data name="trBranchNameHint" xml:space="preserve">
+    <value>اسم الفرع ...</value>
+  </data>
   <data name="trCatalog" xml:space="preserve">
     <value>الفهرس</value>
+  </data>
+  <data name="trCode" xml:space="preserve">
+    <value>الشيفرة</value>
+  </data>
+  <data name="trCompany" xml:space="preserve">
+    <value>الشركة</value>
   </data>
   <data name="trCompanyHint" xml:space="preserve">
     <value>الشركة...</value>
@@ -165,20 +198,86 @@
   <data name="trDelete" xml:space="preserve">
     <value>حذف</value>
   </data>
+  <data name="trDetails" xml:space="preserve">
+    <value>تفاصيل</value>
+  </data>
   <data name="trDetailsHint" xml:space="preserve">
     <value>تفاصيل...</value>
   </data>
   <data name="trEmailHint" xml:space="preserve">
     <value>البريد الالكتروني...</value>
   </data>
+  <data name="trEmptyAccNumToolTip" xml:space="preserve">
+    <value>رقم الحساب لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyAreaToolTip" xml:space="preserve">
+    <value>اختر منطقة</value>
+  </data>
+  <data name="trEmptyBalanceToolTip" xml:space="preserve">
+    <value>الرصيد لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyCodeToolTip" xml:space="preserve">
+    <value>الرمز لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyLastNameToolTip" xml:space="preserve">
+    <value>الاسم الأخير لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyMobileToolTip" xml:space="preserve">
+    <value>أدخل رقم الجوال</value>
+  </data>
+  <data name="trEmptyNameToolTip" xml:space="preserve">
+    <value>الاسم لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyPasswordToolTip" xml:space="preserve">
+    <value>كلمة المرور لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trEmptyUserNameToolTip" xml:space="preserve">
+    <value>اسم المستخدم لا بمكن أن يكون فارغ</value>
+  </data>
+  <data name="trErrorEmailToolTip" xml:space="preserve">
+    <value>عنوان البريد غير صالح</value>
+  </data>
+  <data name="trFirstNameHint" xml:space="preserve">
+    <value>الاسم الأول ...</value>
+  </data>
   <data name="trHome" xml:space="preserve">
     <value>الرئيسية</value>
+  </data>
+  <data name="trIsSmallest" xml:space="preserve">
+    <value>هي الوحدة الأصغر</value>
+  </data>
+  <data name="trIsSmallestHint" xml:space="preserve">
+    <value>هي الوحدة الأصغر</value>
+  </data>
+  <data name="trJob" xml:space="preserve">
+    <value>العمل</value>
+  </data>
+  <data name="trJobHint" xml:space="preserve">
+    <value>العمل ...</value>
+  </data>
+  <data name="trLastName" xml:space="preserve">
+    <value>الاسم الاخير</value>
+  </data>
+  <data name="trLastNameHint" xml:space="preserve">
+    <value>الكنية ...</value>
+  </data>
+  <data name="trLoginInformation" xml:space="preserve">
+    <value>معلومات التسجيل</value>
   </data>
   <data name="trMenu" xml:space="preserve">
     <value>القائمة</value>
   </data>
+  <data name="trMobile" xml:space="preserve">
+    <value>الجوال</value>
+  </data>
   <data name="trMobileHint" xml:space="preserve">
     <value>الجوال...</value>
+  </data>
+  <data name="trMoreInformation" xml:space="preserve">
+    <value>معلومات اخرى</value>
+  </data>
+  <data name="trName" xml:space="preserve">
+    <value>الاسم</value>
   </data>
   <data name="trNameHint" xml:space="preserve">
     <value>الاسم...</value>
@@ -189,11 +288,26 @@
   <data name="trPamentMethodHint" xml:space="preserve">
     <value>اختر طريقة الدفع...</value>
   </data>
+  <data name="trPasswordHint" xml:space="preserve">
+    <value>كلمة المرور ...</value>
+  </data>
   <data name="trPhoneHint" xml:space="preserve">
     <value>الهاتف...</value>
   </data>
   <data name="trPOS" xml:space="preserve">
     <value>نقطة بيع</value>
+  </data>
+  <data name="trPosCode" xml:space="preserve">
+    <value>رمز نقطة البيع</value>
+  </data>
+  <data name="trPosCodeHint" xml:space="preserve">
+    <value>رمز نقطة البيع ...</value>
+  </data>
+  <data name="trPosName" xml:space="preserve">
+    <value>اسم نقطة البيع</value>
+  </data>
+  <data name="trPosNameHint" xml:space="preserve">
+    <value>اسم نقطة البيع ...</value>
   </data>
   <data name="trPurchases" xml:space="preserve">
     <value>المشتريات</value>
@@ -210,104 +324,38 @@
   <data name="trSectionData" xml:space="preserve">
     <value>البيانات الأساسية</value>
   </data>
-  <data name="trSettings" xml:space="preserve">
-    <value>الإعدادت</value>
-  </data>
-  <data name="trStorage" xml:space="preserve">
-    <value>التخزين</value>
-  </data>
-  <data name="trStores" xml:space="preserve">
-    <value>المخازن</value>
-  </data>
-  <data name="trSuppliers" xml:space="preserve">
-    <value>المزودون</value>
-  </data>
-  <data name="trUnits" xml:space="preserve">
-    <value>الوحدات</value>
-  </data>
-  <data name="trUpdate" xml:space="preserve">
-    <value>تعديل</value>
-  </data>
-  <data name="trUserName" xml:space="preserve">
-    <value>اسم المستخدم</value>
-  </data>
-  <data name="trUsers" xml:space="preserve">
-    <value>المستخدمون</value>
-  </data>
-  <data name="trUserType" xml:space="preserve">
-    <value>نوع المستخدم</value>
-  </data>
-  <data name="trBalance" xml:space="preserve">
-    <value>الرصيد</value>
-  </data>
-  <data name="trCompany" xml:space="preserve">
-    <value>الشركة</value>
-  </data>
-  <data name="trDetails" xml:space="preserve">
-    <value>تفاصيل</value>
-  </data>
-  <data name="trMobile" xml:space="preserve">
-    <value>الجوال</value>
-  </data>
-  <data name="trName" xml:space="preserve">
-    <value>الاسم</value>
-  </data>
-  <data name="trFirstNameHint" xml:space="preserve">
-    <value>الاسم الأول ...</value>
-  </data>
-  <data name="trJobHint" xml:space="preserve">
-    <value>العمل ...</value>
-  </data>
-  <data name="trLastNameHint" xml:space="preserve">
-    <value>الكنية ...</value>
-  </data>
-  <data name="trPasswordHint" xml:space="preserve">
-    <value>كلمة المرور ...</value>
-  </data>
-  <data name="trUserInformation" xml:space="preserve">
-    <value>معلومات المستخدم</value>
-  </data>
-  <data name="trUserNameHint" xml:space="preserve">
-    <value>اسم المستخدم ...</value>
-  </data>
-  <data name="trWorkHoursHint" xml:space="preserve">
-    <value>ساعات العمل ...</value>
-  </data>
-  <data name="trWorkInformation" xml:space="preserve">
-    <value>معلومات العمل</value>
-  </data>
-  <data name="trJob" xml:space="preserve">
-    <value>العمل</value>
-  </data>
-  <data name="trLoginInformation" xml:space="preserve">
-    <value>معلومات التسجيل</value>
-  </data>
-  <data name="trSelectJobHint" xml:space="preserve">
-    <value>اختر عمل ...</value>
-  </data>
-  <data name="trWorkHours" xml:space="preserve">
-    <value>ساعات العمل</value>
-  </data>
-  <data name="trAddress" xml:space="preserve">
-    <value>العنوان</value>
-  </data>
-  <data name="trBranchCodeHint" xml:space="preserve">
-    <value>شيفرة الفرع ...</value>
-  </data>
-  <data name="trBranchNameHint" xml:space="preserve">
-    <value>اسم الفرع ...</value>
-  </data>
-  <data name="trCode" xml:space="preserve">
-    <value>الشيفرة</value>
-  </data>
-  <data name="trMoreInformation" xml:space="preserve">
-    <value>معلومات أكثر</value>
+  <data name="trSelectBankNameHint" xml:space="preserve">
+    <value>اختر اسم البنك</value>
   </data>
   <data name="trSelectBranchHint" xml:space="preserve">
     <value>اختر اسم الفرع</value>
   </data>
+  <data name="trSelectJobHint" xml:space="preserve">
+    <value>اختر عمل ...</value>
+  </data>
+  <data name="trSelectPosBranchHint" xml:space="preserve">
+    <value>اختر الفرع</value>
+  </data>
+  <data name="trSelectPosNameHint" xml:space="preserve">
+    <value>اختر اسم نقطة البيع</value>
+  </data>
+  <data name="trSelectSmallestUnitHint" xml:space="preserve">
+    <value>اختر أصغر وحدة</value>
+  </data>
   <data name="trSelectStoreHint" xml:space="preserve">
     <value>اختر اسم المخزن</value>
+  </data>
+  <data name="trSelestUnitNameHint" xml:space="preserve">
+    <value>اختر اسم الوحدة</value>
+  </data>
+  <data name="trSettings" xml:space="preserve">
+    <value>الإعدادت</value>
+  </data>
+  <data name="trSmallestUnit" xml:space="preserve">
+    <value>أصغر وحدة</value>
+  </data>
+  <data name="trStorage" xml:space="preserve">
+    <value>التخزين</value>
   </data>
   <data name="trStoreCodeHint" xml:space="preserve">
     <value>شيفرة المخزن ...</value>
@@ -315,19 +363,46 @@
   <data name="trStoreNameHint" xml:space="preserve">
     <value>اسم المخزن ...</value>
   </data>
-  <data name="trEmptyBalanceToolTip" xml:space="preserve">
-    <value>الرصيد لا يمكن أن يكون فارغ</value>
+  <data name="trStores" xml:space="preserve">
+    <value>المخازن</value>
   </data>
-  <data name="trErrorEmailToolTip" xml:space="preserve">
-    <value>عنوان البريد غير صالح</value>
+  <data name="trSuppliers" xml:space="preserve">
+    <value>المزودون</value>
   </data>
-  <data name="trEmptyNameToolTip" xml:space="preserve">
-    <value>الاسم لا يمكن أن يكون فارغ</value>
+  <data name="trUnitName" xml:space="preserve">
+    <value>اسم الوحدة</value>
   </data>
-  <data name="trEmptyAreaToolTip" xml:space="preserve">
-    <value>اختر منطقة</value>
+  <data name="trUnitNameHint" xml:space="preserve">
+    <value>اسم الوحدة ...</value>
   </data>
-  <data name="trEmptyMobileToolTip" xml:space="preserve">
-    <value>أدخل رقم الجوال</value>
+  <data name="trUnits" xml:space="preserve">
+    <value>الوحدات</value>
+  </data>
+  <data name="trUpdate" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="trUserInformation" xml:space="preserve">
+    <value>معلومات المستخدم</value>
+  </data>
+  <data name="trUserName" xml:space="preserve">
+    <value>اسم المستخدم</value>
+  </data>
+  <data name="trUserNameHint" xml:space="preserve">
+    <value>اسم المستخدم ...</value>
+  </data>
+  <data name="trUsers" xml:space="preserve">
+    <value>المستخدمون</value>
+  </data>
+  <data name="trUserType" xml:space="preserve">
+    <value>نوع المستخدم</value>
+  </data>
+  <data name="trWorkHours" xml:space="preserve">
+    <value>ساعات العمل</value>
+  </data>
+  <data name="trWorkHoursHint" xml:space="preserve">
+    <value>ساعات العمل ...</value>
+  </data>
+  <data name="trWorkInformation" xml:space="preserve">
+    <value>معلومات العمل</value>
   </data>
 </root>

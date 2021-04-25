@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d" 
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="675" d:DesignWidth="985" >
+             d:DesignHeight="675" d:DesignWidth="985" Loaded="UserControl_Loaded" >
 
     <Grid x:Name="grid_ucBank" >
         <Grid.ColumnDefinitions>
@@ -124,7 +124,7 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Bank Name..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" TextChanged="Tb_name_TextChanged" LostFocus="Tb_name_LostFocus"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
@@ -147,7 +147,7 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Account Number..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" TextChanged="Tb_accNum_TextChanged" LostFocus="Tb_accNum_LostFocus"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorAccNum"
@@ -226,7 +226,7 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
                                 <Path Fill="#E81123" Stretch="Fill"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"  
@@ -250,7 +250,7 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Phone..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue"  PreviewTextInput="NumberValidationTextBox" MaxLength="15"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
@@ -279,7 +279,7 @@
                             <TextBox x:Name="tb_address"  Text="{Binding address, Mode=OneWay}" Grid.Row="2"  Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Address..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue"
+                                 BorderBrush="AliceBlue" MaxLength="100" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
@@ -302,7 +302,8 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"  TextWrapping="Wrap" AcceptsReturn="True"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="100" 
+                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="70" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
                         <Path Fill="#E81123" Stretch="Fill" Margin="15,12,15,5"
@@ -322,7 +323,7 @@
                     
 
                 </Grid>
-                <Grid Grid.Row="1" Margin="5,0"  >
+                <Grid Grid.Row="1" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>

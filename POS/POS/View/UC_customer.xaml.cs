@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
 
+
 namespace POS.View
 {
     /// <summary>
@@ -136,8 +137,6 @@ namespace POS.View
                     cb_area.SelectedIndex = -1;
                     tb_mobile.Clear();
                 }
-
-                MessageBox.Show(agent.mobile);
 
             }
         }
@@ -303,7 +302,6 @@ namespace POS.View
                 };
 
                 await agentModel.saveAgent(customer);
-                //MessageBox.Show(cb_area.Text + tb_mobile.Text);
 
                 //pass parameter type (V for vendors, C for Clients , B for Both)
                 var agents = await agentModel.GetAgentsAsync("c");

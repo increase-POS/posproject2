@@ -63,17 +63,19 @@
             </Grid >
             <Grid  Margin="5,5,5,0" Grid.Row="1"  >
                 <Border Background="White" CornerRadius="7" />
-                <DataGrid  Margin="5,5,5,17.5"  Grid.Row="1"  IsReadOnly="False" Background="White"
+                <DataGrid  Margin="5,5,5,17.5"  Grid.Row="1"  IsReadOnly="True" Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
                        SelectionChanged="DG_users_SelectionChanged"
                        x:Name="dg_users"
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
                     <DataGrid.Columns>
-                        <DataGridTextColumn MinWidth="150"  Header="Name" Binding="{Binding Path=firstName}"/>
+                        <DataGridTextColumn MinWidth="150"  Header="Name" Binding="{Binding Path=name}"/>
+                        <DataGridTextColumn MinWidth="150"  Header="LastName" Binding="{Binding Path=lastname}"/>
                         <DataGridTextColumn MinWidth="140"  Header="Job"   Binding="{Binding Path=job}"/>
                         <DataGridTextColumn MinWidth="125"  Header="Work Hours" Binding="{Binding Path=workHours}"/>
                         <DataGridTextColumn MinWidth="125"  Header="Details" Binding="{Binding Path=details}"/>
+
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
@@ -131,20 +133,21 @@
                             </Grid.ColumnDefinitions>
 
 
-                            <TextBox x:Name="tb_firstName"  Text="{Binding firstName, Mode=OneWay}" Padding="10,5,5,5" 
+                            <TextBox x:Name="tb_firstName"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5" 
                             BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="First Name..."  
                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="AliceBlue"
+                             BorderBrush="AliceBlue" MaxLength="20"
+                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            Height="35" Width="200"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
+                            Height="35" Width="200"  Margin="5,5,0,5" Grid.ColumnSpan="2" LostFocus="Tb_firstName_LostFocus" >
 
                             </TextBox>
-                            <Path Fill="#E81123" Stretch="Fill" 
+                            <Path Fill="#E81123" Stretch="Fill" x:Name="p_errorFirstName"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"  
                              VerticalAlignment="Center" Width="15"  Height="15" Margin="5,5,15,5"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                 <Path.ToolTip>
-                                    <ToolTip x:Name="tt_error_firstName" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    <ToolTip x:Name="tt_errorFirstName" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
                         </Grid>
@@ -162,20 +165,22 @@
                             </Grid.ColumnDefinitions>
 
 
-                            <TextBox x:Name="tb_lastName"  Text="{Binding lastName, Mode=OneWay}" Padding="10,5,5,5" 
+                            <TextBox x:Name="tb_lastName"  Text="{Binding lastname, Mode=OneWay}" Padding="10,5,5,5" 
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Last Name..."  
                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="AliceBlue"
+                             BorderBrush="AliceBlue" MaxLength="20"
+                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            Height="35" Width="200"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
+                            Height="35" Width="200"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
+                            LostFocus="Tb_lastName_LostFocus" >
 
                             </TextBox>
-                            <Path Fill="#E81123" Stretch="Fill" 
+                            <Path Fill="#E81123" Stretch="Fill"  x:Name="p_errorLastName"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
                              VerticalAlignment="Center" Width="15"  Height="15" Margin="5,5,15,5"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                 <Path.ToolTip>
-                                    <ToolTip x:Name="tt_error_lastName" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    <ToolTip x:Name="tt_errorLastName" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
                         </Grid>
@@ -196,7 +201,8 @@
                             <TextBox x:Name="tb_address"  Text="{Binding address, Mode=OneWay}" Padding="10,5,5,5" 
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Address..."  
                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="AliceBlue"
+                             BorderBrush="AliceBlue" MaxLength="100"
+                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
                             Height="35" Width="200"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
 
@@ -266,8 +272,10 @@
 
                                 <TextBox x:Name="tb_mobile"  Text="{Binding mobile, Mode=OneWay}" Padding="10,5,5,5" 
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."  
-                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="AliceBlue"
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                     PreviewTextInput="NumberValidationTextBox"
+                             BorderBrush="AliceBlue" MaxLength="9"
+                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
                             Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
 
@@ -294,10 +302,12 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_phone"  Text="{Binding phone, Mode=OneWay}" Grid.Row="2"  Padding="10,5,5,5"   
+                            <TextBox x:Name="tb_phone"  Text="{Binding phone, Mode=OneWay}" Grid.Row="2" 
+                                     Padding="10,5,5,5"   PreviewTextInput="NumberValidationTextBox"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Phone..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue"
+                                 BorderBrush="AliceBlue" MaxLength="15"
+                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
@@ -325,16 +335,17 @@
                             <TextBox x:Name="tb_email"  Text="{Binding email, Mode=OneWay}" Grid.Row="2"  Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Email..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                            BorderBrush="AliceBlue" MaxLength="100"
+                            materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                  Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" LostFocus="Tb_email_LostFocus" />
 
-                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"  x:Name="p_errorEmail"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                 <Path.ToolTip>
-                                    <ToolTip  x:Name="tt_error_email"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    <ToolTip  x:Name="tt_errorEmail"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
                         </Grid>
@@ -379,7 +390,8 @@
                             <TextBox x:Name="tb_job"  Text="{Binding job, Mode=OneWay}" Grid.Row="2"  Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Job..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue"
+                                 BorderBrush="AliceBlue" MaxLength="100"
+                           materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
@@ -409,8 +421,9 @@
                             <TextBox x:Name="tb_workHours"  Text="{Binding workHours, Mode=OneWay}" Grid.Row="2"  Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Work Hours..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                 BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
+                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="2"
+                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
@@ -437,7 +450,8 @@
                             <TextBox x:Name="tb_details"  Text="{Binding details, Mode=OneWay}" Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Details..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue"
+                                 BorderBrush="AliceBlue"  MaxLength="100"
+                            materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
@@ -485,19 +499,21 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_userName"  Text="{Binding userName, Mode=OneWay}" Padding="10,5,5,5"   
+                            <TextBox x:Name="tb_userName"  Text="{Binding username, Mode=OneWay}" Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="User Name..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue"
+                                 BorderBrush="AliceBlue" MaxLength="20"
+                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                  Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" LostFocus="Tb_userName_LostFocus" />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                  x:Name="p_errorUserName"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                 <Path.ToolTip>
-                                    <ToolTip  x:Name="tt_error_userName"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    <ToolTip  x:Name="tt_errorUserName"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
                         </Grid>
@@ -514,23 +530,26 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="tb_password"  Text="{Binding password, Mode=OneWay}" Padding="10,5,5,5"   
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Password..."    
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                                 BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Password..."    
+                                 Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                 BorderBrush="AliceBlue" MaxLength="20"
+                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                 HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                 Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
+                                 LostFocus="Tb_password_LostFocus" />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
+                                  x:Name="p_errorPassword"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                 <Path.ToolTip>
-                                    <ToolTip  x:Name="tt_error_password"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    <ToolTip  x:Name="tt_errorPassword"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
                             <Path Fill="#7e7e7e" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Visible" 
-                         VerticalAlignment="Center" Width="20"  Height="15"
+                         VerticalAlignment="Center" Width="20"  Height="15" x:Name="p_showPassword"
                               Data="M11,0.5C6,0.5,1.7,3.6,0,8c1.7,4.4,6,7.5,11,7.5s9.3-3.1,11-7.5C20.3,3.6,16,0.5,11,0.5z M11,13
 	c-2.8,0-5-2.2-5-5s2.2-5,5-5s5,2.2,5,5S13.8,13,11,13z M11,5C9.3,5,8,6.3,8,8s1.3,3,3,3s3-1.3,3-3S12.7,5,11,5z">
                             </Path>
@@ -543,7 +562,7 @@
                     </Grid>
 
                 </Grid>
-                <Grid Grid.Row="1"  Margin="5,0" >
+                <Grid Grid.Row="1" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -559,11 +578,11 @@
                     <Button Grid.Row="0" Grid.Column="1"  Width="110"
                          BorderThickness="0" Background="#178DD2" Content="Update"
                     Padding="0" Height="33" x:Name="btn_update"
-                            materialDesign:ButtonAssist.CornerRadius="5"  />
+                            materialDesign:ButtonAssist.CornerRadius="5" Click="Btn_update_Click"  />
                     <Button Grid.Row="1" Grid.Column="2"  Width="110"
                          BorderThickness="0" Background="#178DD2" Content="Delete"
                     Padding="0" Height="33" x:Name="btn_delete"
-                            materialDesign:ButtonAssist.CornerRadius="5"  />
+                            materialDesign:ButtonAssist.CornerRadius="5" Click="Btn_delete_Click"  />
 
                 </Grid>
             </Grid>

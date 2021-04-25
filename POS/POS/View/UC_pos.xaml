@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="675" d:DesignWidth="985" >
+             d:DesignHeight="675" d:DesignWidth="985" Loaded="UserControl_Loaded" >
 
     <Grid x:Name="grid_ucPos" >
         <Grid.ColumnDefinitions>
@@ -131,7 +131,7 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="POS Name..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" TextChanged="Tb_name_TextChanged" LostFocus="Tb_name_LostFocus"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
@@ -158,9 +158,9 @@
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="tb_code"  Text="{Binding code, Mode=OneWay}" Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="POS Code..."    
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue" TextChanged="Tb_code_TextChanged" LostFocus="Tb_code_LostFocus"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorCode"
@@ -193,7 +193,7 @@
 
 
                             <TextBlock Text="More Infomation" Foreground="#737373"
-                                 FontSize="10" VerticalAlignment="Center" x:Name="txt_contentInformatin"
+                                 FontSize="10" VerticalAlignment="Center" x:Name="txt_moreInformation"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
                             <Separator Background="#999999"   Width="260"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
@@ -213,7 +213,7 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Balance..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" TextChanged="Tb_balance_TextChanged" LostFocus="Tb_balance_LostFocus"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorBalance"
@@ -265,7 +265,7 @@
                     </Grid>
 
                 </Grid>
-                <Grid Grid.Row="1" Margin="5,0"  >
+                <Grid Grid.Row="1" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
