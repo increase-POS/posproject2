@@ -151,5 +151,12 @@ namespace POS
             uc_purchases uc = new uc_purchases();
             GRID_Main.Children.Add(uc);
         }
+
+        private void BTN_sales_Click(object sender, RoutedEventArgs e)
+        {
+            GRID_Main.Children.Clear();
+            uc_sales uc = new uc_sales();
+            GRID_Main.Children.Add(uc);
+        }
     }
 }
