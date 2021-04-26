@@ -295,7 +295,7 @@
 	c-0.2,0-0.3,0-0.4-0.1c0-0.1-0.1-0.2-0.1-0.4s0-0.3,0.1-0.4c0.1,0,0.3-0.1,0.4-0.1h4.3c0.2,0,0.3,0.1,0.4,0.1c0,0.1,0.1,0.2,0.1,0.4
 	S16.4,11.7,16.3,11.8z"/>
 
-                            
+
                             <!--<Path Fill="#E8E8E8"    Stretch="Fill"
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"
@@ -400,6 +400,58 @@
                             Margin="10,0,5,0" Text="Item Name" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
+                        
+
+                        
+
+                        <Grid Grid.Row="1"  Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid  Grid.Column="0" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ComboBox   
+                                         Grid.Row="1" Padding="10,5,5,5" 
+                            BorderThickness="1"  materialDesign:HintAssist.Hint="Value..."   
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                 BorderBrush="AliceBlue" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                  Height="35" Width="110"  Margin="5,5" >
+                                </ComboBox>
+                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                    <Path.ToolTip>
+                                        <ToolTip  Content="Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    </Path.ToolTip>
+                                </Path>
+                            </Grid>
+                            <Grid  Grid.Column="1" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox   Text="{Binding test, Mode=OneWay}"
+                                         Grid.Row="1" Padding="10,5,5,5" 
+                            BorderThickness="1"  materialDesign:HintAssist.Hint="Value..."   
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                 BorderBrush="AliceBlue" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                  Height="35" Width="110"  Margin="5,5" >
+                                </TextBox>
+                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                    <Path.ToolTip>
+                                        <ToolTip  Content="Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    </Path.ToolTip>
+                                </Path>
+                            </Grid>
+                        </Grid>
                         <Button Grid.Row="1" Grid.Column="0" Padding="0"
                           Background="{x:Null}" BorderBrush="{x:Null}"
                     Margin="5,1"   ToolTip="NewDraft"  >
@@ -407,61 +459,9 @@
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="30" Height="30"/>
                         </Button>
-                        
-                        <Grid Grid.Row="1"  Grid.Column="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid  >
-                                <TextBox  Text="{Binding taxes, Mode=OneWay}"
-                                             Grid.Row="2" Padding="10,5,5,5"
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Copon..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="#f8f8f8"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="30" Width="175"  Margin="5,1" />
-                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
-                            </Grid>
-                            <Grid  >
-                                <TextBox  Text="{Binding taxes, Mode=OneWay}"
-                                             Grid.Row="2" Padding="10,5,5,5"
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Copon..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="#f8f8f8"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="30" Width="175"  Margin="5,1" />
-                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
-                            </Grid>
-                        </Grid>
-
-                        <DataGrid x:Name="dg_draft" Margin="5" Grid.Row="2" Grid.ColumnSpan="2" Height="200"   Background="White"
-                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Collapsed"
-                         IsReadOnly="True" CanUserAddRows="False" 
-                        AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"    >
-                            <DataGrid.Columns>
-                                <DataGridTextColumn MinWidth="150"  Header="Bill Number" Binding="{Binding Path=Id}"/>
-                                <DataGridTextColumn MinWidth="125"  Header="Total" Binding="{Binding Path=Total}"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
                     </Grid>
 
-                    
+
                     <Grid Grid.Row="2">
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
@@ -618,7 +618,7 @@
                     </Grid>
                 </Grid>
             </Border>
-           
+
         </Grid>
     </Grid>
 </UserControl>

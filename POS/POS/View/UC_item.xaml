@@ -822,14 +822,14 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                        <TextBox   Text="{Binding test, Mode=OneWay}"
+                                        <ComboBox   Text="{Binding test, Mode=OneWay}"
                                          Grid.Row="1" Padding="10,5,5,5" 
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Value..."   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" 
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35" Width="110"  Margin="5,5" >
-                                    </TextBox>
+                                    </ComboBox>
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
