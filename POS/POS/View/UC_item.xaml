@@ -822,13 +822,17 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                        <ComboBox   Text="{Binding test, Mode=OneWay}"
-                                         Grid.Row="1" Padding="10,5,5,5" 
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Value..."   
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue" 
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="110"  Margin="5,5" >
+                                        <ComboBox   
+                                             Grid.Column="0"
+                                  Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
+                           TextBlock.FontSize="12"   Background="#f8f8f8" 
+                         HorizontalAlignment="Left" VerticalAlignment="Center" 
+                          Height="35"  Margin="5,5"
+                           BorderBrush="#737373" BorderThickness="0"
+                                         Grid.Row="1" 
+                            materialDesign:HintAssist.Hint="Value..."   
+                           Foreground="#4E4E4E"   
+                  Width="110"   >
                                     </ComboBox>
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
