@@ -19,12 +19,14 @@ namespace POS.Classes
         public uc_categorie ucCategorie;
         public UC_item ucCategorieItem;
         public uc_payInvoice ucPayInvoice;
+        public uc_receiptInvoice ucReceiptInvoice;
 
         public Grid gridCatigories;
         public Grid gridCatigorieItems;
         private int _idCatigories;
         private int _idCatigorieItems;
         private int _idPayInvoice;
+        private int _idReceipInvoice;
         public int idCatigories
         {
             get => _idCatigories; set
@@ -49,6 +51,16 @@ namespace POS.Classes
             {
 
                 _idPayInvoice = value;
+                INotifyPropertyChangedIdCatigorieItems();
+            }
+        }
+
+        public int idReceipInvoice
+        {
+            get => _idReceipInvoice; set
+            {
+
+                _idReceipInvoice = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
         }
