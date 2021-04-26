@@ -99,11 +99,20 @@
     <Compile Include="View\UC_item.xaml.cs">
       <DependentUpon>UC_item.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\uc_payInvoice.xaml.cs">
+      <DependentUpon>uc_payInvoice.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UC_porperty.xaml.cs">
       <DependentUpon>UC_porperty.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UC_pos.xaml.cs">
       <DependentUpon>UC_pos.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\uc_purchases.xaml.cs">
+      <DependentUpon>uc_purchases.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\uc_receiptInvoice.xaml.cs">
+      <DependentUpon>uc_receiptInvoice.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UC_sectionData.xaml.cs" />
     <Compile Include="View\UC_store.xaml.cs">
@@ -178,11 +187,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\uc_payInvoice.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\UC_porperty.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\UC_pos.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\uc_purchases.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\uc_receiptInvoice.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

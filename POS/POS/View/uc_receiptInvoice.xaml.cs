@@ -31,7 +31,7 @@ namespace POS.View
             items.Add(new Bill() { Id = 336551515, Total = 150 });
             items.Add(new Bill() { Id = 336555162, Total = 840 });
             items.Add(new Bill() { Id = 336558897, Total = 325 });
-            LSV_Bill.ItemsSource = items;
+            dg_draft.ItemsSource = items;
             DG_BillDetails.ItemsSource = LoadCollectionData();
             #endregion
 

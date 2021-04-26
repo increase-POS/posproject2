@@ -364,3 +364,11 @@ D:\VSproject\POS\POS\obj\Debug\View\UC_catalog.baml
 D:\VSproject\POS\POS\obj\Debug\View\uc_categorie.baml
 D:\VSproject\POS\POS\obj\Debug\View\UC_item.baml
 D:\VSproject\POS\POS\obj\Debug\View\UC_porperty.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\UC_porperty.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_payInvoice.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_purchases.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_receiptInvoice.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\UC_porperty.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_payInvoice.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_purchases.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_receiptInvoice.baml
