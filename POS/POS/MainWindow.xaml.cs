@@ -143,5 +143,13 @@ namespace POS
             translate();
 
         }
+
+       
+        private void BTN_purchases_Click(object sender, RoutedEventArgs e)
+        {
+            GRID_Main.Children.Clear();
+            uc_purchases uc = new uc_purchases();
+            GRID_Main.Children.Add(uc);
+        }
     }
 }
