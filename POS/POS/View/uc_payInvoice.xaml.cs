@@ -42,6 +42,7 @@ namespace POS.View
             billDetails = LoadCollectionData();
             DG_BillDetails.ItemsSource = billDetails;
             #endregion
+            
 
         }
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
@@ -49,28 +50,37 @@ namespace POS.View
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             catigoriesAndItemsView.ucPayInvoice = this;
-
             #region Generate catigorie
             catigoriesAndItemsView.gridCatigories = Grid_categorie;
             Categorie categorie = new Categorie();
             catigoriesAndItemsView.FN_refrishCatalogCard(categorie.getCategories());
             #endregion
-
-
             #region Generate catigorieItems
             catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
             CategorieItem CategorieItem = new CategorieItem();
             catigoriesAndItemsView.FN_refrishCatalogItem(CategorieItem.getCategorieItems());
             #endregion
 
+            #region Style Date
+            grid_vendor.Visibility = Visibility.Visible;
 
+            dp_desrvedDate.Loaded += delegate
+            {
+
+                var textBox1 = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
+                if (textBox1 != null)
+                {
+                    textBox1.Background = dp_desrvedDate.Background;
+                    textBox1.BorderThickness = dp_desrvedDate.BorderThickness;
+                }
+            };
+            grid_vendor.Visibility = Visibility.Collapsed;
+
+            #endregion
         }
-
-
-
         #region bill
 
-      
+
 
         public class Bill
         {
@@ -142,29 +152,25 @@ namespace POS.View
             return billDetails;
         }
         #endregion
-
-
-        
         #region Tab
         private void btn_payInvoice_Click(object sender, RoutedEventArgs e)
         {
-            //grid_barcode.Visibility = grid_properties.Visibility = Visibility.Collapsed;
-            //grid_itemData.Visibility = Visibility.Visible;
+            grid_vendor.Visibility   = Visibility.Collapsed;
+            grid_payinvoice.Visibility = Visibility.Visible;
             brd_vendorTab.BorderBrush =  (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
             brd_payInvoiceTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
 
         private void btn_vendor_Click(object sender, RoutedEventArgs e)
         {
-            //grid_itemData.Visibility = grid_properties.Visibility = Visibility.Collapsed;
-            //grid_barcode.Visibility = Visibility.Visible;
+            grid_payinvoice.Visibility = Visibility.Collapsed;
+            grid_vendor.Visibility = Visibility.Visible;
             brd_payInvoiceTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
             brd_vendorTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
 
 
         #endregion
-
         #region Button In DataGrid
         void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
         {
@@ -182,20 +188,19 @@ namespace POS.View
         {
             dg_draft.Visibility = Visibility.Visible;
         }
-
         private void Tgl_draftDropDown_Unchecked(object sender, RoutedEventArgs e)
         {
             dg_draft.Visibility = Visibility.Collapsed;
         }
-
         private void Tgl_ReturnInvoiceDropDown_Checked(object sender, RoutedEventArgs e)
         {
             grid_returnInvoice.Visibility = Visibility.Visible;
         }
-
         private void Tgl_ReturnInvoiceDropDown_Unchecked(object sender, RoutedEventArgs e)
         {
             grid_returnInvoice.Visibility = Visibility.Collapsed;
         }
+
+        
     }
 }

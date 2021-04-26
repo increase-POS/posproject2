@@ -87,7 +87,7 @@
                                 <Button  Grid.Column="3" Padding="0"
                                     VerticalAlignment="Top" HorizontalAlignment="Left" 
                             Margin="0" Height="20" 
-                                           Content="CD> " Background="{x:Null}"
+                                           Content="CD " Background="{x:Null}"
                                         BorderThickness="0"
                           FontFamily="{StaticResource Font-cairo-light}" 
                            Foreground="#6e6e6e"
@@ -294,43 +294,6 @@
 	c0.2,0,0.3,0.1,0.4,0.1c0,0.1,0.1,0.3,0.1,0.4C16.4,13.5,16.4,13.6,16.3,13.7z M16.3,11.8c-0.1,0-0.3,0.1-0.4,0.1h-4.3
 	c-0.2,0-0.3,0-0.4-0.1c0-0.1-0.1-0.2-0.1-0.4s0-0.3,0.1-0.4c0.1,0,0.3-0.1,0.4-0.1h4.3c0.2,0,0.3,0.1,0.4,0.1c0,0.1,0.1,0.2,0.1,0.4
 	S16.4,11.7,16.3,11.8z"/>
-
-
-                            <!--<Path Fill="#E8E8E8"    Stretch="Fill"
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="20" Height="20"
-                                  Data="M19.6,12.1h-1.8V2c0-0.1-0.1-0.3-0.1-0.4c-0.1-0.1-0.2-0.1-0.4-0.1H4.1C4,1.5,3.9,1.6,3.8,1.6C3.7,1.7,3.6,1.9,3.6,2v18.1
-	c0,0.6,0.2,1.2,0.7,1.7c0.4,0.4,1,0.7,1.7,0.7h12.4c0.4,0,0.9-0.2,1.2-0.5c0.3-0.3,0.5-0.7,0.5-1.2v-8.3c0-0.1,0-0.3-0.1-0.3
-	C19.8,12.2,19.7,12.1,19.6,12.1z M6,21.5c-0.4,0-0.7-0.2-1-0.4c-0.3-0.3-0.4-0.6-0.4-1V2.5h12.1v18.3c0,0.2,0,0.5,0.1,0.7H6z
-	 M19.1,20.8c0,0.2-0.1,0.3-0.2,0.5c-0.1,0.1-0.3,0.2-0.5,0.2c-0.1,0-0.2,0-0.3-0.1c-0.1,0-0.2-0.1-0.2-0.1s-0.1-0.1-0.1-0.2
-	c0-0.1-0.1-0.2-0.1-0.3v-7.8h1.3V20.8z M10.7,7c0.1,0,0.2,0,0.3,0.1c0.1,0.1,0.1,0.2,0.1,0.3c0,0.1,0,0.1-0.1,0.2
-	c0,0.1-0.1,0.1-0.2,0.1c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1,0-0.2-0.1c0,0-0.1-0.1-0.1-0.1c0-0.1-0.1-0.1-0.1-0.2c0,0-0.1-0.1-0.2-0.1
-	c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1,0.1-0.2,0.1c0,0-0.1,0.1-0.1,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2
-	c0.1,0.2,0.2,0.3,0.3,0.4c0.1,0.1,0.3,0.2,0.5,0.3v0.2c0,0.1,0.1,0.3,0.1,0.4c0.1,0.1,0.2,0.1,0.4,0.1s0.3-0.1,0.4-0.1
-	c0.1-0.1,0.1-0.2,0.1-0.4V8.7c0.3-0.1,0.6-0.3,0.7-0.6c0.2-0.3,0.2-0.6,0.2-0.9c-0.1-0.3-0.2-0.6-0.5-0.8C11.3,6.1,11,6,10.7,6
-	c0,0-0.1,0-0.1,0c0,0-0.1,0-0.1-0.1c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0-0.1c0-0.1,0-0.2,0.1-0.2c0-0.1,0.1-0.1,0.2-0.1
-	c0.1,0,0.2,0,0.2,0c0.1,0,0.1,0.1,0.2,0.1c0,0,0.1,0.1,0.1,0.1c0,0.1,0.1,0.1,0.1,0.2c0,0,0.1,0.1,0.2,0.1c0.1,0,0.1,0,0.2,0
-	c0.1,0,0.1,0,0.2,0c0.1,0,0.1-0.1,0.2-0.1c0,0,0.1-0.1,0.1-0.2c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2c-0.1-0.2-0.2-0.3-0.3-0.4
-	c-0.1-0.1-0.3-0.2-0.5-0.3V4.2c0-0.1-0.1-0.3-0.1-0.4c-0.1-0.1-0.2-0.1-0.4-0.1s-0.3,0.1-0.4,0.1c-0.1,0.1-0.1,0.2-0.1,0.4v0.2
-	C10,4.5,9.7,4.7,9.6,5C9.4,5.3,9.4,5.6,9.4,5.9c0.1,0.3,0.2,0.6,0.4,0.8C10.1,6.9,10.4,7,10.7,7L10.7,7z M6.6,12.2h1.9
-	c0.1,0,0.3-0.1,0.4-0.1C8.9,12,9,11.8,9,11.7s-0.1-0.3-0.1-0.4c-0.1-0.1-0.2-0.1-0.4-0.1H6.6c-0.1,0-0.3,0.1-0.4,0.1
-	c-0.1,0.1-0.1,0.2-0.1,0.4s0.1,0.3,0.1,0.4C6.3,12.2,6.4,12.2,6.6,12.2z M14.8,11.2h-4.3c-0.1,0-0.3,0.1-0.4,0.1
-	c-0.1,0.1-0.1,0.2-0.1,0.4s0.1,0.3,0.1,0.4c0.1,0.1,0.2,0.1,0.4,0.1h4.3c0.1,0,0.3-0.1,0.4-0.1c0.1-0.1,0.1-0.2,0.1-0.4
-	s-0.1-0.3-0.1-0.4C15.1,11.3,15,11.2,14.8,11.2z M14.8,13.1h-1.9c-0.1,0-0.3,0.1-0.4,0.1c-0.1,0.1-0.1,0.2-0.1,0.4
-	c0,0.1,0.1,0.3,0.1,0.4c0.1,0.1,0.2,0.1,0.4,0.1h1.9c0.1,0,0.3-0.1,0.4-0.1c0.1-0.1,0.1-0.2,0.1-0.4c0-0.1-0.1-0.3-0.1-0.4
-	C15.1,13.2,15,13.1,14.8,13.1z M6.6,14.1h4.3c0.1,0,0.3-0.1,0.4-0.1c0.1-0.1,0.1-0.2,0.1-0.4c0-0.1-0.1-0.3-0.1-0.4
-	c-0.1-0.1-0.2-0.1-0.4-0.1H6.6c-0.1,0-0.3,0.1-0.4,0.1c-0.1,0.1-0.1,0.2-0.1,0.4c0,0.1,0.1,0.3,0.1,0.4C6.3,14,6.4,14.1,6.6,14.1
-	L6.6,14.1z M6.6,16h1.9c0.1,0,0.3-0.1,0.4-0.1C8.9,15.8,9,15.6,9,15.5s-0.1-0.3-0.1-0.4C8.7,15.1,8.6,15,8.5,15H6.6
-	c-0.1,0-0.3,0.1-0.4,0.1c-0.1,0.1-0.1,0.2-0.1,0.4s0.1,0.3,0.1,0.4C6.3,15.9,6.4,16,6.6,16z M14.8,15h-4.3c-0.1,0-0.3,0.1-0.4,0.1
-	c-0.1,0.1-0.1,0.2-0.1,0.4s0.1,0.3,0.1,0.4c0.1,0.1,0.2,0.1,0.4,0.1h4.3c0.1,0,0.3-0.1,0.4-0.1c0.1-0.1,0.1-0.2,0.1-0.4
-	s-0.1-0.3-0.1-0.4C15.1,15.1,15,15,14.8,15z M14.8,16.9h-1.9c-0.1,0-0.3,0.1-0.4,0.1c-0.1,0.1-0.1,0.2-0.1,0.4
-	c0,0.1,0.1,0.3,0.1,0.4c0.1,0.1,0.2,0.1,0.4,0.1h1.9c0.1,0,0.3-0.1,0.4-0.1c0.1-0.1,0.1-0.2,0.1-0.4c0-0.1-0.1-0.3-0.1-0.4
-	C15.1,16.9,15,16.9,14.8,16.9z M6.6,17.9h4.3c0.1,0,0.3-0.1,0.4-0.1c0.1-0.1,0.1-0.2,0.1-0.4c0-0.1-0.1-0.3-0.1-0.4
-	c-0.1-0.1-0.2-0.1-0.4-0.1H6.6c-0.1,0-0.3,0.1-0.4,0.1c-0.1,0.1-0.1,0.2-0.1,0.4c0,0.1,0.1,0.3,0.1,0.4C6.3,17.8,6.4,17.9,6.6,17.9
-	L6.6,17.9z M8.5,18.8H6.6c-0.1,0-0.3,0.1-0.4,0.1c-0.1,0.1-0.1,0.2-0.1,0.4c0,0.1,0.1,0.3,0.1,0.4c0.1,0.1,0.2,0.1,0.4,0.1h1.9
-	c0.1,0,0.3-0.1,0.4-0.1C8.9,19.5,9,19.4,9,19.3c0-0.1-0.1-0.3-0.1-0.4C8.7,18.8,8.6,18.8,8.5,18.8z M14.8,18.8h-4.3
-	c-0.1,0-0.3,0.1-0.4,0.1C10.1,19,10,19.1,10,19.3c0,0.1,0.1,0.3,0.1,0.4c0.1,0.1,0.2,0.1,0.4,0.1h4.3c0.1,0,0.3-0.1,0.4-0.1
-	c0.1-0.1,0.1-0.2,0.1-0.4c0-0.1-0.1-0.3-0.1-0.4C15.1,18.8,15,18.8,14.8,18.8z"/>-->
                             <TextBlock Text="Invoice"  Foreground="#E8E8E8" 
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="5"/>
@@ -364,71 +327,129 @@
 
             <Border CornerRadius="0,0,7,7"
                 Grid.Row="1" Background="White">
-                <Grid x:Name="grid_payinvoice">
-                    <Grid.RowDefinitions >
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="70"/>
-                        <RowDefinition Height="10"/>
-                    </Grid.RowDefinitions>
-                    <Grid>
+                <Grid>
+                    <Grid x:Name="grid_payinvoice" Visibility="Visible">
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="70"/>
+                            <RowDefinition Height="10"/>
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Grid Grid.ColumnSpan="2" >
+                        <Grid>
+                            <Grid.RowDefinitions >
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Return Invoice" Foreground="#737373"
+
+                            <Grid Grid.ColumnSpan="2" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Return Invoice" Foreground="#737373"
                                  FontSize="10"       VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
-                            <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
+                                <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
-                        </Grid>
-                        <!--<Button Grid.Row="1" Grid.Column="0" Padding="0"
+                            </Grid>
+                            <!--<Button Grid.Row="1" Grid.Column="0" Padding="0"
                           Background="{x:Null}" BorderBrush="{x:Null}"
                     Margin="5,1"   ToolTip="NewDraft"  >
                             <materialDesign:PackIcon Foreground="#178DD2" Kind="PlusBox"  
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="30" Height="30"/>
                         </Button>-->
-                        <Grid Grid.Row="1"  Grid.Column="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" 
+                            <Grid Grid.Row="1"  Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" 
                             Margin="10,0,5,0" Text="Select Invoice" Foreground="#6e6e6e"
-                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                              FontSize="12"/>
-                            <ToggleButton Grid.Column="1"  x:Name="tgl_ReturnInvoiceDropDown"  Checked="Tgl_ReturnInvoiceDropDown_Checked" Unchecked="Tgl_ReturnInvoiceDropDown_Unchecked"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" 
+                              FontSize="12"  />
+                                <ToggleButton Grid.Column="1"  x:Name="tgl_ReturnInvoiceDropDown"  Checked="Tgl_ReturnInvoiceDropDown_Checked" Unchecked="Tgl_ReturnInvoiceDropDown_Unchecked"
                              VerticalAlignment="Center" Padding="10,15,5,5"
-                                          Margin="5" Height="13" Width="28" />
-                        </Grid>
-                        <Grid x:Name="grid_returnInvoice"  Grid.Row="2" Visibility="Collapsed">
-                            <Grid.RowDefinitions >
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <TextBox  Text="{Binding taxes, Mode=OneWay}" 
+                                          Margin="0,0,0,0" Height="13" Width="28" />
+                            </Grid>
+                            <Grid x:Name="grid_returnInvoice"  Grid.Row="2" Visibility="Collapsed">
+                                <Grid.RowDefinitions >
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBox  Text="{Binding taxes, Mode=OneWay}" 
                                              Grid.Row="0" Padding="10,5,5,5"
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Selcect Invoice..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                              BorderBrush="#f8f8f8"
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
                         Grid.Column="1"  Height="30" Width="340"  Margin="5,1" />
-                            <DataGrid  x:Name="dg_Bills"  Margin="5" Grid.Row="3" Grid.ColumnSpan="2" Height="200"   Background="White"
+                                <DataGrid  x:Name="dg_Bills"  Margin="5" Grid.Row="3" Grid.ColumnSpan="2" Height="200"   Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
+                         IsReadOnly="True" CanUserAddRows="False" 
+                        AutoGenerateColumns="False" 
+                        ColumnWidth="SizeToHeader"    >
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn MinWidth="150"  Header="Bill Number" Binding="{Binding Path=Id}"/>
+                                        <DataGridTextColumn MinWidth="125"  Header="Total" Binding="{Binding Path=Total}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                            </Grid>
+
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions >
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.ColumnSpan="2" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Draft" Foreground="#737373"
+                                 FontSize="10"       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" Margin="5,5,0,5"/>
+                                <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
+                                      Grid.Column="1" VerticalAlignment="Center" />
+                            </Grid>
+                            <Button Grid.Row="1" Grid.Column="0" Padding="0"
+                          Background="{x:Null}" BorderBrush="{x:Null}"
+                    Margin="5,1"   ToolTip="NewDraft"  >
+                                <materialDesign:PackIcon Foreground="#178DD2" Kind="PlusBox"  
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="30" Height="30"/>
+                            </Button>
+                            <Grid Grid.Row="1"  Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" 
+                            Margin="10,0,5,0" Text="Select Draft" Foreground="#6e6e6e"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                              FontSize="12"/>
+                                <ToggleButton Grid.Column="1"  x:Name="tgl_draftDropDown"  Checked="Tgl_draftDropDown_Checked" Unchecked="Tgl_draftDropDown_Unchecked"
+                             VerticalAlignment="Center" Padding="10,15,5,5"
+                                          Margin="0" Height="13" Width="28" />
+                            </Grid>
+
+                            <DataGrid x:Name="dg_draft" Margin="5" Grid.Row="2" Grid.ColumnSpan="2" Height="200"   Background="White"
+                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Collapsed"
                          IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
@@ -437,126 +458,32 @@
                                     <DataGridTextColumn MinWidth="125"  Header="Total" Binding="{Binding Path=Total}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
-
                         </Grid>
-                        
-                    </Grid>
-                    <Grid Grid.Row="1">
-                        <Grid.RowDefinitions >
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Grid Grid.ColumnSpan="2" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Draft" Foreground="#737373"
+                        <Grid Grid.Row="2">
+                            <Grid.RowDefinitions >
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.ColumnSpan="2" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Invoice" Foreground="#737373"
                                  FontSize="10"       VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
-                            <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
+                                <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
-                        </Grid>
-                        <Button Grid.Row="1" Grid.Column="0" Padding="0"
-                          Background="{x:Null}" BorderBrush="{x:Null}"
-                    Margin="5,1"   ToolTip="NewDraft"  >
-                            <materialDesign:PackIcon Foreground="#178DD2" Kind="PlusBox"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="30" Height="30"/>
-                        </Button>
-                        <Grid Grid.Row="1"  Grid.Column="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" 
-                            Margin="10,0,5,0" Text="Select Draft" Foreground="#6e6e6e"
-                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                              FontSize="12"/>
-                            <ToggleButton Grid.Column="1"  x:Name="tgl_draftDropDown"  Checked="Tgl_draftDropDown_Checked" Unchecked="Tgl_draftDropDown_Unchecked"
-                             VerticalAlignment="Center" Padding="10,15,5,5"
-                                          Margin="5" Height="13" Width="28" />
-                        </Grid>
-
-                        <DataGrid x:Name="dg_draft" Margin="5" Grid.Row="2" Grid.ColumnSpan="2" Height="200"   Background="White"
-                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Collapsed"
-                         IsReadOnly="True" CanUserAddRows="False" 
-                        AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"    >
-                            <DataGrid.Columns>
-                                <DataGridTextColumn MinWidth="150"  Header="Bill Number" Binding="{Binding Path=Id}"/>
-                                <DataGridTextColumn MinWidth="125"  Header="Total" Binding="{Binding Path=Total}"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </Grid>
-                    <Grid Grid.Row="2">
-                        <Grid.RowDefinitions >
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.ColumnSpan="2" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Invoice" Foreground="#737373"
-                                 FontSize="10"       VerticalAlignment="Center"
-                                       HorizontalAlignment="Left" Margin="5,5,0,5"/>
-                            <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
-                                      Grid.Column="1" VerticalAlignment="Center" />
-                        </Grid>
-                        <DataGrid x:Name="DG_BillDetails"  Margin="10,5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
-                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
-                         IsReadOnly="True" CanUserAddRows="False" 
-                        AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"    >
-                            <DataGrid.Columns >
-                                <DataGridTemplateColumn Width="20" Header="" >
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Margin="-10"   Click="deleteRowFromInvoiceItems"
-                                                   Padding="0" ToolTip="Delete" 
-                          Background="{x:Null}" BorderBrush="{x:Null}">
-                                                <materialDesign:PackIcon Foreground="#178DD2" Kind="MinusThick"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="17" Height="17"/>
-                                            </Button>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTextColumn   MinWidth="30"   Header="Num"  Binding="{Binding Path=ID}"/>
-                                <DataGridTextColumn MinWidth="100"  Header="Item" Binding="{Binding Path=Product}"/>
-                                <DataGridTextColumn MinWidth="30"  Header="Amount" Binding="{Binding Path=Count}"/>
-                                <DataGridTextColumn MinWidth="30"  Header="Price" Binding="{Binding Path=Price}"/>
-                                <DataGridTextColumn MinWidth="30"  Header="Total" Binding="{Binding Path=Total}"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </Grid>
-                    <Grid Margin="5" Grid.Row="3" VerticalAlignment="Center">
-                        <Grid.RowDefinitions >
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="25"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="40"/>
-                        </Grid.RowDefinitions>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid  >
-                                <TextBox  Text="{Binding taxes, Mode=OneWay}"
-                                             Grid.Row="2" Padding="10,5,5,5"
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Discount%..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="#f8f8f8"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="30" Width="330"  Margin="5,1" />
+                            </Grid>
+                            <Grid Grid.Row="1"  >
+                                <ComboBox   Grid.Row="1"
+                                             Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
+                             materialDesign:HintAssist.Hint="Select Branch... "  
+                           TextBlock.FontSize="12"   Background="#f8f8f8" 
+                         HorizontalAlignment="Left" VerticalAlignment="Center" 
+                          Height="35" Width="340"  Margin="5,5"
+                           BorderBrush="#737373" BorderThickness="0" />
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -566,111 +493,325 @@
                                     </Path.ToolTip>
                                 </Path>
                             </Grid>
-                           
+                            <DataGrid x:Name="DG_BillDetails"  Margin="10,5" Grid.Row="2"   Grid.ColumnSpan="2"    Background="White"
+                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
+                         IsReadOnly="True" CanUserAddRows="False" 
+                        AutoGenerateColumns="False" 
+                        ColumnWidth="SizeToHeader"    >
+                                <DataGrid.Columns >
+                                    <DataGridTemplateColumn Width="20" Header="" >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Margin="-10"   Click="deleteRowFromInvoiceItems"
+                                                   Padding="0" ToolTip="Delete" 
+                          Background="{x:Null}" BorderBrush="{x:Null}">
+                                                    <materialDesign:PackIcon Foreground="#178DD2" Kind="MinusThick"  
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="17" Height="17"/>
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn   MinWidth="30"   Header="Num"  Binding="{Binding Path=ID}"/>
+                                    <DataGridTextColumn MinWidth="100"  Header="Item" Binding="{Binding Path=Product}"/>
+                                    <DataGridTextColumn MinWidth="30"  Header="Amount" Binding="{Binding Path=Count}"/>
+                                    <DataGridTextColumn MinWidth="30"  Header="Price" Binding="{Binding Path=Price}"/>
+                                    <DataGridTextColumn MinWidth="30"  Header="Total" Binding="{Binding Path=Total}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </Grid>
-                        
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1.5*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                        <Grid Margin="5" Grid.Row="3" VerticalAlignment="Center">
+                            <Grid.RowDefinitions >
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" 
+                                <Grid  >
+                                    <TextBox  Text="{Binding taxes, Mode=OneWay}"
+                                             Grid.Row="2" Padding="10,5,5,5"
+                            BorderThickness="1"  materialDesign:HintAssist.Hint="Discount%..."  
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                             BorderBrush="#f8f8f8"
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        Grid.Column="1"  Height="30" Width="330"  Margin="5,1" />
+                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                        <Path.ToolTip>
+                                            <ToolTip   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        </Path.ToolTip>
+                                    </Path>
+                                </Grid>
+
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" 
                             Margin="10,0,5,0" Text="Discount" Foreground="#6e6e6e"
                         HorizontalAlignment="Center" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
-                                <TextBlock  Grid.Column="1"
+                                    <TextBlock  Grid.Column="1"
                             Margin="1,0" Text="150$" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
-                                <TextBlock Grid.Column="2"
+                                    <TextBlock Grid.Column="2"
                              Margin="1,0"   Text="Tax" Foreground="#6e6e6e"
                         HorizontalAlignment="Center" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
-                                <TextBlock Grid.Column="3"
+                                    <TextBlock Grid.Column="3"
                             Margin="5,0" Text="15$" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
-                            </Grid>
+                                </Grid>
 
-                            <Grid Grid.Column="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" 
+                                <Grid Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" 
                             Margin="10,0,5,0" Text="Total" Foreground="Black"
                         HorizontalAlignment="Right" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
-                                <TextBlock  Grid.Column="1"
+                                    <TextBlock  Grid.Column="1"
                             Margin="5,0" Text="365$" Foreground="Black"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
 
-                            </Grid>
+                                </Grid>
 
-                        </Grid>
-                        <Line Grid.Row="2" Stretch="Fill" Stroke="#4E4E4E" X2="1"/>
-                        <Grid Height="30" Grid.Row="3" Grid.ColumnSpan="3"
+                            </Grid>
+                            <Line Grid.Row="2" Stretch="Fill" Stroke="#4E4E4E" X2="1"/>
+                            
+                            <Grid Height="30" Grid.Row="3" Grid.ColumnSpan="3"
                       HorizontalAlignment="Right"
                           Background="#FFA926" Width="150" 
                     Margin="5"    >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Total:" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,5,2" FontSize="16"/>
-                            <TextBox  Grid.Column="1" Margin="0" FontWeight="Bold" FontSize="16" 
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Total:" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,5,2" FontSize="16"/>
+                                <TextBox  Grid.Column="1" Margin="0" FontWeight="Bold" FontSize="16" 
                        TextAlignment="Center"       Text="255" Foreground="White" BorderBrush="#FFA926" HorizontalAlignment="Right" Width="75">
 
-                            </TextBox>
+                                </TextBox>
+                            </Grid>
+                        </Grid>
+                        <Grid Grid.Row="4"  >
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid Margin="5,1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Row="0" Grid.Column="0"
+                          Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,0"    Content="Preview" />
+                                <Button Grid.Row="0" Grid.Column="1"
+                        Background="#4E4E4E" BorderBrush="{x:Null}"
+                   Margin="1,0"    Content="PDF" />
+                                <Button Grid.Row="0" Grid.Column="2"
+                        Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,0"    Content="Print" />
+                            </Grid>
+                            <Grid Grid.Row="1" Margin="5,1" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" 
+                          Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,0"    Content="Cash" />
+                                <Button Grid.Column="1" 
+                          Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,0"     Content="Bank" />
+                            </Grid>
+
                         </Grid>
                     </Grid>
-                    <Grid Grid.Row="4"  >
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
+                    <Grid  x:Name="grid_vendor" Visibility="Visible"  >
+                        <Grid.RowDefinitions >
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="7.5"/>
                         </Grid.RowDefinitions>
-                        <Grid Margin="5,1">
+                        <Grid Grid.ColumnSpan="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Vendor" x:Name="txt_secondaryInformation" Foreground="#737373"
+                                 FontSize="10"      VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" Margin="5,5,0,5"/>
+                            <Separator Background="#999999"   Width="300"  Margin="5,0,5,0"
+                                      Grid.Column="1" VerticalAlignment="Center" />
+                        </Grid>
+                        <Grid  Grid.Row="1" >
+                            <ComboBox x:Name="cb_vendor"  Grid.Row="1"
+                                  Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
+                             materialDesign:HintAssist.Hint="Select Vendor"  
+                           TextBlock.FontSize="12"   Background="#f8f8f8" 
+                         HorizontalAlignment="Left" VerticalAlignment="Center" 
+                         Grid.Column="1" Height="35" Width="340"  Margin="5,5"
+                           BorderBrush="#737373" BorderThickness="0"/>
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52
+                                          6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 
+                                          17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8
+                                          C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12
+                                          C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 
+                                          L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip  
+                                                     Content="Name Not Validate"  
+                                                     Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
+
+
+                        <Grid Grid.Row="2"  >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox   Text="{Binding test, Mode=OneWay}"
+                                             Grid.Row="2" Padding="10,5,5,5" 
+                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                            BorderThickness="1"  materialDesign:HintAssist.Hint="Paid..."  
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                             BorderBrush="#f8f8f8"
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        Grid.Column="1"  Height="35" Width="340"  Margin="5,5" />
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
+
+                        <Grid Grid.Row="3"  >
+                            <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox   Text="{Binding test, Mode=OneWay}"
+                                             Grid.Row="2" Padding="10,5,5,5"  
+                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                            BorderThickness="1"  materialDesign:HintAssist.Hint="Deserved..."  
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                             BorderBrush="#f8f8f8"
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        Grid.Column="1"  Height="35" Width="340"  Margin="5,5" />
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
+                        <Grid Grid.Row="4"  >
+                            <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <DatePicker  x:Name="dp_desrvedDate" 
+                           BorderBrush="#737373"  BorderThickness="0" 
+                                TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
+                                             Grid.Row="2" Padding="10,5,5,5"  
+                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                             materialDesign:HintAssist.Hint="Deserved Date..."  
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        Grid.Column="1"  Height="35" Width="340"  Margin="5,5" />
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 
+                                  L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
+                        <Grid Grid.Row="5"  >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox   Text="{Binding test, Mode=OneWay}"
+                                             Grid.Row="2" Padding="10,5,5,5"  
+                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                            BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                             BorderBrush="#f8f8f8"
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        Grid.Column="1"  Height="70" Width="340"  Margin="5,5" TextWrapping="Wrap"/>
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
+                        <Separator Background="#999999"   Width="340"  Margin="5,0,5,0"
+                                      Grid.Row="6" VerticalAlignment="Center" />
+
+                        <Grid Grid.Row="8" Margin="5,1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <!--<ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>-->
                             </Grid.ColumnDefinitions>
                             <Button Grid.Row="0" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Preview" />
-                            <Button Grid.Row="0" Grid.Column="1"
+                    Margin="1,0"    Content="Save" />
+                            <!--<Button Grid.Row="0" Grid.Column="1"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
-                   Margin="1,0"    Content="PDF" />
+                   Margin="1,0"    Content="Update" />
                             <Button Grid.Row="0" Grid.Column="2"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Print" />
+                    Margin="1,0"    Content="Delete" />-->
                         </Grid>
-                        <Grid Grid.Row="1" Margin="5,1" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" 
-                          Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Cash" />
-                            <Button Grid.Column="1" 
-                          Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"     Content="Bank" />
-                        </Grid>
-
                     </Grid>
                 </Grid>
             </Border>
-
         </Grid>
     </Grid>
 </UserControl>
