@@ -1,6 +1,7 @@
 ﻿using POS.Classes;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,20 +23,23 @@ namespace POS.View
     /// </summary>
     public partial class uc_payInvoice : UserControl
     {
+        ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
+
         public uc_payInvoice()
         {
             InitializeComponent();
 
             #region bill
-            List<Bill> items = new List<Bill>();
-            items.Add(new Bill() { Id = 336554944, Total = 255 });
-            items.Add(new Bill() { Id = 336545142, Total = 260 });
-            items.Add(new Bill() { Id = 336556165, Total = 1200 });
-            items.Add(new Bill() { Id = 336551515, Total = 150 });
-            items.Add(new Bill() { Id = 336555162, Total = 840 });
-            items.Add(new Bill() { Id = 336558897, Total = 325 });
-            dg_draft.ItemsSource = items;
-            DG_BillDetails.ItemsSource = LoadCollectionData();
+            //List<Bill> items = new List<Bill>();
+            //items.Add(new Bill() { Id = 336554944, Total = 255 });
+            //items.Add(new Bill() { Id = 336545142, Total = 260 });
+            //items.Add(new Bill() { Id = 336556165, Total = 1200 });
+            //items.Add(new Bill() { Id = 336551515, Total = 150 });
+            //items.Add(new Bill() { Id = 336555162, Total = 840 });
+            //items.Add(new Bill() { Id = 336558897, Total = 325 });
+            //dg_draft.ItemsSource = items;
+            billDetails = LoadCollectionData();
+            DG_BillDetails.ItemsSource = billDetails;
             #endregion
 
         }
@@ -79,9 +83,9 @@ namespace POS.View
             public int Price { get; set; }
             public int Total { get; set; }
         }
-        private List<BillDetails> LoadCollectionData()
+        private ObservableCollection<BillDetails> LoadCollectionData()
         {
-            List<BillDetails> billDetails = new List<BillDetails>();
+            ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
             billDetails.Add(new BillDetails()
             {
                 ID = 101,
@@ -158,10 +162,44 @@ namespace POS.View
 
         #endregion
 
-       
+        #region Button In DataGrid
+        void ShowHideDetails(object sender, RoutedEventArgs e)
+        {
+            for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
+                if (vis is DataGridRow)
+                {
+                    #region don't clear This comment
+                    //var row = (DataGridRow)vis;
+                    //row.DetailsVisibility =
+                    //row.DetailsVisibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
 
-       
 
-        
+                    //var row = (DataGridRow)vis;
+                    //var b = (BillDetails) row.Item;
+                    ////DG_BillDetails.Items.Remove(b); 
+                    //DG_BillDetails.Items.RemoveAt(DG_BillDetails.SelectedIndex);
+
+
+                    //BillDetails row = (BillDetails)DG_BillDetails.SelectedItems[0];
+                    //List<BillDetails> data = (List<BillDetails>)DG_BillDetails.ItemsSource;
+                    //data.Remove(row);
+                    //DG_BillDetails.ItemsSource = data;
+                    //break;
+                    #endregion
+
+                    //var row = (DataGridRow)vis;
+                    //var b = (BillDetails)row.Item;
+
+
+                    BillDetails row = (BillDetails)DG_BillDetails.SelectedItems[0];
+                    ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)DG_BillDetails.ItemsSource;
+                    data.Remove(row);
+                }
+
+        }
+        #endregion
+
+
+
     }
 }

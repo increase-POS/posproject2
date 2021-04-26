@@ -427,23 +427,47 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="40"/>
                         </Grid.RowDefinitions>
-                        <Grid  >
-                            <TextBox  Text="{Binding taxes, Mode=OneWay}"
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid  >
+                                <TextBox  Text="{Binding taxes, Mode=OneWay}"
+                                             Grid.Row="2" Padding="10,5,5,5"
+                            BorderThickness="1"  materialDesign:HintAssist.Hint="Discount%..."  
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                             BorderBrush="#f8f8f8"
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        Grid.Column="1"  Height="30" Width="160"  Margin="5,1" />
+                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                    <Path.ToolTip>
+                                        <ToolTip   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    </Path.ToolTip>
+                                </Path>
+                            </Grid>
+                            <Grid Grid.Column="1" >
+                                <TextBox  Text="{Binding taxes, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5"
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Copon..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                              BorderBrush="#f8f8f8"
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="30" Width="175"  Margin="5,1" />
-                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                        Grid.Column="1"  Height="30" Width="160"  Margin="5,1" />
+                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                <Path.ToolTip>
-                                    <ToolTip x:Name="tt_errorTaxes" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                </Path.ToolTip>
-                            </Path>
+                                    <Path.ToolTip>
+                                        <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    </Path.ToolTip>
+                                </Path>
+                            </Grid>
                         </Grid>
+
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1.5*"/>
@@ -461,15 +485,15 @@
                         HorizontalAlignment="Center" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
                                 <TextBlock  Grid.Column="1"
-                            Margin="5,0" Text="10%" Foreground="#6e6e6e"
+                            Margin="1,0" Text="150$" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
                                 <TextBlock Grid.Column="2"
-                             Margin="5,0"   Text="Tax" Foreground="#6e6e6e"
+                             Margin="1,0"   Text="Tax" Foreground="#6e6e6e"
                         HorizontalAlignment="Center" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
                                 <TextBlock Grid.Column="3"
-                            Margin="5,0" Text="10%" Foreground="#6e6e6e"
+                            Margin="5,0" Text="15$" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
                             </Grid>
