@@ -119,6 +119,8 @@ namespace POS.View
 
         private void translate()
         {
+            txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
+
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trPamentMethodHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
@@ -143,6 +145,23 @@ namespace POS.View
             dg_vendor.Columns[2].Header = MainWindow.resourcemanager.GetString("trMobile");
             dg_vendor.Columns[3].Header = MainWindow.resourcemanager.GetString("trDetails");
             dg_vendor.Columns[4].Header = MainWindow.resourcemanager.GetString("trBalance");
+            btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
+
+        }
+
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+            tb_address.Text = "";
+            tb_balance.Text = "";
+            tb_company.Text = "";
+            tb_email.Text = "";
+            tb_name.Text = "";
+            tb_notes.Text = "";
+            tb_mobile.Text = "";
+            tb_details.Text = "";
+            tb_phone.Text = "";
+            cb_area.Text = "";
+            cb_accType.Text = "";
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)

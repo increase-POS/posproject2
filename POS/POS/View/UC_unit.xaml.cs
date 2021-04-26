@@ -1,7 +1,11 @@
-﻿using POS.Classes;
+﻿using Newtonsoft.Json;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Resources;
 using System.Text;
@@ -23,55 +27,75 @@ namespace POS.View
     /// </summary>
     public partial class UC_unit : UserControl
     {
-        public int unitId;
-        //Unit unit = new Unit();
+        public int UnitId;
+
+        Unit unitModel = new Unit();
+
+        private int smallestUnitId = 0 ;
+
+        int IsSmallest = 0;
+
         public UC_unit()
         {
             InitializeComponent();
-            //List<Unit> units = new List<Unit>();
-
-
-
-            for (int i = 1; i < 50; i++)
-            {
-                //units.Add(new Unit()
-                //{
-                //    Id = i,
-                //    name = "unit name " + i,
-                //    smallestUnitId = i + 1,
-                //    isSmallest = true 
-                //});
-            }
-
-          //  dg_unit.ItemsSource = units;
         }
 
         private void DG_unit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //Unit unit = new Unit();
-            //if (dg_unit.SelectedIndex != -1)
-            //{
-            //    unit = dg_unit.SelectedItem as Unit;
-            //    this.DataContext = unit;
+            p_errorName.Visibility = Visibility.Collapsed;
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+           
+            Unit unit = new Unit();
+            if (dg_unit.SelectedIndex != -1)
+            {
+                unit = dg_unit.SelectedItem as Unit;
+                this.DataContext = unit;
+            }
+            if (unit != null)
+            {
+                if (unit.unitId != 0)
+                {
+                    UnitId = unit.unitId;
+                }
 
-            //    if (unit != null)
-            //    {
-            //        if (unit.Id != 0)
-            //        {
-            //            unitId = unit.Id;
-            //        }
-            //    }
-            //}
+                if (unit.isSmallest == 0)
+                    tbtn_isSmallest.IsChecked = false;
+                else
+                    tbtn_isSmallest.IsChecked = true;
+
+                //select combo item
+                //for (int i = 0; i < ids.Count; i++)
+                //    if (ids[i] == unit.smallestId)
+                //    { cb_smallestUnitId.SelectedIndex = i;  break; }
+                cb_smallestUnitId.SelectedIndex = ids.IndexOf(unit.smallestId);
+            }
+        }
+
+        List<int>    ids = new List<int>();
+        List<string> names = new List<string>();
+        private void fillSmallestUnits()
+        {
+            Unit unit = new Unit();
+            for (int i = 0; i < dg_unit.Items.Count ; i++)
+            {
+                unit = dg_unit.Items[i] as Unit;
+                ids.Add(unit.unitId);
+                names.Add(unit.name);
+            }
+            cb_smallestUnitId.ItemsSource = names;
         }
 
         private void Tbtn_isSmallest_Checked(object sender, RoutedEventArgs e)
         {
             cb_smallestUnitId.Visibility = Visibility.Collapsed;
+            IsSmallest = 1;
         }
 
         private void Tbtn_isSmallest_unckecked(object sender, RoutedEventArgs e)
         {
             cb_smallestUnitId.Visibility = Visibility.Visible;
+            IsSmallest = 0;
         }
 
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
@@ -109,6 +133,8 @@ namespace POS.View
         }
         private void translate()
         {
+            txt_unit.Text = MainWindow.resourcemanager.GetString("trUnit");
+
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelestUnitNameHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
@@ -120,13 +146,18 @@ namespace POS.View
             btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
             dg_unit.Columns[0].Header = MainWindow.resourcemanager.GetString("trUnitName");
-            dg_unit.Columns[1].Header = MainWindow.resourcemanager.GetString("trIsSmallest");
-            dg_unit.Columns[2].Header = MainWindow.resourcemanager.GetString("trSmallestUnit");
-          //  dg_unit.Columns[2].Header = MainWindow.resourcemanager.GetString("trMobile");
+            //dg_unit.Columns[1].Header = MainWindow.resourcemanager.GetString("trIsSmallest");
+            dg_unit.Columns[1].Header = MainWindow.resourcemanager.GetString("trSmallestUnit");
+            btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
         }
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+            tb_name.Text = "";
+            cb_smallestUnitId.Text = "";
+        }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
             {
@@ -140,6 +171,83 @@ namespace POS.View
             }
 
             translate();
+
+            var units = await unitModel.GetUnitsAsync();
+            dg_unit.ItemsSource = units;
+
+            fillSmallestUnits();
+
+            //dg_unit.Items[0]..SetValue("unit2");
+        }
+
+        private async void Btn_add_Click(object sender, RoutedEventArgs e)
+        {//add
+            Unit unit = new Unit
+            {
+                //unitId
+                name         = tb_name.Text,
+                isSmallest   = IsSmallest,
+                smallestId   = smallestUnitId ,
+                createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                createUserId = 1 ,
+                updateUserId = 1 ,
+                parentid     = 0 //?????????????????
+            };
+
+            await unitModel.saveUnit(unit);
+
+            var units = await unitModel.GetUnitsAsync();
+            dg_unit.ItemsSource = units;
+
+            fillSmallestUnits();
+
+        }
+
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {//update
+            Unit unit = new Unit
+            {
+                unitId       = UnitId,
+                name         = tb_name.Text,
+                isSmallest   = IsSmallest,
+                smallestId   = smallestUnitId ,
+                createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                createUserId = 1,
+                updateUserId = 1,
+                parentid     = 0 //?????????????????
+            };
+
+            await unitModel.saveUnit(unit);
+
+            var units = await unitModel.GetUnitsAsync();
+            dg_unit.ItemsSource = units;
+
+            fillSmallestUnits();
+
+        }
+
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {//delete
+            await unitModel.deleteUnit(UnitId);
+
+            var units = await unitModel.GetUnitsAsync();
+            dg_unit.ItemsSource = units;
+
+            fillSmallestUnits();
+
+            //clear textBoxs
+            UnitId = 0;
+            tb_name.Clear();
+            tbtn_isSmallest.IsChecked = false;
+            cb_smallestUnitId.SelectedIndex = -1;
+            //parentid = 0
+        }
+
+        private void Cb_smallestUnitId_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            smallestUnitId = ids[cb_smallestUnitId.SelectedIndex];
         }
     }
 }

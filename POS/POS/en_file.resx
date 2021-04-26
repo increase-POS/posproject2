@@ -138,7 +138,7 @@
   <data name="trAdressHint" xml:space="preserve">
     <value>Address...</value>
   </data>
-  <data name="trAnotherInformation" xml:space="preserve">
+  <data name="trAnotherInfomation" xml:space="preserve">
     <value>Another Information</value>
   </data>
   <data name="trAreaHint" xml:space="preserve">
@@ -446,5 +446,29 @@
   </data>
   <data name="trProperties" xml:space="preserve">
     <value>Properties</value>
+  </data>
+  <data name="trClear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="trBank" xml:space="preserve">
+    <value>Bank</value>
+  </data>
+  <data name="trBranch" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+  <data name="trCustomer" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="trStore" xml:space="preserve">
+    <value>Store</value>
+  </data>
+  <data name="trUnit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="trUser" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="trVendor" xml:space="preserve">
+    <value>Vendor</value>
   </data>
 </root>

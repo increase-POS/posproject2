@@ -372,3 +372,273 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\UC_porperty.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_payInvoice.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_purchases.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_receiptInvoice.baml
+D:\Increase Company\project2\POS\POS\bin\Debug\POS.exe.config
+D:\Increase Company\project2\POS\POS\obj\Debug\POS.exe
+D:\Increase Company\project2\POS\POS\obj\Debug\POS.pdb
+D:\Increase Company\project2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice_ar.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\controlTemplate\UC_squareCard.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\MainWindow.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_bank.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_branch.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_catalog.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\uc_categorie.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_customer.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_item.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\uc_payInvoice.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_porperty.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_pos.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\uc_purchases.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\uc_receiptInvoice.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_sectionData.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_store.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_unit.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_vendors.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_users.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\App.g.cs
+D:\Increase Company\project2\POS\POS\obj\Debug\POS_MarkupCompile.cache
+D:\Increase Company\project2\POS\POS\obj\Debug\POS_MarkupCompile.lref
+D:\Increase Company\project2\POS\POS\bin\Debug\POS.exe
+D:\Increase Company\project2\POS\POS\bin\Debug\POS.pdb
+D:\Increase Company\project2\POS\POS\bin\Debug\MaterialDesignColors.dll
+D:\Increase Company\project2\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.dll
+D:\Increase Company\project2\POS\POS\bin\Debug\Newtonsoft.Json.dll
+D:\Increase Company\project2\POS\POS\bin\Debug\Zen.Barcode.Core.dll
+D:\Increase Company\project2\POS\POS\bin\Debug\MaterialDesignColors.pdb
+D:\Increase Company\project2\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.pdb
+D:\Increase Company\project2\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.xml
+D:\Increase Company\project2\POS\POS\bin\Debug\Newtonsoft.Json.xml
+D:\Increase Company\project2\POS\POS\obj\Debug\App.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice_ar.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\controlTemplate\UC_squareCard.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\MainWindow.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_bank.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_branch.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_catalog.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\uc_categorie.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_customer.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_item.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\uc_payInvoice.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_porperty.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_pos.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\uc_purchases.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\uc_receiptInvoice.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_sectionData.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_store.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_unit.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_vendors.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\View\UC_users.baml
+D:\Increase Company\project2\POS\POS\obj\Debug\POS.g.resources
+D:\Increase Company\project2\POS\POS\obj\Debug\POS.ar_file.resources
+D:\Increase Company\project2\POS\POS\obj\Debug\POS.en_file.resources
+D:\Increase Company\project2\POS\POS\obj\Debug\POS.Properties.Resources.resources
+D:\Increase Company\project2\POS\POS\obj\Debug\POS.csproj.GenerateResource.cache
+D:\Increase Company\project2\POS\POS\obj\Debug\POS.csproj.CoreCompileInputs.cache
+D:\Increase Company\project2\POS\POS\obj\Debug\POS.csproj.CopyComplete
+D:\Increase Company\project2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice_ar.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\controlTemplate\UC_squareCard.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\MainWindow.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_bank.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_branch.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_catalog.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\uc_categorie.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_customer.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_item.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\uc_payInvoice.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_porperty.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_pos.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\uc_purchases.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\uc_receiptInvoice.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_sectionData.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_store.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_unit.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_vendors.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_users.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\App.g.cs
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\POS_MarkupCompile.cache
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\POS_MarkupCompile.lref
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\POS.exe
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\POS.pdb
+C:\Users\الفارابي\Desktop\POS\POS\bin\Debug\POS.exe.config
+C:\Users\الفارابي\Desktop\POS\POS\bin\Debug\POS.exe
+C:\Users\الفارابي\Desktop\POS\POS\bin\Debug\POS.pdb
+C:\Users\الفارابي\Desktop\POS\POS\bin\Debug\MaterialDesignColors.dll
+C:\Users\الفارابي\Desktop\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\الفارابي\Desktop\POS\POS\bin\Debug\Newtonsoft.Json.dll
+C:\Users\الفارابي\Desktop\POS\POS\bin\Debug\Zen.Barcode.Core.dll
+C:\Users\الفارابي\Desktop\POS\POS\bin\Debug\MaterialDesignColors.pdb
+C:\Users\الفارابي\Desktop\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\الفارابي\Desktop\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\الفارابي\Desktop\POS\POS\bin\Debug\Newtonsoft.Json.xml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\App.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice_ar.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\controlTemplate\UC_squareCard.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\MainWindow.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_bank.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_branch.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_catalog.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\uc_categorie.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_customer.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_item.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\uc_payInvoice.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_porperty.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_pos.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\uc_purchases.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\uc_receiptInvoice.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_sectionData.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_store.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_unit.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_vendors.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\View\UC_users.baml
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\POS.g.resources
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\POS.ar_file.resources
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\POS.en_file.resources
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\POS.Properties.Resources.resources
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\POS.csproj.GenerateResource.cache
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\POS.csproj.CoreCompileInputs.cache
+C:\Users\الفارابي\Desktop\POS\POS\obj\Debug\POS.csproj.CopyComplete
+D:\ملفات المشروع\22-4 غفران\POS26\POS\bin\Debug\POS.exe.config
+D:\ملفات المشروع\22-4 غفران\POS26\POS\bin\Debug\POS.exe
+D:\ملفات المشروع\22-4 غفران\POS26\POS\bin\Debug\POS.pdb
+D:\ملفات المشروع\22-4 غفران\POS26\POS\bin\Debug\MaterialDesignColors.dll
+D:\ملفات المشروع\22-4 غفران\POS26\POS\bin\Debug\MaterialDesignThemes.Wpf.dll
+D:\ملفات المشروع\22-4 غفران\POS26\POS\bin\Debug\Newtonsoft.Json.dll
+D:\ملفات المشروع\22-4 غفران\POS26\POS\bin\Debug\Zen.Barcode.Core.dll
+D:\ملفات المشروع\22-4 غفران\POS26\POS\bin\Debug\MaterialDesignColors.pdb
+D:\ملفات المشروع\22-4 غفران\POS26\POS\bin\Debug\MaterialDesignThemes.Wpf.pdb
+D:\ملفات المشروع\22-4 غفران\POS26\POS\bin\Debug\MaterialDesignThemes.Wpf.xml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\bin\Debug\Newtonsoft.Json.xml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\POS.csprojAssemblyReference.cache
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice_ar.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\controlTemplate\UC_squareCard.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\MainWindow.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_bank.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_branch.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_catalog.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\uc_categorie.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_customer.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_item.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\uc_payInvoice.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_porperty.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_pos.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\uc_purchases.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\uc_receiptInvoice.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_sectionData.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_store.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_unit.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_vendors.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_users.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\App.g.cs
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\POS_MarkupCompile.cache
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\POS_MarkupCompile.lref
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\App.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice_ar.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\controlTemplate\UC_squareCard.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\MainWindow.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_bank.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_branch.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_catalog.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\uc_categorie.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_customer.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_item.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\uc_payInvoice.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_porperty.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_pos.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\uc_purchases.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\uc_receiptInvoice.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_sectionData.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_store.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_unit.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_vendors.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\View\UC_users.baml
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\POS.g.resources
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\POS.ar_file.resources
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\POS.en_file.resources
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\POS.Properties.Resources.resources
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\POS.csproj.GenerateResource.cache
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\POS.csproj.CoreCompileInputs.cache
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\POS.csproj.CopyComplete
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\POS.exe
+D:\ملفات المشروع\22-4 غفران\POS26\POS\obj\Debug\POS.pdb
+D:\VSproject\POS\POS\obj\Debug\View\uc_payInvoice.g.cs
+D:\VSproject\POS\POS\obj\Debug\View\uc_purchases.g.cs
+D:\VSproject\POS\POS\obj\Debug\View\uc_receiptInvoice.g.cs
+D:\VSproject\POS\POS\obj\Debug\View\uc_payInvoice.baml
+D:\VSproject\POS\POS\obj\Debug\View\uc_purchases.baml
+D:\VSproject\POS\POS\obj\Debug\View\uc_receiptInvoice.baml
+D:\VSproject\POS\POS\obj\Debug\View\uc_sales.g.cs
+D:\VSproject\POS\POS\obj\Debug\View\uc_sales.baml
+D:\myproj\posproject2\POS\POS\bin\Debug\POS.exe.config
+D:\myproj\posproject2\POS\POS\bin\Debug\POS.exe
+D:\myproj\posproject2\POS\POS\bin\Debug\POS.pdb
+D:\myproj\posproject2\POS\POS\bin\Debug\MaterialDesignColors.dll
+D:\myproj\posproject2\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.dll
+D:\myproj\posproject2\POS\POS\bin\Debug\Newtonsoft.Json.dll
+D:\myproj\posproject2\POS\POS\bin\Debug\Zen.Barcode.Core.dll
+D:\myproj\posproject2\POS\POS\bin\Debug\MaterialDesignColors.pdb
+D:\myproj\posproject2\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.pdb
+D:\myproj\posproject2\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.xml
+D:\myproj\posproject2\POS\POS\bin\Debug\Newtonsoft.Json.xml
+D:\myproj\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+D:\myproj\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice_ar.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\controlTemplate\UC_squareCard.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\MainWindow.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_bank.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_branch.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_catalog.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\uc_categorie.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_customer.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_item.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\uc_payInvoice.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_porperty.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_pos.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\uc_purchases.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\uc_receiptInvoice.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\uc_sales.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_sectionData.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_store.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_unit.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_vendors.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_users.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\App.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\POS_MarkupCompile.cache
+D:\myproj\posproject2\POS\POS\obj\Debug\POS_MarkupCompile.lref
+D:\myproj\posproject2\POS\POS\obj\Debug\App.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice_ar.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\controlTemplate\UC_squareCard.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\MainWindow.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_bank.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_branch.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_catalog.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\uc_categorie.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_customer.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_item.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\uc_payInvoice.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_porperty.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_pos.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\uc_purchases.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\uc_receiptInvoice.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\uc_sales.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_sectionData.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_store.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_unit.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_vendors.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\UC_users.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\POS.g.resources
+D:\myproj\posproject2\POS\POS\obj\Debug\POS.ar_file.resources
+D:\myproj\posproject2\POS\POS\obj\Debug\POS.en_file.resources
+D:\myproj\posproject2\POS\POS\obj\Debug\POS.Properties.Resources.resources
+D:\myproj\posproject2\POS\POS\obj\Debug\POS.csproj.GenerateResource.cache
+D:\myproj\posproject2\POS\POS\obj\Debug\POS.csproj.CoreCompileInputs.cache
+D:\myproj\posproject2\POS\POS\obj\Debug\POS.csproj.CopyComplete
+D:\myproj\posproject2\POS\POS\obj\Debug\POS.exe
+D:\myproj\posproject2\POS\POS\obj\Debug\POS.pdb

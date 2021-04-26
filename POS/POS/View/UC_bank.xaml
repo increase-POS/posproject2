@@ -87,15 +87,37 @@
                 <Grid.RowDefinitions >
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="40"/>
-                    <RowDefinition Height="17.5"/>
+                    <RowDefinition Height="7.5"/>
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.RowDefinitions >
-                        <RowDefinition Height="17.5"/>
+                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
+
+                    <Button   Width="360" Height="52" Grid.Column="0" BorderBrush="{x:Null}"
+                      HorizontalAlignment="Center" VerticalAlignment="Center" 
+                     Background="{x:Null}"
+                    Padding="0"  >
+                        <Border CornerRadius="7,7,0,0" Background="#4E4E4E">
+                            <Grid Width="360" Height="52" HorizontalAlignment="Center"  >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="1.2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Fill="#E8E8E8" Stretch="Fill"
+                              HorizontalAlignment="Right" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="20" Height="20"
+                              Data="M4,10h3v7H4V10z M10.5,10h3v7h-3V10z M2,19h20v3H2V19z M17,10h3v7h-3V10z M12,1L2,6v2h20V6L12,1z"/>
+                                <TextBlock Text="Bank" x:Name="txt_bank" Foreground="#E8E8E8" 
+                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
+                              Grid.Column="1"      Margin="5"/>
+                            </Grid>
+                        </Border>
+
+                    </Button>
                     <Grid Grid.Row="1" >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
@@ -108,12 +130,22 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Base Infomation" Foreground="#737373"
                                  FontSize="10"  VerticalAlignment="Center" x:Name="txt_baseInformation"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
                             <Separator Background="#999999"   Width="274"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
+                            <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
+                          Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click"
+                    Margin="5,1"   ToolTip="clear">
+
+                                <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="20" Height="20"/>
+                            </Button>
                         </Grid>
                       
                         <Grid   Grid.Row="1"  Margin="5,0,0,0">
@@ -323,7 +355,7 @@
                     
 
                 </Grid>
-                <Grid Grid.Row="1" >
+                <Grid Grid.Row="1" Margin="5,1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -334,18 +366,15 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
-                    <Button x:Name="btn_add" Grid.Row="1" Grid.Column="0"  Width="110"
-                         BorderThickness="0" Background="#178DD2" Content="Add"
-                    Padding="0" Height="33"
-                            materialDesign:ButtonAssist.CornerRadius="5"  Margin="6,0,4,1" VerticalAlignment="Bottom"  />
-                    <Button x:Name="btn_update" Grid.Row="1" Grid.Column="1"  Width="110"
-                         BorderThickness="0" Background="#178DD2" Content="Update"
-                    Padding="0" Height="33"
-                            materialDesign:ButtonAssist.CornerRadius="5"  />
-                    <Button x:Name="btn_delete" Grid.Row="1" Grid.Column="2"  Width="110"
-                         BorderThickness="0" Background="#178DD2" Content="Delete"
-                    Padding="0" Height="33"
-                            materialDesign:ButtonAssist.CornerRadius="5"  />
+                    <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0"
+                          Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,0"    Content="Add" Click="Btn_add_Click" />
+                    <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"
+                        Background="#4E4E4E" BorderBrush="{x:Null}"
+                   Margin="1,0"    Content="Update" Click="Btn_update_Click" />
+                    <Button x:Name="btn_delete" Grid.Row="0" Grid.Column="2"
+                        Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,0"    Content="Delete" Click="Btn_delete_Click" />
 
                 </Grid>
             </Grid>

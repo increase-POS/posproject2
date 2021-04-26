@@ -87,15 +87,46 @@
                 <Grid.RowDefinitions >
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="40"/>
-                    <RowDefinition Height="17.5"/>
+                    <RowDefinition Height="7.5"/>
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.RowDefinitions >
-                        <RowDefinition Height="17.5"/>
+                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
+                    <Button   Width="360" Height="52" Grid.Column="0" BorderBrush="{x:Null}"
+                      HorizontalAlignment="Center" VerticalAlignment="Center" 
+                     Background="{x:Null}"
+                    Padding="0"   >
+                        <Border CornerRadius="7,7,0,0" Background="#4E4E4E">
+                            <Grid Width="360" Height="52" HorizontalAlignment="Center"  >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="1.2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Fill="#E8E8E8" Stretch="Fill"
+                              HorizontalAlignment="Right" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="20" Height="20"
+                              Data="M106.5,12.6h-28C75.9,4.5,67.3,0.1,59.2,2.7c-4.7,1.5-8.4,5.2-9.9,9.9H21.5c-2.6,0-4.8,2.1-4.8,4.8v103.8
+	c0,2.6,2.1,4.8,4.8,4.8h85c2.6,0,4.8-2.1,4.8-4.8V17.4C111.3,14.8,109.1,12.6,106.5,12.6z M63.9,9.3c4.4,0,8,3.6,8,8s-3.6,8-8,8
+	s-8-3.6-8-8C55.9,12.9,59.5,9.3,63.9,9.3z M64.1,112.9H47.9c-1.1,0-1.9-0.9-1.9-1.9s0.9-1.9,1.9-1.9h16.1c1.1,0,1.9,0.9,1.9,1.9
+	S65.1,112.9,64.1,112.9z M80.2,103.5H47.9c-1.1,0-1.9-0.9-1.9-1.9c0-1,0.9-1.9,1.9-1.9h32.3c1.1,0,1.9,0.8,1.9,1.9
+	S81.3,103.5,80.2,103.5C80.2,103.5,80.2,103.5,80.2,103.5L80.2,103.5z M40,92.9c0.1-4.2,0.4-8.3,0.9-12.4c0.3-1.5,1.3-2.9,2.7-3.6
+	c4.6-2.3,14.8-5.7,14.8-5.7v-3.3l-0.3-0.2c-2-1.5-3.3-3.7-3.7-6.2l-0.1-0.4h-0.3c-1.5,0-2.9-0.9-3.5-2.3c-0.3-0.6-0.5-1.3-0.5-2
+	c0-0.5,0.1-0.9,0.3-1.4c0.1-0.5,0.4-0.9,0.8-1.2l0.9-0.6l-0.2-1c-1.7-7.4,4-14,11.7-14.2c0.2,0,0.4,0,0.6,0c0.2,0,0.4,0,0.6,0
+	c7.7,0.2,13.4,6.8,11.7,14.2l-0.2,1l0.9,0.6c0.4,0.3,0.7,0.7,0.8,1.2c0.2,0.4,0.3,0.9,0.3,1.4c0,0.7-0.2,1.4-0.5,2
+	c-0.6,1.4-1.9,2.3-3.5,2.3h-0.3l-0.1,0.4c-0.4,2.4-1.7,4.7-3.7,6.2l-0.3,0.2v3.3c0,0,10.1,3.4,14.8,5.7c1.4,0.7,2.4,2,2.7,3.6
+	c0.6,4.1,0.9,8.3,0.9,12.4L40,92.9z"/>
+                                <TextBlock Text="User" x:Name="txt_user" Foreground="#E8E8E8" 
+                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
+                              Grid.Column="1"      Margin="5"/>
+                            </Grid>
+                        </Border>
+
+                    </Button>
+
                     <Grid Grid.Row="1" >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
@@ -112,12 +143,27 @@
 
                         </Grid.ColumnDefinitions>
                         <Grid Grid.ColumnSpan="2">
-
-                            <TextBlock Text="User Information" Foreground="#737373"
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="User Information" Grid.Column="0" Foreground="#737373"
                                  FontSize="10"      VerticalAlignment="Center" x:Name="txt_userInfomration"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
-                            <Separator Background="#999999"   Width="260"  Margin="90,12,10,12" VerticalAlignment="Center" />
+                                <Separator Background="#999999" Grid.Column="1"  Width="360"  Margin="10,12,10,12" VerticalAlignment="Center" />
+                                <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
+                          Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click"
+                    Margin="5,1"   ToolTip="clear">
+
+                                    <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="20" Height="20"/>
+                                </Button>
+                            </Grid>
                         </Grid>
+
 
 
                         <!--<TextBox  x:Name="tb_firstName" Grid.Column="0" Text="{Binding firstName, Mode=OneWay}" Grid.Row="1"  Padding="10,5,5,5"   
@@ -358,7 +404,6 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="45"/>
                             <RowDefinition Height="45"/>
-                            <RowDefinition Height="45"/>
 
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
@@ -386,14 +431,16 @@
                         <Grid   Grid.Row="1"  Margin="5,0,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_job"  Text="{Binding job, Mode=OneWay}" Grid.Row="2"  Padding="10,5,5,5"   
+                            <TextBox x:Name="tb_job"  Text="{Binding job, Mode=OneWay}"  Grid.Column="0"  Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Job..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" MaxLength="100"
                            materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                  Height="35" Width="170"  Margin="5,5,0,5" />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
@@ -403,9 +450,8 @@
                                     <ToolTip  x:Name="tt_error_job"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
-                        </Grid>
 
-                        <!--<TextBox x:Name="tb_workHours"  Text="{Binding workHours, Mode=OneWay}" Grid.Row="2" Padding="10,5,5,5"
+                            <!--<TextBox x:Name="tb_workHours"  Text="{Binding workHours, Mode=OneWay}" Grid.Row="2" Padding="10,5,5,5"
                                  BorderThickness="1"  materialDesign:HintAssist.Hint="Work Hours..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="#f8f8f8" PreviewTextInput="NumberValidationTextBox"
@@ -413,27 +459,28 @@
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="1"   Height="35" Width="340"  Margin="10,5" />-->
 
-                        
-                        <Grid   Grid.Row="2"  Margin="5,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_workHours"  Text="{Binding workHours, Mode=OneWay}" Grid.Row="2"  Padding="10,5,5,5"   
+
+                            <Grid   Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="tb_workHours"  Text="{Binding workHours, Mode=OneWay}" Grid.Row="2"  Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Work Hours..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
                      HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="2"
                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                  Height="35" Width="162"  Margin="0,5,0,5"  />
 
-                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                <Path.ToolTip>
-                                    <ToolTip  x:Name="tt_error_workHours"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                </Path.ToolTip>
-                            </Path>
+                                    <Path.ToolTip>
+                                        <ToolTip  x:Name="tt_error_workHours"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    </Path.ToolTip>
+                                </Path>
+                            </Grid>
                         </Grid>
 
                         <!--<TextBox x:Name="tb_details"  Text="{Binding details, Mode=OneWay}" Padding="10,5,5,5"
@@ -443,7 +490,7 @@
                                  TextWrapping="Wrap" AcceptsReturn="True"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="1"  Height="35" Width="340"  Margin="10,5" />-->
-                        <Grid   Grid.Row="3"  Margin="5,0,0,0">
+                        <Grid   Grid.Row="2"  Margin="5,0,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
@@ -569,7 +616,7 @@
                     </Grid>
 
                 </Grid>
-                <Grid Grid.Row="1" >
+                <Grid Grid.Row="1" Margin="5,1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -578,18 +625,15 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Button Grid.Row="0" Grid.Column="0"  Width="110"
-                         BorderThickness="0" Background="#178DD2" Content="Add"
-                    Padding="0" Height="33" x:Name="btn_add"
-                            materialDesign:ButtonAssist.CornerRadius="5" Click="Btn_add_Click"  />
-                    <Button Grid.Row="0" Grid.Column="1"  Width="110"
-                         BorderThickness="0" Background="#178DD2" Content="Update"
-                    Padding="0" Height="33" x:Name="btn_update"
-                            materialDesign:ButtonAssist.CornerRadius="5" Click="Btn_update_Click"  />
-                    <Button Grid.Row="1" Grid.Column="2"  Width="110"
-                         BorderThickness="0" Background="#178DD2" Content="Delete"
-                    Padding="0" Height="33" x:Name="btn_delete"
-                            materialDesign:ButtonAssist.CornerRadius="5" Click="Btn_delete_Click"  />
+                    <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0"
+                          Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,0"    Content="Add" Click="Btn_add_Click" />
+                    <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"
+                        Background="#4E4E4E" BorderBrush="{x:Null}"
+                   Margin="1,0"    Content="Update" Click="Btn_update_Click" />
+                    <Button x:Name="btn_delete" Grid.Row="0" Grid.Column="2"
+                        Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,0"    Content="Delete" Click="Btn_delete_Click" />
 
                 </Grid>
             </Grid>

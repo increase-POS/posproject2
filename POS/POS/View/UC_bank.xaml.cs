@@ -69,6 +69,7 @@ namespace POS.View
 
         private void translate()
         {
+            txt_bank.Text = MainWindow.resourcemanager.GetString("trBank");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectBankNameHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
@@ -88,6 +89,7 @@ namespace POS.View
             dg_bank.Columns[3].Header = MainWindow.resourcemanager.GetString("trAddress");
             dg_bank.Columns[2].Header = MainWindow.resourcemanager.GetString("trMobile");
 
+            btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -181,6 +183,33 @@ namespace POS.View
             e.Handled = regex.IsMatch(e.Text);
         }
 
+
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+            tb_name.Text = "";
+            tb_address.Text = "";
+            tb_mobile.Text = "";
+            tb_notes.Text = "";
+            tb_phone.Text = "";
+            tb_accNumber.Text = "";
+            cb_area.Text = "";
+        }
+
+        private void Btn_add_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_update_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         //private void translate()
         //{
         //    MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
@@ -215,6 +244,6 @@ namespace POS.View
         //    }
 
         //    translate();
-      //  }
-}
+        //  }
+    }
 }

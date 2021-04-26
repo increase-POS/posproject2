@@ -1,20 +1,23 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-
+using POS;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace POS.Classes
 {
-     class Agent
+    public class Agent
     {
-        public  int agentId { get; set; }        
+        public int agentId { get; set; }
         public string name { get; set; }
         public string code { get; set; }
         public string company { get; set; }
@@ -28,12 +31,14 @@ namespace POS.Classes
         public string accType { get; set; }
         public float balance { get; set; }
         public int isDefault { get; set; }
-        public DateTime createDate = DateTime.Now;
-        public DateTime updateDate = DateTime.Now;
+        public DateTime createDate { get; set; }
+        public DateTime updateDate { get; set; }
         public int createUserId { get; set; }
         public int updateUserId { get; set; }
         public string notes { get; set; }
         public int isActive { get; set; }
+
+
         public async Task<List<Agent>> GetAgentsAsync(string type)
         {
             List<Agent> agents = null;
@@ -47,7 +52,6 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-
                 request.RequestUri = new Uri(Global.APIUri + "Agent/Get");
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Headers.Add("type", type);
@@ -66,10 +70,7 @@ namespace POS.Classes
                         Converters = new List<JsonConverter> { new BadDateFixingConverter() },
                         DateParseHandling = DateParseHandling.None
                     };
-//                    jsonString = "[{\"agentId\":1,\"name\":\"Ahmad\",\"code\":\"01\",\"company\":\"a1\",\"address\":\"a12\",\"details\":\"qwer\",\"email\":\"Ahmad@gmail.com\",\"phone\":\"09875641\",\"mobile\":\"032156478\",\"image\":\"a\",\"type\":\"V\",\"accType\":\"S\",\"balance\":12.0000,\"isDefault\":1,\"createDate\":\"2013-01-20T00:00:00Z\",\"updateDate\":\"2013-01-20T00:00:00Z\",\"createUserId\":11,\"updateUserId\":11,\"notes\":\"aa\",\"isActive\":1}]";
                     agents = JsonConvert.DeserializeObject<List<Agent>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-
-
                     return agents;
                 }
                 else //web api sent error response 
@@ -80,13 +81,15 @@ namespace POS.Classes
             }
 
         }
-        // adding vendor by calling API metod "saveAgent"
-        public async Task<Boolean> saveAgent(Agent agent)
+        // adding or editing  agent by calling API metod "saveAgent"
+        // if agentId = 0 will call save else call edit
+        public async Task<string> saveAgent(Agent agent)
         {
+            string message = "";
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            // 
-            var myContent = JsonConvert.SerializeObject(agent);
+
+            string myContent = JsonConvert.SerializeObject(agent);
 
             using (var client = new HttpClient())
             {
@@ -95,10 +98,13 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+
                 HttpRequestMessage request = new HttpRequestMessage();
-                // set unicode
-                request.Content = new StringContent(myContent, System.Text.Encoding.UTF8, "text/xml");
-                request.RequestUri = new Uri(Global.APIUri + "Agent/Save?agentObject="+ myContent);
+
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+
+                request.RequestUri = new Uri(Global.APIUri + "Agent/Save?agentObject=" + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -107,12 +113,40 @@ namespace POS.Classes
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return true;
+                    message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
                 }
-                return false;
+                return message;
             }
         }
-
+        public string EncodeNonAsciiCharacters(string value)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in value)
+            {
+                if (c > 127)
+                {
+                    // This character is too big for ASCII
+                    string encodedValue = "\\u" + ((int)c).ToString("x4");
+                    sb.Append(encodedValue);
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
+        }
+        public string DecodeEncodedNonAsciiCharacters(string value)
+        {
+            return Regex.Replace(
+                value,
+                @"\\u(?<Value>[a-zA-Z0-9]{4})",
+                m => {
+                    return ((char)int.Parse(m.Groups["Value"].Value, NumberStyles.HexNumber)).ToString();
+                });
+        }
+        // delete agent
         public async Task<Boolean> deleteAgent(int agentId)
         {
             // ... Use HttpClient.
@@ -143,8 +177,7 @@ namespace POS.Classes
             }
         }
 
-
     }
 
-
 }
+

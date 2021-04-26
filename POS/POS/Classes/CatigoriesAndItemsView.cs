@@ -19,14 +19,12 @@ namespace POS.Classes
         public uc_categorie ucCategorie;
         public UC_item ucCategorieItem;
         public uc_payInvoice ucPayInvoice;
-        public uc_receiptInvoice ucReceiptInvoice;
 
         public Grid gridCatigories;
         public Grid gridCatigorieItems;
         private int _idCatigories;
         private int _idCatigorieItems;
         private int _idPayInvoice;
-        private int _idReceipInvoice;
         public int idCatigories
         {
             get => _idCatigories; set
@@ -51,16 +49,6 @@ namespace POS.Classes
             {
 
                 _idPayInvoice = value;
-                INotifyPropertyChangedIdCatigorieItems();
-            }
-        }
-
-        public int idReceipInvoice
-        {
-            get => _idReceipInvoice; set
-            {
-
-                _idReceipInvoice = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
         }
@@ -155,6 +143,8 @@ namespace POS.Classes
         #endregion
         #region Catalog Items
         private int pastCatalogItem = -1;
+        internal uc_receiptInvoice ucReceiptInvoice;
+
         UC_rectangleCardPrice FN_createCatalogItem(int id, string title, string subtitle, string price, string image, int row, int column,
            string newItem, string offer, string BorderBrush = "#6e6e6e")
         {

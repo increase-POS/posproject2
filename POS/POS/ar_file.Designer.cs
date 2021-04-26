@@ -160,6 +160,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to البنك.
+        /// </summary>
+        internal static string trBank {
+            get {
+                return ResourceManager.GetString("trBank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اسم البنك.
         /// </summary>
         internal static string trBankName {
@@ -192,6 +201,15 @@ namespace POS {
         internal static string trBaseInformation {
             get {
                 return ResourceManager.GetString("trBaseInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الفرع.
+        /// </summary>
+        internal static string trBranch {
+            get {
+                return ResourceManager.GetString("trBranch", resourceCulture);
             }
         }
         
@@ -259,6 +277,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تفريغ.
+        /// </summary>
+        internal static string trClear {
+            get {
+                return ResourceManager.GetString("trClear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الشيفرة.
         /// </summary>
         internal static string trCode {
@@ -309,6 +336,15 @@ namespace POS {
         internal static string trContactInformation {
             get {
                 return ResourceManager.GetString("trContactInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الزبون.
+        /// </summary>
+        internal static string trCustomer {
+            get {
+                return ResourceManager.GetString("trCustomer", resourceCulture);
             }
         }
         
@@ -871,6 +907,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المخزن.
+        /// </summary>
+        internal static string trStore {
+            get {
+                return ResourceManager.GetString("trStore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to شيفرة المخزن....
         /// </summary>
         internal static string trStoreCodeHint {
@@ -934,6 +979,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الوحدة.
+        /// </summary>
+        internal static string trUnit {
+            get {
+                return ResourceManager.GetString("trUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اسم الوحدة.
         /// </summary>
         internal static string trUnitName {
@@ -966,6 +1020,15 @@ namespace POS {
         internal static string trUpdate {
             get {
                 return ResourceManager.GetString("trUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المستخدم.
+        /// </summary>
+        internal static string trUser {
+            get {
+                return ResourceManager.GetString("trUser", resourceCulture);
             }
         }
         
@@ -1011,6 +1074,15 @@ namespace POS {
         internal static string trUserType {
             get {
                 return ResourceManager.GetString("trUserType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المورد.
+        /// </summary>
+        internal static string trVendor {
+            get {
+                return ResourceManager.GetString("trVendor", resourceCulture);
             }
         }
         

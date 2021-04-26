@@ -1,5 +1,5 @@
 ﻿
-using client_app.Classes;
+
 using POS.Classes;
 using System;
 using System.Collections.Generic;
@@ -29,6 +29,7 @@ namespace POS.View
     {
 
         User userModel = new User();
+
         public int UserId;
         public UC_users()
         {
@@ -90,6 +91,8 @@ namespace POS.View
 
         private void translate()
         {
+            txt_user.Text = MainWindow.resourcemanager.GetString("trUser");
+
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectJobHint"));
             txt_userInfomration.Text = MainWindow.resourcemanager.GetString("trUserInformation");
@@ -116,9 +119,24 @@ namespace POS.View
             dg_users.Columns[2].Header = MainWindow.resourcemanager.GetString("trJob");
             dg_users.Columns[3].Header = MainWindow.resourcemanager.GetString("trWorkHours");
             dg_users.Columns[4].Header = MainWindow.resourcemanager.GetString("trDetails");
-            
-        }
+            btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
+        }
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+            tb_address.Text = "";
+            tb_password.Text = "";
+            tb_userName.Text = "";
+            tb_firstName.Text = "";
+            tb_lastName.Text = "";
+            tb_job.Text = "";
+            tb_workHours.Text = "";
+            tb_details.Text = "";
+            tb_phone.Text = "";
+            cb_area.Text = "";
+            tb_mobile.Text = "";
+            tb_email.Text = "";
+        }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
@@ -128,7 +146,6 @@ namespace POS.View
 
             translate();
 
-            //pass parameter type (V for vendors, C for Clients , B for Both)
             var users = await userModel.GetUsersAsync();
             dg_users.ItemsSource = users;
         }
@@ -313,6 +330,7 @@ namespace POS.View
 
         private void P_showPassword_MouseEnter(object sender, MouseEventArgs e)
         {
+            tb_password.Text = pb_password.Password;
             tb_password.Visibility = Visibility.Visible;
             pb_password.Visibility = Visibility.Collapsed;
         }

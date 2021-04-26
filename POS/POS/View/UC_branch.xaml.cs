@@ -1,4 +1,4 @@
-﻿using client_app.Classes;
+﻿
 using POS.Classes;
 using System;
 using System.Collections.Generic;
@@ -133,6 +133,7 @@ namespace POS.View
 
         private void translate()
         {
+            txt_branch.Text = MainWindow.resourcemanager.GetString("trBranch");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectBranchHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
@@ -152,6 +153,9 @@ namespace POS.View
             dg_branch.Columns[1].Header = MainWindow.resourcemanager.GetString("trCode");
             dg_branch.Columns[2].Header = MainWindow.resourcemanager.GetString("trAddress");
             dg_branch.Columns[3].Header = MainWindow.resourcemanager.GetString("trDetails");
+
+            btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
+
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
@@ -282,6 +286,19 @@ namespace POS.View
             tb_phone.Clear();
             tb_mobile.Clear();
             tb_notes.Clear();
+        }
+
+
+
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+            tb_name.Text = "";
+            tb_code.Text = "";
+            tb_address.Text = "";
+            tb_details.Text = "";
+            tb_email.Text = "";
+            tb_phone.Text = "";
+
         }
     }
 }

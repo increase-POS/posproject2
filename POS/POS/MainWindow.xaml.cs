@@ -48,6 +48,24 @@ namespace POS
         {
             this.WindowState = System.Windows.WindowState.Minimized;
         }
+        void colorRefreash(TextBlock txt)
+        {
+
+            txt_home.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_catalog.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_storage.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_purchases.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_sales.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_sales.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_accounting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_reports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_sectiondata.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_settings.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+
+
+            txt.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+        }
 
         private void translate()
         {
@@ -115,11 +133,14 @@ namespace POS
 
         private void BTN_Home_Click(object sender, RoutedEventArgs e)
         {
+            colorRefreash(txt_home);
 
         }
 
         private void BTN_SectionData_Click(object sender, RoutedEventArgs e)
         {
+            colorRefreash(txt_sectiondata);
+
             GRID_Main.Children.Clear();
             UC_SectionData uc = new UC_SectionData();
             GRID_Main.Children.Add(uc);
@@ -128,6 +149,8 @@ namespace POS
 
         private void BTN_catalog_Click(object sender, RoutedEventArgs e)
         {
+            colorRefreash(txt_catalog);
+
             GRID_Main.Children.Clear();
             UC_catalog uc = new UC_catalog();
             GRID_Main.Children.Add(uc);
@@ -147,6 +170,8 @@ namespace POS
        
         private void BTN_purchases_Click(object sender, RoutedEventArgs e)
         {
+            colorRefreash(txt_purchases);
+
             GRID_Main.Children.Clear();
             uc_purchases uc = new uc_purchases();
             GRID_Main.Children.Add(uc);
@@ -154,9 +179,24 @@ namespace POS
 
         private void BTN_sales_Click(object sender, RoutedEventArgs e)
         {
-            GRID_Main.Children.Clear();
-            uc_sales uc = new uc_sales();
-            GRID_Main.Children.Add(uc);
+            colorRefreash(txt_sales);
+
+        }
+
+        private void BTN_accounts_Click(object sender, RoutedEventArgs e)
+        {
+            colorRefreash(txt_accounting);
+
+        }
+
+        private void BTN_reports_Click(object sender, RoutedEventArgs e)
+        {
+            colorRefreash(txt_reports);
+        }
+
+        private void BTN_settings_Click(object sender, RoutedEventArgs e)
+        {
+            colorRefreash(txt_settings);
         }
     }
 }

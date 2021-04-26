@@ -185,6 +185,7 @@ namespace POS.View
         }
         private void translate()
         {
+            txt_pos.Text = MainWindow.resourcemanager.GetString("trPOS");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectPosNameHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
@@ -218,6 +219,15 @@ namespace POS.View
 
             translate();
 
+        }
+
+
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+                tb_name.Text = "";
+            tb_balance.Text = "";
+            tb_code.Text = "";
+            cb_branchId.Text = "";
         }
     }
 }
