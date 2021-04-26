@@ -1,5 +1,7 @@
-﻿using System;
+﻿using POS.Classes;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static POS.View.uc_categorie;
 
 namespace POS.View
 {
@@ -32,33 +35,35 @@ namespace POS.View
             items.Add(new Bill() { Id = 336555162, Total = 840 });
             items.Add(new Bill() { Id = 336558897, Total = 325 });
             dg_draft.ItemsSource = items;
+            dg_Bills.ItemsSource = items;
             DG_BillDetails.ItemsSource = LoadCollectionData();
             #endregion
 
         }
-        //CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
+        CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //catigoriesAndItemsView.ucPayInvoice = this;
+            catigoriesAndItemsView.ucReceiptInvoice = this;
 
             #region Generate catigorie
-            //catigoriesAndItemsView.gridCatigories = Grid_categorie;
-            //Categorie categorie = new Categorie();
-            //catigoriesAndItemsView.FN_refrishCatalogCard(categorie.getCategories());
-            //#endregion
+            catigoriesAndItemsView.gridCatigories = Grid_categorie;
+            Categorie categorie = new Categorie();
+            catigoriesAndItemsView.FN_refrishCatalogCard(categorie.getCategories());
+            #endregion
 
 
-            //#region Generate catigorieItems
-            //catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
-            //CategorieItem CategorieItem = new CategorieItem();
-            //catigoriesAndItemsView.FN_refrishCatalogItem(CategorieItem.getCategorieItems());
+            #region Generate catigorieItems
+            catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
+            CategorieItem CategorieItem = new CategorieItem();
+            catigoriesAndItemsView.FN_refrishCatalogItem(CategorieItem.getCategorieItems());
             #endregion
         }
 
 
 
-        #region bill
+
+            #region bill
 
 
 
@@ -76,9 +81,9 @@ namespace POS.View
             public int Price { get; set; }
             public int Total { get; set; }
         }
-        private List<BillDetails> LoadCollectionData()
+        private ObservableCollection<BillDetails> LoadCollectionData()
         {
-            List<BillDetails> billDetails = new List<BillDetails>();
+            ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
             billDetails.Add(new BillDetails()
             {
                 ID = 101,
@@ -161,6 +166,25 @@ namespace POS.View
         }
         #endregion
 
+
+        #region Button In DataGrid
+        void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
+        {
+            for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
+                if (vis is DataGridRow)
+                {
+                    //var row = (DataGridRow)vis;
+                    //var b = (BillDetails)row.Item;
+
+
+                    BillDetails row = (BillDetails)DG_BillDetails.SelectedItems[0];
+                    ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)DG_BillDetails.ItemsSource;
+                    data.Remove(row);
+                }
+
+        }
+        #endregion
+
         private void Tgl_draftDropDown_Checked(object sender, RoutedEventArgs e)
         {
             dg_draft.Visibility = Visibility.Visible;
@@ -169,6 +193,16 @@ namespace POS.View
         private void Tgl_draftDropDown_Unchecked(object sender, RoutedEventArgs e)
         {
             dg_draft.Visibility = Visibility.Collapsed;
+        }
+
+        private void Tgl_ReturnInvoiceDropDown_Checked(object sender, RoutedEventArgs e)
+        {
+            grid_returnInvoice.Visibility = Visibility.Visible;
+        }
+
+        private void Tgl_ReturnInvoiceDropDown_Unchecked(object sender, RoutedEventArgs e)
+        {
+            grid_returnInvoice.Visibility = Visibility.Collapsed;
         }
     }
 }
