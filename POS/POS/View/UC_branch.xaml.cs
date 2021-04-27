@@ -27,6 +27,7 @@ namespace POS.View
     {
 
         public int BranchId;
+
         Branch branchModel = new Branch();
 
         public UC_branch()
@@ -173,13 +174,14 @@ namespace POS.View
                 updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 createUserId = 1,
                 updateUserId = 1,
-                notes        = tb_notes.Text
+                notes        = tb_notes.Text,
+                type         ="b"
             };
 
 
             await branchModel.saveBranch(branch);
 
-            var branches = await branchModel.GetBranchesAsync();
+            var branches = await branchModel.GetBranchesAsync("b");
             dg_branch.ItemsSource = branches;
 
         }
@@ -193,7 +195,7 @@ namespace POS.View
 
             translate();
 
-            var branches = await branchModel.GetBranchesAsync();
+            var branches = await branchModel.GetBranchesAsync("b");
             dg_branch.ItemsSource = branches;
 
         }
@@ -214,13 +216,14 @@ namespace POS.View
                 updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 createUserId = 1,
                 updateUserId = 1,
-                notes        = tb_notes.Text
+                notes        = tb_notes.Text,
+                type         = "b"
             };
 
 
             await branchModel.saveBranch(branch);
 
-            var branches = await branchModel.GetBranchesAsync();
+            var branches = await branchModel.GetBranchesAsync("b");
             dg_branch.ItemsSource = branches;
 
         }
@@ -273,7 +276,7 @@ namespace POS.View
         {//delete
             await branchModel.deleteBranch(BranchId);
 
-            var branches = await branchModel.GetBranchesAsync();
+            var branches = await branchModel.GetBranchesAsync("b");
             dg_branch.ItemsSource = branches;
 
             //clear textBoxs

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,45 +24,72 @@ namespace POS.View
     /// </summary>
     public partial class UC_pos : UserControl
     {
-        public int posId;
-        //Pos pos = new Pos();
+        public int PosId;
+
+        Pos posModel = new Pos();
+
+        Branch branchModel = new Branch();
+
+        List<int>    branchIds = new List<int>();
+        List<string> branchNames = new List<string>();
+
+        int selectedBranchId = 0;
+
+        DataGrid dt = new DataGrid(); 
         public UC_pos() 
          {
             InitializeComponent();
-           // List<Pos> poss = new List<Pos>();
-
-            
-
-            for (int i = 1; i < 50; i++)
-            {
-                //poss.Add(new Pos()
-                //{
-                //    Id = i,
-                //    name = "branch name " + i,
-                //    code = "branch code" + i,
-                //    balance  = "balance " + i,
-                //    branchName = "branch name "+ i
-
-                //}); ; ;
-            }
-
-            //dg_pos.ItemsSource = poss;
         }
-        
+
+        private async void fillBranches()
+        {
+            var branches = await branchModel.GetBranchesAsync("b");
+            dt.ItemsSource = branches;
+            Branch branch = new Branch();
+            for (int i = 0; i < branches.Count; i++)
+            {
+                branch = dt.Items[i] as Branch;
+                branchIds.Add(branch.branchId);
+                branchNames.Add(branch.name);
+            }
+            //MessageBox.Show(branches.Count.ToString());
+            //branchNames.Add("first"); branchNames.Add("second");
+            cb_branchId.ItemsSource = branchNames;
+
+        }
+
         private void DG_pos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //Pos pos = new Pos();
+            p_errorName.Visibility = Visibility.Collapsed;
+            p_errorCode.Visibility = Visibility.Collapsed;
+            p_errorBalance.Visibility = Visibility.Collapsed;
+            p_errorSelectBranch.Visibility = Visibility.Collapsed;
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_balance.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tt_errorSelectBranch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+            Pos pos = new Pos();
+
             if (dg_pos.SelectedIndex != -1)
             {
-                //pos = dg_pos.SelectedItem as Pos;
-                //this.DataContext = pos;
-                //if (pos != null)
+                pos = dg_pos.SelectedItem as Pos;
+                this.DataContext = pos;
+            }
+            if (pos != null)
+            {
+                if (pos.posId != 0)
+                {
+                    PosId = pos.posId;
+                }
+                //if (pos.branchId != 0)
                 //{
-                //    if (pos.Id != 0)
-                //    {
-                //        posId = pos.Id;
-                //    }
+                //    for (int i = 0; i < branchIds.Count; i++)
+                //        if (branchIds[i] == pos.branchId)
+                //        { cb_branchId.SelectedIndex = i; break; }
                 //}
+
             }
         }
 
@@ -204,7 +232,7 @@ namespace POS.View
             dg_pos.Columns[3].Header = MainWindow.resourcemanager.GetString("trBalance");
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
             {
@@ -219,15 +247,94 @@ namespace POS.View
 
             translate();
 
+            fillBranches();
+
+            var poss = await posModel.GetPosAsync();
+            dg_pos.ItemsSource = poss;
         }
+
 
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
-                tb_name.Text = "";
+            tb_name.Text = "";
             tb_balance.Text = "";
             tb_code.Text = "";
             cb_branchId.Text = "";
+        }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private async void Btn_add_Click(object sender, RoutedEventArgs e)
+        {//add
+            Pos pos = new Pos
+            {
+                code         = tb_code.Text,
+                name         = tb_name.Text,
+                balance      = 0,
+                branchId     = 1 ,
+                //branchId     = selectedBranchId,
+                createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                createUserId = 1,
+                updateUserId = 1,
+                isActive     = 1
+            };
+
+        //public int posId { get; set; }
+     
+            await posModel.savePos(pos);
+
+            var poss = await posModel.GetPosAsync();
+            dg_pos.ItemsSource = poss;
+
+
+        }
+
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {//update
+            Pos pos = new Pos
+            {
+                posId        = PosId,
+                code         = tb_code.Text,
+                name         = tb_name.Text,
+                balance      = decimal.Parse(tb_balance.Text),
+                branchId     = 1,
+                //branchId     = selectedBranchId,
+                createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                createUserId = 1,
+                updateUserId = 1,
+                isActive     = 1
+            };
+
+
+            await posModel.savePos(pos);
+
+            var poss = await posModel.GetPosAsync();
+            dg_pos.ItemsSource = poss;
+
+
+        }
+
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {//delete
+            await posModel.deletePos(PosId);
+
+            var poss = await posModel.GetPosAsync();
+            dg_pos.ItemsSource = poss;
+
+            //clear textBoxs
+            Btn_clear_Click(sender, e);
+        }
+
+        private void Cb_branchId_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectedBranchId = branchIds[cb_branchId.SelectedIndex];
         }
     }
 }

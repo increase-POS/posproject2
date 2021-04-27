@@ -69,7 +69,7 @@
                      
                        x:Name="dg_bank"
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"    >
+                        ColumnWidth="SizeToHeader" SelectionChanged="Dg_bank_SelectionChanged"    >
                     <DataGrid.Columns>
                         <DataGridTextColumn MinWidth="160"  Header="Name" Binding="{Binding Path=name}"/>
                         <DataGridTextColumn MinWidth="160"  Header="Account Number"   Binding="{Binding Path=accNumber}"/>
@@ -177,7 +177,7 @@
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="tb_accNumber"  Text="{Binding accNumber, Mode=OneWay}" Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Account Number..."    
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"  PreviewTextInput="NumberValidationTextBox"
                                  BorderBrush="AliceBlue" TextChanged="Tb_accNum_TextChanged" LostFocus="Tb_accNum_LostFocus"
                      HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />

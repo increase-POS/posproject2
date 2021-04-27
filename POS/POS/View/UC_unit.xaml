@@ -189,7 +189,7 @@ xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 
                         <WrapPanel Grid.Row="2"  Height="35" Width="340" 
                                    Background="#f8f8f8" HorizontalAlignment="Left"  VerticalAlignment="Center"
-                                   Margin="10,5" >
+                                   Margin="10,5" Visibility="Collapsed" >
                             <TextBlock  Text ="Is Smallest" x:Name="tb_isSmallest"  Foreground="#4E4E4E" VerticalAlignment="Center"
                                         Margin="5,2,0,0" Padding="10,5,5,5"/>
                             <ToggleButton x:Name="tbtn_isSmallest" VerticalAlignment="Center" Padding="10,15,5,5"
@@ -209,9 +209,9 @@ xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                              TextBlock.FontSize="12" Margin="10,5"
                              HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Height="35" Width="340"     Background="#f8f8f8" 
-                           BorderBrush="#737373"          BorderThickness="0" 
+                           BorderBrush="#737373"          BorderThickness="0"  Visibility="Collapsed"
                             FontFamily="Segoe UI"         Grid.Row="3" SelectionChanged="Cb_smallestUnitId_SelectionChanged" >
-
+                            
                         </ComboBox>
                         <Separator Background="#999999"   Width="360"  Margin="5,5,5,0"
                                       Grid.Row ="5" VerticalAlignment="Center" />
@@ -235,10 +235,10 @@ xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     Margin="1,0"    Content="Add" Click="Btn_add_Click" />
                     <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
-                   Margin="1,0"    Content="Update" />
+                   Margin="1,0"    Content="Update" Click="Btn_update_Click" />
                     <Button x:Name="btn_delete" Grid.Row="0" Grid.Column="2"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Delete" />
+                    Margin="1,0"    Content="Delete" Click="Btn_delete_Click" />
 
                 </Grid>
 

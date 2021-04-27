@@ -25,60 +25,62 @@ namespace POS.View
     /// </summary>
     public partial class UC_store : UserControl
     {
-       
 
-        public int BranchId;
-        Branch store = new Branch();
+
+        public int StoreId;
+
+        Branch storeModel = new Branch();
+
         public UC_store()
-             {
+        {
             InitializeComponent();
 
-
-            List<Branch> stores = new List<Branch>();
-
-            for (int i = 1; i < 50; i++)
-            {
-                stores.Add(new Branch()
-                {
-                    //Id = i,
-                    //name = "store name " + i,
-                    //address = "store address" + i,
-                    //code = "store code" + i,
-
-                    //mobile = "Test mobile" + i,
-                    //phone = "Test phone" + i,
-                    //email = "Test email" + i,
-                    //details = "store details" + i,
-
-                }); ; ;
-            }
-
-
-
-
-
-            dg_store.ItemsSource = stores;
         }
 
         private void DG_Store_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            p_errorName.Visibility = Visibility.Collapsed;
+            p_errorCode.Visibility = Visibility.Collapsed;
+            p_errorEmail.Visibility = Visibility.Collapsed;
+
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
             Branch store = new Branch();
+
             if (dg_store.SelectedIndex != -1)
             {
                 store = dg_store.SelectedItem as Branch;
                 this.DataContext = store;
-
-                if (store != null)
-                {
-
-                    //if (store.Id != 0)
-                    //{
-                    //    BranchId = store.Id;
-                    //}
-                }
             }
-        
-    }
+
+            if (store != null)
+            {
+                if (store.branchId != 0)
+                {
+                    StoreId = store.branchId;
+                }
+
+                if ((store.mobile != null) && (store.mobile.ToArray().Length > 4))
+                {
+                    string area = new string(store.mobile.Take(4).ToArray());
+                    var mobile = store.mobile.Substring(4, store.mobile.Length - 4);
+
+                    cb_area.Text = area;
+                    tb_mobile.Text = mobile.ToString();
+                }
+                else
+                {
+                    cb_area.SelectedIndex = -1;
+                    tb_mobile.Clear();
+                }
+
+            }
+
+
+        }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
@@ -201,7 +203,7 @@ namespace POS.View
 
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucStore.FlowDirection = FlowDirection.LeftToRight; }
@@ -210,6 +212,8 @@ namespace POS.View
 
             translate();
 
+            var stores = await storeModel.GetBranchesAsync("s");
+            dg_store.ItemsSource = stores;
         }
 
 
@@ -222,6 +226,83 @@ namespace POS.View
             tb_email.Text = "";
             tb_phone.Text = "";
             
+        }
+
+        private async void Btn_add_Click(object sender, RoutedEventArgs e)
+        {//add
+            Branch store = new Branch
+            {
+                code = tb_code.Text,
+                name = tb_name.Text,
+                details = tb_details.Text,
+                address = tb_address.Text,
+                email = tb_email.Text,
+                phone = tb_phone.Text,
+                mobile = cb_area.Text + tb_mobile.Text,
+                createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                createUserId = 1,
+                updateUserId = 1,
+                notes = "",
+                type = "s"
+            };
+
+
+            await storeModel.saveBranch(store);
+
+            var branches = await storeModel.GetBranchesAsync("s");
+            dg_store.ItemsSource = branches;
+
+
+        }
+
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {//update
+            Branch store = new Branch
+            {
+                branchId = StoreId,
+                code = tb_code.Text,
+                name = tb_name.Text,
+                details = tb_details.Text,
+                address = tb_address.Text,
+                email = cb_area.Text + tb_email.Text,
+                phone = tb_phone.Text,
+                mobile = tb_mobile.Text,
+                createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                createUserId = 1,
+                updateUserId = 1,
+                notes = "",
+                type = "s"
+            };
+
+
+            await storeModel.saveBranch(store);
+
+            var stores = await storeModel.GetBranchesAsync("s");
+            dg_store.ItemsSource = stores;
+
+
+        }
+
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {//delete
+            await storeModel.deleteBranch(StoreId);
+
+            var stores = await storeModel.GetBranchesAsync("s");
+            dg_store.ItemsSource = stores;
+
+            //clear textBoxs
+            tb_code.Text = "";
+            tb_name.Text = "";
+            tb_details.Clear();
+            tb_address.Clear();
+            cb_area.SelectedIndex = -1;
+            tb_email.Clear();
+            tb_phone.Clear();
+            tb_mobile.Clear();
+            //tb_notes.Clear();
+
         }
     }
 }

@@ -59,16 +59,17 @@ namespace POS.View
                     UnitId = unit.unitId;
                 }
 
-                if (unit.isSmallest == 0)
-                    tbtn_isSmallest.IsChecked = false;
-                else
-                    tbtn_isSmallest.IsChecked = true;
+                //if (unit.isSmallest == 0)
+                //    tbtn_isSmallest.IsChecked = false;
+                //else
+                //    tbtn_isSmallest.IsChecked = true;
 
                 //select combo item
                 //for (int i = 0; i < ids.Count; i++)
                 //    if (ids[i] == unit.smallestId)
                 //    { cb_smallestUnitId.SelectedIndex = i;  break; }
-                cb_smallestUnitId.SelectedIndex = ids.IndexOf(unit.smallestId);
+                //cb_smallestUnitId.SelectedIndex = ids.IndexOf(unit.smallestId);
+
             }
         }
 
@@ -175,7 +176,7 @@ namespace POS.View
             var units = await unitModel.GetUnitsAsync();
             dg_unit.ItemsSource = units;
 
-            fillSmallestUnits();
+            //fillSmallestUnits();
 
             //dg_unit.Items[0]..SetValue("unit2");
         }
@@ -186,9 +187,11 @@ namespace POS.View
             {
                 //unitId
                 name         = tb_name.Text,
-                isSmallest   = IsSmallest,
-                smallestId   = smallestUnitId ,
-                createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                //isSmallest   = IsSmallest,
+                isSmallest   = 0,
+                //smallestId = smallestUnitId ,
+                smallestId   = 0,
+                createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 createUserId = 1 ,
                 updateUserId = 1 ,
@@ -200,31 +203,7 @@ namespace POS.View
             var units = await unitModel.GetUnitsAsync();
             dg_unit.ItemsSource = units;
 
-            fillSmallestUnits();
-
-        }
-
-        private async void Btn_update_Click(object sender, RoutedEventArgs e)
-        {//update
-            Unit unit = new Unit
-            {
-                unitId       = UnitId,
-                name         = tb_name.Text,
-                isSmallest   = IsSmallest,
-                smallestId   = smallestUnitId ,
-                createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                createUserId = 1,
-                updateUserId = 1,
-                parentid     = 0 //?????????????????
-            };
-
-            await unitModel.saveUnit(unit);
-
-            var units = await unitModel.GetUnitsAsync();
-            dg_unit.ItemsSource = units;
-
-            fillSmallestUnits();
+            //fillSmallestUnits();
 
         }
 
@@ -247,7 +226,36 @@ namespace POS.View
 
         private void Cb_smallestUnitId_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            smallestUnitId = ids[cb_smallestUnitId.SelectedIndex];
+            //smallestUnitId = ids[cb_smallestUnitId.SelectedIndex];
+        }
+
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {//update
+            Unit unit = new Unit
+            {
+                unitId = UnitId,
+                name = tb_name.Text,
+                //isSmallest   = IsSmallest,
+                isSmallest = 0,
+                //smallestId = smallestUnitId ,
+                smallestId = 0,
+                createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                createUserId = 1,
+                updateUserId = 1,
+                parentid = 0 //?????????????????
+            };
+
+             await unitModel.saveUnit(unit);
+
+            MessageBox.Show(UnitId.ToString());
+
+            var units = await unitModel.GetUnitsAsync();
+            dg_unit.ItemsSource = units;
+
+            //fillSmallestUnits();
+
+
         }
     }
 }
