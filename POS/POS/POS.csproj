@@ -74,6 +74,15 @@
     <Compile Include="Classes\CatigoriesAndItemsView.cs" />
     <Compile Include="Classes\Unit.cs" />
     <Compile Include="Classes\User.cs" />
+    <Compile Include="controlTemplate\UC_rectangleCard.xaml.cs">
+      <DependentUpon>UC_rectangleCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controlTemplate\UC_rectangleCardWithoutPrice_ar.xaml.cs">
+      <DependentUpon>UC_rectangleCardWithoutPrice_ar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controlTemplate\UC_rectangleCardWithoutPrice.xaml.cs">
+      <DependentUpon>UC_rectangleCardWithoutPrice.xaml</DependentUpon>
+    </Compile>
     <Compile Include="controlTemplate\UC_rectangleCardPrice.xaml.cs">
       <DependentUpon>UC_rectangleCardPrice.xaml</DependentUpon>
     </Compile>
@@ -131,6 +140,18 @@
     <Compile Include="View\UC_users.xaml.cs">
       <DependentUpon>UC_users.xaml</DependentUpon>
     </Compile>
+    <Page Include="controlTemplate\UC_rectangleCard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controlTemplate\UC_rectangleCardWithoutPrice_ar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controlTemplate\UC_rectangleCardWithoutPrice.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="controlTemplate\UC_rectangleCardPrice.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

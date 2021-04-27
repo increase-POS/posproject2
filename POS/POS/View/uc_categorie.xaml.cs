@@ -72,7 +72,7 @@ namespace POS.View
             #region Generate catigorieItems
             catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
             CategorieItem CategorieItem = new CategorieItem();
-            catigoriesAndItemsView.FN_refrishCatalogItem(CategorieItem.getCategorieItems());
+            catigoriesAndItemsView.FN_refrishCatalogItem(CategorieItem.getCategorieItems() , MainWindow.lang, "sale");
             #endregion
         }
 

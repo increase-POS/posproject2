@@ -24,7 +24,7 @@
         </EventTrigger>
 
     </UserControl.Triggers>
-    <Grid>
+    <Grid FlowDirection="LeftToRight">
         <Border  CornerRadius="10" BorderBrush="{Binding rectangleCardPriceBorderBrush_ar }" 
              BorderThickness="1.2"
                     Background="White">

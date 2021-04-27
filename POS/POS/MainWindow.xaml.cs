@@ -48,7 +48,7 @@ namespace POS
         {
             this.WindowState = System.Windows.WindowState.Minimized;
         }
-        void colorRefreash(TextBlock txt)
+        void colorTextRefreash(TextBlock txt)
         {
 
             txt_home.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
@@ -133,13 +133,13 @@ namespace POS
 
         private void BTN_Home_Click(object sender, RoutedEventArgs e)
         {
-            colorRefreash(txt_home);
+            colorTextRefreash(txt_home);
 
         }
 
         private void BTN_SectionData_Click(object sender, RoutedEventArgs e)
         {
-            colorRefreash(txt_sectiondata);
+            colorTextRefreash(txt_sectiondata);
 
             GRID_Main.Children.Clear();
             UC_SectionData uc = new UC_SectionData();
@@ -149,7 +149,7 @@ namespace POS
 
         private void BTN_catalog_Click(object sender, RoutedEventArgs e)
         {
-            colorRefreash(txt_catalog);
+            colorTextRefreash(txt_catalog);
 
             GRID_Main.Children.Clear();
             UC_catalog uc = new UC_catalog();
@@ -170,7 +170,7 @@ namespace POS
        
         private void BTN_purchases_Click(object sender, RoutedEventArgs e)
         {
-            colorRefreash(txt_purchases);
+            colorTextRefreash(txt_purchases);
 
             GRID_Main.Children.Clear();
             uc_purchases uc = new uc_purchases();
@@ -179,24 +179,24 @@ namespace POS
 
         private void BTN_sales_Click(object sender, RoutedEventArgs e)
         {
-            colorRefreash(txt_sales);
+            colorTextRefreash(txt_sales);
 
         }
 
         private void BTN_accounts_Click(object sender, RoutedEventArgs e)
         {
-            colorRefreash(txt_accounting);
+            colorTextRefreash(txt_accounting);
 
         }
 
         private void BTN_reports_Click(object sender, RoutedEventArgs e)
         {
-            colorRefreash(txt_reports);
+            colorTextRefreash(txt_reports);
         }
 
         private void BTN_settings_Click(object sender, RoutedEventArgs e)
         {
-            colorRefreash(txt_settings);
+            colorTextRefreash(txt_settings);
         }
     }
 }

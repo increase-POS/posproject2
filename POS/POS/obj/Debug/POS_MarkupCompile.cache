@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\myproj\posproject2\POS\POS\obj\Debug\
+E:\GitHub\posproject2\POS\POS\obj\Debug\
 POS
 none
 false
 DEBUG;TRACE
-D:\myproj\posproject2\POS\POS\App.xaml
-21-2012213066
+E:\GitHub\posproject2\POS\POS\App.xaml
+24554119058
 
-36-433539531
-18256695316
-controlTemplate\UC_rectangleCardPrice.xaml;controlTemplate\UC_rectangleCardPrice_ar.xaml;controlTemplate\UC_squareCard.xaml;MainWindow.xaml;View\UC_bank.xaml;View\UC_branch.xaml;View\UC_catalog.xaml;View\uc_categorie.xaml;View\UC_customer.xaml;View\UC_item.xaml;View\uc_payInvoice.xaml;View\UC_porperty.xaml;View\UC_pos.xaml;View\uc_purchases.xaml;View\uc_receiptInvoice.xaml;View\uc_sales.xaml;View\UC_sectionData.xaml;View\UC_store.xaml;View\UC_unit.xaml;View\UC_vendors.xaml;View\UC_users.xaml;
+39-1270808776
+181627077876
+controlTemplate\UC_rectangleCard.xaml;controlTemplate\UC_rectangleCardWithoutPrice_ar.xaml;controlTemplate\UC_rectangleCardWithoutPrice.xaml;controlTemplate\UC_rectangleCardPrice.xaml;controlTemplate\UC_rectangleCardPrice_ar.xaml;controlTemplate\UC_squareCard.xaml;MainWindow.xaml;View\UC_bank.xaml;View\UC_branch.xaml;View\UC_catalog.xaml;View\uc_categorie.xaml;View\UC_customer.xaml;View\UC_item.xaml;View\uc_payInvoice.xaml;View\UC_porperty.xaml;View\UC_pos.xaml;View\uc_purchases.xaml;View\uc_receiptInvoice.xaml;View\uc_sales.xaml;View\UC_sectionData.xaml;View\UC_store.xaml;View\UC_unit.xaml;View\UC_vendors.xaml;View\UC_users.xaml;
 
 False
 
