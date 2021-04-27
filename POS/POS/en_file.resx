@@ -471,4 +471,70 @@
   <data name="trVendor" xml:space="preserve">
     <value>Vendor</value>
   </data>
+  <data name="trBarcode" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
+  <data name="trItemData" xml:space="preserve">
+    <value>Item Data</value>
+  </data>
+  <data name="trMaxHint" xml:space="preserve">
+    <value>Max...</value>
+  </data>
+  <data name="trMinAndMaxOfItem" xml:space="preserve">
+    <value>Maximum and Minimum of Items</value>
+  </data>
+  <data name="trMinHint" xml:space="preserve">
+    <value>Min...</value>
+  </data>
+  <data name="trSelectCategorieHint" xml:space="preserve">
+    <value>Select Categorie</value>
+  </data>
+  <data name="trSelectItemTypeHint" xml:space="preserve">
+    <value>Select Item Type</value>
+  </data>
+  <data name="trSelectParentItemHint" xml:space="preserve">
+    <value>Select Parent Item</value>
+  </data>
+  <data name="trSelectUnitHint" xml:space="preserve">
+    <value>Select Unit</value>
+  </data>
+  <data name="c" xml:space="preserve">
+    <value>SelectUnit</value>
+  </data>
+  <data name="trIsDefaultPurchases" xml:space="preserve">
+    <value>Is Default Purchase</value>
+  </data>
+  <data name="trSmallUnit" xml:space="preserve">
+    <value>Small Unit</value>
+  </data>
+  <data name="trUnitCount" xml:space="preserve">
+    <value>Unit Count</value>
+  </data>
+  <data name="trBarcodeHint" xml:space="preserve">
+    <value>Barcode...</value>
+  </data>
+  <data name="trCountHint" xml:space="preserve">
+    <value>Count...</value>
+  </data>
+  <data name="trCountUnit" xml:space="preserve">
+    <value>Count Unit</value>
+  </data>
+  <data name="trIsDefaultSales" xml:space="preserve">
+    <value>Is Default Sales</value>
+  </data>
+  <data name="trPriceHint" xml:space="preserve">
+    <value>Price...</value>
+  </data>
+  <data name="trSelectProperties" xml:space="preserve">
+    <value>Select Properties</value>
+  </data>
+  <data name="trUnitHint" xml:space="preserve">
+    <value>Unit...</value>
+  </data>
+  <data name="trValue" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="trValueHint" xml:space="preserve">
+    <value>Value...</value>
+  </data>
 </root>

@@ -61,6 +61,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SelectUnit.
+        /// </summary>
+        internal static string c {
+            get {
+                return ResourceManager.GetString("c", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account Number.
         /// </summary>
         internal static string trAccNumber {
@@ -192,6 +201,24 @@ namespace POS {
         internal static string trBanks {
             get {
                 return ResourceManager.GetString("trBanks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barcode.
+        /// </summary>
+        internal static string trBarcode {
+            get {
+                return ResourceManager.GetString("trBarcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barcode....
+        /// </summary>
+        internal static string trBarcodeHint {
+            get {
+                return ResourceManager.GetString("trBarcodeHint", resourceCulture);
             }
         }
         
@@ -336,6 +363,24 @@ namespace POS {
         internal static string trContactInformation {
             get {
                 return ResourceManager.GetString("trContactInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Count....
+        /// </summary>
+        internal static string trCountHint {
+            get {
+                return ResourceManager.GetString("trCountHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Count Unit.
+        /// </summary>
+        internal static string trCountUnit {
+            get {
+                return ResourceManager.GetString("trCountUnit", resourceCulture);
             }
         }
         
@@ -511,6 +556,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is Default Purchase.
+        /// </summary>
+        internal static string trIsDefaultPurchases {
+            get {
+                return ResourceManager.GetString("trIsDefaultPurchases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is Default Sales.
+        /// </summary>
+        internal static string trIsDefaultSales {
+            get {
+                return ResourceManager.GetString("trIsDefaultSales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is Smallest.
         /// </summary>
         internal static string trIsSmallest {
@@ -525,6 +588,15 @@ namespace POS {
         internal static string trIsSmallestHint {
             get {
                 return ResourceManager.GetString("trIsSmallestHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item Data.
+        /// </summary>
+        internal static string trItemData {
+            get {
+                return ResourceManager.GetString("trItemData", resourceCulture);
             }
         }
         
@@ -601,11 +673,38 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max....
+        /// </summary>
+        internal static string trMaxHint {
+            get {
+                return ResourceManager.GetString("trMaxHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Menu.
         /// </summary>
         internal static string trMenu {
             get {
                 return ResourceManager.GetString("trMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum and Minimum of Items.
+        /// </summary>
+        internal static string trMinAndMaxOfItem {
+            get {
+                return ResourceManager.GetString("trMinAndMaxOfItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Min....
+        /// </summary>
+        internal static string trMinHint {
+            get {
+                return ResourceManager.GetString("trMinHint", resourceCulture);
             }
         }
         
@@ -745,6 +844,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Price....
+        /// </summary>
+        internal static string trPriceHint {
+            get {
+                return ResourceManager.GetString("trPriceHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Properties.
         /// </summary>
         internal static string trProperties {
@@ -826,11 +934,38 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Categorie.
+        /// </summary>
+        internal static string trSelectCategorieHint {
+            get {
+                return ResourceManager.GetString("trSelectCategorieHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Item Type.
+        /// </summary>
+        internal static string trSelectItemTypeHint {
+            get {
+                return ResourceManager.GetString("trSelectItemTypeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Job ....
         /// </summary>
         internal static string trSelectJobHint {
             get {
                 return ResourceManager.GetString("trSelectJobHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Parent Item.
+        /// </summary>
+        internal static string trSelectParentItemHint {
+            get {
+                return ResourceManager.GetString("trSelectParentItemHint", resourceCulture);
             }
         }
         
@@ -849,6 +984,15 @@ namespace POS {
         internal static string trSelectPosNameHint {
             get {
                 return ResourceManager.GetString("trSelectPosNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Properties.
+        /// </summary>
+        internal static string trSelectProperties {
+            get {
+                return ResourceManager.GetString("trSelectProperties", resourceCulture);
             }
         }
         
@@ -880,6 +1024,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Unit.
+        /// </summary>
+        internal static string trSelectUnitHint {
+            get {
+                return ResourceManager.GetString("trSelectUnitHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Unit Name.
         /// </summary>
         internal static string trSelestUnitNameHint {
@@ -903,6 +1056,15 @@ namespace POS {
         internal static string trSmallestUnit {
             get {
                 return ResourceManager.GetString("trSmallestUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Small Unit.
+        /// </summary>
+        internal static string trSmallUnit {
+            get {
+                return ResourceManager.GetString("trSmallUnit", resourceCulture);
             }
         }
         
@@ -997,6 +1159,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unit Count.
+        /// </summary>
+        internal static string trUnitCount {
+            get {
+                return ResourceManager.GetString("trUnitCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit....
+        /// </summary>
+        internal static string trUnitHint {
+            get {
+                return ResourceManager.GetString("trUnitHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unit Name.
         /// </summary>
         internal static string trUnitName {
@@ -1083,6 +1263,24 @@ namespace POS {
         internal static string trUserType {
             get {
                 return ResourceManager.GetString("trUserType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value.
+        /// </summary>
+        internal static string trValue {
+            get {
+                return ResourceManager.GetString("trValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value....
+        /// </summary>
+        internal static string trValueHint {
+            get {
+                return ResourceManager.GetString("trValueHint", resourceCulture);
             }
         }
         

@@ -196,6 +196,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الباركود.
+        /// </summary>
+        internal static string trBarcode {
+            get {
+                return ResourceManager.GetString("trBarcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الباركود....
+        /// </summary>
+        internal static string trBarcodeHint {
+            get {
+                return ResourceManager.GetString("trBarcodeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to المعلومات الأساسية.
         /// </summary>
         internal static string trBaseInformation {
@@ -336,6 +354,24 @@ namespace POS {
         internal static string trContactInformation {
             get {
                 return ResourceManager.GetString("trContactInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to العدد....
+        /// </summary>
+        internal static string trCountHint {
+            get {
+                return ResourceManager.GetString("trCountHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عدد الوحدة.
+        /// </summary>
+        internal static string trCountUnit {
+            get {
+                return ResourceManager.GetString("trCountUnit", resourceCulture);
             }
         }
         
@@ -502,6 +538,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الوحدة الافتراضية للبيع.
+        /// </summary>
+        internal static string trIsDefaultPurchases {
+            get {
+                return ResourceManager.GetString("trIsDefaultPurchases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الوحدة الافتراضية للشراء.
+        /// </summary>
+        internal static string trIsDefaultSales {
+            get {
+                return ResourceManager.GetString("trIsDefaultSales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to هي الوحدة الأصغر.
         /// </summary>
         internal static string trIsSmallest {
@@ -516,6 +570,15 @@ namespace POS {
         internal static string trIsSmallestHint {
             get {
                 return ResourceManager.GetString("trIsSmallestHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to معلومات.
+        /// </summary>
+        internal static string trItemData {
+            get {
+                return ResourceManager.GetString("trItemData", resourceCulture);
             }
         }
         
@@ -592,11 +655,38 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الأكبر.
+        /// </summary>
+        internal static string trMaxHint {
+            get {
+                return ResourceManager.GetString("trMaxHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to القائمة.
         /// </summary>
         internal static string trMenu {
             get {
                 return ResourceManager.GetString("trMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الحدود الدنيا والعليا من العنصر.
+        /// </summary>
+        internal static string trMinAndMaxOfItem {
+            get {
+                return ResourceManager.GetString("trMinAndMaxOfItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الأصغر.
+        /// </summary>
+        internal static string trMinHint {
+            get {
+                return ResourceManager.GetString("trMinHint", resourceCulture);
             }
         }
         
@@ -736,6 +826,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to السعر....
+        /// </summary>
+        internal static string trPriceHint {
+            get {
+                return ResourceManager.GetString("trPriceHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الخصائص.
         /// </summary>
         internal static string trProperties {
@@ -817,11 +916,38 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to اختر الفئة.
+        /// </summary>
+        internal static string trSelectCategorieHint {
+            get {
+                return ResourceManager.GetString("trSelectCategorieHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اختر نوع العنصر.
+        /// </summary>
+        internal static string trSelectItemTypeHint {
+            get {
+                return ResourceManager.GetString("trSelectItemTypeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اختر عمل....
         /// </summary>
         internal static string trSelectJobHint {
             get {
                 return ResourceManager.GetString("trSelectJobHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اختر العنصر الأب.
+        /// </summary>
+        internal static string trSelectParentItemHint {
+            get {
+                return ResourceManager.GetString("trSelectParentItemHint", resourceCulture);
             }
         }
         
@@ -840,6 +966,15 @@ namespace POS {
         internal static string trSelectPosNameHint {
             get {
                 return ResourceManager.GetString("trSelectPosNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اختر الخصائص.
+        /// </summary>
+        internal static string trSelectProperties {
+            get {
+                return ResourceManager.GetString("trSelectProperties", resourceCulture);
             }
         }
         
@@ -871,6 +1006,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to اختر الوحدة.
+        /// </summary>
+        internal static string trSelectUnitHint {
+            get {
+                return ResourceManager.GetString("trSelectUnitHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اختر اسم الوحدة.
         /// </summary>
         internal static string trSelestUnitNameHint {
@@ -894,6 +1038,15 @@ namespace POS {
         internal static string trSmallestUnit {
             get {
                 return ResourceManager.GetString("trSmallestUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اصغر وحدة.
+        /// </summary>
+        internal static string trSmallUnit {
+            get {
+                return ResourceManager.GetString("trSmallUnit", resourceCulture);
             }
         }
         
@@ -988,6 +1141,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الوحدة....
+        /// </summary>
+        internal static string trUnitHint {
+            get {
+                return ResourceManager.GetString("trUnitHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اسم الوحدة.
         /// </summary>
         internal static string trUnitName {
@@ -1074,6 +1236,24 @@ namespace POS {
         internal static string trUserType {
             get {
                 return ResourceManager.GetString("trUserType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to القيمة.
+        /// </summary>
+        internal static string trValue {
+            get {
+                return ResourceManager.GetString("trValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to القيمة....
+        /// </summary>
+        internal static string trValueHint {
+            get {
+                return ResourceManager.GetString("trValueHint", resourceCulture);
             }
         }
         

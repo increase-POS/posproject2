@@ -468,4 +468,64 @@
   <data name="trVendor" xml:space="preserve">
     <value>المورد</value>
   </data>
+  <data name="trBarcode" xml:space="preserve">
+    <value>الباركود</value>
+  </data>
+  <data name="trItemData" xml:space="preserve">
+    <value>معلومات</value>
+  </data>
+  <data name="trMaxHint" xml:space="preserve">
+    <value>الأكبر</value>
+  </data>
+  <data name="trMinAndMaxOfItem" xml:space="preserve">
+    <value>الحدود الدنيا والعليا من العنصر</value>
+  </data>
+  <data name="trMinHint" xml:space="preserve">
+    <value>الأصغر</value>
+  </data>
+  <data name="trSelectCategorieHint" xml:space="preserve">
+    <value>اختر الفئة</value>
+  </data>
+  <data name="trSelectItemTypeHint" xml:space="preserve">
+    <value>اختر نوع العنصر</value>
+  </data>
+  <data name="trSelectParentItemHint" xml:space="preserve">
+    <value>اختر العنصر الأب</value>
+  </data>
+  <data name="trSelectUnitHint" xml:space="preserve">
+    <value>اختر الوحدة</value>
+  </data>
+  <data name="trBarcodeHint" xml:space="preserve">
+    <value>الباركود...</value>
+  </data>
+  <data name="trCountHint" xml:space="preserve">
+    <value>العدد...</value>
+  </data>
+  <data name="trCountUnit" xml:space="preserve">
+    <value>عدد الوحدة</value>
+  </data>
+  <data name="trIsDefaultPurchases" xml:space="preserve">
+    <value>الوحدة الافتراضية للبيع</value>
+  </data>
+  <data name="trIsDefaultSales" xml:space="preserve">
+    <value>الوحدة الافتراضية للشراء</value>
+  </data>
+  <data name="trPriceHint" xml:space="preserve">
+    <value>السعر...</value>
+  </data>
+  <data name="trSelectProperties" xml:space="preserve">
+    <value>اختر الخصائص</value>
+  </data>
+  <data name="trSmallUnit" xml:space="preserve">
+    <value>اصغر وحدة</value>
+  </data>
+  <data name="trUnitHint" xml:space="preserve">
+    <value>الوحدة...</value>
+  </data>
+  <data name="trValue" xml:space="preserve">
+    <value>القيمة</value>
+  </data>
+  <data name="trValueHint" xml:space="preserve">
+    <value>القيمة...</value>
+  </data>
 </root>
