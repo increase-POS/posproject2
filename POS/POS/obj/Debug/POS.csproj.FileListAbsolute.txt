@@ -642,3 +642,11 @@ D:\myproj\posproject2\POS\POS\obj\Debug\POS.csproj.CoreCompileInputs.cache
 D:\myproj\posproject2\POS\POS\obj\Debug\POS.csproj.CopyComplete
 D:\myproj\posproject2\POS\POS\obj\Debug\POS.exe
 D:\myproj\posproject2\POS\POS\obj\Debug\POS.pdb
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_sales.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_sales.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCard.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCard.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice_ar.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice_ar.baml
