@@ -129,6 +129,7 @@ namespace POS
                 menuState = false;
                 
             }
+            
 
             #region tooltipVisibility
             FN_tooltipVisibility(BTN_menu);
@@ -145,6 +146,8 @@ namespace POS
 
 
         }
+
+       
 
         void fn_pathOpenCollapsed()
         {

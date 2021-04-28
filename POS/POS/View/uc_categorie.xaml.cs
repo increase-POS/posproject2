@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using client_app.Classes;
+using POS.Classes;
 using POS.controlTemplate;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ namespace POS.View
     /// </summary>
     public partial class uc_categorie : UserControl
     {
+        public int CategorieId;
+        Category categorieModel = new Category();
         public uc_categorie()
         {
             InitializeComponent();
@@ -443,5 +446,56 @@ namespace POS.View
             grid_ItemsCard.Visibility = Visibility.Collapsed;
             grid_itemsDatagrid.Visibility = Visibility.Visible;
         }
+
+        private void Btn_add_Click(object sender, RoutedEventArgs e)
+        {
+            //add
+            if (tb_name.Text.Equals(""))
+            {
+                p_errorName.Visibility = Visibility.Visible;
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+            }
+
+            if (!tb_categoryCode.Text.Equals(""))
+                 {
+
+                p_errorCode.Visibility = Visibility.Visible;
+                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
+                }
+                else
+                {
+                p_errorCode.Visibility = Visibility.Collapsed;
+                }
+            if ((!tb_name.Text.Equals("")))
+            {
+
+                Category categories = new Category
+                {
+                    name = tb_name.Text,
+                    categoryCode = "",
+                    image = "",
+                    details = tb_details.Text,
+
+                    isDefault = 0,
+                    createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                    updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                    createUserId = 1,
+                    updateUserId = 1,
+                    notes = tb_notes.Text,
+                   // isActive = 1,
+
+                };
+                await categorieModel.saveAgent(customer);
+                //pass parameter type (V for vendors, C for Clients , B for Both)
+                var agents = await agentModel.GetAgentsAsync("c");
+                dg_customer.ItemsSource = agents;
+            }
+
+        }
+
     }
 }

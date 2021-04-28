@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using client_app.Classes;
+using POS.Classes;
 using POS.controlTemplate;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,16 @@ namespace POS.View
     /// </summary>
     public partial class UC_item : UserControl
     {
+        public int ItemId;
+
+        Item itemModel = new Item();
+
+        string selectedType = "" ;
+
+        int selectedCategoryId = 0;
+
+        List<int> categoryIds = new List<int>();
+        List<string> categoryNames = new List<string>();
 
         public UC_item()
         {
@@ -130,7 +141,6 @@ namespace POS.View
             translate();
 
         }
-
         public void testChangeCategorieIdEvent()
         {
             MessageBox.Show("Hello World!! CategorieId");
@@ -165,11 +175,12 @@ namespace POS.View
             brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
 
-         //0Normal Item
-         //1Have Expiration date
-         //2Have Serial number
-         //3Service
-         //4Package items
+        //0Normal Item
+        //1Have Expiration date
+        //2Have Serial number
+        //3Service
+        //4Package items
+
         private void CB_type_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
@@ -194,13 +205,48 @@ namespace POS.View
                 line_topService.Visibility = Visibility.Visible;
             }
 
-           
+            switch (cb_itemType.SelectedIndex)
+            {
+                case 0: selectedType = "n"; break;
+                case 1: selectedType = "d"; break;
+                case 2: selectedType = "sn"; break;
+                case 3: selectedType = "sr"; break;
+                case 4: selectedType = "p"; break;
+            }
+
 
 
         }
 
-        private void Btn_add_Click(object sender, RoutedEventArgs e)
-        {
+        private async void Btn_add_Click(object sender, RoutedEventArgs e)
+        {//add
+            Item item = new Item
+            {
+                //itemId { get; set; }
+                code     = tb_code.Text,
+                name     = tb_name.Text,
+                details  = tb_details.Text,
+                type     = selectedType,
+                image    = "",
+                taxes    = decimal.Parse(tb_taxes.Text),
+                isActive = 1,
+                min      = int.Parse(tb_min.Text) ,
+                max      = int.Parse(tb_max.Text),
+
+                //public Nullable<int> categoryId { get; set; }
+                //public Nullable<int> parentId { get; set; }
+                //public Nullable<int> barcodeId { get; set; }
+                //public string serialnum { get; set; }
+                //public Nullable<System.DateTime> createDate { get; set; }
+                //public Nullable<System.DateTime> updateDate { get; set; }
+                //public Nullable<int> createUserId { get; set; }
+                //public Nullable<int> updateUserId { get; set; }
+                //public Nullable<int> minUnitId { get; set; }
+                //public Nullable<int> maxUnitId { get; set; }
+
+            };
+
+            await itemModel.saveItem(item);
 
         }
 
@@ -389,6 +435,28 @@ namespace POS.View
                 p_errorTaxes.Visibility = Visibility.Collapsed;
                 tb_taxes.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
+        }
+
+        private void Cb_categorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectedCategoryId = categoryIds[cb_categorie.SelectedIndex];
+        }
+
+        private async void fillCategories()
+        {
+            //var categories = await categoryModel.GetBranchesAsync("b");
+            //dt.ItemsSource = branches;
+            //Branch branch = new Branch();
+            //for (int i = 0; i < branches.Count; i++)
+            //{
+            //    branch = dt.Items[i] as Branch;
+            //    branchIds.Add(branch.branchId);
+            //    branchNames.Add(branch.name);
+            //}
+            ////MessageBox.Show(branches.Count.ToString());
+            ////branchNames.Add("first"); branchNames.Add("second");
+            //cb_branchId.ItemsSource = branchNames;
+
         }
     }
 }

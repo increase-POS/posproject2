@@ -383,7 +383,7 @@
                                       Grid.Column="1" VerticalAlignment="Center" />
                                 </Grid>
                                 <Button  Grid.Row="1" 
-                               Grid.RowSpan="3"
+                               Grid.RowSpan="3" x:Name="img_calegorieImg"
                              HorizontalAlignment="Center" VerticalAlignment="Center"   
                             BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="5"  Height="125" Width="125" Grid.Column="1">
                                     <Button.Background>
@@ -547,7 +547,7 @@
                             </Grid.RowDefinitions>
                             <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Add"  />
+                    Margin="1,0"    Content="Add" Click="Btn_add_Click"  />
                             <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="1,0"    Content="Update" />
