@@ -32,9 +32,11 @@ namespace POS.View
             btn_categories.Content = MainWindow.resourcemanager.GetString("trCategories");
             btn_properties.Content = MainWindow.resourcemanager.GetString("trProperties");
             btn_item.Content = MainWindow.resourcemanager.GetString("trItems");
+            btn_units.Content = MainWindow.resourcemanager.GetString("trUnits");
+
 
         }
-            private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             Btn_categorie_Click(null, null);
 
@@ -51,6 +53,23 @@ namespace POS.View
 
             translate();
         }
+
+        void refreashBackground()
+        {
+
+
+
+            btn_units.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_units.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+        }
+
+        void refreashBachgroundClick(Button btn)
+        {
+            refreashBackground();
+            btn.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+        }
+
 
         private void Btn_categorie_Click(object sender, RoutedEventArgs e)
         {
@@ -76,6 +95,13 @@ namespace POS.View
             grid_main.Children.Add(uc);
         }
 
+        private void Btn_units_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_units);
+            grid_main.Children.Clear();
+            UC_unit uc = new UC_unit();
+            grid_main.Children.Add(uc);
+        }
 
     }
 }

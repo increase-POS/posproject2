@@ -18,6 +18,7 @@
                 <RowDefinition Height="95"/>
                 <RowDefinition Height="95"/>
                 <RowDefinition Height="95"/>
+                <RowDefinition Height="95"/>
             </Grid.RowDefinitions>
             <Button x:Name="btn_categories" Click="Btn_categorie_Click" Style="{StaticResource SmallButton}"   Grid.Row="0" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5"
@@ -59,6 +60,11 @@
 	c-5,0.3-10,0.1-13.6,0.1l56.5-56.5C184.8,375,185,380.1,184.7,385.2z M275.1,305v59.1h-72.2v-57.7c0-12.3-2.2-14.4-14.7-14.4h-57.3
 	v-72.2h58.8c10.4,0,13.2-2.7,13.2-12.9v-59.1h72c0.1,1.7,0.2,3.4,0.2,5.2c0,17.7,0,35.3,0,53c0,11.4,2.5,13.9,13.7,13.9h58.3v72.2
 	h-58.8C277.9,292.1,275.1,294.8,275.1,305z"/>
+            <Button  Style="{StaticResource SmallButton}"   Grid.Row="3" Grid.Column="0"
+                Height="75" Width="75" Background="White" Margin="5"
+                  Content="Units"    BorderBrush="#67686D" x:Name="btn_units"
+                DataContext="M7,4v40h34V4H7z M17,38h-4v-4h4V38z M17,30h-4v-4h4V30z M17,22h-4v-4h4V22z M17,14h-4v-4h4V14z M35,38H21v-4h14
+	V38z M35,30H21v-4h14V30z M35,22H21v-4h14V22z M35,14H21v-4h14V14z" Click="Btn_units_Click" />
         </Grid>
 
         <Grid Grid.Column="1" x:Name="grid_main"/>

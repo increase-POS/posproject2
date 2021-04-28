@@ -49,7 +49,7 @@
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35"   Width="250" Margin="10,5"/>
-                    <ComboBox x:Name="cb_search"  Grid.Row="2" 
+                    <!--<ComboBox x:Name="cb_search"  Grid.Row="2" 
                                   Padding="10,5,5,5" 
                                    TextBlock.Foreground="#4E4E4E"
                              materialDesign:HintAssist.Hint="Select Job ..."  
@@ -57,7 +57,7 @@
                      HorizontalAlignment="Right" VerticalAlignment="Center" 
                 Grid.Column="1" Height="30" Width="200"  Margin="10,5"
                            BorderBrush="#737373"       BorderThickness="0"   >
-                    </ComboBox>
+                    </ComboBox>-->
                 </Grid>
 
             </Grid >
@@ -277,8 +277,8 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <ComboBox x:Name="cb_area" Padding="10,5,5,5" TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Area ..."  
+                            <ComboBox x:Name="cb_areaMobile" Padding="10,5,5,5" TextBlock.Foreground="#4E4E4E"
+                        
                            TextBlock.FontSize="12" Margin="10,5,5,5"
                      HorizontalAlignment="Center" VerticalAlignment="Center" 
                 Height="35" Width="60"  
@@ -344,21 +344,68 @@
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="0"  Height="35" Width="340"  Margin="10,5" Grid.ColumnSpan="2"/>-->
 
-                        <Grid  Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"  Margin="5,0,0,0">
+                        <Grid  Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" >
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_phone"  Text="{Binding phone, Mode=OneWay}" Grid.Row="2" 
-                                     Padding="10,5,5,5"   PreviewTextInput="NumberValidationTextBox"
+                            <ComboBox x:Name="cb_areaPhone" Padding="10,11,5,5" TextBlock.Foreground="#4E4E4E"
+                            SelectedIndex="0"  Grid.Column="0"
+                           TextBlock.FontSize="12" Margin="10,5,5,5"
+                     HorizontalAlignment="Center" VerticalAlignment="Center" 
+                Height="35" Width="60"  
+                                  Background="#f8f8f8" 
+                           BorderBrush="#737373"       BorderThickness="0" 
+                            FontFamily="{StaticResource Font-cairo-light}"   
+                             Grid.Row="2"
+                           Text="{Binding Gender, Mode=TwoWay}"  >
+                                <ListBoxItem>
+                                    +963
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    +961
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    +966
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    +950
+                                </ListBoxItem>
+                            </ComboBox>
+                            <ComboBox x:Name="cb_areaPhoneLocal" Padding="15,11,5,5" TextBlock.Foreground="#4E4E4E"
+                            SelectedIndex="0"
+                           TextBlock.FontSize="12" Margin="10,5,5,5"
+                     HorizontalAlignment="Center" VerticalAlignment="Center" 
+                Height="35" Width="60"  Grid.Column="1"
+                                  Background="#f8f8f8" 
+                           BorderBrush="#737373"       BorderThickness="0" 
+                            FontFamily="{StaticResource Font-cairo-light}"   
+                           
+                           Text="{Binding Gender, Mode=TwoWay}"  >
+                                <ListBoxItem>
+                                    011
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    021
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    021
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    041
+                                </ListBoxItem>
+                            </ComboBox>
+                            <TextBox x:Name="tb_phone"  Text="{Binding phone, Mode=OneWay}" Grid.Column="2"  Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Phone..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue" MaxLength="15"
-                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                           BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="15"
+                  Height="35" Width="195"  Margin="5,5,0,5" />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"    
+                              HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                 <Path.ToolTip>
@@ -434,10 +481,10 @@
                                 <ColumnDefinition Width="*"/>
 
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_job"  Text="{Binding job, Mode=OneWay}"  Grid.Column="0"  Padding="10,5,5,5"   
+                            <ComboBox x:Name="cb_job"  Text="{Binding job, Mode=OneWay}"  Grid.Column="0"  Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Job..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue" MaxLength="100"
+                                 BorderBrush="AliceBlue" IsEditable="True"
                            materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35" Width="170"  Margin="5,5,0,5" />

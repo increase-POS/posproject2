@@ -698,7 +698,7 @@
                         </Grid>
                     </Grid>
 
-                    <Grid  x:Name="grid_vendor" Visibility="Visible"  >
+                    <Grid  x:Name="grid_vendor" Visibility="Collapsed"  >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="45"/>

@@ -122,8 +122,10 @@ namespace POS.View
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trPamentMethodHint"));
+     //       MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trPamentMethodHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trCodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_address, MainWindow.resourcemanager.GetString("trAdressHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_company, MainWindow.resourcemanager.GetString("trCompanyHint"));
@@ -170,16 +172,16 @@ namespace POS.View
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucVendor.FlowDirection = FlowDirection.RightToLeft; }
 
             translate();
+           
+            //pass parameter type (V for vendors, C for Clients , B for Both)
+
+            var agents = await agentModel.GetAgentsAsync("v");
+            dg_vendor.ItemsSource = agents;
             cb_areaMobile.SelectedIndex = 0;
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
             cb_areaFax.SelectedIndex = 0;
             cb_areaFaxLocal.SelectedIndex = 0;
-            //pass parameter type (V for vendors, C for Clients , B for Both)
-
-            var agents = await agentModel.GetAgentsAsync("v");
-            dg_vendor.ItemsSource = agents;
-
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)

@@ -62,8 +62,9 @@ namespace POS.View
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trPamentMethodHint"));
+          //  MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trPamentMethodHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trCodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_address, MainWindow.resourcemanager.GetString("trAdressHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_company, MainWindow.resourcemanager.GetString("trCompanyHint"));
@@ -244,15 +245,15 @@ namespace POS.View
             }
             
             translate();
+            //pass parameter type (V for vendors, C for Clients , B for Both)
+            var agents = await agentModel.GetAgentsAsync("c");
+                       dg_customer.ItemsSource = agents;
             cb_areaMobile.SelectedIndex = 0;
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
             cb_areaFax.SelectedIndex = 0;
             cb_areaFaxLocal.SelectedIndex = 0;
-            //pass parameter type (V for vendors, C for Clients , B for Both)
-            var agents = await agentModel.GetAgentsAsync("c");
-                       dg_customer.ItemsSource = agents;
-
+            
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)

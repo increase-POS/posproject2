@@ -62,12 +62,12 @@ namespace POS.View
         {
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorCode.Visibility = Visibility.Collapsed;
-            p_errorBalance.Visibility = Visibility.Collapsed;
+           // p_errorBalance.Visibility = Visibility.Collapsed;
             p_errorSelectBranch.Visibility = Visibility.Collapsed;
             var bc = new BrushConverter();
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_balance.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            //tb_balance.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tt_errorSelectBranch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
             Pos pos = new Pos();
@@ -161,39 +161,7 @@ namespace POS.View
             }
         }
 
-        private void Tb_balance_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var bc = new BrushConverter();
-
-            if (tb_balance.Text.Equals(""))
-            {
-                p_errorBalance.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyBalanceToolTip");
-                tb_balance.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorBalance.Visibility = Visibility.Collapsed;
-                tb_balance.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-        }
-
-        private void Tb_balance_LostFocus(object sender, RoutedEventArgs e)
-        {
-            var bc = new BrushConverter();
-
-            if (tb_balance.Text.Equals(""))
-            {
-                p_errorBalance.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyBalanceToolTip");
-                tb_balance.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorBalance.Visibility = Visibility.Collapsed;
-                tb_balance.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-        }
+        
 
         private void Cb_branchId_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -215,14 +183,12 @@ namespace POS.View
         {
             txt_pos.Text = MainWindow.resourcemanager.GetString("trPOS");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectPosNameHint"));
+         //   MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectPosNameHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trPosNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trPosCodeHint"));
-            txt_moreInformation.Text = MainWindow.resourcemanager.GetString("trMoreInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branchId, MainWindow.resourcemanager.GetString("trSelectPosBranchHint"));
 
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_balance, MainWindow.resourcemanager.GetString("trBalanceHint"));
             btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
             btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
@@ -258,7 +224,6 @@ namespace POS.View
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
             tb_name.Text = "";
-            tb_balance.Text = "";
             tb_code.Text = "";
             cb_branchId.Text = "";
         }
@@ -275,7 +240,6 @@ namespace POS.View
             {
                 code         = tb_code.Text,
                 name         = tb_name.Text,
-                balance      = 0,
                 branchId     = 1 ,
                 //branchId     = selectedBranchId,
                 createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
@@ -302,7 +266,7 @@ namespace POS.View
                 posId        = PosId,
                 code         = tb_code.Text,
                 name         = tb_name.Text,
-                balance      = decimal.Parse(tb_balance.Text),
+              //  balance      = decimal.Parse(tb_balance.Text),
                 branchId     = 1,
                 //branchId     = selectedBranchId,
                 createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),

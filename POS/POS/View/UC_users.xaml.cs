@@ -76,12 +76,12 @@ namespace POS.View
                     string area = new string(user.mobile.Take(4).ToArray());
                     var mobile = user.mobile.Substring(4, user.mobile.Length - 4);
 
-                    cb_area.Text = area;
+                    cb_areaMobile.Text = area;
                     tb_mobile.Text = mobile.ToString();
                 }
                 else
                 {
-                    cb_area.SelectedIndex = -1;
+                    cb_areaMobile.SelectedIndex = -1;
                     tb_mobile.Clear();
                 }
 
@@ -94,17 +94,17 @@ namespace POS.View
             txt_user.Text = MainWindow.resourcemanager.GetString("trUser");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectJobHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectJobHint"));
             txt_userInfomration.Text = MainWindow.resourcemanager.GetString("trUserInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_firstName, MainWindow.resourcemanager.GetString("trUserNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_lastName, MainWindow.resourcemanager.GetString("trLastNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_email, MainWindow.resourcemanager.GetString("trEmailHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_area, MainWindow.resourcemanager.GetString("trAreaHint"));
+          //  MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_areaMobile, MainWindow.resourcemanager.GetString("trAreaHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_mobile, MainWindow.resourcemanager.GetString("trMobileHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_phone, MainWindow.resourcemanager.GetString("trPhoneHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_address, MainWindow.resourcemanager.GetString("trAdressHint"));
             txt_workInformation.Text = MainWindow.resourcemanager.GetString("trWorkInformation");
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_job, MainWindow.resourcemanager.GetString("trJobHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_job, MainWindow.resourcemanager.GetString("trJobHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_workHours, MainWindow.resourcemanager.GetString("trWorkHoursHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_details, MainWindow.resourcemanager.GetString("trDetailsHint"));
             txt_loginInformation.Text = MainWindow.resourcemanager.GetString("trLoginInformation");
@@ -129,11 +129,11 @@ namespace POS.View
             tb_userName.Text = "";
             tb_firstName.Text = "";
             tb_lastName.Text = "";
-            tb_job.Text = "";
+            cb_job.SelectedIndex = 0;
             tb_workHours.Text = "";
             tb_details.Text = "";
             tb_phone.Text = "";
-            cb_area.Text = "";
+            cb_areaMobile.Text = "";
             tb_mobile.Text = "";
             tb_email.Text = "";
         }
@@ -145,9 +145,14 @@ namespace POS.View
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucUsers.FlowDirection = FlowDirection.RightToLeft; }
 
             translate();
-
+            
+            
             var users = await userModel.GetUsersAsync();
             dg_users.ItemsSource = users;
+
+            cb_areaMobile.SelectedIndex = 0;
+            cb_areaPhone.SelectedIndex = 0;
+            cb_areaPhoneLocal.SelectedIndex = 0;
         }
 
        
@@ -159,11 +164,11 @@ namespace POS.View
                 password     = tb_password.Text,
                 name         = tb_firstName.Text,
                 lastname     = tb_lastName.Text,
-                job          = tb_job.Text,
+                job          = cb_job.Text,
                 workHours    = tb_workHours.Text,
                 details      = tb_details.Text,
                 phone        = tb_phone.Text,
-                mobile       = cb_area.Text + tb_mobile.Text,
+                mobile       = cb_areaMobile.Text + tb_mobile.Text,
                 email        = tb_email.Text,
                 address      = tb_address.Text,
                 isActive     = 1,
@@ -192,11 +197,11 @@ namespace POS.View
                 password   = tb_password.Text,
                 name       = tb_firstName.Text,
                 lastname   = tb_lastName.Text,
-                job        = tb_job.Text,
+                job        = cb_job.Text,
                 workHours  = tb_workHours.Text,
                 details    = tb_details.Text,
                 phone      = tb_phone.Text,
-                mobile     = cb_area.Text + tb_mobile.Text,
+                mobile     = cb_areaMobile.Text + tb_mobile.Text,
                 email      = tb_email.Text,
                 address    = tb_address.Text,
                 isActive   = 1,
@@ -228,11 +233,13 @@ namespace POS.View
             tb_password.Clear();
             tb_firstName.Clear();
             tb_lastName.Clear();
-            tb_job.Clear();
+            cb_job.SelectedIndex=0;
             tb_workHours.Clear();
             tb_details.Clear();
             tb_phone.Clear();
-            cb_area.SelectedIndex = -1;
+            cb_areaMobile.SelectedIndex = 0;
+            cb_areaPhone.SelectedIndex = 0;
+            cb_areaPhoneLocal.SelectedIndex = 0;
             tb_mobile.Clear();
             tb_email.Clear();
             tb_address.Clear();

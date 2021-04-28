@@ -54,8 +54,8 @@ namespace POS.View
             btn_banks.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_banks.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_units.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_units.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            //btn_units.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            //btn_units.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
 
         void refreashBachgroundClick(Button btn)
@@ -101,7 +101,6 @@ namespace POS.View
             btn_stores.Content = MainWindow.resourcemanager.GetString("trStores");
             btn_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
             btn_banks.Content = MainWindow.resourcemanager.GetString("trBanks");
-            btn_units.Content = MainWindow.resourcemanager.GetString("trUnits");
         }
 
         private void Btn_users_Click(object sender, RoutedEventArgs e)
@@ -154,14 +153,6 @@ namespace POS.View
             GRID_Main.Children.Add(uc);
         }
 
-        private void Btn_units_Click(object sender, RoutedEventArgs e)
-        {
-            refreashBachgroundClick(btn_units);
-
-
-            GRID_Main.Children.Clear();
-            UC_unit uc = new UC_unit();
-            GRID_Main.Children.Add(uc);
-        }
+      
     }
 }

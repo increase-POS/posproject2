@@ -79,30 +79,57 @@ namespace POS.View
             // name
             //details
 
+            //List<Item> items = new List<Item>();
+            //items.Add(new Item()
+            //{
+            //    code = 1,
+            //    name = "ThermalPrinters",
+            //    details = "EPSON-thermal-printer"
+            //});
+
+            //items.Add(new Item()
+            //{
+
+            //    code = 2,
+            //    name = "ThermalPrinters",
+            //    details = "EPSON-thermal-printer2",
+            //});
+
+            //items.Add(new Item()
+            //{
+
+            //    code = 3,
+            //    name = "ThermalPrinters",
+            //    details = "EPSON-thermal-printer3",
+            //});
+
             List<Item> items = new List<Item>();
-            items.Add(new Item()
-            {
-                code = 1,
-                name = "ThermalPrinters",
-                details = "EPSON-thermal-printer"
-            });
-
-            items.Add(new Item()
-            {
-
-                code = 2,
-                name = "ThermalPrinters",
-                details = "EPSON-thermal-printer2",
-            });
-
-            items.Add(new Item()
-            {
-
-                code = 3,
-                name = "ThermalPrinters",
-                details = "EPSON-thermal-printer3",
-            });
-            //dg_items.ItemsSource = items;
+            items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details= "EPSON-thermal-printer1" });
+            items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
+            items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details= "EPSON-thermal-printer3" });
+            items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
+            items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details= "EPSON-thermal-printer5" });
+            items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
+            items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details = "EPSON-thermal-printer1" });
+            items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
+            items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details = "EPSON-thermal-printer3" });
+            items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
+            items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details = "EPSON-thermal-printer5" });
+            items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
+            items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details = "EPSON-thermal-printer1" });
+            items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
+            items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details = "EPSON-thermal-printer3" });
+            items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
+            items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details = "EPSON-thermal-printer5" });
+            items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
+            items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details = "EPSON-thermal-printer1" });
+            items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
+            items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details = "EPSON-thermal-printer3" });
+            items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
+            items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details = "EPSON-thermal-printer5" });
+            items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
+            DG_BillDetails.ItemsSource = items;
+            //dg_items.ItemsSource = items.ToList();
 
             #endregion
 
