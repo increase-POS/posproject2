@@ -181,6 +181,9 @@ namespace POS
         {
             colorTextRefreash(txt_sales);
 
+            GRID_Main.Children.Clear();
+            uc_sales uc = new uc_sales();
+            GRID_Main.Children.Add(uc);
         }
 
         private void BTN_accounts_Click(object sender, RoutedEventArgs e)
