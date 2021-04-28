@@ -73,9 +73,9 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn MinWidth="160"  Header="Name" Binding="{Binding Path=name}"/>
                         <DataGridTextColumn MinWidth="160"  Header="Code"   Binding="{Binding Path=code}"/>
-                        <DataGridTextColumn MinWidth="160"  Header="Branch"     Binding="{Binding Path=branchName}"/>
+                        <DataGridTextColumn MinWidth="160"  Header="Branch"  Binding="{Binding Path=branchName}"   />
                         <DataGridTextColumn MinWidth="150"  Header="Balance" Binding="{Binding Path=balance}"/>
-
+                        <!---->
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

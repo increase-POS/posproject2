@@ -83,12 +83,12 @@ namespace POS.View
                 {
                     PosId = pos.posId;
                 }
-                //if (pos.branchId != 0)
-                //{
-                //    for (int i = 0; i < branchIds.Count; i++)
-                //        if (branchIds[i] == pos.branchId)
-                //        { cb_branchId.SelectedIndex = i; break; }
-                //}
+                if (pos.branchId != 0)
+                {
+                    for (int i = 0; i < branchIds.Count; i++)
+                        if (branchIds[i] == pos.branchId)
+                        { cb_branchId.SelectedIndex = i; break; }
+                }
 
             }
         }
@@ -217,9 +217,10 @@ namespace POS.View
 
             var poss = await posModel.GetPosAsync();
             dg_pos.ItemsSource = poss;
+
+            //dg_pos.Columns["MyColumn"]
+         
         }
-
-
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
@@ -240,17 +241,17 @@ namespace POS.View
             {
                 code         = tb_code.Text,
                 name         = tb_name.Text,
-                branchId     = 1 ,
-                //branchId     = selectedBranchId,
+                balance      = 0,
+                //balance      = decimal.Parse(tb_balance.Text),
+                //branchId     = 1 ,
+                branchId = selectedBranchId,
                 createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                createUserId = 1,
-                updateUserId = 1,
+                createUserId = 2,
+                updateUserId = 2,
                 isActive     = 1
             };
 
-        //public int posId { get; set; }
-     
             await posModel.savePos(pos);
 
             var poss = await posModel.GetPosAsync();
@@ -266,13 +267,14 @@ namespace POS.View
                 posId        = PosId,
                 code         = tb_code.Text,
                 name         = tb_name.Text,
-              //  balance      = decimal.Parse(tb_balance.Text),
-                branchId     = 1,
-                //branchId     = selectedBranchId,
+                balance      = 0,
+                //balance      = decimal.Parse(tb_balance.Text),
+                //branchId     = 1,
+                branchId     = selectedBranchId,
                 createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                createUserId = 1,
-                updateUserId = 1,
+                createUserId = 2,
+                updateUserId = 2,
                 isActive     = 1
             };
 

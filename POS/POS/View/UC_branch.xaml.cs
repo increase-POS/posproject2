@@ -159,33 +159,6 @@ namespace POS.View
 
         }
 
-        private async void Btn_add_Click(object sender, RoutedEventArgs e)
-        {//add
-            Branch branch = new Branch
-            {
-                code         = tb_code.Text,
-                name         = tb_name.Text,
-                details      = tb_details.Text,
-                address      = tb_address.Text,
-                email        = tb_email.Text,
-                phone        = tb_phone.Text,
-                mobile       = cb_area.Text + tb_mobile.Text,
-                createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                createUserId = 1,
-                updateUserId = 1,
-                notes        = tb_notes.Text,
-                type         ="b"
-            };
-
-
-            await branchModel.saveBranch(branch);
-
-            var branches = await branchModel.GetBranchesAsync("b");
-            dg_branch.ItemsSource = branches;
-
-        }
-
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
@@ -194,34 +167,6 @@ namespace POS.View
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucBranch.FlowDirection = FlowDirection.RightToLeft; }
 
             translate();
-
-            var branches = await branchModel.GetBranchesAsync("b");
-            dg_branch.ItemsSource = branches;
-
-        }
-
-        private async void Btn_update_Click(object sender, RoutedEventArgs e)
-        {//update
-            Branch branch = new Branch
-            {
-                branchId     = BranchId,
-                code         = tb_code.Text,
-                name         = tb_name.Text,
-                details      = tb_details.Text,
-                address      = tb_address.Text,
-                email        = cb_area.Text + tb_email.Text,
-                phone        = tb_phone.Text,
-                mobile       = tb_mobile.Text,
-                createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                createUserId = 1,
-                updateUserId = 1,
-                notes        = tb_notes.Text,
-                type         = "b"
-            };
-
-
-            await branchModel.saveBranch(branch);
 
             var branches = await branchModel.GetBranchesAsync("b");
             dg_branch.ItemsSource = branches;
@@ -272,27 +217,7 @@ namespace POS.View
 
         }
 
-        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
-        {//delete
-            await branchModel.deleteBranch(BranchId);
-
-            var branches = await branchModel.GetBranchesAsync("b");
-            dg_branch.ItemsSource = branches;
-
-            //clear textBoxs
-            tb_code.Text="";
-            tb_name.Text="";
-            tb_details.Clear();
-            tb_address.Clear();
-            cb_area.SelectedIndex = -1;
-            tb_email.Clear();
-            tb_phone.Clear();
-            tb_mobile.Clear();
-            tb_notes.Clear();
-        }
-
-
-
+      
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
             tb_name.Text = "";
@@ -301,6 +226,81 @@ namespace POS.View
             tb_details.Text = "";
             tb_email.Text = "";
             tb_phone.Text = "";
+
+        }
+
+        private async void Btn_add_Click(object sender, RoutedEventArgs e)
+        {//add
+            Branch branch = new Branch
+            {
+                code = tb_code.Text,
+                name = tb_name.Text,
+                details = tb_details.Text,
+                address = tb_address.Text,
+                email = tb_email.Text,
+                phone = tb_phone.Text,
+                mobile = cb_area.Text + tb_mobile.Text,
+                createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                createUserId = 2,
+                updateUserId = 2,
+                notes = tb_notes.Text,
+                type = "b"
+            };
+
+
+            await branchModel.saveBranch(branch);
+
+            var branches = await branchModel.GetBranchesAsync("b");
+            dg_branch.ItemsSource = branches;
+
+        }
+
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {//update
+            Branch branch = new Branch
+            {
+                branchId     = BranchId,
+                code         = tb_code.Text,
+                name         = tb_name.Text,
+                details      = tb_details.Text,
+                address      = tb_address.Text,
+                email        = tb_email.Text,
+                phone        = tb_phone.Text,
+                mobile       = cb_area.Text + tb_mobile.Text,
+                createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                createUserId = 2,
+                updateUserId = 2,
+                notes        = tb_notes.Text,
+                type         = "b"
+            };
+
+
+            await branchModel.saveBranch(branch);
+
+            var branches = await branchModel.GetBranchesAsync("b");
+            dg_branch.ItemsSource = branches;
+
+        }
+
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {//delete
+            await branchModel.deleteBranch(BranchId);
+
+            var branches = await branchModel.GetBranchesAsync("b");
+            dg_branch.ItemsSource = branches;
+
+            //clear textBoxs
+            tb_code.Text = "";
+            tb_name.Text = "";
+            tb_details.Clear();
+            tb_address.Clear();
+            cb_area.SelectedIndex = -1;
+            tb_email.Clear();
+            tb_phone.Clear();
+            tb_mobile.Clear();
+            tb_notes.Clear();
 
         }
     }

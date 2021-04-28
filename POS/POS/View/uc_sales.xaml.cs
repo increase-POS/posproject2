@@ -28,14 +28,49 @@ namespace POS.View
         {
             Btn_receiptInvoice_Click(null, null);
         }
+        void refreashBackground()
+        {
 
+            btn_receiptInvoice.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_receiptInvoice.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_statistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_statistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_coupon.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_coupon.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_offer.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_offer.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+  }
+
+        void refreashBachgroundClick(Button btn)
+        {
+            refreashBackground();
+            btn.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+        }
         private void Btn_receiptInvoice_Click(object sender, RoutedEventArgs e)
         {
+            refreashBachgroundClick(btn_receiptInvoice);
             grid_main.Children.Clear();
             uc_receiptInvoice uc = new uc_receiptInvoice();
             grid_main.Children.Add(uc);
         }
 
-      
+        private void Btn_statistic_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_statistic);
+        }
+
+        private void Btn_coupon_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_coupon);
+        }
+
+        private void Btn_offer_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_offer);
+        }
     }
 }

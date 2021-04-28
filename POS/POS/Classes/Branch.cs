@@ -44,9 +44,8 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Branches/Get");
+                request.RequestUri = new Uri(Global.APIUri + "Branches/Get?type=" + type);
                 request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("type", type);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = await client.SendAsync(request);
@@ -71,7 +70,6 @@ namespace POS.Classes
                 }
                 return branches;
             }
-
         }
 
         public async Task<string> saveBranch(Branch branch)
@@ -106,7 +104,7 @@ namespace POS.Classes
                     }
                     return "";
                 }
-            }
+        }
 
         public async Task<Branch> getBranchById(int branchId)
             {

@@ -457,7 +457,7 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
@@ -472,27 +472,27 @@
                                 <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                             </Grid>
-                            <Button Grid.Row="1" Grid.Column="0" Padding="0"
-                          Background="{x:Null}" BorderBrush="{x:Null}"
-                    Margin="5,1"   ToolTip="NewDraft"  >
-                                <materialDesign:PackIcon Foreground="#178DD2" Kind="PlusBox"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="30" Height="30"/>
-                            </Button>
-                            <Grid Grid.Row="1"  Grid.Column="1">
+                            
+                            <Grid Grid.Row="1"  Grid.Column="0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="88"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" 
                             Margin="10,0,5,0" Text="Select Draft" Foreground="#6e6e6e"
-                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
                               FontSize="12"/>
                                 <ToggleButton Grid.Column="1"  x:Name="tgl_draftDropDown"  Checked="Tgl_draftDropDown_Checked" Unchecked="Tgl_draftDropDown_Unchecked"
                              VerticalAlignment="Center" Padding="10,15,5,5"
                                           Margin="0" Height="13" Width="28" />
                             </Grid>
-
+                            <Button Grid.Row="1" Grid.Column="1" Padding="0"
+                          Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right"
+                    Margin="5,1"   ToolTip="NewDraft"  >
+                                <materialDesign:PackIcon Foreground="#178DD2" Kind="PlusBox"  
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="30" Height="30"/>
+                            </Button>
                             <DataGrid x:Name="dg_draft" Margin="5" Grid.Row="2" Grid.ColumnSpan="2" Height="200"   Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Collapsed"
                          IsReadOnly="True" CanUserAddRows="False" 
@@ -692,12 +692,11 @@
                     Margin="1,0"    Content="Cash" />
                                 <Button Grid.Column="1" 
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"     Content="Bank" />
+                    Margin="1,0"     Content="Credit card" />
                             </Grid>
 
                         </Grid>
                     </Grid>
-
                     <Grid  x:Name="grid_vendor" Visibility="Collapsed"  >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>

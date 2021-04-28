@@ -36,6 +36,7 @@ namespace POS.View
 
 
         }
+        
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             Btn_categorie_Click(null, null);
@@ -56,6 +57,14 @@ namespace POS.View
 
         void refreashBackground()
         {
+            btn_categories.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_categories.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_item.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_item.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_properties.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_properties.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
 
 
@@ -73,6 +82,8 @@ namespace POS.View
 
         private void Btn_categorie_Click(object sender, RoutedEventArgs e)
         {
+            refreashBachgroundClick(btn_categories);
+
             grid_main.Children.Clear();
             uc_categorie uc = new uc_categorie();
             grid_main.Children.Add(uc);
@@ -81,6 +92,8 @@ namespace POS.View
 
         private   void BTN_item_Click(object sender, RoutedEventArgs e)
         {
+            refreashBachgroundClick(btn_item);
+
             grid_main.Children.Clear();
             UC_item uc= new UC_item();
             grid_main.Children.Add(uc);
@@ -89,7 +102,9 @@ namespace POS.View
         }
 
         private void Btn_properties_Click(object sender, RoutedEventArgs e)
-        { 
+        {
+            refreashBachgroundClick(btn_properties);
+
             grid_main.Children.Clear();
             UC_porperty uc = new UC_porperty();
             grid_main.Children.Add(uc);

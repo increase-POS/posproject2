@@ -31,7 +31,7 @@ namespace POS
         {
             InitializeComponent();
         }
-         void FN_tooltipVisibility(Button btn)
+        void FN_tooltipVisibility(Button btn)
         {
             ToolTip T = btn.ToolTip as ToolTip;
             if (T.Visibility == Visibility.Visible)
@@ -66,8 +66,21 @@ namespace POS
             txt.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
         }
+        void fn_ColorIconRefreash(Path p)
+        {
+            path_iconSettings.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconSectionData.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconAccounts.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconSales.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconPurchases.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconStorage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconCatalog.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconHome.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
 
-        private void translate()
+            p.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+        }
+            private void translate()
         {
             tt_menu.Content = resourcemanager.GetString("trMenu");
             tt_home.Content = resourcemanager.GetString("trHome");
@@ -97,6 +110,7 @@ namespace POS
                 Storyboard sb = this.FindResource("Storyboard1") as Storyboard;
                 sb.Begin();
                 menuState = true;
+                fn_pathOpenCollapsed();
                 //tt_menu.Visibility = Visibility.Collapsed;
                 //tt_home.Visibility = Visibility.Collapsed;
                 //tt_catalog.Visibility = Visibility.Collapsed;
@@ -113,6 +127,7 @@ namespace POS
                 Storyboard sb = this.FindResource("Storyboard2") as Storyboard;
                 sb.Begin();
                 menuState = false;
+                
             }
 
             #region tooltipVisibility
@@ -131,16 +146,44 @@ namespace POS
 
         }
 
+        void fn_pathOpenCollapsed()
+        {
+            path_openCatalog.Visibility = Visibility.Collapsed;
+            path_openStorage.Visibility = Visibility.Collapsed;
+            path_openPurchases.Visibility = Visibility.Collapsed;
+            path_openSales.Visibility = Visibility.Collapsed;
+            path_openReports.Visibility = Visibility.Collapsed;
+            path_openSectionData.Visibility = Visibility.Collapsed;
+            path_openSettings.Visibility = Visibility.Collapsed;
+            path_openHome.Visibility = Visibility.Collapsed;
+            path_openAccount.Visibility = Visibility.Collapsed;
+        }
+
+        void FN_pathVisible(Path p)
+        {
+            if (!menuState)
+            {
+
+                fn_pathOpenCollapsed();
+
+                p.Visibility = Visibility.Visible;
+            }
+        }
+
+
         private void BTN_Home_Click(object sender, RoutedEventArgs e)
         {
             colorTextRefreash(txt_home);
+            FN_pathVisible(path_openHome);
+            fn_ColorIconRefreash(path_iconHome);
 
         }
 
         private void BTN_SectionData_Click(object sender, RoutedEventArgs e)
         {
             colorTextRefreash(txt_sectiondata);
-
+            FN_pathVisible(path_openSectionData);
+            fn_ColorIconRefreash(path_iconSectionData);
             GRID_Main.Children.Clear();
             UC_SectionData uc = new UC_SectionData();
             GRID_Main.Children.Add(uc);
@@ -150,7 +193,8 @@ namespace POS
         private void BTN_catalog_Click(object sender, RoutedEventArgs e)
         {
             colorTextRefreash(txt_catalog);
-
+            FN_pathVisible(path_openCatalog);
+            fn_ColorIconRefreash(path_iconCatalog);
             GRID_Main.Children.Clear();
             UC_catalog uc = new UC_catalog();
             GRID_Main.Children.Add(uc);
@@ -171,7 +215,8 @@ namespace POS
         private void BTN_purchases_Click(object sender, RoutedEventArgs e)
         {
             colorTextRefreash(txt_purchases);
-
+            FN_pathVisible(path_openPurchases);
+            fn_ColorIconRefreash(path_iconPurchases);
             GRID_Main.Children.Clear();
             uc_purchases uc = new uc_purchases();
             GRID_Main.Children.Add(uc);
@@ -180,7 +225,8 @@ namespace POS
         private void BTN_sales_Click(object sender, RoutedEventArgs e)
         {
             colorTextRefreash(txt_sales);
-
+            FN_pathVisible(path_openSales);
+            fn_ColorIconRefreash(path_iconSales);
             GRID_Main.Children.Clear();
             uc_sales uc = new uc_sales();
             GRID_Main.Children.Add(uc);
@@ -189,17 +235,29 @@ namespace POS
         private void BTN_accounts_Click(object sender, RoutedEventArgs e)
         {
             colorTextRefreash(txt_accounting);
-
+            FN_pathVisible(path_openAccount);
+            fn_ColorIconRefreash(path_iconAccounts);
         }
 
         private void BTN_reports_Click(object sender, RoutedEventArgs e)
         {
             colorTextRefreash(txt_reports);
+            FN_pathVisible(path_openReports);
+            fn_ColorIconRefreash(path_iconReports);
         }
 
         private void BTN_settings_Click(object sender, RoutedEventArgs e)
         {
             colorTextRefreash(txt_settings);
+            FN_pathVisible(path_openSettings);
+            fn_ColorIconRefreash(path_iconSettings);
+        }
+
+        private void BTN_storage_Click(object sender, RoutedEventArgs e)
+        {
+            colorTextRefreash(txt_storage);
+            FN_pathVisible(path_openStorage);
+            fn_ColorIconRefreash(path_iconStorage);
         }
     }
 }

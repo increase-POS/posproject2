@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d" 
  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="675" d:DesignWidth="985" >
+             d:DesignHeight="675" d:DesignWidth="985" Loaded="UserControl_Loaded" >
 
     <Grid x:Name="grid_ucStore" >
         <Grid.ColumnDefinitions>

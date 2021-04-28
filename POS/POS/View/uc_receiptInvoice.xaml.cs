@@ -143,26 +143,29 @@ namespace POS.View
         #region Tab
         private void Btn_newInvoice_Click(object sender, RoutedEventArgs e)
         {
-            //grid_barcode.Visibility = grid_properties.Visibility = Visibility.Collapsed;
-            //grid_itemData.Visibility = Visibility.Visible;
-            brd_customerTab.BorderBrush = brd_salesManTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            grid_customer.Visibility = grid_receiptInvoice.Visibility = Visibility.Collapsed;
+            grid_receiptInvoice.Visibility = Visibility.Visible;
+
+            brd_customerTab.BorderBrush = brd_deliveryTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
             brd_newInvoiceTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
 
         private void Btn_customer_Click(object sender, RoutedEventArgs e)
         {
-            //grid_itemData.Visibility = grid_properties.Visibility = Visibility.Collapsed;
-            //grid_barcode.Visibility = Visibility.Visible;
-            brd_newInvoiceTab.BorderBrush = brd_salesManTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            grid_receiptInvoice.Visibility = grid_receiptInvoice.Visibility = Visibility.Collapsed;
+            grid_customer.Visibility = Visibility.Visible;
+
+            brd_newInvoiceTab.BorderBrush = brd_deliveryTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
             brd_customerTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
 
-        private void Btn_salesMan_Click(object sender, RoutedEventArgs e)
+        private void Btn_delivery_Click(object sender, RoutedEventArgs e)
         {
-            //grid_itemData.Visibility = grid_barcode.Visibility = Visibility.Collapsed;
-            //grid_properties.Visibility = Visibility.Visible;
+            grid_receiptInvoice.Visibility = grid_customer.Visibility = Visibility.Collapsed;
+            grid_delivery.Visibility = Visibility.Visible;
+
             brd_newInvoiceTab.BorderBrush = brd_customerTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
-            brd_salesManTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            brd_deliveryTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
         #endregion
 

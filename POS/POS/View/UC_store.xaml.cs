@@ -25,8 +25,6 @@ namespace POS.View
     /// </summary>
     public partial class UC_store : UserControl
     {
-
-
         public int StoreId;
 
         Branch storeModel = new Branch();
@@ -139,8 +137,6 @@ namespace POS.View
             }
         }
 
-        
-
         private void Tb_code_TextChanged(object sender, TextChangedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -203,20 +199,6 @@ namespace POS.View
 
         }
 
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (MainWindow.lang.Equals("en"))
-            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucStore.FlowDirection = FlowDirection.LeftToRight; }
-            else
-            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucStore.FlowDirection = FlowDirection.RightToLeft; }
-
-            translate();
-
-            var stores = await storeModel.GetBranchesAsync("s");
-            dg_store.ItemsSource = stores;
-        }
-
-
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
             tb_name.Text = "";
@@ -232,19 +214,19 @@ namespace POS.View
         {//add
             Branch store = new Branch
             {
-                code = tb_code.Text,
-                name = tb_name.Text,
-                details = tb_details.Text,
-                address = tb_address.Text,
-                email = tb_email.Text,
-                phone = tb_phone.Text,
-                mobile = cb_area.Text + tb_mobile.Text,
-                createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                createUserId = 1,
-                updateUserId = 1,
-                notes = "",
-                type = "s"
+                code        = tb_code.Text,
+                name         = tb_name.Text,
+                details      = tb_details.Text,
+                address      = tb_address.Text,
+                email        = tb_email.Text,
+                phone        = tb_phone.Text,
+                mobile       = cb_area.Text + tb_mobile.Text,
+                createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                createUserId = 2,
+                updateUserId = 2,
+                notes        = "",
+                type         = "s"
             };
 
 
@@ -260,20 +242,20 @@ namespace POS.View
         {//update
             Branch store = new Branch
             {
-                branchId = StoreId,
-                code = tb_code.Text,
-                name = tb_name.Text,
-                details = tb_details.Text,
-                address = tb_address.Text,
-                email = cb_area.Text + tb_email.Text,
-                phone = tb_phone.Text,
-                mobile = tb_mobile.Text,
-                createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                createUserId = 1,
-                updateUserId = 1,
-                notes = "",
-                type = "s"
+                branchId     = StoreId,
+                code         = tb_code.Text,
+                name         = tb_name.Text,
+                details      = tb_details.Text,
+                address      = tb_address.Text,
+                email        = tb_email.Text,
+                phone        = tb_phone.Text,
+                mobile       = cb_area.Text + tb_mobile.Text,
+                createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                createUserId = 2,
+                updateUserId = 2,
+                notes        = "",
+                type         = "s"
             };
 
 
@@ -303,6 +285,19 @@ namespace POS.View
             tb_mobile.Clear();
             //tb_notes.Clear();
 
+        }
+
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.lang.Equals("en"))
+            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucStore.FlowDirection = FlowDirection.LeftToRight; }
+            else
+            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucStore.FlowDirection = FlowDirection.RightToLeft; }
+
+            translate();
+
+            var stores = await storeModel.GetBranchesAsync("s");
+            dg_store.ItemsSource = stores;
         }
     }
 }
