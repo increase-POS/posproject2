@@ -73,9 +73,46 @@ namespace POS.View
             catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
             CategorieItem CategorieItem = new CategorieItem();
             catigoriesAndItemsView.FN_refrishCatalogItem(CategorieItem.getCategorieItems() , MainWindow.lang, "sale");
+
+            #region DataGrid
+            // code
+            // name
+            //details
+
+            List<Item> items = new List<Item>();
+            items.Add(new Item()
+            {
+                code = 1,
+                name = "ThermalPrinters",
+                details = "EPSON-thermal-printer"
+            });
+
+            items.Add(new Item()
+            {
+
+                code = 2,
+                name = "ThermalPrinters",
+                details = "EPSON-thermal-printer2",
+            });
+
+            items.Add(new Item()
+            {
+
+                code = 3,
+                name = "ThermalPrinters",
+                details = "EPSON-thermal-printer3",
+            });
+            //dg_items.ItemsSource = items;
+
+            #endregion
+
             #endregion
         }
-
+        class Item {
+            public int code { get; set; }
+            public string name { get; set; }
+            public string details { get; set; }
+        }
 
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
 
@@ -287,9 +324,6 @@ namespace POS.View
                 return CategorieItems;
             }
         }
-
-
-
         #endregion
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -369,6 +403,18 @@ namespace POS.View
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void Btn_ItemsInCards_Click(object sender, RoutedEventArgs e)
+        {
+            grid_itemsDatagrid.Visibility = Visibility.Collapsed;
+            grid_ItemsCard.Visibility = Visibility.Visible;
+        }
+
+        private void Btn_ItemsInGrid_Click(object sender, RoutedEventArgs e)
+        {
+            grid_ItemsCard.Visibility = Visibility.Collapsed;
+            grid_itemsDatagrid.Visibility = Visibility.Visible;
         }
     }
 }

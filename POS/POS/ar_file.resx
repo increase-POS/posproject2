@@ -528,4 +528,10 @@
   <data name="trValueHint" xml:space="preserve">
     <value>القيمة...</value>
   </data>
+  <data name="trFaxHint" xml:space="preserve">
+    <value>فاكس...</value>
+  </data>
+  <data name="trUpperLimitHint" xml:space="preserve">
+    <value>الحد الأعلى للسحب...</value>
+  </data>
 </root>

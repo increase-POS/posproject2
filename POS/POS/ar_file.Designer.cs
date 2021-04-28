@@ -520,6 +520,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to فاكس....
+        /// </summary>
+        internal static string trFaxHint {
+            get {
+                return ResourceManager.GetString("trFaxHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الاسم الأول....
         /// </summary>
         internal static string trFirstNameHint {
@@ -1182,6 +1191,15 @@ namespace POS {
         internal static string trUpdate {
             get {
                 return ResourceManager.GetString("trUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الحد الأعلى للسحب....
+        /// </summary>
+        internal static string trUpperLimitHint {
+            get {
+                return ResourceManager.GetString("trUpperLimitHint", resourceCulture);
             }
         }
         

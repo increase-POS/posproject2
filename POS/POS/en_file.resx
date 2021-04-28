@@ -537,4 +537,10 @@
   <data name="trValueHint" xml:space="preserve">
     <value>Value...</value>
   </data>
+  <data name="trFaxHint" xml:space="preserve">
+    <value>Fax...</value>
+  </data>
+  <data name="trUpperLimitHint" xml:space="preserve">
+    <value>The upper limit of the entitlement...</value>
+  </data>
 </root>

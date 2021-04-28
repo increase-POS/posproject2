@@ -538,6 +538,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fax....
+        /// </summary>
+        internal static string trFaxHint {
+            get {
+                return ResourceManager.GetString("trFaxHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name....
         /// </summary>
         internal static string trFirstNameHint {
@@ -1209,6 +1218,15 @@ namespace POS {
         internal static string trUpdate {
             get {
                 return ResourceManager.GetString("trUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The upper limit of the entitlement....
+        /// </summary>
+        internal static string trUpperLimitHint {
+            get {
+                return ResourceManager.GetString("trUpperLimitHint", resourceCulture);
             }
         }
         
