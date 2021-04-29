@@ -131,7 +131,7 @@ namespace POS.View
             items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
             items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details = "EPSON-thermal-printer5" });
             items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
-            DG_BillDetails.ItemsSource = items;
+            DG_Items.ItemsSource = items;
             //dg_items.ItemsSource = items.ToList();
 
             #endregion
@@ -449,6 +449,7 @@ namespace POS.View
 
         private void Btn_add_Click(object sender, RoutedEventArgs e)
         {
+            /*
             //add
             if (tb_name.Text.Equals(""))
             {
@@ -494,7 +495,7 @@ namespace POS.View
                 var agents = await agentModel.GetAgentsAsync("c");
                 dg_customer.ItemsSource = agents;
             }
-
+            */
         }
 
     }

@@ -220,33 +220,33 @@ namespace POS.View
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            Item item = new Item
-            {
-                //itemId { get; set; }
-                code     = tb_code.Text,
-                name     = tb_name.Text,
-                details  = tb_details.Text,
-                type     = selectedType,
-                image    = "",
-                taxes    = decimal.Parse(tb_taxes.Text),
-                isActive = 1,
-                min      = int.Parse(tb_min.Text) ,
-                max      = int.Parse(tb_max.Text),
+            //Item item = new Item
+            //{
+            //    //itemId { get; set; }
+            //    code     = tb_code.Text,
+            //    name     = tb_name.Text,
+            //    details  = tb_details.Text,
+            //    type     = selectedType,
+            //    image    = "",
+            //    taxes    = decimal.Parse(tb_taxes.Text),
+            //    isActive = 1,
+            //    min      = int.Parse(tb_min.Text) ,
+            //    max      = int.Parse(tb_max.Text),
 
-                //public Nullable<int> categoryId { get; set; }
-                //public Nullable<int> parentId { get; set; }
-                //public Nullable<int> barcodeId { get; set; }
-                //public string serialnum { get; set; }
-                //public Nullable<System.DateTime> createDate { get; set; }
-                //public Nullable<System.DateTime> updateDate { get; set; }
-                //public Nullable<int> createUserId { get; set; }
-                //public Nullable<int> updateUserId { get; set; }
-                //public Nullable<int> minUnitId { get; set; }
-                //public Nullable<int> maxUnitId { get; set; }
+            //    //public Nullable<int> categoryId { get; set; }
+            //    //public Nullable<int> parentId { get; set; }
+            //    //public Nullable<int> barcodeId { get; set; }
+            //    //public string serialnum { get; set; }
+            //    //public Nullable<System.DateTime> createDate { get; set; }
+            //    //public Nullable<System.DateTime> updateDate { get; set; }
+            //    //public Nullable<int> createUserId { get; set; }
+            //    //public Nullable<int> updateUserId { get; set; }
+            //    //public Nullable<int> minUnitId { get; set; }
+            //    //public Nullable<int> maxUnitId { get; set; }
 
-            };
+            //};
 
-            await itemModel.saveItem(item);
+            //await itemModel.saveItem(item);
 
         }
 

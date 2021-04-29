@@ -23,7 +23,7 @@ namespace POS.View
     /// </summary>
     public partial class uc_payInvoice : UserControl
     {
-        ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
+        ObservableCollection<BillDetails> billDetails =     new ObservableCollection<BillDetails>();
 
         public uc_payInvoice()
         {
@@ -62,8 +62,6 @@ namespace POS.View
             #endregion
 
             #region Style Date
-            grid_vendor.Visibility = Visibility.Visible;
-
             dp_desrvedDate.Loaded += delegate
             {
 
@@ -74,9 +72,10 @@ namespace POS.View
                     textBox1.BorderThickness = dp_desrvedDate.BorderThickness;
                 }
             };
-            grid_vendor.Visibility = Visibility.Collapsed;
 
             #endregion
+            grid_vendor.Visibility = Visibility.Collapsed;
+
         }
         #region bill
 
@@ -201,6 +200,20 @@ namespace POS.View
             grid_returnInvoice.Visibility = Visibility.Collapsed;
         }
 
-        
+
+        private void Btn_ItemsInCards_Click(object sender, RoutedEventArgs e)
+        {
+            grid_itemsDatagrid.Visibility = Visibility.Collapsed;
+            grid_ItemsCard.Visibility = Visibility.Visible;
+        }
+
+        private void Btn_ItemsInGrid_Click(object sender, RoutedEventArgs e)
+        {
+            grid_ItemsCard.Visibility = Visibility.Collapsed;
+            grid_itemsDatagrid.Visibility = Visibility.Visible;
+        }
+
+
+
     }
 }

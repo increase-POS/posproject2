@@ -58,6 +58,23 @@ namespace POS.View
             CategorieItem CategorieItem = new CategorieItem();
             catigoriesAndItemsView.FN_refrishCatalogItem(CategorieItem.getCategorieItems(), MainWindow.lang, "sale");
             #endregion
+
+
+            #region Style Date
+            dp_desrvedDate.Loaded += delegate
+            {
+
+                var textBox1 = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
+                if (textBox1 != null)
+                {
+                    textBox1.Background = dp_desrvedDate.Background;
+                    textBox1.BorderThickness = dp_desrvedDate.BorderThickness;
+                }
+            };
+
+            #endregion
+            grid_customer.Visibility = Visibility.Collapsed;
+            grid_delivery.Visibility = Visibility.Collapsed;
         }
 
 
@@ -143,7 +160,7 @@ namespace POS.View
         #region Tab
         private void Btn_newInvoice_Click(object sender, RoutedEventArgs e)
         {
-            grid_customer.Visibility = grid_receiptInvoice.Visibility = Visibility.Collapsed;
+            grid_customer.Visibility = grid_delivery.Visibility = Visibility.Collapsed;
             grid_receiptInvoice.Visibility = Visibility.Visible;
 
             brd_customerTab.BorderBrush = brd_deliveryTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
@@ -152,7 +169,7 @@ namespace POS.View
 
         private void Btn_customer_Click(object sender, RoutedEventArgs e)
         {
-            grid_receiptInvoice.Visibility = grid_receiptInvoice.Visibility = Visibility.Collapsed;
+            grid_receiptInvoice.Visibility = grid_delivery.Visibility = Visibility.Collapsed;
             grid_customer.Visibility = Visibility.Visible;
 
             brd_newInvoiceTab.BorderBrush = brd_deliveryTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
@@ -207,5 +224,19 @@ namespace POS.View
         {
             grid_returnInvoice.Visibility = Visibility.Collapsed;
         }
+
+
+        private void Btn_ItemsInCards_Click(object sender, RoutedEventArgs e)
+        {
+            grid_itemsDatagrid.Visibility = Visibility.Collapsed;
+            grid_ItemsCard.Visibility = Visibility.Visible;
+        }
+
+        private void Btn_ItemsInGrid_Click(object sender, RoutedEventArgs e)
+        {
+            grid_ItemsCard.Visibility = Visibility.Collapsed;
+            grid_itemsDatagrid.Visibility = Visibility.Visible;
+        }
+
     }
 }

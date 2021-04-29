@@ -8,5 +8,6 @@ namespace POS.Classes
 {
     class Item
     {
+
     }
 }
