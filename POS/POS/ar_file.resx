@@ -426,11 +426,11 @@
   <data name="trSelectPropertyNameHint" xml:space="preserve">
     <value>اختر اسم الخاصية</value>
   </data>
-  <data name="trSubProperties" xml:space="preserve">
-    <value>الخواص الفرعية</value>
+  <data name="trValuesHint" xml:space="preserve">
+    <value>القيم...</value>
   </data>
-  <data name="trSubPropertiesHint" xml:space="preserve">
-    <value>ادخل الخاصية الفرعية</value>
+  <data name="trValues" xml:space="preserve">
+    <value>القيم</value>
   </data>
   <data name="trTaxesHint" xml:space="preserve">
     <value>الضرائب...</value>
@@ -533,5 +533,14 @@
   </data>
   <data name="trUpperLimitHint" xml:space="preserve">
     <value>الحد الأعلى للسحب...</value>
+  </data>
+  <data name="trUpperLimit" xml:space="preserve">
+    <value>الحد الأعلى للسحب</value>
+  </data>
+  <data name="trProperty" xml:space="preserve">
+    <value>الخاصية</value>
+  </data>
+  <data name="trPropertyHint" xml:space="preserve">
+    <value>الخاصية...</value>
   </data>
 </root>

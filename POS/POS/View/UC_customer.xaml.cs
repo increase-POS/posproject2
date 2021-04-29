@@ -82,8 +82,8 @@ namespace POS.View
             dg_customer.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
             dg_customer.Columns[1].Header = MainWindow.resourcemanager.GetString("trCompany");
             dg_customer.Columns[2].Header = MainWindow.resourcemanager.GetString("trMobile");
-            dg_customer.Columns[3].Header = MainWindow.resourcemanager.GetString("trDetails");
-            dg_customer.Columns[4].Header = MainWindow.resourcemanager.GetString("trBalance");
+            dg_customer.Columns[3].Header = MainWindow.resourcemanager.GetString("trUpperLimitUpper limit of Entitlement");
+        //    dg_customer.Columns[4].Header = MainWindow.resourcemanager.GetString("trBalance");
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
         }
@@ -245,14 +245,18 @@ namespace POS.View
             }
             
             translate();
-            //pass parameter type (V for vendors, C for Clients , B for Both)
-            var agents = await agentModel.GetAgentsAsync("c");
-                       dg_customer.ItemsSource = agents;
-            cb_areaMobile.SelectedIndex = 0;
+
+
+            cb_areaMobile.Text = "+963";
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
             cb_areaFax.SelectedIndex = 0;
             cb_areaFaxLocal.SelectedIndex = 0;
+
+            //pass parameter type (V for vendors, C for Clients , B for Both)
+            var agents = await agentModel.GetAgentsAsync("c");
+            dg_customer.ItemsSource = agents;
+
             
         }
 

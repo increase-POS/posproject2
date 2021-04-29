@@ -541,6 +541,21 @@
     <value>Fax...</value>
   </data>
   <data name="trUpperLimitHint" xml:space="preserve">
-    <value>The upper limit of the entitlement...</value>
+    <value>Upper Limit of Entitlement...</value>
+  </data>
+  <data name="trUpperLimit" xml:space="preserve">
+    <value>Upper Limit of Entitlement</value>
+  </data>
+  <data name="trProperty" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="trPropertyHint" xml:space="preserve">
+    <value>Property...</value>
+  </data>
+  <data name="trValues" xml:space="preserve">
+    <value>Values</value>
+  </data>
+  <data name="trValuesHint" xml:space="preserve">
+    <value>Values...</value>
   </data>
 </root>

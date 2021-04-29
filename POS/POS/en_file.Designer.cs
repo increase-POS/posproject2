@@ -871,6 +871,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Property.
+        /// </summary>
+        internal static string trProperty {
+            get {
+                return ResourceManager.GetString("trProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property....
+        /// </summary>
+        internal static string trPropertyHint {
+            get {
+                return ResourceManager.GetString("trPropertyHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Purchases.
         /// </summary>
         internal static string trPurchases {
@@ -1222,7 +1240,16 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The upper limit of the entitlement....
+        ///   Looks up a localized string similar to Upper Limit of Entitlement.
+        /// </summary>
+        internal static string trUpperLimit {
+            get {
+                return ResourceManager.GetString("trUpperLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upper Limit of Entitlement....
         /// </summary>
         internal static string trUpperLimitHint {
             get {
@@ -1299,6 +1326,24 @@ namespace POS {
         internal static string trValueHint {
             get {
                 return ResourceManager.GetString("trValueHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Values.
+        /// </summary>
+        internal static string trValues {
+            get {
+                return ResourceManager.GetString("trValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Values....
+        /// </summary>
+        internal static string trValuesHint {
+            get {
+                return ResourceManager.GetString("trValuesHint", resourceCulture);
             }
         }
         

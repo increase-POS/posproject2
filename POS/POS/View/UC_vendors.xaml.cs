@@ -119,12 +119,10 @@ namespace POS.View
 
         private void translate()
         {
-            txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
-
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
      //       MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trPamentMethodHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
-
+            txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trCodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_address, MainWindow.resourcemanager.GetString("trAdressHint"));
@@ -143,8 +141,8 @@ namespace POS.View
             dg_vendor.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
             dg_vendor.Columns[1].Header = MainWindow.resourcemanager.GetString("trCompany");
             dg_vendor.Columns[2].Header = MainWindow.resourcemanager.GetString("trMobile");
-            dg_vendor.Columns[3].Header = MainWindow.resourcemanager.GetString("trDetails");
-            dg_vendor.Columns[4].Header = MainWindow.resourcemanager.GetString("trBalance");
+           // dg_vendor.Columns[3].Header = MainWindow.resourcemanager.GetString("trDetails");
+           // dg_vendor.Columns[4].Header = MainWindow.resourcemanager.GetString("trBalance");
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
         }

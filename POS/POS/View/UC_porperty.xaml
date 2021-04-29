@@ -50,15 +50,6 @@
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35"   Width="250" Margin="10,5"/>
-                    <ComboBox x:Name="cb_search"  Grid.Row="2" 
-                                  Padding="10,5,5,5" 
-                                   TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Select Property Name"  
-                           TextBlock.FontSize="12"  
-                     HorizontalAlignment="Right" VerticalAlignment="Center" 
-                Grid.Column="1" Height="35" Width="200"  Margin="10,5"
-                           BorderBrush="#737373"       BorderThickness="0"   >
-                    </ComboBox>
                 </Grid>
 
             </Grid >
@@ -66,13 +57,13 @@
                 <Border Background="White" CornerRadius="7" />
                 <DataGrid  Margin="5,5,5,17.5"  Grid.Row="1"  IsReadOnly="true" Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
-                       
+                       SelectionChanged="Dg_property_SelectionChanged_1"
                        x:Name="dg_property"
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
                     <DataGrid.Columns>
-                        <DataGridTextColumn MinWidth="225"  Header="Main Property Name"     Binding="{Binding Path=name}"/>
-                        <DataGridTextColumn MinWidth="125"  Header="Sub Properties Names" Binding="{Binding Path=company}"/>
+                        <DataGridTextColumn MinWidth="225"  Header="Property"     Binding="{Binding Path=name}"/>
+                        <DataGridTextColumn MinWidth="125"  Header="Values" Binding="{Binding Path=valuesName}"/>
 
                     </DataGrid.Columns>
                 </DataGrid>
@@ -99,36 +90,47 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Main Property" Foreground="#737373"
-                                 FontSize="10"  VerticalAlignment="Center" x:Name="txt_mainProperty"
+                            <TextBlock Text="Property" Foreground="#737373"
+                                 FontSize="10"  VerticalAlignment="Center" x:Name="txt_property"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
-                            <Separator Background="#999999"   Width="274"  Margin="5,0,5,0"
+                            <Separator Background="#999999"   Width="340"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
+                            <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
+                          Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click"
+                    Margin="5,1"   ToolTip="clear">
+
+                                <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="20" Height="20"/>
+                            </Button>
+
                         </Grid>
 
 
                         <Grid  Grid.Row="1" Margin="5,0,0,0">
 
-                            <TextBox x:Name="tb_mainPropertyName"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5" 
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Enter Main Property..."  
+                            <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5" 
+                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Name..."  
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="20" LostFocus="Tb_propertyName_LostFocus" TextChanged="Tb_propertyName_TextChanged"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="35" Width="340" Margin="5" >
                             </TextBox>
-                            <Path Fill="#E81123" Stretch="Fill" x:Name="p_errorPropertyName"
+                            <Path Fill="#E81123" Stretch="Fill" x:Name="p_errorName"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
                              VerticalAlignment="Center" Width="15"  Height="15" Margin="5,5,15,5"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                 <Path.ToolTip>
-                                    <ToolTip x:Name="tt_errorPreoertyName" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    <ToolTip x:Name="tt_errorName" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
                         </Grid>
 
-                        <Grid Grid.Row="3" Margin="0,5,0,5" >
+                        <Grid Grid.Row="3" Margin="5,1" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
@@ -137,18 +139,15 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0"  Width="110"
-                         BorderThickness="0" Background="#178DD2" Content="Add"
-                    Padding="0" Height="33"
-                            materialDesign:ButtonAssist.CornerRadius="5"  Margin="4,0,6,3" VerticalAlignment="Bottom"  />
-                            <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"  Width="110"
-                         BorderThickness="0" Background="#178DD2" Content="Update"
-                    Padding="0" Height="33"
-                            materialDesign:ButtonAssist.CornerRadius="5" Margin="5,0" VerticalAlignment="Top"  />
-                            <Button x:Name="btn_delete" Grid.Column="2"  Width="110"
-                         BorderThickness="0" Background="#178DD2" Content="Delete"
-                    Padding="0" Height="33"
-                            materialDesign:ButtonAssist.CornerRadius="5" Margin="5,0,5,2"  />
+                            <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0"
+                          Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,0"    Content="Add" Click="Btn_add_Click" />
+                            <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"
+                        Background="#4E4E4E" BorderBrush="{x:Null}"
+                   Margin="1,0"    Content="Update" Click="Btn_update_Click" />
+                            <Button x:Name="btn_delete" Grid.Row="0" Grid.Column="2"
+                        Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,0"    Content="Delete" Click="Btn_delete_Click" />
 
                         </Grid>
 
@@ -160,6 +159,7 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
 
                         </Grid.RowDefinitions>
                         <Grid >
@@ -167,10 +167,10 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Sub Properties" Foreground="#737373"
-                                 FontSize="10" VerticalAlignment="Center" x:Name="txt_subProperties"
+                            <TextBlock Text="Values" Foreground="#737373"
+                                 FontSize="10" VerticalAlignment="Center" x:Name="txt_values"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
-                            <Separator Background="#999999"   Width="274"  Margin="5,0,5,0"
+                            <Separator Background="#999999"   Width="340"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
 
                         </Grid>
@@ -180,27 +180,27 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader" >
                             <DataGrid.Columns>
-                                <DataGridTextColumn MinWidth="150"  Header="Sub Properties"   
-                                                        Binding="{Binding Path=nameSub}"/>
+                                <DataGridTextColumn MinWidth="150"  Header="Values"   
+                                                        Binding="{Binding Path=values}"/>
                             </DataGrid.Columns>
 
                         </DataGrid>
 
                         <Grid  Grid.Row="2" >
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="*"/>
+                               
 
                             </Grid.ColumnDefinitions>
 
                             <Grid >
-                            <TextBox x:Name="tb_subPropertyName"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5" 
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Enter Sub Property..."  
+                            <TextBox x:Name="tb_valueName"  Text="{Binding valueName, Mode=OneWay}" Padding="10,5,5,5" 
+                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Value..."  
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="20" 
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                     Height="35" Width="215"  Margin="10"  />
+                                     Height="35" Width="340"  Margin="10"  />
                             
                             <Path Fill="#E81123" Stretch="Fill" x:Name="p_errorNameSub"
                               HorizontalAlignment="Right" Grid.Column="1"  Visibility="Collapsed" 
@@ -212,14 +212,24 @@
                             </Path>
                         </Grid>
                         
-                        <Button x:Name="btn_addSub" Grid.Row="0"  Width="110"
-                         BorderThickness="0" Background="#178DD2" Content="Add"
-                    Padding="0" Height="33" Grid.Column="1"
-                            materialDesign:ButtonAssist.CornerRadius="5"  Margin="0,0,7,0"
-                                    VerticalAlignment="Center"   />
+                        
+                            
                         </Grid>
-                        <Separator Background="#999999"   Width="340"  Margin="0"
-                                      Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="btn_deleteValue"  Grid.Column="1"
+                          Background="#4E4E4E" BorderBrush="{x:Null}" Width="120" Height="33"
+                    Margin="1,0"    Content="Delete" Click="Btn_deleteValue_Click" />
+                            <Button x:Name="btn_addValue"  Grid.Column="0"
+                          Background="#4E4E4E" BorderBrush="{x:Null}" Width="120" Height="33"
+                    Margin="1,0"    Content="Add" Click="Btn_add_Click" />
+                        </Grid>
+                        <Separator Background="#999999"   Width="340"  Margin="5"
+                                      Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Grid>
                     
                 </Grid>

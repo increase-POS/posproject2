@@ -136,24 +136,25 @@ namespace POS.View
         {
             txt_branch.Text = MainWindow.resourcemanager.GetString("trBranch");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectBranchHint"));
+         //   MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectBranchHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trBranchNameHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trBranchCodeHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trCodeHint"));
             txt_contentInformatin.Text = MainWindow.resourcemanager.GetString("trMoreInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_address, MainWindow.resourcemanager.GetString("trAdressHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_area, MainWindow.resourcemanager.GetString("trAreaHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_mobile, MainWindow.resourcemanager.GetString("trMobileHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_phone, MainWindow.resourcemanager.GetString("trPhoneHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_email, MainWindow.resourcemanager.GetString("trEmailHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_details, MainWindow.resourcemanager.GetString("trDetailsHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNotesHint"));
             btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
             btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
-            dg_branch.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
-            dg_branch.Columns[1].Header = MainWindow.resourcemanager.GetString("trCode");
+            dg_branch.Columns[0].Header = MainWindow.resourcemanager.GetString("trCode");
+
+            dg_branch.Columns[1].Header = MainWindow.resourcemanager.GetString("trName");
             dg_branch.Columns[2].Header = MainWindow.resourcemanager.GetString("trAddress");
-            dg_branch.Columns[3].Header = MainWindow.resourcemanager.GetString("trDetails");
+            dg_branch.Columns[3].Header = MainWindow.resourcemanager.GetString("trNotes");
 
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
@@ -223,7 +224,7 @@ namespace POS.View
             tb_name.Text = "";
             tb_code.Text = "";
             tb_address.Text = "";
-            tb_details.Text = "";
+            tb_notes.Text = "";
             tb_email.Text = "";
             tb_phone.Text = "";
 
@@ -235,7 +236,7 @@ namespace POS.View
             {
                 code = tb_code.Text,
                 name = tb_name.Text,
-                details = tb_details.Text,
+                notes = tb_notes.Text,
                 address = tb_address.Text,
                 email = tb_email.Text,
                 phone = tb_phone.Text,
@@ -244,7 +245,7 @@ namespace POS.View
                 updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 createUserId = 2,
                 updateUserId = 2,
-                notes = tb_notes.Text,
+               // notes = tb_notes.Text,
                 type = "b"
             };
 
@@ -263,7 +264,7 @@ namespace POS.View
                 branchId     = BranchId,
                 code         = tb_code.Text,
                 name         = tb_name.Text,
-                details      = tb_details.Text,
+                notes      = tb_notes.Text,
                 address      = tb_address.Text,
                 email        = tb_email.Text,
                 phone        = tb_phone.Text,
@@ -272,7 +273,7 @@ namespace POS.View
                 updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 createUserId = 2,
                 updateUserId = 2,
-                notes        = tb_notes.Text,
+               // notes        = tb_notes.Text,
                 type         = "b"
             };
 
@@ -294,7 +295,7 @@ namespace POS.View
             //clear textBoxs
             tb_code.Text = "";
             tb_name.Text = "";
-            tb_details.Clear();
+            tb_notes.Clear();
             tb_address.Clear();
             cb_area.SelectedIndex = -1;
             tb_email.Clear();

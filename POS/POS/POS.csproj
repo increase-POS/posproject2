@@ -75,6 +75,7 @@
     <Compile Include="Classes\CatigoriesAndItemsView.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\Pos.cs" />
+    <Compile Include="Classes\Property.cs" />
     <Compile Include="Classes\Unit.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="controlTemplate\UC_rectangleCard.xaml.cs">
