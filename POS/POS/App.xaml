@@ -222,7 +222,13 @@
                 <Setter Property="Foreground" Value="Red"/>
                 <Setter Property="Background" Value="#15FF0000"/>
             </Style>
-
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Active}" Value="False">
+                            <Setter Property="Background" Value="#15FF0000" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
 
             <!--#region ScrollBarTrackThumb--> 
 
