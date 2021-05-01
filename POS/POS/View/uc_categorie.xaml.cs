@@ -27,10 +27,48 @@ namespace POS.View
     public partial class uc_categorie : UserControl
     {
         public int CategorieId;
-        Category categorieModel = new Category();
+        Category categoryModel = new Category();
+        //  Item itemModel = new Item();
+
+         List<int> categoryIds = new List<int>();
+          List<string> categoryNames = new List<string>();
+        int selectedItemId = 0;
+          DataGrid dt = new DataGrid();
+
         public uc_categorie()
         {
             InitializeComponent();
+        }
+
+        private async void fillCategories()
+        {
+            //var items = await itemModel.GetSubItems(CategorieId);
+            //dt.ItemsSource = items;
+            //Item item = new Item();
+            //for (int i = 0; i < items.Count; i++)
+            //{
+            //    item = dt.Items[i] as Item;
+            //    itemIds.Add(item.itemId);
+            //    itemNames.Add(item.name);
+            //}
+            //MessageBox.Show(items.Count.ToString());
+            //itemNames.Add("first"); itemNames.Add("second");
+            //cb_parentCategorie.ItemsSource = itemNames;
+
+            var Categories = await categoryModel.GetSubCategories(CategorieId);
+            dt.ItemsSource = Categories;
+            Category category = new Category();
+            for (int i = 0; i < Categories.Count; i++)
+            {
+                category = dt.Items[i] as Category;
+                categoryIds.Add(category.categoryId);
+                categoryNames.Add(category.name);
+            }
+            //MessageBox.Show(items.Count.ToString());
+            //itemNames.Add("first"); itemNames.Add("second");
+            cb_parentCategorie.ItemsSource = category.name;
+
+
         }
         private void translate()
         {
@@ -41,7 +79,7 @@ namespace POS.View
             txt_secondaryInformation.Text = MainWindow.resourcemanager.GetString("trSecondaryInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_parentCategorie, MainWindow.resourcemanager.GetString("trParentCategorieHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_taxes, MainWindow.resourcemanager.GetString("trTaxesHint"));
-         //   MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_categorie, MainWindow.resourcemanager.GetString("trCategorie"));
+         // MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_categorie, MainWindow.resourcemanager.GetString("trCategorie"));
             txt_categorie.Text = MainWindow.resourcemanager.GetString("trCategorie");
 
             btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
@@ -50,7 +88,7 @@ namespace POS.View
            
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             catigoriesAndItemsView.ucCategorie = this;
             if (MainWindow.lang.Equals("en"))
@@ -106,49 +144,65 @@ namespace POS.View
             //    details = "EPSON-thermal-printer3",
             //});
 
-            List<Item> items = new List<Item>();
-            items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details= "EPSON-thermal-printer1" });
-            items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
-            items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details= "EPSON-thermal-printer3" });
-            items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
-            items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details= "EPSON-thermal-printer5" });
-            items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
-            items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details = "EPSON-thermal-printer1" });
-            items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
-            items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details = "EPSON-thermal-printer3" });
-            items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
-            items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details = "EPSON-thermal-printer5" });
-            items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
-            items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details = "EPSON-thermal-printer1" });
-            items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
-            items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details = "EPSON-thermal-printer3" });
-            items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
-            items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details = "EPSON-thermal-printer5" });
-            items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
-            items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details = "EPSON-thermal-printer1" });
-            items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
-            items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details = "EPSON-thermal-printer3" });
-            items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
-            items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details = "EPSON-thermal-printer5" });
-            items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
-            DG_Items.ItemsSource = items;
+            //List<Item> items = new List<Item>();
+            //items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details= "EPSON-thermal-printer1" });
+            //items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
+            //items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details= "EPSON-thermal-printer3" });
+            //items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
+            //items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details= "EPSON-thermal-printer5" });
+            //items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
+            //items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details = "EPSON-thermal-printer1" });
+            //items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
+            //items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details = "EPSON-thermal-printer3" });
+            //items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
+            //items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details = "EPSON-thermal-printer5" });
+            //items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
+            //items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details = "EPSON-thermal-printer1" });
+            //items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
+            //items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details = "EPSON-thermal-printer3" });
+            //items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
+            //items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details = "EPSON-thermal-printer5" });
+            //items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
+            //items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details = "EPSON-thermal-printer1" });
+            //items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
+            //items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details = "EPSON-thermal-printer3" });
+            //items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
+            //items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details = "EPSON-thermal-printer5" });
+            //items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
+            //DG_Items.ItemsSource = items;
             //dg_items.ItemsSource = items.ToList();
 
             #endregion
-
             #endregion
+            fillCategories();
+            var categories = await categoryModel.GetAllCategories();
+            DG_Items.ItemsSource = categories;
         }
-        class Item {
-            public int code { get; set; }
-            public string name { get; set; }
-            public string details { get; set; }
-        }
+        //class Item {
+        //    public int code { get; set; }
+        //    public string name { get; set; }
+        //    public string details { get; set; }
+        //}
 
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
 
-        public void testChangeCategorieIdEvent()
+
+        public async void testChangeCategorieIdEvent()
         {
             MessageBox.Show("Hello World!! CategorieId");
+
+
+            p_errorName.Visibility = Visibility.Collapsed;
+            p_errorCode.Visibility = Visibility.Collapsed;
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+            Category category = new Category();
+            var categories = await categoryModel.GetAllCategories();
+            this.DataContext = categories.Find(c => c.categoryId == 20);
+
         }
         public void testChangeCategorieItemsIdEvent()
         {
@@ -447,56 +501,117 @@ namespace POS.View
             grid_itemsDatagrid.Visibility = Visibility.Visible;
         }
 
-        private void Btn_add_Click(object sender, RoutedEventArgs e)
+        private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            //add
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-            }
+         
 
-            if (!tb_categoryCode.Text.Equals(""))
-                 {
-
-                p_errorCode.Visibility = Visibility.Visible;
-                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
-                }
-                else
-                {
-                p_errorCode.Visibility = Visibility.Collapsed;
-                }
-            if ((!tb_name.Text.Equals("")))
+            Category category = new Category
             {
 
-                Category categories = new Category
-                {
-                    name = tb_name.Text,
-                    categoryCode = "",
-                    image = "",
-                    details = tb_details.Text,
+                categoryCode = tb_categoryCode.Text,
+                name = tb_name.Text,
+                details = tb_details.Text,
+                image = "",
+                taxes = decimal.Parse(tb_taxes.Text),
+                parentId = selectedItemId,
+                // balance = 0,
+                //balance      = decimal.Parse(tb_balance.Text),
+                //branchId     = 1 ,
+                // branchId = selectedBranchId,
+                createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                createUserId = 2,
+                updateUserId = 2,
+                isActive = 1
+            };
 
-                    isDefault = 0,
-                    createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                    updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                    createUserId = 1,
-                    updateUserId = 1,
-                    notes = tb_notes.Text,
-                   // isActive = 1,
+            await categoryModel.saveCategory(category);
 
-                };
-                await categorieModel.saveAgent(customer);
-                //pass parameter type (V for vendors, C for Clients , B for Both)
-                var agents = await agentModel.GetAgentsAsync("c");
-                dg_customer.ItemsSource = agents;
-            }
-            */
+            var Categories = await categoryModel.GetAllCategories();
+            DG_Items.ItemsSource = Categories;
+
         }
 
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {
+            //update
+            Category category = new Category
+            {
+                categoryId = CategorieId,
+                categoryCode = tb_categoryCode.Text,
+                name = tb_name.Text,
+                details = tb_details.Text,
+                image = "",
+                taxes = decimal.Parse( tb_taxes.Text),
+                parentId = selectedItemId,
+                createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                createUserId = 2,
+                updateUserId = 2,
+                 isActive = 1
+            };
+
+
+            await categoryModel.saveCategory(category);
+
+            var categories = await categoryModel.GetAllCategories();
+            DG_Items.ItemsSource = categories;
+        }
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+           // p_errorName.Visibility = Visibility.Collapsed;
+           // var bc = new BrushConverter();
+          //  tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_name.Text = "";
+            tb_taxes.Text = "";
+            tb_details.Text = "";
+            tb_categoryCode.Text = "";
+            cb_parentCategorie.Text = "";
+        }
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {
+            //delete
+            await categoryModel.deleteCategory(CategorieId);
+            
+            var categories = await categoryModel.GetAllCategories();
+            DG_Items.ItemsSource = categories;
+
+            //clear textBoxs
+           // Btn_clear_Click(sender, e);
+        }
+
+        private void Cb_parentCategorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+          //  selectedItemId = [cb_parentCategorie.SelectedIndex];
+
+
+        }
+
+        private void DG_Items_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            p_errorName.Visibility = Visibility.Collapsed;
+            p_errorCode.Visibility = Visibility.Collapsed;
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+            Category category = new Category();
+
+            if (DG_Items.SelectedIndex != -1)
+            {
+                category = DG_Items.SelectedItem as Category;
+                this.DataContext = category;
+            }
+            if (category != null)
+            {
+                if (category.categoryId != 0)
+                {
+                    CategorieId = category.categoryId;
+                }
+
+
+            }
+        }
     }
 }

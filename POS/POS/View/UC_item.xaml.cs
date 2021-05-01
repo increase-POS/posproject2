@@ -114,6 +114,18 @@ namespace POS.View
 
         }
 
+        private void Btn_ItemsInCards_Click(object sender, RoutedEventArgs e)
+        {
+            grid_itemsDatagrid.Visibility = Visibility.Collapsed;
+            grid_ItemsCard.Visibility = Visibility.Visible;
+        }
+
+        private void Btn_ItemsInGrid_Click(object sender, RoutedEventArgs e)
+        {
+            grid_ItemsCard.Visibility = Visibility.Collapsed;
+            grid_itemsDatagrid.Visibility = Visibility.Visible;
+        }
+
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             catigoriesAndItemsView.ucCategorieItem = this;
@@ -155,10 +167,12 @@ namespace POS.View
         public void testChangeCategorieIdEvent()
         {
             MessageBox.Show("Hello World!! CategorieId");
+            
         }
         public void testChangeCategorieItemsIdEvent()
         {
-            MessageBox.Show("Hello World!!  CategorieItems Id");
+            int idItemTest = 5;
+            MessageBox.Show("test id item " +idItemTest);
         }
 
         

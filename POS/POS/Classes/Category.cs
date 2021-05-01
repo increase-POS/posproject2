@@ -20,14 +20,15 @@ namespace client_app.Classes
         public string name { get; set; }
         public string details { get; set; }
         public string image { get; set; }
-        public short isActive { get; set; }
+      //  public short isActive { get; set; }
         public decimal taxes { get; set; }
-        public int parentId { get; set; }
-        public DateTime createDate { get; set; }
-        public DateTime updateDate { get; set; }
-        public int createUserId { get; set; }
-        public int updateUserId { get; set; }
-        public string notes { get; set; }
+        public Nullable<int> parentId { get; set; }
+        public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<int> createUserId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
+      //  public string notes { get; set; }
+        public Nullable<byte> isActive { get; set; }
 
         // adding or editing  category by calling API metod "save"
         // if categoryId = 0 will call save else call edit
@@ -136,6 +137,84 @@ namespace client_app.Classes
                     return message;
                 }
                 return "";
+            }
+        }
+        
+        public async Task<List<Category>> GetAllCategories()
+        {
+            List<Category> categories = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Categories/GetAllCategories");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    categories = JsonConvert.DeserializeObject<List<Category>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return categories;
+                }
+                else //web api sent error response 
+                {
+                    categories = new List<Category>();
+                }
+                return categories;
+            }
+        }
+
+
+        
+
+            public async Task<Category> GetCategoryByID(int posId)
+             {
+            Category category = new Category();
+
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Category/GetCategoryByID");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Headers.Add("categoryId", categoryId.ToString());
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+
+                    category = JsonConvert.DeserializeObject<Category>(jsonString);
+
+                    return category;
+                }
+
+                return category;
             }
         }
     }

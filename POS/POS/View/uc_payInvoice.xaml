@@ -738,13 +738,14 @@
 
                         </Grid>
                     </Grid>
-                    <Grid  x:Name="grid_vendor" Visibility="Visible"  >
+                    <Grid  x:Name="grid_vendor" Visibility="Collapsed"  >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="45"/>
                             <RowDefinition Height="45"/>
                             <RowDefinition Height="45"/>
                             <RowDefinition Height="45"/>
+                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="80"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
@@ -854,7 +855,76 @@
                                 </Path.ToolTip>
                             </Path>
                         </Grid>
-                        <Grid Grid.Row="5"  >
+                        <Grid Grid.Row="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Grid.ColumnSpan="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Vendor invoice details"  Foreground="#737373"
+                                 FontSize="10"      VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" Margin="5,5,0,5"/>
+                                <Separator Background="#999999"   Width="300"  Margin="5,0,5,0"
+                                      Grid.Column="1" VerticalAlignment="Center" />
+                            </Grid>
+                            <Grid Grid.Column="0" Grid.Row="1" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox   Text="{Binding test, Mode=OneWay}"
+                                             Grid.Row="2" Padding="10,5,5,5" 
+                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                            BorderThickness="1"  materialDesign:HintAssist.Hint="invoice number..."  
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                             BorderBrush="#f8f8f8"
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        Grid.Column="1"  Height="35" Width="160"  Margin="5,5" />
+                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 
+                                  L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                    <Path.ToolTip>
+                                        <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    </Path.ToolTip>
+                                </Path>
+                            </Grid>
+                            <Grid  Grid.Column="1" Grid.Row="1" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <DatePicker  
+                           BorderBrush="#737373"  BorderThickness="0" 
+                                TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
+                                             Grid.Row="2" Padding="10,5,5,5"  
+                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                             materialDesign:HintAssist.Hint="Invoice Date..."  
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        Grid.Column="1"  Height="35" Width="160"  Margin="5,5" />
+                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 
+                                  L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                    <Path.ToolTip>
+                                        <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    </Path.ToolTip>
+                                </Path>
+                            </Grid>
+                            <Separator Grid.ColumnSpan="2" Background="#999999"   Width="340"  Margin="5,0,5,0"
+                                      Grid.Row="7" VerticalAlignment="Center" />
+                        </Grid>
+                        <Grid Grid.Row="6"  >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
@@ -876,9 +946,9 @@
                             </Path>
                         </Grid>
                         <Separator Background="#999999"   Width="340"  Margin="5,0,5,0"
-                                      Grid.Row="6" VerticalAlignment="Center" />
+                                      Grid.Row="7" VerticalAlignment="Center" />
 
-                        <Grid Grid.Row="8" Margin="5,1">
+                        <Grid Grid.Row="9" Margin="5,1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <!--<ColumnDefinition Width="*"/>

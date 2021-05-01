@@ -71,6 +71,11 @@ namespace POS.View
         private void Btn_offer_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_offer);
+            grid_main.Children.Clear();
+            uc_offer uc = new uc_offer();
+            grid_main.Children.Add(uc);
         }
+
+         
     }
 }
