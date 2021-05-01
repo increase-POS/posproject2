@@ -224,7 +224,7 @@
             </Style>
                 <Style TargetType="DataGridRow">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Active}" Value="False">
+                        <DataTrigger Binding="{Binding isActive}" Value="False">
                             <Setter Property="Background" Value="#15FF0000" />
                         </DataTrigger>
                     </Style.Triggers>

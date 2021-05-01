@@ -102,7 +102,8 @@ namespace POS.View
             translate();
 
             var properties = await propertyModel.GetPropertyAsync();
-            dg_property.ItemsSource = properties;
+            MessageBox.Show(properties.Count.ToString());
+           // dg_property.ItemsSource = properties;
         }
 
         private void Dg_subProperty_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -144,9 +145,10 @@ namespace POS.View
             dg_property.ItemsSource = properties;
         }
 
-        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        private async void Btn_update_Click_1(object sender, RoutedEventArgs e)
         {
             //update
+            //MessageBox.Show(PropertyId.ToString());
             Property property = new Property
             {
                 propertyId = PropertyId,
@@ -186,7 +188,7 @@ namespace POS.View
             dg_property.ItemsSource = properties;
 
             //clear textBoxs
-            //Btn_clear_Click(sender, e);
+            Btn_clear_Click(sender, e);
         }
 
         private void Dg_property_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
@@ -201,22 +203,23 @@ namespace POS.View
             //tb_balance.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             //   tt_errorSelectBranch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-            Property property = new Property();
+            Property properties = new Property();
 
             if (dg_property.SelectedIndex != -1)
             {
-                property = dg_property.SelectedItem as Property;
-                this.DataContext = property;
+                properties = dg_property.SelectedItem as Property;
+                this.DataContext = properties;
             }
-            if (property != null)
+            if (properties != null)
             {
-                if (property.propertyId != 0)
+                if (properties.propertyId != 0)
                 {
-                    PropertyId = property.propertyId;
+                    PropertyId = properties.propertyId;
                 }
                 
-
             }
+        //    MessageBox.Show(properties.propertyId);
         }
+
     }
 }
