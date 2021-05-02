@@ -161,13 +161,38 @@ namespace POS.View
 
             fillUnits();
 
-            var items = await itemModel.GetItemsByType("Normal Item");
+            var items = await itemModel.GetAllItems();
+            DG_Items.ItemsSource = items;
             MessageBox.Show(items.Count.ToString());
         }
+        /// <summary>
+        /// //////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
         public void testChangeCategorieIdEvent()
         {
             MessageBox.Show("Hello World!! CategorieId");
-            
+            p_errorName.Visibility = Visibility.Collapsed;
+            p_errorCode.Visibility = Visibility.Collapsed;
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tt_errorCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+          //  tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+            Item item = new Item();
+
+            if (DG_Items.SelectedIndex != -1)
+            {
+                item = DG_Items.SelectedItem as Item;
+                this.DataContext = item;
+            }
+            if (item != null)
+            {
+                if (item.categoryId != 0)
+                {
+                    ItemId = item.itemId;
+                }
+            }
+
         }
         public void testChangeCategorieItemsIdEvent()
         {
@@ -252,10 +277,10 @@ namespace POS.View
                 details     = tb_details.Text,
                 type        = selectedType,
                 image       = "",
-                taxes       = decimal.Parse(tb_taxes.Text),
+               // taxes       = decimal.Parse(tb_taxes.Text),
                 isActive    = 1,
-                min         = int.Parse(tb_min.Text),
-                max         = int.Parse(tb_max.Text),
+               // min         = int.Parse(tb_min.Text),
+              //  max         = int.Parse(tb_max.Text),
                 categoryId  = 1 ,/////???????????????????????
                 parentId    = 0 ,/////??????????/
                 barcodeId   = 0 ,////////????????????
@@ -269,7 +294,11 @@ namespace POS.View
             };
 
             await itemModel.saveItem(item);
+            var items = await itemModel.GetAllItems();
+            DG_Items.ItemsSource = items;
+            MessageBox.Show(items.Count.ToString());
 
+            
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
@@ -299,19 +328,21 @@ namespace POS.View
             };
 
             await itemModel.saveItem(item);
-
+            var items = await itemModel.GetAllItems();
+            DG_Items.ItemsSource = items;
 
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            await itemModel.deleteItem(ItemId);
+            await itemModel.deleteItem(ItemId,1);
 
-            var items = await itemModel.GetItemsByType("");
+            var items = await itemModel.GetAllItems();
+            DG_Items.ItemsSource = items;
             MessageBox.Show(items.Count.ToString());
 
             //clear textBoxs
-            Btn_clear_Click(sender, e);
+          //  Btn_clear_Click(sender, e);
 
         }
 
@@ -533,9 +564,37 @@ namespace POS.View
 
         }
 
+        private void DG_Items_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            p_errorName.Visibility = Visibility.Collapsed;
+            p_errorCode.Visibility = Visibility.Collapsed;
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+          //  tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+            Item item = new Item();
+
+            if (DG_Items.SelectedIndex != -1)
+            {
+                item = DG_Items.SelectedItem as Item;
+                this.DataContext = item;
+            }
+            if (item != null)
+            {
+                if (item.categoryId != 0)
+                {
+                  ItemId = item.itemId;
+                }
+
+
+            }
+        }
+
         private void Cb_minUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selectedMinUnitId = unitIds[cb_minUnit.SelectedIndex];
+
         }
 
         private void Cb_maxUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)

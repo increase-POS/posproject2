@@ -13,7 +13,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="380"/>
         </Grid.ColumnDefinitions>
-         <Grid Grid.Column="0">
+        <Grid Grid.Column="0">
             <Grid Grid.Column="1" Margin="5" >
                 <Grid.RowDefinitions >
                     <RowDefinition Height="170"/>
@@ -267,21 +267,21 @@
 	c0-1.4,0.2-2.8,0.6-4.2C68,27.3,58.3,36.5,57.9,48.2C57.5,60,66.7,69.7,78.5,70.1c11.7,0.4,21.5-8.8,21.9-20.6c0.1-2-0.2-4-0.7-5.9
 	C97.6,44.8,95.2,45.5,92.7,45.5z"/>
                                     </Grid>
-                                   
-                            </Grid>
-                            <DataGrid x:Name="DG_Items"  Margin="5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
+
+                                </Grid>
+                                <DataGrid x:Name="DG_Items"  Margin="5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
-                         IsReadOnly="True" CanUserAddRows="False" 
-                        AutoGenerateColumns="False" 
+                         IsReadOnly="True" CanUserAddRows="False" SelectionChanged='DG_Items_SelectionChanged'
+                        AutoGenerateColumns="False"
                         ColumnWidth="SizeToHeader"  >
-                                <DataGrid.Columns >
+                                    <DataGrid.Columns >
                                         <DataGridTextColumn   MinWidth="150"   Header="Code"  Binding="{Binding Path=categoryCode}"/>
-                                    <DataGridTextColumn MinWidth="150"  Header="Name" Binding="{Binding Path=name}"/>
-                                    <DataGridTextColumn MinWidth="200"  Header="Details" Binding="{Binding Path=details}"/>
+                                        <DataGridTextColumn MinWidth="150"  Header="Name" Binding="{Binding Path=name}"/>
+                                        <DataGridTextColumn MinWidth="200"  Header="Details" Binding="{Binding Path=details}"/>
                                         <DataGridTextColumn MinWidth="200"  Header="Active" Binding="{Binding Path=isActive}"/>
 
                                     </DataGrid.Columns>
-                            </DataGrid>
+                                </DataGrid>
                             </Grid>
                         </Grid>
                     </Border>
@@ -317,7 +317,7 @@
 	c4.4,0,8,3.6,8,8V312z M512,248c0,4.4-3.6,8-8,8H360c-4.4,0-8-3.6-8-8v-16c0-4.4,3.6-8,8-8h144c4.4,0,8,3.6,8,8V248z M512,184
 	c0,4.4-3.6,8-8,8H360c-4.4,0-8-3.6-8-8v-16c0-4.4,3.6-8,8-8h144c4.4,0,8,3.6,8,8V184z"/>
                         </Button>
-                       
+
                     </Grid>
                 </Grid>
             </Grid>
@@ -478,7 +478,7 @@
                 <Border Grid.Row="1" Background="White" 
                 CornerRadius="0,0,7,7" >
                     <Grid>
-<!--////////////////////////////////  Item Data ////////////////////////////////////////////////////////-->
+                        <!--////////////////////////////////  Item Data ////////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
                       x:Name="grid_itemData" Visibility="Visible" >
                             <Grid.RowDefinitions >
@@ -645,8 +645,8 @@
                                         <TextBlock Text="Is Defult" Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                    Margin="5"/>
                                         <CheckBox Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,5,5"/>
-                                        
-                                        
+
+
                                         <!--<WrapPanel Grid.Column="1"  Height="35" Width="50" Background="#f8f8f8" HorizontalAlignment="Left"  VerticalAlignment="Center"
                                    Margin="5,5,0,5" >
 
@@ -890,7 +890,7 @@
                                 </Grid.RowDefinitions>
                                 <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Add" Click="Btn_add_Click" />
+                    Margin="1,3,1,0"    Content="Add" Click="Btn_add_Click" VerticalAlignment="Top" />
                                 <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="1,0"    Content="Update" Click="Btn_update_Click" />
@@ -899,7 +899,7 @@
                     Margin="1,0"    Content="Delete" Click="Btn_delete_Click" />
                             </Grid>
                         </Grid>
- <!--////////////////////////////////////   Properties   ////////////////////////////////////////////////////-->
+                        <!--////////////////////////////////////   Properties   ////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
                          x:Name="grid_properties"  Visibility="Collapsed">
                             <Grid.RowDefinitions >
@@ -1184,7 +1184,7 @@
 
 
                         </Grid>
- <!--////////////////////////////////////    Barcode    ////////////////////////////////////////////////////-->
+                        <!--////////////////////////////////////    Barcode    ////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
                       x:Name="grid_barcode"  Visibility="Collapsed" >
                             <Grid.RowDefinitions >
