@@ -250,7 +250,8 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="35"/>
                                 </Grid.RowDefinitions>
-                                <Grid  Width="{Binding ActualWidth, ElementName=DG_BillDetails}"   VerticalAlignment="Bottom" Grid.Column="1">
+                                <Grid  Width="{Binding ActualWidth, ElementName=DG_BillDetails}" HorizontalAlignment="Left"
+                                       Margin="10,0,0,0" VerticalAlignment="Bottom" Grid.Column="1">
                                     <TextBox    Width="{Binding ActualWidth, ElementName=DG_BillDetails}"
                         Padding="10,5,5,5" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
@@ -293,7 +294,7 @@
                         </Grid.ColumnDefinitions>
                         <Button   Height="15"  Grid.Column="0"  Background="{x:Null}" 
                                Padding="0" BorderBrush="{x:Null}" x:Name="btn_ItemsInGrid" Click="Btn_ItemsInGrid_Click">
-                            <Path Fill="#4e4e4e" Stretch="Fill"
+                            <Path Fill="#178DD2" Stretch="Fill"
                           Width="15" Height="15" 
                           Data="M18.9,14h-2.1c-1.2,0-2.1,0.9-2.1,2v2c0,1.1,0.9,2,2.1,2h2.1c1.2,0,2.1-0.9,2.1-2v-2
 	C21,14.9,20.1,14,18.9,14 M11.6,14H9.4c-1.2,0-2.1,0.9-2.1,2v2c0,1.1,0.9,2,2.1,2h2.1c1.2,0,2.1-0.9,2.1-2v-2
@@ -307,7 +308,7 @@
                         <Button Background="{x:Null}"    Grid.Column="1"
                             Padding="0" Height="15" x:Name="btn_ItemsInCards" Click="Btn_ItemsInCards_Click"
                                        BorderBrush="{x:Null}">
-                            <Path Fill="#4e4e4e" Stretch="Fill"
+                            <Path Fill="#178DD2" Stretch="Fill"
                           Width="15" Height="15"  
                           Data="M528,32H48C21.5,32,0,53.5,0,80v352c0,26.5,21.5,48,48,48h480c26.5,0,48-21.5,48-48V80
 	C576,53.5,554.5,32,528,32z M176,128c35.3,0,64,28.7,64,64s-28.7,64-64,64s-64-28.7-64-64S140.7,128,176,128z M288,364.8
@@ -473,13 +474,7 @@
                                 <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                             </Grid>
-                            <!--<Button Grid.Row="1" Grid.Column="0" Padding="0"
-                          Background="{x:Null}" BorderBrush="{x:Null}"
-                    Margin="5,1"   ToolTip="NewDraft"  >
-                            <materialDesign:PackIcon Foreground="#178DD2" Kind="PlusBox"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="30" Height="30"/>
-                        </Button>-->
+                         
                             <Grid Grid.Row="1"  Grid.Column="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
@@ -654,7 +649,15 @@
                              BorderBrush="#f8f8f8"
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
                         Grid.Column="1"  Height="30" Width="160"  Margin="5,1" />
-                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                    
+                                    <Button   Padding="0" Width="20" ToolTip="Clear Coupons"
+                          Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right"
+                   Margin="0,0,5,0">
+                                        <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
+                                  HorizontalAlignment="Center" Grid.Column="0"  
+                             VerticalAlignment="Center" Width="17.5" Height="17.5"/>
+                                    </Button>
+                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -765,7 +768,7 @@
 
                         </Grid>
                     </Grid>
-                    <Grid  x:Name="grid_customer" Visibility="Visible"  >
+                    <Grid  x:Name="grid_customer" Visibility="Collapsed"  >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="45"/>
@@ -922,7 +925,7 @@
                     Margin="1,0"    Content="Delete" />-->
                         </Grid>
                     </Grid>
-                    <Grid  x:Name="grid_delivery" Visibility="Visible"  >
+                    <Grid  x:Name="grid_delivery" Visibility="Collapsed"  >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="45"/>

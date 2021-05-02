@@ -66,6 +66,9 @@ namespace POS.View
         private void Btn_coupon_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_coupon);
+            grid_main.Children.Clear();
+            uc_coupon uc = new uc_coupon();
+            grid_main.Children.Add(uc);
         }
 
         private void Btn_offer_Click(object sender, RoutedEventArgs e)

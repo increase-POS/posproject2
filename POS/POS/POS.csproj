@@ -109,6 +109,9 @@
     <Compile Include="View\uc_categorie.xaml.cs">
       <DependentUpon>uc_categorie.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\uc_coupon.xaml.cs">
+      <DependentUpon>uc_coupon.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UC_customer.xaml.cs" />
     <Compile Include="View\UC_item.xaml.cs">
       <DependentUpon>UC_item.xaml</DependentUpon>
@@ -210,6 +213,10 @@
     <Page Include="View\uc_categorie.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\uc_coupon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UC_customer.xaml">
       <Generator>MSBuild:Compile</Generator>

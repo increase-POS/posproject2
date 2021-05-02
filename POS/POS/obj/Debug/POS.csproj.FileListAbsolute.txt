@@ -798,3 +798,5 @@ C:\Users\HP\Documents\POS\POS\obj\Debug\POS.exe
 C:\Users\HP\Documents\POS\POS\obj\Debug\POS.pdb
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_offer.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_offer.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_coupon.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_coupon.baml

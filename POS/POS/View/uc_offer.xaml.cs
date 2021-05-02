@@ -23,7 +23,7 @@ namespace POS.View
         public uc_offer()
         {
             InitializeComponent();
-            tb_discountValue.Text = _numValue.ToString();
+          
         }
 
         #region Numeric
@@ -81,6 +81,8 @@ namespace POS.View
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            tb_discountValue.Text = _numValue.ToString();
+
             #region Style Date
             /////////////////////////////////////////////////////////////
             dp_startDate.Loaded += delegate
