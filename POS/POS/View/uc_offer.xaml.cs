@@ -23,7 +23,7 @@ namespace POS.View
         public uc_offer()
         {
             InitializeComponent();
-            tb_workHour.Text = _numValue.ToString();
+            tb_discountValue.Text = _numValue.ToString();
         }
 
         #region Numeric
@@ -37,7 +37,7 @@ namespace POS.View
             set
             {
                 _numValue = value;
-                tb_workHour.Text = value.ToString();
+                tb_discountValue.Text = value.ToString();
             }
         }
 
@@ -53,18 +53,18 @@ namespace POS.View
             NumValue--;
         }
 
-        private void tb_workHour_TextChanged(object sender, TextChangedEventArgs e)
+        private void tb_discountValue_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (tb_workHour == null)
+            if (tb_discountValue == null)
             {
                 return;
             }
 
-            if (!int.TryParse(tb_workHour.Text, out _numValue))
-                tb_workHour.Text = _numValue.ToString();
+            if (!int.TryParse(tb_discountValue.Text, out _numValue))
+                tb_discountValue.Text = _numValue.ToString();
         }
 
-        private void tb_workHour_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void tb_discountValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
 
         }
@@ -81,9 +81,57 @@ namespace POS.View
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            #region Style Date
+            /////////////////////////////////////////////////////////////
+            dp_startDate.Loaded += delegate
+            {
 
+                var textBox1 = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
+                if (textBox1 != null)
+                {
+                    textBox1.Background = dp_startDate.Background;
+                    textBox1.BorderThickness = dp_startDate.BorderThickness;
+                }
+            };
+            /////////////////////////////////////////////////////////////
+            dp_endDate.Loaded += delegate
+            {
+
+                var textBox1 = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
+                if (textBox1 != null)
+                {
+                    textBox1.Background = dp_endDate.Background;
+                    textBox1.BorderThickness = dp_endDate.BorderThickness;
+                }
+            };
+            /////////////////////////////////////////////////////////////
+            #endregion
         }
 
-       
+        #region Tab
+        private void Btn_offerTab_Click(object sender, RoutedEventArgs e)
+        {
+            grid_offerOnItem.Visibility = Visibility.Collapsed;
+            grid_offer.Visibility = Visibility.Visible;
+            brd_offerItemsTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            brd_offerTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+        }
+
+        private void btn_offerItems_Click(object sender, RoutedEventArgs e)
+        {
+            grid_offer.Visibility = Visibility.Collapsed;
+            grid_offerOnItem.Visibility = Visibility.Visible;
+            brd_offerTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            brd_offerItemsTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+        }
+
+
+
+
+
+
+        #endregion
+
+     
     }
 }
