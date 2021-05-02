@@ -25,6 +25,7 @@ namespace POS.View
     {
         public int PropertyId;
         Property propertyModel = new Property();
+        PropertiesItems PropertiesItemsModel = new PropertiesItems();
         public UC_porperty()
         {
             InitializeComponent();
@@ -102,8 +103,10 @@ namespace POS.View
             translate();
 
             var properties = await propertyModel.GetPropertyAsync();
-            MessageBox.Show(properties.Count.ToString());
-           // dg_property.ItemsSource = properties;
+            dg_property.ItemsSource = properties;
+
+            var propertiesItems = await PropertiesItemsModel.Get(PropertyId);
+            dg_subProperty.ItemsSource = propertiesItems;
         }
 
         private void Dg_subProperty_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -124,10 +127,9 @@ namespace POS.View
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {
             //add
-            Property property = new Property
+            PropertiesItems propertiesItems = new PropertiesItems
             {
-
-                name = tb_name.Text,
+                name = tb_valueName.Text,
                 // balance = 0,
                 //balance      = decimal.Parse(tb_balance.Text),
                 //branchId     = 1 ,
@@ -139,16 +141,18 @@ namespace POS.View
                 // isActive = 1
             };
 
-            await propertyModel.saveProperty(property);
+            //  await PropertiesItemsModel.Save(propertiesItems);
+            //MessageBox.Show(PropertyId.ToString());
+            var propertiesItemss = await PropertiesItemsModel.Get(PropertyId);
+            dg_subProperty.ItemsSource = propertiesItemss;
+            //get property id
 
-            var properties = await propertyModel.GetPropertyAsync();
-            dg_property.ItemsSource = properties;
+            //add values
         }
 
-        private async void Btn_update_Click_1(object sender, RoutedEventArgs e)
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {
             //update
-            //MessageBox.Show(PropertyId.ToString());
             Property property = new Property
             {
                 propertyId = PropertyId,
@@ -188,7 +192,7 @@ namespace POS.View
             dg_property.ItemsSource = properties;
 
             //clear textBoxs
-            Btn_clear_Click(sender, e);
+            //Btn_clear_Click(sender, e);
         }
 
         private void Dg_property_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
@@ -203,23 +207,22 @@ namespace POS.View
             //tb_balance.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             //   tt_errorSelectBranch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-            Property properties = new Property();
+            Property property = new Property();
 
             if (dg_property.SelectedIndex != -1)
             {
-                properties = dg_property.SelectedItem as Property;
-                this.DataContext = properties;
+                property = dg_property.SelectedItem as Property;
+                this.DataContext = property;
             }
-            if (properties != null)
+            if (property != null)
             {
-                if (properties.propertyId != 0)
+                if (property.propertyId != 0)
                 {
-                    PropertyId = properties.propertyId;
+                    PropertyId = property.propertyId;
                 }
                 
-            }
-        //    MessageBox.Show(properties.propertyId);
-        }
 
+            }
+        }
     }
 }

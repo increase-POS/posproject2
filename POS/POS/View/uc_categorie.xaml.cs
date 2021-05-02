@@ -105,8 +105,8 @@ namespace POS.View
             translate();
             #region Generate catigorie
             catigoriesAndItemsView.gridCatigories = Grid_categorie;
-            Categorie categorie = new Categorie();
-            catigoriesAndItemsView.FN_refrishCatalogCard(categorie.getCategories());
+            //Categorie categorie = new Categorie();
+            //catigoriesAndItemsView.FN_refrishCatalogCard(categorie.getCategories());
             #endregion
 
 

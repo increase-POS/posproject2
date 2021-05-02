@@ -1,4 +1,5 @@
-﻿using POS.controlTemplate;
+﻿using client_app.Classes;
+using POS.controlTemplate;
 using POS.View;
 using System;
 using System.Collections.Generic;
@@ -57,6 +58,7 @@ namespace POS.Classes
         {
             if (ucCategorie != null)
             {
+                //ucCategorie.testChangeCategorieIdEvent(_idCatigories);
                 ucCategorie.testChangeCategorieIdEvent();
 
             }
@@ -88,14 +90,12 @@ namespace POS.Classes
         
 
 
-        public void FN_refrishCatalogCard(List<Categorie> categories )
+        public  void FN_refrishCatalogCard(List<Category> categories )
         {
             gridCatigories.Children.Clear();
             int column = 0;
             foreach (var item in categories)
             {
-
-               
                  FN_createCatalogCard(item.categoryId, item.name, item.image, column, 1);
                 column++;
             }

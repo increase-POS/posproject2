@@ -74,7 +74,9 @@
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\CatigoriesAndItemsView.cs" />
     <Compile Include="Classes\Item.cs" />
+    <Compile Include="Classes\ItemsProp.cs" />
     <Compile Include="Classes\Pos.cs" />
+    <Compile Include="Classes\PropertiesItems.cs" />
     <Compile Include="Classes\Property.cs" />
     <Compile Include="Classes\Unit.cs" />
     <Compile Include="Classes\User.cs" />

@@ -159,7 +159,7 @@
                     <Border BorderThickness="0"  Grid.Row="1"
                     CornerRadius="0,0,7,7" BorderBrush="Black" Background="White">
                         <Grid x:Name="grid_itemsContainer">
-                            <Grid x:Name="grid_ItemsCard" Visibility="Collapsed" >
+                            <Grid x:Name="grid_ItemsCard" Visibility="Visible" >
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="45"/>
@@ -477,10 +477,12 @@
                 </Grid>-->
                 <Border Grid.Row="1" Background="White" 
                 CornerRadius="0,0,7,7" >
-                    <Grid>
-                        <!--////////////////////////////////  Item Data ////////////////////////////////////////////////////////-->
-                        <Grid  Grid.Row="1"
-                      x:Name="grid_itemData" Visibility="Visible" >
+                    
+
+                      <Grid> 
+ <!--////////////////////////////////  Item Data ////////////////////////////////////////////////////////-->
+                          <Grid  Grid.Row="1"
+                      x:Name="grid_itemData" Visibility="Collapsed" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="40"/>
@@ -899,9 +901,9 @@
                     Margin="1,0"    Content="Delete" Click="Btn_delete_Click" />
                             </Grid>
                         </Grid>
-                        <!--////////////////////////////////////   Properties   ////////////////////////////////////////////////////-->
+<!--////////////////////////////////////   Properties   ////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                         x:Name="grid_properties"  Visibility="Collapsed">
+                         x:Name="grid_properties"  Visibility="Visible">
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="7"/>
                                 <RowDefinition Height="*"/>
@@ -1010,6 +1012,7 @@
                             Background="#999999" Height="10"  Width="360"  Margin="10,0,10,0"
                          VerticalAlignment="Center" x:Name="line_topService" />
                             <Grid Grid.Row="3" >
+           <!--////////////////////////// Sub Property >>>> Serial /////////////////////////////////-->
                                 <Grid Grid.Row="2" x:Name="grid_serial" Visibility="Collapsed" >
                                     <Grid.RowDefinitions >
                                         <RowDefinition Height="auto"/>
@@ -1073,22 +1076,26 @@
                                         </Grid>
 
 
+                                        
 
                                         <Button Grid.Row="1" Grid.Column="0"  Width="170" Grid.ColumnSpan="3"
-                         BorderThickness="0" Background="#178DD2" Content="Add"
-                    Padding="0" Height="30"
-                            materialDesign:ButtonAssist.CornerRadius="5"  />
+                         BorderThickness="0" Background="#4E4E4E" Content="Add" BorderBrush="{x:Null}"
+                    Padding="0" Height="33"
+                             />
                                         <Button Grid.Row="1" Grid.Column="3"  Width="170" Grid.ColumnSpan="3"
-                         BorderThickness="0" Background="#178DD2" Content="Delete"
-                    Padding="0" Height="30"
-                            materialDesign:ButtonAssist.CornerRadius="5"  />
+                         BorderThickness="0" Background="#4E4E4E" Content="Delete"
+                    Padding="0" Height="33" BorderBrush="{x:Null}" 
+                            />
                                     </Grid>
 
 
                                 </Grid>
-                                <Grid  Grid.Row="4" x:Name="grid_service" Visibility="Collapsed"  >
+           <!--////////////////////////// Sub Property >>>> Servive /////////////////////////////////-->
+
+                                <Grid  Grid.Row="4" x:Name="grid_service" Visibility="Visible"  >
                                     <Grid.RowDefinitions >
                                         <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="45"/>
                                         <RowDefinition Height="45"/>
                                         <RowDefinition Height="45"/>
                                         <RowDefinition Height="auto"/>
@@ -1174,7 +1181,10 @@
                                             </Path.ToolTip>
                                         </Path>
                                     </Grid>
-
+                                    <Button Grid.Row="3" Grid.Column="0"  Width="340" Grid.ColumnSpan="2"
+                         BorderThickness="0" Background="#4E4E4E" Content="Save" BorderBrush="{x:Null}"
+                    Padding="0" Height="33"
+                             />
 
                                     <Separator Grid.Row="5" Grid.ColumnSpan="2"   
                             Background="#999999"   Width="360"  Margin="10,0,10,0"

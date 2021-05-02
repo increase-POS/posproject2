@@ -52,8 +52,8 @@ namespace POS.View
             catigoriesAndItemsView.ucPayInvoice = this;
             #region Generate catigorie
             catigoriesAndItemsView.gridCatigories = Grid_categorie;
-            Categorie categorie = new Categorie();
-            catigoriesAndItemsView.FN_refrishCatalogCard(categorie.getCategories());
+            //Categorie categorie = new Categorie();
+            //catigoriesAndItemsView.FN_refrishCatalogCard(categorie.getCategories());
             #endregion
             #region Generate catigorieItems
             catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;

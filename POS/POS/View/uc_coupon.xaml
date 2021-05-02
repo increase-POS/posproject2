@@ -61,7 +61,7 @@
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                               FontSize="12"/>
                         <ToggleButton Grid.Column="1"  x:Name="tgl_isActive"  Checked="Tgl_isActive_Checked" Unchecked="Tgl_isActive_Unchecked"
-                             VerticalAlignment="Center" Padding="10,15,5,5"
+                             VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                           Margin="0" Height="13" Width="28" />
                     </Grid>
 

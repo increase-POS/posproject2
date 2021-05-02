@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace client_app.Classes
 {
-    class Category
+    public class Category
     {
         public int categoryId { get; set; }
         public string categoryCode { get; set; }

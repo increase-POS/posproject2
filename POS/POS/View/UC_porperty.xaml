@@ -76,7 +76,7 @@
                 
                 <Grid>
                     <Grid.RowDefinitions >
-                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="17.5"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
@@ -85,51 +85,14 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <Button   Width="360" Height="52" Grid.Column="0" BorderBrush="{x:Null}"
-                      HorizontalAlignment="Center" VerticalAlignment="Center" 
-                     Background="{x:Null}"
-                    Padding="0" Grid.Row="0" >
-                            <Border CornerRadius="7,7,0,0" Background="#4E4E4E">
-                                <Grid Width="360" Height="52" HorizontalAlignment="Center"  >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="1.2*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Path Fill="#E8E8E8" Stretch="Fill"
-                              HorizontalAlignment="Right" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="20" Height="20"
-                              Data="M416.8,292.1c-15.2,0-30.3,0-45.5,0H366v-72.2c17.4,0,34.4,0,51.4,0c8.2,0,11.5-3.3,11.5-11.6c0-43.5,0-87,0-130.5
-	c0-8.6-3.2-11.8-11.8-11.8c-43.5,0-87,0-130.5,0c-8.3,0-11.5,3.3-11.5,11.5c0,15.3,0,30.7,0,46v5.5h-72.2v-5.7c0-15.3,0-30.7,0-46
-	c0-7.9-3.4-11.3-11.3-11.3c-43.7,0-87.3,0-131,0c-8.3,0-11.5,3.3-11.5,11.5c0,43.5,0,87,0,130.5c0,8.6,3.2,11.8,11.8,11.8
-	c15.3,0,30.7,0,46,0h5.3v72.2h-5.6c-15.3,0-30.7,0-46,0c-8,0-11.4,3.3-11.4,11.1c0,44.2,0,88.3,0,132.5c0,6.7,3.4,10.2,10.2,10.2
-	c44.2,0,88.3,0,132.5,0c7.8,0,11.1-3.4,11.2-11.4c0-15.2,0-30.3,0-45.5v-6.2h72.2v5.7c0,15,0,30,0,45c0,9.3,3,12.4,12.2,12.4
-	c43.2,0,86.3,0,129.5,0c9,0,12.1-3.1,12.1-11.9c0-43.3,0-86.7,0-130C428.9,295.2,425.8,292.1,416.8,292.1z M67.4,310.6H80
-	c-4.3,4.1-8.4,8.2-12.6,12.2V310.6z M67.3,351c0-1.1,1.3-2.2,2.3-3.1c11.7-11.8,23.5-23.6,35.3-35.2c1.3-1.3,3.6-2.2,5.6-2.3
-	c4.9-0.3,9.9-0.1,15.3-0.1C106,330,86.9,349.1,67.2,368.8C67.2,362.7,67.1,356.8,67.3,351z M67.3,396.8c0.1-1.3,1.2-2.7,2.2-3.7
-	c26.8-26.9,53.7-53.8,80.6-80.5c1.3-1.3,3.7-2.2,5.6-2.3c4.9-0.3,9.8-0.1,14.5-0.1c-34.4,34.4-68.7,68.6-103,103
-	C67.2,408,67,402.4,67.3,396.8z M96,427.7c-4.8,0.4-9.6,0.1-14.8,0.1c34.7-34.7,68.9-68.9,103.6-103.5c0,5.8,0.1,11.5-0.1,17.2
-	c0,1.2-1.4,2.6-2.4,3.6c-26.7,26.8-53.4,53.5-80.3,80.2C100.6,426.7,98.1,427.6,96,427.7z M184.4,427.5h-13.1
-	c4.5-4.6,8.6-8.7,13.1-13.3V427.5z M184.7,385.2c-0.1,1.6-1,3.5-2.1,4.7c-11.8,12-23.6,23.9-35.6,35.6c-1.3,1.2-3.4,2.1-5.1,2.2
-	c-5,0.3-10,0.1-13.6,0.1l56.5-56.5C184.8,375,185,380.1,184.7,385.2z M275.1,305v59.1h-72.2v-57.7c0-12.3-2.2-14.4-14.7-14.4h-57.3
-	v-72.2h58.8c10.4,0,13.2-2.7,13.2-12.9v-59.1h72c0.1,1.7,0.2,3.4,0.2,5.2c0,17.7,0,35.3,0,53c0,11.4,2.5,13.9,13.7,13.9h58.3v72.2
-	h-58.8C277.9,292.1,275.1,294.8,275.1,305z"/>
-                                    <TextBlock Text="Property" x:Name="txt_propertyHeader" Foreground="#E8E8E8" 
-                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
-                              Grid.Column="1"      Margin="5"/>
-                                </Grid>
-                            </Border>
-
-                        </Button>
-                        <Grid Grid.ColumnSpan="2" Grid.Row="1">
+                        <Grid Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="auto"/>
 
                             </Grid.ColumnDefinitions>
-                            
                             <TextBlock Text="Property" Foreground="#737373"
                                  FontSize="10"  VerticalAlignment="Center" x:Name="txt_property"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
@@ -147,7 +110,7 @@
                         </Grid>
 
 
-                        <Grid  Grid.Row="2" Margin="5,0,0,0">
+                        <Grid  Grid.Row="1" Margin="5,0,0,0">
 
                             <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5" 
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Name..."  
@@ -181,7 +144,7 @@
                     Margin="1,0"    Content="Add" Click="Btn_add_Click" />
                             <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
-                   Margin="1,0"    Content="Update" Click="Btn_update_Click_1" />
+                   Margin="1,0"    Content="Update" Click="Btn_update_Click" />
                             <Button x:Name="btn_delete" Grid.Row="0" Grid.Column="2"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,0"    Content="Delete" Click="Btn_delete_Click" />
@@ -259,11 +222,11 @@
 
                             </Grid.ColumnDefinitions>
                             <Button x:Name="btn_deleteValue"  Grid.Column="1"
-                          Background="#4E4E4E" BorderBrush="{x:Null}"  Height="33"
-                    Margin="10,0,10,0"    Content="Delete" Click="Btn_deleteValue_Click" />
+                          Background="#4E4E4E" BorderBrush="{x:Null}" Width="120" Height="33"
+                    Margin="1,0"    Content="Delete" Click="Btn_deleteValue_Click" />
                             <Button x:Name="btn_addValue"  Grid.Column="0"
-                          Background="#4E4E4E" BorderBrush="{x:Null}"  Height="33"
-                    Margin="10,0,10,0"  Content="Add" Click="Btn_add_Click" />
+                          Background="#4E4E4E" BorderBrush="{x:Null}" Width="120" Height="33"
+                    Margin="1,0"    Content="Add" Click="Btn_add_Click" />
                         </Grid>
                         <Separator Background="#999999"   Width="340"  Margin="5"
                                       Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" />

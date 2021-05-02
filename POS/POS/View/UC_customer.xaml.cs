@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
+//using Tulpep.NotificationWindow;
 
 
 namespace POS.View
@@ -27,34 +28,12 @@ namespace POS.View
     public partial class UC_Customer : UserControl
     {
         public int AgentId;
+
         Agent agentModel = new Agent();
         public UC_Customer()
         {
             InitializeComponent();
 
-           
-            List<Agent> customers = new List<Agent>();
-           
-           
-
-            //for (int i = 0; i < 50; i++)
-            //{
-            //    customers.Add(new Agent()
-            //    {
-            //        agentId = i,
-            //        name = "Test name " + i,
-            //        address = "Test address" + i,
-            //        company = "Test company" + i,
-            //        mobile = "Test mobile" + i,
-            //        phone = "Test phone" + i,
-            //        email = "Test email" + i,
-            //        details = "Test details" + i,
-            //        accType = "Debt",
-            //        balance = 368 * i,
-            //        notes = "Test notes" + i,
-            //    }); ; ;
-            //}
-            dg_customer.ItemsSource = customers;
         }
 
         private void translate()
@@ -82,14 +61,15 @@ namespace POS.View
             dg_customer.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
             dg_customer.Columns[1].Header = MainWindow.resourcemanager.GetString("trCompany");
             dg_customer.Columns[2].Header = MainWindow.resourcemanager.GetString("trMobile");
-            dg_customer.Columns[3].Header = MainWindow.resourcemanager.GetString("trUpperLimitUpper limit of Entitlement");
-        //    dg_customer.Columns[4].Header = MainWindow.resourcemanager.GetString("trBalance");
+            //dg_customer.Columns[3].Header = MainWindow.resourcemanager.GetString("trDetails");
+            //dg_customer.Columns[4].Header = MainWindow.resourcemanager.GetString("trBalance");
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
-        {
+        {//clear
+            tb_code.Text = "";
             tb_address.Text = "";
             tb_fax.Text = "";
             tb_company.Text = "";
@@ -113,7 +93,6 @@ namespace POS.View
         private void DG_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             p_errorName.Visibility = Visibility.Collapsed;
-         //   p_errorBalance.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
             var bc = new BrushConverter();
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
@@ -134,14 +113,7 @@ namespace POS.View
                     AgentId = agent.agentId;
                 }
 
-                //if (agent.accType != null)
-                //{
-                //    if (agent.accType.Equals("c")) cb_accType.SelectedIndex = 0;
-                //    else if (agent.accType.Equals("d")) cb_accType.SelectedIndex = 1;
-                //    else cb_accType.SelectedIndex = 0;
-                //}
-                //else cb_accType.SelectedIndex = -1;
-
+                //mobile
                 if ((agent.mobile != null) && (agent.mobile.ToArray().Length > 4))
                 {
                     string area = new string(agent.mobile.Take(4).ToArray());
@@ -155,7 +127,42 @@ namespace POS.View
                     cb_areaMobile.SelectedIndex = -1;
                     tb_mobile.Clear();
                 }
+                //phone
+                if ((agent.phone != null) && (agent.phone.ToArray().Length > 7))
+                {
+                    string area      = new string(agent.phone.Take(4).ToArray());
+                    string areaLocal = new string(agent.phone.Substring(4, agent.phone.Length - 4).Take(3).ToArray());
 
+                    var phone = agent.phone.Substring(7, agent.phone.Length - 7);
+
+                    cb_areaPhone.Text = area;
+                    cb_areaPhoneLocal.Text = areaLocal;
+                    tb_phone.Text = phone.ToString();
+                }
+                else
+                {
+                    cb_areaPhone.SelectedIndex = -1;
+                    cb_areaPhoneLocal.SelectedIndex = -1;
+                    tb_phone.Clear();
+                }
+                //fax
+                if ((agent.fax != null) && (agent.fax.ToArray().Length > 7))
+                {
+                    string area = new string(agent.fax.Take(4).ToArray());
+                    string areaLocal = new string(agent.fax.Substring(4, agent.fax.Length - 4).Take(3).ToArray());
+
+                    var fax = agent.fax.Substring(7, agent.fax.Length - 7);
+
+                    cb_areaFax.Text = area;
+                    cb_areaFaxLocal.Text = areaLocal;
+                    tb_fax.Text = fax.ToString();
+                }
+                else
+                {
+                    cb_areaFax.SelectedIndex = -1;
+                    cb_areaFaxLocal.SelectedIndex = -1;
+                    tb_fax.Clear();
+                }
             }
         }
 
@@ -170,19 +177,19 @@ namespace POS.View
             {
                 p_errorName.Visibility = Visibility.Collapsed;
             }
-            //if (tb_fax.Text.Equals(""))
-            //{
-            //    p_errorBalance.Visibility = Visibility.Visible;
-            //    tt_errorBalance.Content = MainWindow.resourcemanager.GetString("trEmptyBalanceToolTip");
-            //}
-            //else
-            //{
-            //    p_errorBalance.Visibility = Visibility.Collapsed;
+            if (tb_mobile.Text.Equals(""))
+            {
+                p_errorMobile.Visibility = Visibility.Visible;
+                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
+            }
+            else
+            {
+                p_errorMobile.Visibility = Visibility.Collapsed;
 
-            //}
+            }
             if (!tb_email.Text.Equals(""))
             {
-                if(!ValidatorExtensions.IsValid(tb_email.Text))
+                if (!ValidatorExtensions.IsValid(tb_email.Text))
                 {
                     p_errorEmail.Visibility = Visibility.Visible;
                     tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
@@ -192,44 +199,65 @@ namespace POS.View
                     p_errorEmail.Visibility = Visibility.Collapsed;
                 }
             }
-
-            if ((!tb_name.Text.Equals("") ))
-            {
-                //string acc = cb_accType.Text;
-
-                //if (acc == "Cash")      acc = "c";
-                //else if (acc == "Debt") acc = "d";
-                //else                    acc = "c";
-                Agent customer = new Agent {
-                    name         = tb_name.Text,
-                    code         = "",
-                    company      = tb_company.Text,
-                    address      = tb_address.Text,
-                    details      = tb_upperLimit.Text,
-                    email        = tb_email.Text,
-                    phone        = tb_phone.Text,
-                    mobile       = cb_areaMobile.Text + tb_mobile.Text,
-                    image        = "",
-                    type         = "c",
-                   // accType      = acc,
-                    balance      = Single.Parse(tb_fax.Text),
-                    isDefault    = 0 ,
-                    createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                    updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                    createUserId = 1,
-                    updateUserId = 1,
-                    notes        = tb_notes.Text,
-                    isActive     = 1,
-
-            };
-                await agentModel.saveAgent(customer);
-                //pass parameter type (V for vendors, C for Clients , B for Both)
-                var agents = await agentModel.GetAgentsAsync("c");
-                dg_customer.ItemsSource = agents;
-            }
+            string phoneStr = "";
+            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
             
-        }
+            string faxStr = "";
+            if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + cb_areaFaxLocal.Text + tb_fax.Text;
+            
+            bool emailError = false;
+            if (!tb_email.Text.Equals(""))
+                if (!ValidatorExtensions.IsValid(tb_email.Text))
+                    emailError = true;
 
+            decimal maxDeserveValue = 0;
+            if (!tb_upperLimit.Text.Equals(""))
+                maxDeserveValue = decimal.Parse(tb_upperLimit.Text);
+
+            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) )
+            {
+                if (emailError)
+                    popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
+                else
+                {
+                    genRandomCode();
+
+                    Agent customer = new Agent
+                    {
+                        name = tb_name.Text,
+                        code = tb_code.Text,
+                        company = tb_company.Text,
+                        address = tb_address.Text,
+                        email = tb_email.Text,
+                        phone = phoneStr,
+                        mobile = cb_areaMobile.Text + tb_mobile.Text,
+                        image = "",
+                        type = "c",
+                        accType = "",
+                        balance = 0,
+                        createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                        updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                        createUserId = MainWindow.userID,
+                        updateUserId = MainWindow.userID,
+                        notes = tb_notes.Text,
+                        isActive = 1,
+                        fax = faxStr,
+                        maxDeserve = maxDeserveValue
+
+                    };
+
+                    string s = await agentModel.saveAgent(customer);
+
+                    if (s.Equals("true")) popUpResponse("", "تمت الإضافة بنجاح");
+                    else popUpResponse("", "حدث خطأ");
+
+                    //pass parameter type (V for vendors, C for Clients , B for Both)
+                    var agents = await agentModel.GetAgentsAsync("c");
+                    dg_customer.ItemsSource = agents;
+                }
+            }
+            else popUpResponse("", "لا يمكن الإضافة بدون الاسم و رقم الجوال");
+        }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             
@@ -245,18 +273,16 @@ namespace POS.View
             }
             
             translate();
-
-
-            cb_areaMobile.Text = "+963";
+           
+            //pass parameter type (V for vendors, C for Clients , B for Both)
+            var agents = await agentModel.GetAgentsAsync("c");
+            dg_customer.ItemsSource = agents;
+            
+            cb_areaMobile.SelectedIndex = 0;
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
             cb_areaFax.SelectedIndex = 0;
             cb_areaFaxLocal.SelectedIndex = 0;
-
-            //pass parameter type (V for vendors, C for Clients , B for Both)
-            var agents = await agentModel.GetAgentsAsync("c");
-            dg_customer.ItemsSource = agents;
-
             
         }
 
@@ -272,16 +298,16 @@ namespace POS.View
             {
                 p_errorName.Visibility = Visibility.Collapsed;
             }
-            //if (tb_fax.Text.Equals(""))
-            //{
-            //    p_errorBalance.Visibility = Visibility.Visible;
-            //    tt_errorBalance.Content = MainWindow.resourcemanager.GetString("trEmptyBalanceToolTip");
-            //}
-            //else
-            //{
-            //    p_errorBalance.Visibility = Visibility.Collapsed;
+            if (tb_mobile.Text.Equals(""))
+            {
+                p_errorMobile.Visibility = Visibility.Visible;
+                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
+            }
+            else
+            {
+                p_errorMobile.Visibility = Visibility.Collapsed;
 
-            //}
+            }
             if (!tb_email.Text.Equals(""))
             {
                 if (!ValidatorExtensions.IsValid(tb_email.Text))
@@ -294,54 +320,74 @@ namespace POS.View
                     p_errorEmail.Visibility = Visibility.Collapsed;
                 }
             }
+            string phoneStr = "";
+            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
 
-            if ((!tb_name.Text.Equals("")) && (!tb_fax.Text.Equals("")))
+            string faxStr = "";
+            if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + cb_areaFaxLocal.Text + tb_fax.Text;
+
+            bool emailError = false;
+            if (!tb_email.Text.Equals(""))
+                if (!ValidatorExtensions.IsValid(tb_email.Text))
+                    emailError = true;
+
+            decimal maxDeserveValue = 0;
+            if (!tb_upperLimit.Text.Equals(""))
+                maxDeserveValue = decimal.Parse(tb_upperLimit.Text);
+
+            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
             {
-                //string acc = cb_accType.Text;
-
-                //if (acc == "Cash") acc = "c";
-                //else if (acc == "Debt") acc = "d";
-                //else acc = "c";
-
-                Agent customer = new Agent
+                if (emailError)
+                    popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
+                else
                 {
-                    agentId = AgentId,
-                    name = tb_name.Text,
-                    code = "",
-                    company = tb_company.Text,
-                    address = tb_address.Text,
-                    details = tb_upperLimit.Text,
-                    email = tb_email.Text,
-                    phone = tb_phone.Text,
-                    mobile = cb_areaMobile.Text + tb_mobile.Text,
-                    image = "",
-                    type = "c",
-                   // accType = acc,
-                    balance = Single.Parse(tb_fax.Text),
-                    isDefault = 0,
-                    createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                    updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                    createUserId = 1,
-                    updateUserId = 1,
-                    notes = tb_notes.Text,
-                    isActive = 1,
+                    Agent customer = new Agent
+                    {
+                        agentId = AgentId,
+                        name = tb_name.Text,
+                        code = tb_code.Text,
+                        company = tb_company.Text,
+                        address = tb_address.Text,
+                        email = tb_email.Text,
+                        phone = phoneStr,
+                        mobile = cb_areaMobile.Text + tb_mobile.Text,
+                        image = "",
+                        type = "c",
+                        accType = "",
+                        balance = 0,
+                        createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                        updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                        createUserId = MainWindow.userID,
+                        updateUserId = MainWindow.userID,
+                        notes = tb_notes.Text,
+                        isActive = 1,
+                        fax = faxStr,
+                        maxDeserve = maxDeserveValue
 
-                };
+                    };
 
-                await agentModel.saveAgent(customer);
+                    string s = await agentModel.saveAgent(customer);
 
-                //pass parameter type (V for vendors, C for Clients , B for Both)
-                var agents = await agentModel.GetAgentsAsync("c");
-                dg_customer.ItemsSource = agents;
+                    if (s.Equals("true")) popUpResponse("", "تمت التعديل بنجاح");
+                    else popUpResponse("", "حدث خطأ");
+
+                    //pass parameter type (V for vendors, C for Clients , B for Both)
+                    var agents = await agentModel.GetAgentsAsync("c");
+                    dg_customer.ItemsSource = agents;
+                }
             }
+            else popUpResponse("", "لا يمكن التعديل بدون الاسم و رقم الجوال");
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
 
-            await agentModel.deleteAgent(AgentId);
+            bool b = await agentModel.deleteAgent(AgentId);
+            MessageBox.Show(b.ToString());
+            if(b) popUpResponse("", "تمت الحذف بنجاح");
+            else popUpResponse("", "حدث خطأ");
 
-            //pass parameter type (V for vendors, C for Clients , B for Both)
+            //pass parameter type(V for vendors, C for Clients, B for Both)
             var agents = await agentModel.GetAgentsAsync("c");
             dg_customer.ItemsSource = agents;
 
@@ -354,10 +400,9 @@ namespace POS.View
             tb_email.Clear();
             tb_phone.Clear();
             tb_mobile.Clear();
-         //   cb_accType.SelectedIndex = -1;
             tb_fax.Clear();
             tb_notes.Clear();
-
+           
         }
 
         private void tb_name_LostFocus(object sender, RoutedEventArgs e)
@@ -451,7 +496,58 @@ namespace POS.View
             else
                 p_errorMobile.Visibility = Visibility.Collapsed;
 
+        }
+        private long genRandomCode()
+        {
+            Random rnd = new Random();
+            long randomNum = rnd.Next(0, 999999999);
+            if (!isCodeExist(randomNum))
+                //randomList.Add(randomNum);
+                tb_code.Text = randomNum.ToString();
+            else genRandomCode();
+            
+            return randomNum;
 
+        }
+
+        DataGrid dt = new DataGrid();
+        private bool isCodeExist(long randomNum)
+        {
+            bool b = false;
+            //dt.ItemsSource = null;
+            try
+            {
+            //    dt.ItemsSource = dg_customer.ItemsSource;
+            //    for (int i = 0; i < dt.Items.Count; i++)
+            //    {
+            //        Agent agent = new Agent();
+            //        dt.SelectedIndex = i;
+            //        agent = dt.SelectedItem as Agent;
+            //        //this.DataContext = agent;
+
+            //        if (agent != null)
+            //        {
+            //            if (agent.code.Equals(tb_code.Text))
+            //            { b = true; break; }
+
+            //        }
+            //    }
+            }
+            catch { }
+            return b;
+        }
+
+            private void popUpResponse(string title , string content)
+        {/*
+            PopupNotifier popup = new PopupNotifier();
+            popup.TitleText = title;
+            popup.ContentText =content;
+            //popup.ContentPadding = new Padding(0);
+            //popup.BodyColor = System.Drawing.Color.FromArgb(0, 0, 0);
+            //popup.BorderColor = System.Drawing.Color.FromArgb(0, 0, 0);
+            //popup.ContentColor = System.Drawing.Color.FromArgb(255, 255, 255);
+            //popup.ContentFont = new System.Drawing.Font("Tahoma", 8F);
+            popup.Popup();// show  */
         }
     }
 }

@@ -204,6 +204,8 @@ namespace POS
         }
 
         public static string lang = "ar";
+        internal static int? userID = 2;
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (lang.Equals("en"))
