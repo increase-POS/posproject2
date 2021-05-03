@@ -36,12 +36,10 @@ namespace POS.View
         IEnumerable<Item> itemsQuery;
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
         int selectedItemId = 0;
-
         public uc_categorie()
         {
             InitializeComponent();
         }
-
         private void fillCategories()
         {
             cb_parentCategorie.ItemsSource = categories.ToList();
@@ -66,7 +64,6 @@ namespace POS.View
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
            
         }
-
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             catigoriesAndItemsView.ucCategorie = this;
@@ -595,6 +592,37 @@ namespace POS.View
         {
             grid_ItemsCard.Visibility = Visibility.Collapsed;
             grid_itemsDatagrid.Visibility = Visibility.Visible;
+        }
+        #endregion
+        #region Search
+        private async void Txb_searchItemsDatagrid_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (items is null)
+                await RefrishItem();
+            byte b = 0;
+            if (tgl_itemDatagridIsActive.IsChecked == true)
+                b = 1;
+            else b = 0; 
+            itemsQuery = items.Where(x =>( x.code.Contains(txb_searchItemsDatagrid.Text) ||
+            x.name.Contains(txb_searchItemsDatagrid.Text) ||
+            x.details.Contains(txb_searchItemsDatagrid.Text)
+            ) && x.isActive == b);
+            DG_Items.ItemsSource = itemsQuery;
+        }
+        private async void Txb_searchItemsCard_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (items is null)
+                await RefrishItem();
+            byte b = 0;
+            if (tgl_itemCardIsActive.IsChecked == true)
+                b = 1;
+            else b = 0;
+            itemsQuery = items.Where(x => (x.code.Contains(txb_searchItemsCard.Text) ||
+            x.name.Contains(txb_searchItemsCard.Text) ||
+            x.details.Contains(txb_searchItemsCard.Text)
+            ) && x.isActive == b);
+            catigoriesAndItemsView.FN_refrishCatalogItem(itemsQuery.ToList(), MainWindow.lang, "sale");
+
         }
         #endregion
     }

@@ -228,7 +228,7 @@
                     <Border BorderThickness="0"  Grid.Row="1"
                     CornerRadius="0,0,7,7" BorderBrush="Black" Background="White">
                         <Grid x:Name="grid_itemsContainer">
-                            <Grid x:Name="grid_ItemsCard" Visibility="Collapsed" >
+                            <Grid x:Name="grid_ItemsCard" Visibility="Visible" >
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="45"/>
@@ -293,7 +293,7 @@
                                         
                                     </Grid>
                                     <Grid Width="235" VerticalAlignment="Bottom" Grid.Column="1">
-                                        <TextBox  x:Name="tb_search"
+                                        <TextBox x:Name="txb_searchItemsCard"  TextChanged="Txb_searchItemsCard_TextChanged"
                         Padding="10,5,5,5" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
@@ -329,7 +329,7 @@
                                 </Grid>
                                
                             </Grid>
-                            <Grid x:Name="grid_itemsDatagrid" Visibility="Visible">
+                            <Grid x:Name="grid_itemsDatagrid" Visibility="Collapsed">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="40"/>
                                     <RowDefinition Height="*"/>
@@ -343,7 +343,8 @@
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid   VerticalAlignment="Bottom" Grid.Column="0">
-                                        <TextBox    Width="275"
+                                        <TextBox    Width="275"   x:Name="txb_searchItemsDatagrid"  TextChanged="Txb_searchItemsDatagrid_TextChanged" 
+                                                    
                         Padding="10,5,5,5" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
@@ -388,7 +389,7 @@
                                         <DataGridTextColumn   MinWidth="150"   Header="Code"  Binding="{Binding Path=code}"/>
                                     <DataGridTextColumn MinWidth="150"  Header="Name" Binding="{Binding Path=name}"/>
                                         <DataGridTextColumn MinWidth="200"  Header="Details" Binding="{Binding Path=details}"/>
-                                        <DataGridTextColumn MinWidth="200"  Header="Details" Binding="{Binding Path=type}"/>
+                                        <!--<DataGridTextColumn MinWidth="200"  Header="Type" Binding="{Binding Path=type}"/>-->
                                     </DataGrid.Columns>
                             </DataGrid>
                                 <Separator Width="1000" Background="#999999"     Grid.Row="2"   Margin="10,5,10,0"
