@@ -83,8 +83,8 @@ namespace POS.View
             translate();
 
             #region Generate catigory and item Y
-            catigoriesAndItemsView.gridCatigories = Grid_categorie;
-            catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
+            //catigoriesAndItemsView.gridCatigories = Grid_categorie;
+            //catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
             await RefrishCategory();
             //RefrishCategoryCard(categories);
             await RefrishItem();
@@ -133,6 +133,7 @@ namespace POS.View
         }
         void   RefrishCategoryCard(IEnumerable<Category> _categories)
         {
+            catigoriesAndItemsView.gridCatigories = Grid_categorie;
             catigoriesAndItemsView.FN_refrishCatalogCard(_categories.ToList());
         }
         async Task<bool> RefrishItem()
@@ -142,6 +143,7 @@ namespace POS.View
         }
         void RefrishItemCardAndDatagrid(IEnumerable<Item> _items)
         {
+            catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
             catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), MainWindow.lang, "sale");
             DG_Items.ItemsSource = _items;
         }

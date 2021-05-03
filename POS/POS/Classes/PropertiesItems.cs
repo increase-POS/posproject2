@@ -48,7 +48,7 @@ namespace POS.Classes
                 // set unicode
                 request.Content = new StringContent(myContent, System.Text.Encoding.UTF8, "text/xml");
 
-                request.RequestUri = new Uri(Global.APIUri + "PropertiesItems/Save?PropertiesItemsObject=" + myContent);
+                request.RequestUri = new Uri(Global.APIUri + "propertiesItems/Save?propItemObject=" + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
                 //set content type
                 request.Content.Headers.ContentType.Parameters.Add(new NameValueHeaderValue("charset", "utf-8"));
@@ -97,9 +97,9 @@ namespace POS.Classes
             }
         }
 
-        public async Task<List<PropertiesItems>> Get(int propertyItemId)
+        public async Task<List<PropertiesItems>> Get()
         {
-            List<PropertiesItems> PropertiesItemss = null;
+            List<PropertiesItems> propertiesItemss = null;
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -110,7 +110,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "propertyItems/Get");
+                request.RequestUri = new Uri(Global.APIUri + "propertiesItems/Get");
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -127,14 +127,14 @@ namespace POS.Classes
                         Converters = new List<JsonConverter> { new BadDateFixingConverter() },
                         DateParseHandling = DateParseHandling.None
                     };
-                    PropertiesItemss = JsonConvert.DeserializeObject<List<PropertiesItems>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return PropertiesItemss;
+                    propertiesItemss = JsonConvert.DeserializeObject<List<PropertiesItems>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return propertiesItemss;
                 }
                 else //web api sent error response 
                 {
-                    PropertiesItemss = new List<PropertiesItems>();
+                    propertiesItemss = new List<PropertiesItems>();
                 }
-                return PropertiesItemss;
+                return propertiesItemss;
             }
         }
 

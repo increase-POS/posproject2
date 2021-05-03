@@ -24,7 +24,7 @@ namespace POS.Classes
 
         // adding or editing  category by calling API metod "save"
         // if categoryId = 0 will call save else call edit
-        public async Task<List<Property>> GetPropertyAsync()
+        public async Task<List<Property>> getProperty()
         {
             List<Property> Properties = null;
             // ... Use HttpClient.
@@ -37,7 +37,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Pos/get");
+                request.RequestUri = new Uri(Global.APIUri + "Properties/get");
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -77,7 +77,7 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "Pos/Save?posObject=" + myContent);
+                request.RequestUri = new Uri(Global.APIUri + "Properties/Save?propertyObject" + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -94,7 +94,7 @@ namespace POS.Classes
             }
         }
 
-        public async Task<Property> getPropertyById(int propertyId)
+        public async Task<Property> GetPropertyByID(int propertyId)
         {
             Property property = new Property();
 
@@ -108,9 +108,9 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Users/GetUserByID");
+                request.RequestUri = new Uri(Global.APIUri + "property/GetpropertyByID");
                 request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("posId", propertyId.ToString());
+                request.Headers.Add("propertyId", propertyId.ToString());
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var response = await client.SendAsync(request);
@@ -128,7 +128,7 @@ namespace POS.Classes
             }
         }
 
-        public async Task<string> deleteProperty(int posId)
+        public async Task<string> Delete(int posId)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -141,9 +141,9 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Users/Delete");
+                request.RequestUri = new Uri(Global.APIUri + "Property/Delete");
                 request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("posId", posId.ToString());
+                request.Headers.Add("propertyId", posId.ToString());
                 request.Method = HttpMethod.Post;
                 //set content type
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

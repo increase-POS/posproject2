@@ -102,10 +102,10 @@ namespace POS.View
 
             translate();
 
-            var properties = await propertyModel.GetPropertyAsync();
+            var properties = await propertyModel.getProperty();
             dg_property.ItemsSource = properties;
 
-            var propertiesItems = await PropertiesItemsModel.Get(PropertyId);
+            var propertiesItems = await PropertiesItemsModel.Get();
             dg_subProperty.ItemsSource = propertiesItems;
         }
 
@@ -119,110 +119,182 @@ namespace POS.View
 
         }
 
+
+       
+
+
+            private async void Btn_update_Click(object sender, RoutedEventArgs e)
+            {
+                //update
+                Property property = new Property
+                {
+                    propertyId = PropertyId,
+
+                    name = tb_name.Text,
+                    //balance = 0,
+                    //balance      = decimal.Parse(tb_balance.Text),
+                    //branchId     = 1,
+                    createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                    updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                    createUserId = 2,
+                    updateUserId = 2,
+                    // isActive = 1
+                };
+
+
+                await propertyModel.saveProperty(property);
+
+                var poss = await propertyModel.getProperty();
+                dg_property.ItemsSource = poss;
+
+
+            }
+            private void Btn_clear_Click(object sender, RoutedEventArgs e)
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+                var bc = new BrushConverter();
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_name.Text = "";
+            }
+            private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+            {
+                //delete
+                await propertyModel.Delete(PropertyId);
+
+                var properties = await propertyModel.getProperty();
+                dg_property.ItemsSource = properties;
+
+                //clear textBoxs
+                //Btn_clear_Click(sender, e);
+            }
+
+            private void Dg_property_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+                // p_errorCode.Visibility = Visibility.Collapsed;
+                // p_errorBalance.Visibility = Visibility.Collapsed;
+                // p_errorSelectBranch.Visibility = Visibility.Collapsed;
+                var bc = new BrushConverter();
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                //  tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                //tb_balance.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                //   tt_errorSelectBranch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+                Property property = new Property();
+
+                if (dg_property.SelectedIndex != -1)
+                {
+                    property = dg_property.SelectedItem as Property;
+                    this.DataContext = property;
+                }
+                if (property != null)
+                {
+                    if (property.propertyId != 0)
+                    {
+                        PropertyId = property.propertyId;
+                    }
+
+
+                }
+
+            }
+
+
+            private async void Btn_addValue_Click(object sender, RoutedEventArgs e)
+                {
+
+                    //add
+                    PropertiesItems propertiesItems = new PropertiesItems
+                    {
+                        name = tb_valueName.Text,
+                        propertyId = 1,                       
+                        createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                        updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                        createUserId = 2,
+                        updateUserId = 2,
+                         isActive = 1,
+                         isDefault =1
+                    };
+
+            //  await PropertiesItemsModel.Save(propertiesItems);
+            //MessageBox.Show(PropertyId.ToString());
+                     await PropertiesItemsModel.Save(propertiesItems);
+                     var propertiesItemss = await PropertiesItemsModel.Get();
+                     dg_subProperty.ItemsSource = propertiesItemss;
+            
+            //get property id
+            //getPropertyID(tb_valueName.Text);
+                    MessageBox.Show(propertiesItemss.Count.ToString());
+                    //add values
+                    
+
+                }
+
+                int id = 0;
+                private async void getPropertyID(string name)
+                {
+                    List<string> names = new List<string>();
+                    List<int> ids = new List<int>();
+
+                    var props = await propertyModel.getProperty();
+                    Property prop = new Property();
+                    // MessageBox.Show(props.Count.ToString());
+                    for (int i = 0; i < props.Count; i++)
+                    {
+                        prop = props[i];
+                        if (prop.name.Trim().Equals(name.Trim()))
+                        {
+                            id = prop.propertyId;
+                            break;
+                        }
+                        //names.Add(prop.name);
+                        //ids.Add(prop.propertyId);
+
+                    }
+                    //for(int i;)
+                    //if (names.Contains(name))
+                    //    id = 
+                    MessageBox.Show(prop.propertyId.ToString());
+                }
+
         private void Btn_deleteValue_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private async void Btn_add_Click(object sender, RoutedEventArgs e)
+        private async  void Btn_add_Click(object sender, RoutedEventArgs e)
         {
             //add
-            PropertiesItems propertiesItems = new PropertiesItems
-            {
-                name = tb_valueName.Text,
-                // balance = 0,
-                //balance      = decimal.Parse(tb_balance.Text),
-                //branchId     = 1 ,
-                // branchId = selectedBranchId,
-                createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                createUserId = 2,
-                updateUserId = 2,
-                // isActive = 1
-            };
-
-            //  await PropertiesItemsModel.Save(propertiesItems);
-            //MessageBox.Show(PropertyId.ToString());
-            var propertiesItemss = await PropertiesItemsModel.Get(PropertyId);
-            dg_subProperty.ItemsSource = propertiesItemss;
-            //get property id
-
-            //add values
-        }
-
-        private async void Btn_update_Click(object sender, RoutedEventArgs e)
-        {
-            //update
             Property property = new Property
             {
-                propertyId = PropertyId,
-
-                name = tb_name.Text,
-                //balance = 0,
-                //balance      = decimal.Parse(tb_balance.Text),
-                //branchId     = 1,
+                name = tb_name.Text,                
                 createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 createUserId = 2,
                 updateUserId = 2,
                 // isActive = 1
             };
+            //PropertiesItems propertiesItems = new PropertiesItems
+            //{
+            //    name = tb_valueName.Text,
+            //    createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+            //    updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+            //    createUserId = 2,
+            //    updateUserId = 2,
+            //    // isActive = 1
+            //};
 
-
-            await propertyModel.saveProperty(property);
-
-            var poss = await propertyModel.GetPropertyAsync();
-            dg_property.ItemsSource = poss;
-
-
-        }
-        private void Btn_clear_Click(object sender, RoutedEventArgs e)
-        {
-            p_errorName.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_name.Text = "";
-        }
-        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
-        {
-            //delete
-            await propertyModel.deleteProperty(PropertyId);
-
-            var properties = await propertyModel.GetPropertyAsync();
+            MessageBox.Show( await propertyModel.saveProperty(property));
+            //MessageBox.Show(PropertyId.ToString());
+            var properties = await propertyModel.getProperty();
             dg_property.ItemsSource = properties;
+            //get property id
+            //  getPropertyID(tb_valueName.Text);
+            MessageBox.Show(properties.Count.ToString());
 
-            //clear textBoxs
-            //Btn_clear_Click(sender, e);
-        }
-
-        private void Dg_property_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
-        {
-            p_errorName.Visibility = Visibility.Collapsed;
-           // p_errorCode.Visibility = Visibility.Collapsed;
-            // p_errorBalance.Visibility = Visibility.Collapsed;
-           // p_errorSelectBranch.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            //  tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            //tb_balance.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            //   tt_errorSelectBranch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-            Property property = new Property();
-
-            if (dg_property.SelectedIndex != -1)
-            {
-                property = dg_property.SelectedItem as Property;
-                this.DataContext = property;
-            }
-            if (property != null)
-            {
-                if (property.propertyId != 0)
-                {
-                    PropertyId = property.propertyId;
-                }
-                
-
-            }
+            //add values
+            //  var value = await PropertiesItemsModel.Save(propertiesItems);
+            //   dg_subProperty.ItemsSource = value;
         }
     }
-}
+ } 
