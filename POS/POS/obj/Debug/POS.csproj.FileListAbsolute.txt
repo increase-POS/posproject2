@@ -75,7 +75,6 @@ E:\GitHub\posproject2\POS\POS\bin\Debug\MaterialDesignColors.pdb
 E:\GitHub\posproject2\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.pdb
 E:\GitHub\posproject2\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.xml
 E:\GitHub\posproject2\POS\POS\bin\Debug\Newtonsoft.Json.xml
-E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
 E:\GitHub\posproject2\POS\POS\obj\Debug\MainWindow.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\UC_customer.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\UC_sectionData.g.cs
@@ -800,3 +799,4 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_offer.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_offer.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_coupon.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_coupon.baml
+E:\GitHub\posproject2\POS\POS\bin\Debug\Tulpep.NotificationWindow.dll

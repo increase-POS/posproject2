@@ -3,6 +3,7 @@ using POS.Classes;
 using POS.controlTemplate;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -28,46 +29,24 @@ namespace POS.View
     {
         public int CategorieId;
         Category categoryModel = new Category();
-        //  Item itemModel = new Item();
-
-         List<int> categoryIds = new List<int>();
-          List<string> categoryNames = new List<string>();
+        Item itemModel = new Item();
+        IEnumerable<Category> categories;
+        IEnumerable<Category> categoriesQuery;
+        IEnumerable<Item> items;
+        IEnumerable<Item> itemsQuery;
+        CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
         int selectedItemId = 0;
-          DataGrid dt = new DataGrid();
 
         public uc_categorie()
         {
             InitializeComponent();
         }
 
-        private async void fillCategories()
+        private void fillCategories()
         {
-            //var items = await itemModel.GetSubItems(CategorieId);
-            //dt.ItemsSource = items;
-            //Item item = new Item();
-            //for (int i = 0; i < items.Count; i++)
-            //{
-            //    item = dt.Items[i] as Item;
-            //    itemIds.Add(item.itemId);
-            //    itemNames.Add(item.name);
-            //}
-            //MessageBox.Show(items.Count.ToString());
-            //itemNames.Add("first"); itemNames.Add("second");
-            //cb_parentCategorie.ItemsSource = itemNames;
-
-            var Categories = await categoryModel.GetSubCategories(CategorieId);
-            dt.ItemsSource = Categories;
-            Category category = new Category();
-            for (int i = 0; i < Categories.Count; i++)
-            {
-                category = dt.Items[i] as Category;
-                categoryIds.Add(category.categoryId);
-                categoryNames.Add(category.name);
-            }
-            //MessageBox.Show(items.Count.ToString());
-            //itemNames.Add("first"); itemNames.Add("second");
-            cb_parentCategorie.ItemsSource = category.name;
-
+            cb_parentCategorie.ItemsSource = categories.ToList();
+            cb_parentCategorie.SelectedValuePath = "categoryId";
+            cb_parentCategorie.DisplayMemberPath = "name";
 
         }
         private void translate()
@@ -101,97 +80,27 @@ namespace POS.View
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucCategorie.FlowDirection = FlowDirection.RightToLeft;
             }
-
             translate();
-            #region Generate catigorie
+
+            #region Generate catigory and item Y
             catigoriesAndItemsView.gridCatigories = Grid_categorie;
-            //Categorie categorie = new Categorie();
-            //catigoriesAndItemsView.FN_refrishCatalogCard(categorie.getCategories());
-            #endregion
-
-
-            #region Generate catigorieItems
             catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
-            CategorieItem CategorieItem = new CategorieItem();
-            catigoriesAndItemsView.FN_refrishCatalogItem(CategorieItem.getCategorieItems() , MainWindow.lang, "sale");
-
-            #region DataGrid
-            // code
-            // name
-            //details
-
-            //List<Item> items = new List<Item>();
-            //items.Add(new Item()
-            //{
-            //    code = 1,
-            //    name = "ThermalPrinters",
-            //    details = "EPSON-thermal-printer"
-            //});
-
-            //items.Add(new Item()
-            //{
-
-            //    code = 2,
-            //    name = "ThermalPrinters",
-            //    details = "EPSON-thermal-printer2",
-            //});
-
-            //items.Add(new Item()
-            //{
-
-            //    code = 3,
-            //    name = "ThermalPrinters",
-            //    details = "EPSON-thermal-printer3",
-            //});
-
-            //List<Item> items = new List<Item>();
-            //items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details= "EPSON-thermal-printer1" });
-            //items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
-            //items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details= "EPSON-thermal-printer3" });
-            //items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
-            //items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details= "EPSON-thermal-printer5" });
-            //items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
-            //items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details = "EPSON-thermal-printer1" });
-            //items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
-            //items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details = "EPSON-thermal-printer3" });
-            //items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
-            //items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details = "EPSON-thermal-printer5" });
-            //items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
-            //items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details = "EPSON-thermal-printer1" });
-            //items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
-            //items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details = "EPSON-thermal-printer3" });
-            //items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
-            //items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details = "EPSON-thermal-printer5" });
-            //items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
-            //items.Add(new Item() { code = 336554944, name = "ThermalPrinters", details = "EPSON-thermal-printer1" });
-            //items.Add(new Item() { code = 336545142, name = "ThermalPrinters", details = "EPSON-thermal-printer2" });
-            //items.Add(new Item() { code = 336556165, name = "ThermalPrinters", details = "EPSON-thermal-printer3" });
-            //items.Add(new Item() { code = 336551515, name = "ThermalPrinters", details = "EPSON-thermal-printer4" });
-            //items.Add(new Item() { code = 336555162, name = "ThermalPrinters", details = "EPSON-thermal-printer5" });
-            //items.Add(new Item() { code = 336558897, name = "ThermalPrinters", details = "EPSON-thermal-printer6" });
-            //DG_Items.ItemsSource = items;
-            //dg_items.ItemsSource = items.ToList();
-
-            #endregion
+            await RefrishCategory();
+            //RefrishCategoryCard(categories);
+            await RefrishItem();
+            //RefrishItemCardAndDatagrid(items);
             #endregion
             fillCategories();
-            var categories = await categoryModel.GetAllCategories();
-            DG_Items.ItemsSource = categories;
+
         }
-        //class Item {
-        //    public int code { get; set; }
-        //    public string name { get; set; }
-        //    public string details { get; set; }
-        //}
-
-        CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
-
-
-        public async void testChangeCategorieIdEvent()
+        private void Cb_parentCategorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MessageBox.Show("Hello World!! CategorieId");
+            //  selectedItemId = [cb_parentCategorie.SelectedIndex];
 
 
+        }
+        private void DG_Items_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorCode.Visibility = Visibility.Collapsed;
             var bc = new BrushConverter();
@@ -200,17 +109,65 @@ namespace POS.View
             tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
             Category category = new Category();
-            var categories = await categoryModel.GetAllCategories();
-            this.DataContext = categories.Find(c => c.categoryId == 20);
+
+            if (DG_Items.SelectedIndex != -1)
+            {
+                category = DG_Items.SelectedItem as Category;
+                this.DataContext = category;
+            }
+            if (category != null)
+            {
+                if (category.categoryId != 0)
+                {
+                    CategorieId = category.categoryId;
+                }
+
+
+            }
+        }
+        #region Refrish Y
+        async Task<bool> RefrishCategory()
+        {
+            categories = await categoryModel.GetAllCategories();
+            return true;
+        }
+        void   RefrishCategoryCard(IEnumerable<Category> _categories)
+        {
+            catigoriesAndItemsView.FN_refrishCatalogCard(_categories.ToList());
+        }
+        async Task<bool> RefrishItem()
+        {
+            items = await itemModel.GetAllItems();
+            return true;
+        }
+        void RefrishItemCardAndDatagrid(IEnumerable<Item> _items)
+        {
+            catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), MainWindow.lang, "sale");
+            DG_Items.ItemsSource = _items;
+        }
+        #endregion
+        #region Get Id By Click  Y
+        public void ChangeCategorieIdEvent(int categoryId)
+        {
+            //////////////
+            p_errorName.Visibility = Visibility.Collapsed;
+            p_errorCode.Visibility = Visibility.Collapsed;
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            //////////////
+
+            this.DataContext = categories.ToList().Find(c => c.categoryId == categoryId);
 
         }
         public void testChangeCategorieItemsIdEvent()
         {
             MessageBox.Show("Hello World!!  CategorieItems Id");
         }
-
-        #region Catalog
-        public class Categorie
+        #endregion
+        #region Catalog Y
+        /*  public class Categorie
         {
             public int categoryId;
             public string name;
@@ -297,118 +254,122 @@ namespace POS.View
             }
 
         }
+        */
         #endregion
-        #region  Catalog Items
-        public class CategorieItem
+        #region  Catalog Items Y
+        /*
+    public class CategorieItem
+    {
+        public int CategorieItemsId;
+        public string title;
+        public string subtitle;
+        public string price;
+        public string New;
+        public string isOffer;
+        public string image;
+
+        public List<CategorieItem> getCategorieItems()
         {
-            public int CategorieItemsId;
-            public string title;
-            public string subtitle;
-            public string price;
-            public string New;
-            public string isOffer;
-            public string image;
-
-            public List<CategorieItem> getCategorieItems()
+            List<CategorieItem> CategorieItems = new List<CategorieItem>();
+            //Collapsed
+            //    Visible
+            CategorieItems.Add(new CategorieItem()
             {
-                List<CategorieItem> CategorieItems = new List<CategorieItem>();
-                //Collapsed
-                //    Visible
-                CategorieItems.Add(new CategorieItem()
-                {
-                    CategorieItemsId = 1,
-                    title = "ThermalPrinters",
-                    subtitle = "EPSON-thermal-printer",
-                    price = "1050$",
-                    New = "Visible",
-                    isOffer = "Collapsed",
-                    image = "/pic/ThermalPrinters/EPSON-thermal-printer.png"
-                });
-                CategorieItems.Add(new CategorieItem()
-                {
-                    CategorieItemsId = 2,
-                    title = "ThermalPrinters",
-                    subtitle = "EPSON-thermal-printer2",
-                    price = "350$",
-                    New = "Collapsed",
-                    isOffer = "Collapsed",
-                    image = "/pic/ThermalPrinters/EPSON-thermal-printer2.png"
-                });
-                CategorieItems.Add(new CategorieItem()
-                {
-                    CategorieItemsId = 3,
-                    title = "ThermalPrinters",
-                    subtitle = "EPSON-thermal-printer3",
-                    price = "650$",
-                    New = "Visible",
-                    isOffer = "Visible",
-                    image = "/pic/ThermalPrinters/EPSON-thermal-printer3.png"
-                });
-                CategorieItems.Add(new CategorieItem()
-                {
-                    CategorieItemsId = 4,
-                    title = "ThermalPrinters",
-                    subtitle = "EPSON-thermal-printer4",
-                    price = "120$",
-                    New = "Visible",
-                    isOffer = "Collapsed",
-                    image = "/pic/ThermalPrinters/EPSON-thermal-printer4.png"
-                });
-                CategorieItems.Add(new CategorieItem()
-                {
-                    CategorieItemsId = 5,
-                    title = "ThermalPrinters",
-                    subtitle = "POZONE-PP610-USB",
-                    price = "240$",
-                    New = "Collapsed",
-                    isOffer = "Visible",
-                    image = "/pic/ThermalPrinters/POZONE-PP610-USB.png"
-                });
-                CategorieItems.Add(new CategorieItem()
-                {
-                    CategorieItemsId = 6,
-                    title = "ThermalPrinters",
-                    subtitle = "POZONE-thermal-printer",
-                    price = "995$",
-                    New = "Collapsed",
-                    isOffer = "Collapsed",
-                    image = "/pic/ThermalPrinters/POZONE-thermal-printer.png"
-                });
-                CategorieItems.Add(new CategorieItem()
-                {
-                    CategorieItemsId = 7,
-                    title = "ThermalPrinters",
-                    subtitle = "rio-thermal-printer",
-                    price = "335$",
-                    New = "Collapsed",
-                    isOffer = "Collapsed",
-                    image = "/pic/ThermalPrinters/rio-thermal-printer.png"
-                });
-                CategorieItems.Add(new CategorieItem()
-                {
-                    CategorieItemsId = 8,
-                    title = "ThermalPrinters",
-                    subtitle = "Sewoo-thermal-printer",
-                    price = "799$",
-                    New = "Collapsed",
-                    isOffer = "Visible",
-                    image = "/pic/ThermalPrinters/Sewoo-thermal-printer.png"
-                });
-                CategorieItems.Add(new CategorieItem()
-                {
-                    CategorieItemsId = 9,
-                    title = "ThermalPrinters",
-                    subtitle = "Zebra-ZD200D",
-                    price = "1250$",
-                    New = "Visible",
-                    isOffer = "Visible",
-                    image = "/pic/ThermalPrinters/Zebra-ZD200D.png"
-                });
+                CategorieItemsId = 1,
+                title = "ThermalPrinters",
+                subtitle = "EPSON-thermal-printer",
+                price = "1050$",
+                New = "Visible",
+                isOffer = "Collapsed",
+                image = "/pic/ThermalPrinters/EPSON-thermal-printer.png"
+            });
+            CategorieItems.Add(new CategorieItem()
+            {
+                CategorieItemsId = 2,
+                title = "ThermalPrinters",
+                subtitle = "EPSON-thermal-printer2",
+                price = "350$",
+                New = "Collapsed",
+                isOffer = "Collapsed",
+                image = "/pic/ThermalPrinters/EPSON-thermal-printer2.png"
+            });
+            CategorieItems.Add(new CategorieItem()
+            {
+                CategorieItemsId = 3,
+                title = "ThermalPrinters",
+                subtitle = "EPSON-thermal-printer3",
+                price = "650$",
+                New = "Visible",
+                isOffer = "Visible",
+                image = "/pic/ThermalPrinters/EPSON-thermal-printer3.png"
+            });
+            CategorieItems.Add(new CategorieItem()
+            {
+                CategorieItemsId = 4,
+                title = "ThermalPrinters",
+                subtitle = "EPSON-thermal-printer4",
+                price = "120$",
+                New = "Visible",
+                isOffer = "Collapsed",
+                image = "/pic/ThermalPrinters/EPSON-thermal-printer4.png"
+            });
+            CategorieItems.Add(new CategorieItem()
+            {
+                CategorieItemsId = 5,
+                title = "ThermalPrinters",
+                subtitle = "POZONE-PP610-USB",
+                price = "240$",
+                New = "Collapsed",
+                isOffer = "Visible",
+                image = "/pic/ThermalPrinters/POZONE-PP610-USB.png"
+            });
+            CategorieItems.Add(new CategorieItem()
+            {
+                CategorieItemsId = 6,
+                title = "ThermalPrinters",
+                subtitle = "POZONE-thermal-printer",
+                price = "995$",
+                New = "Collapsed",
+                isOffer = "Collapsed",
+                image = "/pic/ThermalPrinters/POZONE-thermal-printer.png"
+            });
+            CategorieItems.Add(new CategorieItem()
+            {
+                CategorieItemsId = 7,
+                title = "ThermalPrinters",
+                subtitle = "rio-thermal-printer",
+                price = "335$",
+                New = "Collapsed",
+                isOffer = "Collapsed",
+                image = "/pic/ThermalPrinters/rio-thermal-printer.png"
+            });
+            CategorieItems.Add(new CategorieItem()
+            {
+                CategorieItemsId = 8,
+                title = "ThermalPrinters",
+                subtitle = "Sewoo-thermal-printer",
+                price = "799$",
+                New = "Collapsed",
+                isOffer = "Visible",
+                image = "/pic/ThermalPrinters/Sewoo-thermal-printer.png"
+            });
+            CategorieItems.Add(new CategorieItem()
+            {
+                CategorieItemsId = 9,
+                title = "ThermalPrinters",
+                subtitle = "Zebra-ZD200D",
+                price = "1250$",
+                New = "Visible",
+                isOffer = "Visible",
+                image = "/pic/ThermalPrinters/Zebra-ZD200D.png"
+            });
 
-                return CategorieItems;
-            }
+            return CategorieItems;
         }
+    }
+    */
         #endregion
+        #region
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -469,7 +430,7 @@ namespace POS.View
 
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
-   var bc = new BrushConverter();
+            var bc = new BrushConverter();
 
             if (tb_name.Text.Equals(""))
             {
@@ -488,22 +449,11 @@ namespace POS.View
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
-        private void Btn_ItemsInCards_Click(object sender, RoutedEventArgs e)
-        {
-            grid_itemsDatagrid.Visibility = Visibility.Collapsed;
-            grid_ItemsCard.Visibility = Visibility.Visible;
-        }
-
-        private void Btn_ItemsInGrid_Click(object sender, RoutedEventArgs e)
-        {
-            grid_ItemsCard.Visibility = Visibility.Collapsed;
-            grid_itemsDatagrid.Visibility = Visibility.Visible;
-        }
-
+        #endregion
+        #region Add - Update - Delete _ Clear
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {
-         
+
 
             Category category = new Category
             {
@@ -531,7 +481,6 @@ namespace POS.View
             DG_Items.ItemsSource = Categories;
 
         }
-
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {
             //update
@@ -542,13 +491,13 @@ namespace POS.View
                 name = tb_name.Text,
                 details = tb_details.Text,
                 image = "",
-                taxes = decimal.Parse( tb_taxes.Text),
+                taxes = decimal.Parse(tb_taxes.Text),
                 parentId = selectedItemId,
                 createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 createUserId = 2,
                 updateUserId = 2,
-                 isActive = 1
+                isActive = 1
             };
 
 
@@ -559,9 +508,9 @@ namespace POS.View
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
-           // p_errorName.Visibility = Visibility.Collapsed;
-           // var bc = new BrushConverter();
-          //  tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            // p_errorName.Visibility = Visibility.Collapsed;
+            // var bc = new BrushConverter();
+            //  tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_name.Text = "";
             tb_taxes.Text = "";
             tb_details.Text = "";
@@ -572,46 +521,79 @@ namespace POS.View
         {
             //delete
             await categoryModel.deleteCategory(CategorieId);
-            
+
             var categories = await categoryModel.GetAllCategories();
             DG_Items.ItemsSource = categories;
 
             //clear textBoxs
-           // Btn_clear_Click(sender, e);
+            // Btn_clear_Click(sender, e);
         }
 
-        private void Cb_parentCategorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        #endregion
+        #region Toggle Button Y
+
+        private async void Tgl_categoryIsActive_Checked(object sender, RoutedEventArgs e)
         {
-          //  selectedItemId = [cb_parentCategorie.SelectedIndex];
-
+            if (categories is null)
+                await RefrishCategory();
+            categoriesQuery = categories.Where(x => x.isActive == 1);
+            RefrishCategoryCard(categoriesQuery);
 
         }
-
-        private void DG_Items_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Tgl_categoryIsActive_Unchecked(object sender, RoutedEventArgs e)
         {
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorCode.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-            Category category = new Category();
-
-            if (DG_Items.SelectedIndex != -1)
-            {
-                category = DG_Items.SelectedItem as Category;
-                this.DataContext = category;
-            }
-            if (category != null)
-            {
-                if (category.categoryId != 0)
-                {
-                    CategorieId = category.categoryId;
-                }
-
-
-            }
+            if (categories is null)
+                await RefrishCategory();
+            categoriesQuery = categories.Where(x => x.isActive == 0);
+            RefrishCategoryCard(categoriesQuery);
         }
+        private async void Tgl_itemDatagridIsActive_Checked(object sender, RoutedEventArgs e)
+        {
+            if (items is null)
+                await RefrishItem();
+            itemsQuery = items.Where(x => x.isActive == 1);
+            RefrishItemCardAndDatagrid(itemsQuery);
+
+        }
+        private async void Tgl_itemDatagridIsActive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (items is null)
+                await RefrishItem();
+            itemsQuery = items.Where(x => x.isActive == 0);
+            RefrishItemCardAndDatagrid(itemsQuery);
+
+        }
+
+        private async void Tgl_itemCardIsActive_Checked(object sender, RoutedEventArgs e)
+        {
+            if (items is null)
+                await RefrishItem();
+            itemsQuery = items.Where(x => x.isActive == 1);
+            RefrishItemCardAndDatagrid(itemsQuery);
+        }
+
+        private async void Tgl_itemCardIsActive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (items is null)
+                await RefrishItem();
+            itemsQuery = items.Where(x => x.isActive == 0);
+            RefrishItemCardAndDatagrid(itemsQuery);
+        }
+
+        #endregion
+        #region Switch Card/DataGrid
+
+        private void Btn_ItemsInCards_Click(object sender, RoutedEventArgs e)
+        {
+            grid_itemsDatagrid.Visibility = Visibility.Collapsed;
+            grid_ItemsCard.Visibility = Visibility.Visible;
+        }
+
+        private void Btn_ItemsInGrid_Click(object sender, RoutedEventArgs e)
+        {
+            grid_ItemsCard.Visibility = Visibility.Collapsed;
+            grid_itemsDatagrid.Visibility = Visibility.Visible;
+        }
+        #endregion
     }
 }

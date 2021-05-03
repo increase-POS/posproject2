@@ -59,7 +59,7 @@ namespace POS.Classes
             if (ucCategorie != null)
             {
                 //ucCategorie.testChangeCategorieIdEvent(_idCatigories);
-                ucCategorie.testChangeCategorieIdEvent();
+                ucCategorie.ChangeCategorieIdEvent(idCatigories);
 
             }
             else if (ucCategorieItem != null)
@@ -120,6 +120,7 @@ namespace POS.Classes
             //uc.MouseEnter += new MouseEventHandler(UserControl_MouseEnter);
             return uc;
         }
+
         void catalogCard_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             //FN_refrishCatalogCard();
@@ -141,17 +142,41 @@ namespace POS.Classes
             pastCatalogCard = uc.ContentId;
             idCatigories = uc.ContentId;
         }
-        
+         
 
         #endregion
         #region Catalog Items
-        
+
 
         private int pastCatalogItem = -1;
         internal uc_receiptInvoice ucReceiptInvoice;
+        /*
+        protected class ItemConvert
+        {
+            public int itemId { get; set; }
+            public string itemTitle { get; set; }
+            public string itemSubtitle { get; set; }
+            public string itemPrice { get; set; }
+            public string itemImage { get; set; }
+            public string itemIsNew { get; set; }
+            public string itemIsOffer { get; set; }
+        }
 
-        
-        public void FN_refrishCatalogItem(List<CategorieItem> CategorieItems, string language , string cardType)
+        public void FN_refrishCatalogItem(List<Item> items, string language, string cardType)
+        {
+            List<ItemConvert> itemConvert = new List<ItemConvert>();
+            foreach (var item in items)
+            {
+                item.itemId = ItemConvert. ;
+                item.name = ItemConvert. ;
+                item.details = ItemConvert. ;
+                item.details = ItemConvert. ;
+                item.image = ItemConvert. ;
+                item.createDate = ItemConvert. ;
+                //item.isOffer = ItemConvert. ;
+            }
+        }
+        public void FN_refrishCatalogItemStepTwo(List<Item> CategorieItems, string language, string cardType)
         {
             gridCatigorieItems.Children.Clear();
             //CategorieItem CategorieItem = new CategorieItem();
@@ -160,7 +185,7 @@ namespace POS.Classes
             int column = 0;
             foreach (var item in CategorieItems)
             {
-                if(cardType == "sale")
+                if (cardType == "sale")
                 {
                     if (language == "ar")
                         FN_createCatalogItem_ar(item.CategorieItemsId, item.title, item.subtitle
@@ -177,7 +202,51 @@ namespace POS.Classes
                         FN_createCatalogItemtWithoutPrice(item.CategorieItemsId, item.title, item.subtitle
                            , item.price, item.image, row, column, item.New, item.isOffer);
                 }
-                
+
+
+                row++;
+                if (row == 3)
+                {
+                    row = 0;
+                    column++;
+                }
+            }
+
+
+
+
+        }
+        */
+
+        public void FN_refrishCatalogItem(List<Item> items, string language, string cardType)
+        {
+            gridCatigorieItems.Children.Clear();
+            int row = 0;
+            int column = 0;
+            foreach (var item in items)
+            {
+                //Visible
+                //    Collapsed
+
+
+                if (cardType == "sale")
+                {
+                    if (language == "ar")
+                        FN_createCatalogItem_ar(item.itemId, item.name, item.details
+                           , "0$", item.image, row, column, "Collapsed", "Collapsed");
+                    else FN_createCatalogItem(item.itemId, item.name, item.details
+                           , "0$", item.image, row, column, "Collapsed", "Collapsed");
+                }
+                else
+                {
+                    if (language == "ar")
+                        FN_createCatalogItemtWithoutPrice_ar(item.itemId, item.name, item.details
+                           , "0$", item.image, row, column, "Collapsed", "Collapsed");
+                    else
+                        FN_createCatalogItemtWithoutPrice(item.itemId, item.name, item.details
+                           , "0$", item.image, row, column, "Collapsed", "Collapsed");
+                }
+
 
                 row++;
                 if (row == 3)

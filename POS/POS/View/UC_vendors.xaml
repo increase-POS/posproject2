@@ -48,7 +48,7 @@
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35"   Width="250" Margin="10,5"/>
+                  Height="35"   Width="250" Margin="10,5" LostFocus="tb_search_LostFocus" TextChanged="tb_search_TextChanged"/>
                     <!--<ComboBox x:Name="cb_search"  Grid.Row="2" 
                                   Padding="10,5,5,5" 
                                    TextBlock.Foreground="#4E4E4E"
@@ -70,41 +70,11 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
                     <DataGrid.Columns>
-                        <DataGridTextColumn MinWidth="125"  Header="name"     Binding="{Binding Path=name}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding isActive}" Value="False">
-                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn MinWidth="125"  Header="company" Binding="{Binding Path=company}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding isActive}" Value="False">
-                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn MinWidth="125"  Header="mobile"   Binding="{Binding Path=mobile}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding isActive}" Value="False">
-                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <!--<DataGridTextColumn MinWidth="125"  Header="details" Binding="{Binding Path=details}"/>-->
-                   
+                        <DataGridTextColumn MinWidth="125"  Header="code"     Binding="{Binding Path=code}"/>
+                        <DataGridTextColumn MinWidth="125"  Header="name"     Binding="{Binding Path=name}"/>
+                        <DataGridTextColumn MinWidth="125"  Header="company"  Binding="{Binding Path=company}"/>
+                        <DataGridTextColumn MinWidth="125"  Header="mobile"   Binding="{Binding Path=mobile}"/>
+                        <DataGridTextColumn MinWidth="125"  Header=""         Binding="{Binding Path=isActive}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
@@ -224,10 +194,11 @@
                                 <ColumnDefinition Width="*"/>
 
                             </Grid.ColumnDefinitions>
-                            <Label x:Name="tb_code"  Content="{Binding code, Mode=OneWay}" Padding="10,5,5,5" 
+                            <TextBox x:Name="tb_code"  Text="{Binding code, Mode=OneWay}" Padding="10,5,5,5" 
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Code..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue"  HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                 BorderBrush="AliceBlue" MaxLength="100" IsReadOnly="True"
+                     HorizontalAlignment="Left" VerticalAlignment="Center" 
                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="200" Margin="5,5,0,5" Grid.ColumnSpan="2" />
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
@@ -324,7 +295,7 @@
                            BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
                              Grid.Row="2"
-                           Text="{Binding areaMobile, Mode=TwoWay}"  >
+                           Text="{Binding Gender, Mode=TwoWay}"  >
                                 <ListBoxItem>
                                     +963
                                 </ListBoxItem>
@@ -382,7 +353,7 @@
                            BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
                              Grid.Row="2"
-                           Text="{Binding areaPhone, Mode=TwoWay}"  >
+                           Text="{Binding Gender, Mode=TwoWay}"  >
                                 <ListBoxItem>
                                     +963
                                 </ListBoxItem>
@@ -400,23 +371,23 @@
                             SelectedIndex="0"
                            TextBlock.FontSize="12" Margin="10,5,5,5"
                      HorizontalAlignment="Center" VerticalAlignment="Center" 
-                Height="35" Width="50"  Grid.Column="1"
+                Height="35" Width="60"  Grid.Column="1"
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
                            
-                           Text="{Binding areaPhoneLocal, Mode=TwoWay}"  >
+                           Text="{Binding Gender, Mode=TwoWay}"  >
                                 <ListBoxItem>
-                                    11
+                                    011
                                 </ListBoxItem>
                                 <ListBoxItem>
-                                    21
+                                    021
                                 </ListBoxItem>
                                 <ListBoxItem>
-                                    21
+                                    021
                                 </ListBoxItem>
                                 <ListBoxItem>
-                                    41
+                                    041
                                 </ListBoxItem>
                             </ComboBox>
                             <TextBox x:Name="tb_phone"  Text="{Binding phone, Mode=OneWay}" Grid.Column="2"  Padding="10,5,5,5"   
@@ -425,7 +396,7 @@
                            BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="15"
-                  Height="35" Width="205"  Margin="5,5,0,5" />
+                  Height="35" Width="195"  Margin="5,5,0,5" />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
@@ -461,7 +432,7 @@
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="35" Width="170"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
                                      LostFocus="Tb_email_LostFocus" />
-                            <TextBox x:Name="tb_address"  Text="{Binding address, Mode=OneWay}" Grid.Row="2" Grid.Column="1"  Padding="10,5,5,5"   
+                            <TextBox x:Name="tb_address"  Text="{Binding email, Mode=OneWay}" Grid.Row="2" Grid.Column="1"  Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Address..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="100"
@@ -495,7 +466,7 @@
                            BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
                              Grid.Row="2"
-                           Text="{Binding areaFax, Mode=TwoWay}"  >
+                           Text="{Binding Gender, Mode=TwoWay}"  >
                                 <ListBoxItem>
                                     +963
                                 </ListBoxItem>
@@ -513,30 +484,30 @@
                             SelectedIndex="0"
                            TextBlock.FontSize="12" Margin="10,5,5,5"
                      HorizontalAlignment="Center" VerticalAlignment="Center" 
-                Height="35" Width="50"  Grid.Column="1"
+                Height="35" Width="60"  Grid.Column="1"
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
                            
-                           Text="{Binding areaFaxLocal, Mode=TwoWay}"  >
+                           Text="{Binding Gender, Mode=TwoWay}"  >
                                 <ListBoxItem>
-                                    11
+                                    011
                                 </ListBoxItem>
                                 <ListBoxItem>
-                                    21
+                                    021
                                 </ListBoxItem>
                                 <ListBoxItem>
-                                    21
+                                    021
                                 </ListBoxItem>
                                 <ListBoxItem>
-                                    41
+                                    041
                                 </ListBoxItem>
                             </ComboBox>
                             <TextBox x:Name="tb_fax"  Text="{Binding fax, Mode=OneWay}" Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Fax..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
-                                     Height="35"  Margin="5,5,10,5" Grid.Column="2" Width="205"
+                                     Height="35"  Margin="0,5,2,5" Grid.Column="2" Width="195"
                                      />
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorFax"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
@@ -647,7 +618,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="tb_notes"  Text="{Binding notes, Mode=OneWay}" Padding="10,5,5,5"   
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Notes..."    
+                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"  TextWrapping="Wrap" AcceptsReturn="True"
                      HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="100" 

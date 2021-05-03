@@ -426,11 +426,11 @@
   <data name="trSelectPropertyNameHint" xml:space="preserve">
     <value>اختر اسم الخاصية</value>
   </data>
-  <data name="trValuesHint" xml:space="preserve">
-    <value>القيم...</value>
+  <data name="trSubProperties" xml:space="preserve">
+    <value>الخواص الفرعية</value>
   </data>
-  <data name="trValues" xml:space="preserve">
-    <value>القيم</value>
+  <data name="trSubPropertiesHint" xml:space="preserve">
+    <value>ادخل الخاصية الفرعية</value>
   </data>
   <data name="trTaxesHint" xml:space="preserve">
     <value>الضرائب...</value>
@@ -534,13 +534,22 @@
   <data name="trUpperLimitHint" xml:space="preserve">
     <value>الحد الأعلى للسحب...</value>
   </data>
-  <data name="trUpperLimit" xml:space="preserve">
-    <value>الحد الأعلى للسحب</value>
+  <data name="trPopAdd" xml:space="preserve">
+    <value>تمت الإضافة بنجاح</value>
   </data>
-  <data name="trProperty" xml:space="preserve">
-    <value>الخاصية</value>
+  <data name="trPopAddValidate" xml:space="preserve">
+    <value>لا يمكن الإضافة بدون الاسم و رقم الجوال</value>
   </data>
-  <data name="trPropertyHint" xml:space="preserve">
-    <value>الخاصية...</value>
+  <data name="trPopDelete" xml:space="preserve">
+    <value>تم الحذف بنجاح</value>
+  </data>
+  <data name="trPopError" xml:space="preserve">
+    <value>حدث خطأ</value>
+  </data>
+  <data name="trPopUpdate" xml:space="preserve">
+    <value>تم التعديل بنجاح</value>
+  </data>
+  <data name="trPopUpdateValidate" xml:space="preserve">
+    <value>لا يمكن التعديل بدون الاسم و رقم الجوال</value>
   </data>
 </root>

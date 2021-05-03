@@ -27,7 +27,7 @@
               ForceCursor="true" Cursor="Hand">
             <Grid.RowDefinitions >
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="25"/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             <Grid  Grid.Row="0" >
                 <Border 

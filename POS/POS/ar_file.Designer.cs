@@ -790,6 +790,60 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تمت الإضافة بنجاح.
+        /// </summary>
+        internal static string trPopAdd {
+            get {
+                return ResourceManager.GetString("trPopAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يمكن الإضافة بدون الاسم و رقم الجوال.
+        /// </summary>
+        internal static string trPopAddValidate {
+            get {
+                return ResourceManager.GetString("trPopAddValidate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تم الحذف بنجاح.
+        /// </summary>
+        internal static string trPopDelete {
+            get {
+                return ResourceManager.GetString("trPopDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to حدث خطأ.
+        /// </summary>
+        internal static string trPopError {
+            get {
+                return ResourceManager.GetString("trPopError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تم التعديل بنجاح.
+        /// </summary>
+        internal static string trPopUpdate {
+            get {
+                return ResourceManager.GetString("trPopUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يمكن التعديل بدون الاسم و رقم الجوال.
+        /// </summary>
+        internal static string trPopUpdateValidate {
+            get {
+                return ResourceManager.GetString("trPopUpdateValidate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to نقطة بيع.
         /// </summary>
         internal static string trPOS {
@@ -849,24 +903,6 @@ namespace POS {
         internal static string trProperties {
             get {
                 return ResourceManager.GetString("trProperties", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to الخاصية.
-        /// </summary>
-        internal static string trProperty {
-            get {
-                return ResourceManager.GetString("trProperty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to الخاصية....
-        /// </summary>
-        internal static string trPropertyHint {
-            get {
-                return ResourceManager.GetString("trPropertyHint", resourceCulture);
             }
         }
         
@@ -1123,6 +1159,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الخواص الفرعية.
+        /// </summary>
+        internal static string trSubProperties {
+            get {
+                return ResourceManager.GetString("trSubProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ادخل الخاصية الفرعية.
+        /// </summary>
+        internal static string trSubPropertiesHint {
+            get {
+                return ResourceManager.GetString("trSubPropertiesHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to المزودون.
         /// </summary>
         internal static string trSuppliers {
@@ -1191,15 +1245,6 @@ namespace POS {
         internal static string trUpdate {
             get {
                 return ResourceManager.GetString("trUpdate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to الحد الأعلى للسحب.
-        /// </summary>
-        internal static string trUpperLimit {
-            get {
-                return ResourceManager.GetString("trUpperLimit", resourceCulture);
             }
         }
         
@@ -1281,24 +1326,6 @@ namespace POS {
         internal static string trValueHint {
             get {
                 return ResourceManager.GetString("trValueHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to القيم.
-        /// </summary>
-        internal static string trValues {
-            get {
-                return ResourceManager.GetString("trValues", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to القيم....
-        /// </summary>
-        internal static string trValuesHint {
-            get {
-                return ResourceManager.GetString("trValuesHint", resourceCulture);
             }
         }
         

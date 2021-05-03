@@ -482,7 +482,7 @@
                       <Grid> 
  <!--////////////////////////////////  Item Data ////////////////////////////////////////////////////////-->
                           <Grid  Grid.Row="1"
-                      x:Name="grid_itemData" Visibility="Collapsed" >
+                      x:Name="grid_itemData" Visibility="Visible" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="40"/>
@@ -903,7 +903,7 @@
                         </Grid>
 <!--////////////////////////////////////   Properties   ////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                         x:Name="grid_properties"  Visibility="Visible">
+                         x:Name="grid_properties"  Visibility="Collapsed">
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="7"/>
                                 <RowDefinition Height="*"/>

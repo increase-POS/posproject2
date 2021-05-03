@@ -56,6 +56,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Tulpep.NotificationWindow, Version=1.1.38.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tulpep.NotificationWindow.1.1.38\lib\net40\Tulpep.NotificationWindow.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -78,6 +81,7 @@
     <Compile Include="Classes\Pos.cs" />
     <Compile Include="Classes\PropertiesItems.cs" />
     <Compile Include="Classes\Property.cs" />
+    <Compile Include="Classes\SectionData.cs" />
     <Compile Include="Classes\Unit.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="controlTemplate\UC_rectangleCard.xaml.cs">

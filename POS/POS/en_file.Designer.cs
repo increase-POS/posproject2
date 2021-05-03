@@ -70,6 +70,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account Number.
         /// </summary>
         internal static string trAccNumber {
@@ -808,6 +817,60 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Added success.
+        /// </summary>
+        internal static string trPopAdd {
+            get {
+                return ResourceManager.GetString("trPopAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to It is not possible to add without the name and mobile number.
+        /// </summary>
+        internal static string trPopAddValidate {
+            get {
+                return ResourceManager.GetString("trPopAddValidate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted success.
+        /// </summary>
+        internal static string trPopDelete {
+            get {
+                return ResourceManager.GetString("trPopDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred.
+        /// </summary>
+        internal static string trPopError {
+            get {
+                return ResourceManager.GetString("trPopError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updated success.
+        /// </summary>
+        internal static string trPopUpdate {
+            get {
+                return ResourceManager.GetString("trPopUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to It is not possible to update without the name and mobile number.
+        /// </summary>
+        internal static string trPopUpdateValidate {
+            get {
+                return ResourceManager.GetString("trPopUpdateValidate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to POS.
         /// </summary>
         internal static string trPOS {
@@ -867,24 +930,6 @@ namespace POS {
         internal static string trProperties {
             get {
                 return ResourceManager.GetString("trProperties", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Property.
-        /// </summary>
-        internal static string trProperty {
-            get {
-                return ResourceManager.GetString("trProperty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Property....
-        /// </summary>
-        internal static string trPropertyHint {
-            get {
-                return ResourceManager.GetString("trPropertyHint", resourceCulture);
             }
         }
         
@@ -1159,7 +1204,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Suppliers.
+        ///   Looks up a localized string similar to Vendors.
         /// </summary>
         internal static string trSuppliers {
             get {
@@ -1240,16 +1285,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upper Limit of Entitlement.
-        /// </summary>
-        internal static string trUpperLimit {
-            get {
-                return ResourceManager.GetString("trUpperLimit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Upper Limit of Entitlement....
+        ///   Looks up a localized string similar to The upper limit of the entitlement....
         /// </summary>
         internal static string trUpperLimitHint {
             get {
@@ -1326,24 +1362,6 @@ namespace POS {
         internal static string trValueHint {
             get {
                 return ResourceManager.GetString("trValueHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Values.
-        /// </summary>
-        internal static string trValues {
-            get {
-                return ResourceManager.GetString("trValues", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Values....
-        /// </summary>
-        internal static string trValuesHint {
-            get {
-                return ResourceManager.GetString("trValuesHint", resourceCulture);
             }
         }
         
