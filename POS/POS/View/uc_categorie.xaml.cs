@@ -40,8 +40,10 @@ namespace POS.View
         {
             InitializeComponent();
         }
-        private void fillCategories()
+        private async void fillCategories()
         {
+            if (categories is null)
+                await RefrishCategory();
             cb_parentCategorie.ItemsSource = categories.ToList();
             cb_parentCategorie.SelectedValuePath = "categoryId";
             cb_parentCategorie.DisplayMemberPath = "name";
@@ -64,7 +66,7 @@ namespace POS.View
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
            
         }
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             catigoriesAndItemsView.ucCategorie = this;
             if (MainWindow.lang.Equals("en"))
@@ -82,12 +84,14 @@ namespace POS.View
             #region Generate catigory and item Y
             //catigoriesAndItemsView.gridCatigories = Grid_categorie;
             //catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
-            await RefrishCategory();
+            //await RefrishCategory();
             //RefrishCategoryCard(categories);
-            await RefrishItem();
+            //await RefrishItem();
             //RefrishItemCardAndDatagrid(items);
+
             #endregion
             fillCategories();
+            paginationSetting();
 
         }
         private void Cb_parentCategorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -138,11 +142,14 @@ namespace POS.View
             items = await itemModel.GetAllItems();
             return true;
         }
-        void RefrishItemCardAndDatagrid(IEnumerable<Item> _items)
+        void RefrishItemDatagrid(IEnumerable<Item> _items )
+        {
+            DG_Items.ItemsSource = _items;
+        }
+        void RefrishItemCard(IEnumerable<Item> _items )
         {
             catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
             catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), MainWindow.lang, "sale");
-            DG_Items.ItemsSource = _items;
         }
         #endregion
         #region Get Id By Click  Y
@@ -551,7 +558,10 @@ namespace POS.View
             if (items is null)
                 await RefrishItem();
             itemsQuery = items.Where(x => x.isActive == 1);
-            RefrishItemCardAndDatagrid(itemsQuery);
+            //RefrishItemDatagrid(itemsQuery);
+            Txb_searchItemsDatagrid_TextChanged(null, null);
+
+
 
         }
         private async void Tgl_itemDatagridIsActive_Unchecked(object sender, RoutedEventArgs e)
@@ -559,8 +569,8 @@ namespace POS.View
             if (items is null)
                 await RefrishItem();
             itemsQuery = items.Where(x => x.isActive == 0);
-            RefrishItemCardAndDatagrid(itemsQuery);
-
+            //RefrishItemDatagrid(itemsQuery);
+            Txb_searchItemsDatagrid_TextChanged(null, null);
         }
 
         private async void Tgl_itemCardIsActive_Checked(object sender, RoutedEventArgs e)
@@ -568,7 +578,9 @@ namespace POS.View
             if (items is null)
                 await RefrishItem();
             itemsQuery = items.Where(x => x.isActive == 1);
-            RefrishItemCardAndDatagrid(itemsQuery);
+            //RefrishItemCard(itemsQuery);
+            Txb_searchItemsCard_TextChanged(null, null);
+
         }
 
         private async void Tgl_itemCardIsActive_Unchecked(object sender, RoutedEventArgs e)
@@ -576,7 +588,8 @@ namespace POS.View
             if (items is null)
                 await RefrishItem();
             itemsQuery = items.Where(x => x.isActive == 0);
-            RefrishItemCardAndDatagrid(itemsQuery);
+            //RefrishItemCard(itemsQuery);
+            Txb_searchItemsCard_TextChanged(null, null);
         }
 
         #endregion
@@ -607,7 +620,8 @@ namespace POS.View
             x.name.Contains(txb_searchItemsDatagrid.Text) ||
             x.details.Contains(txb_searchItemsDatagrid.Text)
             ) && x.isActive == b);
-            DG_Items.ItemsSource = itemsQuery;
+            RefrishItemDatagrid(itemsQuery);
+            //DG_Items.ItemsSource = itemsQuery;
         }
         private async void Txb_searchItemsCard_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -621,9 +635,155 @@ namespace POS.View
             x.name.Contains(txb_searchItemsCard.Text) ||
             x.details.Contains(txb_searchItemsCard.Text)
             ) && x.isActive == b);
-            catigoriesAndItemsView.FN_refrishCatalogItem(itemsQuery.ToList(), MainWindow.lang, "sale");
+            RefrishItemCard(itemsQuery);
 
         }
         #endregion
+
+        #region Pagination
+        public int pageIndex = 1;
+        private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(tb_pageNumberSearch.Text.Equals(""))
+            {
+                pageIndex = 1;
+            }
+            else  if(((items.Count() - 1) / 9) + 1 < int.Parse(tb_pageNumberSearch.Text))
+            {
+                pageIndex = ((items.Count() - 1) / 9) + 1;
+            }
+            else
+            {
+                pageIndex = int.Parse(tb_pageNumberSearch.Text);
+            }
+            //pageIndex = tb_pageNumberSearch.Text.Equals("") ? 1 : int.Parse(tb_pageNumberSearch.Text);
+            paginationSetting();
+        }
+        void    pageNumberActive( Button btn , int indexContent)
+        {
+            btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2")); 
+            btn.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF")); 
+            btn.Content = indexContent.ToString();
+            //pageIndex = indexContent;
+        }
+        void pageNumberDisActive(Button btn, int indexContent)
+        {
+            btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#DFDFDF")); 
+            btn.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#686868")); 
+            btn.Content = indexContent.ToString();
+
+        }
+        async void paginationSetting()
+        {
+            if (items is null)
+                await RefrishItem();
+
+            if (2 >= ((items.Count() - 1) / 9))
+            {
+                if(pageIndex == 1)
+                {
+                    pageNumberActive(btn_prevPage, 1 );
+                    pageNumberDisActive(btn_activePage, 2);
+                    pageNumberDisActive(btn_nextPage, 3);
+                }
+                else if (pageIndex == 2)
+                {
+                    pageNumberDisActive(btn_prevPage,1);
+                    pageNumberActive(btn_activePage, 2);
+                    pageNumberDisActive(btn_nextPage,3);
+                }
+                else
+                {
+                    pageNumberDisActive(btn_prevPage, 1);
+                    pageNumberDisActive(btn_activePage, 2);
+                    pageNumberActive(btn_nextPage, 3);
+                }
+                btn_firstPage.IsEnabled = false;
+                btn_lastPage.IsEnabled = false;
+            }
+            else if (pageIndex == 1)
+            {
+                btn_firstPage.IsEnabled = false;
+                btn_lastPage.IsEnabled = true;
+                pageNumberActive(btn_prevPage, pageIndex);
+                pageNumberDisActive(btn_activePage, pageIndex + 1);
+                pageNumberDisActive(btn_nextPage, pageIndex + 2);
+            }
+            else if (pageIndex == 2)
+            {
+                pageNumberDisActive(btn_prevPage, 1);
+                pageNumberActive(btn_activePage, 2);
+                pageNumberDisActive(btn_nextPage, 3);
+            }
+            /////prev last
+            else if (pageIndex  == ((items.Count() - 1) / 9))
+            {
+                btn_lastPage.IsEnabled = false;
+                btn_firstPage.IsEnabled = true;
+
+                pageNumberDisActive(btn_prevPage, pageIndex - 1);
+                pageNumberActive(btn_activePage, pageIndex );
+                pageNumberDisActive(btn_nextPage, pageIndex +1);
+
+            }
+            ///// last
+            else if  ((pageIndex - 1) >= ((items.Count() - 1) / 9))
+            {
+                btn_lastPage.IsEnabled = false;
+                btn_firstPage.IsEnabled = true;
+
+                pageNumberDisActive(btn_prevPage ,   pageIndex-2);
+                pageNumberDisActive(btn_activePage ,  pageIndex-1);
+                pageNumberActive(btn_nextPage    ,  pageIndex );
+
+            }
+            else
+            {
+                pageNumberDisActive(btn_prevPage, pageIndex-1);
+                pageNumberActive(btn_activePage ,  pageIndex);
+                pageNumberDisActive(btn_nextPage, pageIndex+1);
+                btn_lastPage.IsEnabled = true;
+                btn_firstPage.IsEnabled = true;
+
+            }
+
+            itemsQuery = items.Skip((pageIndex - 1 )* 9).Take(9);
+            RefrishItemCard(itemsQuery);
+            //RefrishItemCard(items.Skip(pageIndex - 1 * 9).Take(9));
+        }
+         
+         
+        private void Btn_firstPage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex =1;
+            paginationSetting();
+        }
+
+        private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = int.Parse(btn_prevPage.Content.ToString());
+            paginationSetting();
+        }
+
+        private void Btn_activePage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = int.Parse(btn_activePage.Content.ToString());
+            paginationSetting();
+        }
+
+        private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = int.Parse(btn_nextPage.Content.ToString());
+            paginationSetting();
+        }
+
+        private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
+        {
+                pageIndex = ((items.Count() - 1) / 9) + 1;
+            paginationSetting();
+        }
+        #endregion
+
+       
     }
 }
