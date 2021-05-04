@@ -29,7 +29,7 @@ namespace POS.View
 
         Agent agentModel = new Agent();
 
-        bool canDelete = false;
+        bool CanDelete = false;
 
         public UC_vendors()
         {
@@ -92,6 +92,7 @@ namespace POS.View
                 if (agent.agentId != 0)
                 {
                     AgentId = agent.agentId;
+                    CanDelete = agent.canDelete;
                 }
 
                 //mobile
@@ -144,6 +145,10 @@ namespace POS.View
                     cb_areaFaxLocal.SelectedIndex = -1;
                     tb_fax.Clear();
                 }
+
+                if (CanDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
             }
            
         }
@@ -178,6 +183,16 @@ namespace POS.View
             dg_vendor.Columns[3].Header = MainWindow.resourcemanager.GetString("trMobile");
            
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
+
+            tt_code.Content = MainWindow.resourcemanager.GetString("trCode");
+            tt_name.Content = MainWindow.resourcemanager.GetString("trName");
+            tt_company.Content = MainWindow.resourcemanager.GetString("trCompany");
+            tt_mobile.Content = MainWindow.resourcemanager.GetString("trMobile");
+            tt_phone.Content = MainWindow.resourcemanager.GetString("trPhone");
+            tt_fax.Content = MainWindow.resourcemanager.GetString("trFax");
+            tt_email.Content = MainWindow.resourcemanager.GetString("trEmail");
+            tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
+            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
 
         }
 
@@ -221,10 +236,6 @@ namespace POS.View
             cb_areaPhoneLocal.SelectedIndex = 0;
             cb_areaFax.SelectedIndex = 0;
             cb_areaFaxLocal.SelectedIndex = 0;
-
-            if (canDelete) btn_delete.Content = "حذف";
-
-            else btn_delete.Content = "إلغاء تفعيل";
 
         }
 
@@ -418,12 +429,13 @@ namespace POS.View
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (canDelete) btn_delete.Content = "حذف";
-            else btn_delete.Content = "إلغاء تفعيل";
-            
-            bool b = await agentModel.deleteAgent(AgentId, canDelete);
+            string popupContent = "";
+            if (CanDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+            else popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-            if (b) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
+            bool b = await agentModel.deleteAgent(AgentId, CanDelete);
+
+            if (b) SectionData.popUpResponse("", popupContent);
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
             //pass parameter type(V for vendors, C for Clients, B for Both)

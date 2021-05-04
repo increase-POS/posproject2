@@ -91,6 +91,7 @@ namespace POS.View
 
             #endregion
             fillCategories();
+            pageIndex = 1;
             paginationSetting();
 
         }
@@ -577,12 +578,11 @@ namespace POS.View
         {
             if (items is null)
                 await RefrishItem();
-            itemsQuery = items.Where(x => x.isActive == 1);
+            //itemsQuery = items.Where(x => x.isActive == 1);
             //RefrishItemCard(itemsQuery);
             Txb_searchItemsCard_TextChanged(null, null);
 
         }
-
         private async void Tgl_itemCardIsActive_Unchecked(object sender, RoutedEventArgs e)
         {
             if (items is null)
@@ -593,21 +593,25 @@ namespace POS.View
         }
 
         #endregion
-        #region Switch Card/DataGrid
+        #region Switch Card/DataGrid Y
 
         private void Btn_ItemsInCards_Click(object sender, RoutedEventArgs e)
         {
             grid_itemsDatagrid.Visibility = Visibility.Collapsed;
             grid_ItemsCard.Visibility = Visibility.Visible;
+            path_ItemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_ItemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
         }
 
         private void Btn_ItemsInGrid_Click(object sender, RoutedEventArgs e)
         {
             grid_ItemsCard.Visibility = Visibility.Collapsed;
             grid_itemsDatagrid.Visibility = Visibility.Visible;
+            path_ItemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_ItemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
         }
         #endregion
-        #region Search
+        #region Search Y
         private async void Txb_searchItemsDatagrid_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (items is null)
@@ -635,22 +639,29 @@ namespace POS.View
             x.name.Contains(txb_searchItemsCard.Text) ||
             x.details.Contains(txb_searchItemsCard.Text)
             ) && x.isActive == b);
-            RefrishItemCard(itemsQuery);
-
+            //RefrishItemCard(itemsQuery);
+            pageIndex = 1;
+            paginationSetting(itemsQuery);
         }
         #endregion
 
-        #region Pagination
+        #region Pagination Y
         public int pageIndex = 1;
         private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(tb_pageNumberSearch.Text.Equals(""))
+            byte b = 0;
+            if (tgl_itemCardIsActive.IsChecked == true)
+                b = 1;
+            else b = 0;
+            itemsQuery = items.Where(x => x.isActive == b);
+
+            if (tb_pageNumberSearch.Text.Equals(""))
             {
                 pageIndex = 1;
             }
-            else  if(((items.Count() - 1) / 9) + 1 < int.Parse(tb_pageNumberSearch.Text))
+            else  if(((itemsQuery.Count() - 1) / 9) + 1 < int.Parse(tb_pageNumberSearch.Text))
             {
-                pageIndex = ((items.Count() - 1) / 9) + 1;
+                pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
             }
             else
             {
@@ -673,24 +684,37 @@ namespace POS.View
             btn.Content = indexContent.ToString();
 
         }
-        async void paginationSetting()
+        async void paginationSetting(IEnumerable<Item> _items= null)
         {
-            if (items is null)
-                await RefrishItem();
-
-            if (2 >= ((items.Count() - 1) / 9))
+            if (_items is null)
             {
-                if(pageIndex == 1)
+                if (items is null)
                 {
-                    pageNumberActive(btn_prevPage, 1 );
+                    await RefrishItem();
+                    _items = items;
+                }
+                else
+                    _items = items;
+            }
+
+            byte b = 0;
+            if (tgl_itemCardIsActive.IsChecked == true)
+                b = 1;
+            else b = 0;
+            _items = _items.Where(x => x.isActive == b);
+            if (2 >= ((_items.Count() - 1) / 9))
+            {
+                if (pageIndex == 1)
+                {
+                    pageNumberActive(btn_prevPage, 1);
                     pageNumberDisActive(btn_activePage, 2);
                     pageNumberDisActive(btn_nextPage, 3);
                 }
                 else if (pageIndex == 2)
                 {
-                    pageNumberDisActive(btn_prevPage,1);
+                    pageNumberDisActive(btn_prevPage, 1);
                     pageNumberActive(btn_activePage, 2);
-                    pageNumberDisActive(btn_nextPage,3);
+                    pageNumberDisActive(btn_nextPage, 3);
                 }
                 else
                 {
@@ -716,38 +740,38 @@ namespace POS.View
                 pageNumberDisActive(btn_nextPage, 3);
             }
             /////prev last
-            else if (pageIndex  == ((items.Count() - 1) / 9))
+            else if (pageIndex == ((_items.Count() - 1) / 9))
             {
                 btn_lastPage.IsEnabled = false;
                 btn_firstPage.IsEnabled = true;
 
                 pageNumberDisActive(btn_prevPage, pageIndex - 1);
-                pageNumberActive(btn_activePage, pageIndex );
-                pageNumberDisActive(btn_nextPage, pageIndex +1);
+                pageNumberActive(btn_activePage, pageIndex);
+                pageNumberDisActive(btn_nextPage, pageIndex + 1);
 
             }
             ///// last
-            else if  ((pageIndex - 1) >= ((items.Count() - 1) / 9))
+            else if ((pageIndex - 1) >= ((_items.Count() - 1) / 9))
             {
                 btn_lastPage.IsEnabled = false;
                 btn_firstPage.IsEnabled = true;
 
-                pageNumberDisActive(btn_prevPage ,   pageIndex-2);
-                pageNumberDisActive(btn_activePage ,  pageIndex-1);
-                pageNumberActive(btn_nextPage    ,  pageIndex );
+                pageNumberDisActive(btn_prevPage, pageIndex - 2);
+                pageNumberDisActive(btn_activePage, pageIndex - 1);
+                pageNumberActive(btn_nextPage, pageIndex);
 
             }
             else
             {
-                pageNumberDisActive(btn_prevPage, pageIndex-1);
-                pageNumberActive(btn_activePage ,  pageIndex);
-                pageNumberDisActive(btn_nextPage, pageIndex+1);
+                pageNumberDisActive(btn_prevPage, pageIndex - 1);
+                pageNumberActive(btn_activePage, pageIndex);
+                pageNumberDisActive(btn_nextPage, pageIndex + 1);
                 btn_lastPage.IsEnabled = true;
                 btn_firstPage.IsEnabled = true;
 
             }
 
-            itemsQuery = items.Skip((pageIndex - 1 )* 9).Take(9);
+            itemsQuery = _items.Skip((pageIndex - 1 )* 9).Take(9);
             RefrishItemCard(itemsQuery);
             //RefrishItemCard(items.Skip(pageIndex - 1 * 9).Take(9));
         }
@@ -779,7 +803,12 @@ namespace POS.View
 
         private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
         {
-                pageIndex = ((items.Count() - 1) / 9) + 1;
+            byte b = 0;
+            if (tgl_itemCardIsActive.IsChecked == true)
+                b = 1;
+            else b = 0;
+            itemsQuery = items.Where(x => x.isActive == b);
+            pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
             paginationSetting();
         }
         #endregion

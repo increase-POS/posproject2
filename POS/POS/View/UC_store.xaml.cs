@@ -29,6 +29,8 @@ namespace POS.View
 
         Branch storeModel = new Branch();
 
+        bool CanDelete = false;
+
         public UC_store()
         {
             InitializeComponent();
@@ -46,25 +48,26 @@ namespace POS.View
             tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-            Branch store = new Branch();
+            Branch branch = new Branch();
 
             if (dg_store.SelectedIndex != -1)
             {
-                store = dg_store.SelectedItem as Branch;
-                this.DataContext = store;
+                branch = dg_store.SelectedItem as Branch;
+                this.DataContext = branch;
             }
 
-            if (store != null)
+            if (branch != null)
             {
-                if (store.branchId != 0)
+                if (branch.branchId != 0)
                 {
-                    StoreId = store.branchId;
+                    StoreId = branch.branchId;
+                    CanDelete = branch.canDelete;
                 }
-
-                if ((store.mobile != null) && (store.mobile.ToArray().Length > 4))
+                //mobile
+                if ((branch.mobile != null) && (branch.mobile.ToArray().Length > 4))
                 {
-                    string area = new string(store.mobile.Take(4).ToArray());
-                    var mobile = store.mobile.Substring(4, store.mobile.Length - 4);
+                    string area = new string(branch.mobile.Take(4).ToArray());
+                    var mobile = branch.mobile.Substring(4, branch.mobile.Length - 4);
 
                     cb_area.Text = area;
                     tb_mobile.Text = mobile.ToString();
@@ -74,9 +77,30 @@ namespace POS.View
                     cb_area.SelectedIndex = -1;
                     tb_mobile.Clear();
                 }
+                //phone
+                if ((branch.phone != null) && (branch.phone.ToArray().Length > 7))
+                {
+                    string area = new string(branch.phone.Take(4).ToArray());
+                    string areaLocal = new string(branch.phone.Substring(4, branch.phone.Length - 4).Take(3).ToArray());
 
+                    var phone = branch.phone.Substring(7, branch.phone.Length - 7);
+
+                    cb_areaPhone.Text = area;
+                    cb_areaPhoneLocal.Text = areaLocal;
+                    tb_phone.Text = phone.ToString();
+
+                }
+                else
+                {
+                    cb_areaPhone.SelectedIndex = -1;
+                    cb_areaPhoneLocal.SelectedIndex = -1;
+                    tb_phone.Clear();
+                }
+
+                if (CanDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
             }
-
 
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -200,90 +224,204 @@ namespace POS.View
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
-        {
+        {//clear
             tb_name.Text = "";
             tb_code.Text = "";
             tb_address.Text = "";
             tb_notes.Text = "";
             tb_email.Text = "";
+            cb_area.SelectedIndex = 0;
+            tb_mobile.Text = "";
+            cb_areaPhone.SelectedIndex = 0;
+            cb_areaPhoneLocal.SelectedIndex = 0;
             tb_phone.Text = "";
-            
+
+            p_errorName.Visibility = Visibility.Collapsed;
+            p_errorCode.Visibility = Visibility.Collapsed;
+            p_errorEmail.Visibility = Visibility.Collapsed;
+
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            Branch store = new Branch
+            if (tb_name.Text.Equals(""))
             {
-                code        = tb_code.Text,
-                name         = tb_name.Text,
-                notes      = tb_notes.Text,
-                address      = tb_address.Text,
-                email        = tb_email.Text,
-                phone        = tb_phone.Text,
-                mobile       = cb_area.Text + tb_mobile.Text,
-                createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                createUserId = 2,
-                updateUserId = 2,
-              //  notes        = "",
-                type         = "s"
-            };
+                p_errorName.Visibility = Visibility.Visible;
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+            }
+            if (tb_mobile.Text.Equals(""))
+            {
+                p_errorMobile.Visibility = Visibility.Visible;
+                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
+            }
+            else
+            {
+                p_errorMobile.Visibility = Visibility.Collapsed;
 
+            }
+            if (!tb_email.Text.Equals(""))
+            {
+                if (!ValidatorExtensions.IsValid(tb_email.Text))
+                {
+                    p_errorEmail.Visibility = Visibility.Visible;
+                    tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
+                }
+                else
+                {
+                    p_errorEmail.Visibility = Visibility.Collapsed;
+                }
+            }
+            string phoneStr = "";
+            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
+            MessageBox.Show(cb_areaPhone.Text + " " + cb_areaPhoneLocal.Text + " " + tb_phone.Text);
+            bool emailError = false;
 
-            await storeModel.saveBranch(store);
+            if (!tb_email.Text.Equals(""))
+                if (!SectionData.IsValid(tb_email.Text))
+                    emailError = true;
+            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
+            {
+                if (emailError)
+                    SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
+                else
+                {
+                    SectionData.genRandomCode("s", "Branch");
 
-            var branches = await storeModel.GetBranchesAsync("s");
-            dg_store.ItemsSource = branches;
+                    tb_code.Text = SectionData.code;
+                    
+                    Branch store = new Branch
+                    {
+                        code = tb_code.Text,
+                        name = tb_name.Text,
+                        notes = tb_notes.Text,
+                        address = tb_address.Text,
+                        email = tb_email.Text,
+                        phone = phoneStr,
+                        mobile = cb_area.Text + tb_mobile.Text,
+                        createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                        updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                        createUserId = MainWindow.userID,
+                        updateUserId = MainWindow.userID,
+                        type = "s",
+                        isActive = 1
+                    };
 
+                    string s = await storeModel.saveBranch(store);
+
+                    if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                    else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                    var stores = await storeModel.GetBranchesAsync("s");
+                    dg_store.ItemsSource = stores;
+                }
+            }
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
 
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            Branch store = new Branch
+            if (tb_name.Text.Equals(""))
             {
-                branchId     = StoreId,
-                code         = tb_code.Text,
-                name         = tb_name.Text,
-                notes      = tb_notes.Text,
-                address      = tb_address.Text,
-                email        = tb_email.Text,
-                phone        = tb_phone.Text,
-                mobile       = cb_area.Text + tb_mobile.Text,
-                createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                createUserId = 2,
-                updateUserId = 2,
-              //  notes        = "",
-                type         = "s"
-            };
+                p_errorName.Visibility = Visibility.Visible;
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+            }
+            if (tb_mobile.Text.Equals(""))
+            {
+                p_errorMobile.Visibility = Visibility.Visible;
+                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
+            }
+            else
+            {
+                p_errorMobile.Visibility = Visibility.Collapsed;
+            }
+            if (!tb_email.Text.Equals(""))
+            {
+                if (!ValidatorExtensions.IsValid(tb_email.Text))
+                {
+                    p_errorEmail.Visibility = Visibility.Visible;
+                    tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
+                }
+                else
+                {
+                    p_errorEmail.Visibility = Visibility.Collapsed;
+                }
+            }
+            string phoneStr = "";
+            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
 
+            bool emailError = false;
 
-            await storeModel.saveBranch(store);
+            if (!tb_email.Text.Equals(""))
+                if (!SectionData.IsValid(tb_email.Text))
+                    emailError = true;
+            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
+            {
+                if (emailError)
+                    SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
+                else
+                {
+                    SectionData.genRandomCode("s", "Branch");
+                    tb_code.Text = SectionData.code;
+                    Branch branch = new Branch
+                    {
+                        branchId = StoreId,
+                        code = tb_code.Text,
+                        name = tb_name.Text,
+                        notes = tb_notes.Text,
+                        address = tb_address.Text,
+                        email = tb_email.Text,
+                        phone = phoneStr,
+                        mobile = cb_area.Text + tb_mobile.Text,
+                        createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                        updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                        createUserId = MainWindow.userID,
+                        updateUserId = MainWindow.userID,
+                        type = "s",
+                        isActive = 1
+                    };
 
-            var stores = await storeModel.GetBranchesAsync("s");
-            dg_store.ItemsSource = stores;
+                    string s = await storeModel.saveBranch(branch);
 
+                    if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                    else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                    var stores= await storeModel.GetBranchesAsync("s");
+                    dg_store.ItemsSource = stores;
+                }
+            }
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
 
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            await storeModel.deleteBranch(StoreId);
+            string popupContent = "";
+            if (CanDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+            else popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+            bool b = await storeModel.deleteBranch(StoreId, CanDelete);
+
+            if (b) SectionData.popUpResponse("", popupContent);
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
             var stores = await storeModel.GetBranchesAsync("s");
             dg_store.ItemsSource = stores;
 
             //clear textBoxs
-            tb_code.Text = "";
-            tb_name.Text = "";
-            tb_notes.Clear();
-            tb_address.Clear();
-            cb_area.SelectedIndex = -1;
-            tb_email.Clear();
-            tb_phone.Clear();
-            tb_mobile.Clear();
-            //tb_notes.Clear();
+            Btn_clear_Click(sender, e);
 
         }
 
@@ -298,6 +436,19 @@ namespace POS.View
 
             var stores = await storeModel.GetBranchesAsync("s");
             dg_store.ItemsSource = stores;
+        }
+
+        private async void tb_search_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var stores = await storeModel.GetBranchesAsync("s");
+            dg_store.ItemsSource = stores;
+        }
+
+        private async void tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {//search
+            var stores = await storeModel.SearchBranches("s", tb_search.Text);
+            dg_store.ItemsSource = stores;
+
         }
     }
 }

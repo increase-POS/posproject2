@@ -564,4 +564,25 @@
   <data name="trPopUpdateValidate" xml:space="preserve">
     <value>It is not possible to update without the name and mobile number</value>
   </data>
+  <data name="trEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="trFax" xml:space="preserve">
+    <value>Fax</value>
+  </data>
+  <data name="trNote" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="trPhone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="trUpperLimit" xml:space="preserve">
+    <value>The upper limit of the entitlement</value>
+  </data>
+  <data name="trInActive" xml:space="preserve">
+    <value>Deactivate</value>
+  </data>
+  <data name="trPopInActive" xml:space="preserve">
+    <value>The activation was canceled successfully</value>
+  </data>
 </root>

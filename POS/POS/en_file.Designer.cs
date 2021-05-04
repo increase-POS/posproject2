@@ -439,6 +439,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        internal static string trEmail {
+            get {
+                return ResourceManager.GetString("trEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email....
         /// </summary>
         internal static string trEmailHint {
@@ -547,6 +556,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fax.
+        /// </summary>
+        internal static string trFax {
+            get {
+                return ResourceManager.GetString("trFax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fax....
         /// </summary>
         internal static string trFaxHint {
@@ -570,6 +588,15 @@ namespace POS {
         internal static string trHome {
             get {
                 return ResourceManager.GetString("trHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deactivate.
+        /// </summary>
+        internal static string trInActive {
+            get {
+                return ResourceManager.GetString("trInActive", resourceCulture);
             }
         }
         
@@ -772,6 +799,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notes.
+        /// </summary>
+        internal static string trNote {
+            get {
+                return ResourceManager.GetString("trNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Note....
         /// </summary>
         internal static string trNoteHint {
@@ -804,6 +840,15 @@ namespace POS {
         internal static string trPasswordHint {
             get {
                 return ResourceManager.GetString("trPasswordHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone.
+        /// </summary>
+        internal static string trPhone {
+            get {
+                return ResourceManager.GetString("trPhone", resourceCulture);
             }
         }
         
@@ -849,6 +894,15 @@ namespace POS {
         internal static string trPopError {
             get {
                 return ResourceManager.GetString("trPopError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The activation was canceled successfully.
+        /// </summary>
+        internal static string trPopInActive {
+            get {
+                return ResourceManager.GetString("trPopInActive", resourceCulture);
             }
         }
         
@@ -1281,6 +1335,15 @@ namespace POS {
         internal static string trUpdate {
             get {
                 return ResourceManager.GetString("trUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The upper limit of the entitlement.
+        /// </summary>
+        internal static string trUpperLimit {
+            get {
+                return ResourceManager.GetString("trUpperLimit", resourceCulture);
             }
         }
         

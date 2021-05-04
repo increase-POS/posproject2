@@ -552,4 +552,25 @@
   <data name="trPopUpdateValidate" xml:space="preserve">
     <value>لا يمكن التعديل بدون الاسم و رقم الجوال</value>
   </data>
+  <data name="trEmail" xml:space="preserve">
+    <value>البريد الالكتروني</value>
+  </data>
+  <data name="trFax" xml:space="preserve">
+    <value>الفاكس</value>
+  </data>
+  <data name="trNote" xml:space="preserve">
+    <value>ملاحظات</value>
+  </data>
+  <data name="trPhone" xml:space="preserve">
+    <value>الهاتف</value>
+  </data>
+  <data name="trUpperLimit" xml:space="preserve">
+    <value>الحد الأعلى للسحب</value>
+  </data>
+  <data name="trInActive" xml:space="preserve">
+    <value>إلغاء التفعيل</value>
+  </data>
+  <data name="trPopInActive" xml:space="preserve">
+    <value>تم إلغاء التفيل بنجاح</value>
+  </data>
 </root>

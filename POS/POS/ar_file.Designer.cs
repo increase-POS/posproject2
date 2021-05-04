@@ -421,6 +421,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to البريد الالكتروني.
+        /// </summary>
+        internal static string trEmail {
+            get {
+                return ResourceManager.GetString("trEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to البريد الالكتروني....
         /// </summary>
         internal static string trEmailHint {
@@ -520,6 +529,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الفاكس.
+        /// </summary>
+        internal static string trFax {
+            get {
+                return ResourceManager.GetString("trFax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to فاكس....
         /// </summary>
         internal static string trFaxHint {
@@ -543,6 +561,15 @@ namespace POS {
         internal static string trHome {
             get {
                 return ResourceManager.GetString("trHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إلغاء التفعيل.
+        /// </summary>
+        internal static string trInActive {
+            get {
+                return ResourceManager.GetString("trInActive", resourceCulture);
             }
         }
         
@@ -745,6 +772,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ملاحظات.
+        /// </summary>
+        internal static string trNote {
+            get {
+                return ResourceManager.GetString("trNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ملاحظات....
         /// </summary>
         internal static string trNoteHint {
@@ -777,6 +813,15 @@ namespace POS {
         internal static string trPasswordHint {
             get {
                 return ResourceManager.GetString("trPasswordHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الهاتف.
+        /// </summary>
+        internal static string trPhone {
+            get {
+                return ResourceManager.GetString("trPhone", resourceCulture);
             }
         }
         
@@ -822,6 +867,15 @@ namespace POS {
         internal static string trPopError {
             get {
                 return ResourceManager.GetString("trPopError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تم إلغاء التفيل بنجاح.
+        /// </summary>
+        internal static string trPopInActive {
+            get {
+                return ResourceManager.GetString("trPopInActive", resourceCulture);
             }
         }
         
@@ -1245,6 +1299,15 @@ namespace POS {
         internal static string trUpdate {
             get {
                 return ResourceManager.GetString("trUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الحد الأعلى للسحب.
+        /// </summary>
+        internal static string trUpperLimit {
+            get {
+                return ResourceManager.GetString("trUpperLimit", resourceCulture);
             }
         }
         
