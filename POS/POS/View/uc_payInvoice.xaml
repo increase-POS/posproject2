@@ -737,24 +737,31 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Grid  >
+                                <Grid Grid.Column="1" >
                                     <TextBox  Text="{Binding taxes, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5"
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Discount%..."  
+                            BorderThickness="1"  materialDesign:HintAssist.Hint="Copon..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                              BorderBrush="#f8f8f8"
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="30" Width="330"  Margin="5,1" />
-                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                        Grid.Column="1"  Height="30" Width="340"  Margin="5,1" />
+
+                                    <Button   Padding="0" Width="20" ToolTip="Clear Coupons"
+                          Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right"
+                   Margin="0,0,5,0">
+                                        <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
+                                  HorizontalAlignment="Center" Grid.Column="0"  
+                             VerticalAlignment="Center" Width="17.5" Height="17.5"/>
+                                    </Button>
+                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                         <Path.ToolTip>
-                                            <ToolTip   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                            <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                         </Path.ToolTip>
                                     </Path>
                                 </Grid>
-
                             </Grid>
 
                             <Grid Grid.Row="1">
@@ -805,7 +812,6 @@
 
                             </Grid>
                             <Line Grid.Row="2" Stretch="Fill" Stroke="#4E4E4E" X2="1"/>
-                            
                             <Grid Height="30" Grid.Row="3" Grid.ColumnSpan="3"
                       HorizontalAlignment="Right"
                           Background="#FFA926" Width="150" 
@@ -815,10 +821,10 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Total:" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,5,2" FontSize="16"/>
-                                <TextBox  Grid.Column="1" Margin="0" FontWeight="Bold" FontSize="16" 
-                       TextAlignment="Center"       Text="255" Foreground="White" BorderBrush="#FFA926" HorizontalAlignment="Right" Width="75">
+                                <TextBlock  Grid.Column="1" Margin="0" FontWeight="Bold" FontSize="16"  VerticalAlignment="Center"
+                       TextAlignment="Center"       Text="255$" Foreground="White" HorizontalAlignment="Right" Width="75">
 
-                                </TextBox>
+                                </TextBlock>
                             </Grid>
                         </Grid>
                         <Grid Grid.Row="4"  >

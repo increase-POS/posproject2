@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
 using Tulpep.NotificationWindow;
-
+using System.Threading;
 
 namespace POS.View
 {
@@ -28,6 +28,7 @@ namespace POS.View
     public partial class UC_Customer : UserControl
     {
         public int AgentId;
+        IEnumerable<Agent> agentsQuery;
 
         Agent agentModel = new Agent();
 
@@ -280,7 +281,8 @@ namespace POS.View
 
                     //pass parameter type (V for vendors, C for Clients , B for Both)
                     var agents = await agentModel.GetAgentsAsync("c");
-                    dg_customer.ItemsSource = agents;
+                    agentsQuery = agents;
+                    dg_customer.ItemsSource = agentsQuery;
                 }
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
@@ -538,6 +540,41 @@ namespace POS.View
         {
             var agents = await agentModel.GetAgentsAsync("c");
             dg_customer.ItemsSource = agents;
+        }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+            //try
+            //{
+                Thread t1 = new Thread(FN_ExportToExcel);
+                t1.SetApartmentState(ApartmentState.STA);
+                t1.Start();
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    AllClasses.Exception1(ex);
+            //}
+        }
+        void FN_ExportToExcel()
+        {
+            var QueryExcel = agentsQuery.AsEnumerable().Select(x => new
+            {
+                Code = x.code,
+                Name = x.name,
+                Company = x.company,
+                Mobile = x.mobile
+
+            });
+
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trCode");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trName");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trCompany");
+            DTForExcel.Columns[3].Caption =  MainWindow.resourcemanager.GetString("trMobile");
+
+
+            ExportToExcel.ExportTest2(DTForExcel);
         }
     }
 }
