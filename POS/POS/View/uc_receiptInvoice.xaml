@@ -277,9 +277,39 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
                                     <DataGrid.Columns >
-                                        <DataGridTextColumn   MinWidth="150"   Header="Code"  Binding="{Binding Path=code}"/>
-                                        <DataGridTextColumn MinWidth="150"  Header="Name" Binding="{Binding Path=name}"/>
-                                        <DataGridTextColumn MinWidth="200"  Header="Details" Binding="{Binding Path=details}"/>
+                                        <DataGridTextColumn   MinWidth="150"   Header="Code"  Binding="{Binding Path=code}">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn MinWidth="150"  Header="Name" Binding="{Binding Path=name}">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn MinWidth="200"  Header="Details" Binding="{Binding Path=details}">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
@@ -506,8 +536,28 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn MinWidth="150"  Header="Bill Number" Binding="{Binding Path=Id}"/>
-                                        <DataGridTextColumn MinWidth="125"  Header="Total" Binding="{Binding Path=Total}"/>
+                                        <DataGridTextColumn MinWidth="150"  Header="Bill Number" Binding="{Binding Path=Id}">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn MinWidth="125"  Header="Total" Binding="{Binding Path=Total}">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
                                     </DataGrid.Columns>
                                 </DataGrid>
 
@@ -563,8 +613,28 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn MinWidth="150"  Header="Bill Number" Binding="{Binding Path=Id}"/>
-                                    <DataGridTextColumn MinWidth="125"  Header="Total" Binding="{Binding Path=Total}"/>
+                                    <DataGridTextColumn MinWidth="150"  Header="Bill Number" Binding="{Binding Path=Id}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                        <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn MinWidth="125"  Header="Total" Binding="{Binding Path=Total}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                        <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
@@ -604,11 +674,61 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTextColumn   MinWidth="30"   Header="Num"  Binding="{Binding Path=ID}"/>
-                                    <DataGridTextColumn MinWidth="100"  Header="Item" Binding="{Binding Path=Product}"/>
-                                    <DataGridTextColumn MinWidth="30"  Header="Amount" Binding="{Binding Path=Count}"/>
-                                    <DataGridTextColumn MinWidth="30"  Header="Price" Binding="{Binding Path=Price}"/>
-                                    <DataGridTextColumn MinWidth="30"  Header="Total" Binding="{Binding Path=Total}"/>
+                                    <DataGridTextColumn   MinWidth="30"   Header="Num"  Binding="{Binding Path=ID}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                        <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn MinWidth="100"  Header="Item" Binding="{Binding Path=Product}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                        <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn MinWidth="30"  Header="Amount" Binding="{Binding Path=Count}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                        <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn MinWidth="30"  Header="Price" Binding="{Binding Path=Price}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                        <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn MinWidth="30"  Header="Total" Binding="{Binding Path=Total}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                        <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>

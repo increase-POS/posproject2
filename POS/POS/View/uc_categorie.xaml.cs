@@ -88,11 +88,10 @@ namespace POS.View
             //RefrishCategoryCard(categories);
             //await RefrishItem();
             //RefrishItemCardAndDatagrid(items);
-
             #endregion
             fillCategories();
-            pageIndex = 1;
-            paginationSetting();
+            //pageIndex = 1;
+            //paginationSetting();
 
         }
         private void Cb_parentCategorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -644,7 +643,6 @@ namespace POS.View
             paginationSetting(itemsQuery);
         }
         #endregion
-
         #region Pagination Y
         public int pageIndex = 1;
         private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)

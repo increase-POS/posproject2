@@ -62,8 +62,28 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
                     <DataGrid.Columns>
-                        <DataGridTextColumn MinWidth="225"  Header="Property"     Binding="{Binding Path=name}"/>
-                        <DataGridTextColumn MinWidth="125"  Header="Values" Binding="{Binding Path=valuesName}"/>
+                        <DataGridTextColumn MinWidth="225"  Header="Property"     Binding="{Binding Path=name}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn MinWidth="125"  Header="Values" Binding="{Binding Path=valuesName}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
 
                     </DataGrid.Columns>
                 </DataGrid>
@@ -220,7 +240,17 @@
                         ColumnWidth="SizeToHeader" >
                             <DataGrid.Columns>
                                 <DataGridTextColumn MinWidth="150"  Header="Values"   
-                                                        Binding="{Binding Path=values}"/>
+                                                        Binding="{Binding Path=values}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                    <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
                             </DataGrid.Columns>
 
                         </DataGrid>

@@ -393,9 +393,39 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"  SelectionChanged="DG_Items_SelectionChanged"  >
                                 <DataGrid.Columns >
-                                        <DataGridTextColumn   MinWidth="150"   Header="Code"  Binding="{Binding Path=code}"/>
-                                    <DataGridTextColumn MinWidth="150"  Header="Name" Binding="{Binding Path=name}"/>
-                                        <DataGridTextColumn MinWidth="200"  Header="Details" Binding="{Binding Path=details}"/>
+                                        <DataGridTextColumn   MinWidth="150"   Header="Code"  Binding="{Binding Path=code}">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn MinWidth="150"  Header="Name" Binding="{Binding Path=name}">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn MinWidth="200"  Header="Details" Binding="{Binding Path=details}">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
                                         <!--<DataGridTextColumn MinWidth="200"  Header="Type" Binding="{Binding Path=type}"/>-->
                                     </DataGrid.Columns>
                             </DataGrid>
@@ -414,7 +444,7 @@
                         </Grid.ColumnDefinitions>
                         <Button   Height="15"  Grid.Column="0"  Background="{x:Null}" 
                                Padding="0" BorderBrush="{x:Null}" x:Name="btn_ItemsInGrid" Click="Btn_ItemsInGrid_Click">
-                            <Path Fill="#178DD2" Stretch="Fill"
+                            <Path Fill="#4e4e4e" Stretch="Fill"
                           Width="15" Height="15"  x:Name="path_ItemsInGrid"
                           Data="M18.9,14h-2.1c-1.2,0-2.1,0.9-2.1,2v2c0,1.1,0.9,2,2.1,2h2.1c1.2,0,2.1-0.9,2.1-2v-2
 	C21,14.9,20.1,14,18.9,14 M11.6,14H9.4c-1.2,0-2.1,0.9-2.1,2v2c0,1.1,0.9,2,2.1,2h2.1c1.2,0,2.1-0.9,2.1-2v-2
@@ -428,7 +458,7 @@
                         <Button Background="{x:Null}"    Grid.Column="1"
                             Padding="0" Height="15" x:Name="btn_ItemsInCards" Click="Btn_ItemsInCards_Click"
                                        BorderBrush="{x:Null}">
-                            <Path Fill="#4e4e4e" Stretch="Fill"
+                            <Path Fill="#178DD2" Stretch="Fill"
                           Width="15" Height="15"  x:Name="path_ItemsInCards"
                           Data="M528,32H48C21.5,32,0,53.5,0,80v352c0,26.5,21.5,48,48,48h480c26.5,0,48-21.5,48-48V80
 	C576,53.5,554.5,32,528,32z M176,128c35.3,0,64,28.7,64,64s-28.7,64-64,64s-64-28.7-64-64S140.7,128,176,128z M288,364.8

@@ -222,14 +222,25 @@
                 <Setter Property="Foreground" Value="Red"/>
                 <Setter Property="Background" Value="#15FF0000"/>
             </Style>
-                <Style TargetType="DataGridRow">
+                <!--<Style TargetType="DataGridRow">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding isActive}" Value="False">
+                        <DataTrigger Binding="{Binding isActive}" Value="0">
                             <Setter Property="Background" Value="#15FF0000" />
                         </DataTrigger>
                     </Style.Triggers>
-                </Style>
-
+                </Style>-->
+            <Style TargetType="DataGridRow">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding isActive}" Value="0">
+                        <Setter Property="Background" Value="#BFBFBF" />
+                        <Setter Property="TextBlock.TextDecorations" Value="Strikethrough " />
+                        <Setter Property="TextBlock.Foreground" Value="White" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="strikethrough">
+                <Setter Property="TextBlock.TextDecorations" Value="Strikethrough " />
+            </Style>
             <!--#region ScrollBarTrackThumb--> 
 
             <Style x:Key="ScrollBarTrackThumb"
