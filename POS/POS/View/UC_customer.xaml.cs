@@ -28,11 +28,13 @@ namespace POS.View
     public partial class UC_Customer : UserControl
     {
         public int AgentId;
-        IEnumerable<Agent> agentsQuery;
+         IEnumerable<Agent> agentsQuery;
+         IEnumerable<Agent> agents;
 
         Agent agentModel = new Agent();
 
         bool CanDelete = false;
+        byte tgl_customerState;
 
         public UC_Customer()
         {
@@ -82,7 +84,7 @@ namespace POS.View
 
 
         }
-
+       
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             p_errorName.Visibility = Visibility.Collapsed;
@@ -280,9 +282,10 @@ namespace POS.View
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
                     //pass parameter type (V for vendors, C for Clients , B for Both)
-                    var agents = await agentModel.GetAgentsAsync("c");
-                    agentsQuery = agents;
+                    //var agents = await agentModel.GetAgentsAsync("c");
+                    //agentsQuery = agents;
                     dg_customer.ItemsSource = agentsQuery;
+                    txt_Count.Text = agentsQuery.Count().ToString();
                 }
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
@@ -305,7 +308,10 @@ namespace POS.View
            
             //pass parameter type (V for vendors, C for Clients , B for Both)
             var agents = await agentModel.GetAgentsAsync("c");
-            dg_customer.ItemsSource = agents;
+            agentsQuery = agents;
+            dg_customer.ItemsSource = agentsQuery;
+            txt_Count.Text = agentsQuery.Count().ToString();
+            //dg_customer.ItemsSource = agents;
 
             cb_areaMobile.SelectedIndex = 0;
             cb_areaPhone.SelectedIndex = 0;
@@ -401,7 +407,10 @@ namespace POS.View
 
                     //pass parameter type (V for vendors, C for Clients , B for Both)
                     var agents = await agentModel.GetAgentsAsync("c");
-                    dg_customer.ItemsSource = agents;
+                    agentsQuery = agents;
+                    dg_customer.ItemsSource = agentsQuery;
+                    txt_Count.Text = agentsQuery.Count().ToString();
+                    //dg_customer.ItemsSource = agents;
                 }
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
@@ -530,30 +539,29 @@ namespace POS.View
 
         }
 
-        private async void tb_search_TextChanged(object sender, TextChangedEventArgs e)
-        {//search
-            var agents = await agentModel.SearchAgents("c" , tb_search.Text);
-            dg_customer.ItemsSource = agents;
-        }
+        
 
-        private async void tb_search_LostFocus(object sender, RoutedEventArgs e)
-        {
-            var agents = await agentModel.GetAgentsAsync("c");
-            dg_customer.ItemsSource = agents;
-        }
+        //private async void tb_search_LostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    var agents = await agentModel.GetAgentsAsync("c");
+        //    agentsQuery = agents;
+        //    dg_customer.ItemsSource = agentsQuery;
+        //    txt_Count.Text = agentsQuery.Count().ToString();
+        //    //dg_customer.ItemsSource = agents;
+        //}
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
             //try
             //{
-                //Thread t1 = new Thread(FN_ExportToExcel);
-                //t1.SetApartmentState(ApartmentState.STA);
-                //t1.Start();
+                Thread t1 = new Thread(FN_ExportToExcel);
+                t1.SetApartmentState(ApartmentState.STA);
+                t1.Start();
 
             //}
             //catch (Exception ex)
             //{
-            //    AllClasses.Exception1(ex);
+                //AllClasses.Exception1(ex);
             //}
         }
         void FN_ExportToExcel()
@@ -574,8 +582,47 @@ namespace POS.View
             DTForExcel.Columns[3].Caption =  MainWindow.resourcemanager.GetString("trMobile");
 
 
-            ExportToExcel.ExportTest2(DTForExcel);
+            ExportToExcel.Export(DTForExcel);
         }
+
+        private async void Tgl_customerIsActive_Checked(object sender, RoutedEventArgs e)
+        {
+            if (agents is null)
+                await RefrishCustomers();
+            tgl_customerState = 1;
+            tb_search_TextChanged(null, null);
+        }
+
+        private void Tgl_customerIsActive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            tgl_customerState = 0;
+        }
+        async Task<bool> RefrishCustomers()
+        {
+            agents = await agentModel.GetAgentsAsync("c");
+            return true;
+        }
+        void RefrishCustomerDatagrid()
+        {
+            dg_customer.ItemsSource = agentsQuery;
+            txt_Count.Text = agentsQuery.Count().ToString();
+        }
+        
+        private async void tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (agents is null)
+                await RefrishCustomers();
+
+            agentsQuery = agents.Where(x => (x.code.Contains(tb_search.Text) ||
+            x.name.Contains(tb_search.Text) ||
+            x.company.Contains(tb_search.Text) ||
+            x.mobile.Contains(tb_search.Text)
+            ) && x.isActive == tgl_customerState);
+            RefrishCustomerDatagrid();
+
+            
+        }
+
     }
 }
     

@@ -100,11 +100,11 @@
 
                                 <Grid Grid.Column="20" HorizontalAlignment="Right"   Margin="5,0,5,0"  >
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="45"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" 
-                            Margin="5,0,5,0" Text="Active/DisActive" Foreground="#6e6e6e"
+                            Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                               FontSize="12"/>
                                     <ToggleButton Grid.Column="1"  x:Name="tgl_categoryIsActive"  Checked="Tgl_categoryIsActive_Checked" Unchecked="Tgl_categoryIsActive_Unchecked"
@@ -321,11 +321,11 @@
                                     </Grid>
                                     <Grid    Grid.Column="3" HorizontalAlignment="Right"   Margin="5,5,5,0"  >
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="45"/>
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" 
-                            Margin="5,0,5,0" Text="Active/DisActive" Foreground="#6e6e6e"
+                            Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                               FontSize="12"/>
                                         <ToggleButton Grid.Column="1"  x:Name="tgl_itemCardIsActive"  Checked="Tgl_itemCardIsActive_Checked" Unchecked="Tgl_itemCardIsActive_Unchecked"
@@ -374,11 +374,11 @@
 
                                     <Grid Grid.Column="1" HorizontalAlignment="Right"   Margin="5,0,5,0"  >
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="45"/>
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" 
-                            Margin="5,0,5,0" Text="Active/DisActive" Foreground="#6e6e6e"
+                            Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                               FontSize="12"/>
                                         <ToggleButton Grid.Column="1"  x:Name="tgl_itemDatagridIsActive"  Checked="Tgl_itemDatagridIsActive_Checked" Unchecked="Tgl_itemDatagridIsActive_Unchecked"

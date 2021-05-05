@@ -33,7 +33,7 @@ namespace POS.Classes
         }
         #region
 
-        static public void ExportTest2(DataTable ds, string excelFilePath = null)
+        static public void Export(DataTable ds, string excelFilePath = null)
         {
             string data = null;
             int i = 0;
@@ -83,137 +83,10 @@ namespace POS.Classes
                 xlApp.Visible = true;
             }
         }
-        //static public void ExportTest2(int[] HideColumns, DataTable ds, string excelFilePath = null)
-        //{
-        //    string data = null;
-        //    int i = 0;
-        //    int j = 0;
-        //    Excel.Application xlApp;
-        //    Excel.Workbook xlWorkBook;
-        //    Excel.Worksheet xlWorkSheet;
-        //    object misValue = System.Reflection.Missing.Value;
-        //    xlApp = new Excel.Application();
-        //    xlWorkBook = xlApp.Workbooks.Add(misValue);
-        //    xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-        //    bool StepColumn = false;
-        //    for (j = 0; j <= ds.Columns.Count - 1; j++)
-        //    {
-        //        foreach (var item in HideColumns)
-        //        {
-        //            if (j == item)
-        //            {
-        //                StepColumn = true;
-        //                break;
-        //            }
-        //        }
-        //        if (StepColumn == true)
-        //        {
-        //            StepColumn = false;
-        //            continue;
-        //        }
-        //        data = ds.Columns[j].Caption;
-        //        xlWorkSheet.Cells[1, j + 1] = data;
-        //    }
-
-        //    for (i = 0; i <= ds.Rows.Count - 1; i++)
-        //    {
-        //        for (j = 0; j <= ds.Columns.Count - 1; j++)
-        //        {
-        //            foreach (var item in HideColumns)
-        //            {
-        //                if (j == item)
-        //                {
-        //                    StepColumn = true;
-        //                    break;
-        //                }
-        //            }
-        //            if (StepColumn == true)
-        //            {
-        //                StepColumn = false;
-        //                continue;
-        //            }
-        //            data = ds.Rows[i].ItemArray[j].ToString();
-        //            xlWorkSheet.Cells[i + 2, j + 1] = data;
-        //        }
-        //    }
-        //    // check file path
-        //    if (!string.IsNullOrEmpty(excelFilePath))
-        //    {
-        //        try
-        //        {
-        //            xlWorkBook.SaveAs(excelFilePath);
-        //            xlWorkBook.Close(true, misValue, misValue);
-        //            xlApp.Quit();
-        //            releaseObject(xlWorkSheet);
-        //            releaseObject(xlWorkBook);
-        //            releaseObject(xlApp);
-        //            W_MessageBox.Show("Excel file created , you can find the file c:\\csharp.net-informations.xls");
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("ExportToExcel: Excel file could not be saved! Check filepath.\n"
-        //                                + ex.Message);
-        //        }
-        //    }
-        //    else
-        //    { // no file path is given
-        //        xlApp.Visible = true;
-        //    }
-        //}
+      
 
         #endregion
-        //static public void ExportTest3(IEnumerable Query, string excelFilePath = null)
-        //{
-        //    string data = null;
-        //    int i = 0;
-        //    int j = 0;
-        //    Excel.Application xlApp;
-        //    Excel.Workbook xlWorkBook;
-        //    Excel.Worksheet xlWorkSheet;
-        //    object misValue = System.Reflection.Missing.Value;
-        //    xlApp = new Excel.Application();
-        //    xlWorkBook = xlApp.Workbooks.Add(misValue);
-        //    xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
-        //    for (j = 0; j <= ds.Columns.Count - 1; j++)
-        //    {
-        //        data = ds.Columns[j].Caption;
-        //        xlWorkSheet.Cells[1, j + 1] = data;
-        //    }
-        //    for (i = 0; i <= ds.Rows.Count - 1; i++)
-        //    {
-        //        for (j = 0; j <= ds.Columns.Count - 1; j++)
-        //        {
-        //            data = ds.Rows[i].ItemArray[j].ToString();
-        //            xlWorkSheet.Cells[i + 2, j + 1] = data;
-        //        }
-        //    }
-        //    // check file path
-        //    if (!string.IsNullOrEmpty(excelFilePath))
-        //    {
-        //        try
-        //        {
-        //            xlWorkBook.SaveAs(excelFilePath);
-        //            xlWorkBook.Close(true, misValue, misValue);
-        //            xlApp.Quit();
-        //            releaseObject(xlWorkSheet);
-        //            releaseObject(xlWorkBook);
-        //            releaseObject(xlApp);
-        //            W_MessageBox.Show("Excel file created , you can find the file c:\\csharp.net-informations.xls");
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("ExportToExcel: Excel file could not be saved! Check filepath.\n"
-        //                                + ex.Message);
-        //        }
-        //    }
-        //    else
-        //    { // no file path is given
-        //        xlApp.Visible = true;
-        //    }
-        //}
+        
         static public void releaseObject(object obj)
         {
             try

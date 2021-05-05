@@ -577,8 +577,6 @@ namespace POS.View
         {
             if (items is null)
                 await RefrishItem();
-            //itemsQuery = items.Where(x => x.isActive == 1);
-            //RefrishItemCard(itemsQuery);
             Txb_searchItemsCard_TextChanged(null, null);
 
         }

@@ -232,9 +232,9 @@
             <Style TargetType="DataGridRow">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding isActive}" Value="0">
-                        <Setter Property="Background" Value="#A1A1A1" />
+                        <!--<Setter Property="Background" Value="#A1A1A1" />-->
                         <Setter Property="TextBlock.TextDecorations" Value="Strikethrough " />
-                        <Setter Property="TextBlock.Foreground" Value="White" />
+                        <!--<Setter Property="TextBlock.Foreground" Value="White" />-->
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
