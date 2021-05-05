@@ -16,7 +16,7 @@
         <Grid Grid.Column="0">
             <Grid Grid.Column="1" Margin="5" >
                 <Grid.RowDefinitions >
-                    <RowDefinition Height="170"/>
+                    <RowDefinition Height="50"/>
                     <RowDefinition Height="4*"/>
                 </Grid.RowDefinitions>
                 <Grid Margin="5,10,5,5">
@@ -27,12 +27,12 @@
 
                     <Grid >
                         <Border BorderThickness="0" Grid.Row="0" Grid.ColumnSpan="2"
-                    CornerRadius="15,0,0,15" BorderBrush="Black" Background="#4e4e4e">
+                    CornerRadius="7,0,0,7" BorderBrush="Black" Background="#4e4e4e">
                         </Border>
                         <Grid >
                             <Button Padding="0" Background="{x:Null}" BorderBrush="{x:Null}">
                                 <Path Fill="White" Stretch="Fill"
-                          Width="22" Height="22" Margin="0"  
+                          Width="15" Height="15" Margin="0"  
                           Data="M20,21.6c-0.1,0-0.2,0-0.3-0.1L5.4,15.1C5.2,15,5,14.7,5,14.4c0-0.3,0.2-0.6,0.5-0.7L19.7,8c0.1,0,0.2,0,0.3,0
 	c0.1,0,0.2,0,0.3,0l14.3,5.7c0.3,0.1,0.5,0.4,0.5,0.7c0,0.3-0.2,0.6-0.4,0.7l-14.3,6.4C20.2,21.5,20.1,21.6,20,21.6L20,21.6z
 	 M7.6,14.5L20,20l12.4-5.5L20,9.5L7.6,14.5z M5.4,20.5c-0.4-0.2-0.5-0.6-0.4-1c0.1-0.3,0.4-0.5,0.7-0.5c0.1,0,0.2,0,0.3,0.1l14,6.2
@@ -48,10 +48,9 @@
                         <Grid Grid.Column="1"  Margin="7.5,0" >
 
                             <Grid.RowDefinitions >
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="130"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Grid Grid.ColumnSpan="10" VerticalAlignment="Top" Height="20" Margin="15,0,0,0">
+                            <Grid Grid.ColumnSpan="10" VerticalAlignment="Center"  Margin="15,0,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="auto"/>
@@ -70,131 +69,35 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Button  Grid.Column="1" Padding="0"
+                                <Button  Grid.Column="0" Padding="0"
                                     VerticalAlignment="Top" HorizontalAlignment="Left" 
-                            Margin="0" Height="20" x:Name="btn_test"
-                                           Content="Pos> " Background="{x:Null}"
+                            Margin="0"  
+                                           Content="Electronics> " Background="{x:Null}"
                                         BorderThickness="0"
                           FontFamily="{StaticResource Font-cairo-light}" 
                            Foreground="#6e6e6e"
-                                  FontWeight="Bold"  FontSize="11">
+                                  FontWeight="Bold"  FontSize="14">
+                                </Button>
+                                <Button  Grid.Column="1" Padding="0"
+                                    VerticalAlignment="Top" HorizontalAlignment="Left" 
+                            Margin="0"
+                                           Content="Programs> " Background="{x:Null}"
+                                        BorderThickness="0"
+                          FontFamily="{StaticResource Font-cairo-light}" 
+                           Foreground="#6e6e6e"
+                                  FontWeight="Bold"  FontSize="14">
                                 </Button>
                                 <Button  Grid.Column="2" Padding="0"
                                     VerticalAlignment="Top" HorizontalAlignment="Left" 
-                            Margin="0" Height="20" 
-                                           Content="Program> " Background="{x:Null}"
-                                        BorderThickness="0"
-                          FontFamily="{StaticResource Font-cairo-light}" 
-                           Foreground="#6e6e6e"
-                                 FontSize="11">
-                                </Button>
-                                <Button  Grid.Column="3" Padding="0"
-                                    VerticalAlignment="Top" HorizontalAlignment="Left" 
-                            Margin="0" Height="20"  
-                                           Content="CD  " Background="{x:Null}"
+                            Margin="0" 
+                                           Content="Pos " Background="{x:Null}"
                                         BorderThickness="0"
                           FontFamily="{StaticResource Font-cairo-bold}" 
                            Foreground="#6e6e6e"
-                                  FontWeight="Bold"  FontSize="11">
+                                  FontWeight="Bold"  FontSize="14">
                                 </Button>
-
-                                <Grid Grid.Column="20" HorizontalAlignment="Right"   Margin="5,0,5,0"  >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" 
-                            Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                              FontSize="12"/>
-                                    <ToggleButton Grid.Column="1"  x:Name="tgl_categoryIsActive"  Checked="Tgl_categoryIsActive_Checked" Unchecked="Tgl_categoryIsActive_Unchecked"
-                             VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
-                                          Margin="0" Height="13" Width="28" />
-                                </Grid>
                             </Grid>
-                            <ScrollViewer  Grid.Row="1"  VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Margin="0"
-                                          ScrollViewer.CanContentScroll="True">
-                                <Grid  x:Name="Grid_categorie" Grid.Row="1"   Margin="0">
-                                    <Grid.ColumnDefinitions>
-                                        <!--<ColumnDefinition Width="110"/>-->
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                </Grid>
-                            </ScrollViewer>
+                           
 
 
                         </Grid>
@@ -211,7 +114,7 @@
                         <Border BorderThickness="0" Grid.Row="0" 
                     CornerRadius="7,7,0,0" BorderBrush="Black" Background="#178DD2">
                             <Grid >
-                                <Button Margin="2"   Width="15" Height="12"   Padding="0"
+                                <!--<Button Margin="2"   Width="15" Height="12"   Padding="0"
                                         Background="{x:Null}" BorderBrush="{x:Null}">
                                     <Path Fill="White" Stretch="Fill"
                           Width="15" Height="12" 
@@ -220,26 +123,28 @@
 	c0.1-0.3,0.4-0.5,0.7-0.5c0.1,0,0.2,0,0.3,0.1L20,20l14-6.2c0.1,0,0.2-0.1,0.3-0.1c0.3,0,0.5,0.2,0.7,0.5c0.2,0.4,0,0.8-0.4,1
 	L20,21.6L5.4,15.1z M5.4,25.5c-0.4-0.2-0.5-0.6-0.4-1C5.2,24.2,5.4,24,5.7,24c0.1,0,0.2,0,0.3,0.1l14,6.3l14-6.3
 	c0.1,0,0.2-0.1,0.3-0.1c0.3,0,0.5,0.2,0.7,0.5c0.2,0.4,0,0.8-0.4,1L20,32L5.4,25.5z"/>
-                                </Button>
+                                </Button>-->
                             </Grid>
                         </Border>
 
                     </Grid>
                     <Border BorderThickness="0"  Grid.Row="1"
                     CornerRadius="0,0,7,7" BorderBrush="Black" Background="White">
-                        <Grid x:Name="grid_itemsContainer">
-                            <Grid x:Name="grid_ItemsCard" Visibility="Visible" >
+                        <Grid x:Name="grid_categoriesContainer">
+                            <Grid x:Name="grid_categoryCards" Visibility="Visible" >
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="45"/>
                                 </Grid.RowDefinitions>
-                                <Grid x:Name="Grid_CategorieItem"  Background="{x:Null}">
+                                <Grid x:Name="grid_categorieContainerCard"  Background="{x:Null}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
@@ -300,7 +205,7 @@
                      HorizontalAlignment="Left" VerticalAlignment="Bottom" 
                   Height="30"   Width="30" Margin="5,0,15,0"/>
                                     <Grid Width="235" VerticalAlignment="Bottom" Grid.Column="2" >
-                                        <TextBox x:Name="txb_searchItemsCard"  TextChanged="Txb_searchItemsCard_TextChanged"
+                                        <TextBox x:Name="txb_searchcategoriesCard"  TextChanged="Txb_searchcategoriesCard_TextChanged"
                         Padding="10,5,5,5" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
@@ -328,7 +233,7 @@
                             Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                               FontSize="12"/>
-                                        <ToggleButton Grid.Column="1"  x:Name="tgl_itemCardIsActive"  Checked="Tgl_itemCardIsActive_Checked" Unchecked="Tgl_itemCardIsActive_Unchecked"
+                                        <ToggleButton Grid.Column="1"  x:Name="tgl_categoryCardIsActive"  Checked="Tgl_categoryCardIsActive_Checked" Unchecked="Tgl_categoryCardIsActive_Unchecked"
                              VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                           Margin="0" Height="13" Width="28" />
                                     </Grid>
@@ -336,21 +241,21 @@
                                 </Grid>
                                
                             </Grid>
-                            <Grid x:Name="grid_itemsDatagrid" Visibility="Collapsed">
+                            <Grid x:Name="grid_categoriesDatagrid" Visibility="Collapsed">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="40"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="45"/>
                                 </Grid.RowDefinitions>
                                 
-                                <Grid  Width="{Binding ActualWidth, ElementName=DG_Items}" >
+                                <Grid  Width="{Binding ActualWidth, ElementName=dg_categories}" >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid   VerticalAlignment="Bottom" Grid.Column="0">
-                                        <TextBox    Width="275"   x:Name="txb_searchItemsDatagrid"  TextChanged="Txb_searchItemsDatagrid_TextChanged" 
+                                        <TextBox    Width="275"   x:Name="txb_searchcategoriesDatagrid"  TextChanged="Txb_searchcategoriesDatagrid_TextChanged" 
                                                     
                         Padding="10,5,5,5" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
@@ -381,17 +286,17 @@
                             Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                               FontSize="12"/>
-                                        <ToggleButton Grid.Column="1"  x:Name="tgl_itemDatagridIsActive"  Checked="Tgl_itemDatagridIsActive_Checked" Unchecked="Tgl_itemDatagridIsActive_Unchecked"
+                                        <ToggleButton Grid.Column="1"  x:Name="tgl_categoryDatagridIsActive"  Checked="Tgl_categoryDatagridIsActive_Checked" Unchecked="Tgl_categoryDatagridIsActive_Unchecked"
                              VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                           Margin="0" Height="13" Width="28" />
                                     </Grid>
                                 </Grid>
                               
-                            <DataGrid x:Name="DG_Items"  Margin="5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
+                            <DataGrid x:Name="dg_categories"  Margin="5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"  SelectionChanged="DG_Items_SelectionChanged"  >
+                        ColumnWidth="SizeToHeader"  SelectionChanged="dg_categories_SelectionChanged"  >
                                 <DataGrid.Columns >
                                         <DataGridTextColumn   MinWidth="150"   Header="Code"  Binding="{Binding Path=code}">
                                             <DataGridTextColumn.ElementStyle>
@@ -443,9 +348,9 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Button   Height="15"  Grid.Column="0"  Background="{x:Null}" 
-                               Padding="0" BorderBrush="{x:Null}" x:Name="btn_ItemsInGrid" Click="Btn_ItemsInGrid_Click">
+                               Padding="0" BorderBrush="{x:Null}" x:Name="btn_categoriesInGrid" Click="Btn_categoriesInGrid_Click">
                             <Path Fill="#4e4e4e" Stretch="Fill"
-                          Width="15" Height="15"  x:Name="path_ItemsInGrid"
+                          Width="15" Height="15"  x:Name="path_categoriesInGrid"
                           Data="M18.9,14h-2.1c-1.2,0-2.1,0.9-2.1,2v2c0,1.1,0.9,2,2.1,2h2.1c1.2,0,2.1-0.9,2.1-2v-2
 	C21,14.9,20.1,14,18.9,14 M11.6,14H9.4c-1.2,0-2.1,0.9-2.1,2v2c0,1.1,0.9,2,2.1,2h2.1c1.2,0,2.1-0.9,2.1-2v-2
 	C13.6,14.9,12.7,14,11.6,14 M4.2,14H2.1C0.9,14,0,14.9,0,16v2c0,1.1,0.9,2,2.1,2h2.1c1.2,0,2.1-0.9,2.1-2v-2C6.3,14.9,5.4,14,4.2,14
@@ -456,10 +361,10 @@
 	C13.6,0.9,12.7,0,11.6,0 M6.3,2v2c0,1.1-0.9,2-2.1,2H2.1C0.9,6,0,5.1,0,4V2c0-1.1,0.9-2,2.1-2h2.1C5.4,0,6.3,0.9,6.3,2"/>
                         </Button>
                         <Button Background="{x:Null}"    Grid.Column="1"
-                            Padding="0" Height="15" x:Name="btn_ItemsInCards" Click="Btn_ItemsInCards_Click"
+                            Padding="0" Height="15" x:Name="btn_categoriesInCards" Click="Btn_categoriesInCards_Click"
                                        BorderBrush="{x:Null}">
                             <Path Fill="#178DD2" Stretch="Fill"
-                          Width="15" Height="15"  x:Name="path_ItemsInCards"
+                          Width="15" Height="15"  x:Name="path_categoriesInCards"
                           Data="M528,32H48C21.5,32,0,53.5,0,80v352c0,26.5,21.5,48,48,48h480c26.5,0,48-21.5,48-48V80
 	C576,53.5,554.5,32,528,32z M176,128c35.3,0,64,28.7,64,64s-28.7,64-64,64s-64-28.7-64-64S140.7,128,176,128z M288,364.8
 	c0,10.6-10,19.2-22.4,19.2H86.4C74,384,64,375.4,64,364.8v-19.2c0-31.8,30.1-57.6,67.2-57.6h5c12.3,5.1,25.7,8,39.8,8
@@ -488,7 +393,7 @@
                     <Button   Width="360" Height="52" Grid.Column="0" BorderBrush="{x:Null}"
                       HorizontalAlignment="Center" VerticalAlignment="Center" 
                      Background="{x:Null}"
-                    Padding="0"  x:Name="btn_itemData" >
+                    Padding="0"  x:Name="btn_categoryData" >
                         <Border CornerRadius="7,7,0,0" Background="#4E4E4E">
                             <Grid Width="360" Height="52" HorizontalAlignment="Center"  >
                                 <Grid.ColumnDefinitions>
@@ -522,7 +427,7 @@
                 <Border Grid.Row="1" Background="White" 
                 CornerRadius="0,0,7,7" >
                     <Grid  Grid.Row="1"
-                      x:Name="grid_itemData" Visibility="Visible" >
+                      x:Name="grid_categoryData" Visibility="Visible" >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="40"/>
@@ -574,7 +479,7 @@
                              HorizontalAlignment="Center" VerticalAlignment="Center"   
                             BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="5"  Height="125" Width="125" Grid.Column="1">
                                     <Button.Background>
-                                        <ImageBrush Stretch="Fill"  x:Name="img_item" ImageSource="/pic/EPSON-thermal-printer3.png"   />
+                                        <ImageBrush Stretch="Fill"  x:Name="img_category" ImageSource="/pic/EPSON-thermal-printer3.png"   />
                                     </Button.Background>
                                 </Button>
                                 <Grid  Grid.Row="1" >
@@ -673,7 +578,7 @@
                                     </Grid.ColumnDefinitions>
                                     <ComboBox x:Name="cb_parentCategorie"  Grid.Row="1"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Select Parent Item "  
+                             materialDesign:HintAssist.Hint="Select Parent category "  
                            TextBlock.FontSize="12"   Background="#f8f8f8"  SelectionChanged="Cb_parentCategorie_SelectionChanged"
                          HorizontalAlignment="Left" VerticalAlignment="Center" 
                          Grid.Column="1" Height="35" Width="340"  Margin="10,5"

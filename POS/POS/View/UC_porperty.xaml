@@ -270,7 +270,7 @@
                         ColumnWidth="SizeToHeader" >
                             <DataGrid.Columns>
                                 <DataGridTextColumn MinWidth="150"  Header="Values"   
-                                                        Binding="{Binding Path=values}">
+                                                        Binding="{Binding Path=propertyItemName}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Style.Triggers>
@@ -293,7 +293,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Grid >
-                            <TextBox x:Name="tb_valueName"  Text="{Binding valueName, Mode=OneWay}" Padding="10,5,5,5" 
+                                <TextBox x:Name="tb_valueName"  Text="{Binding propertyItemName, Mode=OneWay}" Padding="10,5,5,5" 
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Value..."  
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="20" 

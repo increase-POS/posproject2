@@ -585,4 +585,10 @@
   <data name="trPopInActive" xml:space="preserve">
     <value>The activation was canceled successfully</value>
   </data>
+  <data name="trActive" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="trPopActive" xml:space="preserve">
+    <value>Activation was successful</value>
+  </data>
 </root>

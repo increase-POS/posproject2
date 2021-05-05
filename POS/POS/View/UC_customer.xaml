@@ -45,7 +45,7 @@
                     <Border Grid.ColumnSpan="2" CornerRadius="0,5,5,0"  
                            Background="White"  />
 
-                    <TextBox  x:Name="tb_search"
+                    <TextBox  x:Name="tb_search"  TabIndex="17"
                         Padding="10,5,5,5" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
@@ -71,7 +71,7 @@
                               FontSize="12"/>
                         <ToggleButton Grid.Column="1"  x:Name="tgl_customerIsActive"  Checked="Tgl_customerIsActive_Checked" Unchecked="Tgl_customerIsActive_Unchecked"
                              VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
-                                          Margin="0" Height="13" Width="28" />
+                                          Margin="0" Height="13" Width="28"  TabIndex="18" />
                     </Grid>
                 </Grid>
 
@@ -238,7 +238,7 @@
                     Margin="5,1"   ToolTip="clear">
 
                                 <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
+                              HorizontalAlignment="Center" Grid.Column="0"  TabIndex="16"  
                          VerticalAlignment="Center" Width="20" Height="20"/>
                             </Button>
 
@@ -264,7 +264,7 @@
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="20" LostFocus="tb_name_LostFocus" VerticalAlignment="Center" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                     Height="35"  Margin="5,5,6,5" >
+                                     Height="35"  Margin="5,5,6,5" TabIndex="0" >
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_name" Content="Name" />
                                 </TextBox.ToolTip>
@@ -284,18 +284,17 @@
                                 <ColumnDefinition Width="*"/>
 
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_code"  Text="{Binding code, Mode=OneWay}" Padding="10,5,5,5" 
-                                    BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Code..."  
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                    BorderBrush="AliceBlue" MaxLength="100"  
+                            <TextBlock x:Name="tb_code"  Text="{Binding code, Mode=OneWay}" Padding="10,5,5,5" 
+                                    materialDesign:HintAssist.Hint="Code..." 
+                                    KeyboardNavigation.IsTabStop="False"
+                                    TextBlock.FontSize="12"
                                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                    IsTabStop="false" IsReadOnly="True" 
                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                     Height="35" Width="200" Margin="5,5,0,5" Grid.ColumnSpan="2">
-                                <TextBox.ToolTip>
+                                <TextBlock.ToolTip>
                                     <ToolTip x:Name="tt_code" Content="Code" />
-                                </TextBox.ToolTip>
-                            </TextBox>
+                                </TextBlock.ToolTip>
+                            </TextBlock>
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -317,7 +316,7 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Company..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center"  TabIndex="1"
                   Height="35" Width="200"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_company" Content="Company" />
@@ -366,15 +365,14 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <ComboBox x:Name="cb_areaMobile" Padding="10,11,5,5" TextBlock.Foreground="#4E4E4E"
-                             SelectedIndex="0"  
+                             SelectedIndex="0"   TabIndex="2" 
                            TextBlock.FontSize="12" Margin="10,5,5,5"
                      HorizontalAlignment="Center" VerticalAlignment="Center" 
                 Height="35" Width="60"  
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
-                             Grid.Row="2"
-                           Text="{Binding Gender, Mode=TwoWay}"  >
+                             Grid.Row="2">
                                 <ListBoxItem>
                                     +963
                                 </ListBoxItem>
@@ -400,8 +398,8 @@
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"
                                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2" LostFocus="Tb_mobile_LostFocus" >
+                     HorizontalAlignment="Left" VerticalAlignment="Center"  TabIndex="3"
+                  Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2" LostFocus="Tb_mobile_LostFocus" TextChanged="tb_mobile_TextChanged" >
                                     <TextBox.ToolTip>
                                         <ToolTip x:Name="tt_mobile" Content="Mobile" />
                                     </TextBox.ToolTip>
@@ -428,15 +426,14 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <ComboBox x:Name="cb_areaPhone" Padding="10,11,5,5" TextBlock.Foreground="#4E4E4E"
-                            SelectedIndex="0"  Grid.Column="0"
+                            SelectedIndex="0"  Grid.Column="0"  TabIndex="4"
                            TextBlock.FontSize="12" Margin="10,5,5,5"
                      HorizontalAlignment="Center" VerticalAlignment="Center" 
                 Height="35" Width="60"  
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
-                             Grid.Row="2"
-                           Text="{Binding Gender, Mode=TwoWay}"  >
+                             Grid.Row="2"  >
                                 <ListBoxItem>
                                     +963
                                 </ListBoxItem>
@@ -451,15 +448,13 @@
                                 </ListBoxItem>
                             </ComboBox>
                             <ComboBox x:Name="cb_areaPhoneLocal" Padding="15,11,5,5" TextBlock.Foreground="#4E4E4E"
-                            SelectedIndex="0"
+                            SelectedIndex="0"  TabIndex="5"
                            TextBlock.FontSize="12" Margin="10,5,5,5"
                      HorizontalAlignment="Center" VerticalAlignment="Center" 
                 Height="35" Width="60"  Grid.Column="1"
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" 
-                            FontFamily="{StaticResource Font-cairo-light}"   
-                           
-                           Text="{Binding Gender, Mode=TwoWay}"  >
+                            FontFamily="{StaticResource Font-cairo-light}"  >
                                 <ListBoxItem>
                                     011
                                 </ListBoxItem>
@@ -477,6 +472,7 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Phone..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                            BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
+                                      TabIndex="6"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="15"
                   Height="35" Width="195"  Margin="5,5,0,5" >
@@ -515,7 +511,7 @@
                             <TextBox x:Name="tb_email"  Text="{Binding email, Mode=OneWay}" Grid.Row="2"  Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Email..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                     BorderBrush="AliceBlue" MaxLength="100"
+                                     BorderBrush="AliceBlue" MaxLength="100"  TabIndex="10"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="35" Width="170"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
@@ -527,7 +523,7 @@
                             <TextBox x:Name="tb_address"  Text="{Binding address, Mode=OneWay}" Grid.Row="2" Grid.Column="1"  Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Address..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                     BorderBrush="AliceBlue" MaxLength="100"
+                                     BorderBrush="AliceBlue" MaxLength="100"  TabIndex="10"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="35" Width="170"  Margin="5,5,5,5" Grid.ColumnSpan="2" 
@@ -557,12 +553,11 @@
                             SelectedIndex="0"  Grid.Column="0"
                            TextBlock.FontSize="12" Margin="10,5,5,5"
                      HorizontalAlignment="Center" VerticalAlignment="Center" 
-                Height="35" Width="60"  
+                Height="35" Width="60"   TabIndex="7"
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
-                             Grid.Row="2"
-                           Text="{Binding Gender, Mode=TwoWay}"  >
+                             Grid.Row="2"  >
                                 <ListBoxItem>
                                     +963
                                 </ListBoxItem>
@@ -580,12 +575,10 @@
                             SelectedIndex="0"
                            TextBlock.FontSize="12" Margin="10,5,5,5"
                      HorizontalAlignment="Center" VerticalAlignment="Center" 
-                Height="35" Width="60"  Grid.Column="1"
+                Height="35" Width="60"  Grid.Column="1"  TabIndex="8"
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" 
-                            FontFamily="{StaticResource Font-cairo-light}"   
-                           
-                           Text="{Binding Gender, Mode=TwoWay}"  >
+                            FontFamily="{StaticResource Font-cairo-light}"  >
                                 <ListBoxItem>
                                     011
                                 </ListBoxItem>
@@ -603,7 +596,7 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Fax..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
-                                     Height="35"  Margin="0,5,2,5" Grid.Column="2" Width="195">
+                                     Height="35"  Margin="0,5,2,5" Grid.Column="2" Width="195"  TabIndex="9">
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_fax" Content="Fax" />
                                 </TextBox.ToolTip>
@@ -656,7 +649,7 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="The upper limit of the entitlement..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" MaxLength="100" PreviewTextInput="NumberValidationTextBox"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center"  TabIndex="11"
                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
                                 <TextBox.ToolTip>
@@ -746,7 +739,7 @@
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"  TextWrapping="Wrap" AcceptsReturn="True"
                      HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="100" 
-                    materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                    materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" TabIndex="12"
                   Height="70" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_notes" Content="Notes" />
@@ -793,13 +786,13 @@
                             materialDesign:ButtonAssist.CornerRadius="5" Click="Btn_delete_Click"  />-->
                     <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Add" Click="Btn_add_Click" />
+                    Margin="1,0"    Content="Add" Click="Btn_add_Click"  TabIndex="13" />
                     <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
-                   Margin="1,0"    Content="Update" Click="Btn_update_Click" />
+                   Margin="1,0"    Content="Update" Click="Btn_update_Click"  TabIndex="14" />
                     <Button x:Name="btn_delete" Grid.Row="0" Grid.Column="2"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Delete" Click="Btn_delete_Click" />
+                    Margin="1,0"    Content="Delete" Click="Btn_delete_Click"  TabIndex="15"/>
                 </Grid>
             </Grid>
         </Border>

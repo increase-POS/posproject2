@@ -573,4 +573,10 @@
   <data name="trPopInActive" xml:space="preserve">
     <value>تم إلغاء التفيل بنجاح</value>
   </data>
+  <data name="trActive" xml:space="preserve">
+    <value>تفعيل</value>
+  </data>
+  <data name="trPopActive" xml:space="preserve">
+    <value>تم التفعيل بنجاح</value>
+  </data>
 </root>

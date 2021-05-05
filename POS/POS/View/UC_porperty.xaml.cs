@@ -24,6 +24,8 @@ namespace POS.View
     public partial class UC_porperty : UserControl
     {
         public int PropertyId;
+        public int propertyItemId;
+        bool CanDelete;
         Property propertyModel = new Property();
         PropertiesItems PropertiesItemsModel = new PropertiesItems();
         public UC_porperty()
@@ -105,19 +107,37 @@ namespace POS.View
             var properties = await propertyModel.getProperty();
             dg_property.ItemsSource = properties;
 
-            var propertiesItems = await PropertiesItemsModel.Get();
+            var propertiesItems = await PropertiesItemsModel.GetPropertiesItems();
             dg_subProperty.ItemsSource = propertiesItems;
         }
 
         private void Dg_subProperty_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            p_errorName.Visibility = Visibility.Collapsed;           
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");            
 
+            PropertiesItems propertiesItems = new PropertiesItems();
+
+            if (dg_subProperty.SelectedIndex != -1)
+            {
+                propertiesItems = dg_subProperty.SelectedItem as PropertiesItems;
+                this.DataContext = propertiesItems;
+            }
+            if (propertiesItems != null)
+            {
+                if (propertiesItems.propertyItemId != 0)
+                {
+                    propertyItemId = propertiesItems.propertyItemId;
+                    CanDelete = propertiesItems.canDelete;
+                    MessageBox.Show(propertyItemId.ToString() + " " + CanDelete.ToString());
+                }
+
+
+            }
+            
         }
 
-        private void Dg_property_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
 
 
        
@@ -159,13 +179,26 @@ namespace POS.View
             private async void Btn_delete_Click(object sender, RoutedEventArgs e)
             {
                 //delete
-                await propertyModel.Delete(PropertyId);
+              //  await propertyModel.deleteProperty(PropertyId,  CanDelete);
 
-                var properties = await propertyModel.getProperty();
-                dg_property.ItemsSource = properties;
+               // var properties = await propertyModel.getProperty();
+          //      dg_property.ItemsSource = properties;
 
-                //clear textBoxs
-                //Btn_clear_Click(sender, e);
+                string popupContent = "";
+                
+
+                if (CanDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                else popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                bool b = await propertyModel.deleteProperty(PropertyId, CanDelete);
+
+                if (b) SectionData.popUpResponse("", popupContent);
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                var prop = await propertyModel.getProperty();
+                dg_property.ItemsSource = prop;
+            //clear textBoxs
+            //Btn_clear_Click(sender, e);
             }
 
             private void Dg_property_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
@@ -192,6 +225,8 @@ namespace POS.View
                     if (property.propertyId != 0)
                     {
                         PropertyId = property.propertyId;
+                    CanDelete = property.canDelete;
+
                     }
 
 
@@ -206,20 +241,22 @@ namespace POS.View
                     //add
                     PropertiesItems propertiesItems = new PropertiesItems
                     {
-                        name = tb_valueName.Text,
-                        propertyId = 1,                       
+                        name  = tb_valueName.Text,
+                        //propertyId = 1,
+                        propertyName = tb_name.Text,
                         createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                         updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                         createUserId = 2,
                         updateUserId = 2,
                          isActive = 1,
-                         isDefault =1
+                         isDefault =1,
+                       //  canDelete = true
                     };
 
             //  await PropertiesItemsModel.Save(propertiesItems);
             //MessageBox.Show(PropertyId.ToString());
-                     await PropertiesItemsModel.Save(propertiesItems);
-                     var propertiesItemss = await PropertiesItemsModel.Get();
+                     await PropertiesItemsModel.SavePropertiesItems(propertiesItems);
+                     var propertiesItemss = await PropertiesItemsModel.GetPropertiesItems();
                      dg_subProperty.ItemsSource = propertiesItemss;
             
             //get property id
@@ -231,7 +268,9 @@ namespace POS.View
                 }
 
                 int id = 0;
-                private async void getPropertyID(string name)
+        //private string popupContent;
+
+        private async void getPropertyID(string name)
                 {
                     List<string> names = new List<string>();
                     List<int> ids = new List<int>();
@@ -257,9 +296,21 @@ namespace POS.View
                     MessageBox.Show(prop.propertyId.ToString());
                 }
 
-        private void Btn_deleteValue_Click(object sender, RoutedEventArgs e)
+        private async void Btn_deleteValue_Click(object sender, RoutedEventArgs e)
         {
+            string popupContent = "";
+            CanDelete = PropertiesItemsModel.canDelete;
+            
+            if (CanDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+            else popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
+            bool b = await PropertiesItemsModel.DeletePropertiesItems(propertyItemId, CanDelete);
+
+            if (b) SectionData.popUpResponse("", popupContent);
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+            var propertiesitems = await PropertiesItemsModel.GetPropertiesItems();
+            dg_subProperty.ItemsSource = propertiesitems;       
         }
 
         private async  void Btn_add_Click(object sender, RoutedEventArgs e)

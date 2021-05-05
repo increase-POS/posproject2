@@ -87,20 +87,72 @@ namespace POS.Classes
 
         #region Catalog
         public int pastCatalogCard = -1;
-        
 
 
-        public  void FN_refrishCatalogCard(List<Category> categories )
+
+        /*
+        public void FN_refrishCatalogCard(List<Category> categories)
         {
             gridCatigories.Children.Clear();
             int column = 0;
             foreach (var item in categories)
             {
-                 FN_createCatalogCard(item.categoryId, item.name, item.image, column, 1);
+                FN_createCatalogCard(item.categoryId, item.name, item.image, column, 1);
                 column++;
             }
         }
-        public UC_squareCard FN_createCatalogCard(int id, string name, string image, int column, int row, string BorderBrush = "#6e6e6e")
+        
+        public void FN_refrishCatalogCard(List<Category> categories)
+        {
+            gridCatigories.Children.Clear();
+            int row = 0;
+            int column = 0;
+            foreach (var item in categories)
+            {
+                FN_createCatalogCard(item.categoryId, item.name, item.image, column, row);
+
+                row++;
+                if (row == 3)
+                {
+                    row = 0;
+                    column++;
+                }
+            }
+        }
+        */
+
+        public void FN_refrishCatalogCard(List<Category> categories ,int columnCount)
+        {
+            gridCatigories.Children.Clear();
+            int row = 0;
+            int column = 0;
+            foreach (var item in categories)
+            {
+                FN_createCatalogCard(item.categoryId, item.name, item.image,  row , column , columnCount);
+
+                //row++;
+                //if (row == rowCount)
+                //{
+                //    row = 0;
+                //    column++;
+                //}
+
+                //column++;
+                //if (column == 3)
+                //{
+                //    column = 0;
+                //    row++;
+                //}
+                column++;
+                if (column == columnCount)
+                {
+                    column = 0;
+                    row++;
+                }
+            }
+        }
+
+        public UC_squareCard FN_createCatalogCard(int id, string name, string image,  int row, int column, int columnCount,   string BorderBrush = "#6e6e6e")
         {
             UC_squareCard uc = new UC_squareCard();
             uc.ContentId = id;
@@ -110,8 +162,10 @@ namespace POS.Classes
             uc.Margin = new Thickness(5, 0, 5, 0);
             uc.Tag = "categorie" + id;
             uc.Name = "categorie" + id;
-            uc.Column = column;
             uc.Row = row;
+            uc.Column = column;
+            //uc.rowCount = rowCount;
+            uc.columnCount = columnCount;
             Grid.SetColumn(uc, column);
             Grid.SetRow(uc, row);
             //uc.Tag = "1";
@@ -128,15 +182,19 @@ namespace POS.Classes
             uc = gridCatigories.Children.OfType<UC_squareCard>().Where(x => x.Name.ToString() == "categorie" + uc.ContentId).FirstOrDefault();
 
             gridCatigories.Children.Remove(uc);
-            FN_createCatalogCard(uc.ContentId, uc.squareCardText, uc.squareCardImageSource, uc.Column, 1, "#178DD2");
+            FN_createCatalogCard(uc.ContentId, uc.squareCardText, uc.squareCardImageSource, uc.Row, uc.Column, uc.columnCount,   "#178DD2");
 
 
-            if (pastCatalogCard != -1)
+            if (pastCatalogCard != -1 )
             {
                 var pastUc = new UC_squareCard() { ContentId = pastCatalogCard };
                 pastUc = gridCatigories.Children.OfType<UC_squareCard>().Where(x => x.Name.ToString() == "categorie" + pastUc.ContentId).FirstOrDefault();
-                gridCatigories.Children.Remove(pastUc);
-                FN_createCatalogCard(pastUc.ContentId, pastUc.squareCardText, pastUc.squareCardImageSource, pastUc.Column, 1, "#6e6e6e");
+                if (pastUc != null)
+                {
+                    gridCatigories.Children.Remove(pastUc);
+                    FN_createCatalogCard(pastUc.ContentId, pastUc.squareCardText, pastUc.squareCardImageSource, pastUc.Row, pastUc.Column,
+                     pastUc.columnCount, "#6e6e6e");
+                }
             }
 
             pastCatalogCard = uc.ContentId;
@@ -150,73 +208,7 @@ namespace POS.Classes
 
         private int pastCatalogItem = -1;
         internal uc_receiptInvoice ucReceiptInvoice;
-        /*
-        protected class ItemConvert
-        {
-            public int itemId { get; set; }
-            public string itemTitle { get; set; }
-            public string itemSubtitle { get; set; }
-            public string itemPrice { get; set; }
-            public string itemImage { get; set; }
-            public string itemIsNew { get; set; }
-            public string itemIsOffer { get; set; }
-        }
-
-        public void FN_refrishCatalogItem(List<Item> items, string language, string cardType)
-        {
-            List<ItemConvert> itemConvert = new List<ItemConvert>();
-            foreach (var item in items)
-            {
-                item.itemId = ItemConvert. ;
-                item.name = ItemConvert. ;
-                item.details = ItemConvert. ;
-                item.details = ItemConvert. ;
-                item.image = ItemConvert. ;
-                item.createDate = ItemConvert. ;
-                //item.isOffer = ItemConvert. ;
-            }
-        }
-        public void FN_refrishCatalogItemStepTwo(List<Item> CategorieItems, string language, string cardType)
-        {
-            gridCatigorieItems.Children.Clear();
-            //CategorieItem CategorieItem = new CategorieItem();
-            //var CategorieItems = CategorieItem.getCategorieItems();
-            int row = 0;
-            int column = 0;
-            foreach (var item in CategorieItems)
-            {
-                if (cardType == "sale")
-                {
-                    if (language == "ar")
-                        FN_createCatalogItem_ar(item.CategorieItemsId, item.title, item.subtitle
-                           , item.price, item.image, row, column, item.New, item.isOffer);
-                    else FN_createCatalogItem(item.CategorieItemsId, item.title, item.subtitle
-                       , item.price, item.image, row, column, item.New, item.isOffer);
-                }
-                else
-                {
-                    if (language == "ar")
-                        FN_createCatalogItemtWithoutPrice_ar(item.CategorieItemsId, item.title, item.subtitle
-                           , item.price, item.image, row, column, item.New, item.isOffer);
-                    else
-                        FN_createCatalogItemtWithoutPrice(item.CategorieItemsId, item.title, item.subtitle
-                           , item.price, item.image, row, column, item.New, item.isOffer);
-                }
-
-
-                row++;
-                if (row == 3)
-                {
-                    row = 0;
-                    column++;
-                }
-            }
-
-
-
-
-        }
-        */
+    
 
         public void FN_refrishCatalogItem(List<Item> items, string language, string cardType)
         {
@@ -298,9 +290,12 @@ namespace POS.Classes
             {
                 var pastUc = new UC_rectangleCardPrice() { ContentId = pastCatalogItem };
                 pastUc = gridCatigorieItems.Children.OfType<UC_rectangleCardPrice>().Where(x => x.Name.ToString() == "CategorieItems" + pastUc.ContentId).FirstOrDefault();
-                gridCatigorieItems.Children.Remove(pastUc);
-                FN_createCatalogItem(pastUc.ContentId, pastUc.rectangleCardPriceTitleText, pastUc.rectangleCardPriceSubtitleText, pastUc.rectangleCardPricePriceTitle
-                    , pastUc.rectangleCardPriceImageSource, pastUc.Row, pastUc.Column, pastUc.rectangleCardPriceNew, pastUc.rectangleCardPriceOffer, "#6e6e6e");
+                if (pastUc != null)
+                {
+                    gridCatigorieItems.Children.Remove(pastUc);
+                    FN_createCatalogItem(pastUc.ContentId, pastUc.rectangleCardPriceTitleText, pastUc.rectangleCardPriceSubtitleText, pastUc.rectangleCardPricePriceTitle
+                        , pastUc.rectangleCardPriceImageSource, pastUc.Row, pastUc.Column, pastUc.rectangleCardPriceNew, pastUc.rectangleCardPriceOffer, "#6e6e6e");
+                }
             }
             pastCatalogItem = uc.ContentId;
             idCatigorieItems = uc.ContentId;
@@ -344,9 +339,12 @@ namespace POS.Classes
             {
                 var pastUc = new UC_rectangleCardPrice_ar() { ContentId = pastCatalogItem };
                 pastUc = gridCatigorieItems.Children.OfType<UC_rectangleCardPrice_ar>().Where(x => x.Name.ToString() == "CategorieItems" + pastUc.ContentId).FirstOrDefault();
-                gridCatigorieItems.Children.Remove(pastUc);
-                FN_createCatalogItem_ar(pastUc.ContentId, pastUc.rectangleCardPriceTitleText_ar, pastUc.rectangleCardPriceSubtitleText_ar, pastUc.rectangleCardPricePriceTitle_ar
-                    , pastUc.rectangleCardPriceImageSource_ar, pastUc.Row, pastUc.Column, pastUc.rectangleCardPriceNew_ar, pastUc.rectangleCardPriceOffer_ar, "#6e6e6e");
+                if (pastUc != null)
+                {
+                    gridCatigorieItems.Children.Remove(pastUc);
+                    FN_createCatalogItem_ar(pastUc.ContentId, pastUc.rectangleCardPriceTitleText_ar, pastUc.rectangleCardPriceSubtitleText_ar, pastUc.rectangleCardPricePriceTitle_ar
+                        , pastUc.rectangleCardPriceImageSource_ar, pastUc.Row, pastUc.Column, pastUc.rectangleCardPriceNew_ar, pastUc.rectangleCardPriceOffer_ar, "#6e6e6e");
+                }
             }
             pastCatalogItem = uc.ContentId;
             idCatigorieItems = uc.ContentId;
@@ -394,9 +392,12 @@ namespace POS.Classes
             {
                 var pastUc = new UC_rectangleCardWithoutPrice() { ContentId = pastCatalogItem };
                 pastUc = gridCatigorieItems.Children.OfType<UC_rectangleCardWithoutPrice>().Where(x => x.Name.ToString() == "CategorieItems" + pastUc.ContentId).FirstOrDefault();
-                gridCatigorieItems.Children.Remove(pastUc);
-                FN_createCatalogItemtWithoutPrice(pastUc.ContentId, pastUc.rectangleCardWithoutPriceTitleText, pastUc.rectangleCardWithoutPriceSubtitleText, pastUc.rectangleCardWithoutPriceWithoutPriceTitle
-                    , pastUc.rectangleCardWithoutPriceImageSource, pastUc.Row, pastUc.Column, pastUc.rectangleCardWithoutPriceNew, pastUc.rectangleCardWithoutPriceOffer, "#6e6e6e");
+                if (pastUc != null)
+                {
+                    gridCatigorieItems.Children.Remove(pastUc);
+                    FN_createCatalogItemtWithoutPrice(pastUc.ContentId, pastUc.rectangleCardWithoutPriceTitleText, pastUc.rectangleCardWithoutPriceSubtitleText, pastUc.rectangleCardWithoutPriceWithoutPriceTitle
+                        , pastUc.rectangleCardWithoutPriceImageSource, pastUc.Row, pastUc.Column, pastUc.rectangleCardWithoutPriceNew, pastUc.rectangleCardWithoutPriceOffer, "#6e6e6e");
+                }
             }
             pastCatalogItem = uc.ContentId;
             idCatigorieItems = uc.ContentId;
@@ -440,10 +441,13 @@ namespace POS.Classes
             {
                 var pastUc = new UC_rectangleCardWithoutPrice_ar() { ContentId = pastCatalogItem };
                 pastUc = gridCatigorieItems.Children.OfType<UC_rectangleCardWithoutPrice_ar>().Where(x => x.Name.ToString() == "CategorieItems" + pastUc.ContentId).FirstOrDefault();
-                gridCatigorieItems.Children.Remove(pastUc);
-                FN_createCatalogItemtWithoutPrice_ar(pastUc.ContentId, pastUc.rectangleCardWithoutPriceTitleText_ar, pastUc.rectangleCardWithoutPriceSubtitleText_ar,
-                    pastUc.rectangleCardWithoutPriceWithoutPriceTitle_ar
-                    , pastUc.rectangleCardWithoutPriceImageSource_ar, pastUc.Row, pastUc.Column, pastUc.rectangleCardWithoutPriceNew_ar, pastUc.rectangleCardWithoutPriceOffer_ar, "#6e6e6e");
+                if (pastUc != null)
+                {
+                    gridCatigorieItems.Children.Remove(pastUc);
+                    FN_createCatalogItemtWithoutPrice_ar(pastUc.ContentId, pastUc.rectangleCardWithoutPriceTitleText_ar, pastUc.rectangleCardWithoutPriceSubtitleText_ar,
+                        pastUc.rectangleCardWithoutPriceWithoutPriceTitle_ar
+                        , pastUc.rectangleCardWithoutPriceImageSource_ar, pastUc.Row, pastUc.Column, pastUc.rectangleCardWithoutPriceNew_ar, pastUc.rectangleCardWithoutPriceOffer_ar, "#6e6e6e");
+                }
             }
             pastCatalogItem = uc.ContentId;
             idCatigorieItems = uc.ContentId;

@@ -156,14 +156,22 @@ namespace POS.View
             }
 
             translate();
-
-            fillCategories();
-
+            refreshCategory();
+            
             fillUnits();
 
             var items = await itemModel.GetAllItems();
             DG_Items.ItemsSource = items;
-            MessageBox.Show(items.Count.ToString());
+            // fill parent items
+            cb_parentItem.ItemsSource = items.ToList();
+            cb_parentItem.SelectedValuePath = "itemId";
+            cb_parentItem.DisplayMemberPath = "name";
+
+            cb_parentItem.SelectedIndex = 0;
+            cb_categorie.SelectedIndex = 0;
+            cb_itemType.SelectedIndex = 0;
+            cb_minUnit.SelectedIndex = 0;
+            cb_maxUnit.SelectedIndex = 0;
         }
         /// <summary>
         /// //////////////////////////////////////////////////////////////////////////////////
@@ -269,34 +277,42 @@ namespace POS.View
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
+            int min = 0;
+            int max = 0;
+            decimal taxes = 0;
+            if (tb_min.Text != "")
+                min = int.Parse(tb_min.Text);
+            if (tb_max.Text != "")
+                max = int.Parse(tb_max.Text);
+            if (tb_taxes.Text != "")
+                taxes = decimal.Parse(tb_taxes.Text);
+
             Item item = new Item
             {
-                //itemId { get; set; }
                 code        = tb_code.Text,
                 name        = tb_name.Text,
                 details     = tb_details.Text,
                 type        = selectedType,
                 image       = "",
-               // taxes       = decimal.Parse(tb_taxes.Text),
+              taxes       = taxes,
                 isActive    = 1,
-               // min         = int.Parse(tb_min.Text),
-              //  max         = int.Parse(tb_max.Text),
-                categoryId  = 1 ,/////???????????????????????
-                parentId    = 0 ,/////??????????/
-                barcodeId   = 0 ,////////????????????
-                serialnum   = "0",//////////////////?????????????????/
+               min         = min,
+               max         = max,
+                categoryId  = (int)cb_categorie.SelectedValue ,
+                parentId    = (int)cb_parentItem.SelectedValue,
+
                 createDate  = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 updateDate  = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 createUserId = 2 ,
                 updateUserId = 2 ,
-                minUnitId    = selectedMinUnitId ,
-                maxUnitId    = selectedMaxUnitId
+                minUnitId    = cb_minUnit.SelectedIndex,
+                maxUnitId    = cb_maxUnit.SelectedIndex,
             };
 
             await itemModel.saveItem(item);
             var items = await itemModel.GetAllItems();
             DG_Items.ItemsSource = items;
-            MessageBox.Show(items.Count.ToString());
+            //MessageBox.Show(items.Count.ToString());
 
             
         }
@@ -317,8 +333,7 @@ namespace POS.View
                 max          = int.Parse(tb_max.Text),
                 categoryId   = 1,/////???????????????????????
                 parentId     = 0,/////??????????/
-                barcodeId    = 0,////////????????????
-                serialnum    = "0",//////////////////?????????????????/
+
                 createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 createUserId = 2,
@@ -471,6 +486,23 @@ namespace POS.View
             e.Handled = regex.IsMatch(e.Text);
         }
 
+        private void DecimalValidationTextBox(object sender, KeyEventArgs e)
+        {
+            // allows 0-9, backspace, and decimal
+           //if ((((int)e.Key < 48 || (int)e.Key > 57) && (int)e.Key != 8 && (int)e.Key != 46))
+           // {
+           //     e.Handled = true;
+            //    return;
+            //}
+
+            // checks to make sure only 1 decimal is allowed
+            //if ((int)e.Key == 46)
+           // {
+           //     if ((sender as TextBox).Text.IndexOf((char)e.Key) != -1)
+            //        e.Handled = true;
+            //}
+        }
+        
         private void Tb_min_LostFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -503,6 +535,13 @@ namespace POS.View
                 p_errorMax.Visibility = Visibility.Collapsed;
                 tb_max.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
+        }
+        async void refreshCategory()
+        {
+            IEnumerable<Category> categories = await categoryModel.GetAllCategories();
+            cb_categorie.ItemsSource = categories.ToList();
+            cb_categorie.SelectedValuePath = "categoryId";
+            cb_categorie.DisplayMemberPath = "name";
         }
 
         private void Tb_taxes_LostFocus(object sender, RoutedEventArgs e)
@@ -550,19 +589,15 @@ namespace POS.View
         private async void fillUnits()
         {
             var units = await unitModel.GetUnitsAsync();
-            dt.ItemsSource = units;
-            Unit unit = new Unit();
-            for (int i = 0; i < units.Count; i++)
-            {
-                unit = dt.Items[i] as Unit;
-                unitIds.Add(unit.unitId);
-                unitNames.Add(unit.name);
-            }
+            cb_minUnit.ItemsSource = units.ToList();
+            cb_minUnit.SelectedValuePath = "categoryId";
+            cb_minUnit.DisplayMemberPath = "name";
 
-            cb_minUnit.ItemsSource = unitNames;
-            cb_maxUnit.ItemsSource = unitNames;
-
+            cb_maxUnit.ItemsSource = units.ToList();
+            cb_maxUnit.SelectedValuePath = "categoryId";
+            cb_maxUnit.DisplayMemberPath = "name";
         }
+
 
         private void DG_Items_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -591,48 +626,25 @@ namespace POS.View
             }
         }
 
-        private void Cb_minUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Cb_parentItem_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedMinUnitId = unitIds[cb_minUnit.SelectedIndex];
-
+            int parentItem = (int) cb_parentItem.SelectedValue;
+            if (parentItem != 0)
+            {
+                MessageBox.Show(cb_parentItem.SelectedValue.ToString());
+                itemModel = await itemModel.GetItemByID(parentItem);
+                if(itemModel.categoryId != null)
+                    cb_categorie.SelectedValue = (int)itemModel.categoryId;
+                cb_itemType.SelectedItem = itemModel.type;
+                tb_taxes.Text = itemModel.taxes.ToString();
+                tb_min.Text = itemModel.min.ToString();
+                tb_max.Text = itemModel.max.ToString();
+                if(itemModel.minUnitId!= null)
+                    cb_minUnit.SelectedIndex = (int)itemModel.minUnitId;
+                if (itemModel.maxUnitId != null)
+                    cb_maxUnit.SelectedIndex = (int)itemModel.maxUnitId;
+            }
         }
 
-        private void Cb_maxUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            selectedMaxUnitId = unitIds[cb_maxUnit.SelectedIndex];
-        }
-
-        //approach1 to fill combo 
-        //public class UnitClass
-        //{
-        //    public int Value { get; set; }
-        //    public string DisplayValue { get; set; }
-        //}
-
-        //public ObservableCollection<UnitClass> UnitClassCollection
-        //{
-        //    get
-        //    {
-        //        return new ObservableCollection<UnitClass>
-        //    {
-
-        //        new UnitClass{DisplayValue = "Item1", Value = 1},
-        //        new UnitClass{DisplayValue = "Item2", Value = 2},
-        //        new UnitClass{DisplayValue = "Item3", Value = 3},
-        //        new UnitClass{DisplayValue = "Item4", Value = 4},
-        //    };
-        //    }
-        //}
-
-        //ItemsSource="{Binding UnitClassCollection}" DisplayMemberPath="DisplayValue"
-
-        //approach2 to fill combo
-        //foreach (var item in units)
-        //   {
-        //       cb_minUnit.Items.Add(item);
-        //       cb_minUnit.SelectedValuePath = "ID";
-        //       cb_minUnit.DisplayMemberPath = "Name";
-        //   }
-        //var id = cb_minUnit.SelectedValue;
     }
 }

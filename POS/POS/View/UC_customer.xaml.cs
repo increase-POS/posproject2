@@ -36,6 +36,8 @@ namespace POS.View
         bool CanDelete = false;
         byte tgl_customerState;
 
+        int IsActive = 0;
+
         public UC_Customer()
         {
             InitializeComponent();
@@ -87,14 +89,20 @@ namespace POS.View
        
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
+
+            SectionData.genRandomCode("c");
+            tb_code.Text = SectionData.code;
+
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
+            p_errorMobile.Visibility = Visibility.Collapsed;
+
             var bc = new BrushConverter();
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_fax.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-            tb_code.Text = "";
             tb_address.Text = "";
             tb_fax.Text = "";
             tb_company.Text = "";
@@ -137,6 +145,7 @@ namespace POS.View
                 {
                     AgentId = agent.agentId;
                     CanDelete = agent.canDelete;
+                    tb_code.Text = agent.code;
                 }
 
                 //mobile
@@ -190,8 +199,12 @@ namespace POS.View
                     tb_fax.Clear();
                 }
                 if (CanDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
-                
-                else           btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                else
+                {
+                    if (IsActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
+                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                }
             }
         }
 
@@ -290,7 +303,7 @@ namespace POS.View
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
         }
-        private   void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             
             if(MainWindow.lang.Equals("en"))
@@ -319,6 +332,18 @@ namespace POS.View
             {
                 tb_search_TextChanged(null, null);
             });
+
+            cb_areaMobile.SelectedIndex = 0;
+            cb_areaPhone.SelectedIndex = 0;
+            cb_areaPhoneLocal.SelectedIndex = 0;
+            cb_areaFax.SelectedIndex = 0;
+            cb_areaFaxLocal.SelectedIndex = 0;
+
+            Keyboard.Focus(tb_name);
+
+            SectionData.genRandomCode("c");
+            tb_code.Text = SectionData.code;
+
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
@@ -418,32 +443,45 @@ namespace POS.View
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            string popupContent = "";
-            if (CanDelete)  popupContent = MainWindow.resourcemanager.GetString("trPopDelete"); 
-            else  popupContent = MainWindow.resourcemanager.GetString("trPopInActive"); 
+            if ((!CanDelete) && (IsActive == 0))
+                activate();
+            else
+            {
+                string popupContent = "";
+                if (CanDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                if ((!CanDelete) && (IsActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-            bool b = await agentModel.deleteAgent(AgentId , CanDelete);
+                bool b = await agentModel.deleteAgent(AgentId, CanDelete);
 
-            if (b) SectionData.popUpResponse("", popupContent);
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                if (b) SectionData.popUpResponse("", popupContent);
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            }
+
 
             //pass parameter type(V for vendors, C for Clients, B for Both)
             var agents = await agentModel.GetAgentsAsync("c");
             dg_customer.ItemsSource = agents;
 
+
             //clear textBoxs
             AgentId = 0;
-            tb_name.Clear();
-            tb_code.Clear();
-            tb_company.Clear();
-            tb_address.Clear();
-            tb_upperLimit.Clear();
-            tb_email.Clear();
-            tb_phone.Clear();
-            tb_mobile.Clear();
-            tb_fax.Clear();
-            tb_notes.Clear();
+            Btn_clear_Click(sender , e);
            
+        }
+
+        private async void activate()
+        {//activate
+            Agent customer = new Agent
+            {
+                agentId = AgentId,
+                isActive = 1,
+            };
+
+            string s = await agentModel.saveAgent(customer);
+
+            if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
         }
 
         private void tb_name_LostFocus(object sender, RoutedEventArgs e)
@@ -463,24 +501,6 @@ namespace POS.View
             }
         }
 
-        //private void tb_fax_LostFocus(object sender, RoutedEventArgs e)
-        //{
-        //    var bc = new BrushConverter();
-
-        //    if (tb_fax.Text.Equals(""))
-        //    {
-        //        p_errorBalance.Visibility = Visibility.Visible;
-        //        tt_errorBalance.Content = MainWindow.resourcemanager.GetString("trEmptyBalanceToolTip");
-        //        tb_fax.Background = (Brush)bc.ConvertFrom("#15FF0000");
-        //    }
-        //    else
-        //    {
-        //        p_errorBalance.Visibility = Visibility.Collapsed;
-        //        tb_fax.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-        //    }
-        //}
-
-       
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -501,46 +521,46 @@ namespace POS.View
             }
         }
 
-        public bool IsValid0(string emailAddress)
-        {
-            try
-            {
-                MailAddress m = new MailAddress(emailAddress);
-                return true;
-            }
-            catch (FormatException)
-            {
-                return false;
-            }
-        }
-
-       
-
         private void Tb_mobile_LostFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
-
-            if ((!tb_mobile.Text.Equals("")) && (cb_areaMobile.Text.Equals("")))
-            {
-                p_errorMobile.Visibility = Visibility.Visible;
-                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyAreaToolTip");
-            }
-            else
-                p_errorMobile.Visibility = Visibility.Collapsed;
-
-
-            if ((tb_mobile.Text.Equals("")) && (!cb_areaMobile.Text.Equals("")))
+            
+            if (tb_mobile.Text.Equals(""))
             {
                 p_errorMobile.Visibility = Visibility.Visible;
                 tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
+                tb_mobile.Background = (Brush)bc.ConvertFrom("#15FF0000");
+
             }
             else
+            {
+                tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                 p_errorMobile.Visibility = Visibility.Collapsed;
+
+            }
 
         }
 
-        
+        private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var bc = new BrushConverter();
 
+            if (tb_mobile.Text.Equals(""))
+            {
+                p_errorMobile.Visibility = Visibility.Visible;
+                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
+                tb_mobile.Background = (Brush)bc.ConvertFrom("#15FF0000");
+
+            }
+            else
+            {
+                tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_errorMobile.Visibility = Visibility.Collapsed;
+
+            }
+        }
+
+     
         //private async void tb_search_LostFocus(object sender, RoutedEventArgs e)
         //{
         //    var agents = await agentModel.GetAgentsAsync("c");
@@ -649,6 +669,7 @@ namespace POS.View
            
         }
 
+      
     }
 }
     

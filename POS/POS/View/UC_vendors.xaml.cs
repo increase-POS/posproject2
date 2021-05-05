@@ -34,35 +34,6 @@ namespace POS.View
         public UC_vendors()
         {
             InitializeComponent();
-
-            /* List<Agent> suppliers = new List<Agent>();
-
-             for (int i = 0; i < 50; i++)
-             {
-                 suppliers.Add(new Agent()
-                 {
-                     agentId = i,
-                     name = "Test supplier name " + i,
-                     address = "Test supplier address" + i,
-                     company = "Test supplier company" + i,
-                     mobile = "Test supplier mobile" + i,
-                     phone = "Test supplier phone" + i,
-                     email = "Test supplier email" + i,
-                     details = "Test supplier details" + i,
-                     accType = "Debt",
-                     balance = 368 * i,
-                     notes = "Test supplier notes" + i,
-                 }); ; ;
-             }
-
-             Agent ag = new Agent
-             {
-
-                 agentId = AgentId,
-                 name = tb_name.Text
-             };
-
-             dg_vendor.ItemsSource = suppliers;*/
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -93,6 +64,7 @@ namespace POS.View
                 {
                     AgentId = agent.agentId;
                     CanDelete = agent.canDelete;
+                    tb_code.Text = agent.code;
                 }
 
                 //mobile
@@ -200,12 +172,17 @@ namespace POS.View
         {//clear
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
+            p_errorMobile.Visibility = Visibility.Collapsed;
+
             var bc = new BrushConverter();
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_fax.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            p_errorMobile.Visibility = Visibility.Collapsed;
 
-            tb_code.Text = "";
+            SectionData.genRandomCode("c");
+            tb_code.Text = SectionData.code;
+            
             tb_address.Text = "";
             tb_fax.Text = "";
             tb_company.Text = "";
@@ -237,6 +214,10 @@ namespace POS.View
             cb_areaFax.SelectedIndex = 0;
             cb_areaFaxLocal.SelectedIndex = 0;
 
+            Keyboard.Focus(tb_name);
+
+            SectionData.genRandomCode("c");
+            tb_code.Text = SectionData.code;
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
@@ -445,7 +426,7 @@ namespace POS.View
             //clear textBoxs
             AgentId = 0;
             tb_name.Clear();
-            tb_code.Clear();
+            //tb_code.Text = "";
             tb_company.Clear();
             tb_address.Clear();
             tb_email.Clear();
@@ -457,49 +438,11 @@ namespace POS.View
         }
 
 
-        private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
+        
+        private void tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var bc = new BrushConverter();
-
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                //<!--15FF0000-->
-                //var bc = new BrushConverter();
-                //tt_errorEmail.Background = (Brush)bc.ConvertFrom("#15FF0000");
-
-                //tt_errorEmail.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#082049");
-
-                //tt_errorEmail.Background = new SolidColorBrush(Colors.Red);
-                //Use the following code to remove the background you set on it.
-                //tb_name.ClearValue(TextBox.BackgroundProperty);
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            tb_name_LostFocus( sender,  e);
         }
-
-        //private void Tb_balance_LostFocus(object sender, RoutedEventArgs e)
-        //{
-        //    var bc = new BrushConverter();
-
-        //    if (tb_balance.Text.Equals(""))
-        //    {
-        //        p_errorBalance.Visibility = Visibility.Visible;
-        //        tt_errorBalance.Content = MainWindow.resourcemanager.GetString("trEmptyBalanceToolTip");
-        //        tb_balance.Background = (Brush)bc.ConvertFrom("#15FF0000");
-        //    }
-        //    else
-        //    {
-        //        p_errorBalance.Visibility = Visibility.Collapsed;
-        //        tb_balance.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-        //    }
-        //}
-
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -530,6 +473,61 @@ namespace POS.View
         {
             var agents = await agentModel.SearchAgents("v", tb_search.Text);
             dg_vendor.ItemsSource = agents;
+        }
+
+        private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var bc = new BrushConverter();
+
+            if (tb_mobile.Text.Equals(""))
+            {
+                p_errorMobile.Visibility = Visibility.Visible;
+                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
+                tb_mobile.Background = (Brush)bc.ConvertFrom("#15FF0000");
+
+            }
+            else
+            {
+                tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_errorMobile.Visibility = Visibility.Collapsed;
+
+            }
+        }
+
+        private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var bc = new BrushConverter();
+
+            if (tb_mobile.Text.Equals(""))
+            {
+                p_errorMobile.Visibility = Visibility.Visible;
+                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
+                tb_mobile.Background = (Brush)bc.ConvertFrom("#15FF0000");
+
+            }
+            else
+            {
+                tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_errorMobile.Visibility = Visibility.Collapsed;
+
+            }
+        }
+
+        private void tb_name_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var bc = new BrushConverter();
+
+            if (tb_name.Text.Equals(""))
+            {
+                p_errorName.Visibility = Visibility.Visible;
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
         }
     }
 }

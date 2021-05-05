@@ -56,7 +56,7 @@ namespace POS.View
             //catigoriesAndItemsView.FN_refrishCatalogCard(categorie.getCategories());
             #endregion
             #region Generate catigorieItems
-            catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
+            //catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
             //CategorieItem CategorieItem = new CategorieItem();
             //catigoriesAndItemsView.FN_refrishCatalogItem(CategorieItem.getCategorieItems(),MainWindow.lang,"");
             #endregion
@@ -203,14 +203,14 @@ namespace POS.View
 
         private void Btn_ItemsInCards_Click(object sender, RoutedEventArgs e)
         {
-            grid_itemsDatagrid.Visibility = Visibility.Collapsed;
-            grid_ItemsCard.Visibility = Visibility.Visible;
+            //grid_itemsDatagrid.Visibility = Visibility.Collapsed;
+            //grid_ItemsCard.Visibility = Visibility.Visible;
         }
 
         private void Btn_ItemsInGrid_Click(object sender, RoutedEventArgs e)
         {
-            grid_ItemsCard.Visibility = Visibility.Collapsed;
-            grid_itemsDatagrid.Visibility = Visibility.Visible;
+            //grid_ItemsCard.Visibility = Visibility.Collapsed;
+            //grid_itemsDatagrid.Visibility = Visibility.Visible;
         }
 
 

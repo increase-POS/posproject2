@@ -275,7 +275,7 @@
                         AutoGenerateColumns="False"
                         ColumnWidth="SizeToHeader"  >
                                     <DataGrid.Columns >
-                                        <DataGridTextColumn   MinWidth="150"   Header="Code"  Binding="{Binding Path=categoryCode}">
+                                        <DataGridTextColumn   MinWidth="150"   Header="Code"  Binding="{Binding Path=code}">
                                             <DataGridTextColumn.ElementStyle>
                                                 <Style TargetType="{x:Type TextBlock}">
                                                     <Style.Triggers>
@@ -666,13 +666,8 @@
                            TextBlock.FontSize="12"   Background="#f8f8f8"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="0" Height="35" Width="260"  Margin="10,5,5,5"
-                           BorderBrush="#737373" BorderThickness="0">
-                                            <ListBoxItem>
-                                                item1
-                                            </ListBoxItem>
-                                            <ListBoxItem>
-                                                item2
-                                            </ListBoxItem>
+                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_parentItem_SelectionChanged">
+                                           
                                         </ComboBox>
                                         <TextBlock Text="Is Defult" Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                    Margin="5"/>
@@ -708,12 +703,7 @@
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="1" Height="35" Width="340"  Margin="10,5" LostFocus="Cb_categorie_LostFocus"
                            BorderBrush="#737373" BorderThickness="0">
-                                            <ListBoxItem>
-                                                item1
-                                            </ListBoxItem>
-                                            <ListBoxItem>
-                                                item2
-                                            </ListBoxItem>
+                                           
                                         </ComboBox>
                                         <Path Fill="#E81123" x:Name="p_errorCategorie" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -773,8 +763,8 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBox x:Name="tb_taxes"  Text="{Binding taxes, Mode=OneWay}"
-                                             Grid.Row="2" Padding="10,5,5,5" MaxLength="20" PreviewTextInput="NumberValidationTextBox"
-                                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"   
+                                             Grid.Row="2" Padding="10,5,5,5" MaxLength="20" 
+                                             KeyDown="DecimalValidationTextBox"   materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"   
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Taxes..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                              BorderBrush="#f8f8f8" LostFocus="Tb_taxes_LostFocus"
@@ -825,7 +815,7 @@
                            Foreground="#4E4E4E"  TextBlock.FontSize="12"
                                  Background="#f8f8f8" BorderBrush="#f8f8f8"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="0"   Height="35" Width="160"  Margin="10,5" />
+                Grid.Column="0"   Height="35" Width="160"  Margin="10,5"/>
                                         <Path x:Name="p_errorMin" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -848,7 +838,7 @@
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="1" Height="35" Width="160"  Margin="10,5"
                                   Background="#f8f8f8" 
-                           BorderBrush="#737373"       BorderThickness="0" SelectionChanged="Cb_minUnit_SelectionChanged"/>
+                           BorderBrush="#737373"       BorderThickness="0" />
                                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -893,7 +883,7 @@
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="1" Height="35" Width="160"  Margin="10,5"
                                   Background="#f8f8f8" 
-                           BorderBrush="#737373"       BorderThickness="0" SelectionChanged="Cb_maxUnit_SelectionChanged" />
+                           BorderBrush="#737373"       BorderThickness="0" />
 
                                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -1152,7 +1142,7 @@
                                 </Grid>
            <!--////////////////////////// Sub Property >>>> Servive /////////////////////////////////-->
 
-                                <Grid  Grid.Row="4" x:Name="grid_service" Visibility="Visible"  >
+                                <Grid  Grid.Row="4" x:Name="grid_service" Visibility="Collapsed"  >
                                     <Grid.RowDefinitions >
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="45"/>

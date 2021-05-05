@@ -115,6 +115,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activate.
+        /// </summary>
+        internal static string trActive {
+            get {
+                return ResourceManager.GetString("trActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         internal static string trAdd {
@@ -858,6 +867,15 @@ namespace POS {
         internal static string trPhoneHint {
             get {
                 return ResourceManager.GetString("trPhoneHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activation was successful.
+        /// </summary>
+        internal static string trPopActive {
+            get {
+                return ResourceManager.GetString("trPopActive", resourceCulture);
             }
         }
         

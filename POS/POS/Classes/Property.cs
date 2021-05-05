@@ -15,12 +15,12 @@ namespace POS.Classes
     {
         public int propertyId { get; set; }
         public string name { get; set; }
-
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
-        // public string notes { get; set; }
+        public Nullable<byte> isActive { get; set; }
+        public Boolean canDelete { get; set; }
 
         // adding or editing  category by calling API metod "save"
         // if categoryId = 0 will call save else call edit
@@ -38,6 +38,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "Properties/get");
+
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -77,7 +78,7 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "Properties/Save?propertyObject" + myContent);
+                request.RequestUri = new Uri(Global.APIUri + "Properties/Save?propertyObject=" + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -128,7 +129,37 @@ namespace POS.Classes
             }
         }
 
-        public async Task<string> Delete(int posId)
+        //public async Task<Boolean> deleteProperty(int propertyId, Boolean final)
+        //{
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "Property/Delete?propertyId=" + propertyId + "&final=" + final);
+        //        request.Headers.Add("userId", "2");
+        //        request.Headers.Add("APIKey", Global.APIKey);
+        //     //   request.Headers.Add("propertyId", propertyId.ToString());
+        //        request.Method = HttpMethod.Post;
+        //        //set content type
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        var response = await client.SendAsync(request);
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            return true;
+        //        }
+        //        return false;
+        //    }
+        //}
+
+        public async Task<Boolean> deleteProperty(int propertyId, bool final)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -141,9 +172,11 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Property/Delete");
+                request.RequestUri = new Uri(Global.APIUri + "Properties/Delete?propertyId="+propertyId+"&final=" + final);
+                //request.RequestUri = new Uri(Global.APIUri + "Agent/Search?type=" + type + "&Searchwords=" + searchWord);
+
                 request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("propertyId", posId.ToString());
+                request.Headers.Add("userId", "2");
                 request.Method = HttpMethod.Post;
                 //set content type
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -151,12 +184,11 @@ namespace POS.Classes
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
+                    return true;
                 }
-                return "";
+                return false;
             }
         }
+
     }
 }

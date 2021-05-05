@@ -27,15 +27,16 @@ namespace client_app.Classes
         public Nullable<int> min { get; set; }
         public Nullable<int> max { get; set; }
         public Nullable<int> categoryId { get; set; }
+        public string categoryName { get; set; }
         public Nullable<int> parentId { get; set; }
-        public Nullable<int> barcodeId { get; set; }
-        public string serialnum { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> minUnitId { get; set; }
         public Nullable<int> maxUnitId { get; set; }
+        public Boolean canDelete { get; set; }
+
 
         public async Task<string> saveItem(Item item)
         {
@@ -238,9 +239,8 @@ namespace client_app.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Item/GetItemByID");
+                request.RequestUri = new Uri(Global.APIUri + "Items/GetItemByID?itemId="+itemId);
                 request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("itemId", itemId.ToString());
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var response = await client.SendAsync(request);

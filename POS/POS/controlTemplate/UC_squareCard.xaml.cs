@@ -25,8 +25,10 @@ namespace POS.controlTemplate
             InitializeComponent();
         }
         public int ContentId { get; set; }
-        public int Row { get; set; }
         public int Column { get; set; }
+        public int Row { get; set; }
+        public int rowCount { get; set; }
+        public int columnCount { get; set; }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             this.DataContext = this;
