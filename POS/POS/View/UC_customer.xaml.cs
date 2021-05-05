@@ -290,7 +290,7 @@ namespace POS.View
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
         }
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private   void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             
             if(MainWindow.lang.Equals("en"))
@@ -305,20 +305,20 @@ namespace POS.View
             }
             
             translate();
-           
-            //pass parameter type (V for vendors, C for Clients , B for Both)
-            var agents = await agentModel.GetAgentsAsync("c");
-            agentsQuery = agents;
-            dg_customer.ItemsSource = agentsQuery;
-            txt_Count.Text = agentsQuery.Count().ToString();
-            //dg_customer.ItemsSource = agents;
 
-            cb_areaMobile.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
-            cb_areaFax.SelectedIndex = 0;
-            cb_areaFaxLocal.SelectedIndex = 0;
-            
+            //pass parameter type (V for vendors, C for Clients , B for Both)
+            //var agents = await agentModel.GetAgentsAsync("c");
+            //agentsQuery = agents;
+            //dg_customer.ItemsSource = agentsQuery;
+            //txt_Count.Text = agentsQuery.Count().ToString();
+            //dg_customer.ItemsSource = agents;
+            //Dispatcher.BeginInvoke(new Action(() => { GetGridData(null, 0)}));
+            //tb_search_TextChanged(null, null);
+
+            this.Dispatcher.Invoke(() =>
+            {
+                tb_search_TextChanged(null, null);
+            });
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
@@ -554,9 +554,13 @@ namespace POS.View
         {
             //try
             //{
+            this.Dispatcher.Invoke(() =>
+            {
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
+            });
+           
 
             //}
             //catch (Exception ex)
@@ -564,63 +568,85 @@ namespace POS.View
                 //AllClasses.Exception1(ex);
             //}
         }
-        void FN_ExportToExcel()
+         void FN_ExportToExcel()
         {
+           
             var QueryExcel = agentsQuery.AsEnumerable().Select(x => new
             {
                 Code = x.code,
                 Name = x.name,
                 Company = x.company,
-                Mobile = x.mobile
+                Mobile = x.mobile,
+                Phone = x.phone,
+                Fax = x.fax,
+                Email = x.email,
+                Address = x.address,
+                MaxDeserve = x.maxDeserve,
+                Notes = x.notes,
 
             });
-
             var DTForExcel = QueryExcel.ToDataTable();
             DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trCode");
             DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trName");
             DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trCompany");
-            DTForExcel.Columns[3].Caption =  MainWindow.resourcemanager.GetString("trMobile");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trMobile");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trPhone");
+            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trFax");
+            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trEmail");
+            DTForExcel.Columns[7].Caption = MainWindow.resourcemanager.GetString("trAddress");
+            DTForExcel.Columns[8].Caption = MainWindow.resourcemanager.GetString("trUpperLimit");
+            DTForExcel.Columns[9].Caption = MainWindow.resourcemanager.GetString("trNote");
 
 
             ExportToExcel.Export(DTForExcel);
+
         }
+        string searchText = "";
 
         private async void Tgl_customerIsActive_Checked(object sender, RoutedEventArgs e)
         {
             if (agents is null)
-                await RefrishCustomers();
+                await RefrishCustomersList();
             tgl_customerState = 1;
             tb_search_TextChanged(null, null);
         }
 
-        private void Tgl_customerIsActive_Unchecked(object sender, RoutedEventArgs e)
+        private async void Tgl_customerIsActive_Unchecked(object sender, RoutedEventArgs e)
         {
+            if (agents is null)
+                await RefrishCustomersList();
             tgl_customerState = 0;
+            tb_search_TextChanged(null, null);
         }
-        async Task<bool> RefrishCustomers()
+        async Task<IEnumerable<Agent>> RefrishCustomersList()
         {
             agents = await agentModel.GetAgentsAsync("c");
-            return true;
+            return agents;
         }
-        void RefrishCustomerDatagrid()
+        void RefrishCustomerView()
         {
             dg_customer.ItemsSource = agentsQuery;
             txt_Count.Text = agentsQuery.Count().ToString();
+            cb_areaMobile.SelectedIndex = 0;
+            cb_areaPhone.SelectedIndex = 0;
+            cb_areaPhoneLocal.SelectedIndex = 0;
+            cb_areaFax.SelectedIndex = 0;
+            cb_areaFaxLocal.SelectedIndex = 0;
         }
         
         private async void tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (agents is null)
-                await RefrishCustomers();
+                await RefrishCustomersList();
+            searchText = tb_search.Text;
+            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
+            s.name.Contains(searchText) ||
+            s.company.Contains(searchText) ||
+            s.mobile.Contains(searchText)
+            ) && s.isActive == tgl_customerState);
+            RefrishCustomerView();
 
-            agentsQuery = agents.Where(x => (x.code.Contains(tb_search.Text) ||
-            x.name.Contains(tb_search.Text) ||
-            x.company.Contains(tb_search.Text) ||
-            x.mobile.Contains(tb_search.Text)
-            ) && x.isActive == tgl_customerState);
-            RefrishCustomerDatagrid();
-
-            
+           
         }
 
     }
