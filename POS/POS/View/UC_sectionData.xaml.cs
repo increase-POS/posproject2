@@ -26,9 +26,7 @@ namespace POS.View
         {
             InitializeComponent();
 
-            GRID_Main.Children.Clear();
-            UC_Customer uc = new UC_Customer();
-            GRID_Main.Children.Add(uc);
+            BTN_Customers_Click(null, null);
         }
         void refreashBackground()
         {
@@ -67,10 +65,11 @@ namespace POS.View
 
         private void BTN_Customers_Click(object sender, RoutedEventArgs e)
         {
+            refreashBachgroundClick(btn_customers);
+
             GRID_Main.Children.Clear();
             UC_Customer uc = new UC_Customer();
             GRID_Main.Children.Add(uc);
-            refreashBachgroundClick(btn_customers);
         }
 
         private void Btn_suppliers_Click(object sender, RoutedEventArgs e)
@@ -92,9 +91,9 @@ namespace POS.View
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucSectionData.FlowDirection = FlowDirection.RightToLeft; }
             translate();
         }
-
         private void translate()
         {
+            btn_customers.Content = MainWindow.resourcemanager.GetString("trCustomers");
             btn_suppliers.Content = MainWindow.resourcemanager.GetString("trSuppliers");
             btn_users.Content = MainWindow.resourcemanager.GetString("trUsers");
             btn_branches.Content = MainWindow.resourcemanager.GetString("trBranches");
@@ -102,6 +101,7 @@ namespace POS.View
             btn_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
             btn_banks.Content = MainWindow.resourcemanager.GetString("trBanks");
         }
+        
 
         private void Btn_users_Click(object sender, RoutedEventArgs e)
         {

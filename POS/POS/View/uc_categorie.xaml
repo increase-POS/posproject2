@@ -97,7 +97,7 @@
                                   FontWeight="Bold"  FontSize="14">
                                 </Button>
                             </Grid>
-                           
+
 
 
                         </Grid>
@@ -107,14 +107,15 @@
 
                 <Grid Grid.Column="1" Grid.Row="1" Margin="5,5,5,10">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="20"/>
+                        <!--<RowDefinition Height="20"/>-->
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Grid >
+                    <!--<Grid >
                         <Border BorderThickness="0" Grid.Row="0" 
                     CornerRadius="7,7,0,0" BorderBrush="Black" Background="#178DD2">
                             <Grid >
-                                <!--<Button Margin="2"   Width="15" Height="12"   Padding="0"
+                                -->
+                    <!--<Button Margin="2"   Width="15" Height="12"   Padding="0"
                                         Background="{x:Null}" BorderBrush="{x:Null}">
                                     <Path Fill="White" Stretch="Fill"
                           Width="15" Height="12" 
@@ -124,20 +125,112 @@
 	L20,21.6L5.4,15.1z M5.4,25.5c-0.4-0.2-0.5-0.6-0.4-1C5.2,24.2,5.4,24,5.7,24c0.1,0,0.2,0,0.3,0.1l14,6.3l14-6.3
 	c0.1,0,0.2-0.1,0.3-0.1c0.3,0,0.5,0.2,0.7,0.5c0.2,0.4,0,0.8-0.4,1L20,32L5.4,25.5z"/>
                                 </Button>-->
+                    <!--
                             </Grid>
                         </Border>
 
-                    </Grid>
-                    <Border BorderThickness="0"  Grid.Row="1"
-                    CornerRadius="0,0,7,7" BorderBrush="Black" Background="White">
+                    </Grid>-->
+                    <Border BorderThickness="0"  Grid.Row="1" 
+                    CornerRadius="7,7,7,7" BorderBrush="Black" Background="White">
                         <Grid x:Name="grid_categoriesContainer">
-                            <Grid x:Name="grid_categoryCards" Visibility="Visible" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="45"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid  Width="{Binding ActualWidth, ElementName=grid_categoriesContainer}" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Width="275" VerticalAlignment="Center" Grid.Column="0" >
+                                    <TextBox x:Name="txb_searchcategories"  TextChanged="Txb_searchcategories_TextChanged"
+                        Padding="10,5,5,5" BorderBrush="{x:Null}"
+                          materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
+                 Foreground="#4e4e4e" TextBlock.FontSize="14"
+                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                  Height="30"   Width="225" Margin="5,5,5,0"/>
+                                    <Grid Margin="0,0,0,2"  HorizontalAlignment="Right" VerticalAlignment="Bottom"  Background="White" Width="30" Height="30">
+                                        <Path Fill="#4e4e4e" Stretch="Fill"   Margin="5,2.5,7.5,0"
+                             Grid.Column="0"   HorizontalAlignment="Left"
+                         VerticalAlignment="Center" Width="17.5" Height="17.5"
+                              Data="M111.6,16.4c-17.9-17.9-47-17.9-65,0C31,32.1,28.7,56.7,41.3,75c1,1.4,2,2.7,3.1,4L40.3,83l-4.9-4.9L5.9,108.2
+	C2,112,2,118.3,5.9,122.1s10.1,3.9,13.9,0c0,0,0,0,0,0l29.5-30.1l-3.6-3.6l0,0l-0.9-0.9l4.1-4.1c1.1,0.9,2.2,1.8,3.3,2.6
+	c20.6,14.8,49.3,10,64.1-10.6C129.5,57.4,127.5,32.3,111.6,16.4L111.6,16.4z M101.6,71.4c-12.4,12.4-32.6,12.5-45,0s-12.5-32.6,0-45
+	s32.6-12.5,45,0c6,6,9.4,14.1,9.4,22.5C110.9,57.3,107.6,65.4,101.6,71.4z M92.7,45.5c-7.5,0-13.6-6.1-13.6-13.6
+	c0-1.4,0.2-2.8,0.6-4.2C68,27.3,58.3,36.5,57.9,48.2C57.5,60,66.7,69.7,78.5,70.1c11.7,0.4,21.5-8.8,21.9-20.6c0.1-2-0.2-4-0.7-5.9
+	C97.6,44.8,95.2,45.5,92.7,45.5z"/>
+                                    </Grid>
+                                </Grid>
+                                <Grid    Grid.Column="2" HorizontalAlignment="Right"   Margin="5,5,5,0"  >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="45"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" 
+                            Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                              FontSize="12"/>
+                                    <ToggleButton Grid.Column="1"  x:Name="tgl_categoryIsActive"  Checked="Tgl_categoryIsActive_Checked" Unchecked="Tgl_categorIsActive_Unchecked"
+                             VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
+                                          Margin="0" Height="13" Width="28" />
+                                </Grid>
+                                <Separator Width="1000" Background="#999999"      Margin="5,0,5,0"
+                                      Grid.ColumnSpan="5" VerticalAlignment="Bottom" />
+                            </Grid>
+                            <Grid Grid.Row="1" x:Name="grid_categoryCards" Visibility="Visible" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="106*"/>
+                                    <ColumnDefinition Width="645*"/>
+                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="45"/>
                                 </Grid.RowDefinitions>
-                                <Grid x:Name="grid_categorieContainerCard"  Background="{x:Null}">
+                                <!--<Grid  Width="{Binding ActualWidth, ElementName=grid_categoriesContainer}" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Width="275" VerticalAlignment="Bottom" Grid.Column="0" >
+                                        <TextBox x:Name="txb_searchcategoriesCard"  TextChanged="Txb_searchcategoriesCard_TextChanged"
+                        Padding="10,5,5,5" BorderBrush="{x:Null}"
+                          materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
+                 Foreground="#4e4e4e" TextBlock.FontSize="14"
+                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                  Height="30"   Width="225" Margin="5,5,5,0"/>
+                                        <Grid Margin="0,0,0,2"  HorizontalAlignment="Right" VerticalAlignment="Bottom"  Background="White" Width="30" Height="30">
+                                            <Path Fill="#4e4e4e" Stretch="Fill"   Margin="5,2.5,7.5,0"
+                             Grid.Column="0"   HorizontalAlignment="Left"
+                         VerticalAlignment="Center" Width="17.5" Height="17.5"
+                              Data="M111.6,16.4c-17.9-17.9-47-17.9-65,0C31,32.1,28.7,56.7,41.3,75c1,1.4,2,2.7,3.1,4L40.3,83l-4.9-4.9L5.9,108.2
+	C2,112,2,118.3,5.9,122.1s10.1,3.9,13.9,0c0,0,0,0,0,0l29.5-30.1l-3.6-3.6l0,0l-0.9-0.9l4.1-4.1c1.1,0.9,2.2,1.8,3.3,2.6
+	c20.6,14.8,49.3,10,64.1-10.6C129.5,57.4,127.5,32.3,111.6,16.4L111.6,16.4z M101.6,71.4c-12.4,12.4-32.6,12.5-45,0s-12.5-32.6,0-45
+	s32.6-12.5,45,0c6,6,9.4,14.1,9.4,22.5C110.9,57.3,107.6,65.4,101.6,71.4z M92.7,45.5c-7.5,0-13.6-6.1-13.6-13.6
+	c0-1.4,0.2-2.8,0.6-4.2C68,27.3,58.3,36.5,57.9,48.2C57.5,60,66.7,69.7,78.5,70.1c11.7,0.4,21.5-8.8,21.9-20.6c0.1-2-0.2-4-0.7-5.9
+	C97.6,44.8,95.2,45.5,92.7,45.5z"/>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid    Grid.Column="2" HorizontalAlignment="Right"   Margin="5,5,5,0"  >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" 
+                            Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                              FontSize="12"/>
+                                        <ToggleButton Grid.Column="1"  x:Name="tgl_categoryCardIsActive"  Checked="Tgl_categoryIsActive_Checked" Unchecked="Tgl_categorIsActive_Unchecked"
+                             VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
+                                          Margin="0" Height="13" Width="28" />
+                                    </Grid>
+                                    <Separator Width="1000" Background="#999999"      Margin="5,0,5,0"
+                                      Grid.ColumnSpan="5" VerticalAlignment="Bottom" />
+                                </Grid>-->
+                                <Grid Grid.Row="0" x:Name="grid_categorieContainerCard"  Background="{x:Null}" Grid.ColumnSpan="2">
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
@@ -150,8 +243,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                 </Grid>
-
-                                <Grid Margin="5,5,5,5" Grid.Row="4"    >
+                                <Grid Margin="5,5,5,5" Grid.Row="1" Grid.ColumnSpan="2"    >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="auto"/>
@@ -159,9 +251,8 @@
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Separator Width="1000" Background="#999999"      Margin="5,0,5,0"
-                                      Grid.ColumnSpan="5" VerticalAlignment="Top" />
-                                    <Grid VerticalAlignment="Bottom" x:Name="grid_pagination">
+
+                                    <Grid Margin="15,0,0,0" VerticalAlignment="Bottom" x:Name="grid_pagination">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="32.5"/>
                                             <ColumnDefinition Width="30"/>
@@ -196,7 +287,7 @@
                               Data="M7.6,2.8v8.4c0,0.3-0.2,0.5-0.5,0.5c-0.3,0-0.5-0.2-0.5-0.5V2.8c0-0.3,0.2-0.5,0.5-0.5C7.4,2.3,7.6,2.5,7.6,2.8
 	z M6.4,6.4l-3-3.9c-0.2-0.3-0.6,0-0.6,0.6v7.9c0,0.6,0.3,1,0.6,0.6l3-3.9C6.6,7.3,6.6,6.7,6.4,6.4z"/>
                                         </Button>
-                                        
+
                                     </Grid>
                                     <TextBox  Grid.Column="1" x:Name="tb_pageNumberSearch"  TextChanged="Tb_pageNumberSearch_TextChanged"   
                         Padding="10,5,5,5" BorderBrush="{x:Null}"
@@ -204,64 +295,28 @@
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
                      HorizontalAlignment="Left" VerticalAlignment="Bottom" 
                   Height="30"   Width="30" Margin="5,0,15,0"/>
-                                    <Grid Width="235" VerticalAlignment="Bottom" Grid.Column="2" >
-                                        <TextBox x:Name="txb_searchcategoriesCard"  TextChanged="Txb_searchcategoriesCard_TextChanged"
-                        Padding="10,5,5,5" BorderBrush="{x:Null}"
-                          materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
-                 Foreground="#4e4e4e" TextBlock.FontSize="14"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="30"   Width="225" Margin="5,5,5,0"/>
-                                        <Grid Margin="0,0,0,2"  HorizontalAlignment="Right" VerticalAlignment="Bottom"  Background="White" Width="30" Height="30">
-                                            <Path Fill="#4e4e4e" Stretch="Fill"   Margin="5,2.5,7.5,0"
-                             Grid.Column="0"   HorizontalAlignment="Left"
-                         VerticalAlignment="Center" Width="17.5" Height="17.5"
-                              Data="M111.6,16.4c-17.9-17.9-47-17.9-65,0C31,32.1,28.7,56.7,41.3,75c1,1.4,2,2.7,3.1,4L40.3,83l-4.9-4.9L5.9,108.2
-	C2,112,2,118.3,5.9,122.1s10.1,3.9,13.9,0c0,0,0,0,0,0l29.5-30.1l-3.6-3.6l0,0l-0.9-0.9l4.1-4.1c1.1,0.9,2.2,1.8,3.3,2.6
-	c20.6,14.8,49.3,10,64.1-10.6C129.5,57.4,127.5,32.3,111.6,16.4L111.6,16.4z M101.6,71.4c-12.4,12.4-32.6,12.5-45,0s-12.5-32.6,0-45
-	s32.6-12.5,45,0c6,6,9.4,14.1,9.4,22.5C110.9,57.3,107.6,65.4,101.6,71.4z M92.7,45.5c-7.5,0-13.6-6.1-13.6-13.6
-	c0-1.4,0.2-2.8,0.6-4.2C68,27.3,58.3,36.5,57.9,48.2C57.5,60,66.7,69.7,78.5,70.1c11.7,0.4,21.5-8.8,21.9-20.6c0.1-2-0.2-4-0.7-5.9
-	C97.6,44.8,95.2,45.5,92.7,45.5z"/>
-                                        </Grid>
 
-                                    </Grid>
-                                    <Grid    Grid.Column="3" HorizontalAlignment="Right"   Margin="5,5,5,0"  >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="45"/>
-                                            <ColumnDefinition Width="auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" 
-                            Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                              FontSize="12"/>
-                                        <ToggleButton Grid.Column="1"  x:Name="tgl_categoryCardIsActive"  Checked="Tgl_categoryCardIsActive_Checked" Unchecked="Tgl_categoryCardIsActive_Unchecked"
-                             VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
-                                          Margin="0" Height="13" Width="28" />
-                                    </Grid>
 
                                 </Grid>
-                               
                             </Grid>
-                            <Grid x:Name="grid_categoriesDatagrid" Visibility="Collapsed">
+                            <Grid Grid.Row="1" x:Name="grid_categoriesDatagrid" Visibility="Collapsed">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="40"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="45"/>
                                 </Grid.RowDefinitions>
-                                
-                                <Grid  Width="{Binding ActualWidth, ElementName=dg_categories}" >
+                                <!--<Grid  Width="{Binding ActualWidth, ElementName=dg_categories}" >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <Grid   VerticalAlignment="Bottom" Grid.Column="0">
-                                        <TextBox    Width="275"   x:Name="txb_searchcategoriesDatagrid"  TextChanged="Txb_searchcategoriesDatagrid_TextChanged" 
-                                                    
+                                    <Grid     Width="275" VerticalAlignment="Bottom" Grid.Column="0">
+                                        <TextBox    x:Name="txb_searchcategoriesDatagrid"  TextChanged="Txb_searchcategoriesDatagrid_TextChanged" 
                         Padding="10,5,5,5" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="30"   Margin="0"/>
+                  Height="30"  Width="225"  Margin="5,5,5,0"/>
                                         <Grid Margin="0,0,0,3"  HorizontalAlignment="Right" VerticalAlignment="Bottom"  Background="White" Width="30" Height="30">
                                             <Path Fill="#4e4e4e" Stretch="Fill"   Margin="5,2.5,7.5,0"
                              Grid.Column="0"   HorizontalAlignment="Left"
@@ -277,7 +332,7 @@
 
                                     </Grid>
 
-                                    <Grid Grid.Column="1" HorizontalAlignment="Right"   Margin="5,0,5,0"  >
+                                    <Grid    Grid.Column="2" HorizontalAlignment="Right"   Margin="5,5,5,0"  >
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="45"/>
                                             <ColumnDefinition Width="auto"/>
@@ -286,19 +341,20 @@
                             Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                               FontSize="12"/>
-                                        <ToggleButton Grid.Column="1"  x:Name="tgl_categoryDatagridIsActive"  Checked="Tgl_categoryDatagridIsActive_Checked" Unchecked="Tgl_categoryDatagridIsActive_Unchecked"
+                                        <ToggleButton Grid.Column="1"  x:Name="tgl_categoryDatagridIsActive"  Checked="Tgl_categoryIsActive_Checked" Unchecked="Tgl_categorIsActive_Unchecked"
                              VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                           Margin="0" Height="13" Width="28" />
                                     </Grid>
-                                </Grid>
-                              
-                            <DataGrid x:Name="dg_categories"  Margin="5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
+                                    <Separator Width="1000" Background="#999999"      Margin="5,0,5,0"
+                                      Grid.ColumnSpan="5" VerticalAlignment="Bottom" />
+                                </Grid>-->
+                                <DataGrid x:Name="dg_categories"  Margin="5" Grid.Row="0"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"  SelectionChanged="dg_categories_SelectionChanged"  >
-                                <DataGrid.Columns >
-                                        <DataGridTextColumn   MinWidth="150"   Header="Code"  Binding="{Binding Path=code}">
+                                    <DataGrid.Columns >
+                                        <DataGridTextColumn   MinWidth="150"   Header="Code"  Binding="{Binding Path=categoryCode}">
                                             <DataGridTextColumn.ElementStyle>
                                                 <Style TargetType="{x:Type TextBlock}">
                                                     <Style.Triggers>
@@ -333,13 +389,13 @@
                                         </DataGridTextColumn>
                                         <!--<DataGridTextColumn MinWidth="200"  Header="Type" Binding="{Binding Path=type}"/>-->
                                     </DataGrid.Columns>
-                            </DataGrid>
-                                <Separator Width="1000" Background="#999999"     Grid.Row="2"   Margin="10,5,10,0"
+                                </DataGrid>
+                                <Separator Width="1000" Background="#999999"     Grid.Row="1"   Margin="10,5,10,0"
                                       Grid.ColumnSpan="4" VerticalAlignment="Top" />
                             </Grid>
                         </Grid>
                     </Border>
-                  
+
                     <Grid Height="15" Width="40" Grid.RowSpan="2"
                       VerticalAlignment="Bottom" HorizontalAlignment="Right"
                       Margin="10,5,10,10">
@@ -372,10 +428,63 @@
 	c4.4,0,8,3.6,8,8V312z M512,248c0,4.4-3.6,8-8,8H360c-4.4,0-8-3.6-8-8v-16c0-4.4,3.6-8,8-8h144c4.4,0,8,3.6,8,8V248z M512,184
 	c0,4.4-3.6,8-8,8H360c-4.4,0-8-3.6-8-8v-16c0-4.4,3.6-8,8-8h144c4.4,0,8,3.6,8,8V184z"/>
                         </Button>
-                        
-                       
+
+
                     </Grid>
-                    
+                    <Grid Height="20"   Grid.RowSpan="2"
+                      VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                      Margin="10,5,60,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button VerticalAlignment="Bottom"  Height="15" Background="{x:Null}"    Grid.Column="0" Margin="2.5,0,2.5,0"
+                            Padding="0" 
+                                       BorderBrush="{x:Null}">
+                            <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="15" Height="15">
+                                <materialDesign:PackIcon.ToolTip>
+                                    <ToolTip x:Name="tt_report" Content="Report"
+                                              Placement="left" 
+                                              HorizontalOffset="5"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="-10"/>
+                                </materialDesign:PackIcon.ToolTip>
+                            </materialDesign:PackIcon>
+                        </Button>
+                        <Button  Height="15"  Background="{x:Null}" VerticalAlignment="Bottom"    Grid.Column="1" Margin="2.5,0,2.5,0"
+                            Padding="0"   x:Name="btn_exportToExcel"   Click="Btn_exportToExcel_Click"
+                                       BorderBrush="{x:Null}">
+                            <Path Fill="#378500" Stretch="Fill"
+                          Width="15" Height="15" 
+                           FlowDirection="LeftToRight" Data="M25.162,3H16v2.984h3.031v2.031H16V10h3v2h-3v2h3v2h-3v2h3v2h-3v3h9.162   C25.623,23,26,22.609,26,22.13V3.87C26,3.391,25.623,3,25.162,3z M24,20h-4v-2h4V20z M24,16h-4v-2h4V16z M24,12h-4v-2h4V12z M24,8   h-4V6h4V8z 
+	                     M0,2.889v20.223L15,26V0L0,2.889z M9.488,18.08l-1.745-3.299c-0.066-0.123-0.134-0.349-0.205-0.678   H7.511C7.478,14.258,7.4,14.494,7.277,14.81l-1.751,3.27H2.807l3.228-5.064L3.082,7.951h2.776l1.448,3.037   c0.113,0.24,0.214,0.525,0.304,0.854h0.028c0.057-0.198,0.163-0.492,0.318-0.883l1.61-3.009h2.542l-3.037,5.022l3.122,5.107 
+                          L9.488,18.08L9.488,18.08z"  >
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_excel" Content="Export to excel"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="-10"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Button>
+                        <TextBlock   Height="15" Background="{x:Null}" x:Name="txt_Count"   Grid.Column="2"
+                                     Margin="0,0,0,0" VerticalAlignment="Bottom"
+                              Text="0" Foreground="#378500" FontSize="12"  >
+                            <TextBlock.ToolTip>
+                                <ToolTip x:Name="tt_count" Content="Category Count"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,25,0,0"
+                                              VerticalOffset="-20"/>
+                            </TextBlock.ToolTip>
+
+                        </TextBlock>
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>
@@ -458,7 +567,7 @@
                                         <ColumnDefinition Width="auto"/>
 
                                     </Grid.ColumnDefinitions>
-                                    
+
                                     <TextBlock Text="Base Infomation" Foreground="#737373"
                                  FontSize="10"   x:Name="txt_baseInformation"    VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
@@ -624,7 +733,7 @@
                                     </Path>
                                 </Grid>
 
-                                
+
                             </Grid>
 
                         </Grid>

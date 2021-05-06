@@ -553,8 +553,12 @@ namespace POS.View
             paginationSetting();
         }
         #endregion
+
         #endregion
 
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
     }
 }

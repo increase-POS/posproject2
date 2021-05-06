@@ -20,14 +20,12 @@ namespace client_app.Classes
         public string name { get; set; }
         public string details { get; set; }
         public string image { get; set; }
-      //  public short isActive { get; set; }
         public decimal taxes { get; set; }
         public Nullable<int> parentId { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
-      //  public string notes { get; set; }
         public Nullable<byte> isActive { get; set; }
 
         // adding or editing  category by calling API metod "save"
@@ -110,7 +108,7 @@ namespace client_app.Classes
                 return categories;
             }
         }
-        public async Task<string> deleteCategory(int categoryId)
+        public async Task<string> deleteCategory(int categoryId,int? userId)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -123,7 +121,7 @@ namespace client_app.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Categories/Delete?categoryId=" + categoryId + "&userId=1");
+                request.RequestUri = new Uri(Global.APIUri + "Categories/Delete?categoryId=" + categoryId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

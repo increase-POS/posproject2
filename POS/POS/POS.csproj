@@ -380,5 +380,11 @@
   <ItemGroup>
     <Resource Include="pic\profilePhotos_2.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pic\no-image-icon-125x125.png" />
+    <Resource Include="pic\no-image-icon-40x40.png" />
+    <Resource Include="pic\no-image-icon-512x512.png" />
+    <Resource Include="pic\no-image-icon-90x90.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -579,4 +579,91 @@
   <data name="trPopActive" xml:space="preserve">
     <value>تم التفعيل بنجاح</value>
   </data>
+  <data name="trAmount" xml:space="preserve">
+    <value>الكمية</value>
+  </data>
+  <data name="trBranchHint" xml:space="preserve">
+    <value>الفرع...</value>
+  </data>
+  <data name="trCash" xml:space="preserve">
+    <value>نقدي</value>
+  </data>
+  <data name="trCreditCard" xml:space="preserve">
+    <value>بطاقة ائتمان</value>
+  </data>
+  <data name="trDeservedDateHint" xml:space="preserve">
+    <value>تاريخ الإستحقاق...</value>
+  </data>
+  <data name="trDeservedHint" xml:space="preserve">
+    <value>المستحق...</value>
+  </data>
+  <data name="trDiscount" xml:space="preserve">
+    <value>الخصم</value>
+  </data>
+  <data name="trDiscountHint" xml:space="preserve">
+    <value>الخصم...</value>
+  </data>
+  <data name="trDraft" xml:space="preserve">
+    <value>مسودة</value>
+  </data>
+  <data name="trInvoice" xml:space="preserve">
+    <value>الفاتورة</value>
+  </data>
+  <data name="trInvoiceDateHint" xml:space="preserve">
+    <value>تاريخ الفاتورة...</value>
+  </data>
+  <data name="trInvoiceHint" xml:space="preserve">
+    <value>الفاتورة...</value>
+  </data>
+  <data name="trInvoiceNumber" xml:space="preserve">
+    <value>رقم الفاتورة</value>
+  </data>
+  <data name="trInvoiceNumberHint" xml:space="preserve">
+    <value>رقم الفاتورة...</value>
+  </data>
+  <data name="trItem" xml:space="preserve">
+    <value>العنصر</value>
+  </data>
+  <data name="trNum" xml:space="preserve">
+    <value>الرقم</value>
+  </data>
+  <data name="trPaidHint" xml:space="preserve">
+    <value>المدفوع...</value>
+  </data>
+  <data name="trPdf" xml:space="preserve">
+    <value>PDF</value>
+  </data>
+  <data name="trPreview" xml:space="preserve">
+    <value>معاينة</value>
+  </data>
+  <data name="trPrice" xml:space="preserve">
+    <value>السعر</value>
+  </data>
+  <data name="trPrint" xml:space="preserve">
+    <value>طباعة</value>
+  </data>
+  <data name="trReturnInvoice" xml:space="preserve">
+    <value>فاتورة الإرجاع</value>
+  </data>
+  <data name="trSave" xml:space="preserve">
+    <value>حفظ</value>
+  </data>
+  <data name="trSum" xml:space="preserve">
+    <value>المجموع</value>
+  </data>
+  <data name="trTax" xml:space="preserve">
+    <value>الضريبة</value>
+  </data>
+  <data name="trTotal" xml:space="preserve">
+    <value>الإجمالي</value>
+  </data>
+  <data name="trTotal:" xml:space="preserve">
+    <value>الإجمالي:</value>
+  </data>
+  <data name="trVendorHint" xml:space="preserve">
+    <value>المورد...</value>
+  </data>
+  <data name="trVendorInvoiceDetails" xml:space="preserve">
+    <value>تفاصيل فاتورة المزود</value>
+  </data>
 </root>

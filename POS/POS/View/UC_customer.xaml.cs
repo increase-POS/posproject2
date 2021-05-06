@@ -27,16 +27,16 @@ namespace POS.View
     /// </summary>
     public partial class UC_Customer : UserControl
     {
-        public int AgentId;
-         IEnumerable<Agent> agentsQuery;
-         IEnumerable<Agent> agents;
+        
+        IEnumerable<Agent> agentsQuery;
+        IEnumerable<Agent> agents;
+        byte tgl_customerState;
+        string searchText = "";
+
 
         Agent agentModel = new Agent();
-
-        bool CanDelete = false;
-        byte tgl_customerState;
-
-        int IsActive = 0;
+        
+        Agent agent = new Agent();
 
         public UC_Customer()
         {
@@ -83,10 +83,14 @@ namespace POS.View
             tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
             tt_upperLimit.Content = MainWindow.resourcemanager.GetString("trUpperLimit");
             tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
 
 
         }
-       
+
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
 
@@ -103,6 +107,7 @@ namespace POS.View
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
+            agent.agentId = 0;
             tb_address.Text = "";
             tb_fax.Text = "";
             tb_company.Text = "";
@@ -114,13 +119,24 @@ namespace POS.View
             tb_phone.Text = "";
             cb_areaMobile.SelectedIndex = 0;
             cb_areaPhone.SelectedIndex = 0;
+            cb_areaFax.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
+            cb_areaFaxLocal.SelectedIndex = 0;
 
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
+            //only int
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+
+            //decimal
+            //var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            //if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+            //    e.Handled = false;
+
+            //else
+            //    e.Handled = true;
         }
 
         private void DG_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -132,7 +148,6 @@ namespace POS.View
             tb_fax.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-            Agent agent = new Agent();
             if (dg_customer.SelectedIndex != -1)
             {
                 agent = dg_customer.SelectedItem as Agent;
@@ -141,12 +156,14 @@ namespace POS.View
             if (agent != null)
             {
 
-                if (agent.agentId != 0)
-                {
-                    AgentId = agent.agentId;
-                    CanDelete = agent.canDelete;
-                    tb_code.Text = agent.code;
-                }
+                //if (agent.agentId != 0)
+                //{
+                //    AgentId = agent.agentId;
+                //    CanDelete = agent.canDelete;
+                //    tb_code.Text = agent.code;
+                //    // CreateDate = agent.createDate.Value;
+                //    // CreateUser = agent.createUserId.Value;
+                //}
 
                 //mobile
                 if ((agent.mobile != null) && (agent.mobile.ToArray().Length > 4))
@@ -198,11 +215,11 @@ namespace POS.View
                     cb_areaFaxLocal.SelectedIndex = -1;
                     tb_fax.Clear();
                 }
-                if (CanDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+                if (agent.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
 
                 else
                 {
-                    if (IsActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
+                    if (agent.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
                     else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
                 }
             }
@@ -210,6 +227,7 @@ namespace POS.View
 
         private async void  Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
+            agent.agentId = 0;
             if (tb_name.Text.Equals(""))
             {
                 p_errorName.Visibility = Visibility.Visible;
@@ -265,40 +283,41 @@ namespace POS.View
                     SectionData.genRandomCode("c");
                     tb_code.Text = SectionData.code;
 
-                    Agent customer = new Agent
-                    {
-                        name = tb_name.Text,
-                        code = tb_code.Text,
-                        company = tb_company.Text,
-                        address = tb_address.Text,
-                        email = tb_email.Text,
-                        phone = phoneStr,
-                        mobile = cb_areaMobile.Text + tb_mobile.Text,
-                        image = "",
-                        type = "c",
-                        accType = "",
-                        balance = 0,
-                        createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                        updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                        createUserId = MainWindow.userID,
-                        updateUserId = MainWindow.userID,
-                        notes = tb_notes.Text,
-                        isActive = 1,
-                        fax = faxStr,
-                        maxDeserve = maxDeserveValue
+                    //Agent customer = new Agent
+                    //{
+                    agent.name = tb_name.Text;
+                    agent.code = tb_code.Text;
+                    agent.company = tb_company.Text;
+                    agent.address = tb_address.Text;
+                    agent.email = tb_email.Text;
+                    agent.phone = phoneStr;
+                    agent.mobile = cb_areaMobile.Text + tb_mobile.Text;
+                    agent.image = "";
+                    agent.type = "c";
+                    agent.accType = "";
+                    agent.balance = 0;
+                    //createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                    //updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                    agent.createUserId = MainWindow.userID;
+                    agent.updateUserId = MainWindow.userID;
+                    agent.notes = tb_notes.Text;
+                    agent.isActive = 1;
+                    agent.fax = faxStr;
+                    agent.maxDeserve = maxDeserveValue;
 
-                    };
+                    //};
 
-                    string s = await agentModel.saveAgent(customer);
+                    string s = await agentModel.saveAgent(agent);
 
                     if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
                     //pass parameter type (V for vendors, C for Clients , B for Both)
-                    //var agents = await agentModel.GetAgentsAsync("c");
-                    //agentsQuery = agents;
+                    agents = await agentModel.GetAgentsAsync("c");
+                    agentsQuery = agents;
                     dg_customer.ItemsSource = agentsQuery;
-                    txt_Count.Text = agentsQuery.Count().ToString();
+                    //txt_Count.Text = agentsQuery.Count().ToString();
+                    tb_search_TextChanged(null, null);
                 }
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
@@ -400,42 +419,42 @@ namespace POS.View
                     SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
                 else
                 {
-                    Agent customer = new Agent
-                    {
-                        agentId = AgentId,
-                        name = tb_name.Text,
-                        code = tb_code.Text,
-                        company = tb_company.Text,
-                        address = tb_address.Text,
-                        email = tb_email.Text,
-                        phone = phoneStr,
-                        mobile = cb_areaMobile.Text + tb_mobile.Text,
-                        image = "",
-                        type = "c",
-                        accType = "",
-                        balance = 0,
-                        createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                        updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                        createUserId = MainWindow.userID,
-                        updateUserId = MainWindow.userID,
-                        notes = tb_notes.Text,
-                        isActive = 1,
-                        fax = faxStr,
-                        maxDeserve = maxDeserveValue
+                    //Agent customer = new Agent
+                    //{
+                    //agentId = AgentId,
+                    agent.name = tb_name.Text;
+                    agent.code = tb_code.Text;
+                    agent.company = tb_company.Text;
+                    agent.address = tb_address.Text;
+                    agent.email = tb_email.Text;
+                    agent.phone = phoneStr;
+                    agent.mobile = cb_areaMobile.Text + tb_mobile.Text;
+                    agent.image = "";
+                    //agent.type = "c";
+                    //agent.accType = "";
+                    //agent.balance = 0;
+                    //createDate = CreateDate,
+                    //updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                    //createUserId = CreateUser,
+                    agent.updateUserId = MainWindow.userID;
+                    agent.notes = tb_notes.Text;
+                    //isActive = IsActive,
+                    agent.fax = faxStr;
+                    agent.maxDeserve = maxDeserveValue;
 
-                    };
+                    //};
 
-                    string s = await agentModel.saveAgent(customer);
+                    string s = await agentModel.saveAgent(agent);
 
                     if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
                     //pass parameter type (V for vendors, C for Clients , B for Both)
-                    var agents = await agentModel.GetAgentsAsync("c");
-                    agentsQuery = agents;
-                    dg_customer.ItemsSource = agentsQuery;
-                    txt_Count.Text = agentsQuery.Count().ToString();
-                    //dg_customer.ItemsSource = agents;
+                    //agents = await agentModel.GetAgentsAsync("c");
+                    //agentsQuery = agents;
+                    //dg_customer.ItemsSource = agentsQuery;
+                    //txt_Count.Text = agentsQuery.Count().ToString();
+                    tb_search_TextChanged(null, null);
                 }
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
@@ -443,15 +462,16 @@ namespace POS.View
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if ((!CanDelete) && (IsActive == 0))
+            MessageBox.Show(agent.canDelete.ToString() + " " + agent.isActive.ToString());
+            if ((!agent.canDelete) && (agent.isActive == 0))
                 activate();
             else
             {
                 string popupContent = "";
-                if (CanDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                if ((!CanDelete) && (IsActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                bool b = await agentModel.deleteAgent(AgentId, CanDelete);
+                bool b = await agentModel.deleteAgent(agent.agentId , agent.canDelete);
 
                 if (b) SectionData.popUpResponse("", popupContent);
                 else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
@@ -459,25 +479,25 @@ namespace POS.View
 
 
             //pass parameter type(V for vendors, C for Clients, B for Both)
-            var agents = await agentModel.GetAgentsAsync("c");
-            dg_customer.ItemsSource = agents;
-
+            //var agents = await agentModel.GetAgentsAsync("c");
+            //dg_customer.ItemsSource = agents;
+            agents = await agentModel.GetAgentsAsync("c");
+            agentsQuery = agents;
+            dg_customer.ItemsSource = agentsQuery;
+            txt_Count.Text = agentsQuery.Count().ToString();
+            tb_search_TextChanged(null, null);
 
             //clear textBoxs
-            AgentId = 0;
             Btn_clear_Click(sender , e);
            
         }
 
         private async void activate()
         {//activate
-            Agent customer = new Agent
-            {
-                agentId = AgentId,
-                isActive = 1,
-            };
 
-            string s = await agentModel.saveAgent(customer);
+            agent.isActive = 1;
+
+            string s = await agentModel.saveAgent(agent);
 
             if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
@@ -560,15 +580,18 @@ namespace POS.View
             }
         }
 
-     
-        //private async void tb_search_LostFocus(object sender, RoutedEventArgs e)
-        //{
-        //    var agents = await agentModel.GetAgentsAsync("c");
-        //    agentsQuery = agents;
-        //    dg_customer.ItemsSource = agentsQuery;
-        //    txt_Count.Text = agentsQuery.Count().ToString();
-        //    //dg_customer.ItemsSource = agents;
-        //}
+
+        private async void tb_search_LostFocus(object sender, RoutedEventArgs e)
+        {
+            //var agents = await agentModel.GetAgentsAsync("c");
+            //agentsQuery = agents;
+            //dg_customer.ItemsSource = agentsQuery;
+            //txt_Count.Text = agentsQuery.Count().ToString();
+            ////dg_customer.ItemsSource = agents;
+            ///
+            //Keyboard.Focus(tb_name);
+
+        }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
@@ -580,12 +603,12 @@ namespace POS.View
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
             });
-           
+
 
             //}
             //catch (Exception ex)
             //{
-                //AllClasses.Exception1(ex);
+            //AllClasses.Exception1(ex);
             //}
         }
          void FN_ExportToExcel()
@@ -621,12 +644,11 @@ namespace POS.View
             ExportToExcel.Export(DTForExcel);
 
         }
-        string searchText = "";
 
         private async void Tgl_customerIsActive_Checked(object sender, RoutedEventArgs e)
         {
             if (agents is null)
-                await RefrishCustomersList();
+                await RefreshCustomersList();
             tgl_customerState = 1;
             tb_search_TextChanged(null, null);
         }
@@ -634,16 +656,16 @@ namespace POS.View
         private async void Tgl_customerIsActive_Unchecked(object sender, RoutedEventArgs e)
         {
             if (agents is null)
-                await RefrishCustomersList();
+                await RefreshCustomersList();
             tgl_customerState = 0;
             tb_search_TextChanged(null, null);
         }
-        async Task<IEnumerable<Agent>> RefrishCustomersList()
+        async Task<IEnumerable<Agent>> RefreshCustomersList()
         {
             agents = await agentModel.GetAgentsAsync("c");
             return agents;
         }
-        void RefrishCustomerView()
+        void RefreshCustomerView()
         {
             dg_customer.ItemsSource = agentsQuery;
             txt_Count.Text = agentsQuery.Count().ToString();
@@ -657,19 +679,55 @@ namespace POS.View
         private async void tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (agents is null)
-                await RefrishCustomersList();
+                await RefreshCustomersList();
             searchText = tb_search.Text;
             agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
             s.name.Contains(searchText) ||
             s.company.Contains(searchText) ||
             s.mobile.Contains(searchText)
             ) && s.isActive == tgl_customerState);
-            RefrishCustomerView();
+            RefreshCustomerView();
 
            
         }
 
-      
+        private void tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            //doesn't allow spaces into textbox
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void tb_phone_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void tb_fax_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void tb_upperLimit_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void tb_search_GotFocus(object sender, RoutedEventArgs e)
+        {
+           
+            var bc = new BrushConverter();
+
+            p_errorName.Visibility = Visibility.Collapsed;
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+        }
+
+        private void UserControl_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var bc = new BrushConverter();
+
+            p_errorName.Visibility = Visibility.Collapsed;
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+        }
     }
 }
     

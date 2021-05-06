@@ -591,4 +591,91 @@
   <data name="trPopActive" xml:space="preserve">
     <value>Activation was successful</value>
   </data>
+  <data name="trAmount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="trBranchHint" xml:space="preserve">
+    <value>Branch...</value>
+  </data>
+  <data name="trCash" xml:space="preserve">
+    <value>Cash</value>
+  </data>
+  <data name="trCreditCard" xml:space="preserve">
+    <value>Credit Card</value>
+  </data>
+  <data name="trDeservedDateHint" xml:space="preserve">
+    <value> Deserved Date...</value>
+  </data>
+  <data name="trDeservedHint" xml:space="preserve">
+    <value>Deserved...</value>
+  </data>
+  <data name="trDiscount" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="trDiscountHint" xml:space="preserve">
+    <value>Discount...</value>
+  </data>
+  <data name="trDraft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="trInvoice" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="trInvoiceDateHint" xml:space="preserve">
+    <value>Invoice Date...</value>
+  </data>
+  <data name="trInvoiceHint" xml:space="preserve">
+    <value>Invoice...</value>
+  </data>
+  <data name="trInvoiceNumber" xml:space="preserve">
+    <value>Invoice Number</value>
+  </data>
+  <data name="trInvoiceNumberHint" xml:space="preserve">
+    <value>Invoice Number...</value>
+  </data>
+  <data name="trItem" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="trNum" xml:space="preserve">
+    <value>Num</value>
+  </data>
+  <data name="trPaidHint" xml:space="preserve">
+    <value>Paid...</value>
+  </data>
+  <data name="trPdf" xml:space="preserve">
+    <value>PDF</value>
+  </data>
+  <data name="trPreview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="trPrice" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="trPrint" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="trReturnInvoice" xml:space="preserve">
+    <value>Return Invoice</value>
+  </data>
+  <data name="trSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="trSum" xml:space="preserve">
+    <value>Sum</value>
+  </data>
+  <data name="trTax" xml:space="preserve">
+    <value>Tax</value>
+  </data>
+  <data name="trTotal" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="trTotal:" xml:space="preserve">
+    <value>Total:</value>
+  </data>
+  <data name="trVendorHint" xml:space="preserve">
+    <value>Vendor...</value>
+  </data>
+  <data name="trVendorInvoiceDetails" xml:space="preserve">
+    <value>Vendor Invoice Details</value>
+  </data>
 </root>

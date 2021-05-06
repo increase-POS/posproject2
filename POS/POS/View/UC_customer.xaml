@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d" 
                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="675" d:DesignWidth="985" Loaded="UserControl_Loaded">
+             d:DesignHeight="675" d:DesignWidth="985" Loaded="UserControl_Loaded" LostFocus="UserControl_LostFocus">
 
     <Grid x:Name="grid_ucCustomer" >
         <Grid.ColumnDefinitions>
@@ -50,7 +50,7 @@
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35"   Width="250" Margin="10,5" TextChanged="tb_search_TextChanged" />
+                  Height="35"   Width="250" Margin="10,5" TextChanged="tb_search_TextChanged" GotFocus="tb_search_GotFocus" />
                     <!--<ComboBox x:Name="cb_search"  Grid.Row="2" 
                                   Padding="10,5,5,5" 
                                    TextBlock.Foreground="#4E4E4E"
@@ -129,7 +129,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        
+
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
@@ -147,7 +147,15 @@
                                        BorderBrush="{x:Null}">
                     <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
                               HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="22" Height="22"/>
+                         VerticalAlignment="Center" Width="22" Height="22">
+                        <materialDesign:PackIcon.ToolTip>
+                            <ToolTip x:Name="tt_report" Content="Report"
+                                              Placement="left" 
+                                              HorizontalOffset="5"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="-10"/>
+                        </materialDesign:PackIcon.ToolTip>
+                    </materialDesign:PackIcon>
                 </Button>
                 <Button   Background="{x:Null}"    Grid.Column="1" Margin="5,0,5,0"
                             Padding="0" Height="35"   x:Name="btn_exportToExcel"   Click="Btn_exportToExcel_Click"
@@ -156,10 +164,25 @@
                           Width="20" Height="20" 
                            FlowDirection="LeftToRight" Data="M25.162,3H16v2.984h3.031v2.031H16V10h3v2h-3v2h3v2h-3v2h3v2h-3v3h9.162   C25.623,23,26,22.609,26,22.13V3.87C26,3.391,25.623,3,25.162,3z M24,20h-4v-2h4V20z M24,16h-4v-2h4V16z M24,12h-4v-2h4V12z M24,8   h-4V6h4V8z 
 	                     M0,2.889v20.223L15,26V0L0,2.889z M9.488,18.08l-1.745-3.299c-0.066-0.123-0.134-0.349-0.205-0.678   H7.511C7.478,14.258,7.4,14.494,7.277,14.81l-1.751,3.27H2.807l3.228-5.064L3.082,7.951h2.776l1.448,3.037   c0.113,0.24,0.214,0.525,0.304,0.854h0.028c0.057-0.198,0.163-0.492,0.318-0.883l1.61-3.009h2.542l-3.037,5.022l3.122,5.107 
-                          L9.488,18.08L9.488,18.08z"  />
+                          L9.488,18.08L9.488,18.08z"  >
+                        <Path.ToolTip>
+                            <ToolTip x:Name="tt_excel" Content="Export to excel"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="-10"/>
+                        </Path.ToolTip>
+                    </Path>
                 </Button>
-                <TextBlock   Background="{x:Null}" x:Name="txt_Count"   Grid.Column="2" Margin="0,5,0,5" VerticalAlignment="Center"
-                            Padding="0"   Text="0" Foreground="#378500" FontSize="12"  >
+                <TextBlock   Background="{x:Null}" x:Name="txt_Count"   Grid.Column="2" Margin="0,0,0,5" VerticalAlignment="Bottom"
+                            Padding="10"   Text="0" Foreground="#378500" FontSize="12"  >
+                    <TextBlock.ToolTip>
+                            <ToolTip x:Name="tt_count" Content="Customers Count"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,25,0,0"
+                                              VerticalOffset="-20"/>
+                        </TextBlock.ToolTip>
 
                 </TextBlock>
             </Grid>
@@ -234,12 +257,22 @@
                             <Separator Background="#999999"   Width="274"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                             <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
-                          Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click"
-                    Margin="5,1"   ToolTip="clear">
+                                    Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click"
+                                    Margin="5,1">
 
                                 <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
-                              HorizontalAlignment="Center" Grid.Column="0"  TabIndex="16"  
-                         VerticalAlignment="Center" Width="20" Height="20"/>
+                                                  HorizontalAlignment="Center" Grid.Column="0"  TabIndex="16"  
+                                                   VerticalAlignment="Center" Width="20" Height="20">
+                                    <materialDesign:PackIcon.ToolTip>
+                                        <ToolTip x:Name="tt_clear" Content="clear"
+                                             Placement="left" 
+                                             HorizontalOffset="5"
+                                             PlacementRectangle="50,0,0,0"
+                                             VerticalOffset="20"/>
+                                    </materialDesign:PackIcon.ToolTip>
+
+                                </materialDesign:PackIcon>
+
                             </Button>
 
                         </Grid>
@@ -262,11 +295,16 @@
                             <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5" 
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Name..."  
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                     BorderBrush="AliceBlue" MaxLength="20" LostFocus="tb_name_LostFocus" VerticalAlignment="Center" 
+                                     BorderBrush="AliceBlue" MaxLength="50" LostFocus="tb_name_LostFocus" 
+                                     VerticalAlignment="Center" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="35"  Margin="5,5,6,5" TabIndex="0" >
                                 <TextBox.ToolTip>
-                                    <ToolTip x:Name="tt_name" Content="Name" />
+                                    <ToolTip x:Name="tt_name" Content="Name"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
                                 </TextBox.ToolTip>
                             </TextBox>
                             <Path Fill="#E81123" Stretch="Fill" x:Name="p_errorName"
@@ -292,7 +330,11 @@
                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                     Height="35" Width="200" Margin="5,5,0,5" Grid.ColumnSpan="2">
                                 <TextBlock.ToolTip>
-                                    <ToolTip x:Name="tt_code" Content="Code" />
+                                    <ToolTip x:Name="tt_code" Content="Code"
+                                             Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
                                 </TextBlock.ToolTip>
                             </TextBlock>
 
@@ -314,12 +356,17 @@
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="tb_company"  Text="{Binding company, Mode=OneWay}" Padding="10,5,5,5" 
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Company..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                     HorizontalAlignment="Left" VerticalAlignment="Center"  TabIndex="1"
-                  Height="35" Width="200"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                     BorderBrush="AliceBlue" MaxLength="50" 
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center"  TabIndex="1"
+                                     Height="35" Width="200"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
                                 <TextBox.ToolTip>
-                                    <ToolTip x:Name="tt_company" Content="Company" />
+                                    <ToolTip x:Name="tt_company" Content="Company"
+                                             Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
                                 </TextBox.ToolTip>
                             </TextBox>
 
@@ -399,9 +446,13 @@
                                  BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"
                                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center"  TabIndex="3"
-                  Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2" LostFocus="Tb_mobile_LostFocus" TextChanged="tb_mobile_TextChanged" >
+                  Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2" LostFocus="Tb_mobile_LostFocus" TextChanged="tb_mobile_TextChanged" PreviewKeyDown="tb_mobile_PreviewKeyDown" >
                                     <TextBox.ToolTip>
-                                        <ToolTip x:Name="tt_mobile" Content="Mobile" />
+                                        <ToolTip x:Name="tt_mobile" Content="Mobile"
+                                                Placement="left" 
+                                                HorizontalOffset="35"
+                                                PlacementRectangle="50,0,0,0"
+                                                VerticalOffset="20"/>
                                     </TextBox.ToolTip>
                                 </TextBox>
                                 <Path Fill="#E81123" Stretch="Fill"  x:Name="p_errorMobile"
@@ -474,10 +525,14 @@
                            BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
                                       TabIndex="6"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="15"
-                  Height="35" Width="195"  Margin="5,5,0,5" >
+                     HorizontalAlignment="Left" VerticalAlignment="Bottom" MaxLength="15"
+                  Height="35" Width="195"  Margin="5,0,0,5" PreviewKeyDown="tb_phone_PreviewKeyDown" >
                                 <TextBox.ToolTip>
-                                    <ToolTip x:Name="tt_phone" Content="Phone" />
+                                    <ToolTip x:Name="tt_phone" Content="Phone"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
                                 </TextBox.ToolTip>
                             </TextBox>
 
@@ -517,7 +572,11 @@
                                      Height="35" Width="170"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
                                      LostFocus="Tb_email_LostFocus" >
                                 <TextBox.ToolTip>
-                                    <ToolTip x:Name="tt_email" Content="Email" />
+                                    <ToolTip x:Name="tt_email" Content="Email"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
                                 </TextBox.ToolTip>
                             </TextBox>
                             <TextBox x:Name="tb_address"  Text="{Binding address, Mode=OneWay}" Grid.Row="2" Grid.Column="1"  Padding="10,5,5,5"   
@@ -529,7 +588,11 @@
                                      Height="35" Width="170"  Margin="5,5,5,5" Grid.ColumnSpan="2" 
                                      LostFocus="Tb_email_LostFocus" >
                                 <TextBox.ToolTip>
-                                    <ToolTip x:Name="tt_address" Content="Address" />
+                                    <ToolTip x:Name="tt_address" Content="Address"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
                                 </TextBox.ToolTip>
                             </TextBox>
 
@@ -596,9 +659,13 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Fax..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
-                                     Height="35"  Margin="0,5,2,5" Grid.Column="2" Width="195"  TabIndex="9">
+                                     Height="35"  Margin="0,5,2,5" Grid.Column="2" Width="195"  TabIndex="9" PreviewKeyDown="tb_fax_PreviewKeyDown">
                                 <TextBox.ToolTip>
-                                    <ToolTip x:Name="tt_fax" Content="Fax" />
+                                    <ToolTip x:Name="tt_fax" Content="Fax" 
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
                                 </TextBox.ToolTip>
                             </TextBox>
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorFax"
@@ -651,9 +718,13 @@
                                  BorderBrush="AliceBlue" MaxLength="100" PreviewTextInput="NumberValidationTextBox"
                      HorizontalAlignment="Left" VerticalAlignment="Center"  TabIndex="11"
                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
+                  Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" PreviewKeyDown="tb_upperLimit_PreviewKeyDown" >
                                 <TextBox.ToolTip>
-                                    <ToolTip x:Name="tt_upperLimit" Content="UpperLimit" />
+                                    <ToolTip x:Name="tt_upperLimit" Content="UpperLimit"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
                                 </TextBox.ToolTip>
                             </TextBox>
 
@@ -742,7 +813,11 @@
                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" TabIndex="12"
                   Height="70" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
                                 <TextBox.ToolTip>
-                                    <ToolTip x:Name="tt_notes" Content="Notes" />
+                                    <ToolTip x:Name="tt_notes" Content="Notes"
+                                             Placement="left" 
+                                             HorizontalOffset="35"
+                                             PlacementRectangle="50,0,0,0"
+                                             VerticalOffset="20"/>
                                 </TextBox.ToolTip>
                             </TextBox>
 

@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -38,17 +40,78 @@ namespace POS.View
             items.Add(new Bill() { Id = 336555162, Total = 840 });
             items.Add(new Bill() { Id = 336558897, Total = 325 });
             dg_draft.ItemsSource = items;
-            dg_Bills.ItemsSource = items;
+            dg_invoice.ItemsSource = items;
             billDetails = LoadCollectionData();
-            DG_BillDetails.ItemsSource = billDetails;
+            dg_billDetails.ItemsSource = billDetails;
             #endregion
             
 
         }
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
+       
 
+        private void translate()
+        {
+            ////////////////////////////////----invoice----/////////////////////////////////
+            txt_invoiceHeader.Text = MainWindow.resourcemanager.GetString("trInvoice");
+            txt_returnInvoice.Text = MainWindow.resourcemanager.GetString("trReturnInvoice");
+            txt_invoiceToggle.Text = MainWindow.resourcemanager.GetString("trInvoice");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_InvoicenName, MainWindow.resourcemanager.GetString("trInvoiceHint"));
+
+            txt_draft.Text = MainWindow.resourcemanager.GetString("trDraft");
+            txt_draftToggle.Text = MainWindow.resourcemanager.GetString("trDraft");
+            txt_invoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trBranchHint"));
+            dg_billDetails.Columns[0].Header = MainWindow.resourcemanager.GetString("trNum");
+            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trItem");
+            dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trAmount");
+            dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trPrice");
+            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trTotal");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
+            txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
+            txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
+            txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
+            txt_total.Text = MainWindow.resourcemanager.GetString("trTotal:");
+            btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
+            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdf");
+            btn_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            btn_cash.Content = MainWindow.resourcemanager.GetString("trCash");
+            btn_creditcard.Content = MainWindow.resourcemanager.GetString("trCreditCard");
+            dg_invoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
+            dg_invoice.Columns[1].Header = MainWindow.resourcemanager.GetString("trTotal");
+
+            dg_draft.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
+            dg_draft.Columns[1].Header = MainWindow.resourcemanager.GetString("trTotal");
+
+            ////////////////////////////////----vendor----/////////////////////////////////
+
+            txt_vendorHeader.Text = MainWindow.resourcemanager.GetString("trVendor");
+            txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendor, MainWindow.resourcemanager.GetString("trVendorHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_paid, MainWindow.resourcemanager.GetString("trPaidHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_deserved, MainWindow.resourcemanager.GetString("trDeservedHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_desrvedDate, MainWindow.resourcemanager.GetString("trDeservedDateHint"));
+            txt_vendorIvoiceDetails.Text = MainWindow.resourcemanager.GetString("trVendorInvoiceDetails");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_invoiceNumber, MainWindow.resourcemanager.GetString("trInvoiceNumberHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_invoiceDate, MainWindow.resourcemanager.GetString("trInvoiceDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+        }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_ucPayInvoice.FlowDirection = FlowDirection.LeftToRight;
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_ucPayInvoice.FlowDirection = FlowDirection.RightToLeft;
+            }
+
+            translate();
+
             catigoriesAndItemsView.ucPayInvoice = this;
             #region Generate catigorie
             catigoriesAndItemsView.gridCatigories = Grid_categorie;
@@ -75,6 +138,8 @@ namespace POS.View
 
             #endregion
             grid_vendor.Visibility = Visibility.Collapsed;
+
+
 
         }
         #region bill
@@ -176,8 +241,8 @@ namespace POS.View
             for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
                 if (vis is DataGridRow)
                 {
-                    BillDetails row = (BillDetails)DG_BillDetails.SelectedItems[0];
-                    ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)DG_BillDetails.ItemsSource;
+                    BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
+                    ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)dg_billDetails.ItemsSource;
                     data.Remove(row);
                 }
 
@@ -213,7 +278,9 @@ namespace POS.View
             //grid_itemsDatagrid.Visibility = Visibility.Visible;
         }
 
+        private void UserControl_Loaded_1(object sender, RoutedEventArgs e)
+        {
 
-
+        }
     }
 }
