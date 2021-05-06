@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POS_Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
+            Boolean canDelete = false;
+
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -31,19 +34,37 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var locationsList = entity.locations
-                    .Select(L => new
+                    .Select(L => new LocationModel
                     {
-                        L.locationId,
-                        L.x,
-                        L.y,
-                        L.z,
-                        L.branchId,
-                        L.createDate,
-                        L.updateDate,
-                        L.createUserId,
-                        L.updateUserId,
+                      locationId=  L.locationId,
+                       x =  L.x,
+                       y = L.y,
+                        z = L.z,
+                        branchId= L.branchId,
+                        createDate=L.createDate,
+                        updateDate=L.updateDate,
+                        createUserId= L.createUserId,
+                        updateUserId=L.updateUserId,
+                        isActive=L.isActive,
                     })
                     .ToList();
+
+                    if (locationsList.Count > 0)
+                    {
+                        for (int i = 0; i < locationsList.Count; i++)
+                        {
+                            if (locationsList[i].isActive == 1)
+                            {
+                                int locationId = (int)locationsList[i].locationId;
+                                var itemsLocationL = entity.itemsLocations.Where(x => x.locationId == locationId).Select(b => new { b.itemsLocId }).FirstOrDefault();
+                                var itemsTransferL = entity.itemsTransfer.Where(x => x.locationIdNew == locationId || x.locationIdOld == locationId).Select(x => new { x.itemsTransId }).FirstOrDefault();
+                                
+                                if ((itemsLocationL is null) && (itemsTransferL is null) )
+                                    canDelete = true;
+                            }
+                            locationsList[i].canDelete = canDelete;
+                        }
+                    }
 
                     if (locationsList == null)
                         return NotFound();
@@ -87,6 +108,7 @@ namespace POS_Server.Controllers
                        L.updateDate,
                        L.createUserId,
                        L.updateUserId,
+                       L.isActive,
                    })
                    .FirstOrDefault();
 
@@ -100,7 +122,7 @@ namespace POS_Server.Controllers
                 return NotFound();
         }
 
-        // add or update pos
+        // add or update location
         [HttpPost]
         [Route("Save")]
         public string Save(string locationObject)
@@ -138,6 +160,10 @@ namespace POS_Server.Controllers
                         var locationEntity = entity.Set<locations>();
                         if (newObject.locationId == 0)
                         {
+                            newObject.createDate = DateTime.Now;
+                            newObject.updateDate = DateTime.Now;
+                            newObject.updateUserId = newObject.createUserId;
+
                             locationEntity.Add(newObject);
                             message = "Location Is Added Successfully";
                         }
@@ -148,7 +174,7 @@ namespace POS_Server.Controllers
                             tmpLocation.y = newObject.y;
                             tmpLocation.z = newObject.z;
                             tmpLocation.branchId = newObject.branchId;
-                            tmpLocation.updateDate = newObject.updateDate;
+                            tmpLocation.updateDate = DateTime.Now;
                             tmpLocation.updateUserId = newObject.updateUserId;
 
                             message = "Location Is Updated Successfully";
@@ -166,7 +192,7 @@ namespace POS_Server.Controllers
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int locationId)
+        public IHttpActionResult Delete(int locationId, int userId,Boolean final)
         {
             var re = Request;
             var headers = re.Headers;
@@ -180,21 +206,45 @@ namespace POS_Server.Controllers
             bool valid = validation.CheckApiKey(token);
             if (valid)
             {
-                try
+                if (final)
                 {
-                    using (incposdbEntities entity = new incposdbEntities())
+                    try
                     {
-                        locations locationDelete = entity.locations.Find(locationId);
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            locations locationDelete = entity.locations.Find(locationId);
 
-                        entity.locations.Remove(locationDelete);
-                        entity.SaveChanges();
+                            entity.locations.Remove(locationDelete);
+                            entity.SaveChanges();
 
-                        return Ok("Location is Deleted Successfully");
+                            return Ok("Location is Deleted Successfully");
+                        }
+                    }
+                    catch
+                    {
+                        return NotFound();
                     }
                 }
-                catch
+                else
                 {
-                    return NotFound();
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            locations locationDelete = entity.locations.Find(locationId);
+
+                            locationDelete.isActive = 0;
+                            locationDelete.updateUserId = userId;
+                            locationDelete.updateDate = DateTime.Now;
+                            entity.SaveChanges();
+
+                            return Ok("Location is Deleted Successfully");
+                        }
+                    }
+                    catch
+                    {
+                        return NotFound();
+                    }
                 }
             }
             else

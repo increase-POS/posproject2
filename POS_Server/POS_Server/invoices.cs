@@ -17,9 +17,10 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public invoices()
         {
-            this.barcodes = new HashSet<barcodes>();
             this.cashTransfer = new HashSet<cashTransfer>();
+            this.couponsInvoices = new HashSet<couponsInvoices>();
             this.invoices1 = new HashSet<invoices>();
+            this.invoicesOrders = new HashSet<invoicesOrders>();
             this.itemsTransfer = new HashSet<itemsTransfer>();
             this.orders = new HashSet<orders>();
             this.orderscontents = new HashSet<orderscontents>();
@@ -40,14 +41,16 @@ namespace POS_Server
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> invoiceMainId { get; set; }
         public string invCase { get; set; }
-        public Nullable<System.DateTime> invTime { get; set; }
+        public Nullable<System.TimeSpan> invTime { get; set; }
         public string notes { get; set; }
+        public string vendorInvNum { get; set; }
+        public Nullable<System.DateTime> vendorInvDate { get; set; }
     
         public virtual agents agents { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<barcodes> barcodes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cashTransfer> cashTransfer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<couponsInvoices> couponsInvoices { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<invoices> invoices1 { get; set; }
         public virtual invoices invoices2 { get; set; }
@@ -55,6 +58,8 @@ namespace POS_Server
         public virtual users users1 { get; set; }
         public virtual users users2 { get; set; }
         public virtual users users3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<invoicesOrders> invoicesOrders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsTransfer> itemsTransfer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

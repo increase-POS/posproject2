@@ -11,9 +11,10 @@ namespace POS_Server.Controllers
     [RoutePrefix("api/Users")]
     public class UsersController : ApiController
     {
+        //get active users
         [HttpGet]
-        [Route("Get")]
-        public IHttpActionResult Get()
+        [Route("GetActive")]
+        public IHttpActionResult GetActive()
         {
             var re = Request;
             var headers = re.Headers;
@@ -39,7 +40,6 @@ namespace POS_Server.Controllers
                         u.lastname,
                         u.job,
                         u.workHours,
-                        u.details,
                         u.createDate,
                         u.updateDate,
                         u.createUserId,
@@ -63,6 +63,58 @@ namespace POS_Server.Controllers
             return NotFound();
         }
 
+        // return all users active and inactive
+        [HttpGet]
+        [Route("Get")]
+        public IHttpActionResult Get()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var usersList = entity.users
+                    .Select(u => new
+                    {
+                        u.userId,
+                        u.username,
+                        u.password,
+                        u.name,
+                        u.lastname,
+                        u.job,
+                        u.workHours,
+                        u.createDate,
+                        u.updateDate,
+                        u.createUserId,
+                        u.updateUserId,
+                        u.phone,
+                        u.mobile,
+                        u.email,
+                        u.notes,
+                        u.address,
+                        u.isActive,
+                        u.isOnline
+                    })
+                    .ToList();
+
+                    if (usersList == null)
+                        return NotFound();
+                    else
+                        return Ok(usersList);
+                }
+            }
+            //else
+            return NotFound();
+        }
         // GET api/<controller>
         [HttpGet]
         [Route("GetUserByID")]
@@ -98,7 +150,6 @@ namespace POS_Server.Controllers
                        u.lastname,
                        u.job,
                        u.workHours,
-                       u.details,
                        u.createDate,
                        u.updateDate,
                        u.createUserId,
@@ -122,6 +173,58 @@ namespace POS_Server.Controllers
                 return NotFound();
         }
 
+        [HttpGet]
+        [Route("Search")]
+        public IHttpActionResult Search(string searchWords)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var usersList = entity.users
+                    .Where(p => p.name.Contains(searchWords) || p.lastname.Contains(searchWords) || p.job.Contains(searchWords) || p.workHours.Contains(searchWords))
+                    .Select(u => new
+                    {
+                        u.userId,
+                        u.username,
+                        u.password,
+                        u.name,
+                        u.lastname,
+                        u.job,
+                        u.workHours,
+                        u.createDate,
+                        u.updateDate,
+                        u.createUserId,
+                        u.updateUserId,
+                        u.phone,
+                        u.mobile,
+                        u.email,
+                        u.notes,
+                        u.address,
+                        u.isActive,
+                        u.isOnline
+                    })
+                    .ToList();
+
+                    if (usersList == null)
+                        return NotFound();
+                    else
+                        return Ok(usersList);
+                }
+            }
+            //else
+            return NotFound();
+        }
         // add or update unit
         [HttpPost]
         [Route("Save")]
@@ -160,6 +263,10 @@ namespace POS_Server.Controllers
                         var unitEntity = entity.Set<users>();
                         if (newObject.userId == 0)
                         {
+                            newObject.createDate = DateTime.Now;
+                            newObject.updateDate = DateTime.Now;
+                            newObject.updateUserId = newObject.createUserId;
+
                             unitEntity.Add(newObject);
                             message = "User Is Added Successfully";
                         }
@@ -173,15 +280,14 @@ namespace POS_Server.Controllers
                             tmpUnit.lastname = newObject.lastname;
                             tmpUnit.job = newObject.job;
                             tmpUnit.workHours = newObject.workHours;
-                            tmpUnit.details = newObject.details;
-                            tmpUnit.updateDate = newObject.updateDate;
+                            tmpUnit.updateDate =DateTime.Now;
                             tmpUnit.updateUserId = newObject.updateUserId;
                             tmpUnit.phone = newObject.phone;
                             tmpUnit.mobile = newObject.mobile;
                             tmpUnit.email = newObject.email;
                             tmpUnit.notes = newObject.notes;
                             tmpUnit.address = newObject.address;
-
+                            tmpUnit.isActive = newObject.isActive;
                             message = "User Is Updated Successfully";
                         }
                         entity.SaveChanges();

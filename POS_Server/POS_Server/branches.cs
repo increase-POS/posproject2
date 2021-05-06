@@ -25,7 +25,6 @@ namespace POS_Server
         public int branchId { get; set; }
         public string code { get; set; }
         public string name { get; set; }
-        public string details { get; set; }
         public string address { get; set; }
         public string email { get; set; }
         public string phone { get; set; }
@@ -36,6 +35,8 @@ namespace POS_Server
         public Nullable<int> updateUserId { get; set; }
         public string notes { get; set; }
         public Nullable<int> parentId { get; set; }
+        public Nullable<byte> isActive { get; set; }
+        public string type { get; set; }
     
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }

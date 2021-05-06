@@ -8,7 +8,6 @@ namespace POS_Server
 {
     public static class WebApiConfig
     {
-        private static MediaTypeHeaderValue appXmlType;
 
         public static void Register(HttpConfiguration config)
         {

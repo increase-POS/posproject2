@@ -17,7 +17,7 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public itemsUnits()
         {
-            this.prices1 = new HashSet<prices>();
+            this.itemsOffers = new HashSet<itemsOffers>();
         }
     
         public int itemUnitId { get; set; }
@@ -26,20 +26,19 @@ namespace POS_Server
         public Nullable<decimal> unitValue { get; set; }
         public Nullable<short> defaultSale { get; set; }
         public Nullable<short> defaultPurchase { get; set; }
-        public Nullable<int> priceId { get; set; }
-        public Nullable<int> barcodeId { get; set; }
+        public Nullable<decimal> price { get; set; }
+        public string barcode { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
+        public Nullable<int> subUnitId { get; set; }
     
-        public virtual barcodes barcodes { get; set; }
         public virtual items items { get; set; }
-        public virtual prices prices { get; set; }
         public virtual units units { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<prices> prices1 { get; set; }
+        public virtual ICollection<itemsOffers> itemsOffers { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POS_Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
+            Boolean canDelete = false;
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -30,17 +32,34 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var propertiesList = entity.propertiesItems.Select(p => new {
-                        p.propertyItemId,
-                        p.propertyId,
-                        p.name,
-                        p.isDefault,
-                        p.createDate,
-                        p.createUserId,
-                        p.updateDate,
-                        p.updateUserId,
+                    var propertiesList = entity.propertiesItems.Select(p => new PropertiesItemModel {
+                       propertyItemId= p.propertyItemId,
+                        propertyId= p.propertyId,
+                        propertyItemName = p.name,
+                        isDefault= p.isDefault,
+                        createDate=p.createDate,
+                        createUserId= p.createUserId,
+                        updateDate= p.updateDate,
+                        updateUserId=p.updateUserId,
+                        isActive = p.isActive,
                     })
                     .ToList();
+
+                    if (propertiesList.Count > 0)
+                    {
+                        for (int i = 0; i < propertiesList.Count; i++)
+                        {
+                            if (propertiesList[i].isActive == 1)
+                            {
+                                int propertyItemId = (int)propertiesList[i].propertyItemId;
+                                var Itemsprop = entity.itemsProp.Where(x => x.propertyItemId == propertyItemId).Select(b => new { b.itemPropId }).FirstOrDefault();
+
+                                if (Itemsprop is null)
+                                    canDelete = true;
+                            }
+                            propertiesList[i].canDelete = canDelete;
+                        }
+                    }
 
                     if (propertiesList == null)
                         return NotFound();
@@ -138,6 +157,10 @@ namespace POS_Server.Controllers
                         var propItemEntity = entity.Set<propertiesItems>();
                         if (propertyItemObject.propertyItemId == 0)
                         {
+                            propertyItemObject.createDate = DateTime.Now;
+                            propertyItemObject.updateDate = DateTime.Now;
+                            propertyItemObject.updateUserId = propertyItemObject.createUserId;
+
                             propItemEntity.Add(propertyItemObject);
                             message = "Property Item Is Added Successfully";
                         }
@@ -147,9 +170,9 @@ namespace POS_Server.Controllers
                             tmpPropertyItem.name = propertyItemObject.name;
                             tmpPropertyItem.propertyId = propertyItemObject.propertyId;
                             tmpPropertyItem.isDefault = propertyItemObject.isDefault;
-                            tmpPropertyItem.updateDate = propertyItemObject.updateDate;
+                            tmpPropertyItem.updateDate = DateTime.Now;
                             tmpPropertyItem.updateUserId = propertyItemObject.updateUserId;
-
+                            tmpPropertyItem.isActive = propertyItemObject.isActive;
                             message = "Property Item Is Updated Successfully";
                         }
                         entity.SaveChanges();
@@ -166,37 +189,54 @@ namespace POS_Server.Controllers
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete()
+        public IHttpActionResult Delete(int propertyItemId,int userId,Boolean final)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            int propertyItemId = 0;
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
-            }
-            if (headers.Contains("propertyItemId"))
-            {
-                propertyItemId = Convert.ToInt32(headers.GetValues("propertyItemId").First());
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
             if (valid)
             {
-                try
+                if (final)
                 {
-                    using (incposdbEntities entity = new incposdbEntities())
+                    try
                     {
-                        propertiesItems PropertDelete = entity.propertiesItems.Find(propertyItemId);
-                        entity.propertiesItems.Remove(PropertDelete);
-                        entity.SaveChanges();
-                        return Ok("Property Item is Deleted Successfully");
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            propertiesItems PropertDelete = entity.propertiesItems.Find(propertyItemId);
+                            entity.propertiesItems.Remove(PropertDelete);
+                            entity.SaveChanges();
+                            return Ok("Property Item is Deleted Successfully");
+                        }
+                    }
+                    catch
+                    {
+                        return NotFound();
                     }
                 }
-                catch
+                else
                 {
-                    return NotFound();
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            propertiesItems PropertDelete = entity.propertiesItems.Find(propertyItemId);
+                            PropertDelete.isActive = 0;
+                            PropertDelete.updateUserId = userId;
+                            PropertDelete.updateDate = DateTime.Now;
+                            entity.SaveChanges();
+                            return Ok("Property Item is Deleted Successfully");
+                        }
+                    }
+                    catch
+                    {
+                        return NotFound();
+                    }
                 }
             }
             else

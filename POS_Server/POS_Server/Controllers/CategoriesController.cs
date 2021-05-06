@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POS_Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,72 @@ namespace POS_Server.Controllers
     public class CategoriesController : ApiController
     {
         // GET api/category
+
+        [HttpGet]
+        [Route("GetAllCategories")]
+        public IHttpActionResult GetAllCategories()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            Boolean canDelete = false;
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var categoriesList = entity.categories
+                    .Select(p => new CategoryModel{
+                      categoryId=  p.categoryId,
+                        name= p.name,
+                        categoryCode= p.categoryCode,
+                        createDate=  p.createDate,
+                        createUserId=p.createUserId,
+                        details= p.details,
+                        image=p.image,
+                        notes= p.notes,
+                        parentId=p.parentId,
+                        taxes= p.taxes,
+                        updateDate=p.updateDate,
+                        updateUserId= p.updateUserId,
+                        isActive= p.isActive,
+                    })
+                    .ToList();
+
+                    if (categoriesList.Count > 0)
+                    {
+                        for (int i = 0; i < categoriesList.Count; i++)
+                        {
+                            if (categoriesList[i].isActive == 1)
+                            {
+                                int categoryId = (int)categoriesList[i].categoryId;
+                                var items = entity.items.Where(x => x.categoryId == categoryId).Select(b => new { b.itemId }).FirstOrDefault();
+
+                                if (items is null)
+                                    canDelete = true;
+                            }
+                            categoriesList[i].canDelete = canDelete;
+                        }
+                    }
+                    if (categoriesList == null)
+                        return NotFound();
+                    else
+                        return Ok(categoriesList);
+
+                }
+            }
+            else
+                return NotFound();
+        }
+
         [HttpGet]
         [Route("GetSubCategories")]
         public IHttpActionResult GetSubCategories(int categoryId)
@@ -79,9 +146,7 @@ namespace POS_Server.Controllers
                             return NotFound();
                         else
                             return Ok(categoriesList);
-                    }
-                    
-
+                    }                  
                 }
             }
             else
@@ -175,6 +240,10 @@ namespace POS_Server.Controllers
                         var categoryEntity = entity.Set<categories>();
                         if (newObject.categoryId == 0)
                         {
+                            newObject.createDate = DateTime.Now;
+                            newObject.updateDate = DateTime.Now;
+                            newObject.updateUserId = newObject.createUserId;
+
                             categoryEntity.Add(newObject);
                             message = "Category Is Added Successfully";
                         }
@@ -188,8 +257,10 @@ namespace POS_Server.Controllers
                             tmpCategory.notes = newObject.notes;
                             tmpCategory.parentId = newObject.parentId;
                             tmpCategory.taxes = newObject.taxes;
-                            tmpCategory.updateDate = newObject.updateDate;
+                            tmpCategory.updateDate = DateTime.Now;
                             tmpCategory.updateUserId = newObject.updateUserId;
+                            tmpCategory.isActive = newObject.isActive;
+
                             message = "Category Is Updated Successfully";
                         }
                         entity.SaveChanges();

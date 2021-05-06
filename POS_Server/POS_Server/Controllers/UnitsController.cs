@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POS_Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,20 +31,24 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                   var unitsList = entity.units.Select(u=> new {
-                    u.createDate,
-                    u.createUserId,
-                    u.isSmallest,
-                    u.name,
-                    u.parentid,
-                    u.smallestId,
-                    u.unitId,
-                    u.updateDate,
-                    u.updateUserId,
-                   })
-                   .ToList();
-
-                   if (unitsList == null)
+                    var unitsList = (from u in entity.units
+                                    join b in entity.units 
+                                     on new { UnitModel = u.smallestId } equals new { UnitModel = (int?)b.unitId } into lj from x in lj.DefaultIfEmpty()
+                                    select new UnitModel()
+                                    {
+                                        unitId = u.unitId,
+                                        name = u.name,
+                                        isSmallest = u.isSmallest,
+                                        smallestUnit = x.name,
+                                    parentid = u.parentid,
+                                    smallestId = u.smallestId,
+                                        createDate = u.createDate,
+                                        createUserId = u.createUserId,
+                                        updateDate = u.updateDate,
+                                    updateUserId = u.updateUserId,
+                                    isActive = u.isActive,
+                                    }).ToList();
+                    if (unitsList == null)
                        return NotFound();
                     else
                         return Ok(unitsList);
@@ -51,6 +56,95 @@ namespace POS_Server.Controllers
             }
             //else
                 return NotFound();
+        }
+
+        [HttpGet]
+        [Route("Search")]
+        public IHttpActionResult Search(string searchWords)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var unitsList = (from u in entity.units
+                                     join b in entity.units
+                                      on new { UnitModel = u.smallestId } equals new { UnitModel = (int?)b.unitId } into lj
+                                     from x in lj.DefaultIfEmpty()
+                                     select new UnitModel()
+                                     {
+                                         unitId = u.unitId,
+                                         name = u.name,
+                                         isSmallest = u.isSmallest,
+                                         smallestUnit = x.name,
+                                         parentid = u.parentid,
+                                         smallestId = u.smallestId,
+                                         createDate = u.createDate,
+                                         createUserId = u.createUserId,
+                                         updateDate = u.updateDate,
+                                         updateUserId = u.updateUserId,
+                                         isActive = u.isActive,
+                                     }).Where(f => (f.name.Contains(searchWords) || f.smallestUnit.Contains(searchWords))).ToList();
+                    if (unitsList == null)
+                        return NotFound();
+                    else
+                        return Ok(unitsList);
+                }
+            }
+            //else
+            return NotFound();
+        }
+
+        [HttpGet]
+        [Route("GetActive")]
+        public IHttpActionResult GetActive()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var unitsList = entity.units
+                        .Where(u => u.isActive == 1)
+                        .Select(u => new {
+                        u.createDate,
+                        u.createUserId,
+                        u.isSmallest,
+                        u.name,
+                        u.parentid,
+                        u.smallestId,
+                        u.unitId,
+                        u.updateDate,
+                        u.updateUserId,
+                    })
+                    .ToList();
+
+                    if (unitsList == null)
+                        return NotFound();
+                    else
+                        return Ok(unitsList);
+                }
+            }
+            //else
+            return NotFound();
         }
 
         // GET api/<controller>
@@ -130,6 +224,10 @@ namespace POS_Server.Controllers
                         var unitEntity = entity.Set<units>();
                         if (Object.unitId == 0)
                         {
+                            Object.createDate = DateTime.Now;
+                            Object.updateDate = DateTime.Now;
+                            Object.updateUserId = Object.createUserId;
+
                             unitEntity.Add(Object);
                             message = "Unit Is Added Successfully";
                         }
@@ -139,9 +237,10 @@ namespace POS_Server.Controllers
                             tmpUnit.name = Object.name;
                             tmpUnit.isSmallest = Object.isSmallest;
                             tmpUnit.smallestId = Object.smallestId;
-                            tmpUnit.updateDate = Object.updateDate;
+                            tmpUnit.updateDate = DateTime.Now;
                             tmpUnit.updateUserId = Object.updateUserId;
                             tmpUnit.parentid = Object.parentid;
+                            tmpUnit.isActive = Object.isActive;
                             message = "Unit Is Updated Successfully";
                         }
                         entity.SaveChanges();

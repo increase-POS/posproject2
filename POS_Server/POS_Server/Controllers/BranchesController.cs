@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POS_Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,75 @@ namespace POS_Server.Controllers
     {
         [HttpGet]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(string type)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            Boolean canDelete = false;
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+
+                    var branchesList = entity.branches
+                        .Where(b => b.type == type)
+                   .Select(b => new BranchModel{
+                      branchId= b.branchId,
+                       address=b.address,
+                       createDate= b.createDate,
+                       createUserId= b.createUserId,
+                       email=b.email,
+                       mobile= b.mobile,
+                       name= b.name,
+                       code=b.code,
+                       notes=b.notes,
+                       parentId= b.parentId,
+                       phone=b.phone,
+                       updateDate= b.updateDate,
+                       updateUserId= b.updateUserId,
+                       isActive=b.isActive,
+                       type= b.type})
+                   .ToList();
+
+                    if (branchesList.Count > 0)
+                    {
+                        for (int i = 0; i < branchesList.Count; i++)
+                        {
+                            if (branchesList[i].isActive == 1)
+                            {
+                                int branchId = (int)branchesList[i].branchId;
+                                var posL = entity.pos.Where(x => x.branchId == branchId).Select(b => new { b.posId }).FirstOrDefault();
+                                var locationsL = entity.locations.Where(x => x.branchId == branchId).Select(x => new { x.locationId }).FirstOrDefault();
+                                var usersL = entity.branchesUsers.Where(x => x.branchId == branchId).Select(x => new { x.branchsUsersId }).FirstOrDefault();
+                                if ((posL is null) && (locationsL is null) && (usersL is null))
+                                    canDelete = true;
+                            }
+                            branchesList[i].canDelete = canDelete;
+                        }
+                    }
+                    if (branchesList == null)
+                        return NotFound();
+                    else
+                        return Ok(branchesList);
+
+                }
+            }
+            else
+                return NotFound();
+        }
+
+        [HttpGet]
+        [Route("Search")]
+        public IHttpActionResult Search(string type,string searchWords)
         {
             var re = Request;
             var headers = re.Headers;
@@ -32,7 +101,76 @@ namespace POS_Server.Controllers
                 {
 
                     var branchesList = entity.branches
-                   .Select(b => new { b.branchId, b.address, b.createDate, b.createUserId, b.details, b.email, b.mobile, b.name,b.code, b.notes, b.parentId, b.phone,  b.updateDate, b.updateUserId })
+                        .Where(b => b.type == type && (b.name.Contains(searchWords) || b.code.Contains(searchWords) || b.address.Contains(searchWords)))
+                   .Select(b => new {
+                       b.branchId,
+                       b.address,
+                       b.createDate,
+                       b.createUserId,
+                       b.email,
+                       b.mobile,
+                       b.name,
+                       b.code,
+                       b.notes,
+                       b.parentId,
+                       b.phone,
+                       b.updateDate,
+                       b.updateUserId,
+                       b.isActive,
+                       b.type
+                   })
+                   .ToList();
+
+                    if (branchesList == null)
+                        return NotFound();
+                    else
+                        return Ok(branchesList);
+
+                }
+            }
+            else
+                return NotFound();
+        }
+
+        [HttpGet]
+        [Route("GetActive")]
+        public IHttpActionResult GetActive(string type)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+
+                    var branchesList = entity.branches
+                        .Where(b => b.type == type && b.isActive == 1)
+                   .Select(b => new {
+                       b.branchId,
+                       b.address,
+                       b.createDate,
+                       b.createUserId,
+                       b.email,
+                       b.mobile,
+                       b.name,
+                       b.code,
+                       b.notes,
+                       b.parentId,
+                       b.phone,
+                       b.updateDate,
+                       b.updateUserId,
+                       b.isActive,
+                       b.type
+                   })
                    .ToList();
 
                     if (branchesList == null)
@@ -72,7 +210,7 @@ namespace POS_Server.Controllers
 
                     var branch = entity.branches
                    .Where(b => b.branchId == branchId)
-                   .Select(b => new { b.branchId, b.address, b.createDate, b.createUserId, b.details, b.email, b.mobile, b.name, b.code, b.notes, b.parentId, b.phone, b.updateDate, b.updateUserId })
+                   .Select(b => new { b.branchId, b.address, b.createDate, b.createUserId, b.email, b.mobile, b.name, b.code, b.notes, b.parentId, b.phone, b.updateDate, b.updateUserId })
                    .FirstOrDefault();
 
                     if (branch == null)
@@ -123,22 +261,28 @@ namespace POS_Server.Controllers
                         var branchEntity = entity.Set<branches>();
                         if (newObject.branchId == 0)
                         {
+                            newObject.createDate = DateTime.Now;
+                            newObject.updateDate = DateTime.Now;
+                            newObject.updateUserId = newObject.createUserId;
+
+
                             branchEntity.Add(newObject);
                         }
                         else
                         {
                             var tmpBranch = entity.branches.Where(p => p.branchId == newObject.branchId).First();
                             tmpBranch.address = newObject.address;
-                            tmpBranch.details = newObject.details;
                             tmpBranch.code = newObject.code;
                             tmpBranch.email = newObject.email;
                             tmpBranch.name = newObject.name;
                             tmpBranch.mobile = newObject.mobile;
                             tmpBranch.notes = newObject.notes;
                             tmpBranch.phone = newObject.phone;
+                            tmpBranch.type = newObject.type;
                             tmpBranch.parentId = newObject.parentId;
-                            tmpBranch.updateDate = newObject.updateDate;
-                            tmpBranch.updateUserId = newObject.updateUserId;
+                            tmpBranch.updateDate = DateTime.Now;// server current date
+                            tmpBranch.updateUserId = newObject.updateUserId; 
+                            tmpBranch.isActive = newObject.isActive;
                         }
                         entity.SaveChanges();
                     }
@@ -155,41 +299,60 @@ namespace POS_Server.Controllers
         }
         [HttpPost]
         [Route("Delete")]
-        public bool Delete()
+        public bool Delete(int branchId, int userId,Boolean final)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            int branchId = 0;
 
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
-            }
-            if (headers.Contains("branchId"))
-            {
-                branchId = Convert.ToInt32(headers.GetValues("branchId").First());
             }
 
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
             if (valid)
             {
-                try
+                if (final)
                 {
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {
-                        var tmpBranch = entity.branches.Where(p => p.branchId == branchId).First();
-                        entity.branches.Remove(tmpBranch);
+                    //try
+                    //{
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            var tmpBranch = entity.branches.Where(p => p.branchId == branchId).First();
+                            entity.branches.Remove(tmpBranch);
 
-                        entity.SaveChanges();
-                    }
+                            entity.SaveChanges();
+                        }
 
-                    return true;
+                        return true;
+                   // }
+                   // catch
+                   // {
+                   //     return false;
+                   // }
                 }
-                catch
+                else
                 {
-                    return false;
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            var tmpBranch = entity.branches.Where(p => p.branchId == branchId).First();
+                            tmpBranch.isActive = 0;
+                            tmpBranch.updateUserId = userId;
+                            tmpBranch.updateDate = DateTime.Now;
+
+                            entity.SaveChanges();
+                        }
+
+                        return true;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
                 }
             }
             else

@@ -19,8 +19,6 @@ namespace POS_Server
         public Nullable<long> quantity { get; set; }
         public string type { get; set; }
         public Nullable<int> invoiceId { get; set; }
-        public Nullable<decimal> discount { get; set; }
-        public Nullable<short> discountType { get; set; }
         public Nullable<int> locationIdNew { get; set; }
         public Nullable<int> locationIdOld { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
@@ -30,10 +28,7 @@ namespace POS_Server
         public string notes { get; set; }
     
         public virtual invoices invoices { get; set; }
-        public virtual items items { get; set; }
         public virtual locations locations { get; set; }
         public virtual locations locations1 { get; set; }
-        public virtual users users { get; set; }
-        public virtual users users1 { get; set; }
     }
 }
