@@ -213,7 +213,7 @@ namespace POS.Classes
         //        return "";
         //    }
         //}
-        public async Task<Boolean> deleteBranch(int branchId, bool final)
+        public async Task<Boolean> deleteBranch(int branchId,int userId, bool final)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -226,11 +226,12 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Branches/Delete?final=" + final);
-
+                request.RequestUri = new Uri(Global.APIUri + "Branches/Delete?branchId="+ branchId + "&userId="+userId+ "&final=" + final);
+                //request.RequestUri = new Uri(Global.APIUri + "Branches/Search?type=" + type + "&Searchwords=" + searchWord);
+                
                 request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("agentId", branchId.ToString());
-                request.Headers.Add("userId", "2");
+                //request.Headers.Add("branchId", branchId.ToString());
+                //request.Headers.Add("userId", "2");
                 request.Method = HttpMethod.Post;
                 //set content type
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

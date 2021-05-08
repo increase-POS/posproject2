@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              Loaded="UserControl_Loaded"
               d:DesignHeight="675" d:DesignWidth="1150">
-    <Grid  >
+    <Grid  x:Name="grid_ucReceiptInvoice">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="380"/>
@@ -104,7 +104,7 @@
                                         <ColumnDefinition Width="45"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" 
+                                    <TextBlock x:Name="txt_active"  Grid.Column="0" 
                             Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                               FontSize="12"/>
@@ -301,7 +301,7 @@
                      HorizontalAlignment="Left" VerticalAlignment="Bottom" 
                   Height="30"   Width="30" Margin="5,0,15,0"/>
                                     <Grid Width="235" VerticalAlignment="Bottom" Grid.Column="2" >
-                                        <TextBox x:Name="txb_searchItemsCard"  TextChanged="Txb_searchItemsCard_TextChanged"
+                                        <TextBox x:Name="tb_searchItemsCard"  TextChanged="Txb_searchItemsCard_TextChanged"
                         Padding="10,5,5,5" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
@@ -325,7 +325,7 @@
                                             <ColumnDefinition Width="45"/>
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" 
+                                        <TextBlock x:Name="txt_activeItem" Grid.Column="0" 
                             Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                               FontSize="12"/>
@@ -588,7 +588,7 @@
 	c0.2,0,0.3,0.1,0.4,0.1c0,0.1,0.1,0.3,0.1,0.4C16.4,13.5,16.4,13.6,16.3,13.7z M16.3,11.8c-0.1,0-0.3,0.1-0.4,0.1h-4.3
 	c-0.2,0-0.3,0-0.4-0.1c0-0.1-0.1-0.2-0.1-0.4s0-0.3,0.1-0.4c0.1,0,0.3-0.1,0.4-0.1h4.3c0.2,0,0.3,0.1,0.4,0.1c0,0.1,0.1,0.2,0.1,0.4
 	S16.4,11.7,16.3,11.8z"/>
-                            <TextBlock Text="Invoice"  Foreground="#E8E8E8" 
+                            <TextBlock Text="Invoice" x:Name="txt_invoiceHeader" Foreground="#E8E8E8" 
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="5"/>
                         </Grid>
@@ -609,7 +609,7 @@
                             <materialDesign:PackIcon Foreground="#E8E8E8" Kind="AccountBoxes"  
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"/>
-                            <TextBlock Text="Customer"  Foreground="#E8E8E8"
+                            <TextBlock x:Name="txt_customerHeader" Text="Customer"  Foreground="#E8E8E8"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="5"/>
                         </Grid>
@@ -637,7 +637,7 @@
 	C126.9,115.6,126.6,110.7,125.9,105.9z M109.3,82.3l1.6-8.5c0.8-6.2-3.5-11.9-9.7-12.8c-0.5-0.1-1-0.1-1.5-0.1h-2
 	c-6.3,0-11.3,5.1-11.3,11.3c0,0.5,0,1,0.1,1.5l1.6,8.5c1.1,5.8,6.8,9.6,12.6,8.5C105.1,90,108.5,86.6,109.3,82.3L109.3,82.3z
 	 M92,94.9c0,0-11.9,4-17.4,6.7c-1.7,0.8-2.8,2.4-3.1,4.2c-0.6,4.8-1,9.7-1.1,14.6h22.8l3.1-21.2L93,94.9H92z"/>
-                            <TextBlock Text="Delivery"  Foreground="#E8E8E8"
+                            <TextBlock x:Name="txt_deliveryHeader"  Text="Delivery"  Foreground="#E8E8E8"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="5"/>
                         </Grid>
@@ -649,6 +649,7 @@
             <Border CornerRadius="0,0,7,7"
                 Grid.Row="1" Background="White">
                 <Grid>
+ <!--/////////////////////////////////////   invoice   ///////////////////////////////////////-->
                     <Grid x:Name="grid_receiptInvoice"  Visibility="Visible"  >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
@@ -674,39 +675,40 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Return Invoice" Foreground="#737373"
+                                <TextBlock x:Name="txt_returnInvoice" Text="Return Invoice" Foreground="#737373"
                                  FontSize="10"       VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
                                 <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                             </Grid>
-                         
-                            <Grid Grid.Row="1"  Grid.Column="1">
+                        <Grid Grid.Row="1"  Grid.Column="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" 
-                            Margin="10,0,5,0" Text="Invoice" Foreground="#6e6e6e"
+                                <TextBlock x:Name="txt_invoiceToggle" Grid.Column="0" 
+                            Margin="10,5,5,5" Text="Invoice" Foreground="#6e6e6e"
                         HorizontalAlignment="Center" VerticalAlignment="Center" 
                               FontSize="12"  />
                                 <ToggleButton Grid.Column="1"  x:Name="tgl_ReturnInvoiceDropDown"  Checked="Tgl_ReturnInvoiceDropDown_Checked" Unchecked="Tgl_ReturnInvoiceDropDown_Unchecked"
                              VerticalAlignment="Center" Padding="10,15,5,5"
                                           Margin="0,0,0,0" Height="13" Width="28" />
-                            </Grid>
+                        </Grid>
+
+ <!--////////////////////////////////////////    Sub Invoice     /////////////////////////////////////////-->
                             <Grid x:Name="grid_returnInvoice"  Grid.Row="2" Visibility="Collapsed">
                                 <Grid.RowDefinitions >
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBox  Text="{Binding taxes, Mode=OneWay}" 
+                                <TextBox x:Name="tb_InvoicenName" Text="{Binding taxes, Mode=OneWay}" 
                                              Grid.Row="0" Padding="10,5,5,5"
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Selcect Invoice..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                              BorderBrush="#f8f8f8"
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
                         Grid.Column="1"  Height="30" Width="340"  Margin="5,1" />
-                                <DataGrid  x:Name="dg_Bills"  Margin="5" Grid.Row="3" Grid.ColumnSpan="2" Height="200"   Background="White"
+                                <DataGrid  x:Name="dg_invoice"  Margin="5" Grid.Row="3" Grid.ColumnSpan="2" Height="200"   Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
@@ -756,9 +758,9 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Draft" Foreground="#737373"
+                                <TextBlock Text="Draft" x:Name="txt_draft" Foreground="#737373"
                                  FontSize="10"       VerticalAlignment="Center"
-                                       HorizontalAlignment="Left" Margin="5,5,0,5"/>
+                                       HorizontalAlignment="Left" Margin="6,5,0,5" />
                                 <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                             </Grid>
@@ -768,7 +770,7 @@
                                     <ColumnDefinition Width="88"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" 
+                                <TextBlock x:Name="txt_draftToggle" Grid.Column="0" 
                             Margin="10,0,5,0" Text="Draft" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                               FontSize="12"/>
@@ -789,7 +791,7 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn MinWidth="150"  Header="Bill Number" Binding="{Binding Path=Id}">
+                                    <DataGridTextColumn   MinWidth="150"  Header="Invoice Number" Binding="{Binding Path=Id}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
@@ -825,13 +827,13 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Invoice" Foreground="#737373"
+                                <TextBlock x:Name="txt_invoice" Text="Invoice" Foreground="#737373"
                                  FontSize="10"       VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
                                 <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                             </Grid>
-                            <DataGrid x:Name="DG_BillDetails"  Margin="10,5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
+                            <DataGrid x:Name="dg_billDetails"  Margin="10,5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
@@ -850,7 +852,7 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTextColumn   MinWidth="30"   Header="Num"  Binding="{Binding Path=ID}">
+                                    <DataGridTextColumn   MinWidth="10"   Header="Num"  Binding="{Binding Path=ID}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
@@ -861,7 +863,7 @@
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn MinWidth="100"  Header="Item" Binding="{Binding Path=Product}">
+                                    <DataGridTextColumn MinWidth="90"  Header="Item" Binding="{Binding Path=Product}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
@@ -872,7 +874,7 @@
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn MinWidth="30"  Header="Amount" Binding="{Binding Path=Count}">
+                                    <DataGridTextColumn MinWidth="10"  Header="Amount" Binding="{Binding Path=Count}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
@@ -883,7 +885,7 @@
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn MinWidth="30"  Header="Price" Binding="{Binding Path=Price}">
+                                    <DataGridTextColumn MinWidth="20"  Header="Price" Binding="{Binding Path=Price}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
@@ -894,7 +896,7 @@
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn MinWidth="30"  Header="Total" Binding="{Binding Path=Total}">
+                                    <DataGridTextColumn MinWidth="20"  Header="Total" Binding="{Binding Path=Total}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
@@ -920,9 +922,9 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid Grid.Column="1" >
-                                    <TextBox  Text="{Binding taxes, Mode=OneWay}"
+                                    <TextBox x:Name="tb_discount" Text="{Binding taxes, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5"
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Copon..."  
+                            BorderThickness="1"  materialDesign:HintAssist.Hint="Discount..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                              BorderBrush="#f8f8f8"
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
@@ -958,7 +960,7 @@
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" 
+                                    <TextBlock x:Name="txt_discount" Grid.Column="0" 
                             Margin="10,0,5,0" Text="Discount" Foreground="#6e6e6e"
                         HorizontalAlignment="Center" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
@@ -966,7 +968,7 @@
                             Margin="1,0" Text="150$" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
-                                    <TextBlock Grid.Column="2"
+                                    <TextBlock x:Name="txt_tax"  Grid.Column="2"
                              Margin="1,0"   Text="Tax" Foreground="#6e6e6e"
                         HorizontalAlignment="Center" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
@@ -981,8 +983,8 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" 
-                            Margin="10,0,5,0" Text="Total" Foreground="Black"
+                                    <TextBlock x:Name="txt_sum" Grid.Column="0" 
+                            Margin="10,0,5,0" Text="Sum" Foreground="Black"
                         HorizontalAlignment="Right" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
                                     <TextBlock  Grid.Column="1"
@@ -1002,7 +1004,7 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Total:" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,5,2" FontSize="16"/>
+                                <TextBlock x:Name="txt_total" Text="Total:" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,2,5,2" FontSize="16"/>
                                 <TextBlock  Grid.Column="1" Margin="0" FontWeight="Bold" FontSize="16"  VerticalAlignment="Center"
                        TextAlignment="Center"       Text="255$" Foreground="White" HorizontalAlignment="Right" Width="75">
 
@@ -1021,13 +1023,13 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Row="0" Grid.Column="0"
+                                <Button x:Name="btn_preview"  Grid.Row="0" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,0"    Content="Preview" />
-                                <Button Grid.Row="0" Grid.Column="1"
+                                <Button x:Name="btn_pdf" Grid.Row="0" Grid.Column="1"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="1,0"    Content="PDF" />
-                                <Button Grid.Row="0" Grid.Column="2"
+                                <Button x:Name="btn_print" Grid.Row="0" Grid.Column="2"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,0"    Content="Print" />
                             </Grid>
@@ -1036,16 +1038,18 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" 
+                                <Button x:Name="btn_cash" Grid.Column="0" 
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,0"    Content="Cash" />
-                                <Button Grid.Column="1" 
+                                <Button x:Name="btn_creditcard" Grid.Column="1" 
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,0"     Content="Credit card" />
                             </Grid>
 
                         </Grid>
                     </Grid>
+ <!--/////////////////////////////////////   Customer   ///////////////////////////////////////-->
+
                     <Grid  x:Name="grid_customer" Visibility="Collapsed"  >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
@@ -1064,7 +1068,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Customer" x:Name="txt_secondaryInformation" Foreground="#737373"
+                            <TextBlock Text="Customer" x:Name="txt_customer" Foreground="#737373"
                                  FontSize="10"      VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
                             <Separator Background="#999999"   Width="300"  Margin="5,0,5,0"
@@ -1073,7 +1077,7 @@
                         <Grid  Grid.Row="1" >
                             <ComboBox x:Name="cb_customer"  Grid.Row="1"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Select Customer"  
+                             materialDesign:HintAssist.Hint="Customer..."  
                            TextBlock.FontSize="12"   Background="#f8f8f8" 
                          HorizontalAlignment="Left" VerticalAlignment="Center" 
                          Grid.Column="1" Height="35" Width="340"  Margin="5,5"
@@ -1100,7 +1104,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox   Text="{Binding test, Mode=OneWay}"
+                            <TextBox x:Name="txt_paid"  Text="{Binding test, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5" 
                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Paid..."  
@@ -1122,7 +1126,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox   Text="{Binding test, Mode=OneWay}"
+                            <TextBox x:Name="txt_deserved"  Text="{Binding test, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5"  
                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Deserved..."  
@@ -1166,7 +1170,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox   Text="{Binding test, Mode=OneWay}"
+                            <TextBox x:Name="tb_note"  Text="{Binding test, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5"  
                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  
@@ -1192,7 +1196,7 @@
                                 <!--<ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>-->
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Row="0" Grid.Column="0"
+                            <Button x:Name="btn_save" Grid.Row="0" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,0"    Content="Save" />
                             <!--<Button Grid.Row="0" Grid.Column="1"
@@ -1203,6 +1207,8 @@
                     Margin="1,0"    Content="Delete" />-->
                         </Grid>
                     </Grid>
+ <!--/////////////////////////////////////   Delivery   ///////////////////////////////////////-->
+
                     <Grid  x:Name="grid_delivery" Visibility="Collapsed"  >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
@@ -1217,7 +1223,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Delivery"  Foreground="#737373"
+                            <TextBlock x:Name="txt_delivery" Text="Delivery"  Foreground="#737373"
                                  FontSize="10"      VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
                             <Separator Background="#999999"   Width="300"  Margin="5,0,5,0"
@@ -1226,7 +1232,7 @@
                         <Grid  Grid.Row="1" >
                             <ComboBox x:Name="cb_delivery"  Grid.Row="1"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Select Delivery"  
+                             materialDesign:HintAssist.Hint="Delivery..."  
                            TextBlock.FontSize="12"   Background="#f8f8f8" 
                          HorizontalAlignment="Left" VerticalAlignment="Center" 
                          Grid.Column="1" Height="35" Width="340"  Margin="5,5"
@@ -1260,7 +1266,7 @@
                                 <!--<ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>-->
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Row="0" Grid.Column="0"
+                            <Button x:Name="btn_saveDelivery" Grid.Row="0" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,0"    Content="Save" />
                             <!--<Button Grid.Row="0" Grid.Column="1"

@@ -88,6 +88,7 @@
     <Compile Include="Classes\PropertiesItems.cs" />
     <Compile Include="Classes\Property.cs" />
     <Compile Include="Classes\SectionData.cs" />
+    <Compile Include="Classes\Serial.cs" />
     <Compile Include="Classes\Unit.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="controlTemplate\UC_rectangleCard.xaml.cs">

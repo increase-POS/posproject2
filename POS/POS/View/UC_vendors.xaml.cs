@@ -49,11 +49,13 @@ namespace POS.View
         {
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
+            p_errorMobile.Visibility = Visibility.Collapsed;
             var bc = new BrushConverter();
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_fax.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
+            tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            
             if (dg_vendor.SelectedIndex != -1)
             {
                 agent = dg_vendor.SelectedItem as Agent;
@@ -401,7 +403,6 @@ namespace POS.View
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            MessageBox.Show(agent.canDelete.ToString() + " " + agent.isActive.ToString());
             if ((!agent.canDelete) && (agent.isActive == 0))
                 activate();
             else
@@ -461,12 +462,6 @@ namespace POS.View
                 }
             }
         }
-
-        //private async void tb_search_LostFocus(object sender, RoutedEventArgs e)
-        //{
-        //    var agents = await agentModel.GetAgentsAsync("v");
-        //    dg_vendor.ItemsSource = agents;
-        //}
 
         private async void tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -646,6 +641,11 @@ namespace POS.View
 
             p_errorName.Visibility = Visibility.Collapsed;
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+        }
+
+        private void tb_email_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
         }
     }
 

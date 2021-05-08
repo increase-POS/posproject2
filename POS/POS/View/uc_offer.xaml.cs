@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -79,8 +81,62 @@ namespace POS.View
 
         }
 
+        private void translate()
+        {
+            txt_active.Text = MainWindow.resourcemanager.GetString("trActive");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            ///////////////////////////////////////------OFFER------///////////////////////////////
+            txt_offerHeader.Text = MainWindow.resourcemanager.GetString("trOffer");
+            txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trCodeHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
+            txt_isActive.Text = MainWindow.resourcemanager.GetString("trActive");
+            txt_details.Text = MainWindow.resourcemanager.GetString("trDetails");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trTypeDiscountHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discountValue, MainWindow.resourcemanager.GetString("trDiscountValueHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
+
+            btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
+            btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
+
+            dg_offer.Columns[0].Header = MainWindow.resourcemanager.GetString("trCode");
+            dg_offer.Columns[1].Header = MainWindow.resourcemanager.GetString("trName");
+            dg_offer.Columns[2].Header = MainWindow.resourcemanager.GetString("trValue");
+            dg_offer.Columns[3].Header = MainWindow.resourcemanager.GetString("trStartDate");
+            dg_offer.Columns[4].Header = MainWindow.resourcemanager.GetString("trEndDate");
+            ///////////////////////////////////////------on Item------///////////////////////////////
+            txt_onItemHeader.Text = MainWindow.resourcemanager.GetString("trOnItems");
+            tb_items.Text = MainWindow.resourcemanager.GetString("trItems");
+            txt_onItemHeader.Text = MainWindow.resourcemanager.GetString("trOnItems");
+
+            dg_items.Columns[0].Header = MainWindow.resourcemanager.GetString("trCode");
+            dg_items.Columns[1].Header = MainWindow.resourcemanager.GetString("trName");
+            dg_items.Columns[2].Header = MainWindow.resourcemanager.GetString("trValue");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_item, MainWindow.resourcemanager.GetString("trItem"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
+
+            btn_addItem.Content = MainWindow.resourcemanager.GetString("trAdd");
+            btn_deleteItem.Content = MainWindow.resourcemanager.GetString("trDelete");
+        }
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_ucOffer.FlowDirection = FlowDirection.LeftToRight;
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_ucOffer.FlowDirection = FlowDirection.RightToLeft;
+            }
+
+            translate();
             tb_discountValue.Text = _numValue.ToString();
 
             #region Style Date

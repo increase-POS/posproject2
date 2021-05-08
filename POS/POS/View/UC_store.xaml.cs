@@ -210,7 +210,7 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_mobile, MainWindow.resourcemanager.GetString("trMobileHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_phone, MainWindow.resourcemanager.GetString("trPhoneHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_email, MainWindow.resourcemanager.GetString("trEmailHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trnotesHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
             btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
             btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
@@ -220,6 +220,19 @@ namespace POS.View
             dg_store.Columns[3].Header = MainWindow.resourcemanager.GetString("trNotes");
 
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
+
+            tt_code.Content = MainWindow.resourcemanager.GetString("trCode");
+            tt_name.Content = MainWindow.resourcemanager.GetString("trName");
+            tt_mobile.Content = MainWindow.resourcemanager.GetString("trMobile");
+            tt_phone.Content = MainWindow.resourcemanager.GetString("trPhone");
+            tt_email.Content = MainWindow.resourcemanager.GetString("trEmail");
+            tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
+            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
 
         }
 
@@ -412,13 +425,13 @@ namespace POS.View
             if (CanDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
             else popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-            bool b = await storeModel.deleteBranch(StoreId, CanDelete);
+            //bool b = await storeModel.deleteBranch(StoreId, CanDelete);
 
-            if (b) SectionData.popUpResponse("", popupContent);
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            //if (b) SectionData.popUpResponse("", popupContent);
+            //else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-            var stores = await storeModel.GetBranchesAsync("s");
-            dg_store.ItemsSource = stores;
+            //var stores = await storeModel.GetBranchesAsync("s");
+            //dg_store.ItemsSource = stores;
 
             //clear textBoxs
             Btn_clear_Click(sender, e);

@@ -29,21 +29,31 @@ namespace POS.View
     /// </summary>
     public partial class UC_item : UserControl
     {
-        public int ItemId;
+        //public int ItemId;
 
         Item itemModel = new Item();
-
+        // item object
+        Item item = new Item();
         Category categoryModel = new Category();
 
         Unit unitModel = new Unit();
-
+        Property propertyModel = new Property();
+        PropertiesItems propItemsModel = new PropertiesItems();
+        ItemsProp itemsPropModel = new ItemsProp();
+        Serial serialModel = new Serial();
+ 
         string selectedType = "" ;
 
         int selectedCategoryId = 0 , selectedMinUnitId = 0 , selectedMaxUnitId = 0;
 
         List<int> categoryIds = new List<int>();
         List<string> categoryNames = new List<string>();
-
+        List<Property> properties;
+        List<Category> categories;
+        List<PropertiesItems> propItems;
+        List<Unit> units;
+        List<ItemsProp> itemsProp;
+        List<Serial> itemSerials;
         public UC_item()
         {
             InitializeComponent();
@@ -156,56 +166,22 @@ namespace POS.View
             }
 
             translate();
-            refreshCategory();
-            
+            fillCategories();           
             fillUnits();
+            fillProperties();
 
             var items = await itemModel.GetAllItems();
-            DG_Items.ItemsSource = items;
+            dg_items.ItemsSource = items;
             // fill parent items
             cb_parentItem.ItemsSource = items.ToList();
             cb_parentItem.SelectedValuePath = "itemId";
             cb_parentItem.DisplayMemberPath = "name";
 
-            cb_parentItem.SelectedIndex = 0;
-            cb_categorie.SelectedIndex = 0;
+            cb_parentItem.SelectedIndex = -1;
+            cb_categorie.SelectedIndex = -1;
             cb_itemType.SelectedIndex = 0;
             cb_minUnit.SelectedIndex = 0;
             cb_maxUnit.SelectedIndex = 0;
-        }
-        /// <summary>
-        /// //////////////////////////////////////////////////////////////////////////////////
-        /// </summary>
-        public void testChangeCategorieIdEvent()
-        {
-            MessageBox.Show("Hello World!! CategorieId");
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorCode.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tt_errorCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-          //  tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-            Item item = new Item();
-
-            if (DG_Items.SelectedIndex != -1)
-            {
-                item = DG_Items.SelectedItem as Item;
-                this.DataContext = item;
-            }
-            if (item != null)
-            {
-                if (item.categoryId != 0)
-                {
-                    ItemId = item.itemId;
-                }
-            }
-
-        }
-        public void testChangeCategorieItemsIdEvent()
-        {
-            int idItemTest = 5;
-            MessageBox.Show("test id item " +idItemTest);
         }
 
         
@@ -277,9 +253,18 @@ namespace POS.View
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
+            Nullable<int> categoryId = null;
+            if (cb_categorie.SelectedIndex != -1)
+                categoryId = (int)cb_categorie.SelectedValue;
+
+            Nullable<int> parentId = null;
+            if (cb_parentItem.SelectedIndex != -1)
+                parentId = (int)cb_parentItem.SelectedValue;
+
             int min = 0;
             int max = 0;
             decimal taxes = 0;
+           
             if (tb_min.Text != "")
                 min = int.Parse(tb_min.Text);
             if (tb_max.Text != "")
@@ -287,80 +272,131 @@ namespace POS.View
             if (tb_taxes.Text != "")
                 taxes = decimal.Parse(tb_taxes.Text);
 
-            Item item = new Item
-            {
-                code        = tb_code.Text,
-                name        = tb_name.Text,
-                details     = tb_details.Text,
-                type        = selectedType,
-                image       = "",
-              taxes       = taxes,
-                isActive    = 1,
-               min         = min,
-               max         = max,
-                categoryId  = (int)cb_categorie.SelectedValue ,
-                parentId    = (int)cb_parentItem.SelectedValue,
+            Nullable<int> minUnitId = null;
+            if (cb_minUnit.SelectedIndex != -1)
+                minUnitId = units[cb_minUnit.SelectedIndex].unitId;
 
-                createDate  = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                updateDate  = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                createUserId = 2 ,
-                updateUserId = 2 ,
-                minUnitId    = cb_minUnit.SelectedIndex,
-                maxUnitId    = cb_maxUnit.SelectedIndex,
-            };
+            Nullable<int> maxUnitId = null;
+            if (cb_maxUnit.SelectedIndex != -1)
+                maxUnitId = units[cb_maxUnit.SelectedIndex].unitId;
 
-            await itemModel.saveItem(item);
+            item.code = tb_code.Text;
+            item.name = tb_name.Text;
+            item.details = tb_details.Text;
+            item.type = selectedType;
+            item.image = "";
+            item.taxes = taxes;
+            item.isActive = 1;
+            item.min = min;
+            item.max = max;
+            item.categoryId = categoryId;
+            item.parentId = parentId;
+            item.createUserId = MainWindow.userID;
+            item.updateUserId = MainWindow.userID;
+            item.minUnitId = minUnitId;
+            item.maxUnitId = maxUnitId;
+
+           string res = await itemModel.saveItem(item);
+            if (res.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
             var items = await itemModel.GetAllItems();
-            DG_Items.ItemsSource = items;
+            dg_items.ItemsSource = items;
             //MessageBox.Show(items.Count.ToString());
 
             
         }
 
+        //update item
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
-        {//add
-            Item item = new Item
-            {
-                itemId       = ItemId,
-                code         = tb_code.Text,
-                name         = tb_name.Text,
-                details      = tb_details.Text,
-                type         = selectedType,
-                image        = "",
-                taxes        = decimal.Parse(tb_taxes.Text),
-                isActive     = 1,
-                min          = int.Parse(tb_min.Text),
-                max          = int.Parse(tb_max.Text),
-                categoryId   = 1,/////???????????????????????
-                parentId     = 0,/////??????????/
+        {
+            Nullable<int> categoryId = null;
+            if (cb_categorie.SelectedIndex != -1)
+                categoryId = (int)cb_categorie.SelectedValue;
 
-                createDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                createUserId = 2,
-                updateUserId = 2,
-                minUnitId    = selectedMinUnitId,
-                maxUnitId    = selectedMaxUnitId
-            };
+            Nullable<int> parentId = null;
+            if (cb_parentItem.SelectedIndex != -1)
+                parentId = (int)cb_parentItem.SelectedValue;
 
-            await itemModel.saveItem(item);
+            int min = 0;
+            int max = 0;
+            decimal taxes = 0;
+
+            if (tb_min.Text != "")
+                min = int.Parse(tb_min.Text);
+            if (tb_max.Text != "")
+                max = int.Parse(tb_max.Text);
+            if (tb_taxes.Text != "")
+                taxes = decimal.Parse(tb_taxes.Text);
+
+            Nullable<int> minUnitId = null;
+            if (cb_minUnit.SelectedIndex != -1)
+                minUnitId = units[cb_minUnit.SelectedIndex].unitId;
+
+            Nullable<int> maxUnitId = null;
+            if (cb_maxUnit.SelectedIndex != -1)
+                maxUnitId = units[cb_maxUnit.SelectedIndex].unitId;
+
+            item.itemId = item.itemId;
+            item.code = tb_code.Text;
+            item.name = tb_name.Text;
+            item.details = tb_details.Text;
+            item.type = selectedType;
+            item.image = "";
+            item.taxes = taxes;
+            item.min = min;
+            item.max = max;
+            item.categoryId = categoryId;
+            item.parentId = parentId;
+            item.updateUserId = MainWindow.userID;
+            item.minUnitId = minUnitId;
+            item.maxUnitId = maxUnitId;
+            // };
+
+            string res = await itemModel.saveItem(item);
+            if (res.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
             var items = await itemModel.GetAllItems();
-            DG_Items.ItemsSource = items;
-
+            dg_items.ItemsSource = items;
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            await itemModel.deleteItem(ItemId,1);
+            if ((!item.canDelete) && (item.isActive == 0))
+                activate();
+            else
+            {
+                string popupContent = "";
+                if (item.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                if ((!item.canDelete) && (item.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                int userId = (int)MainWindow.userID;
+                Boolean res = await itemModel.deleteItem(item.itemId,userId, item.canDelete);
+
+                if (res) SectionData.popUpResponse("", popupContent);
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            }
 
             var items = await itemModel.GetAllItems();
-            DG_Items.ItemsSource = items;
-            MessageBox.Show(items.Count.ToString());
+            dg_items.ItemsSource = items;
+
+           // tb_search_TextChanged(null, null);
 
             //clear textBoxs
-          //  Btn_clear_Click(sender, e);
+            Btn_clear_Click(sender, e);
 
         }
+        private async void activate()
+        {//activate
 
+            item.isActive = 1;
+
+            string s = await itemModel.saveItem(item);
+
+            if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+        }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             tb_taxes.Text = "";
@@ -480,28 +516,6 @@ namespace POS.View
             }
         }
 
-        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
-        }
-
-        private void DecimalValidationTextBox(object sender, KeyEventArgs e)
-        {
-            // allows 0-9, backspace, and decimal
-           //if ((((int)e.Key < 48 || (int)e.Key > 57) && (int)e.Key != 8 && (int)e.Key != 46))
-           // {
-           //     e.Handled = true;
-            //    return;
-            //}
-
-            // checks to make sure only 1 decimal is allowed
-            //if ((int)e.Key == 46)
-           // {
-           //     if ((sender as TextBox).Text.IndexOf((char)e.Key) != -1)
-            //        e.Handled = true;
-            //}
-        }
         
         private void Tb_min_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -536,14 +550,7 @@ namespace POS.View
                 tb_max.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
         }
-        async void refreshCategory()
-        {
-            IEnumerable<Category> categories = await categoryModel.GetAllCategories();
-            cb_categorie.ItemsSource = categories.ToList();
-            cb_categorie.SelectedValuePath = "categoryId";
-            cb_categorie.DisplayMemberPath = "name";
-        }
-
+       
         private void Tb_taxes_LostFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -563,43 +570,139 @@ namespace POS.View
 
         private void Cb_categorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedCategoryId = categoryIds[cb_categorie.SelectedIndex];
+            //selectedCategoryId = categoryIds[cb_categorie.SelectedIndex];
         }
 
-        private async void fillCategories()
-        {
-            //var categories = await categoryModel.GetSubCategories();
-            //dt.ItemsSource = branches;
-            //Branch branch = new Branch();
-            //for (int i = 0; i < branches.Count; i++)
-            //{
-            //    branch = dt.Items[i] as Branch;
-            //    branchIds.Add(branch.branchId);
-            //    branchNames.Add(branch.name);
-            //}
-            ////MessageBox.Show(branches.Count.ToString());
-            ////branchNames.Add("first"); branchNames.Add("second");
-            //cb_branchId.ItemsSource = branchNames;
-
-        }
+       
 
         DataGrid dt = new DataGrid();
-        List<int>    unitIds = new List<int>();
+        async void fillCategories()
+        {
+            categories = await categoryModel.GetAllCategories();
+            cb_categorie.ItemsSource = categories.ToList();
+            cb_categorie.SelectedValuePath = "categoryId";
+            cb_categorie.DisplayMemberPath = "name";
+        }
+        List<int> unitIds = new List<int>();
         List<string> unitNames = new List<string>();
         private async void fillUnits()
         {
-            var units = await unitModel.GetUnitsAsync();
+            units = await unitModel.GetUnitsAsync();
             cb_minUnit.ItemsSource = units.ToList();
-            cb_minUnit.SelectedValuePath = "categoryId";
+            cb_minUnit.SelectedValuePath = "unitId";
             cb_minUnit.DisplayMemberPath = "name";
 
             cb_maxUnit.ItemsSource = units.ToList();
-            cb_maxUnit.SelectedValuePath = "categoryId";
+            cb_maxUnit.SelectedValuePath = "unitId";
             cb_maxUnit.DisplayMemberPath = "name";
         }
+        async void fillProperties()
+        {
+             properties = await propertyModel.getProperty();
+            cb_selectProperties.ItemsSource = properties.ToList();
+            cb_selectProperties.SelectedValuePath = "propertyId";
+            cb_selectProperties.DisplayMemberPath = "name";
+        }
 
+        private void Cb_minUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           // selectedMinUnitId  = unitIds[cb_minUnit.SelectedIndex];
+        }
 
-        private void DG_Items_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Cb_maxUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //selectedMaxUnitId = unitIds[cb_maxUnit.SelectedIndex];
+        }
+
+        async void Btn_addProperties_Click(object sender, RoutedEventArgs e)
+        {
+            if (cb_value.SelectedValue != null && item.itemId >0)
+            {
+                int propertyItemId = propItems[cb_value.SelectedIndex].propertyItemId;
+                int itemId = (int) item.itemId;
+
+                // check if property assigned previously to item
+                Boolean exist = itemsProp.Any(x => x.propertyItemId == propertyItemId && x.itemId == itemId);
+
+                if (!exist)
+                {
+                    ItemsProp itemspropObj = new ItemsProp();
+                    itemspropObj.propertyItemId = propItems[cb_value.SelectedIndex].propertyItemId;
+                    itemspropObj.itemId = itemId;
+                    itemspropObj.updateUserId = MainWindow.userID;
+                    itemspropObj.createUserId = MainWindow.userID;
+
+                    Boolean res = await itemsPropModel.Save(itemspropObj);
+                    if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                    else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                    itemsProp = await itemsPropModel.Get(itemId);
+                    dg_properties.ItemsSource = itemsProp.ToList();
+                }
+                cb_value.SelectedIndex = -1;
+                cb_selectProperties.SelectedIndex = -1;
+            }
+        }
+        // add serial to item
+        async void Btn_addSerial_Click(object sender, RoutedEventArgs e)
+        {
+            if (tb_serial.Text != "")
+            {
+                Boolean exist = itemSerials.Any(x => x.serialNum == tb_serial.Text && x.itemId == item.itemId);
+
+                if (!exist)
+                {
+                    Serial serial = new Serial();
+                    serial.serialNum = tb_serial.Text;
+                    serial.itemId = item.itemId;
+                    serial.isActive = 1;
+
+                    Boolean res = await serialModel.saveSerial(serial);
+
+                    if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                    else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                    // refresh  serials grid
+                    refreshSerials(item.itemId);
+                }
+                tb_serial.Clear();
+            }
+        }
+
+        async void refreshSerials(int itemId)
+        {
+            // get all item serials
+            itemSerials = await serialModel.GetItemSerials(item.itemId);
+            dg_serials.ItemsSource = itemSerials;
+        }
+        async void Btn_updateProperties_Click(object sender, RoutedEventArgs e)
+        {
+            if (cb_value.SelectedValue != null && item.itemId > 0)
+            {
+                int propertyItemId = propItems[cb_value.SelectedIndex].propertyItemId;
+                int itemId = item.itemId;
+
+                Boolean res = await itemsPropModel.Delete(itemId, propertyItemId);
+
+                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                itemsProp = await itemsPropModel.Get(item.itemId);
+                dg_properties.ItemsSource = itemsProp.ToList();
+            }
+        }
+        async void Cb_selectProperties_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int propertyId = properties[cb_selectProperties.SelectedIndex].propertyId;
+             propItems = await propertyModel.GetPropertyValues(propertyId);
+            cb_value.ItemsSource = propItems.ToList();
+            cb_value.SelectedValuePath = "propertyItemId";
+            cb_value.DisplayMemberPath = "propertyItemName";
+        }
+
+        
+
+        async void DG_Items_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorCode.Visibility = Visibility.Collapsed;
@@ -607,43 +710,127 @@ namespace POS.View
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
           //  tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-            Item item = new Item();
-
-            if (DG_Items.SelectedIndex != -1)
+            
+            if (dg_items.SelectedIndex != -1)
             {
-                item = DG_Items.SelectedItem as Item;
+                item = dg_items.SelectedItem as Item;
                 this.DataContext = item;
+
+                itemsProp = await itemsPropModel.Get(item.itemId);
+                dg_properties.ItemsSource = itemsProp.ToList();
+                
             }
             if (item != null)
             {
-                if (item.categoryId != 0)
+                if (item.parentId != null && item.parentId != 0)
                 {
-                  ItemId = item.itemId;
+                    cb_parentItem.SelectedValue = (int)item.parentId;
                 }
+                else
+                    cb_parentItem.SelectedValue = -1;
 
+                if (item.categoryId != null)
+                {
+                    cb_categorie.SelectedValue = (int)item.categoryId;
+                }
+                else
+                    cb_categorie.SelectedValue = -1;
+              
+                if (item.type != null)
+                {
+                    cb_itemType.SelectedValue = item.type;
+                    switch (item.type){
+                        case "n": cb_itemType.SelectedIndex = 0; break;
+                        case "d": cb_itemType.SelectedIndex = 1; break;
+                        case "sn": 
+                        { // refresh  serials grid
+                            refreshSerials(item.itemId);
+                            cb_itemType.SelectedIndex = 2; break;
+                        }
+                        case "sr": cb_itemType.SelectedIndex = 3; break;
+                        case "p": cb_itemType.SelectedIndex = 4; break;
+                    }
+                }
+                else
+                    cb_itemType.SelectedValue = -1;
+
+                tb_min.Text = item.min.ToString();
+                tb_max.Text = item.max.ToString();
+               
+                if (item.minUnitId != null)
+                    cb_minUnit.SelectedValue = (int) item.minUnitId;
+                else
+                    cb_minUnit.SelectedValue = -1;
+
+                if (item.maxUnitId != null)
+                    cb_maxUnit.SelectedValue = (int)item.maxUnitId;
+                else
+                    cb_minUnit.SelectedValue = -1;
+
+                if (item.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                else
+                {
+                    if (item.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
+                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                }
 
             }
         }
 
         private async void Cb_parentItem_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int parentItem = (int) cb_parentItem.SelectedValue;
-            if (parentItem != 0)
+            Item parentItem = new Item();
+            int parentId = 0;
+            if(cb_parentItem.SelectedIndex != -1 && item.itemId ==0 )
             {
-                MessageBox.Show(cb_parentItem.SelectedValue.ToString());
-                itemModel = await itemModel.GetItemByID(parentItem);
-                if(itemModel.categoryId != null)
-                    cb_categorie.SelectedValue = (int)itemModel.categoryId;
-                cb_itemType.SelectedItem = itemModel.type;
-                tb_taxes.Text = itemModel.taxes.ToString();
-                tb_min.Text = itemModel.min.ToString();
-                tb_max.Text = itemModel.max.ToString();
-                if(itemModel.minUnitId!= null)
-                    cb_minUnit.SelectedIndex = (int)itemModel.minUnitId;
-                if (itemModel.maxUnitId != null)
-                    cb_maxUnit.SelectedIndex = (int)itemModel.maxUnitId;
+                parentItem = await itemModel.GetItemByID((int)cb_parentItem.SelectedValue);
+                parentId = parentItem.itemId;
+
+                if (parentItem.categoryId != null)
+                    cb_categorie.SelectedValue = (int)parentItem.categoryId;
+                if (parentItem.type != null)
+                {
+                    //cb_itemType.SelectedValue = parentItem.type;
+                    switch (parentItem.type)
+                    {
+                        case "n": cb_itemType.SelectedIndex = 0; break;
+                        case "d": cb_itemType.SelectedIndex = 1; break;
+                        case "sn": cb_itemType.SelectedIndex = 2; break;
+                        case "sr": cb_itemType.SelectedIndex = 3; break;
+                        case "p": cb_itemType.SelectedIndex = 4; break;
+                    }
+                }
+                tb_taxes.Text = parentItem.taxes.ToString();
+                tb_min.Text = parentItem.min.ToString();
+                tb_max.Text = parentItem.max.ToString();
+
+                if (parentItem.minUnitId != null)
+                    cb_minUnit.SelectedValue = (int)parentItem.minUnitId;
+
+                if (parentItem.maxUnitId != null)
+                    cb_maxUnit.SelectedValue = (int)parentItem.maxUnitId;
             }
+       }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                e.Handled = false;
+
+            else
+                e.Handled = true;
+        }
+        private void tb_upperLimit_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
         }
 
     }

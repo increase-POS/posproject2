@@ -8,7 +8,7 @@
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
               d:DesignHeight="675" d:DesignWidth="985" Loaded="UserControl_Loaded" >
 
-    <Grid x:Name="grid_uccoupon" >
+    <Grid x:Name="grid_ucCoupon" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="380"/>
@@ -56,7 +56,7 @@
                             <ColumnDefinition Width="45"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" 
+                        <TextBlock x:Name="txt_active" Grid.Column="0" 
                             Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                               FontSize="12"/>
@@ -109,17 +109,6 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn MinWidth="125"  Header="remain Quantity" Binding="{Binding Path=name}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding isActive}" Value="0">
-                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
                         <DataGridTextColumn MinWidth="125"  Header="Quantity" Binding="{Binding Path=name}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
@@ -131,6 +120,18 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
+                        <DataGridTextColumn MinWidth="125"  Header="Remain Quantity" Binding="{Binding Path=name}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
@@ -262,7 +263,7 @@
 	c0.2,2.7,1,5.6,2.5,8.7c1.5,3.1,3.4,5.8,5.8,8.2c3,3,6.1,4.6,9.2,4.7c3.1,0.1,5.9-1.1,8.5-3.7c1.9-1.9,2.8-4.2,2.8-6.9
 	c-0.1-2.6-0.6-5.5-1.6-8.5c-1-3-2.2-6.2-3.6-9.6c-1.4-3.4-2.4-6.8-3.1-10.1c-0.7-3.3-0.7-6.6-0.2-9.9c0.6-3.3,2.3-6.4,5.2-9.3
 	c3.8-3.8,8.4-5.6,14-5.6c5.6,0,11.1,2.1,16.5,6.3l8.7-8.7l7,7L422.1,373.7z"/>
-                            <TextBlock Text="Coupon" x:Name="txt_customer" Foreground="#E8E8E8" 
+                            <TextBlock Text="Coupon" x:Name="txt_couponHeader" Foreground="#E8E8E8" 
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="5"/>
                         </Grid>
@@ -331,8 +332,8 @@
                                          BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="coupon Code..."    
                                Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                      BorderBrush="AliceBlue"  
-                         HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                      Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                         HorizontalAlignment="Left" VerticalAlignment="Bottom" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                      Height="35" Width="340"  Margin="5,0,0,5" />
 
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorCode"
                                   HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
@@ -367,8 +368,8 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox   Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5"   
-                                         BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Barcode ..."    
+                                    <TextBox x:Name="tb_barcode"  Text="{Binding barcode, Mode=OneWay}" Padding="10,5,5,5"   
+                                         BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Barcode..."    
                                Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" 
                          HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
@@ -392,7 +393,7 @@
                                         <ColumnDefinition Width="60"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" 
+                                    <TextBlock x:Name="txt_isActive" Grid.Column="0" 
                                 Margin="5,0,5,0" Text="is Active" Foreground="#6e6e6e"
                             HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontSize="12"/>
@@ -421,7 +422,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Details" Foreground="#737373"
-                                     FontSize="10"      VerticalAlignment="Center" x:Name="txt_workInformation"
+                                     FontSize="10"      VerticalAlignment="Center" x:Name="txt_details"
                                            HorizontalAlignment="Left" Margin="5,5,0,5"/>
                                     <Separator Background="#999999"   Width="315"  Margin="5,0,5,0"
                                           Grid.Column="1" VerticalAlignment="Center" />
@@ -431,9 +432,9 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <ComboBox  Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E" Margin="5,5" 
+                                    <ComboBox x:Name="cb_typeDiscount" Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E" Margin="5,5" 
                                            Text="{Binding test, Mode=OneWay}" 
-                                 materialDesign:HintAssist.Hint="Select type discount..." 
+                                 materialDesign:HintAssist.Hint="type discount..." 
                                TextBlock.FontSize="12" 
                          HorizontalAlignment="Center" VerticalAlignment="Center" 
                                   Height="35" Width="160"  
@@ -554,7 +555,7 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBox   Text="{Binding code, Mode=OneWay}" Padding="10,5,5,5"   
+                                        <TextBox x:Name="tb_MinInvoiceValue"  Text="{Binding code, Mode=OneWay}" Padding="10,5,5,5"   
                                          BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Minimum invoice value..."    
                                Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                      BorderBrush="AliceBlue"  Margin="5,5" 
@@ -574,7 +575,7 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBox   Text="{Binding test, Mode=OneWay}" Padding="10,5,5,5"   
+                                        <TextBox  x:Name="tb_MaxInvoiceValue" Text="{Binding test, Mode=OneWay}" Padding="10,5,5,5"   
                                          BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Maximum invoice value..."    
                                Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                      BorderBrush="AliceBlue"  Margin="5,5" 
@@ -600,8 +601,8 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBox   Text="{Binding test, Mode=OneWay}" Padding="10,5,5,5"   
-                                         BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="remain Quantity..."    
+                                        <TextBox x:Name="tb_quantity"  Text="{Binding test, Mode=OneWay}" Padding="10,5,5,5"   
+                                         BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Quantity..."    
                                Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                      BorderBrush="AliceBlue"  Margin="5,5" 
                          HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
@@ -620,8 +621,8 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBox   Text="{Binding test, Mode=OneWay}" Padding="10,5,5,5"   
-                                         BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Quantity..."    
+                                        <TextBox x:Name="tb_remainQuantity"  Text="{Binding test, Mode=OneWay}" Padding="10,5,5,5"   
+                                         BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Remain Quantity..."    
                                Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                      BorderBrush="AliceBlue"  
                          HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
@@ -641,7 +642,7 @@
                                           Grid.Row="7" VerticalAlignment="Center" />
                             </Grid>
                             <Grid Grid.Row="3"   >
-                                <TextBox   Text="{Binding test, Mode=OneWay}"
+                                <TextBox x:Name="tb_note" Text="{Binding test, Mode=OneWay}"
                                                  Grid.Row="2" Padding="10,5,5,5"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  
@@ -680,7 +681,7 @@
 
                         </Grid>
                     </Grid>
-                  
+
                 </Grid>
             </Border>
         </Grid>

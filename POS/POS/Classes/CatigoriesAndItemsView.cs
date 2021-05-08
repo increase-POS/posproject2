@@ -64,7 +64,7 @@ namespace POS.Classes
             }
             else if (ucCategorieItem != null)
             {
-                ucCategorieItem.testChangeCategorieIdEvent();
+                //ucCategorieItem.testChangeCategorieIdEvent();
             }
             
 
@@ -76,12 +76,12 @@ namespace POS.Classes
 
             if (ucCategorie != null)
             {
-                ucCategorie.testChangeCategorieItemsIdEvent();
+                //ucCategorie.testChangeCategorieItemsIdEvent();
 
             }
             else if (ucCategorieItem != null)
             {
-                ucCategorieItem.testChangeCategorieItemsIdEvent();
+                //ucCategorieItem.testChangeCategorieItemsIdEvent();
             }   
         }
 

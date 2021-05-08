@@ -178,7 +178,7 @@
     <value>الفهرس</value>
   </data>
   <data name="trCode" xml:space="preserve">
-    <value>الشيفرة</value>
+    <value>الكود</value>
   </data>
   <data name="trCompany" xml:space="preserve">
     <value>الشركة</value>
@@ -454,7 +454,7 @@
     <value>الفرع</value>
   </data>
   <data name="trCustomer" xml:space="preserve">
-    <value>الزبون</value>
+    <value>العميل</value>
   </data>
   <data name="trStore" xml:space="preserve">
     <value>المخزن</value>
@@ -598,10 +598,10 @@
     <value>المستحق...</value>
   </data>
   <data name="trDiscount" xml:space="preserve">
-    <value>الخصم</value>
+    <value>الحسم</value>
   </data>
   <data name="trDiscountHint" xml:space="preserve">
-    <value>الخصم...</value>
+    <value>الحسم...</value>
   </data>
   <data name="trDraft" xml:space="preserve">
     <value>مسودة</value>
@@ -630,7 +630,7 @@
   <data name="trPaidHint" xml:space="preserve">
     <value>المدفوع...</value>
   </data>
-  <data name="trPdf" xml:space="preserve">
+  <data name="trPdfBtn" xml:space="preserve">
     <value>PDF</value>
   </data>
   <data name="trPreview" xml:space="preserve">
@@ -665,5 +665,80 @@
   </data>
   <data name="trVendorInvoiceDetails" xml:space="preserve">
     <value>تفاصيل فاتورة المزود</value>
+  </data>
+  <data name="trCoponHint" xml:space="preserve">
+    <value>كوبون...</value>
+  </data>
+  <data name="trDeliveryHint" xml:space="preserve">
+    <value>التوصيل...</value>
+  </data>
+  <data name="trCount" xml:space="preserve">
+    <value>عدد السجلات</value>
+  </data>
+  <data name="trCoupon" xml:space="preserve">
+    <value>الكوبون</value>
+  </data>
+  <data name="trCouponCodeHint" xml:space="preserve">
+    <value>كود الكوبون...</value>
+  </data>
+  <data name="trCouponNameHint" xml:space="preserve">
+    <value>اسم الكوبون...</value>
+  </data>
+  <data name="trCustomerHint" xml:space="preserve">
+    <value>العميل...</value>
+  </data>
+  <data name="trDelivery" xml:space="preserve">
+    <value>التوصيل</value>
+  </data>
+  <data name="trDiscountValueHint" xml:space="preserve">
+    <value>قيمة الحسم...</value>
+  </data>
+  <data name="trEndDate" xml:space="preserve">
+    <value>تاريخ النهاية</value>
+  </data>
+  <data name="trEndDateHint" xml:space="preserve">
+    <value>تاريخ النهاية...</value>
+  </data>
+  <data name="trExcel" xml:space="preserve">
+    <value>التصدير لملف إكسل</value>
+  </data>
+  <data name="trMaximumInvoiceValueHint" xml:space="preserve">
+    <value>أكبر قيمة للفاتورة...</value>
+  </data>
+  <data name="trMinimumInvoiceValueHint" xml:space="preserve">
+    <value>أصغر قيمة للفاتورة...</value>
+  </data>
+  <data name="trOffer" xml:space="preserve">
+    <value>العروض</value>
+  </data>
+  <data name="trOnItems" xml:space="preserve">
+    <value>العناصر</value>
+  </data>
+  <data name="trPdf" xml:space="preserve">
+    <value>طباعة PDF</value>
+  </data>
+  <data name="trQuantity" xml:space="preserve">
+    <value>الكمية</value>
+  </data>
+  <data name="trQuantityHint" xml:space="preserve">
+    <value>الكمية...</value>
+  </data>
+  <data name="trRemainQuantity" xml:space="preserve">
+    <value>الكمية المتبقية</value>
+  </data>
+  <data name="trRemainQuantityHint" xml:space="preserve">
+    <value>الكمية المتبقية...</value>
+  </data>
+  <data name="trStartDate" xml:space="preserve">
+    <value>تاريخ البداية</value>
+  </data>
+  <data name="trStartDateHint" xml:space="preserve">
+    <value>تاريخ البداية...</value>
+  </data>
+  <data name="trTypeDiscountHint" xml:space="preserve">
+    <value>نوع الحسم...</value>
+  </data>
+  <data name="trStatistic" xml:space="preserve">
+    <value>الإحصائيات</value>
   </data>
 </root>

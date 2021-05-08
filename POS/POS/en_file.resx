@@ -642,7 +642,7 @@
   <data name="trPaidHint" xml:space="preserve">
     <value>Paid...</value>
   </data>
-  <data name="trPdf" xml:space="preserve">
+  <data name="trPdfBtn" xml:space="preserve">
     <value>PDF</value>
   </data>
   <data name="trPreview" xml:space="preserve">
@@ -677,5 +677,86 @@
   </data>
   <data name="trVendorInvoiceDetails" xml:space="preserve">
     <value>Vendor Invoice Details</value>
+  </data>
+  <data name="trCoponHint" xml:space="preserve">
+    <value>Copon...</value>
+  </data>
+  <data name="trDeliveryHint" xml:space="preserve">
+    <value>Delivery...</value>
+  </data>
+  <data name="trCount" xml:space="preserve">
+    <value>Recordes Count</value>
+  </data>
+  <data name="trCoupon" xml:space="preserve">
+    <value>Coupon</value>
+  </data>
+  <data name="trCouponCodeHint" xml:space="preserve">
+    <value>Coupon Code...</value>
+  </data>
+  <data name="trCouponNameHint" xml:space="preserve">
+    <value>Coupon Name...</value>
+  </data>
+  <data name="trCustomerHint" xml:space="preserve">
+    <value>Customer...</value>
+  </data>
+  <data name="trDelivery" xml:space="preserve">
+    <value>Delivery</value>
+  </data>
+  <data name="trDiscountValueHint" xml:space="preserve">
+    <value>Discount Value...</value>
+  </data>
+  <data name="trEndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="trEndDateHint" xml:space="preserve">
+    <value>End Date...</value>
+  </data>
+  <data name="trExcel" xml:space="preserve">
+    <value>Export to Excel</value>
+  </data>
+  <data name="trMaximumInvoiceValueHint" xml:space="preserve">
+    <value>Maximum Invoice Value...</value>
+  </data>
+  <data name="trMinimumInvoiceValueHint" xml:space="preserve">
+    <value>Minimum Invoice Value...</value>
+  </data>
+  <data name="trOffer" xml:space="preserve">
+    <value>Offer</value>
+  </data>
+  <data name="trOfferCodeHint" xml:space="preserve">
+    <value>Offer Code...</value>
+  </data>
+  <data name="trOfferNameHint" xml:space="preserve">
+    <value>Offer Name...</value>
+  </data>
+  <data name="trOnItems" xml:space="preserve">
+    <value>On Items</value>
+  </data>
+  <data name="trPdf" xml:space="preserve">
+    <value>Print Pdf</value>
+  </data>
+  <data name="trQuantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="trQuantityHint" xml:space="preserve">
+    <value>Quantity...</value>
+  </data>
+  <data name="trRemainQuantity" xml:space="preserve">
+    <value>Remain Quantity</value>
+  </data>
+  <data name="trRemainQuantityHint" xml:space="preserve">
+    <value>Remain Quantity...</value>
+  </data>
+  <data name="trStartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="trStartDateHint" xml:space="preserve">
+    <value>Start Date...</value>
+  </data>
+  <data name="trTypeDiscountHint" xml:space="preserve">
+    <value>Type Discount...</value>
+  </data>
+  <data name="trStatistic" xml:space="preserve">
+    <value>Statistic</value>
   </data>
 </root>

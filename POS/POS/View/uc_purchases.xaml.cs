@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,8 +26,27 @@ namespace POS.View
         {
             InitializeComponent();
         }
+        private void translate()
+        {
+            btn_payInvoice.Content = MainWindow.resourcemanager.GetString("trInvoice");
+            btn_statistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
+           
+
+        }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_ucPurchases.FlowDirection = FlowDirection.LeftToRight;
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_ucPurchases.FlowDirection = FlowDirection.RightToLeft;
+            }
+
+            translate();
             btn_payInvoice_Click(null, null);
         }
         void refreashBackground()

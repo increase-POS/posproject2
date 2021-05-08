@@ -269,7 +269,7 @@
                                     </Grid>
 
                                 </Grid>
-                                <DataGrid x:Name="DG_Items"  Margin="5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
+                                <DataGrid x:Name="dg_items"  Margin="5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="True" CanUserAddRows="False" SelectionChanged='DG_Items_SelectionChanged'
                         AutoGenerateColumns="False"
@@ -357,7 +357,8 @@
             <Grid >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="120*"/>
+                    <RowDefinition Height="29*"/>
                 </Grid.RowDefinitions>
                 <Grid  Background="#002196F3" >
                     <Grid.ColumnDefinitions>
@@ -506,13 +507,13 @@
                     </Button>
                 </Grid>-->
                 <Border Grid.Row="1" Background="White" 
-                CornerRadius="0,0,7,7" >
-                    
+                CornerRadius="0,0,7,7" Grid.RowSpan="2" >
 
-                      <Grid> 
- <!--////////////////////////////////  Item Data ////////////////////////////////////////////////////////-->
-                          <Grid  Grid.Row="1"
-                      x:Name="grid_itemData" Visibility="Visible" >
+
+                    <Grid>
+                        <!--////////////////////////////////  Item Data ////////////////////////////////////////////////////////-->
+                        <Grid  Grid.Row="1"
+                      x:Name="grid_itemData" Visibility="Collapsed" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="40"/>
@@ -667,7 +668,7 @@
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="0" Height="35" Width="260"  Margin="10,5,5,5"
                            BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_parentItem_SelectionChanged">
-                                           
+
                                         </ComboBox>
                                         <TextBlock Text="Is Defult" Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                    Margin="5"/>
@@ -703,7 +704,7 @@
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="1" Height="35" Width="340"  Margin="10,5" LostFocus="Cb_categorie_LostFocus"
                            BorderBrush="#737373" BorderThickness="0">
-                                           
+
                                         </ComboBox>
                                         <Path Fill="#E81123" x:Name="p_errorCategorie" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -764,7 +765,8 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBox x:Name="tb_taxes"  Text="{Binding taxes, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5" MaxLength="20" 
-                                             KeyDown="DecimalValidationTextBox"   materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"   
+                                             PreviewTextInput="DecimalValidationTextBox"  PreviewKeyDown="tb_upperLimit_PreviewKeyDown"
+                                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"   
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Taxes..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                              BorderBrush="#f8f8f8" LostFocus="Tb_taxes_LostFocus"
@@ -807,6 +809,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBox x:Name="tb_min" MaxLength="20" PreviewTextInput="NumberValidationTextBox"
+                                                 PreviewKeyDown="tb_upperLimit_PreviewKeyDown"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" LostFocus="Tb_min_LostFocus"
                                                  Text="{Binding min, Mode=OneWay}" 
                                  Grid.Row="1" Padding="10,5,5,5"
@@ -838,7 +841,7 @@
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="1" Height="35" Width="160"  Margin="10,5"
                                   Background="#f8f8f8" 
-                           BorderBrush="#737373"       BorderThickness="0" />
+                           BorderBrush="#737373"       BorderThickness="0" SelectionChanged="Cb_minUnit_SelectionChanged" />
                                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -853,6 +856,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBox x:Name="tb_max"  MaxLength="20" PreviewTextInput="NumberValidationTextBox"
+                                                 PreviewKeyDown="tb_upperLimit_PreviewKeyDown"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" LostFocus="Tb_max_LostFocus"
                                                  Text="{Binding max, Mode=OneWay}" 
                                  Grid.Row="2" Padding="10,5,5,5"
@@ -883,7 +887,7 @@
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="1" Height="35" Width="160"  Margin="10,5"
                                   Background="#f8f8f8" 
-                           BorderBrush="#737373"       BorderThickness="0" />
+                           BorderBrush="#737373"       BorderThickness="0" SelectionChanged="Cb_maxUnit_SelectionChanged" />
 
                                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -921,9 +925,9 @@
                     Margin="1,0"    Content="Delete" Click="Btn_delete_Click" />
                             </Grid>
                         </Grid>
-<!--////////////////////////////////////   Properties   ////////////////////////////////////////////////////-->
+                        <!--////////////////////////////////////   Properties   ////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                         x:Name="grid_properties"  Visibility="Collapsed">
+                         x:Name="grid_properties"  Visibility="Visible">
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="7"/>
                                 <RowDefinition Height="*"/>
@@ -967,7 +971,7 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn MinWidth="150"  Header="Name" Binding="{Binding Path=Test}">
+                                        <DataGridTextColumn MinWidth="150"  Header="Name" Binding="{Binding Path=propName}">
                                             <DataGridTextColumn.ElementStyle>
                                                 <Style TargetType="{x:Type TextBlock}">
                                                     <Style.Triggers>
@@ -978,7 +982,7 @@
                                                 </Style>
                                             </DataGridTextColumn.ElementStyle>
                                         </DataGridTextColumn>
-                                        <DataGridTextColumn MinWidth="125"  Header="Value" Binding="{Binding Path=Test}">
+                                        <DataGridTextColumn MinWidth="125"  Header="Value" Binding="{Binding Path=propValue}">
                                             <DataGridTextColumn.ElementStyle>
                                                 <Style TargetType="{x:Type TextBlock}">
                                                     <Style.Triggers>
@@ -1007,7 +1011,7 @@
                            TextBlock.FontSize="12"   Background="#f8f8f8" 
                          HorizontalAlignment="Left" VerticalAlignment="Center" 
                           Height="35" Width="110"  Margin="5,5"
-                           BorderBrush="#737373" BorderThickness="0"/>
+                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_selectProperties_SelectionChanged"/>
                                     <Grid  Grid.Column="1" >
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -1018,7 +1022,7 @@
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" 
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="110"  Margin="5,5" >
+                  Height="35" Width="110"  Margin="5,5"  >
                                         </ComboBox>
                                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -1039,11 +1043,11 @@
                             materialDesign:ButtonAssist.CornerRadius="5"  />-->
                                     <Button x:Name="btn_addProperties" Grid.Row="0" Grid.Column="2"  Width="50"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"  Padding="0"  Height="33" Content="Add" FontSize="12"  />
+                    Margin="5,6,5,0"  Padding="0"  Height="33" Content="Add" FontSize="12" Click="Btn_addProperties_Click" VerticalAlignment="Top"  />
 
                                     <Button x:Name="btn_updateProperties" Grid.Row="0" Grid.Column="3"
                         Background="#4E4E4E" BorderBrush="{x:Null}" Width="50"
-                    Margin="1,0" Height="33"  Padding="0"  Content="Delete" FontSize="12" />
+                    Margin="1,0" Height="33"  Padding="0"  Content="Delete" FontSize="12" Click="Btn_updateProperties_Click" />
                                 </Grid>
 
 
@@ -1052,8 +1056,8 @@
                             Background="#999999" Height="10"  Width="360"  Margin="10,0,10,0"
                          VerticalAlignment="Center" x:Name="line_topService" />
                             <Grid Grid.Row="3" >
-           <!--////////////////////////// Sub Property >>>> Serial /////////////////////////////////-->
-                                <Grid Grid.Row="2" x:Name="grid_serial" Visibility="Collapsed" >
+                                <!--////////////////////////// Sub Property >>>> Serial /////////////////////////////////-->
+                                <Grid Grid.Row="2" x:Name="grid_serial" Visibility="Visible" >
                                     <Grid.RowDefinitions >
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="*"/>
@@ -1071,13 +1075,13 @@
                                         <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                                     </Grid>
-                                    <DataGrid  Grid.Row="1" Margin="5" Background="White"
+                                    <DataGrid x:Name="dg_serials"  Grid.Row="1" Margin="5" Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
                         IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn MinWidth="250"  Header="Code" Binding="{Binding Path=Test}">
+                                            <DataGridTextColumn MinWidth="250"  Header="Code" Binding="{Binding Path=serialNum}">
                                                 <DataGridTextColumn.ElementStyle>
                                                     <Style TargetType="{x:Type TextBlock}">
                                                         <Style.Triggers>
@@ -1107,7 +1111,7 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBox   Text="{Binding test, Mode=OneWay}"
+                                            <TextBox x:Name="tb_serial"   Text="{Binding test, Mode=OneWay}"
                                          Grid.Row="1" Padding="10,5,5,5" 
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Code..."   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
@@ -1126,11 +1130,11 @@
                                         </Grid>
 
 
-                                        
 
-                                        <Button Grid.Row="1" Grid.Column="0"  Width="170" Grid.ColumnSpan="3"
+
+                                        <Button x:Name="btn_addSerial" Grid.Row="1" Grid.Column="0"  Width="170" Grid.ColumnSpan="3"
                          BorderThickness="0" Background="#4E4E4E" Content="Add" BorderBrush="{x:Null}"
-                    Padding="0" Height="33"
+                    Padding="0" Height="33" Click="Btn_addSerial_Click"
                              />
                                         <Button Grid.Row="1" Grid.Column="3"  Width="170" Grid.ColumnSpan="3"
                          BorderThickness="0" Background="#4E4E4E" Content="Delete"
@@ -1140,7 +1144,7 @@
 
 
                                 </Grid>
-           <!--////////////////////////// Sub Property >>>> Servive /////////////////////////////////-->
+                                <!--////////////////////////// Sub Property >>>> Servive /////////////////////////////////-->
 
                                 <Grid  Grid.Row="4" x:Name="grid_service" Visibility="Collapsed"  >
                                     <Grid.RowDefinitions >

@@ -13,21 +13,18 @@ namespace POS.Classes
 {
     class ItemsProp
     {
-        public int itemPropId  { get; set; }
-        public int propertyItemId { get; set; }
+        public int itemPropId { get; set; }
+        public Nullable<int> propertyItemId { get; set; }
         public Nullable<int> itemId { get; set; }
 
+        public string propValue { get; set; }
+        public string propName { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
-        //  public string notes { get; set; }
-        public Nullable<byte> isActive { get; set; }
 
-        // adding or editing  category by calling API metod "save"
-        // if itemPropId = 0 will call save else call edit
-
-        public async Task<string> Save(ItemsProp itemsProp)
+        public async Task<Boolean> Save(ItemsProp itemsProp)
         {
             string message = "";
             // ... Use HttpClient.
@@ -58,15 +55,13 @@ namespace POS.Classes
 
                 if (response.IsSuccessStatusCode)
                 {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-
+                    return true;
                 }
-                return message;
+                return false;
             }
         }
      
-        public async Task<string> Delete(int itemPropId)
+        public async Task<Boolean> Delete(int itemId, int propertyItemId)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -79,7 +74,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "itemProps/Delete?itemPropId=" + itemPropId);
+                request.RequestUri = new Uri(Global.APIUri + "itemsProp/Delete?itemId=" + itemId+ "&propertyItemId="+propertyItemId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -88,11 +83,9 @@ namespace POS.Classes
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
+                    return true;
                 }
-                return "";
+                return false;
             }
         }
 
@@ -109,7 +102,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "ItemsProps/Get");
+                request.RequestUri = new Uri(Global.APIUri + "ItemsProp/Get?itemId="+itemId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

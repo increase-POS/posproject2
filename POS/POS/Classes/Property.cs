@@ -189,6 +189,42 @@ namespace POS.Classes
                 return false;
             }
         }
+        public async Task<List<PropertiesItems>> GetPropertyValues(int propertyId)
+        {
+            List<PropertiesItems> propertiesItems = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Properties/GetPropertyValues?propertyId="+propertyId);
+
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+
+                    propertiesItems = JsonConvert.DeserializeObject<List<PropertiesItems>>(jsonString);
+
+                    return propertiesItems;
+                }
+                else //web api sent error response 
+                {
+                    propertiesItems = new List<PropertiesItems>();
+                }
+                return propertiesItems;
+            }
+
+        }
 
     }
 }

@@ -31,6 +31,7 @@ namespace POS.View
         //public int _categorieId;
         Category categoryModel = new Category();
         Category category = new Category();
+        int? categoryParentId = 0;
         IEnumerable<Category> categories;
         IEnumerable<Category> categoriesQuery;
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
@@ -267,30 +268,7 @@ namespace POS.View
 
         #endregion
 
-        private void dg_categories_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorCode.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-
-            if (dg_categories.SelectedIndex != -1)
-            {
-                category = dg_categories.SelectedItem as Category;
-                this.DataContext = category;
-                cb_parentCategorie.SelectedValue = category.parentId;
-            }
-            //if (category != null)
-            //{
-            //    if (category.categoryId != 0)
-            //    {
-            //        _categorieId = category.categoryId;
-            //    }
-            //}
-        }
+      
         #region Categor and Item
 
         #region Refrish Y
@@ -316,6 +294,33 @@ namespace POS.View
         }
         #endregion
         #region Get Id By Click  Y
+        private void dg_categories_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            p_errorName.Visibility = Visibility.Collapsed;
+            p_errorCode.Visibility = Visibility.Collapsed;
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+
+            if (dg_categories.SelectedIndex != -1)
+            {
+                category = dg_categories.SelectedItem as Category;
+                this.DataContext = category;
+                cb_parentCategorie.SelectedValue = category.parentId;
+            }
+            //if (category != null)
+            //{
+            //    if (category.categoryId != 0)
+            //    {
+            //        _categorieId = category.categoryId;
+            //    }
+            //}
+
+            categoryParentId = category.categoryId;
+            Txb_searchcategories_TextChanged(null, null);
+        }
         public void ChangeCategorieIdEvent(int categoryId)
         {
             //////////////
@@ -330,12 +335,13 @@ namespace POS.View
              category = categories.ToList().Find(c => c.categoryId == categoryId);
             this.DataContext = category;
             cb_parentCategorie.SelectedValue = category.parentId;
-
+            categoryParentId = category.categoryId;
+            Txb_searchcategories_TextChanged(null, null);
         }
-        public void testChangeCategorieItemsIdEvent()
-        {
-            MessageBox.Show("Hello World!!  CategorieItems Id");
-        }
+        //public void testChangeCategorieItemsIdEvent()
+        //{
+        //    MessageBox.Show("Hello World!!  CategorieItems Id");
+        //}
         #endregion
         #region Toggle Button Y
         
@@ -392,10 +398,30 @@ namespace POS.View
             if (categories is null)
                 await RefrishCategories();
             txtCategorySearch = txb_searchcategories.Text;
+            //categoriesQuery = new List<Category>();
+            /*
+            if(categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
+            x.name.Contains(txtCategorySearch) ||
+            x.details.Contains(txtCategorySearch)
+            ) && x.isActive == tglCategoryState && x.parentId == categoryParentId).Count() == 0)
+            {
+                categoriesQuery = categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
+            x.name.Contains(txtCategorySearch) ||
+            x.details.Contains(txtCategorySearch)
+            ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+            }
+            else
+            {
+                categoriesQuery = categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
+            x.name.Contains(txtCategorySearch) ||
+            x.details.Contains(txtCategorySearch)
+            ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+            }
+            */
             categoriesQuery = categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
             x.name.Contains(txtCategorySearch) ||
             x.details.Contains(txtCategorySearch)
-            ) && x.isActive == tglCategoryState);
+            ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
             txt_Count.Text = categoriesQuery.Count().ToString();
             RefrishCategoriesDatagrid(categoriesQuery);
             paginationSetting(categoriesQuery);
@@ -594,7 +620,6 @@ namespace POS.View
             paginationSetting();
         }
         #endregion
-
         #region Excel
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
@@ -630,6 +655,79 @@ namespace POS.View
         }
         #endregion
         #endregion
+        #region categoryPathControl Y
 
+        void generateTrack(List<Category> listCategory)
+        {
+           
+            int count = 0;
+            //TestLestCategory[0] = TestLestCategory[0];
+            foreach (var item in listCategory)
+            {
+                Button b = new Button();
+                b.Content = " > " + item.name + " ";
+                b.Padding = new Thickness(0);
+                b.Margin = new Thickness(0);
+                b.Background =null;
+                b.BorderThickness = new Thickness(0);
+                if (count + 1 == listCategory.Count)
+                    b.FontFamily = Application.Current.Resources["Font-cairo-bold"] as FontFamily;
+                else b.FontFamily = Application.Current.Resources["Font-cairo-light"] as FontFamily;
+                b.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e")); 
+                //b.FontWeight = FontWeights.Bold;
+                b.FontSize = 14;
+                Grid.SetColumn(b, count);
+                b.DataContext = item;
+                b.Name = "category" + item.categoryId;
+                b.Tag = item.categoryId;
+                b.Click += new RoutedEventHandler(getCategoryIdFromPath);
+                count++;
+                grid_categoryControlPath.Children.Add(b);
+            }
+        }
+
+        private void getCategoryIdFromPath(object sender, RoutedEventArgs e)
+        {
+            Button b = (Button)sender;
+            //if (sender != null)
+                MessageBox.Show("Name: " + b.Name + " \\Tag: " + b.Tag + "");
+
+
+            //categoryParentId = "ParentID"
+            
+        }
+
+        private void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
+        {
+            categoryParentId = 0;
+            Txb_searchcategories_TextChanged(null, null);
+
+
+            List<Category> TestLestCategory = new List<Category>();
+            TestLestCategory.Add(new Category()
+            {
+                categoryId = 23,
+                parentId = 0,
+                //name = "Electronics"
+                name = "إلكترونيات"
+            });
+            TestLestCategory.Add(new Category()
+            {
+                categoryId = 28,
+                parentId = 23,
+                //name = "Programs"
+                name = "برامج"
+            });
+            TestLestCategory.Add(new Category()
+            {
+                categoryId = 56,
+                parentId = 28,
+                //name = "Pos"
+                name = "نقاط مبيعات"
+            });
+            generateTrack(TestLestCategory);
+        }
+
+        #endregion
     }
 }

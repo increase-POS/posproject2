@@ -143,10 +143,13 @@ namespace POS.View
         {
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
+            p_errorMobile.Visibility = Visibility.Collapsed;
+
             var bc = new BrushConverter();
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_fax.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
             if (dg_customer.SelectedIndex != -1)
             {
@@ -727,6 +730,11 @@ namespace POS.View
 
             p_errorName.Visibility = Visibility.Collapsed;
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+        }
+
+        private void tb_email_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
         }
     }
 }
