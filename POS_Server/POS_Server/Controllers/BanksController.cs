@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POS_Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,9 @@ namespace POS_Server.Controllers
                 var re = Request;
                 var headers = re.Headers;
                 string token = "";
-                if (headers.Contains("APIKey"))
+            Boolean canDelete = false;
+
+            if (headers.Contains("APIKey"))
                 {
                     token = headers.GetValues("APIKey").First();
                 }
@@ -30,22 +33,37 @@ namespace POS_Server.Controllers
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-                        var banksList = entity.banks.Select(b => new {
-                            b.accNumber,
-                            b.address,
-                            b.bankId,
-                            b.mobile,
-                            b.name,
-                            b.notes,
-                            b.phone,
-                            b.createDate,
-                            b.updateDate,
-                            b.createUserId,
-                            b.updateUserId
+                        var banksList = entity.banks.Select(b => new BankModel {
+                           accNumber= b.accNumber,
+                            address= b.address,
+                            bankId= b.bankId,
+                            mobile= b.mobile,
+                            name=b.name,
+                            notes=b.notes,
+                            phone=b.phone,
+                            createDate=b.createDate,
+                            updateDate=b.updateDate,
+                            createUserId=b.createUserId,
+                            updateUserId=b.updateUserId
                         })
                         .ToList();
 
-                        if (banksList == null)
+                    if (banksList.Count > 0)
+                    {
+                        for (int i = 0; i < banksList.Count; i++)
+                        {
+                            if (banksList[i].isActive == 1)
+                            {
+                                int bankId = (int)banksList[i].bankId;
+                                var operationsL = entity.operations.Where(x => x.bankId == bankId).Select(b => new { b.operationId }).FirstOrDefault();
+                              
+                                if (operationsL is null)
+                                    canDelete = true;
+                            }
+                            banksList[i].canDelete = canDelete;
+                        }
+                    }
+                    if (banksList == null)
                             return NotFound();
                         else
                             return Ok(banksList);
@@ -54,9 +72,52 @@ namespace POS_Server.Controllers
                 //else
                 return NotFound();
             }
+        [HttpGet]
+        [Route("Search")]
+        public IHttpActionResult Search(string searchWords)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
 
-            // GET api/<controller>
-            [HttpGet]
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var banksList = entity.banks
+                        .Where(x =>(x.name.Contains(searchWords) || x.accNumber.Contains(searchWords) || x.address.Contains(searchWords) || x.mobile.Contains(searchWords)))
+                        .Select(b => new {
+                        b.accNumber,
+                        b.address,
+                        b.bankId,
+                        b.mobile,
+                        b.name,
+                        b.notes,
+                        b.phone,
+                        b.createDate,
+                        b.updateDate,
+                        b.createUserId,
+                        b.updateUserId
+                    })
+                    .ToList();
+
+                    if (banksList == null)
+                        return NotFound();
+                    else
+                        return Ok(banksList);
+                }
+            }
+            //else
+            return NotFound();
+        }
+        // GET api/<controller>
+        [HttpGet]
             [Route("GetBankByID")]
             public IHttpActionResult GetBankByID()
             {
@@ -106,7 +167,7 @@ namespace POS_Server.Controllers
                     return NotFound();
             }
 
-            // add or update unit
+            // add or update bank
             [HttpPost]
             [Route("Save")]
             public string Save(string bankObject)
@@ -144,7 +205,10 @@ namespace POS_Server.Controllers
                             var bankEntity = entity.Set<banks>();
                             if (newObject.bankId == 0)
                             {
-                                bankEntity.Add(newObject);
+                            newObject.createDate = DateTime.Now;
+                            newObject.updateDate = DateTime.Now;
+                            newObject.updateUserId = newObject.createUserId;
+                            bankEntity.Add(newObject);
                                 message = "Bank Is Added Successfully";
                             }
                             else
@@ -156,8 +220,9 @@ namespace POS_Server.Controllers
                                tmpBank.mobile = newObject.mobile;
                             tmpBank.notes = newObject.notes;
                             tmpBank.phone = newObject.phone;
-                            tmpBank.updateDate = newObject.updateDate;
+                            tmpBank.updateDate = DateTime.Now;
                                tmpBank.updateUserId = newObject.updateUserId;
+                               tmpBank.isActive = newObject.isActive;
                               
                                 message = "Bank Is Updated Successfully";
                             }
@@ -175,7 +240,7 @@ namespace POS_Server.Controllers
 
             [HttpPost]
             [Route("Delete")]
-            public IHttpActionResult Delete(int bankId)
+            public IHttpActionResult Delete(int bankId , int userId , Boolean final)
             {
                 var re = Request;
                 var headers = re.Headers;
@@ -188,21 +253,44 @@ namespace POS_Server.Controllers
                 bool valid = validation.CheckApiKey(token);
                 if (valid)
                 {
+                if (final)
+                {
                     try
                     {
                         using (incposdbEntities entity = new incposdbEntities())
                         {
-                            
-                                banks bankDelete = entity.banks.Find(bankId);
-                                entity.banks.Remove(bankDelete);
-                                entity.SaveChanges();
-                                return Ok("Bank is Deleted Successfully"); 
+
+                            banks bankDelete = entity.banks.Find(bankId);
+                            entity.banks.Remove(bankDelete);
+                            entity.SaveChanges();
+                            return Ok("Bank is Deleted Successfully");
                         }
                     }
                     catch
                     {
                         return NotFound();
                     }
+                }
+                else
+                {
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+
+                            banks bankObj = entity.banks.Find(bankId);
+                            bankObj.isActive = 0;
+                            bankObj.updateUserId = userId;
+                            bankObj.updateDate = DateTime.Now;
+                            entity.SaveChanges();
+                            return Ok("Bank is Deleted Successfully");
+                        }
+                    }
+                    catch
+                    {
+                        return NotFound();
+                    }
+                }
                 }
                 else
                     return NotFound();

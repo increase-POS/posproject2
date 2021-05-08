@@ -17,13 +17,11 @@ namespace POS_Server
         public int itemPropId { get; set; }
         public Nullable<int> propertyItemId { get; set; }
         public Nullable<int> itemId { get; set; }
-        public Nullable<int> barcodeId { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
     
-        public virtual barcodes barcodes { get; set; }
         public virtual items items { get; set; }
         public virtual propertiesItems propertiesItems { get; set; }
         public virtual users users { get; set; }

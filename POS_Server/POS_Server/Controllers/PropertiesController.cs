@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POS_Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
+            Boolean canDelete = false;
+
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -30,15 +33,32 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var propertiesList = entity.properties.Select(p => new {
-                        p.propertyId,
-                        p.name,
-                        p.createDate,
-                        p.createUserId,
-                        p.updateDate,
-                        p.updateUserId,
+                    var propertiesList = entity.properties.Select(p => new PropertyModel {
+                      propertyId=  p.propertyId,
+                        name= p.name,
+                        createDate= p.createDate,
+                        createUserId= p.createUserId,
+                        updateDate= p.updateDate,
+                        updateUserId= p.updateUserId,
+                        isActive= p.isActive,
                     })
                     .ToList();
+
+                    if (propertiesList.Count > 0)
+                    {
+                        for (int i = 0; i < propertiesList.Count; i++)
+                        {
+                            if (propertiesList[i].isActive == 1)
+                            {
+                                int propertyId = (int)propertiesList[i].propertyId;
+                                var propItems = entity.propertiesItems.Where(x => x.propertyId == propertyId).Select(b => new { b.propertyItemId }).FirstOrDefault();
+
+                                if (propItems is null)
+                                    canDelete = true;
+                            }
+                            propertiesList[i].canDelete = canDelete;
+                        }
+                    }
 
                     if (propertiesList == null)
                         return NotFound();
@@ -49,22 +69,115 @@ namespace POS_Server.Controllers
             return NotFound();
         }
 
-        // GET api/<controller>
         [HttpGet]
-        [Route("GetPropertyByID")]
-        public IHttpActionResult GetPropertyByID()
+        [Route("GetPropertyValues")]
+        public IHttpActionResult GetPropertyValues(int propertyId)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            int propertyId = 0;
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
             }
-            if (headers.Contains("propertyId"))
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
             {
-                propertyId = Convert.ToInt32(headers.GetValues("propertyId").First());
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var propertiesList =( from PI in entity.propertiesItems.Where(x => x.propertyId == propertyId)
+                                          join P in entity.properties on PI.propertyId equals P.propertyId
+                                          select new PropertiesItemModel(){
+                                           propertyId = PI.propertyId,
+                                           propertyItemName = PI.name,
+                                           createDate = PI.createDate,
+                                           createUserId = PI.createUserId,
+                                           updateDate = PI.updateDate,
+                                           updateUserId = PI.updateUserId,
+                                           propertyName = P.name,
+                                        })
+                                        .ToList();
+
+                    if (propertiesList == null)
+                        return NotFound();
+                    else
+                        return Ok(propertiesList);
+                }
+            }
+            return NotFound();
+        }
+
+        [HttpGet]
+        [Route("GetAllPropertiesValues")]
+        public IHttpActionResult GetAllPropertiesValues()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            Boolean canDelete = false;
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var propertiesList = (from PI in entity.propertiesItems
+                                          join P in entity.properties on PI.propertyId equals P.propertyId
+                                          select new PropertiesItemModel()
+                                          {
+                                              propertyId = PI.propertyId,
+                                              propertyItemName = PI.name,
+                                              createDate = PI.createDate,
+                                              createUserId = PI.createUserId,
+                                              updateDate = PI.updateDate,
+                                              updateUserId = PI.updateUserId,
+                                              propertyName = P.name,
+                                          })
+                                        .ToList();
+
+                    if (propertiesList.Count > 0)
+                    {
+                        for (int i = 0; i < propertiesList.Count; i++)
+                        {
+                            if (propertiesList[i].isActive == 1)
+                            {
+                                int propertyItemId = (int)propertiesList[i].propertyItemId;
+                                var Itemsprop = entity.itemsProp.Where(x => x.propertyItemId == propertyItemId).Select(b => new { b.itemPropId }).FirstOrDefault();
+
+                                if (Itemsprop is null)
+                                    canDelete = true;
+                            }
+                            propertiesList[i].canDelete = canDelete;
+                        }
+                    }
+
+                    if (propertiesList == null)
+                        return NotFound();
+                    else
+                        return Ok(propertiesList);
+                }
+            }
+            return NotFound();
+        }
+        // GET api/<controller>
+        [HttpGet]
+        [Route("GetPropertyByID")]
+        public IHttpActionResult GetPropertyByID(int propertyId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
@@ -134,6 +247,10 @@ namespace POS_Server.Controllers
                         var propEntity = entity.Set<properties>();
                         if (propertiesObject.propertyId == 0)
                         {
+                            propertiesObject.createDate = DateTime.Now;
+                            propertiesObject.updateDate = DateTime.Now;
+                            propertiesObject.updateUserId = propertiesObject.createUserId;
+
                             propEntity.Add(propertiesObject);
                             message = "Property Is Added Successfully";
                         }
@@ -141,7 +258,7 @@ namespace POS_Server.Controllers
                         {
                             var tmpProperty = entity.properties.Where(p => p.propertyId == propertiesObject.propertyId).FirstOrDefault();
                             tmpProperty.name = propertiesObject.name;
-                            tmpProperty.updateDate = propertiesObject.updateDate;
+                            tmpProperty.updateDate = DateTime.Now;
                             tmpProperty.updateUserId = propertiesObject.updateUserId;
 
                             message = "Property Is Updated Successfully";
@@ -160,37 +277,47 @@ namespace POS_Server.Controllers
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete()
+        public IHttpActionResult Delete(int propertyId, int userId, Boolean final)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            int propertyId = 0;
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
-            }
-            if (headers.Contains("propertyId"))
-            {
-                propertyId = Convert.ToInt32(headers.GetValues("propertyId").First());
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
             if (valid)
             {
-                try
+                if (final)
                 {
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {                        
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
                             properties PropertDelete = entity.properties.Find(propertyId);
                             entity.properties.Remove(PropertDelete);
                             entity.SaveChanges();
                             return Ok("Property is Deleted Successfully");
+                        }
+                    }
+                    catch
+                    {
+                        return NotFound();
                     }
                 }
-                catch
+                else
                 {
-                    return NotFound();
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        properties PropertDelete = entity.properties.Find(propertyId);
+                        PropertDelete.isActive = 0;
+                        PropertDelete.updateDate = DateTime.Now;
+                        PropertDelete.updateUserId = userId;
+                        entity.SaveChanges();
+                        return Ok("Property is Deleted Successfully");
+                    }
                 }
             }
             else

@@ -31,6 +31,7 @@ namespace POS_Server
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
+        public Nullable<byte> isActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<operations> operations { get; set; }

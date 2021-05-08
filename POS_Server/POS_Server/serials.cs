@@ -17,6 +17,7 @@ namespace POS_Server
         public int serialId { get; set; }
         public Nullable<int> itemId { get; set; }
         public string serialNum { get; set; }
+        public Nullable<byte> isActive { get; set; }
     
         public virtual items items { get; set; }
     }

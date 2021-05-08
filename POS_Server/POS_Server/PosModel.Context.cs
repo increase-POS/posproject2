@@ -27,17 +27,18 @@ namespace POS_Server
     
         public virtual DbSet<agents> agents { get; set; }
         public virtual DbSet<banks> banks { get; set; }
-        public virtual DbSet<barcodes> barcodes { get; set; }
         public virtual DbSet<branches> branches { get; set; }
         public virtual DbSet<branchesUsers> branchesUsers { get; set; }
         public virtual DbSet<cashTransfer> cashTransfer { get; set; }
         public virtual DbSet<categories> categories { get; set; }
+        public virtual DbSet<coupons> coupons { get; set; }
+        public virtual DbSet<couponsInvoices> couponsInvoices { get; set; }
         public virtual DbSet<Expenses> Expenses { get; set; }
         public virtual DbSet<invoices> invoices { get; set; }
+        public virtual DbSet<invoicesOrders> invoicesOrders { get; set; }
         public virtual DbSet<items> items { get; set; }
-        public virtual DbSet<itemsDates> itemsDates { get; set; }
-        public virtual DbSet<itemsLocations> itemsLocations { get; set; }
         public virtual DbSet<itemsMaterials> itemsMaterials { get; set; }
+        public virtual DbSet<itemsOffers> itemsOffers { get; set; }
         public virtual DbSet<itemsProp> itemsProp { get; set; }
         public virtual DbSet<itemsTransfer> itemsTransfer { get; set; }
         public virtual DbSet<itemsUnits> itemsUnits { get; set; }
@@ -48,11 +49,12 @@ namespace POS_Server
         public virtual DbSet<orderscontents> orderscontents { get; set; }
         public virtual DbSet<pos> pos { get; set; }
         public virtual DbSet<posUsers> posUsers { get; set; }
-        public virtual DbSet<prices> prices { get; set; }
         public virtual DbSet<properties> properties { get; set; }
         public virtual DbSet<propertiesItems> propertiesItems { get; set; }
         public virtual DbSet<serials> serials { get; set; }
         public virtual DbSet<units> units { get; set; }
         public virtual DbSet<users> users { get; set; }
+        public virtual DbSet<itemsLocations> itemsLocations { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
     }
 }

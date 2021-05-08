@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POS_Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
+            Boolean canDelete = false;
+
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -30,20 +33,39 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var posList = entity.pos
-                    .Select(p => new
+                    var posList = (from p in entity.pos
+                                  join b in entity.branches on p.branchId equals b.branchId into lj
+                                   from x in lj.DefaultIfEmpty()
+                                   select  new PosModel (){
+                                      posId = p.posId,
+                                      balance = p.balance,
+                                      branchId =p.branchId,
+                                      code=p.code,
+                                      name= p.name,
+                                      branchName = x.name,
+                                      createDate= p.createDate,
+                                      updateDate= p.updateDate,
+                                      createUserId=p.createUserId,
+                                      updateUserId= p.updateUserId,
+                                      isActive = p.isActive,
+                    }).ToList();
+
+                    if (posList.Count > 0)
                     {
-                        p.posId,
-                        p.balance,
-                        p.branchId,
-                        p.code,
-                        p.name,
-                        p.createDate,
-                        p.updateDate,
-                        p.createUserId,
-                        p.updateUserId,
-                    })
-                    .ToList();
+                        for (int i = 0; i < posList.Count; i++)
+                        {
+                            if (posList[i].isActive == 1)
+                            {
+                                int posId = (int)posList[i].posId;
+                                var cashTransferL = entity.cashTransfer.Where(x => x.posId == posId).Select(b => new { b.cashTransId }).FirstOrDefault();
+                                var posUsersL = entity.posUsers.Where(x => x.posId == posId).Select(x => new { x.posUserId }).FirstOrDefault();
+                               
+                                if ((cashTransferL is null) && (posUsersL is null))
+                                    canDelete = true;
+                            }
+                            posList[i].canDelete = canDelete;
+                        }
+                    }
 
                     if (posList == null)
                         return NotFound();
@@ -55,6 +77,59 @@ namespace POS_Server.Controllers
             return NotFound();
         }
 
+        [HttpGet]
+        [Route("Search")]
+        public IHttpActionResult Search(string searchWords)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            decimal balance =0;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            try
+            {
+                 balance = Convert.ToDecimal(searchWords);
+            }
+            catch { }
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var posList = (from p in entity.pos
+                                   join b in entity.branches on p.branchId equals b.branchId into lj
+                                   from x in lj.DefaultIfEmpty()
+                                   select new PosModel()
+                                   {
+                                       posId = p.posId,
+                                       balance = p.balance,
+                                       branchId = p.branchId,
+                                       code = p.code,
+                                       name = p.name,
+                                       branchName = x.name,
+                                       createDate = p.createDate,
+                                       updateDate = p.updateDate,
+                                       createUserId = p.createUserId,
+                                       updateUserId = p.updateUserId,
+                                       isActive = p.isActive,
+                                   })
+                                   .Where(p=> (p.name.Contains(searchWords) || p.code.Contains(searchWords) || p.branchName.Contains(searchWords) || p.balance == balance ))
+                                   .ToList();
+
+                    if (posList == null)
+                        return NotFound();
+                    else
+                        return Ok(posList);
+                }
+            }
+            //else
+            return NotFound();
+        }
         // GET api/<controller>
         [HttpGet]
         [Route("GetPosByID")]
@@ -87,6 +162,7 @@ namespace POS_Server.Controllers
                        p.updateDate,
                        p.createUserId,
                        p.updateUserId,
+                       p.isActive,
                    })
                    .FirstOrDefault();
 
@@ -138,6 +214,10 @@ namespace POS_Server.Controllers
                         var unitEntity = entity.Set<pos>();
                         if (newObject.posId == 0)
                         {
+                            newObject.createDate = DateTime.Now;
+                            newObject.updateDate = DateTime.Now;
+                            newObject.updateUserId = newObject.createUserId;
+
                             unitEntity.Add(newObject);
                             message = "Pos Is Added Successfully";
                         }
@@ -146,11 +226,10 @@ namespace POS_Server.Controllers
                             var tmpPos = entity.pos.Where(p => p.posId == newObject.posId).FirstOrDefault();
                             tmpPos.name = newObject.name;
                             tmpPos.code = newObject.code;
-                            tmpPos.balance = newObject.balance;
                             tmpPos.branchId = newObject.branchId;
-                            tmpPos.updateDate = newObject.updateDate;
+                            tmpPos.updateDate = DateTime.Now;
                             tmpPos.updateUserId = newObject.updateUserId;
-
+                            tmpPos.isActive = newObject.isActive;
                             message = "Pos Is Updated Successfully";
                         }
                         entity.SaveChanges();
@@ -166,7 +245,7 @@ namespace POS_Server.Controllers
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int posId)
+        public IHttpActionResult Delete(int posId,int userId,Boolean final)
         {
             var re = Request;
             var headers = re.Headers;
@@ -180,21 +259,38 @@ namespace POS_Server.Controllers
             bool valid = validation.CheckApiKey(token);
             if (valid)
             {
-                try
+                if (final)
+                {
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            pos posDelete = entity.pos.Find(posId);
+
+                            entity.pos.Remove(posDelete);
+                            entity.SaveChanges();
+
+                            return Ok("Pos is Deleted Successfully");
+                        }
+                    }
+                    catch
+                    {
+                        return NotFound();
+                    }
+                }
+                else
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         pos posDelete = entity.pos.Find(posId);
 
-                        entity.pos.Remove(posDelete);
+                        posDelete.isActive = 0;
+                        posDelete.updateUserId = userId;
+                        posDelete.updateDate = DateTime.Now;
                         entity.SaveChanges();
 
                         return Ok("Pos is Deleted Successfully");
                     }
-                }
-                catch
-                {
-                    return NotFound();
                 }
             }
             else

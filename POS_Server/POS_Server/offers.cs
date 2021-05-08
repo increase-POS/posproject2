@@ -14,7 +14,27 @@ namespace POS_Server
     
     public partial class offers
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public offers()
+        {
+            this.itemsOffers = new HashSet<itemsOffers>();
+        }
+    
         public int offerId { get; set; }
-        public string offerType { get; set; }
+        public string name { get; set; }
+        public string code { get; set; }
+        public Nullable<byte> isActive { get; set; }
+        public string discountType { get; set; }
+        public Nullable<decimal> discountValue { get; set; }
+        public Nullable<System.DateTime> startDate { get; set; }
+        public Nullable<System.DateTime> endDate { get; set; }
+        public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<int> createUserId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
+        public string notes { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemsOffers> itemsOffers { get; set; }
     }
 }

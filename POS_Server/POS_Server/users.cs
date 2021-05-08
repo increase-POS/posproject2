@@ -19,10 +19,6 @@ namespace POS_Server
         {
             this.agents = new HashSet<agents>();
             this.agents1 = new HashSet<agents>();
-            this.barcodes = new HashSet<barcodes>();
-            this.barcodes1 = new HashSet<barcodes>();
-            this.barcodes2 = new HashSet<barcodes>();
-            this.barcodes3 = new HashSet<barcodes>();
             this.branches = new HashSet<branches>();
             this.branches1 = new HashSet<branches>();
             this.branchesUsers = new HashSet<branchesUsers>();
@@ -33,28 +29,24 @@ namespace POS_Server
             this.cashTransfer4 = new HashSet<cashTransfer>();
             this.categories = new HashSet<categories>();
             this.categories1 = new HashSet<categories>();
+            this.coupons = new HashSet<coupons>();
+            this.coupons1 = new HashSet<coupons>();
+            this.couponsInvoices = new HashSet<couponsInvoices>();
+            this.couponsInvoices1 = new HashSet<couponsInvoices>();
             this.invoices = new HashSet<invoices>();
             this.invoices1 = new HashSet<invoices>();
             this.invoices2 = new HashSet<invoices>();
             this.invoices3 = new HashSet<invoices>();
+            this.invoicesOrders = new HashSet<invoicesOrders>();
+            this.invoicesOrders1 = new HashSet<invoicesOrders>();
             this.items = new HashSet<items>();
             this.items1 = new HashSet<items>();
             this.items2 = new HashSet<items>();
             this.items3 = new HashSet<items>();
-            this.itemsDates = new HashSet<itemsDates>();
-            this.itemsDates1 = new HashSet<itemsDates>();
-            this.itemsDates2 = new HashSet<itemsDates>();
-            this.itemsDates3 = new HashSet<itemsDates>();
-            this.itemsDates4 = new HashSet<itemsDates>();
-            this.itemsDates5 = new HashSet<itemsDates>();
-            this.itemsLocations = new HashSet<itemsLocations>();
-            this.itemsLocations1 = new HashSet<itemsLocations>();
-            this.itemsLocations2 = new HashSet<itemsLocations>();
-            this.itemsLocations3 = new HashSet<itemsLocations>();
+            this.itemsOffers = new HashSet<itemsOffers>();
+            this.itemsOffers1 = new HashSet<itemsOffers>();
             this.itemsProp = new HashSet<itemsProp>();
             this.itemsProp1 = new HashSet<itemsProp>();
-            this.itemsTransfer = new HashSet<itemsTransfer>();
-            this.itemsTransfer1 = new HashSet<itemsTransfer>();
             this.itemsUnits = new HashSet<itemsUnits>();
             this.itemsUnits1 = new HashSet<itemsUnits>();
             this.locations = new HashSet<locations>();
@@ -68,14 +60,16 @@ namespace POS_Server
             this.orderscontents1 = new HashSet<orderscontents>();
             this.pos = new HashSet<pos>();
             this.pos1 = new HashSet<pos>();
-            this.prices = new HashSet<prices>();
-            this.prices1 = new HashSet<prices>();
             this.properties = new HashSet<properties>();
             this.properties1 = new HashSet<properties>();
             this.propertiesItems = new HashSet<propertiesItems>();
             this.propertiesItems1 = new HashSet<propertiesItems>();
             this.units = new HashSet<units>();
             this.units1 = new HashSet<units>();
+            this.itemsLocations = new HashSet<itemsLocations>();
+            this.itemsLocations1 = new HashSet<itemsLocations>();
+            this.itemsLocations2 = new HashSet<itemsLocations>();
+            this.itemsLocations3 = new HashSet<itemsLocations>();
         }
     
         public int userId { get; set; }
@@ -85,7 +79,6 @@ namespace POS_Server
         public string lastname { get; set; }
         public string job { get; set; }
         public string workHours { get; set; }
-        public string details { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
@@ -103,14 +96,6 @@ namespace POS_Server
         public virtual ICollection<agents> agents { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<agents> agents1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<barcodes> barcodes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<barcodes> barcodes1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<barcodes> barcodes2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<barcodes> barcodes3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<branches> branches { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -132,6 +117,14 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<categories> categories1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<coupons> coupons { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<coupons> coupons1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<couponsInvoices> couponsInvoices { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<couponsInvoices> couponsInvoices1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<invoices> invoices { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<invoices> invoices1 { get; set; }
@@ -139,6 +132,10 @@ namespace POS_Server
         public virtual ICollection<invoices> invoices2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<invoices> invoices3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<invoicesOrders> invoicesOrders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<invoicesOrders> invoicesOrders1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<items> items { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -148,33 +145,13 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<items> items3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemsDates> itemsDates { get; set; }
+        public virtual ICollection<itemsOffers> itemsOffers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemsDates> itemsDates1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemsDates> itemsDates2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemsDates> itemsDates3 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemsDates> itemsDates4 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemsDates> itemsDates5 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemsLocations> itemsLocations { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemsLocations> itemsLocations1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemsLocations> itemsLocations2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemsLocations> itemsLocations3 { get; set; }
+        public virtual ICollection<itemsOffers> itemsOffers1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsProp> itemsProp { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsProp> itemsProp1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemsTransfer> itemsTransfer { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemsTransfer> itemsTransfer1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsUnits> itemsUnits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -202,10 +179,6 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<pos> pos1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<prices> prices { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<prices> prices1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<properties> properties { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<properties> properties1 { get; set; }
@@ -217,5 +190,13 @@ namespace POS_Server
         public virtual ICollection<units> units { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<units> units1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemsLocations> itemsLocations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemsLocations> itemsLocations1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemsLocations> itemsLocations2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemsLocations> itemsLocations3 { get; set; }
     }
 }
