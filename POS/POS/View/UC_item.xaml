@@ -271,7 +271,7 @@
                                 </Grid>
                                 <DataGrid x:Name="dg_items"  Margin="5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
-                         IsReadOnly="True" CanUserAddRows="False" SelectionChanged='DG_Items_SelectionChanged'
+                         IsReadOnly="True" CanUserAddRows="False" SelectionChanged='dg_itemsSelectionChanged'
                         AutoGenerateColumns="False"
                         ColumnWidth="SizeToHeader"  >
                                     <DataGrid.Columns >
@@ -551,7 +551,7 @@
                                         <Separator Background="#999999"   Width="274"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                                         <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
-                          Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click"
+                          Background="{x:Null}" BorderBrush="{x:Null}" Click="btn_clear_Click"
                     Margin="5,1"   ToolTip="clear">
 
                                             <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
@@ -927,7 +927,7 @@
                         </Grid>
                         <!--////////////////////////////////////   Properties   ////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                         x:Name="grid_properties"  Visibility="Visible">
+                         x:Name="grid_properties"  Visibility="Collapsed">
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="7"/>
                                 <RowDefinition Height="*"/>
@@ -957,7 +957,7 @@
                                     <Separator Background="#999999"   Width="300"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                                     <Button x:Name="btn_clearPropertiess" Grid.Row="1" Grid.Column="2" Padding="0"
-                          Background="{x:Null}" BorderBrush="{x:Null}" 
+                          Background="{x:Null}" BorderBrush="{x:Null}"  Click="btn_clearPropertiesClick"
                     Margin="5,1"   ToolTip="clear">
 
                                         <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
@@ -969,7 +969,7 @@
                       materialDesign:DataGridAssist.CornerRadius="5" 
                          IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"    >
+                        ColumnWidth="SizeToHeader" SelectionChanged="dg_propertiesSelectionChanged"    >
                                     <DataGrid.Columns>
                                         <DataGridTextColumn MinWidth="150"  Header="Name" Binding="{Binding Path=propName}">
                                             <DataGridTextColumn.ElementStyle>
@@ -1043,11 +1043,11 @@
                             materialDesign:ButtonAssist.CornerRadius="5"  />-->
                                     <Button x:Name="btn_addProperties" Grid.Row="0" Grid.Column="2"  Width="50"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="5,6,5,0"  Padding="0"  Height="33" Content="Add" FontSize="12" Click="Btn_addProperties_Click" VerticalAlignment="Top"  />
+                    Margin="5,6"  Padding="0"  Height="Auto" Content="Add" FontSize="12" Click="Btn_addProperties_Click"  />
 
                                     <Button x:Name="btn_updateProperties" Grid.Row="0" Grid.Column="3"
-                        Background="#4E4E4E" BorderBrush="{x:Null}" Width="50"
-                    Margin="1,0" Height="33"  Padding="0"  Content="Delete" FontSize="12" Click="Btn_updateProperties_Click" />
+                        Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="5,6,5,0" Height="33"  Padding="0"  Content="Delete" FontSize="12" Click="Btn_deleteProperties_Click" VerticalAlignment="Top" />
                                 </Grid>
 
 
@@ -1057,14 +1057,17 @@
                          VerticalAlignment="Center" x:Name="line_topService" />
                             <Grid Grid.Row="3" >
                                 <!--////////////////////////// Sub Property >>>> Serial /////////////////////////////////-->
-                                <Grid Grid.Row="2" x:Name="grid_serial" Visibility="Visible" >
+                                <Grid Grid.Row="2" x:Name="grid_serial" Visibility="Collapsed" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions >
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <Grid Grid.ColumnSpan="2">
+                                    <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="auto"/>
                                             <ColumnDefinition Width="*"/>
@@ -1079,7 +1082,7 @@
                       materialDesign:DataGridAssist.CornerRadius="5" 
                         IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"    >
+                        ColumnWidth="SizeToHeader" SelectionChanged="dg_serials_SelectionChanged"    >
                                         <DataGrid.Columns>
                                             <DataGridTextColumn MinWidth="250"  Header="Code" Binding="{Binding Path=serialNum}">
                                                 <DataGridTextColumn.ElementStyle>
@@ -1136,9 +1139,9 @@
                          BorderThickness="0" Background="#4E4E4E" Content="Add" BorderBrush="{x:Null}"
                     Padding="0" Height="33" Click="Btn_addSerial_Click"
                              />
-                                        <Button Grid.Row="1" Grid.Column="3"  Width="170" Grid.ColumnSpan="3"
+                                        <Button x:Name="btn_deleteSerial" Grid.Row="1" Grid.Column="3"  Width="170" Grid.ColumnSpan="3"
                          BorderThickness="0" Background="#4E4E4E" Content="Delete"
-                    Padding="0" Height="33" BorderBrush="{x:Null}" 
+                    Padding="0" Height="33" BorderBrush="{x:Null}" Click="Btn_deleteSerial_Click" 
                             />
                                     </Grid>
 
@@ -1250,7 +1253,7 @@
                         </Grid>
                         <!--////////////////////////////////////    Barcode    ////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                      x:Name="grid_barcode"  Visibility="Collapsed" >
+                      x:Name="dg_barcode"  Visibility="Visible" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="7.5"/>
                                 <RowDefinition Height="auto"/>
@@ -1281,7 +1284,7 @@
                                 <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                                 <Button x:Name="btn_clearProperties" Grid.Row="1" Grid.Column="2" Padding="0"
-                          Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click"
+                          Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_unitClear"
                     Margin="5,1"   ToolTip="clear">
 
                                     <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
@@ -1294,9 +1297,9 @@
                       materialDesign:DataGridAssist.CornerRadius="5" 
                         IsReadOnly="True" CanUserAddRows="False"  
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"    >
+                        ColumnWidth="SizeToHeader" SelectionChanged="dg_unit_SelectionChanged"    >
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn MinWidth="125"  Header="Unit" Binding="{Binding Path=Test}">
+                                    <DataGridTextColumn MinWidth="125"  Header="Unit" Binding="{Binding Path=mainUnit}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
@@ -1307,7 +1310,7 @@
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn MinWidth="125"  Header="Count Unit" Binding="{Binding Path=Test}">
+                                    <DataGridTextColumn MinWidth="125"  Header="Count Unit" Binding="{Binding Path=unitValue}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
@@ -1318,7 +1321,7 @@
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn MinWidth="125"  Header="Small Unit" Binding="{Binding Path=Test}">
+                                    <DataGridTextColumn MinWidth="125"  Header="Small Unit" Binding="{Binding Path=smallUnit}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
@@ -1329,7 +1332,7 @@
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn MinWidth="125"  Header="Price" Binding="{Binding Path=Test}">
+                                    <DataGridTextColumn MinWidth="125"  Header="Price" Binding="{Binding Path=price}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
@@ -1340,7 +1343,7 @@
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn MinWidth="125"  Header="Barcode" Binding="{Binding Path=Test}">
+                                    <DataGridTextColumn MinWidth="125"  Header="Barcode" Binding="{Binding Path=barcode}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
@@ -1437,10 +1440,11 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox x:Name="tb_Count"   Text="{Binding test, Mode=OneWay}" Padding="10,5,5,5" 
+                                    <TextBox x:Name="tb_count"   Text="{Binding test, Mode=OneWay}" Padding="10,5,5,5" 
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Count..."   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
+                                 BorderBrush="AliceBlue" PreviewTextInput="DecimalValidationTextBox"
+                                             PreviewKeyDown="tb_upperLimit_PreviewKeyDown"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Top" 
                   Height="35" Width="170"  Margin="5,5,0,0" />
@@ -1484,7 +1488,8 @@
                                          Grid.Row="1" Padding="10,5,5,5" 
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Price..."   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
+                                 BorderBrush="AliceBlue" PreviewTextInput="DecimalValidationTextBox"
+                                         PreviewKeyDown="tb_upperLimit_PreviewKeyDown"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35" Width="350"  Margin="5,5" >
@@ -1533,13 +1538,13 @@
 
                                 <Button x:Name="btn_addBarcode" Grid.Row="0" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Add" Click="Btn_add_Click" />
+                    Margin="1,0"    Content="Add" Click="Btn_addBarcode_Click"/>
                                 <Button x:Name="btn_updateBarcode" Grid.Row="0" Grid.Column="1"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
-                   Margin="1,0"    Content="Update" Click="Btn_update_Click" />
+                   Margin="1,0"    Content="Update" Click="Btn_updateBarcode_Click" />
                                 <Button x:Name="btn_deleteBarcode" Grid.Row="0" Grid.Column="2"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Delete" Click="Btn_delete_Click" />
+                    Margin="1,0"    Content="Delete" Click="Btn_deleteBarcode_Click" />
                             </Grid>
                         </Grid>
                     </Grid>

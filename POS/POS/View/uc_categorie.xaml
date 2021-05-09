@@ -151,7 +151,7 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Grid Width="275" VerticalAlignment="Center" Grid.Column="0" >
+                                <Grid Margin="5,0,0,0" Width="275" VerticalAlignment="Center" Grid.Column="0" >
                                     <TextBox x:Name="txb_searchcategories"  TextChanged="Txb_searchcategories_TextChanged"
                         Padding="10,5,5,5" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
@@ -181,7 +181,7 @@
                               FontSize="12"/>
                                     <ToggleButton Grid.Column="1"  x:Name="tgl_categoryIsActive"  Checked="Tgl_categoryIsActive_Checked" Unchecked="Tgl_categorIsActive_Unchecked"
                              VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
-                                          Margin="0" Height="13" Width="28" />
+                                          Margin="0,0,5,0" Height="13" Width="28" />
                                 </Grid>
                                 <Separator Width="1000" Background="#9C9C9C"       Margin="5,0,5,0"
                                       Grid.ColumnSpan="5" VerticalAlignment="Bottom" />

@@ -12,52 +12,29 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class Serial
+    class ItemUnit
     {
-        public int serialId { get; set; }
+        public int itemUnitId { get; set; }
         public Nullable<int> itemId { get; set; }
-        public string serialNum { get; set; }
-        public Nullable<byte> isActive { get; set; }
+        public Nullable<int> unitId { get; set; }
+        public Nullable<decimal> unitValue { get; set; }
+        public Nullable<short> defaultSale { get; set; }
+        public Nullable<short> defaultPurchase { get; set; }
+        public Nullable<decimal> price { get; set; }
+        public string barcode { get; set; }
+        public string mainUnit { get; set; }
+        public string smallUnit { get; set; }
+        public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<int> createUserId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
+        public Nullable<int> subUnitId { get; set; }
 
-
-        //*********************************************//
-        // add serial to item
-        public async Task<Boolean> saveSerial(Serial serial)
+        //**************************************************
+        //*************** item unit methods *********************
+        public async Task<List<ItemUnit>> GetItemUnits(int itemId)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            // 
-            var myContent = JsonConvert.SerializeObject(serial);
-
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "serials/Save?serialObject=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
-
-        // get all item serials
-        public async Task<List<Serial>> GetItemSerials(int itemId)
-        {
-            List<Serial> serials = null;
+            List<ItemUnit> items = null;
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -68,7 +45,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "serials/Get?itemId=" + itemId);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsUnits/Get?itemId=" + itemId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -85,18 +62,54 @@ namespace POS.Classes
                         Converters = new List<JsonConverter> { new BadDateFixingConverter() },
                         DateParseHandling = DateParseHandling.None
                     };
-                    serials = JsonConvert.DeserializeObject<List<Serial>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return serials;
+                    items = JsonConvert.DeserializeObject<List<ItemUnit>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return items;
                 }
                 else //web api sent error response 
                 {
-                    serials = new List<Serial>();
+                    items = new List<ItemUnit>();
                 }
-                return serials;
+                return items;
             }
         }
-        // call api method to delete item serial
-        public async Task<Boolean> delete(int serialId)
+        //***************************************
+        // add or update item unit
+        //***************************************
+        public async Task<string> saveItemUnit(ItemUnit itemUnit)
+        {
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            // 
+            var myContent = JsonConvert.SerializeObject(itemUnit);
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsUnits/Save?itemsUnitsObject=" + myContent);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return "true";
+                }
+                return "false";
+            }
+        }
+        //***************************************
+        // delete item unit (barcode)
+        //***************************************
+        public async Task<Boolean> Delete(int ItemUnitId)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -109,7 +122,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "serials/Delete?serialId=" + serialId);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsUnits/Delete?ItemUnitId=" + ItemUnitId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

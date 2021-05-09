@@ -80,11 +80,9 @@ namespace client_app.Classes
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
+                    return "true";
                 }
-                return "";
+                return "false";
             }
         }
 

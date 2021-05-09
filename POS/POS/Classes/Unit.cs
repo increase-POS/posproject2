@@ -16,12 +16,12 @@ namespace POS.Classes
         public int      unitId { get; set; }
         public string   name { get; set; }
         public int      isSmallest { get; set; }
-        public int      smallestId { get; set; }
-        public DateTime createDate { get; set; }
-        public DateTime updateDate { get; set; }
-        public int      createUserId { get; set; }
-        public int      updateUserId { get; set; }
-        public int      parentid { get; set; }
+        public int?      smallestId { get; set; }
+        public DateTime? createDate { get; set; }
+        public DateTime? updateDate { get; set; }
+        public int?      createUserId { get; set; }
+        public int?      updateUserId { get; set; }
+        public int?      parentid { get; set; }
 
         public async Task<List<Unit>> GetUnitsAsync()
         {
