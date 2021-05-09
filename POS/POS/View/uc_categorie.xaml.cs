@@ -339,10 +339,10 @@ namespace POS.View
              x.name.Contains(txtCategorySearch) ||
              x.details.Contains(txtCategorySearch)
              ) && x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
-            categoryParentId = category.categoryId;
-
-
-            Txb_searchcategories_TextChanged(null, null);
+            {
+                categoryParentId = category.categoryId;
+                Txb_searchcategories_TextChanged(null, null);
+            }
         }
         //public void testChangeCategorieItemsIdEvent()
         //{
@@ -403,7 +403,7 @@ namespace POS.View
         {
             if (categories is null)
                 await RefrishCategories();
-            txtCategorySearch = txb_searchcategories.Text;
+            txtCategorySearch = txb_searchcategories.Text.ToLower();
             //categoriesQuery = new List<Category>();
             /*
             if(categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
@@ -424,9 +424,9 @@ namespace POS.View
             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
             }
             */
-            categoriesQuery = categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
-            x.name.Contains(txtCategorySearch) ||
-            x.details.Contains(txtCategorySearch)
+            categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+            x.name.ToLower().Contains(txtCategorySearch) ||
+            x.details.ToLower().Contains(txtCategorySearch)
             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
             txt_Count.Text = categoriesQuery.Count().ToString();
             RefrishCategoriesDatagrid(categoriesQuery);

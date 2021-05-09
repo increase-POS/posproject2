@@ -41,6 +41,7 @@ namespace POS.View
 
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
         int? parentCategorieSelctedValue;
+        public byte tglCategoryState;
         public byte tglItemState;
         public string txtItemSearch;
         //tglItemState
@@ -408,6 +409,28 @@ namespace POS.View
         //}
         #endregion
         #region Toggle Button Y
+            /// <summary>
+            /// Category
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+        private void Tgl_categoryIsActive_Checked(object sender, RoutedEventArgs e)
+        {
+            tglCategoryState = 1;
+            Txb_searchcategories_TextChanged(null, null);
+
+
+        }
+        private void Tgl_categorIsActive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            tglCategoryState = 0;
+            Txb_searchcategories_TextChanged(null, null);
+        }
+        /// <summary>
+        /// Item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
         private void Tgl_itemIsActive_Checked(object sender, RoutedEventArgs e)
         {
@@ -461,7 +484,7 @@ namespace POS.View
         {
             if (items is null)
                 await RefrishItems();
-            txtItemSearch = txb_searchitems.Text;
+            txtItemSearch = txb_searchitems.Text.ToLower();
             //categoriesQuery = new List<Category>();
             /*
             if(categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
@@ -482,9 +505,9 @@ namespace POS.View
             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
             }
             */
-            itemsQuery = items.Where(x => (x.code.Contains(txtItemSearch) ||
-            x.name.Contains(txtItemSearch) ||
-            x.details.Contains(txtItemSearch)
+            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+            x.name.ToLower().Contains(txtItemSearch) ||
+            x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState );
             //txt_Count.Text = categoriesQuery.Count().ToString();
             RefrishItemsDatagrid(itemsQuery);

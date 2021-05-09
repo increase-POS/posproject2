@@ -65,6 +65,9 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <!--<Button  Grid.Column="1" Padding="0"
                                     VerticalAlignment="Top" HorizontalAlignment="Left" 
@@ -84,8 +87,20 @@
                            Foreground="#6e6e6e"
                                  FontSize="11">
                                 </Button>-->
-                               
 
+                                <Grid    Grid.Column="13"   Margin="5,5,5,0"  >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="45"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" 
+                            Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                              FontSize="12"/>
+                                    <ToggleButton Grid.Column="1"  x:Name="tgl_categoryIsActive"  Checked="Tgl_categoryIsActive_Checked" Unchecked="Tgl_categorIsActive_Unchecked"
+                             VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
+                                          Margin="0,0,5,0" Height="13" Width="28" />
+                                </Grid>
 
                             </Grid>
                             <ScrollViewer  Grid.Row="1"  VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Margin="0"
