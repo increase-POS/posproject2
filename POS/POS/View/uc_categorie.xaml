@@ -183,7 +183,7 @@
                              VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                           Margin="0" Height="13" Width="28" />
                                 </Grid>
-                                <Separator Width="1000" Background="#999999"      Margin="5,0,5,0"
+                                <Separator Width="1000" Background="#9C9C9C"       Margin="5,0,5,0"
                                       Grid.ColumnSpan="5" VerticalAlignment="Bottom" />
                             </Grid>
                             <Grid Grid.Row="1" x:Name="grid_categoryCards" Visibility="Visible" >

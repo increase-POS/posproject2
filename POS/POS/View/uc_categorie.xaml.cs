@@ -335,7 +335,14 @@ namespace POS.View
              category = categories.ToList().Find(c => c.categoryId == categoryId);
             this.DataContext = category;
             cb_parentCategorie.SelectedValue = category.parentId;
+
+            if (categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
+             x.name.Contains(txtCategorySearch) ||
+             x.details.Contains(txtCategorySearch)
+             ) && x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
             categoryParentId = category.categoryId;
+
+
             Txb_searchcategories_TextChanged(null, null);
         }
         //public void testChangeCategorieItemsIdEvent()
