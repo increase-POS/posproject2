@@ -25,7 +25,7 @@ namespace POS.Classes
         public Grid gridCatigories;
         public Grid gridCatigorieItems;
         private int _idCatigories;
-        private int _idCatigorieItems;
+        private int _idItem;
         private int _idPayInvoice;
         public int idCatigories
         {
@@ -36,12 +36,12 @@ namespace POS.Classes
                 INotifyPropertyChangedIdCatigories();
             }
         }
-        public int idCatigorieItems
+        public int idItem
         {
-            get => _idCatigorieItems; set
+            get => _idItem; set
             {
 
-                _idCatigorieItems = value;
+                _idItem = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
         }
@@ -66,7 +66,12 @@ namespace POS.Classes
             {
                 //ucCategorieItem.testChangeCategorieIdEvent();
             }
-            
+            else  if (ucPayInvoice != null)
+            {
+                ucPayInvoice.ChangeCategoryIdEvent(idCatigories);
+
+            }
+
 
         }
 
@@ -82,7 +87,12 @@ namespace POS.Classes
             else if (ucCategorieItem != null)
             {
                 //ucCategorieItem.testChangeCategorieItemsIdEvent();
-            }   
+            }
+            else if (ucPayInvoice != null)
+            {
+                ucPayInvoice.ChangeItemIdEvent(idItem);
+
+            }
         }
 
         #region Catalog
@@ -239,12 +249,19 @@ namespace POS.Classes
                            , "0$", item.image, row, column, "Collapsed", "Collapsed");
                 }
 
-
+                /*
                 row++;
                 if (row == 3)
                 {
                     row = 0;
                     column++;
+                }
+                */
+                column++;
+                if (column == 3)
+                {
+                    column = 0;
+                    row++;
                 }
             }
 
@@ -298,7 +315,7 @@ namespace POS.Classes
                 }
             }
             pastCatalogItem = uc.ContentId;
-            idCatigorieItems = uc.ContentId;
+            idItem = uc.ContentId;
         }
         #endregion
         #region Ar
@@ -347,7 +364,7 @@ namespace POS.Classes
                 }
             }
             pastCatalogItem = uc.ContentId;
-            idCatigorieItems = uc.ContentId;
+            idItem = uc.ContentId;
         }
 
         #endregion
@@ -400,7 +417,7 @@ namespace POS.Classes
                 }
             }
             pastCatalogItem = uc.ContentId;
-            idCatigorieItems = uc.ContentId;
+            idItem = uc.ContentId;
         }
         #endregion
         #region  Ar
@@ -450,7 +467,7 @@ namespace POS.Classes
                 }
             }
             pastCatalogItem = uc.ContentId;
-            idCatigorieItems = uc.ContentId;
+            idItem = uc.ContentId;
         }
         #endregion
 

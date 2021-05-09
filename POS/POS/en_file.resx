@@ -759,4 +759,7 @@
   <data name="trStatistic" xml:space="preserve">
     <value>Statistic</value>
   </data>
+  <data name="trParentBranch" xml:space="preserve">
+    <value>Parent Branch</value>
+  </data>
 </root>

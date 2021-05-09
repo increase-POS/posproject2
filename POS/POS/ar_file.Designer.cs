@@ -1105,6 +1105,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الفرع الأب.
+        /// </summary>
+        internal static string trParentBranch {
+            get {
+                return ResourceManager.GetString("trParentBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اختر العنصر الأب.
         /// </summary>
         internal static string trParentCategorieHint {

@@ -1150,6 +1150,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parent Branch.
+        /// </summary>
+        internal static string trParentBranch {
+            get {
+                return ResourceManager.GetString("trParentBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Parent Item.
         /// </summary>
         internal static string trParentCategorieHint {

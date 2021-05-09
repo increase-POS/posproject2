@@ -270,7 +270,6 @@ namespace POS.View
 
       
         #region Categor and Item
-
         #region Refrish Y
         async Task<IEnumerable<Category>> RefrishCategories()
         {
@@ -310,15 +309,15 @@ namespace POS.View
                 this.DataContext = category;
                 cb_parentCategorie.SelectedValue = category.parentId;
             }
-            //if (category != null)
-            //{
-            //    if (category.categoryId != 0)
-            //    {
-            //        _categorieId = category.categoryId;
-            //    }
-            //}
 
-            categoryParentId = category.categoryId;
+
+            // Validate if it's dosn't have cheldren 
+            if (categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
+           x.name.Contains(txtCategorySearch) ||
+           x.details.Contains(txtCategorySearch)
+           ) && x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
+                categoryParentId = category.categoryId;
+
             Txb_searchcategories_TextChanged(null, null);
         }
         public void ChangeCategorieIdEvent(int categoryId)
@@ -661,12 +660,11 @@ namespace POS.View
 
         }
         #endregion
-        #endregion
         #region categoryPathControl Y
 
         void generateTrack(List<Category> listCategory)
         {
-           
+
             int count = 0;
             //TestLestCategory[0] = TestLestCategory[0];
             foreach (var item in listCategory)
@@ -675,12 +673,12 @@ namespace POS.View
                 b.Content = " > " + item.name + " ";
                 b.Padding = new Thickness(0);
                 b.Margin = new Thickness(0);
-                b.Background =null;
+                b.Background = null;
                 b.BorderThickness = new Thickness(0);
                 if (count + 1 == listCategory.Count)
                     b.FontFamily = Application.Current.Resources["Font-cairo-bold"] as FontFamily;
                 else b.FontFamily = Application.Current.Resources["Font-cairo-light"] as FontFamily;
-                b.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e")); 
+                b.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
                 //b.FontWeight = FontWeights.Bold;
                 b.FontSize = 14;
                 Grid.SetColumn(b, count);
@@ -697,11 +695,11 @@ namespace POS.View
         {
             Button b = (Button)sender;
             //if (sender != null)
-                MessageBox.Show("Name: " + b.Name + " \\Tag: " + b.Tag + "");
+            MessageBox.Show("Name: " + b.Name + " \\Tag: " + b.Tag + "");
 
 
             //categoryParentId = "ParentID"
-            
+
         }
 
         private void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
@@ -736,5 +734,7 @@ namespace POS.View
         }
 
         #endregion
+        #endregion
+
     }
 }

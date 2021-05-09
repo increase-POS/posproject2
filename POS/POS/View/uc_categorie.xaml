@@ -360,7 +360,7 @@
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"  SelectionChanged="dg_categories_SelectionChanged"  >
+                        ColumnWidth="SizeToHeader"  SelectionChanged="dg_categories_SelectionChanged"   >
                                     <DataGrid.Columns >
                                         <DataGridTextColumn   MinWidth="150"   Header="Code"  Binding="{Binding Path=categoryCode}">
                                             <DataGridTextColumn.ElementStyle>

@@ -741,4 +741,7 @@
   <data name="trStatistic" xml:space="preserve">
     <value>الإحصائيات</value>
   </data>
+  <data name="trParentBranch" xml:space="preserve">
+    <value>الفرع الأب</value>
+  </data>
 </root>
