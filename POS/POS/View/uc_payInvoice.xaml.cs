@@ -299,6 +299,22 @@ namespace POS.View
             categories = await categoryModel.GetAllCategories();
             return categories;
         }
+        async void RefrishCategoriesCard()
+        {
+            //if (_categories)
+            //{
+
+            //}
+            //else
+            //{
+                if (categories is null)
+                    await RefrishCategories();
+                categoriesQuery = categories.Where(x => x.isActive == tglCategoryState  && x.parentId == categoryParentId);
+                catigoriesAndItemsView.gridCatigories = grid_categoryCards;
+                catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
+            //}
+            
+        }
 
         /// <summary>
         /// Item
@@ -348,30 +364,19 @@ namespace POS.View
         }
         public void ChangeCategoryIdEvent(int categoryId)
         {
-            //////////////
-            ///
-            /*
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorCode.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            */
-            //////////////
-            //_categorieId = categoryId;
             category = categories.ToList().Find(c => c.categoryId == categoryId);
-            //this.DataContext = category;
-            //cb_parentCategorie.SelectedValue = category.parentId;
 
-            if (categories.Where(x => (x.categoryCode.Contains(txtItemSearch) ||
-             x.name.Contains(txtItemSearch) ||
-             x.details.Contains(txtItemSearch)
-             ) && x.isActive == tglItemState && x.parentId == category.categoryId).Count() != 0)
+            if (categories.Where(x =>
+            x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
+            {
                 categoryParentId = category.categoryId;
-
-            MessageBox.Show("add event Here");
-            //Txb_searchcategories_TextChanged(null, null);
+                RefrishCategoriesCard();
+            }
+            //{
+            //    categoryParentId = category.categoryId;
+            //    categoriesQuery = categories.Where(x =>
+            //x.isActive == tglCategoryState && x.parentId == categoryParentId);
+            //}
         }
 
         public void ChangeItemIdEvent(int categoryId)
@@ -417,21 +422,21 @@ namespace POS.View
         private void Tgl_categoryIsActive_Checked(object sender, RoutedEventArgs e)
         {
             tglCategoryState = 1;
-            Txb_searchcategories_TextChanged(null, null);
+            RefrishCategoriesCard();
+
 
 
         }
         private void Tgl_categorIsActive_Unchecked(object sender, RoutedEventArgs e)
         {
             tglCategoryState = 0;
-            Txb_searchcategories_TextChanged(null, null);
+            RefrishCategoriesCard();
         }
         /// <summary>
         /// Item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-
         private void Tgl_itemIsActive_Checked(object sender, RoutedEventArgs e)
         {
             //if (categories is null)
@@ -480,6 +485,14 @@ namespace POS.View
         }
         #endregion
         #region Search Y
+
+        
+
+        /// <summary>
+        /// Item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (items is null)

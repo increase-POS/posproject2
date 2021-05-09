@@ -153,12 +153,20 @@ namespace POS.Classes
                 //    column = 0;
                 //    row++;
                 //}
-                column++;
-                if (column == columnCount)
+                if(column != -1)
                 {
-                    column = 0;
-                    row++;
+                    column++;
+                    if (column == columnCount)
+                    {
+                        column = 0;
+                        row++;
+                    }
                 }
+                else
+                {
+                    column++;
+                }
+              
             }
         }
 
