@@ -117,7 +117,7 @@ namespace POS_Server.Controllers
                             tmpTransfer.notes = transferObj.notes;
                             tmpTransfer.updateDate = DateTime.Now;
                             tmpTransfer.updateUserId = transferObj.updateUserId;
-                            
+
                         }
                         entity.SaveChanges();
                     }

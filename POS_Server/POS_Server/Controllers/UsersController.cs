@@ -240,7 +240,7 @@ namespace POS_Server.Controllers
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-            
+
             if (valid)
             {
                 userObject = userObject.Replace("\\", string.Empty);
@@ -280,7 +280,7 @@ namespace POS_Server.Controllers
                             tmpUnit.lastname = newObject.lastname;
                             tmpUnit.job = newObject.job;
                             tmpUnit.workHours = newObject.workHours;
-                            tmpUnit.updateDate =DateTime.Now;
+                            tmpUnit.updateDate = DateTime.Now;
                             tmpUnit.updateUserId = newObject.updateUserId;
                             tmpUnit.phone = newObject.phone;
                             tmpUnit.mobile = newObject.mobile;

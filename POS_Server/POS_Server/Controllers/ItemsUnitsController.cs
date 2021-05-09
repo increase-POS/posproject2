@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POS_Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,23 +30,28 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var itemUnitsList = entity.itemsUnits
-                        .Where(IU => IU.itemId == itemId)
-                        .Select(IU => new
-                        {
-                            IU.itemUnitId,
-                            IU.unitId,
-                            IU.createDate,
-                            IU.createUserId,
-                            IU.defaultPurchase,
-                            IU.defaultSale,
-                            IU.price,
-                            IU.subUnitId,
-                            IU.unitValue,
-                            IU.updateDate,
-                            IU.updateUserId,
-                        })
-                        .ToList();
+                    var itemUnitsList = (from IU in entity.itemsUnits where (IU.itemId == itemId)
+                                         join u in entity.units on IU.unitId equals u.unitId into lj from v in lj.DefaultIfEmpty()
+                                         join u1 in entity.units on IU.subUnitId equals u1.unitId into tj
+                                         from v1 in tj.DefaultIfEmpty()
+                                         select new ItemUnitModel()
+                                         {
+                                             itemUnitId = IU.itemUnitId,
+                                             unitId= IU.unitId,
+                                             mainUnit = v.name,
+                                             createDate =IU.createDate,
+                                             createUserId=  IU.createUserId,
+                                             defaultPurchase=IU.defaultPurchase,
+                                             defaultSale=IU.defaultSale,
+                                             price= IU.price,
+                                             subUnitId= IU.subUnitId,
+                                             smallUnit = v1.name,
+                                             unitValue=IU.unitValue,
+                                             barcode = IU.barcode,
+                                             updateDate=IU.updateDate,
+                                             updateUserId= IU.updateUserId,
+                                         })
+                                         .ToList();
 
                     if (itemUnitsList == null)
                         return NotFound();
@@ -94,6 +100,27 @@ namespace POS_Server.Controllers
                         var itemUnitEntity = entity.Set<itemsUnits>();
                         if (newObject.itemUnitId == 0)
                         {
+                            //create
+                            // set the other default sale or purchase to 0 if the new object.default is 1
+                        
+                            if (newObject.defaultSale == 1)
+                            { // get the row with same itemId of newObject
+                                itemsUnits defItemUnit = entity.itemsUnits.Where(p => p.itemId == newObject.itemId && p.defaultSale == 1).FirstOrDefault();
+                            if (defItemUnit != null)
+                            {
+                                defItemUnit.defaultSale = 0;
+                                 entity.SaveChanges();
+                            }
+                            }
+                            if (newObject.defaultPurchase == 1)
+                            {
+                                var defItemUnit = entity.itemsUnits.Where(p => p.itemId == newObject.itemId && p.defaultPurchase == 1).FirstOrDefault();
+                                if (defItemUnit != null)
+                                {
+                                    defItemUnit.defaultPurchase = 0;
+                                    entity.SaveChanges();
+                                }
+                            }
                             newObject.createDate = DateTime.Now;
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
@@ -103,11 +130,12 @@ namespace POS_Server.Controllers
                         }
                         else
                         {
+                            //update
                             // set the other default sale or purchase to 0 if the new object.default is 1
                             var tmpItemUnit = entity.itemsUnits.Where(p => p.itemUnitId == newObject.itemUnitId).FirstOrDefault();
-                            if (newObject.defaultSale==1)
+                            if (newObject.defaultSale == 1)
                             {
-                                itemsUnits defItemUnit = entity.itemsUnits.Where(p => p.itemId == newObject.itemId && p.defaultSale== 1 ).FirstOrDefault();
+                                itemsUnits defItemUnit = entity.itemsUnits.Where(p => p.itemId == newObject.itemId && p.defaultSale == 1).FirstOrDefault();
 
                                 defItemUnit.defaultSale = 0;
                                 entity.SaveChanges();
@@ -128,13 +156,13 @@ namespace POS_Server.Controllers
                             tmpItemUnit.defaultSale = newObject.defaultSale;
                             tmpItemUnit.updateDate = DateTime.Now;
                             tmpItemUnit.updateUserId = newObject.updateUserId;
-                            
+
                             message = "Item Unit Is Updated Successfully";
                         }
                         entity.SaveChanges();
                     }
                 }
-                catch
+               catch
                 {
                     message = "an error ocurred";
                 }

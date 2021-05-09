@@ -10,12 +10,10 @@ using POS_Server.Models;
 
 namespace POS_Server.Controllers
 {
-  
-
     [RoutePrefix("api/Items")]
     public class ItemsController : ApiController
     {
-        Classes.Calculate Calc = new Classes.Calculate();
+        private Classes.Calculate Calc = new Classes.Calculate();
 
         List<int> categoriesId = new List<int>();
 
@@ -74,6 +72,7 @@ namespace POS_Server.Controllers
                             if (itemsList[i].isActive == 1)
                             {
                                 int itemId = (int)itemsList[i].itemId;
+                                var childItemL = entity.items.Where(x => x.parentId == itemId).Select(b => new { b.itemId }).FirstOrDefault();
                                 var itemsPropL = entity.itemsProp.Where(x => x.itemId == itemId).Select(b => new { b.itemPropId }).FirstOrDefault();
                                 var ordersL = entity.orderscontents.Where(x => x.itemId == itemId).Select(b => new { b.orderId }).FirstOrDefault();
                                 var itemUnitsL = entity.itemsUnits.Where(x => x.itemId == itemId).Select(b => new { b.itemUnitId }).FirstOrDefault();
@@ -81,7 +80,7 @@ namespace POS_Server.Controllers
                                 var itemsMaterials = entity.itemsMaterials.Where(x => x.itemId == itemId).Select(b => new { b.itemMatId }).FirstOrDefault();
                                 var serials = entity.serials.Where(x => x.itemId == itemId).Select(b => new { b.serialId }).FirstOrDefault();
 
-                                if ((itemsPropL is null) && (ordersL is null) && (itemUnitsL is null) && (itemLocationsL is null) && (itemsMaterials is null) && (serials is null))
+                                if ((childItemL is null)&&(itemsPropL is null) && (ordersL is null) && (itemUnitsL is null) && (itemLocationsL is null) && (itemsMaterials is null) && (serials is null))
                                     canDelete = true;
                             }
                             itemsList[i].canDelete = canDelete;
@@ -180,7 +179,7 @@ namespace POS_Server.Controllers
                        I.itemId,
                        I.name,
                        I.code,
-                      
+                      I.categoryId,
                        I.max,
                        I.maxUnitId,
                        I.minUnitId,
@@ -419,7 +418,7 @@ namespace POS_Server.Controllers
                             itemModel.min = itemObj.min;
                             itemModel.minUnitId = itemObj.minUnitId;
                             itemModel.name = itemObj.name;
-                            
+
                             itemModel.taxes = itemObj.taxes;
                             itemModel.type = itemObj.type;
                             itemModel.updateDate = DateTime.Now;
@@ -440,7 +439,7 @@ namespace POS_Server.Controllers
         }
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int itemId, int userId,Boolean final)
+        public Boolean Delete(int itemId, int userId,Boolean final)
         {
             var re = Request;
             var headers = re.Headers;
@@ -462,12 +461,12 @@ namespace POS_Server.Controllers
                             var tmpItem = entity.items.Where(I => I.itemId == itemId).First();
                             entity.items.Remove(tmpItem);                          
                             entity.SaveChanges();
-                            return Ok("Item is Deleted Successfully");
+                            return true;
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        return false;
                     }
                 }
                 else
@@ -482,17 +481,17 @@ namespace POS_Server.Controllers
                             tmpItem.updateUserId = userId;
 
                             entity.SaveChanges();
-                            return Ok("Item is Deleted Successfully");
+                            return true;
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        return false;
                     }
                 }
             }
             else
-                return NotFound();
+                return false;
         }
         [HttpGet]
         [Route("GetSubItems")]
@@ -582,7 +581,6 @@ namespace POS_Server.Controllers
                 return NotFound();
         }
 
-
         // get all items where defaultSale is 1 and set isNew=1 if new item  and set isOffer=1 if Has Active Offer 
         int newdays = -15;
 
@@ -611,7 +609,7 @@ namespace POS_Server.Controllers
                                      //  join itun in entity.itemsUnits on itm.itemId equals itun.itemId 
                                      //   join untb in entity.units on itun.unitId equals untb.unitId
 
-                                     select new ItemModel()
+                                     select new ItemSalePurModel()
                                      {
                                          itemId = itm.itemId,
                                          name = itm.name,
@@ -630,7 +628,7 @@ namespace POS_Server.Controllers
                                          maxUnitId = itm.maxUnitId,
                                          minUnitId = itm.minUnitId,
                                          min = itm.min,
-                                        
+
                                          parentId = itm.parentId,
                                          isActive = itm.isActive,
                                          taxes = itm.taxes,
@@ -649,7 +647,7 @@ namespace POS_Server.Controllers
                                            //  join iu in entity.itemsUnits on itof.iuId  equals  iu.itemUnitId //itemsUnits and itemsOffers
                                            join iu in entity.itemsUnits on itof.iuId equals iu.itemUnitId
                                            //from un in entity.units
-                                           select new ItemModel()
+                                           select new ItemSalePurModel()
                                            {
                                                itemId = iu.itemId,
                                                itemUnitId = itof.iuId,
@@ -677,7 +675,7 @@ namespace POS_Server.Controllers
                                join untb in entity.units on unitm.unitId equals untb.unitId
                                join itemtb in entity.items on unitm.itemId equals itemtb.itemId
 
-                               select new ItemModel()
+                               select new ItemSalePurModel()
                                {
                                    itemId = itemtb.itemId,
                                    name = itemtb.name,
@@ -688,7 +686,7 @@ namespace POS_Server.Controllers
                                    maxUnitId = itemtb.maxUnitId,
                                    minUnitId = itemtb.minUnitId,
                                    min = itemtb.min,
-                                
+
                                    parentId = itemtb.parentId,
                                    isActive = itemtb.isActive,
 
@@ -713,13 +711,13 @@ namespace POS_Server.Controllers
                         {
                             if (row.itemId == iunlist.itemId)
                             {
-                               
+
 
                                 iunlist.unitName = row.unitName;
                                 iunlist.unitId = row.unitId;
                                 iunlist.price = row.price;
-                                iunlist.priceTax = iunlist.price+ Calc.percentValue(row.price, iunlist.taxes);
-                              
+                                iunlist.priceTax = iunlist.price + Calc.percentValue(row.price, iunlist.taxes);
+
                             }
                         }
 
@@ -831,7 +829,7 @@ namespace POS_Server.Controllers
                                      join cat in entity.categories on itm.categoryId equals cat.categoryId
                                      join itun in entity.itemsUnits on itm.itemId equals itun.itemId
                                      join untb in entity.units on itun.unitId equals untb.unitId
-                                     select new ItemModel()
+                                     select new ItemSalePurModel()
                                      {
                                          itemId = itm.itemId,
                                          name = itm.name,
@@ -852,7 +850,7 @@ namespace POS_Server.Controllers
                                          categoryName = cat.name,
 
 
-                                       
+
                                          parentId = itm.parentId,
                                          isActive = itm.isActive,
                                          taxes = itm.taxes,
@@ -906,5 +904,6 @@ namespace POS_Server.Controllers
 
         }
         #endregion
+
     }
 }

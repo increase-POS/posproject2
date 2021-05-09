@@ -20,6 +20,7 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
+            Boolean canDelete = false;
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -48,6 +49,24 @@ namespace POS_Server.Controllers
                                     updateUserId = u.updateUserId,
                                     isActive = u.isActive,
                                     }).ToList();
+
+                    if (unitsList.Count > 0)
+                    {
+                        for (int i = 0; i < unitsList.Count; i++)
+                        {
+                            if (unitsList[i].isActive == 1)
+                            {
+                                int unitId = (int)unitsList[i].unitId;
+                                var itemsL = entity.items.Where(x => x.minUnitId == unitId || x.maxUnitId == unitId).Select(b => new { b.itemId }).FirstOrDefault();
+                                var itemsMatL = entity.itemsMaterials.Where(x => x.unitId == unitId ).Select(x => new { x.itemMatId }).FirstOrDefault();
+                                var itemsUnitL = entity.itemsUnits.Where(x => x.unitId == unitId).Select(x => new { x.itemUnitId }).FirstOrDefault();
+                                var unitsL = entity.units.Where(x => x.parentid == unitId).Select(x => new { x.unitId }).FirstOrDefault();
+                                if ((itemsL is null) && (itemsMatL is null) && (itemsUnitL is null) && (unitsL is null))
+                                    canDelete = true;
+                            }
+                            unitsList[i].canDelete = canDelete;
+                        }
+                    }
                     if (unitsList == null)
                        return NotFound();
                     else
@@ -211,7 +230,7 @@ namespace POS_Server.Controllers
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-            
+
             if (valid)
             {
                 unitObject = unitObject.Replace("\\", string.Empty);
@@ -244,60 +263,86 @@ namespace POS_Server.Controllers
                             message = "Unit Is Updated Successfully";
                         }
                         entity.SaveChanges();
-                    }  
-               }
+                    }
+                }
 
                 catch
                 {
-                   message ="an error ocurred";
+                    message = "an error ocurred";
                 }
             }
-                return message;
+            return message;
         }
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete()
+        public IHttpActionResult Delete(int unitId, int userId,Boolean final)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            int unitId = 0;
+
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
             }
-            if (headers.Contains("unitId"))
-            {
-                unitId = Convert.ToInt32(headers.GetValues("unitId").First());
-            }
+
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
             if (valid)
             {
-               try
+                if (final)
                 {
-                    using (incposdbEntities entity = new incposdbEntities())
+                    try
                     {
-                        var itemUnits = entity.itemsUnits.Where(u => u.unitId == unitId).FirstOrDefault();
-                    var relatedUnits = entity.units.Where(u => u.parentid == unitId || u.smallestId == unitId)
-                        .Select(u => new { u.unitId } )              
-                        .FirstOrDefault();
-                        if (itemUnits == null && relatedUnits == null)
+                        using (incposdbEntities entity = new incposdbEntities())
                         {
-                            units unitDelete = entity.units.Find(unitId);
-                            entity.units.Remove(unitDelete);
-                            entity.SaveChanges();
-                            return Ok("Unit is Deleted Successfully");
+                            var itemUnits = entity.itemsUnits.Where(u => u.unitId == unitId).FirstOrDefault();
+                            var relatedUnits = entity.units.Where(u => u.parentid == unitId || u.smallestId == unitId)
+                                .Select(u => new { u.unitId })
+                                .FirstOrDefault();
+                            if (itemUnits == null && relatedUnits == null)
+                            {
+                                units unitDelete = entity.units.Find(unitId);
+                                entity.units.Remove(unitDelete);
+                                entity.SaveChanges();
+                                return Ok("Unit is Deleted Successfully");
+                            }
+                            else
+                                return Ok("Can't Delete This Unit");
                         }
-                        else
-                            return Ok("Can't Delete This Unit");    
+                    }
+                    catch
+                    {
+                        return NotFound();
                     }
                 }
-               catch
-               {
-                    return NotFound() ;
-               }
+                else
+                {
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            var itemUnits = entity.itemsUnits.Where(u => u.unitId == unitId).FirstOrDefault();
+                            var relatedUnits = entity.units.Where(u => u.parentid == unitId || u.smallestId == unitId)
+                                .Select(u => new { u.unitId })
+                                .FirstOrDefault();
+                            if (itemUnits == null && relatedUnits == null)
+                            {
+                                units unitDelete = entity.units.Find(unitId);
+                                entity.units.Remove(unitDelete);
+                                entity.SaveChanges();
+                                return Ok("Unit is Deleted Successfully");
+                            }
+                            else
+                                return Ok("Can't Delete This Unit");
+                        }
+                    }
+                    catch
+                    {
+                        return NotFound();
+                    }
+                }
             }
             else
                return NotFound();

@@ -35,10 +35,10 @@ namespace POS_Server
         public Nullable<int> subUnitId { get; set; }
     
         public virtual items items { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemsOffers> itemsOffers { get; set; }
         public virtual units units { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemsOffers> itemsOffers { get; set; }
     }
 }

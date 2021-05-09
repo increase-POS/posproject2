@@ -33,15 +33,18 @@ namespace POS_Server.Controllers
                 {
                     var itemPropsList = (from a in entity.itemsProp.Where(i => i.itemId == itemId)
                     join b in entity.propertiesItems on a.propertyItemId equals b.propertyItemId
+                    join x in entity.properties on b.propertyId equals x.propertyId
                     select new itemsPropModel() {
                          itemPropId = a.itemPropId,
                          propertyItemId = a.propertyItemId,
                          itemId = a.itemId,
-                         propName = b.name,
+                         propValue = b.name,
+                         propName = x.name,
                          createDate = a.createDate,
                          updateDate = a.updateDate,
                          createUserId = a.createUserId,
-                         updateUserId = a.updateUserId}).ToList();
+                         updateUserId = a.updateUserId,
+                    }).ToList();
 
                     if (itemPropsList == null)
                         return NotFound();
@@ -139,7 +142,6 @@ namespace POS_Server.Controllers
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         itemsProp itemPropObject = entity.itemsProp.Find(itemPropId);
-
                         entity.itemsProp.Remove(itemPropObject);
                         entity.SaveChanges();
 

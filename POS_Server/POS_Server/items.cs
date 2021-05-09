@@ -17,13 +17,13 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public items()
         {
+            this.itemsLocations = new HashSet<itemsLocations>();
             this.itemsMaterials = new HashSet<itemsMaterials>();
             this.itemsMaterials1 = new HashSet<itemsMaterials>();
             this.itemsProp = new HashSet<itemsProp>();
             this.itemsUnits = new HashSet<itemsUnits>();
             this.orderscontents = new HashSet<orderscontents>();
             this.serials = new HashSet<serials>();
-            this.itemsLocations = new HashSet<itemsLocations>();
         }
     
         public int itemId { get; set; }
@@ -53,6 +53,8 @@ namespace POS_Server
         public virtual users users2 { get; set; }
         public virtual users users3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemsLocations> itemsLocations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsMaterials> itemsMaterials { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsMaterials> itemsMaterials1 { get; set; }
@@ -64,7 +66,5 @@ namespace POS_Server
         public virtual ICollection<orderscontents> orderscontents { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<serials> serials { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemsLocations> itemsLocations { get; set; }
     }
 }

@@ -162,10 +162,6 @@ namespace POS_Server.Controllers
                         var offerEntity = entity.Set<offers>();
                         if (newObject.offerId == 0)
                         {
-                            newObject.createDate = DateTime.Now;
-                            newObject.updateDate = DateTime.Now;
-                            newObject.updateUserId = newObject.createUserId;
-
                             offerEntity.Add(newObject);
                             message = "Offer Is Added Successfully";
                         }
@@ -178,10 +174,10 @@ namespace POS_Server.Controllers
                             oldObject.discountValue = newObject.discountValue;
                             oldObject.startDate = newObject.startDate;
                             oldObject.endDate = newObject.endDate;
-                            oldObject.updateDate = DateTime.Now;
+                            oldObject.updateDate = newObject.updateDate;
                             oldObject.updateUserId = newObject.updateUserId;
                             oldObject.notes = newObject.notes;
-                            oldObject.isActive = newObject.isActive;
+
                             message = "Offer Is Updated Successfully";
                         }
                         entity.SaveChanges();

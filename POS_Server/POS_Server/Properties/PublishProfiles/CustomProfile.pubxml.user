@@ -79,7 +79,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/09/2013 02:29:20</publishTime>
     </File>
     <File Include="bin/BouncyCastle.Crypto.dll">
-      <publishTime>02/24/2020 13:29:24</publishTime>
+      <publishTime>02/24/2020 12:29:24</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>04/13/2019 22:35:24</publishTime>
@@ -103,13 +103,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/25/2012 21:48:56</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>02/18/2018 17:44:54</publishTime>
+      <publishTime>02/18/2018 16:44:54</publishTime>
     </File>
     <File Include="bin/POS_Server.dll">
-      <publishTime>05/06/2021 17:53:12</publishTime>
+      <publishTime>05/09/2021 18:51:33</publishTime>
     </File>
     <File Include="bin/POS_Server.pdb">
-      <publishTime>05/06/2021 17:53:12</publishTime>
+      <publishTime>05/09/2021 18:51:33</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>05/24/2018 23:38:22</publishTime>
@@ -250,13 +250,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/24/2018 23:38:24</publishTime>
     </File>
     <File Include="bin/System.Buffers.dll">
-      <publishTime>02/19/2020 08:05:18</publishTime>
+      <publishTime>02/19/2020 07:05:18</publishTime>
     </File>
     <File Include="bin/System.Memory.dll">
-      <publishTime>02/19/2020 08:05:18</publishTime>
+      <publishTime>02/19/2020 07:05:18</publishTime>
     </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
-      <publishTime>11/28/2018 21:00:36</publishTime>
+      <publishTime>11/28/2018 20:00:36</publishTime>
     </File>
     <File Include="bin/System.Numerics.Vectors.dll">
       <publishTime>05/15/2018 13:29:44</publishTime>
@@ -265,43 +265,43 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/19/2020 18:46:30</publishTime>
     </File>
     <File Include="bin/System.Text.Encodings.Web.dll">
-      <publishTime>02/16/2021 19:53:20</publishTime>
+      <publishTime>02/16/2021 18:53:20</publishTime>
     </File>
     <File Include="bin/System.Text.Json.dll">
-      <publishTime>03/16/2021 20:34:50</publishTime>
+      <publishTime>03/16/2021 19:34:50</publishTime>
     </File>
     <File Include="bin/System.Threading.Tasks.Extensions.dll">
-      <publishTime>02/19/2020 08:05:18</publishTime>
+      <publishTime>02/19/2020 07:05:18</publishTime>
     </File>
     <File Include="bin/System.ValueTuple.dll">
       <publishTime>05/15/2018 13:29:52</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
-      <publishTime>11/28/2018 21:04:24</publishTime>
+      <publishTime>11/28/2018 20:04:24</publishTime>
     </File>
     <File Include="bin/System.Web.Http.dll">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/System.Web.Http.WebHost.dll">
-      <publishTime>11/28/2018 21:02:56</publishTime>
+      <publishTime>11/28/2018 20:02:56</publishTime>
     </File>
     <File Include="bin/System.Web.Mvc.dll">
-      <publishTime>11/28/2018 20:59:46</publishTime>
+      <publishTime>11/28/2018 19:59:46</publishTime>
     </File>
     <File Include="bin/System.Web.Optimization.dll">
       <publishTime>12/02/2014 00:26:04</publishTime>
     </File>
     <File Include="bin/System.Web.Razor.dll">
-      <publishTime>11/28/2018 21:00:12</publishTime>
+      <publishTime>11/28/2018 20:00:12</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.Deployment.dll">
-      <publishTime>11/28/2018 21:04:24</publishTime>
+      <publishTime>11/28/2018 20:04:24</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.dll">
-      <publishTime>11/28/2018 21:04:24</publishTime>
+      <publishTime>11/28/2018 20:04:24</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.Razor.dll">
-      <publishTime>11/28/2018 21:04:24</publishTime>
+      <publishTime>11/28/2018 20:04:24</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>01/23/2014 23:57:34</publishTime>
@@ -355,7 +355,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/14/2021 23:46:47</publishTime>
     </File>
     <File Include="PosModel.edmx.diagram">
-      <publishTime>04/05/2021 10:41:37</publishTime>
+      <publishTime>05/09/2021 18:51:15</publishTime>
     </File>
     <File Include="POS_Model.edmx.diagram">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -403,7 +403,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/14/2021 23:46:47</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/04/2021 14:38:34</publishTime>
+      <publishTime>05/09/2021 14:56:43</publishTime>
     </File>
   </ItemGroup>
 </Project>

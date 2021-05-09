@@ -15,16 +15,16 @@ namespace POS_Server
     public partial class itemsOffers
     {
         public int ioId { get; set; }
+        public Nullable<int> iuId { get; set; }
         public Nullable<int> offerId { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
-        public Nullable<int> iuId { get; set; }
     
+        public virtual itemsUnits itemsUnits { get; set; }
         public virtual offers offers { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
-        public virtual itemsUnits itemsUnits { get; set; }
     }
 }

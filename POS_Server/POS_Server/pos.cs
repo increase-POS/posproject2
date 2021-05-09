@@ -18,6 +18,8 @@ namespace POS_Server
         public pos()
         {
             this.cashTransfer = new HashSet<cashTransfer>();
+            this.posUsers = new HashSet<posUsers>();
+            this.usersLogs = new HashSet<usersLogs>();
         }
     
         public int posId { get; set; }
@@ -36,5 +38,9 @@ namespace POS_Server
         public virtual ICollection<cashTransfer> cashTransfer { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<posUsers> posUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<usersLogs> usersLogs { get; set; }
     }
 }

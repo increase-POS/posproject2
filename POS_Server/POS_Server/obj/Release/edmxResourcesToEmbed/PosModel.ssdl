@@ -441,16 +441,10 @@
     <Property Name="itemId" Type="int" />
     <Property Name="serialNum" Type="nvarchar" MaxLength="200" />
     <Property Name="isActive" Type="tinyint" />
-  </EntityType>
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
   </EntityType>
   <EntityType Name="units">
     <Key>
@@ -490,6 +484,16 @@
     <Property Name="notes" Type="ntext" />
     <Property Name="isOnline" Type="tinyint" />
     <Property Name="role" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="usersLogs">
+    <Key>
+      <PropertyRef Name="logId" />
+    </Key>
+    <Property Name="logId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="sInDate" Type="datetime2" Precision="7" />
+    <Property Name="sOutDate" Type="datetime2" Precision="7" />
+    <Property Name="posId" Type="int" />
+    <Property Name="userId" Type="int" />
   </EntityType>
   <Association Name="FK_agents_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
@@ -764,6 +768,18 @@
       </Principal>
       <Dependent Role="couponsInvoices">
         <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Expenses_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="Expenses" Type="Self.Expenses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Expenses">
+        <PropertyRef Name="createUserId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1475,6 +1491,54 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_posUsers_pos">
+    <End Role="pos" Type="Self.pos" Multiplicity="0..1" />
+    <End Role="posUsers" Type="Self.posUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pos">
+        <PropertyRef Name="posId" />
+      </Principal>
+      <Dependent Role="posUsers">
+        <PropertyRef Name="posId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_posUsers_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="posUsers" Type="Self.posUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="posUsers">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_posUsers_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="posUsers" Type="Self.posUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="posUsers">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_posUsers_users2">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="posUsers" Type="Self.posUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="posUsers">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_properties_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="properties" Type="Self.properties" Multiplicity="*" />
@@ -1547,6 +1611,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_serials_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="serials" Type="Self.serials" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="serials">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_serials_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="serials" Type="Self.serials" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="serials">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_units_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="units" Type="Self.units" Multiplicity="*" />
@@ -1568,6 +1656,30 @@
       </Principal>
       <Dependent Role="units">
         <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_usersLogs_pos">
+    <End Role="pos" Type="Self.pos" Multiplicity="0..1" />
+    <End Role="usersLogs" Type="Self.usersLogs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pos">
+        <PropertyRef Name="posId" />
+      </Principal>
+      <Dependent Role="usersLogs">
+        <PropertyRef Name="posId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_usersLogs_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="usersLogs" Type="Self.usersLogs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="usersLogs">
+        <PropertyRef Name="userId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1600,9 +1712,9 @@
     <EntitySet Name="properties" EntityType="Self.properties" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="propertiesItems" EntityType="Self.propertiesItems" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="serials" EntityType="Self.serials" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="units" EntityType="Self.units" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="usersLogs" EntityType="Self.usersLogs" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_agents_users" Association="Self.FK_agents_users">
       <End Role="users" EntitySet="users" />
       <End Role="agents" EntitySet="agents" />
@@ -1694,6 +1806,10 @@
     <AssociationSet Name="FK_couponsInvoices_users1" Association="Self.FK_couponsInvoices_users1">
       <End Role="users" EntitySet="users" />
       <End Role="couponsInvoices" EntitySet="couponsInvoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Expenses_users" Association="Self.FK_Expenses_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="Expenses" EntitySet="Expenses" />
     </AssociationSet>
     <AssociationSet Name="FK_invoices_agents" Association="Self.FK_invoices_agents">
       <End Role="agents" EntitySet="agents" />
@@ -1931,6 +2047,22 @@
       <End Role="users" EntitySet="users" />
       <End Role="pos" EntitySet="pos" />
     </AssociationSet>
+    <AssociationSet Name="FK_posUsers_pos" Association="Self.FK_posUsers_pos">
+      <End Role="pos" EntitySet="pos" />
+      <End Role="posUsers" EntitySet="posUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_posUsers_users" Association="Self.FK_posUsers_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="posUsers" EntitySet="posUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_posUsers_users1" Association="Self.FK_posUsers_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="posUsers" EntitySet="posUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_posUsers_users2" Association="Self.FK_posUsers_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="posUsers" EntitySet="posUsers" />
+    </AssociationSet>
     <AssociationSet Name="FK_properties_users" Association="Self.FK_properties_users">
       <End Role="users" EntitySet="users" />
       <End Role="properties" EntitySet="properties" />
@@ -1955,6 +2087,14 @@
       <End Role="items" EntitySet="items" />
       <End Role="serials" EntitySet="serials" />
     </AssociationSet>
+    <AssociationSet Name="FK_serials_users" Association="Self.FK_serials_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="serials" EntitySet="serials" />
+    </AssociationSet>
+    <AssociationSet Name="FK_serials_users1" Association="Self.FK_serials_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="serials" EntitySet="serials" />
+    </AssociationSet>
     <AssociationSet Name="FK_units_users" Association="Self.FK_units_users">
       <End Role="users" EntitySet="users" />
       <End Role="units" EntitySet="units" />
@@ -1962,6 +2102,14 @@
     <AssociationSet Name="FK_units_users1" Association="Self.FK_units_users1">
       <End Role="users" EntitySet="users" />
       <End Role="units" EntitySet="units" />
+    </AssociationSet>
+    <AssociationSet Name="FK_usersLogs_pos" Association="Self.FK_usersLogs_pos">
+      <End Role="pos" EntitySet="pos" />
+      <End Role="usersLogs" EntitySet="usersLogs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_usersLogs_users" Association="Self.FK_usersLogs_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="usersLogs" EntitySet="usersLogs" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

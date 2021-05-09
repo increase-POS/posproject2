@@ -33,6 +33,7 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
 
+
                     var branchesList = entity.branches
                         .Where(b => b.type == type)
                    .Select(b => new BranchModel{
@@ -60,10 +61,11 @@ namespace POS_Server.Controllers
                             if (branchesList[i].isActive == 1)
                             {
                                 int branchId = (int)branchesList[i].branchId;
+                                var parentBrancheL = entity.branches.Where(x => x.parentId == branchId).Select(x => new { x.branchId }).FirstOrDefault();
                                 var posL = entity.pos.Where(x => x.branchId == branchId).Select(b => new { b.posId }).FirstOrDefault();
                                 var locationsL = entity.locations.Where(x => x.branchId == branchId).Select(x => new { x.locationId }).FirstOrDefault();
                                 var usersL = entity.branchesUsers.Where(x => x.branchId == branchId).Select(x => new { x.branchsUsersId }).FirstOrDefault();
-                                if ((posL is null) && (locationsL is null) && (usersL is null))
+                                if ((parentBrancheL is null)&&(posL is null) && (locationsL is null) && (usersL is null))
                                     canDelete = true;
                             }
                             branchesList[i].canDelete = canDelete;
@@ -238,7 +240,7 @@ namespace POS_Server.Controllers
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-   
+
             if (valid)
             {
                 branchObject = branchObject.Replace("\\", string.Empty);
@@ -281,7 +283,7 @@ namespace POS_Server.Controllers
                             tmpBranch.type = newObject.type;
                             tmpBranch.parentId = newObject.parentId;
                             tmpBranch.updateDate = DateTime.Now;// server current date
-                            tmpBranch.updateUserId = newObject.updateUserId; 
+                            tmpBranch.updateUserId = newObject.updateUserId;
                             tmpBranch.isActive = newObject.isActive;
                         }
                         entity.SaveChanges();
@@ -297,6 +299,7 @@ namespace POS_Server.Controllers
             else
                 return false;
         }
+
         [HttpPost]
         [Route("Delete")]
         public bool Delete(int branchId, int userId,Boolean final)
@@ -357,6 +360,113 @@ namespace POS_Server.Controllers
             }
             else
                 return false;
+        }
+
+        [HttpGet]
+        [Route("GetBranchTreeByID")]
+        public IHttpActionResult GetBranchTreeByID(int branchID)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+            List<branches> treebranch = new List<branches>();
+            /*
+        p.branchId 
+         code 
+        name 
+         address 
+         email 
+         phone 
+         mobile 
+        createDate 
+         updateDate 
+         createUserId 
+        updateUserId 
+        notes 
+        parentId 
+        isActive 
+        type 
+        canDelete 
+             * */
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    /*
+                    var category1 = entity.categories.Where(c => c.categoryId == categoryID)
+                    .Select(p => new {
+                        //  p.name,
+                        p.parentId,
+
+                    }).FirstOrDefault();
+                    int parentid = (int)category1.parentId;
+                    */
+                    int parentid = branchID; // if want to show the last category 
+                    while (parentid > 0 )
+                    {
+                        branches tempbranch = new branches();
+                        var branch = entity.branches.Where(c => c.branchId == parentid)
+                            .Select(p => new {
+                               
+                                p.branchId,
+                                p.code,
+                                p.name,
+                                p.address,
+                                p.email,
+                                p.phone,
+                                p.mobile,
+                                p.createDate,
+                                p.updateDate,
+                                p.createUserId,
+                                p.updateUserId,
+                                p.notes,
+                                p.parentId,
+                                p.isActive,
+                                p.type,
+
+                            }).FirstOrDefault();
+
+                        tempbranch.branchId = branch.branchId;
+                        tempbranch.code = branch.code;
+                        tempbranch.name = branch.name;
+                        tempbranch.address = branch.address;
+                        tempbranch.email = branch.email;
+                        tempbranch.phone = branch.phone;
+                        tempbranch.mobile = branch.mobile;
+                        tempbranch.createDate = branch.createDate;
+                        tempbranch.updateDate = branch.updateDate;
+                        tempbranch.createUserId = branch.createUserId;
+                        tempbranch.updateUserId = branch.updateUserId;
+                        tempbranch.notes = branch.notes;
+                        tempbranch.parentId = branch.parentId;
+                        tempbranch.isActive = branch.isActive;
+                        tempbranch.type = branch.type;
+                        
+
+
+                        parentid = (int)tempbranch.parentId;
+
+                        treebranch.Add(tempbranch);
+
+                    }
+                    if (treebranch == null)
+                        return NotFound();
+                    else
+                        //treebranch.Reverse();
+                        return Ok(treebranch);
+
+                }
+
+
+            }
+            else
+                return NotFound();
         }
     }
 }

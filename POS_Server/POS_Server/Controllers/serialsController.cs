@@ -79,7 +79,7 @@ namespace POS_Server.Controllers
                         var serialEntity = entity.Set<serials>();
                         if (newObject.serialId == 0)
                         {
-                            
+
 
                             serialEntity.Add(newObject);
                             message = "Serial Is Added Successfully";
@@ -103,9 +103,10 @@ namespace POS_Server.Controllers
             return message;
         }
 
+
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int serialId , int userId)
+        public IHttpActionResult Delete(int serialId)
         {
             var re = Request;
             var headers = re.Headers;

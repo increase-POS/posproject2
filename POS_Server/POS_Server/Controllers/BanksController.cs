@@ -170,21 +170,21 @@ namespace POS_Server.Controllers
             // add or update bank
             [HttpPost]
             [Route("Save")]
-            public string Save(string bankObject)
+        public string Save(string bankObject)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            string message = "";
+            if (headers.Contains("APIKey"))
             {
-                var re = Request;
-                var headers = re.Headers;
-                string token = "";
-                string message = "";
-                if (headers.Contains("APIKey"))
-                {
-                    token = headers.GetValues("APIKey").First();
-                }
-                Validation validation = new Validation();
-                bool valid = validation.CheckApiKey(token);
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
 
-                if (valid)
-                {
+            if (valid)
+            {
                 bankObject = bankObject.Replace("\\", string.Empty);
                 bankObject = bankObject.Trim('"');
                 banks newObject = JsonConvert.DeserializeObject<banks>(bankObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
@@ -199,46 +199,46 @@ namespace POS_Server.Controllers
                     newObject.createUserId = id;
                 }
                 try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
                     {
-                        using (incposdbEntities entity = new incposdbEntities())
+                        var bankEntity = entity.Set<banks>();
+                        if (newObject.bankId == 0)
                         {
-                            var bankEntity = entity.Set<banks>();
-                            if (newObject.bankId == 0)
-                            {
                             newObject.createDate = DateTime.Now;
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
                             bankEntity.Add(newObject);
-                                message = "Bank Is Added Successfully";
-                            }
-                            else
-                            {
-                                var tmpBank = entity.banks.Where(p => p.bankId == newObject.bankId).FirstOrDefault();
-                                tmpBank.name = newObject.name;
-                                tmpBank.accNumber = newObject.accNumber;
-                                tmpBank.address = newObject.address;
-                               tmpBank.mobile = newObject.mobile;
+                            message = "Bank Is Added Successfully";
+                        }
+                        else
+                        {
+                            var tmpBank = entity.banks.Where(p => p.bankId == newObject.bankId).FirstOrDefault();
+                            tmpBank.name = newObject.name;
+                            tmpBank.accNumber = newObject.accNumber;
+                            tmpBank.address = newObject.address;
+                            tmpBank.mobile = newObject.mobile;
                             tmpBank.notes = newObject.notes;
                             tmpBank.phone = newObject.phone;
                             tmpBank.updateDate = DateTime.Now;
-                               tmpBank.updateUserId = newObject.updateUserId;
-                               tmpBank.isActive = newObject.isActive;
-                              
-                                message = "Bank Is Updated Successfully";
-                            }
-                            entity.SaveChanges();
-                        }
-                    }
+                            tmpBank.updateUserId = newObject.updateUserId;
+                            tmpBank.isActive = newObject.isActive;
 
-                    catch
-                    {
-                        message = "an error ocurred";
+                            message = "Bank Is Updated Successfully";
+                        }
+                        entity.SaveChanges();
                     }
                 }
-                return message;
-            }
 
-            [HttpPost]
+                catch
+                {
+                    message = "an error ocurred";
+                }
+            }
+            return message;
+        }
+
+        [HttpPost]
             [Route("Delete")]
             public IHttpActionResult Delete(int bankId , int userId , Boolean final)
             {
