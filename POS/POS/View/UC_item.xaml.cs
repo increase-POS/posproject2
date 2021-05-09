@@ -833,6 +833,8 @@ namespace POS.View
         }
         async void Btn_deleteProperties_Click(object sender, RoutedEventArgs e)
         {
+            // dosent content right parameter
+            /*
             if (itemProp.itemPropId != 0)
             {
                 int propertyItemId = (int)itemProp.propertyItemId;
@@ -845,6 +847,7 @@ namespace POS.View
 
                 refreshPropertiesGrid(item.itemId); 
             }
+            */
         }
         async void Btn_deleteSerial_Click(object sender, RoutedEventArgs e)
         {
