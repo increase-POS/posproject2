@@ -97,6 +97,22 @@ namespace POS.View
             SectionData.genRandomCode("c");
             tb_code.Text = SectionData.code;
 
+            agent.agentId = 0;
+            tb_address.Clear();
+            tb_fax.Clear();
+            tb_company.Clear();
+            tb_email.Clear();
+            tb_name.Clear();
+            tb_notes.Clear();
+            tb_mobile.Clear();
+            tb_upperLimit.Clear();
+            tb_phone.Clear();
+            cb_areaMobile.SelectedIndex = 0;
+            cb_areaPhone.SelectedIndex = 0;
+            cb_areaFax.SelectedIndex = 0;
+            cb_areaPhoneLocal.SelectedIndex = 0;
+            cb_areaFaxLocal.SelectedIndex = 0;
+
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
             p_errorMobile.Visibility = Visibility.Collapsed;
@@ -106,23 +122,6 @@ namespace POS.View
             tb_fax.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-            agent.agentId = 0;
-            tb_address.Text = "";
-            tb_fax.Text = "";
-            tb_company.Text = "";
-            tb_email.Text = "";
-            tb_name.Text = "";
-            tb_notes.Text = "";
-            tb_mobile.Text = "";
-            tb_upperLimit.Text = "";
-            tb_phone.Text = "";
-            cb_areaMobile.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaFax.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
-            cb_areaFaxLocal.SelectedIndex = 0;
-
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -312,18 +311,17 @@ namespace POS.View
 
                     string s = await agentModel.saveAgent(agent);
 
-                    if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                    if (s.Equals("true")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-                    //pass parameter type (V for vendors, C for Clients , B for Both)
-                    agents = await agentModel.GetAgentsAsync("c");
-                    agentsQuery = agents;
-                    dg_customer.ItemsSource = agentsQuery;
-                    //txt_Count.Text = agentsQuery.Count().ToString();
-                    tb_search_TextChanged(null, null);
                 }
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
+
+            agents = await agentModel.GetAgentsAsync("c");
+            agentsQuery = agents.Where(s => s.isActive == Convert.ToInt32(tgl_customerIsActive.IsChecked));
+            dg_customer.ItemsSource = agentsQuery;
+
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -452,15 +450,14 @@ namespace POS.View
                     if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-                    //pass parameter type (V for vendors, C for Clients , B for Both)
-                    //agents = await agentModel.GetAgentsAsync("c");
-                    //agentsQuery = agents;
-                    //dg_customer.ItemsSource = agentsQuery;
-                    //txt_Count.Text = agentsQuery.Count().ToString();
                     tb_search_TextChanged(null, null);
                 }
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
+
+            agents = await agentModel.GetAgentsAsync("c");
+            agentsQuery = agents.Where(s => s.isActive == Convert.ToInt32(tgl_customerIsActive.IsChecked));
+            dg_customer.ItemsSource = agentsQuery;
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
@@ -524,6 +521,22 @@ namespace POS.View
             }
         }
 
+        private void tb_name_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var bc = new BrushConverter();
+
+            if (tb_name.Text.Equals(""))
+            {
+                p_errorName.Visibility = Visibility.Visible;
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+        }
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -581,19 +594,6 @@ namespace POS.View
                 p_errorMobile.Visibility = Visibility.Collapsed;
 
             }
-        }
-
-
-        private async void tb_search_LostFocus(object sender, RoutedEventArgs e)
-        {
-            //var agents = await agentModel.GetAgentsAsync("c");
-            //agentsQuery = agents;
-            //dg_customer.ItemsSource = agentsQuery;
-            //txt_Count.Text = agentsQuery.Count().ToString();
-            ////dg_customer.ItemsSource = agents;
-            ///
-            //Keyboard.Focus(tb_name);
-
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -726,16 +726,18 @@ namespace POS.View
 
         private void UserControl_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
+        //    var bc = new BrushConverter();
 
-            p_errorName.Visibility = Visibility.Collapsed;
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+        //    p_errorName.Visibility = Visibility.Collapsed;
+        //    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
         }
 
         private void tb_email_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
         }
+
+       
     }
 }
     

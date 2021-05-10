@@ -298,10 +298,11 @@
                             <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5" 
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Name..."  
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                     BorderBrush="AliceBlue" MaxLength="50" LostFocus="tb_name_LostFocus" 
+                                     BorderBrush="AliceBlue" MaxLength="50" 
+                                     LostFocus="tb_name_LostFocus" 
                                      VerticalAlignment="Center" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                     Height="35"  Margin="5,5,6,5" TabIndex="0" >
+                                     Height="35"  Margin="5,5,6,5" TabIndex="0" TextChanged="tb_name_TextChanged" >
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_name" Content="Name"
                                               Placement="left" 

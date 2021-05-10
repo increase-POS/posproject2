@@ -538,7 +538,7 @@
     <value>تمت الإضافة بنجاح</value>
   </data>
   <data name="trPopAddValidate" xml:space="preserve">
-    <value>لا يمكن الإضافة بدون الاسم و رقم الجوال</value>
+    <value>لا يمكن الإضافة بدون الكود و الاسم و رقم الجوال</value>
   </data>
   <data name="trPopDelete" xml:space="preserve">
     <value>تم الحذف بنجاح</value>

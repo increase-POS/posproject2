@@ -43,14 +43,6 @@ namespace POS.View
             InitializeComponent();
         }
 
-        private async void fillBranches()
-        {
-            //var branches = await branchModel.GetBranchesAsync("b");
-            //cb_branch.ItemsSource = branches;
-            //cb_branch.DisplayMemberPath = "name";
-            //cb_branch.SelectedValuePath = "branchId";
-        }
-
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -174,10 +166,10 @@ namespace POS.View
             if (cb_branch.Items.Count > 0)
                 cb_branch.SelectedIndex = 0;
 
-            Keyboard.Focus(tb_name);
+            Keyboard.Focus(tb_code);
 
-            SectionData.genRandomCode("b", "Branch");
-            tb_code.Text = SectionData.code;
+            //SectionData.genRandomCode("b", "Branch");
+            //tb_code.Text = SectionData.code;
 
             this.Dispatcher.Invoke(() =>
             {
@@ -189,11 +181,13 @@ namespace POS.View
 
         private void Dg_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            p_errorCode.Visibility = Visibility.Collapsed;
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorMobile.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
 
             var bc = new BrushConverter();
+            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
@@ -262,6 +256,7 @@ namespace POS.View
       
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
+            tb_code.Clear();
             tb_name.Clear();
             cb_branch.SelectedIndex = 0;
             tb_address.Clear();
@@ -273,101 +268,133 @@ namespace POS.View
             cb_areaPhoneLocal.SelectedIndex = 0;
             tb_phone.Clear();
 
+            p_errorCode.Visibility = Visibility.Collapsed;
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorMobile.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
 
             var bc = new BrushConverter();
+            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-            SectionData.genRandomCode("b" ,"Branch");
-            tb_code.Text = SectionData.code;
+            //SectionData.genRandomCode("b" ,"Branch");
+            //tb_code.Text = SectionData.code;
 
         }
-
+        // Error Here
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
-        {//add
-            branch.branchId = 0;
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-            }
-            if (tb_mobile.Text.Equals(""))
-            {
-                p_errorMobile.Visibility = Visibility.Visible;
-                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
-            }
-            else
-            {
-                p_errorMobile.Visibility = Visibility.Collapsed;
+        {
+            /*
+                //add
+                branch.branchId = 0;
+                bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "b", "Branch");
 
-            }
-            if (!tb_email.Text.Equals(""))
-            {
-                if (!ValidatorExtensions.IsValid(tb_email.Text))
+                if (tb_code.Text.Equals(""))
                 {
-                    p_errorEmail.Visibility = Visibility.Visible;
-                    tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
+                    p_errorCode.Visibility = Visibility.Visible;
+                    tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyCodeToolTip");
                 }
                 else
                 {
-                    p_errorEmail.Visibility = Visibility.Collapsed;
+                    p_errorCode.Visibility = Visibility.Collapsed;
+                    //iscodeExist = SectionData.isCodeExist(tb_code.Text, "b", "Branch");
                 }
-            }
-            string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
-            
-            bool emailError = false;
-            
-            if (!tb_email.Text.Equals(""))
-                if (!SectionData.IsValid(tb_email.Text))
-                    emailError = true;
-            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
-            {
-                if (emailError)
-                    SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
+                if (tb_name.Text.Equals(""))
+                {
+                    p_errorName.Visibility = Visibility.Visible;
+                    tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                }
                 else
                 {
-                    SectionData.genRandomCode("b", "Branch");
-
-                    tb_code.Text = SectionData.code;
-
-                    branch.code = tb_code.Text;
-                    branch.name = tb_name.Text;
-                    branch.notes = tb_notes.Text;
-                    branch.address = tb_address.Text;
-                    branch.email = tb_email.Text;
-                    branch.phone = phoneStr;
-                    branch.mobile = cb_area.Text + tb_mobile.Text;
-                    branch.createUserId = MainWindow.userID;
-                    branch.updateUserId = MainWindow.userID;
-                    branch.type = "b";
-                    branch.isActive = 1;
-                    branch.parentId = ParentId;
-
-                    string s = await branchModel.saveBranch(branch);
-
-                    if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                    else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    p_errorName.Visibility = Visibility.Collapsed;
+                }
+                if (tb_mobile.Text.Equals(""))
+                {
+                    p_errorMobile.Visibility = Visibility.Visible;
+                    tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
+                }
+                else
+                {
+                    p_errorMobile.Visibility = Visibility.Collapsed;
 
                 }
-            }
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
-            
-            branches = await branchModel.GetBranchesAsync("b");
-            branchesQuery = branches.Where(s => s.isActive == Convert.ToInt32(tgl_branchIsActive.IsChecked));
-            dg_branch.ItemsSource = branchesQuery;
+                if (!tb_email.Text.Equals(""))
+                {
+                    if (!ValidatorExtensions.IsValid(tb_email.Text))
+                    {
+                        p_errorEmail.Visibility = Visibility.Visible;
+                        tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
+                    }
+                    else
+                    {
+                        p_errorEmail.Visibility = Visibility.Collapsed;
+                    }
+                }
+                string phoneStr = "";
+                if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
+
+                bool emailError = false;
+
+                if (!tb_email.Text.Equals(""))
+                    if (!SectionData.IsValid(tb_email.Text))
+                        emailError = true;
+
+                if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_code.Text.Equals("")))
+                {
+                    if (emailError)
+                        SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
+                    else if (iscodeExist)
+                    {
+                        p_errorCode.Visibility = Visibility.Visible;
+                        tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyCodeToolTip");
+                    }
+                    else
+                    {
+                        //SectionData.genRandomCode("b", "Branch");
+                        //tb_code.Text = SectionData.code;
+
+                        branch.code = tb_code.Text;
+                        branch.name = tb_name.Text;
+                        branch.notes = tb_notes.Text;
+                        branch.address = tb_address.Text;
+                        branch.email = tb_email.Text;
+                        branch.phone = phoneStr;
+                        branch.mobile = cb_area.Text + tb_mobile.Text;
+                        branch.createUserId = MainWindow.userID;
+                        branch.updateUserId = MainWindow.userID;
+                        branch.type = "b";
+                        branch.isActive = 1;
+                        branch.parentId = ParentId;
+
+                        string s = await branchModel.saveBranch(branch);
+
+                        if (s.Equals("true")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
+                        else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                    }
+                }
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
+
+                branches = await branchModel.GetBranchesAsync("b");
+                branchesQuery = branches.Where(s => s.isActive == Convert.ToInt32(tgl_branchIsActive.IsChecked));
+                dg_branch.ItemsSource = branchesQuery;
+
+            */
+
         }
-
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
+            if (tb_code.Text.Equals(""))
+            {
+                p_errorCode.Visibility = Visibility.Visible;
+                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyCodeToolTip");
+            }
+            else
+            {
+                p_errorCode.Visibility = Visibility.Collapsed;
+            }
             if (tb_name.Text.Equals(""))
             {
                 p_errorName.Visibility = Visibility.Visible;
@@ -413,8 +440,8 @@ namespace POS.View
                     SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
                 else
                 {
-                    SectionData.genRandomCode("b" , "Branch");
-                    tb_code.Text = SectionData.code;
+                    //SectionData.genRandomCode("b" , "Branch");
+                    //tb_code.Text = SectionData.code;
 
                     branch.code = tb_code.Text;
                     branch.name = tb_name.Text;
@@ -523,7 +550,6 @@ namespace POS.View
                 p_errorMobile.Visibility = Visibility.Visible;
                 tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
                 tb_mobile.Background = (Brush)bc.ConvertFrom("#15FF0000");
-
             }
             else
             {
@@ -627,6 +653,44 @@ namespace POS.View
             }
             catch 
             { ParentId = 0; }
+        }
+
+        private void tb_code_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var bc = new BrushConverter();
+
+            if (tb_code.Text.Equals(""))
+            {
+                p_errorCode.Visibility = Visibility.Visible;
+                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyCodeToolTip");
+                tb_code.Background = (Brush)bc.ConvertFrom("#15FF0000");
+
+            }
+            else
+            {
+                tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_errorCode.Visibility = Visibility.Collapsed;
+
+            }
+        }
+
+        private void tb_code_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var bc = new BrushConverter();
+
+            if (tb_code.Text.Equals(""))
+            {
+                p_errorCode.Visibility = Visibility.Visible;
+                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyCodeToolTip");
+                tb_code.Background = (Brush)bc.ConvertFrom("#15FF0000");
+
+            }
+            else
+            {
+                tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_errorCode.Visibility = Visibility.Collapsed;
+
+            }
         }
     }
 }

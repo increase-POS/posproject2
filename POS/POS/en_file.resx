@@ -550,7 +550,7 @@
     <value />
   </data>
   <data name="trPopAddValidate" xml:space="preserve">
-    <value>It is not possible to add without the name and mobile number</value>
+    <value>It is not possible to add without the code and name and mobile number</value>
   </data>
   <data name="trPopDelete" xml:space="preserve">
     <value>Deleted success</value>

@@ -1,24 +1,11 @@
-﻿using Newtonsoft.Json;
-using POS.Classes;
+﻿using POS.Classes;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Reflection;
 using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace POS.View
 {
@@ -31,7 +18,7 @@ namespace POS.View
 
         Unit unitModel = new Unit();
 
-        private int smallestUnitId = 0 ;
+        private int smallestUnitId = 0;
 
         int IsSmallest = 0;
 
@@ -45,7 +32,7 @@ namespace POS.View
             p_errorName.Visibility = Visibility.Collapsed;
             var bc = new BrushConverter();
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-           
+
             Unit unit = new Unit();
             if (dg_unit.SelectedIndex != -1)
             {
@@ -73,12 +60,12 @@ namespace POS.View
             }
         }
 
-        List<int>    ids = new List<int>();
+        List<int> ids = new List<int>();
         List<string> names = new List<string>();
         private void fillSmallestUnits()
         {
             Unit unit = new Unit();
-            for (int i = 0; i < dg_unit.Items.Count ; i++)
+            for (int i = 0; i < dg_unit.Items.Count; i++)
             {
                 unit = dg_unit.Items[i] as Unit;
                 ids.Add(unit.unitId);
@@ -173,7 +160,7 @@ namespace POS.View
 
             translate();
 
-            var units = await unitModel.GetUnitsAsync();
+           var units = await unitModel.GetUnitsAsync();
             dg_unit.ItemsSource = units;
 
             //fillSmallestUnits();
@@ -186,23 +173,24 @@ namespace POS.View
             Unit unit = new Unit
             {
                 //unitId
-                name         = tb_name.Text,
+                name = "text",
                 //isSmallest   = IsSmallest,
-                isSmallest   = 0,
+                isSmallest = 0,
                 //smallestId = smallestUnitId ,
-                smallestId   = 0,
+                smallestId = 0,
                 createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                updateDate   = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                createUserId = 1 ,
-                updateUserId = 1 ,
-                parentid     = 0 //?????????????????
+                updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                createUserId = 1,
+                updateUserId = 1,
+                parentId = 0, //?????????????????
+                //isActive = 1,
             };
 
             await unitModel.saveUnit(unit);
 
             var units = await unitModel.GetUnitsAsync();
             dg_unit.ItemsSource = units;
-
+            MessageBox.Show(units.Count.ToString());
             //fillSmallestUnits();
 
         }
@@ -243,10 +231,10 @@ namespace POS.View
                 updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 createUserId = 1,
                 updateUserId = 1,
-                parentid = 0 //?????????????????
+                parentId = 0 //?????????????????
             };
 
-             await unitModel.saveUnit(unit);
+            await unitModel.saveUnit(unit);
 
             MessageBox.Show(UnitId.ToString());
 

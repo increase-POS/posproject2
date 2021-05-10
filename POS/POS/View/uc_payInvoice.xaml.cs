@@ -377,6 +377,7 @@ namespace POS.View
             //    categoriesQuery = categories.Where(x =>
             //x.isActive == tglCategoryState && x.parentId == categoryParentId);
             //}
+            generateTrack(categoryId);
         }
 
         public void ChangeItemIdEvent(int categoryId)
@@ -759,75 +760,58 @@ namespace POS.View
         */
         #region categoryPathControl Y
 
-        void generateTrack(List<Category> listCategory)
+        async void generateTrack(int categorypaPathId)
         {
+            grid_categoryControlPath.Children.Clear();
+            IEnumerable<Category> categoriesPath = await
+            categoryModel.GetCategoryTreeByID(categorypaPathId);
 
             int count = 0;
-            //TestLestCategory[0] = TestLestCategory[0];
-            foreach (var item in listCategory)
+            foreach (var item in categoriesPath.Reverse())
             {
-                Button b = new Button();
-                b.Content = " > " + item.name + " ";
-                b.Padding = new Thickness(0);
-                b.Margin = new Thickness(0);
-                b.Background = null;
-                b.BorderThickness = new Thickness(0);
-                if (count + 1 == listCategory.Count)
-                    b.FontFamily = Application.Current.Resources["Font-cairo-bold"] as FontFamily;
-                else b.FontFamily = Application.Current.Resources["Font-cairo-light"] as FontFamily;
-                b.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
-                //b.FontWeight = FontWeights.Bold;
-                b.FontSize = 14;
-                Grid.SetColumn(b, count);
-                b.DataContext = item;
-                b.Name = "category" + item.categoryId;
-                b.Tag = item.categoryId;
-                b.Click += new RoutedEventHandler(getCategoryIdFromPath);
-                count++;
-                grid_categoryControlPath.Children.Add(b);
+                if (categories.Where(x => x.parentId == item.categoryId).Count() != 0)
+                {
+                    Button b = new Button();
+                    b.Content = " > " + item.name + " ";
+                    b.Padding = new Thickness(0);
+                    b.Margin = new Thickness(0);
+                    b.Background = null;
+                    b.BorderThickness = new Thickness(0);
+                    b.FontFamily = Application.Current.Resources["Font-cairo-light"] as FontFamily;
+                    b.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
+                    b.FontSize = 14;
+                    Grid.SetColumn(b, count);
+                    b.DataContext = item;
+                    b.Name = "category" + item.categoryId;
+                    b.Tag = item.categoryId;
+                    b.Click += new RoutedEventHandler(getCategoryIdFromPath);
+                    count++;
+                    grid_categoryControlPath.Children.Add(b);
+                }
             }
-        }
 
+
+        }
         private void getCategoryIdFromPath(object sender, RoutedEventArgs e)
         {
             Button b = (Button)sender;
-            //if (sender != null)
-            MessageBox.Show("Name: " + b.Name + " \\Tag: " + b.Tag + "");
 
-
-            //categoryParentId = "ParentID"
+            if (!string.IsNullOrEmpty(b.Tag.ToString()))
+            {
+                generateTrack(int.Parse(b.Tag.ToString()));
+                categoryParentId = int.Parse(b.Tag.ToString());
+                RefrishCategoriesCard();
+            }
+               
 
         }
-
         private void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
         {
             categoryParentId = 0;
-            Txb_searchitems_TextChanged(null, null);
+            RefrishCategoriesCard();
+            grid_categoryControlPath.Children.Clear();
 
 
-            List<Category> TestLestCategory = new List<Category>();
-            TestLestCategory.Add(new Category()
-            {
-                categoryId = 23,
-                parentId = 0,
-                //name = "Electronics"
-                name = "إلكترونيات"
-            });
-            TestLestCategory.Add(new Category()
-            {
-                categoryId = 28,
-                parentId = 23,
-                //name = "Programs"
-                name = "برامج"
-            });
-            TestLestCategory.Add(new Category()
-            {
-                categoryId = 56,
-                parentId = 28,
-                //name = "Pos"
-                name = "نقاط مبيعات"
-            });
-            generateTrack(TestLestCategory);
         }
 
         #endregion

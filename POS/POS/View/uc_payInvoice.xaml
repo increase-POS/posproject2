@@ -31,7 +31,7 @@
                     CornerRadius="15,0,0,15" BorderBrush="Black" Background="#4e4e4e">
                         </Border>
                         <Grid >
-                            <Button Padding="0" Background="{x:Null}" BorderBrush="{x:Null}">
+                            <Button Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" x:Name="btn_getAllCategory" Click="Btn_getAllCategory_Click">
                                 <Path Fill="White" Stretch="Fill"
                           Width="22" Height="22" Margin="0"  
                           Data="M20,21.6c-0.1,0-0.2,0-0.3-0.1L5.4,15.1C5.2,15,5,14.7,5,14.4c0-0.3,0.2-0.6,0.5-0.7L19.7,8c0.1,0,0.2,0,0.3,0
@@ -52,7 +52,7 @@
                                 <RowDefinition Height="25"/>
                                 <RowDefinition Height="130"/>
                             </Grid.RowDefinitions>
-                            <Grid Grid.ColumnSpan="10" VerticalAlignment="Top" Height="20" Margin="15,0,0,0" x:Name="grid_categoryControlPath">
+                            <Grid Grid.ColumnSpan="10" VerticalAlignment="Top" Height="25" Margin="15,0,0,0" x:Name="grid_categoryControlPath">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="auto"/>

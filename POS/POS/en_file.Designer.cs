@@ -1231,7 +1231,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to It is not possible to add without the name and mobile number.
+        ///   Looks up a localized string similar to It is not possible to add without the code and name and mobile number.
         /// </summary>
         internal static string trPopAddValidate {
             get {

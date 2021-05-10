@@ -322,6 +322,8 @@ namespace POS.View
             stores = await storeModel.GetBranchesAsync("s");
             storesQuery = stores.Where(s => s.isActive == Convert.ToInt32(tgl_storeIsActive.IsChecked));
             dg_store.ItemsSource = storesQuery;
+
+            Btn_clear_Click(null , null);
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
@@ -459,7 +461,7 @@ namespace POS.View
             if(cb_branch.Items.Count > 0)
                 cb_branch.SelectedIndex = 0;
 
-            Keyboard.Focus(tb_name);
+            Keyboard.Focus(tb_code);
 
             SectionData.genRandomCode("s", "Branch");
             tb_code.Text = SectionData.code;
@@ -596,7 +598,6 @@ namespace POS.View
                 Email = x.email,
                 Address = x.address,
                 Notes = x.notes,
-
             });
             var DTForExcel = QueryExcel.ToDataTable();
             DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trCode");
@@ -608,7 +609,21 @@ namespace POS.View
             DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trNote");
 
             ExportToExcel.Export(DTForExcel);
+        }
 
+        private void tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void tb_phone_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void tb_email_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
         }
     }
 }

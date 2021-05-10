@@ -15,13 +15,14 @@ namespace POS.Classes
     {
         public int      unitId { get; set; }
         public string   name { get; set; }
-        public int      isSmallest { get; set; }
+        public int?      isSmallest { get; set; }
         public int?      smallestId { get; set; }
-        public DateTime? createDate { get; set; }
-        public DateTime? updateDate { get; set; }
-        public int?      createUserId { get; set; }
-        public int?      updateUserId { get; set; }
-        public int?      parentid { get; set; }
+        public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<int> createUserId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
+        public Nullable<int> parentId { get; set; }
+        public int? isActive { get; set; }
 
         public async Task<List<Unit>> GetUnitsAsync()
         {
@@ -110,7 +111,7 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "Units/Save?unitObject=" + myContent);
+                request.RequestUri = new Uri(Global.APIUri + "Unit/Save?unitObject=" + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

@@ -45,7 +45,7 @@
                     <Border Grid.ColumnSpan="2" CornerRadius="0,5,5,0"  
                            Background="White"  />
 
-                    <TextBox  x:Name="tb_search" TabIndex="14"
+                    <TextBox  x:Name="tb_search" TabIndex="15"
                               Padding="10,5,5,5" BorderBrush="{x:Null}"
                               materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                               Foreground="#4e4e4e" TextBlock.FontSize="14"
@@ -62,7 +62,7 @@
                                    Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="12"/>
-                        <ToggleButton Grid.Column="1"  x:Name="tgl_storeIsActive"  TabIndex="15"
+                        <ToggleButton Grid.Column="1"  x:Name="tgl_storeIsActive"  TabIndex="16"
                                       VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                       Margin="0" Height="13" Width="28" Checked="tgl_storeIsActive_Checked" Unchecked="tgl_storeIsActive_Unchecked"/>
                     </Grid>
@@ -137,7 +137,7 @@
                 </Grid.ColumnDefinitions>
                 <Border Background="White" CornerRadius="0,0,7,7" Grid.ColumnSpan="10" />
                 <Button   Background="{x:Null}"    Grid.Column="0" Margin="10,0,5,0"
-                          Padding="0" Height="35" TabIndex="16"
+                          Padding="0" Height="35" TabIndex="17"
                                        BorderBrush="{x:Null}">
                     <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
                               HorizontalAlignment="Center" Grid.Column="0"  
@@ -152,7 +152,7 @@
                     </materialDesign:PackIcon>
                 </Button>
                 <Button   Background="{x:Null}"    Grid.Column="1" Margin="5,0,5,0"
-                          Padding="0" Height="35" TabIndex="17" x:Name="btn_exportToExcel"
+                          Padding="0" Height="35" TabIndex="18" x:Name="btn_exportToExcel"
                           BorderBrush="{x:Null}" Click="btn_exportToExcel_Click" >
                     <Path Fill="#378500" Stretch="Fill"
                           Width="20" Height="20"  x:Name="p_exportToExcel"
@@ -256,7 +256,7 @@
                                        Grid.Column="1" VerticalAlignment="Center" />
                             <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
                                     Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click"
-                                    Margin="5,1"   ToolTip="clear"  TabIndex="13">
+                                    Margin="5,1"   ToolTip="clear"  TabIndex="14">
                                 <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20">
@@ -284,7 +284,7 @@
                             <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Name..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                     BorderBrush="AliceBlue" TabIndex="0"
+                                     BorderBrush="AliceBlue" TabIndex="1"
                                      TextChanged="Tb_name_TextChanged" LostFocus="Tb_name_LostFocus"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                                      Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
@@ -319,21 +319,24 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="tb_code"  Text="{Binding code, Mode=OneWay}" 
-                                       Padding="10,5,5,5"   
-                                       materialDesign:HintAssist.Hint="Code..."    
-                                       Foreground="#4E4E4E"  TextBlock.FontSize="12" 
+                            <TextBox x:Name="tb_code"  Text="{Binding code, Mode=OneWay}" 
+                                       Padding="10,5,5,5"  BorderThickness="0,0,0,2" 
+                                       materialDesign:HintAssist.Hint="Code..."   
+                                       Background="#f8f8f8"     TabIndex="0"
+                                       BorderBrush="AliceBlue"  MaxLength="10" 
+                                       Foreground="#4E4E4E"     TextBlock.FontSize="12" 
                                        HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                       Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
-                                       KeyboardNavigation.IsTabStop="False">
-                                <TextBlock.ToolTip>
+                                       materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                       KeyboardNavigation.IsTabStop="False"
+                                       Height="35" Width="340"  Margin="5,2,0,8" >
+                                <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_code" Content="Code"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                </TextBlock.ToolTip>
-                            </TextBlock>
+                                </TextBox.ToolTip>
+                            </TextBox>
                             <Path Fill="#E81123" 
                                   Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorCode"
                                   HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
@@ -351,7 +354,7 @@
                             </Grid.ColumnDefinitions>
                             <ComboBox x:Name="cb_branch" Padding="10,11,5,5" 
                                       TextBlock.Foreground="#4E4E4E"
-                                      TabIndex="1"  
+                                      TabIndex="2"  
                                       TextBlock.FontSize="12" Margin="5,1,10,10"
                                       HorizontalAlignment="Center" VerticalAlignment="Center" 
                                       Height="35" Width="340"  Background="#f8f8f8" 
@@ -402,7 +405,7 @@
                             <TextBox x:Name="tb_address"  Text="{Binding address, Mode=OneWay}" Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Address..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" 
-                                     Background="#f8f8f8"  TabIndex="2"
+                                     Background="#f8f8f8"  TabIndex="3"
                                      BorderBrush="AliceBlue"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                                      Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
@@ -432,7 +435,7 @@
                             </Grid.ColumnDefinitions>
                             <ComboBox x:Name="cb_area" Padding="10,11,5,5" 
                                       SelectedIndex="0"   TextBlock.Foreground="#4E4E4E"
-                                      TabIndex="3"
+                                      TabIndex="4"
                                       TextBlock.FontSize="12" Margin="10,5,5,5"
                                       HorizontalAlignment="Center" VerticalAlignment="Center" 
                                       Height="35" Width="60"  
@@ -467,12 +470,12 @@
                                 <TextBox x:Name="tb_mobile"  Text="{Binding mobile, Mode=OneWay}"  Padding="10,5,5,5" 
                                          BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   
                                          Foreground="#4E4E4E"  TextBlock.FontSize="12" 
-                                         Background="#f8f8f8" TabIndex="4"
+                                         Background="#f8f8f8" TabIndex="5"
                                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                          BorderBrush="AliceBlue" MaxLength="9" 
                                          PreviewTextInput="NumberValidationTextBox"
                                          HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                         Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2" TextChanged="tb_mobile_TextChanged" LostFocus="tb_mobile_LostFocus" >
+                                         Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2" TextChanged="tb_mobile_TextChanged" LostFocus="tb_mobile_LostFocus" PreviewKeyDown="tb_mobile_PreviewKeyDown" >
                                     <TextBox.ToolTip>
                                         <ToolTip x:Name="tt_mobile" Content="Mobile"
                                                  Placement="left" 
@@ -512,7 +515,7 @@
                                       TextBlock.FontSize="12" Margin="10,5,5,5"
                                       HorizontalAlignment="Center" VerticalAlignment="Center" 
                                       Height="35" Width="60"  
-                                      Background="#f8f8f8"  TabIndex="5"
+                                      Background="#f8f8f8"  TabIndex="6"
                                       BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
                              Grid.Row="2" >
@@ -531,7 +534,7 @@
                             </ComboBox>
                             <ComboBox x:Name="cb_areaPhoneLocal" Padding="15,11,5,5" 
                                       TextBlock.Foreground="#4E4E4E"
-                                      SelectedIndex="0"  TabIndex="6"
+                                      SelectedIndex="0"  TabIndex="7"
                                       TextBlock.FontSize="12" Margin="10,5,5,5"
                                       HorizontalAlignment="Center" VerticalAlignment="Center" 
                                       Height="35" Width="50"  Grid.Column="1"
@@ -552,13 +555,13 @@
                                 </ListBoxItem>
                             </ComboBox>
                             <TextBox x:Name="tb_phone"  Text="{Binding phone, Mode=OneWay}" Grid.Column="2"  
-                                     Padding="10,5,5,5"    TabIndex="7"
+                                     Padding="10,5,5,5"    TabIndex="8"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Phone..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="15"
-                                     Height="35" Width="205"  Margin="5,5,0,5" >
+                                     Height="35" Width="205"  Margin="5,5,0,5" PreviewKeyDown="tb_phone_PreviewKeyDown" >
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_phone" Content="Phone"
                                              Placement="left" 
@@ -591,12 +594,12 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="tb_email"  Text="{Binding email, Mode=OneWay}" Grid.Row="2"  
-                                     Padding="10,5,5,5"   TabIndex="8"
+                                     Padding="10,5,5,5"   TabIndex="9"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Email..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" LostFocus="Tb_email_LostFocus"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                     Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
+                                     Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" PreviewKeyDown="tb_email_PreviewKeyDown" >
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_email" Content="Email"
                                              Placement="left" 
@@ -630,7 +633,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="tb_notes"  Text="{Binding notes, Mode=OneWay}" 
-                                     Padding="10,5,5,5"   TabIndex="9"
+                                     Padding="10,5,5,5"   TabIndex="10"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Notes..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue"
@@ -675,14 +678,14 @@
 
                     <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0"
                             Background="#4E4E4E" BorderBrush="{x:Null}"
-                            TabIndex="10"
+                            TabIndex="11"
                             Margin="1,0"    Content="Add" Click="Btn_add_Click" />
                     <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"
-                            TabIndex="11"
+                            TabIndex="12"
                             Background="#4E4E4E" BorderBrush="{x:Null}"
                             Margin="1,0"    Content="Update" Click="Btn_update_Click" />
                     <Button x:Name="btn_delete" Grid.Row="0" Grid.Column="2"
-                            TabIndex="12"
+                            TabIndex="13"
                             Background="#4E4E4E" BorderBrush="{x:Null}"
                             Margin="1,0"    Content="Delete" Click="Btn_delete_Click" />
 

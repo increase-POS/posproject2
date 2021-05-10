@@ -174,30 +174,31 @@ namespace POS.View
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
+            SectionData.genRandomCode("v");
+            tb_code.Text = SectionData.code;
+
+            agent.agentId = 0;
+            tb_address.Clear();
+            tb_fax.Clear();
+            tb_company.Clear();
+            tb_email.Clear();
+            tb_name.Clear();
+            tb_notes.Clear();
+            tb_mobile.Clear();
+            tb_phone.Clear();
+            cb_areaMobile.SelectedIndex = 0;
+            cb_areaPhone.SelectedIndex = 0;
+            cb_areaPhoneLocal.SelectedIndex = 0;
+
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
             p_errorMobile.Visibility = Visibility.Collapsed;
 
             var bc = new BrushConverter();
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_fax.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            p_errorMobile.Visibility = Visibility.Collapsed;
 
-            SectionData.genRandomCode("v");
-            tb_code.Text = SectionData.code;
-            
-            tb_address.Text = "";
-            tb_fax.Text = "";
-            tb_company.Text = "";
-            tb_email.Text = "";
-            tb_name.Text = "";
-            tb_notes.Text = "";
-            tb_mobile.Text = "";
-            tb_phone.Text = "";
-            cb_areaMobile.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -310,16 +311,15 @@ namespace POS.View
                     if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-                    //pass parameter type (V for vendors, C for Clients , B for Both)
-                    agents = await agentModel.GetAgentsAsync("v");
-                    agentsQuery = agents;
-                    dg_vendor.ItemsSource = agentsQuery;
-                    //txt_Count.Text = agentsQuery.Count().ToString();
-                    tb_search_TextChanged(null, null);
                 }
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
-        
+
+            agents = await agentModel.GetAgentsAsync("v");
+            agentsQuery = agents.Where(s => s.isActive == Convert.ToInt32(tgl_vendorIsActive.IsChecked));
+            dg_vendor.ItemsSource = agentsQuery;
+
+            Btn_clear_Click(null, null);
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
@@ -394,11 +394,13 @@ namespace POS.View
                     if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-                    tb_search_TextChanged(null, null);
                 }
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
 
+            agents = await agentModel.GetAgentsAsync("v");
+            agentsQuery = agents.Where(s => s.isActive == Convert.ToInt32(tgl_vendorIsActive.IsChecked));
+            dg_vendor.ItemsSource = agentsQuery;
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
@@ -637,10 +639,10 @@ namespace POS.View
 
         private void UserControl_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
+            //var bc = new BrushConverter();
 
-            p_errorName.Visibility = Visibility.Collapsed;
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            //p_errorName.Visibility = Visibility.Collapsed;
+            //tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
         }
 
         private void tb_email_PreviewKeyDown(object sender, KeyEventArgs e)

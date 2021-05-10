@@ -1186,7 +1186,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لا يمكن الإضافة بدون الاسم و رقم الجوال.
+        ///   Looks up a localized string similar to لا يمكن الإضافة بدون الكود و الاسم و رقم الجوال.
         /// </summary>
         internal static string trPopAddValidate {
             get {

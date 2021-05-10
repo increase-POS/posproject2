@@ -60,6 +60,18 @@ namespace POS.View
             dg_bank.Columns[3].Header = MainWindow.resourcemanager.GetString("trMobile");
 
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
+
+            tt_name.Content = MainWindow.resourcemanager.GetString("trName");
+            tt_accNum.Content = MainWindow.resourcemanager.GetString("trAccNumber");
+            tt_mobile.Content = MainWindow.resourcemanager.GetString("trMobile");
+            tt_phone.Content = MainWindow.resourcemanager.GetString("trPhone");
+            tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
+            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)

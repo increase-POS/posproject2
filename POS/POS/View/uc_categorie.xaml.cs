@@ -29,6 +29,7 @@ namespace POS.View
     public partial class uc_categorie : UserControl
     {
         //public int _categorieId;
+        //public int categoryPathId = 0;
         Category categoryModel = new Category();
         Category category = new Category();
         int? categoryParentId = 0;
@@ -282,7 +283,9 @@ namespace POS.View
         {
             dg_categories.ItemsSource = _categories;
         }
-        
+
+     
+
         void RefrishCategoriesCard(IEnumerable<Category> _categories)
         {
             //catigoriesAndItemsView.gridCatigorieItems = grid_itemCard;
@@ -293,33 +296,44 @@ namespace POS.View
         }
         #endregion
         #region Get Id By Click  Y
+        int datagridSelectedItemId;
         private void dg_categories_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (dg_categories.SelectedItem as Category == null || dg_categories.SelectedIndex == -1)
+                return;
+            if (datagridSelectedItemId == (dg_categories.SelectedItem as Category).categoryId)
+                    return;
+           
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorCode.Visibility = Visibility.Collapsed;
             var bc = new BrushConverter();
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            ////////////////////////////////
 
+            
 
             if (dg_categories.SelectedIndex != -1)
             {
                 category = dg_categories.SelectedItem as Category;
+                datagridSelectedItemId = (dg_categories.SelectedItem as Category).categoryId;
                 this.DataContext = category;
                 cb_parentCategorie.SelectedValue = category.parentId;
             }
-
-
-            // Validate if it's dosn't have cheldren 
             if (categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
-           x.name.Contains(txtCategorySearch) ||
-           x.details.Contains(txtCategorySearch)
-           ) && x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
+         x.name.Contains(txtCategorySearch) ||
+         x.details.Contains(txtCategorySearch)
+         ) && x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
+            {
                 categoryParentId = category.categoryId;
+                Txb_searchcategories_TextChanged(null, null);
+            }
+            //grid_categoryControlPath.Children.Clear();
+            generateTrack(category.categoryId);
 
-            Txb_searchcategories_TextChanged(null, null);
         }
+
         public void ChangeCategorieIdEvent(int categoryId)
         {
             //////////////
@@ -331,6 +345,7 @@ namespace POS.View
             tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             //////////////
             //_categorieId = categoryId;
+
              category = categories.ToList().Find(c => c.categoryId == categoryId);
             this.DataContext = category;
             cb_parentCategorie.SelectedValue = category.parentId;
@@ -343,11 +358,10 @@ namespace POS.View
                 categoryParentId = category.categoryId;
                 Txb_searchcategories_TextChanged(null, null);
             }
+
+            generateTrack(category.categoryId);
         }
-        //public void testChangeCategorieItemsIdEvent()
-        //{
-        //    MessageBox.Show("Hello World!!  CategorieItems Id");
-        //}
+      
         #endregion
         #region Toggle Button Y
         
@@ -404,60 +418,17 @@ namespace POS.View
             if (categories is null)
                 await RefrishCategories();
             txtCategorySearch = txb_searchcategories.Text.ToLower();
-            //categoriesQuery = new List<Category>();
-            /*
-            if(categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
-            x.name.Contains(txtCategorySearch) ||
-            x.details.Contains(txtCategorySearch)
-            ) && x.isActive == tglCategoryState && x.parentId == categoryParentId).Count() == 0)
-            {
-                categoriesQuery = categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
-            x.name.Contains(txtCategorySearch) ||
-            x.details.Contains(txtCategorySearch)
-            ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            }
-            else
-            {
-                categoriesQuery = categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
-            x.name.Contains(txtCategorySearch) ||
-            x.details.Contains(txtCategorySearch)
-            ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            }
-            */
+            
             categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
             x.name.ToLower().Contains(txtCategorySearch) ||
             x.details.ToLower().Contains(txtCategorySearch)
             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
             txt_Count.Text = categoriesQuery.Count().ToString();
-            RefrishCategoriesDatagrid(categoriesQuery);
-            paginationSetting(categoriesQuery);
-        }
-        /*
-        private async void Txb_searchcategoriesDatagrid_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (categories is null)
-                await RefrishCategories();
-            
-            categoriesQuery = categories.Where(x => (x.categoryCode.Contains(txb_searchcategoriesDatagrid.Text) ||
-            x.name.Contains(txb_searchcategoriesDatagrid.Text) ||
-            x.details.Contains(txb_searchcategoriesDatagrid.Text)
-            ) && x.isActive == tglCategoryState);
-            RefrishCategoriesDatagrid(categoriesQuery);
-        }
-        private async void Txb_searchcategoriesCard_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (categories is null)
-                await RefrishCategories();
-            
-            categoriesQuery = categories.Where(x => (x.categoryCode.Contains(txb_searchcategoriesCard.Text) ||
-            x.name.Contains(txb_searchcategoriesCard.Text) ||
-            x.details.Contains(txb_searchcategoriesCard.Text)
-            ) && x.isActive == tglCategoryState);
-            pageIndex = 1;
-            paginationSetting(categoriesQuery);
 
+            
+            RefrishCategoriesDatagrid(categoriesQuery);
+            paginationSetting(categoriesQuery);
         }
-        */
         #endregion
         #region Pagination Y
         public int pageIndex = 1;
@@ -662,75 +633,107 @@ namespace POS.View
         #endregion
         #region categoryPathControl Y
 
-        void generateTrack(List<Category> listCategory)
+        async void generateTrack(int categorypaPathId)
         {
+            grid_categoryControlPath.Children.Clear();
+            IEnumerable<Category> categoriesPath = await
+            categoryModel.GetCategoryTreeByID(categorypaPathId);
+            
+            int count = 0;
+            foreach (var item in categoriesPath.Reverse())
+            {
+                if (categories.Where(x => x.parentId == item.categoryId).Count() != 0)
+                {
+                    Button b = new Button();
+                    b.Content = " > " + item.name + " ";
+                    b.Padding = new Thickness(0);
+                    b.Margin = new Thickness(0);
+                    b.Background = null;
+                    b.BorderThickness = new Thickness(0);
+                    //if (count + 1 == categoriesPath.Count())
+                    //    b.FontFamily = Application.Current.Resources["Font-cairo-bold"] as FontFamily;
+                    //else
+                    b.FontFamily = Application.Current.Resources["Font-cairo-light"] as FontFamily;
+                    b.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
+                    //b.FontWeight = FontWeights.Bold;
+                    b.FontSize = 14;
+                    Grid.SetColumn(b, count);
+                    b.DataContext = item;
+                    b.Name = "category" + item.categoryId;
+                    b.Tag = item.categoryId;
+                    b.Click += new RoutedEventHandler(getCategoryIdFromPath);
+                    count++;
+                    grid_categoryControlPath.Children.Add(b);
+                }
+            }
+            
+            /*
+            List<Button> listBtn = new List<Button>();
+
 
             int count = 0;
-            //TestLestCategory[0] = TestLestCategory[0];
-            foreach (var item in listCategory)
+            foreach (var item in categoriesPath.Reverse())
             {
-                Button b = new Button();
-                b.Content = " > " + item.name + " ";
-                b.Padding = new Thickness(0);
-                b.Margin = new Thickness(0);
-                b.Background = null;
-                b.BorderThickness = new Thickness(0);
-                if (count + 1 == listCategory.Count)
-                    b.FontFamily = Application.Current.Resources["Font-cairo-bold"] as FontFamily;
-                else b.FontFamily = Application.Current.Resources["Font-cairo-light"] as FontFamily;
-                b.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
-                //b.FontWeight = FontWeights.Bold;
-                b.FontSize = 14;
-                Grid.SetColumn(b, count);
-                b.DataContext = item;
-                b.Name = "category" + item.categoryId;
-                b.Tag = item.categoryId;
-                b.Click += new RoutedEventHandler(getCategoryIdFromPath);
-                count++;
-                grid_categoryControlPath.Children.Add(b);
+                if (categories.Where(x => x.parentId == item.categoryId).Count() != 0)
+                {
+                    Button b = new Button();
+                    b.Content = " > " + item.name + " ";
+                    b.Padding = new Thickness(0);
+                    b.Margin = new Thickness(0);
+                    b.Background = null;
+                    b.BorderThickness = new Thickness(0);
+                    //if (count + 1 == categoriesPath.Count())
+                    //    b.FontFamily = Application.Current.Resources["Font-cairo-bold"] as FontFamily;
+                    //else
+                    b.FontFamily = Application.Current.Resources["Font-cairo-light"] as FontFamily;
+                    b.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
+                    //b.FontWeight = FontWeights.Bold;
+                    b.FontSize = 14;
+                    Grid.SetColumn(b, count);
+                    b.DataContext = item;
+                    b.Name = "category" + item.categoryId;
+                    b.Tag = item.categoryId;
+                    b.Click += new RoutedEventHandler(getCategoryIdFromPath);
+                    count++;
+                    listBtn.Add(b);
+                }
             }
-        }
+            grid_categoryControlPath.Children.Clear();
+            foreach (var item in listBtn)
+            {
+                grid_categoryControlPath.Children.Add(item);
+            }
+          */
 
+
+            
+        }
         private void getCategoryIdFromPath(object sender, RoutedEventArgs e)
         {
             Button b = (Button)sender;
-            //if (sender != null)
-            MessageBox.Show("Name: " + b.Name + " \\Tag: " + b.Tag + "");
+            
+            if (!string.IsNullOrEmpty(b.Tag.ToString()))
+            generateTrack(int.Parse( b.Tag.ToString() ));
 
+            if (categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
+             x.name.Contains(txtCategorySearch) ||
+             x.details.Contains(txtCategorySearch)
+             ) && x.isActive == tglCategoryState && x.parentId == int.Parse(b.Tag.ToString()) ).Count() != 0)
+            {
+                categoryParentId = int.Parse(b.Tag.ToString());
+                Txb_searchcategories_TextChanged(null, null);
 
-            //categoryParentId = "ParentID"
-
+            }
+            datagridSelectedItemId = 0;
         }
 
         private void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
         {
             categoryParentId = 0;
             Txb_searchcategories_TextChanged(null, null);
+            grid_categoryControlPath.Children.Clear();
 
-
-            List<Category> TestLestCategory = new List<Category>();
-            TestLestCategory.Add(new Category()
-            {
-                categoryId = 23,
-                parentId = 0,
-                //name = "Electronics"
-                name = "إلكترونيات"
-            });
-            TestLestCategory.Add(new Category()
-            {
-                categoryId = 28,
-                parentId = 23,
-                //name = "Programs"
-                name = "برامج"
-            });
-            TestLestCategory.Add(new Category()
-            {
-                categoryId = 56,
-                parentId = 28,
-                //name = "Pos"
-                name = "نقاط مبيعات"
-            });
-            generateTrack(TestLestCategory);
+          
         }
 
         #endregion

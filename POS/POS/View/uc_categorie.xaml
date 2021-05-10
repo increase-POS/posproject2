@@ -46,7 +46,6 @@
                     CornerRadius="0,7,7,0" BorderBrush="Black" Background="White" Padding="0">
 
                         <Grid Grid.Column="1"  Margin="7.5,0" >
-
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
@@ -69,41 +68,6 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <!--<TreeView >
-                                    <TreeViewItem Header=">Electronics">
-                                        <TreeViewItem Header=">Programs">
-                                            <TreeViewItem Header=">Pos">
-
-                                            </TreeViewItem>
-                                        </TreeViewItem>
-                                    </TreeViewItem>
-                                </TreeView>-->
-                                <!--<Button  Grid.Column="0" Padding="0" Tag="0" 
-                                    VerticalAlignment="Top" HorizontalAlignment="Left" 
-                            Margin="0"  
-                                           Content=">Electronics " Background="{x:Null}"
-                                        BorderThickness="0"
-                          FontFamily="{StaticResource Font-cairo-light}" 
-                           Foreground="#6e6e6e"
-                                  FontWeight="Bold"  FontSize="14">
-                                </Button>
-                                <Button  Grid.Column="1" Padding="0"  Tag="0"
-                                    VerticalAlignment="Top" HorizontalAlignment="Left" 
-                            Margin="0"
-                                           Content=">Programs " Background="{x:Null}"
-                                        BorderThickness="0"
-                          FontFamily="{StaticResource Font-cairo-light}" 
-                           Foreground="#6e6e6e"
-                                  FontWeight="Bold"  FontSize="14">
-                                </Button>
-                                <Button  Grid.Column="2" Padding="0"
-                            Margin="0" 
-                                           Content=">نقاط مبيعات" Background="{x:Null}"
-                                        BorderThickness="0"
-                          FontFamily="{StaticResource Font-cairo-bold}" 
-                           Foreground="#6e6e6e"
-                                  FontWeight="Bold"  FontSize="14">
-                                </Button>-->
                             </Grid>
 
 
