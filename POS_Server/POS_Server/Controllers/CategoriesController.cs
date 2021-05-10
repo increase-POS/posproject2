@@ -61,8 +61,9 @@ namespace POS_Server.Controllers
                             {
                                 int categoryId = (int)categoriesList[i].categoryId;
                                 var items = entity.items.Where(x => x.categoryId == categoryId).Select(b => new { b.itemId }).FirstOrDefault();
+                                var childCategoryL = entity.categories.Where(x => x.parentId == categoryId).Select(b => new { b.categoryId }).FirstOrDefault();
 
-                                if (items is null)
+                                if ((items is null) && (childCategoryL is null))
                                     canDelete = true;
                             }
                             categoriesList[i].canDelete = canDelete;
@@ -216,7 +217,7 @@ namespace POS_Server.Controllers
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-  
+
             if (valid)
             {
                 categoryObject = categoryObject.Replace("\\", string.Empty);
@@ -250,7 +251,7 @@ namespace POS_Server.Controllers
                         else
                         {
                             var tmpCategory = entity.categories.Where(p => p.categoryId == newObject.categoryId).First();
-                            tmpCategory.categoryCode= newObject.categoryCode;
+                            tmpCategory.categoryCode = newObject.categoryCode;
                             tmpCategory.details = newObject.details;
                             tmpCategory.image = newObject.image;
                             tmpCategory.name = newObject.name;
@@ -265,7 +266,7 @@ namespace POS_Server.Controllers
                         }
                         entity.SaveChanges();
                     }
-              }
+                }
 
                 catch
                 {
@@ -276,7 +277,7 @@ namespace POS_Server.Controllers
         }
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int categoryId , int userId)
+        public IHttpActionResult Delete(int categoryId , int userId , Boolean final)
         {
             var re = Request;
             var headers = re.Headers;
@@ -291,32 +292,149 @@ namespace POS_Server.Controllers
             bool valid = validation.CheckApiKey(token);
             if (valid)
             {
-                try
+                if (final)
                 {
-                    using (incposdbEntities entity = new incposdbEntities())
+                    try
                     {
-                        var childCategories = entity.categories.Where(u => u.parentId == categoryId && u.isActive ==1).FirstOrDefault();
-  
-                        if (childCategories == null)
+                        using (incposdbEntities entity = new incposdbEntities())
                         {
-                            var tmpCategory = entity.categories.Where(p => p.categoryId == categoryId).First();
-                            tmpCategory.isActive = 0;
-                            tmpCategory.updateDate = DateTime.Now;
-                            tmpCategory.updateUserId = userId;
+                            var childCategories = entity.categories.Where(u => u.parentId == categoryId && u.isActive == 1).FirstOrDefault();
 
-                            entity.SaveChanges();
-                            return Ok("Category is Deleted Successfully");
+                            if (childCategories == null)
+                            {
+                                var tmpCategory = entity.categories.Where(p => p.categoryId == categoryId).First();
+                                entity.categories.Remove(tmpCategory);
+
+                                entity.SaveChanges();
+                                return Ok("Category is Deleted Successfully");
+                            }
+                            else
+                                return Ok("Can't Delete This Category");
                         }
-                        else
-                            return Ok("Can't Delete This Category");
+                    }
+                    catch
+                    {
+                        return NotFound();
                     }
                 }
-                catch
+                else
                 {
-                    return NotFound();
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            var childCategories = entity.categories.Where(u => u.parentId == categoryId && u.isActive == 1).FirstOrDefault();
+
+                            if (childCategories == null)
+                            {
+                                var tmpCategory = entity.categories.Where(p => p.categoryId == categoryId).First();
+                                tmpCategory.isActive = 0;
+                                tmpCategory.updateDate = DateTime.Now;
+                                tmpCategory.updateUserId = userId;
+
+                                entity.SaveChanges();
+                                return Ok("Category is Deleted Successfully");
+                            }
+                            else
+                                return Ok("Can't Delete This Category");
+                        }
+                    }
+                    catch
+                    {
+                        return NotFound();
+                    }
                 }
             }
             return NotFound();
+        }
+
+        [HttpGet]
+        [Route("GetCategoryTreeByID")]
+        public IHttpActionResult GetCategoryTreeByID(int categoryID)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+            List<categories> treecat = new List<categories>();
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    /*
+                    var category1 = entity.categories.Where(c => c.categoryId == categoryID)
+                    .Select(p => new {
+                        //  p.name,
+                        p.parentId,
+
+                    }).FirstOrDefault();
+                    int parentid = (int)category1.parentId;
+                    */
+                    int parentid = categoryID; // if want to show the last category 
+                    while (parentid > 0 )
+                    {
+                        categories tempcate = new categories();
+                        var category = entity.categories.Where(c => c.categoryId == parentid)
+                            .Select(p => new {
+                                p.categoryId,
+                                p.name,
+                                p.categoryCode,
+                                p.createDate,
+                                p.createUserId,
+                                p.details,
+                                p.image,
+                                p.notes,
+                                p.parentId,
+                                p.taxes,
+                                p.updateDate,
+                                p.updateUserId,
+                            }).FirstOrDefault();
+
+
+                        tempcate.categoryId = category.categoryId;
+
+                        tempcate.name = category.name;
+                        tempcate.categoryCode = category.categoryCode;
+                        tempcate.createDate = category.createDate;
+                        tempcate.createUserId = category.createUserId;
+                        tempcate.details = category.details;
+                        tempcate.image = category.image;
+                        tempcate.notes = category.notes;
+                        tempcate.parentId = category.parentId;
+                        tempcate.taxes = category.taxes;
+                        tempcate.updateDate = category.updateDate;
+                        tempcate.updateUserId = category.updateUserId;
+
+                        //if (tempcate.parentId == null)
+                        //{
+                        //    Nullable<int> tmpid = null;
+                        //    parentid = 0;
+
+                        //}
+
+                        parentid = (int)tempcate.parentId;
+
+                        treecat.Add(tempcate);
+
+                    }
+                    if (treecat == null)
+                        return NotFound();
+                    else
+                        //treecat.Reverse();
+                        return Ok(treecat);
+
+                }
+
+
+            }
+            else
+                return NotFound();
         }
     }
 }

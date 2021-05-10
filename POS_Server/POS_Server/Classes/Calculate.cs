@@ -7,10 +7,10 @@ namespace POS_Server.Classes
 {
     public class Calculate
     {
-        public decimal percentValue(decimal? value,decimal? percent)
+        public decimal percentValue(decimal? value, decimal? percent)
         {
           decimal? perval=  (value * percent / 100);
-            return 1;
+            return (decimal) perval;
         }
     }
 }

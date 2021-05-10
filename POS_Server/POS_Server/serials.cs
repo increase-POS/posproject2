@@ -18,7 +18,13 @@ namespace POS_Server
         public Nullable<int> itemId { get; set; }
         public string serialNum { get; set; }
         public Nullable<byte> isActive { get; set; }
+        public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<int> createUserId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
     
         public virtual items items { get; set; }
+        public virtual users users { get; set; }
+        public virtual users users1 { get; set; }
     }
 }

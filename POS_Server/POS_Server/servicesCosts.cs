@@ -12,19 +12,19 @@ namespace POS_Server
     using System;
     using System.Collections.Generic;
     
-    public partial class posUsers
+    public partial class servicesCosts
     {
-        public int posUserId { get; set; }
-        public Nullable<int> userId { get; set; }
-        public Nullable<int> posId { get; set; }
+        public int costId { get; set; }
+        public string name { get; set; }
+        public Nullable<decimal> costVal { get; set; }
+        public Nullable<int> itemId { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
     
-        public virtual pos pos { get; set; }
+        public virtual items items { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
-        public virtual users users2 { get; set; }
     }
 }

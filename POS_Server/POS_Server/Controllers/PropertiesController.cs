@@ -90,7 +90,8 @@ namespace POS_Server.Controllers
                     var propertiesList =( from PI in entity.propertiesItems.Where(x => x.propertyId == propertyId)
                                           join P in entity.properties on PI.propertyId equals P.propertyId
                                           select new PropertiesItemModel(){
-                                           propertyId = PI.propertyId,
+                                              propertyItemId = PI.propertyItemId,
+                                              propertyId = PI.propertyId,
                                            propertyItemName = PI.name,
                                            createDate = PI.createDate,
                                            createUserId = PI.createUserId,
@@ -224,12 +225,12 @@ namespace POS_Server.Controllers
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-             
+
             if (valid)
             {
                 propertyObject = propertyObject.Replace("\\", string.Empty);
                 propertyObject = propertyObject.Trim('"');
-                properties propertiesObject = JsonConvert.DeserializeObject<properties>(propertyObject , new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                properties propertiesObject = JsonConvert.DeserializeObject<properties>(propertyObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
                 if (propertiesObject.updateUserId == 0 || propertiesObject.updateUserId == null)
                 {
                     Nullable<int> id = null;

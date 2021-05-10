@@ -5,9 +5,9 @@ using System.Web;
 
 namespace POS_Server.Models
 {
-    public class ItemModel
+    public class ItemSalePurModel
     {
-        public int itemId { get; set; }
+        public int? itemId { get; set; }
         public string code { get; set; }
         public string name { get; set; }
         public string details { get; set; }
@@ -29,5 +29,24 @@ namespace POS_Server.Models
         public Boolean canDelete { get; set; }
 
 
+        // offer item
+        public Nullable<decimal> desPrice { get; set; }
+        public Nullable<int> isNew { get; set; }
+        public Nullable<int> isOffer { get; set; }
+        // unit item
+        public Nullable<decimal> price { get; set; }
+        public Nullable<int> unitId { get; set; }
+        public string unitName { get; set; }
+        public string offerName { get; set; }
+        public Nullable<int> offerId { get; set; }
+        public Nullable<System.DateTime> startDate { get; set; }
+        public Nullable<System.DateTime> endDate { get; set; }
+        public byte? isActiveOffer { get; set; }
+        public Nullable<int> itemUnitId { get; set; }
+        public Nullable<short> defaultSale { get; set; }
+        public string discountType { get; set; }
+        public Nullable<decimal> discountValue { get; set; }
+        public Nullable<decimal> priceTax { get; set; }
+        public Nullable<short> defaultPurchase { get; set; }
     }
 }

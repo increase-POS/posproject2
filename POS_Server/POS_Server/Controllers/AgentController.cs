@@ -252,7 +252,7 @@ namespace POS_Server.Controllers
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-            
+
             agentObject = agentObject.Replace("\\", string.Empty);
             agentObject = agentObject.Trim('"');
 
@@ -298,8 +298,8 @@ namespace POS_Server.Controllers
                             tmpAgent.maxDeserve = agentObj.maxDeserve;
                             tmpAgent.fax = agentObj.fax;
                             tmpAgent.updateDate = DateTime.Now;// server current date
-                            tmpAgent.updateUserId = agentObj.updateUserId; 
-                            tmpAgent.isActive = agentObj.isActive; 
+                            tmpAgent.updateUserId = agentObj.updateUserId;
+                            tmpAgent.isActive = agentObj.isActive;
                         }
                         entity.SaveChanges();
                     }

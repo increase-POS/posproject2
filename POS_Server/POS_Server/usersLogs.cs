@@ -12,12 +12,15 @@ namespace POS_Server
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagrams
+    public partial class usersLogs
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public int logId { get; set; }
+        public Nullable<System.DateTime> sInDate { get; set; }
+        public Nullable<System.DateTime> sOutDate { get; set; }
+        public Nullable<int> posId { get; set; }
+        public Nullable<int> userId { get; set; }
+    
+        public virtual pos pos { get; set; }
+        public virtual users users { get; set; }
     }
 }

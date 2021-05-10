@@ -280,9 +280,11 @@
     <Compile Include="Models\BankModel.cs" />
     <Compile Include="Models\BranchModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
-    <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\ItemOfferModel.cs" />
+    <Compile Include="Models\ItemSalePurModel.cs" />
+    <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\ItemTransferModel.cs" />
+    <Compile Include="Models\ItemUnitModel.cs" />
     <Compile Include="Models\LocationModel.cs" />
     <Compile Include="Models\OfferModel.cs" />
     <Compile Include="Models\PosModel.cs" />
@@ -337,13 +339,16 @@
     <Compile Include="serials.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="sysdiagrams.cs">
+    <Compile Include="servicesCosts.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="units.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="users.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="usersLogs.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
