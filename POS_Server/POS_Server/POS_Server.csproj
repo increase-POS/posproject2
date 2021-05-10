@@ -339,6 +339,9 @@
     <Compile Include="serials.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="servicesCosts.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="units.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>

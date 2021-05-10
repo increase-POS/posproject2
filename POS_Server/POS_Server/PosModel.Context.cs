@@ -56,5 +56,6 @@ namespace POS_Server
         public virtual DbSet<units> units { get; set; }
         public virtual DbSet<users> users { get; set; }
         public virtual DbSet<usersLogs> usersLogs { get; set; }
+        public virtual DbSet<servicesCosts> servicesCosts { get; set; }
     }
 }

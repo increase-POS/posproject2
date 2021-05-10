@@ -135,6 +135,10 @@
         <AssociationConnector Association="incposdbModel.FK_serials_users" />
         <AssociationConnector Association="incposdbModel.FK_serials_users1" />
         <AssociationConnector Association="incposdbModel.FK_usersLogs_users" />
+        <EntityTypeShape EntityType="incposdbModel.servicesCosts" Width="1.5" PointX="19.5" PointY="44" />
+        <AssociationConnector Association="incposdbModel.FK_servicesCosts_items" />
+        <AssociationConnector Association="incposdbModel.FK_servicesCosts_users" />
+        <AssociationConnector Association="incposdbModel.FK_servicesCosts_users1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

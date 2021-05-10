@@ -527,5 +527,19 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="servicesCosts">
+      <EntityTypeMapping TypeName="incposdbModel.servicesCosts">
+        <MappingFragment StoreEntitySet="servicesCosts">
+          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+          <ScalarProperty Name="createDate" ColumnName="createDate" />
+          <ScalarProperty Name="itemId" ColumnName="itemId" />
+          <ScalarProperty Name="costVal" ColumnName="costVal" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="costId" ColumnName="costId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -281,6 +281,7 @@
     <NavigationProperty Name="itemsUnits" Relationship="Self.FK_itemsUnits_items" FromRole="items" ToRole="itemsUnits" />
     <NavigationProperty Name="orderscontents" Relationship="Self.FK_orderscontents_items" FromRole="items" ToRole="orderscontents" />
     <NavigationProperty Name="serials" Relationship="Self.FK_serials_items" FromRole="items" ToRole="serials" />
+    <NavigationProperty Name="servicesCosts" Relationship="incposdbModel.FK_servicesCosts_items" FromRole="items" ToRole="servicesCosts" />
   </EntityType>
   <EntityType Name="itemsLocations">
     <Key>
@@ -680,6 +681,8 @@
     <NavigationProperty Name="serials" Relationship="incposdbModel.FK_serials_users" FromRole="users" ToRole="serials" />
     <NavigationProperty Name="serials1" Relationship="incposdbModel.FK_serials_users1" FromRole="users" ToRole="serials" />
     <NavigationProperty Name="usersLogs" Relationship="incposdbModel.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
+    <NavigationProperty Name="servicesCosts" Relationship="incposdbModel.FK_servicesCosts_users" FromRole="users" ToRole="servicesCosts" />
+    <NavigationProperty Name="servicesCosts1" Relationship="incposdbModel.FK_servicesCosts_users1" FromRole="users" ToRole="servicesCosts" />
   </EntityType>
   <Association Name="FK_agents_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
@@ -2189,6 +2192,19 @@
       <End Role="users" EntitySet="users" />
       <End Role="usersLogs" EntitySet="usersLogs" />
     </AssociationSet>
+    <EntitySet Name="servicesCosts" EntityType="incposdbModel.servicesCosts" />
+    <AssociationSet Name="FK_servicesCosts_items" Association="incposdbModel.FK_servicesCosts_items">
+      <End Role="items" EntitySet="items" />
+      <End Role="servicesCosts" EntitySet="servicesCosts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_servicesCosts_users" Association="incposdbModel.FK_servicesCosts_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="servicesCosts" EntitySet="servicesCosts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_servicesCosts_users1" Association="incposdbModel.FK_servicesCosts_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="servicesCosts" EntitySet="servicesCosts" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="usersLogs">
     <Key>
@@ -2307,6 +2323,58 @@
       </Principal>
       <Dependent Role="usersLogs">
         <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="servicesCosts">
+    <Key>
+      <PropertyRef Name="costId" />
+    </Key>
+    <Property Name="costId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="costVal" Type="Decimal" Precision="20" Scale="4" />
+    <Property Name="itemId" Type="Int32" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <NavigationProperty Name="items" Relationship="incposdbModel.FK_servicesCosts_items" FromRole="servicesCosts" ToRole="items" />
+    <NavigationProperty Name="users" Relationship="incposdbModel.FK_servicesCosts_users" FromRole="servicesCosts" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_servicesCosts_users1" FromRole="servicesCosts" ToRole="users" />
+  </EntityType>
+  <Association Name="FK_servicesCosts_items">
+    <End Type="incposdbModel.items" Role="items" Multiplicity="0..1" />
+    <End Type="incposdbModel.servicesCosts" Role="servicesCosts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="items">
+        <PropertyRef Name="itemId" />
+      </Principal>
+      <Dependent Role="servicesCosts">
+        <PropertyRef Name="itemId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_servicesCosts_users">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.servicesCosts" Role="servicesCosts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="servicesCosts">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_servicesCosts_users1">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.servicesCosts" Role="servicesCosts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="servicesCosts">
+        <PropertyRef Name="updateUserId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

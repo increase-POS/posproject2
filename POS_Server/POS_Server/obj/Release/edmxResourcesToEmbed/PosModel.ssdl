@@ -446,6 +446,19 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
   </EntityType>
+  <EntityType Name="servicesCosts">
+    <Key>
+      <PropertyRef Name="costId" />
+    </Key>
+    <Property Name="costId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="200" />
+    <Property Name="costVal" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="itemId" Type="int" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
+  </EntityType>
   <EntityType Name="units">
     <Key>
       <PropertyRef Name="unitId" />
@@ -1635,6 +1648,42 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_servicesCosts_items">
+    <End Role="items" Type="Self.items" Multiplicity="0..1" />
+    <End Role="servicesCosts" Type="Self.servicesCosts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="items">
+        <PropertyRef Name="itemId" />
+      </Principal>
+      <Dependent Role="servicesCosts">
+        <PropertyRef Name="itemId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_servicesCosts_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="servicesCosts" Type="Self.servicesCosts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="servicesCosts">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_servicesCosts_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="servicesCosts" Type="Self.servicesCosts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="servicesCosts">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_units_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="units" Type="Self.units" Multiplicity="*" />
@@ -1712,6 +1761,7 @@
     <EntitySet Name="properties" EntityType="Self.properties" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="propertiesItems" EntityType="Self.propertiesItems" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="serials" EntityType="Self.serials" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="servicesCosts" EntityType="Self.servicesCosts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="units" EntityType="Self.units" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="usersLogs" EntityType="Self.usersLogs" Schema="dbo" store:Type="Tables" />
@@ -2094,6 +2144,18 @@
     <AssociationSet Name="FK_serials_users1" Association="Self.FK_serials_users1">
       <End Role="users" EntitySet="users" />
       <End Role="serials" EntitySet="serials" />
+    </AssociationSet>
+    <AssociationSet Name="FK_servicesCosts_items" Association="Self.FK_servicesCosts_items">
+      <End Role="items" EntitySet="items" />
+      <End Role="servicesCosts" EntitySet="servicesCosts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_servicesCosts_users" Association="Self.FK_servicesCosts_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="servicesCosts" EntitySet="servicesCosts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_servicesCosts_users1" Association="Self.FK_servicesCosts_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="servicesCosts" EntitySet="servicesCosts" />
     </AssociationSet>
     <AssociationSet Name="FK_units_users" Association="Self.FK_units_users">
       <End Role="users" EntitySet="users" />

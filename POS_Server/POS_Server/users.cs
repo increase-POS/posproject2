@@ -77,6 +77,8 @@ namespace POS_Server
             this.serials = new HashSet<serials>();
             this.serials1 = new HashSet<serials>();
             this.usersLogs = new HashSet<usersLogs>();
+            this.servicesCosts = new HashSet<servicesCosts>();
+            this.servicesCosts1 = new HashSet<servicesCosts>();
         }
     
         public int userId { get; set; }
@@ -219,5 +221,9 @@ namespace POS_Server
         public virtual ICollection<serials> serials1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<usersLogs> usersLogs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<servicesCosts> servicesCosts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<servicesCosts> servicesCosts1 { get; set; }
     }
 }
