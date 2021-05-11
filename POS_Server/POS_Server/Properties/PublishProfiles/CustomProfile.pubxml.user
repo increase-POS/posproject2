@@ -106,10 +106,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/18/2018 16:44:54</publishTime>
     </File>
     <File Include="bin/POS_Server.dll">
-      <publishTime>05/10/2021 16:55:41</publishTime>
+      <publishTime>05/11/2021 15:50:01</publishTime>
     </File>
     <File Include="bin/POS_Server.pdb">
-      <publishTime>05/10/2021 16:55:41</publishTime>
+      <publishTime>05/11/2021 15:50:01</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>05/24/2018 23:38:22</publishTime>
@@ -304,7 +304,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/28/2018 20:04:24</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
-      <publishTime>01/23/2014 23:57:34</publishTime>
+      <publishTime>01/24/2014 00:57:34</publishTime>
     </File>
     <File Include="Content/bootstrap-theme.css">
       <publishTime>04/14/2021 23:46:51</publishTime>
@@ -403,7 +403,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/14/2021 23:46:47</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/09/2021 14:56:43</publishTime>
+      <publishTime>05/11/2021 14:24:31</publishTime>
     </File>
   </ItemGroup>
 </Project>

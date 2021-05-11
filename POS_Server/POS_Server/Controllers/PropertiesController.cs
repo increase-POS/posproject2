@@ -48,15 +48,26 @@ namespace POS_Server.Controllers
                     {
                         for (int i = 0; i < propertiesList.Count; i++)
                         {
-                            if (propertiesList[i].isActive == 1)
+                            string values = "";
+                            int propertyId = (int)propertiesList[i].propertyId;
+                            var propItems = entity.propertiesItems.Where(x => x.propertyId == propertyId).Select(b => new { b.name,b.propertyItemId }).ToList();
+    
+                            if (propItems is null || propItems.Count == 0)
                             {
-                                int propertyId = (int)propertiesList[i].propertyId;
-                                var propItems = entity.propertiesItems.Where(x => x.propertyId == propertyId).Select(b => new { b.propertyItemId }).FirstOrDefault();
-
-                                if (propItems is null)
-                                    canDelete = true;
+                                canDelete = true;
+                            }
+                            else
+                            {
+                                foreach (var s in propItems)
+                                {
+                                    if (values == "")
+                                        values += s.name;
+                                    else
+                                        values += ", "+ s.name ;
+                                }
                             }
                             propertiesList[i].canDelete = canDelete;
+                            propertiesList[i].propertyValues = values;
                         }
                     }
 
@@ -259,6 +270,7 @@ namespace POS_Server.Controllers
                         {
                             var tmpProperty = entity.properties.Where(p => p.propertyId == propertiesObject.propertyId).FirstOrDefault();
                             tmpProperty.name = propertiesObject.name;
+                            tmpProperty.isActive = propertiesObject.isActive;
                             tmpProperty.updateDate = DateTime.Now;
                             tmpProperty.updateUserId = propertiesObject.updateUserId;
 
