@@ -4,7 +4,8 @@ using POS.controlTemplate;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
+
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -62,6 +63,9 @@ namespace POS.View
         List<ItemsProp> itemsProp;
         List<Serial> itemSerials;
         List<ItemUnit> itemUnits;
+        List<string> barcodesList;
+
+        static private int _InternalCounter = 0;
         public UC_item()
         {
             InitializeComponent();
@@ -177,6 +181,7 @@ namespace POS.View
             fillCategories();           
             fillUnits();
             fillProperties();
+            fillBarcodeList();
 
             var items = await itemModel.GetAllItems();
             dg_items.ItemsSource = items;
@@ -190,9 +195,45 @@ namespace POS.View
             cb_itemType.SelectedIndex = 0;
             cb_minUnit.SelectedIndex = 0;
             cb_maxUnit.SelectedIndex = 0;
+            generateBarcode();
         }
 
-        
+        private void generateBarcode(string barcodeString="")
+        {
+            if(barcodeString == "")
+            {
+                barcodeString = generateRandomBarcode();
+                if (barcodesList != null)
+                {
+                    Boolean exist = barcodesList.Any(x => barcodeString.Contains(x));
+                    if (exist == true)
+                        barcodeString = generateRandomBarcode();
+                }
+                tb_barcode.Text = barcodeString;
+            }
+            tb_barcode.Text = barcodeString;
+            // create encoding object
+            Zen.Barcode.Code128BarcodeDraw barcode = Zen.Barcode.BarcodeDrawFactory.Code128WithChecksum;
+
+            System.Drawing.Bitmap serial_bitmap = (System.Drawing.Bitmap)barcode.Draw(barcodeString, 60);
+            System.Drawing.ImageConverter ic = new System.Drawing.ImageConverter();
+            //generate bitmap
+            img_barcode.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(serial_bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            
+
+        }
+
+        static public string generateRandomBarcode()
+        {
+            var now = DateTime.Now;
+
+            var days = (int)(now - new DateTime(2000, 1, 1)).TotalDays;
+            var seconds = (int)(now - DateTime.Today).TotalSeconds;
+
+            var counter = _InternalCounter++ % 100;
+
+            return days.ToString("00000") + seconds.ToString("00000") + counter.ToString("00");
+        }
         private void Btn_itemData_Click(object sender, RoutedEventArgs e)
         {
             dg_barcode.Visibility = grid_properties.Visibility = Visibility.Collapsed;
@@ -545,7 +586,9 @@ namespace POS.View
             tb_count.Text = "";
             cb_unit.SelectedIndex = -1;
             tb_price.Text = "";
-            tb_barcode.Text = "";
+
+            // set random barcode on image
+            generateBarcode();  
 
             itemUnit = new ItemUnit();
         }
@@ -747,7 +790,10 @@ namespace POS.View
             cb_selectProperties.SelectedValuePath = "propertyId";
             cb_selectProperties.DisplayMemberPath = "name";
         }
-
+        async void fillBarcodeList()
+        {
+            barcodesList = await itemUnitModel.getAllBarcodes();
+        }
         private void Cb_minUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
            // selectedMinUnitId  = unitIds[cb_minUnit.SelectedIndex];
@@ -833,8 +879,6 @@ namespace POS.View
         }
         async void Btn_deleteProperties_Click(object sender, RoutedEventArgs e)
         {
-            // dosent content right parameter
-            /*
             if (itemProp.itemPropId != 0)
             {
                 int propertyItemId = (int)itemProp.propertyItemId;
@@ -847,13 +891,15 @@ namespace POS.View
 
                 refreshPropertiesGrid(item.itemId); 
             }
-            */
         }
         async void Btn_deleteSerial_Click(object sender, RoutedEventArgs e)
         {
             if (serial.serialId != 0)
             {
-                Boolean res = await serialModel.delete(serial.serialId);
+                Boolean final = false;
+                if (serial.isActive == 1)
+                    final = true;
+                Boolean res = await serialModel.delete(serial.serialId,(int)MainWindow.userID,final);
 
                 if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
                 else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
@@ -876,7 +922,7 @@ namespace POS.View
 
         
 
-        async void dg_itemsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void dg_itemsSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorCode.Visibility = Visibility.Collapsed;
@@ -897,6 +943,9 @@ namespace POS.View
             }
             if (item != null)
             {
+                tb_code.Text = item.code;
+                tb_name.Text = item.name;
+                tb_details.Text = item.details;
                 if (item.parentId != null && item.parentId != 0)
                 {
                     cb_parentItem.SelectedValue = (int)item.parentId;
@@ -937,7 +986,7 @@ namespace POS.View
                     cb_maxUnit.SelectedValue = (int)item.maxUnitId;
                 else
                     cb_minUnit.SelectedValue = -1;
-
+ 
                 if (item.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
 
                 else
@@ -947,6 +996,19 @@ namespace POS.View
                 }
 
             }
+        }
+        private  void tb_barcode_Generate(object sender, KeyEventArgs e)
+        {
+            if (e.Key.ToString() == "Return")
+            {
+                string barCode = tb_barcode.Text;
+                generateBarcode(barCode);
+            }
+        }
+        private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string barCode = tb_barcode.Text;
+            generateBarcode(barCode);
         }
 
         private void dg_unit_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -982,6 +1044,9 @@ namespace POS.View
                 tb_count.Text = itemUnit.unitValue.ToString();
                 tb_price.Text = itemUnit.price.ToString();
                 tb_barcode.Text = itemUnit.barcode;
+
+                // drawing barcode on image
+                generateBarcode(itemUnit.barcode);
             }
         }
         private void dg_propertiesSelectionChanged(object sender, SelectionChangedEventArgs e)

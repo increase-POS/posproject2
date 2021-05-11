@@ -61,7 +61,7 @@ namespace POS.Classes
             }
         }
      
-        public async Task<Boolean> Delete(int itemId, int propertyItemId)
+        public async Task<Boolean> Delete(int itemPropId)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -74,7 +74,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "itemsProp/Delete?itemId=" + itemId+ "&propertyItemId="+propertyItemId);
+                request.RequestUri = new Uri(Global.APIUri + "itemsProp/Delete?itemPropId=" + itemPropId );
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

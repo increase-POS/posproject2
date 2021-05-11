@@ -85,6 +85,8 @@ namespace client_app.Classes
                 return "false";
             }
         }
+
+       
         public async Task<Boolean> deleteItem(int itemId, int userId,Boolean final)
         {
             // ... Use HttpClient.
@@ -112,6 +114,7 @@ namespace client_app.Classes
                 return false;
             }
         }
+
         // get items in direct category
         public async Task<List<Item>> GetItemsInCategory(int categoryId)
         {
@@ -153,6 +156,7 @@ namespace client_app.Classes
                 return items;
             }
         }
+
         // get items of type
         public async Task<List<Item>> GetItemsByType(string type)
         {
@@ -234,6 +238,7 @@ namespace client_app.Classes
                 return items;
             }
         }
+
         public async Task<Item> GetItemByID(int itemId)
         {
             Item item = new Item();
@@ -266,6 +271,7 @@ namespace client_app.Classes
                 return item;
             }
         }
+        
         public async Task<List<Item>> GetAllItems()
         {
             List<Item> items = null;
@@ -306,6 +312,7 @@ namespace client_app.Classes
                 return items;
             }
         }
+
        // get all items where defaultSale is 1 and set isNew=1 if new item and set isOffer = 1 if Has Active Offer
         public async Task<List<Item>> GetAllSaleItems()
         {
@@ -347,6 +354,7 @@ namespace client_app.Classes
                 return items;
             }
         }
+
         // get all items where defaultPurchase is 1 and set isNew=1 if new item 
         public async Task<List<Item>> GetAllPurItems()
         {

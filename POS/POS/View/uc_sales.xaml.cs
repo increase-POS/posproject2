@@ -104,6 +104,12 @@ namespace POS.View
             grid_main.Children.Add(uc);
         }
 
-         
+        private void Btn_package_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_package);
+            grid_main.Children.Clear();
+            uc_packageOfItems uc = new uc_packageOfItems();
+            grid_main.Children.Add(uc);
+        }
     }
 }

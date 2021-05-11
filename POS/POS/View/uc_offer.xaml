@@ -279,7 +279,7 @@
                 Grid.Row="1" Background="White">
                 <Grid>
     <!--//////////////////////////   offer    ////////////////////////////////////////////////-->                
-                    <Grid x:Name="grid_offer" Visibility="Collapsed" >
+                    <Grid x:Name="grid_offer" Visibility="Visible" >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="40"/>
@@ -569,7 +569,7 @@
 
   <!--//////////////////////////   on items    ////////////////////////////////////////////////-->
 
-                    <Grid x:Name="grid_offerOnItem" Visibility="Visible" >
+                    <Grid x:Name="grid_offerOnItem" Visibility="Collapsed" >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
@@ -647,15 +647,18 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
-
                             <Button x:Name="btn_addItem"  Grid.Row="0" Grid.Column="0"
                               Background="#4E4E4E" BorderBrush="{x:Null}"
-                        Margin="1,0"    Content="Add"/>
+                        Margin="1,0"    Content="Add Item"/>
+                            <Button x:Name="btn_addItems"  Grid.Row="0" Grid.Column="1"
+                              Background="#4E4E4E" BorderBrush="{x:Null}"
+                        Margin="1,0"    Content="Add Items"/>
                             <Button x:Name="btn_deleteItem" Grid.Row="0" Grid.Column="2"
                             Background="#4E4E4E" BorderBrush="{x:Null}"
                         Margin="1,0"    Content="Delete" />

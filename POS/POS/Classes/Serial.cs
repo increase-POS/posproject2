@@ -96,7 +96,7 @@ namespace POS.Classes
             }
         }
         // call api method to delete item serial
-        public async Task<Boolean> delete(int serialId)
+        public async Task<Boolean> delete(int serialId,int userId, Boolean final)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -109,7 +109,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "serials/Delete?serialId=" + serialId);
+                request.RequestUri = new Uri(Global.APIUri + "serials/Delete?serialId=" + serialId+ "&userId=" + userId + "&final=" + final);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

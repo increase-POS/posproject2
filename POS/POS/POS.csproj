@@ -50,6 +50,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.5.0.2\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -90,6 +94,7 @@
     <Compile Include="Classes\Property.cs" />
     <Compile Include="Classes\SectionData.cs" />
     <Compile Include="Classes\Serial.cs" />
+    <Compile Include="Classes\Service.cs" />
     <Compile Include="Classes\Unit.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="controlTemplate\UC_rectangleCard.xaml.cs">
@@ -132,6 +137,9 @@
     </Compile>
     <Compile Include="View\uc_offer.xaml.cs">
       <DependentUpon>uc_offer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\uc_packageOfItems.xaml.cs">
+      <DependentUpon>uc_packageOfItems.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\uc_payInvoice.xaml.cs">
       <DependentUpon>uc_payInvoice.xaml</DependentUpon>
@@ -241,6 +249,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\uc_offer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\uc_packageOfItems.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
