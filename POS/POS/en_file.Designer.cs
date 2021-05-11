@@ -610,6 +610,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Code is not valid.
+        /// </summary>
+        internal static string trDuplicateCodeToolTip {
+            get {
+                return ResourceManager.GetString("trDuplicateCodeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         internal static string trEmail {
@@ -651,6 +660,15 @@ namespace POS {
         internal static string trEmptyBalanceToolTip {
             get {
                 return ResourceManager.GetString("trEmptyBalanceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parent branch can not be empty.
+        /// </summary>
+        internal static string trEmptyBranchToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyBranchToolTip", resourceCulture);
             }
         }
         

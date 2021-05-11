@@ -762,4 +762,10 @@
   <data name="trParentBranch" xml:space="preserve">
     <value>Parent Branch</value>
   </data>
+  <data name="trDuplicateCodeToolTip" xml:space="preserve">
+    <value>Code is not valid</value>
+  </data>
+  <data name="trEmptyBranchToolTip" xml:space="preserve">
+    <value>Parent branch can not be empty</value>
+  </data>
 </root>

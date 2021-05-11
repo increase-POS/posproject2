@@ -502,12 +502,10 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Button x:Name="btn_addItem"  Grid.Row="0" Grid.Column="0"
+                                <Button x:Name="btn_items"  Grid.Row="0" Grid.ColumnSpan="2"
                               Background="#4E4E4E" BorderBrush="{x:Null}"
-                        Margin="1,0"    Content="Add Item"/>
-                                <Button x:Name="btn_addItems"  Grid.Row="0" Grid.Column="1"
-                              Background="#4E4E4E" BorderBrush="{x:Null}"
-                        Margin="1,0"    Content="Add Items"/>
+                        Margin="1,0"    Content="Items"/>
+                               
                                 <Button x:Name="btn_update" Grid.Row="1" Grid.Column="0"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,0"    Content="Update"   />

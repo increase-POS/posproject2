@@ -592,6 +592,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الرمز غير صالح.
+        /// </summary>
+        internal static string trDuplicateCodeToolTip {
+            get {
+                return ResourceManager.GetString("trDuplicateCodeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to البريد الالكتروني.
         /// </summary>
         internal static string trEmail {
@@ -633,6 +642,15 @@ namespace POS {
         internal static string trEmptyBalanceToolTip {
             get {
                 return ResourceManager.GetString("trEmptyBalanceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يمكن أن يكون الفرع الأب فارغاً.
+        /// </summary>
+        internal static string trEmptyBranchToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyBranchToolTip", resourceCulture);
             }
         }
         

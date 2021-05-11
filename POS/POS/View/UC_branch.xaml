@@ -358,7 +358,7 @@
                                       Height="35" Width="340"  Background="#f8f8f8" 
                                       BorderBrush="#737373"       BorderThickness="0" 
                                       FontFamily="{StaticResource Font-cairo-light}"   
-                                      Grid.Row="0" SelectionChanged="cb_branch_SelectionChanged" >
+                                      Grid.Row="0" SelectionChanged="cb_branch_SelectionChanged" LostFocus="cb_branch_LostFocus" >
                             <ComboBox.ToolTip>
                                 <ToolTip x:Name="tt_branch" Content="Branch"
                                          Placement="left" 

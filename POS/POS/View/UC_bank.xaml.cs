@@ -26,22 +26,24 @@ namespace POS.View
     {
         Bank bankModel = new Bank();
 
-        public int BankId;
+        Bank bamk = new Bank();
 
-        bool isClear = false;
+        IEnumerable<Bank> banksQuery;
+        IEnumerable<Bank> branches;
+        byte tgl_bankState;
+        string searchText = "";
 
+        BrushConverter bc = new BrushConverter();
         public UC_bank()
         {
             InitializeComponent();
         }
 
-
-
         private void translate()
         {
             txt_bank.Text = MainWindow.resourcemanager.GetString("trBank");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectBankNameHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectBankNameHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trBankNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_accNumber, MainWindow.resourcemanager.GetString("trAccNumberHint"));
@@ -95,71 +97,79 @@ namespace POS.View
 
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var bc = new BrushConverter();
+            //var bc = new BrushConverter();
 
-            if (tb_name.Text.Equals("")) 
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            //if (tb_name.Text.Equals("")) 
+            //{
+            //    p_errorName.Visibility = Visibility.Visible;
+            //    tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            //    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            //}
+            //else
+            //{
+            //    p_errorName.Visibility = Visibility.Collapsed;
+            //    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            //}
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+
         }
 
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
+            //var bc = new BrushConverter();
 
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            //if (tb_name.Text.Equals(""))
+            //{
+            //    p_errorName.Visibility = Visibility.Visible;
+            //    tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            //    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            //}
+            //else
+            //{
+            //    p_errorName.Visibility = Visibility.Collapsed;
+            //    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            //}
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+
         }
 
         private void Tb_accNum_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var bc = new BrushConverter();
+            //var bc = new BrushConverter();
 
-            if (tb_accNumber.Text.Equals(""))
-            {
-                p_errorAccNum.Visibility = Visibility.Visible;
-                tt_errorAccNum.Content = MainWindow.resourcemanager.GetString("trEmptyAccNumToolTip");
-                tb_accNumber.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorAccNum.Visibility = Visibility.Collapsed;
-                tb_accNumber.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            //if (tb_accNumber.Text.Equals(""))
+            //{
+            //    p_errorAccNum.Visibility = Visibility.Visible;
+            //    tt_errorAccNum.Content = MainWindow.resourcemanager.GetString("trEmptyAccNumToolTip");
+            //    tb_accNumber.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            //}
+            //else
+            //{
+            //    p_errorAccNum.Visibility = Visibility.Collapsed;
+            //    tb_accNumber.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            //}
+            SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyAccNumToolTip");
+
         }
 
 
         private void Tb_accNum_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
+            //var bc = new BrushConverter();
 
-            if (tb_accNumber.Text.Equals(""))
-            {
-                p_errorAccNum.Visibility = Visibility.Visible;
-                tt_errorAccNum.Content = MainWindow.resourcemanager.GetString("trEmptyAccNumToolTip");
-                tb_accNumber.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorAccNum.Visibility = Visibility.Collapsed;
-                tb_accNumber.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            //if (tb_accNumber.Text.Equals(""))
+            //{
+            //    p_errorAccNum.Visibility = Visibility.Visible;
+            //    tt_errorAccNum.Content = MainWindow.resourcemanager.GetString("trEmptyAccNumToolTip");
+            //    tb_accNumber.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            //}
+            //else
+            //{
+            //    p_errorAccNum.Visibility = Visibility.Collapsed;
+            //    tb_accNumber.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            //}
+            SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyAccNumToolTip");
+
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -171,7 +181,7 @@ namespace POS.View
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
-            isClear = true;
+            //isClear = true;
 
             tb_name.Text = "";
             tb_address.Text = "";
@@ -212,7 +222,7 @@ namespace POS.View
         {//update
             Bank bank = new Bank
             {
-                bankId       = BankId ,
+                //bankId       = BankId ,
                 name         = tb_name.Text,
                 phone        = tb_phone.Text,
                 mobile       = cb_area.Text + tb_mobile.Text,
@@ -236,7 +246,7 @@ namespace POS.View
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            await bankModel.deleteBank(BankId);
+           // await bankModel.deleteBank(BankId);
 
             var banks = await bankModel.GetBanksAsync();
             dg_bank.ItemsSource = banks;
@@ -265,7 +275,7 @@ namespace POS.View
             {
                 if (bank.bankId != 0)
                 {
-                    BankId = bank.bankId;
+                    //BankId = bank.bankId;
                 }
 
 
@@ -284,6 +294,31 @@ namespace POS.View
                 }
 
             }
+
+        }
+
+        private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+        }
+
+        private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+        }
+
+        private void tb_phone_LostFocus(object sender, RoutedEventArgs e)
+        {
+            //SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
+        }
+
+        private void tb_phone_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
+        }
+
+        private void tb_phone_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
 
         }
     }

@@ -744,4 +744,10 @@
   <data name="trParentBranch" xml:space="preserve">
     <value>الفرع الأب</value>
   </data>
+  <data name="trDuplicateCodeToolTip" xml:space="preserve">
+    <value>الرمز غير صالح</value>
+  </data>
+  <data name="trEmptyBranchToolTip" xml:space="preserve">
+    <value>لا يمكن أن يكون الفرع الأب فارغاً</value>
+  </data>
 </root>

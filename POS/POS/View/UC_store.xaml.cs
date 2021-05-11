@@ -41,6 +41,8 @@ namespace POS.View
 
         int ParentId = 0;
 
+        BrushConverter bc = new BrushConverter();
+
         public UC_store()
         {
             InitializeComponent();
@@ -49,11 +51,14 @@ namespace POS.View
 
         private void DG_Store_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            p_errorBranch.Visibility = Visibility.Collapsed;
+            p_errorCode.Visibility = Visibility.Collapsed;
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorMobile.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
 
-            var bc = new BrushConverter();
+            cb_branch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
@@ -127,54 +132,58 @@ namespace POS.View
 
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var bc = new BrushConverter();
+            //var bc = new BrushConverter();
 
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            //if (tb_name.Text.Equals(""))
+            //{
+            //    p_errorName.Visibility = Visibility.Visible;
+            //    tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            //    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            //}
+            //else
+            //{
+            //    p_errorName.Visibility = Visibility.Collapsed;
+            //    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            //}
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
         }
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
-                {
-                    var bc = new BrushConverter();
+        {
+            //var bc = new BrushConverter();
 
-                    if (tb_name.Text.Equals(""))
-                    {
-                        p_errorName.Visibility = Visibility.Visible;
-                        tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                        tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                    }
-                    else
-                    {
-                        p_errorName.Visibility = Visibility.Collapsed;
-                        tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                    }
-                }
+            //if (tb_name.Text.Equals(""))
+            //{
+            //    p_errorName.Visibility = Visibility.Visible;
+            //    tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            //    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            //}
+            //else
+            //{
+            //    p_errorName.Visibility = Visibility.Collapsed;
+            //    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            //}
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+        }
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
+            //var bc = new BrushConverter();
 
-            if (!tb_email.Text.Equals(""))
-            {
-                if (!ValidatorExtensions.IsValid(tb_email.Text))
-                {
-                    p_errorEmail.Visibility = Visibility.Visible;
-                    tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
-                    tb_email.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                }
-                else
-                {
-                    p_errorEmail.Visibility = Visibility.Collapsed;
-                    tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                }
-            }
+            //if (!tb_email.Text.Equals(""))
+            //{
+            //    if (!ValidatorExtensions.IsValid(tb_email.Text))
+            //    {
+            //        p_errorEmail.Visibility = Visibility.Visible;
+            //        tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
+            //        tb_email.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            //    }
+            //    else
+            //    {
+            //        p_errorEmail.Visibility = Visibility.Collapsed;
+            //        tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            //    }
+            //}
+            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+
         }
 
         private void translate()
@@ -198,7 +207,7 @@ namespace POS.View
             dg_store.Columns[0].Header = MainWindow.resourcemanager.GetString("trCode");
             dg_store.Columns[1].Header = MainWindow.resourcemanager.GetString("trName");
             dg_store.Columns[2].Header = MainWindow.resourcemanager.GetString("trAddress");
-            dg_store.Columns[3].Header = MainWindow.resourcemanager.GetString("trNotes");
+            dg_store.Columns[3].Header = MainWindow.resourcemanager.GetString("trNote");
 
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
@@ -220,8 +229,9 @@ namespace POS.View
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
+            tb_code.Clear();
             tb_name.Clear();
-            cb_branch.SelectedIndex = 0;
+            cb_branch.SelectedIndex = -1;
             tb_address.Clear();
             tb_notes.Clear();
             tb_email.Clear();
@@ -231,53 +241,36 @@ namespace POS.View
             cb_areaPhoneLocal.SelectedIndex = 0;
             tb_phone.Clear();
 
+            p_errorBranch.Visibility = Visibility.Collapsed;
+            p_errorCode.Visibility = Visibility.Collapsed;
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorMobile.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
 
-            var bc = new BrushConverter();
+            cb_branch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-            SectionData.genRandomCode("s", "Branch");
-            tb_code.Text = SectionData.code;
 
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             store.branchId = 0;
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-            }
-            if (tb_mobile.Text.Equals(""))
-            {
-                p_errorMobile.Visibility = Visibility.Visible;
-                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
-            }
-            else
-            {
-                p_errorMobile.Visibility = Visibility.Collapsed;
-            }
-            if (!tb_email.Text.Equals(""))
-            {
-                if (!ValidatorExtensions.IsValid(tb_email.Text))
-                {
-                    p_errorEmail.Visibility = Visibility.Visible;
-                    tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
-                }
-                else
-                {
-                    p_errorEmail.Visibility = Visibility.Collapsed;
-                }
-            }
+
+            bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "s", "Branch", 0);
+            //chk empty branch
+            SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+            //chk empty code
+            SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk empty mobile
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            //validate email
+            SectionData.validateEmail(tb_email, p_errorEmail, tt_email);
+
             string phoneStr = "";
             if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
 
@@ -286,17 +279,16 @@ namespace POS.View
             if (!tb_email.Text.Equals(""))
                 if (!SectionData.IsValid(tb_email.Text))
                     emailError = true;
-            
-            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
+
+            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
             {
                 if (emailError)
-                    SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
+                    SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                //duplicate
+                else if (iscodeExist)
+                    SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode);
                 else
                 {
-                    SectionData.genRandomCode("s", "Branch");
-
-                    tb_code.Text = SectionData.code;
-
                     store.code = tb_code.Text;
                     store.name = tb_name.Text;
                     store.notes = tb_notes.Text;
@@ -312,53 +304,35 @@ namespace POS.View
 
                     string s = await storeModel.saveBranch(store);
 
-                    if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                    if (s.Equals("true")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
                 }
             }
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
+           // else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
 
             stores = await storeModel.GetBranchesAsync("s");
             storesQuery = stores.Where(s => s.isActive == Convert.ToInt32(tgl_storeIsActive.IsChecked));
             dg_store.ItemsSource = storesQuery;
 
-            Btn_clear_Click(null , null);
+            
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-            }
-            if (tb_mobile.Text.Equals(""))
-            {
-                p_errorMobile.Visibility = Visibility.Visible;
-                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
-            }
-            else
-            {
-                p_errorMobile.Visibility = Visibility.Collapsed;
+            bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "s", "Branch", store.branchId);
 
-            }
-            if (!tb_email.Text.Equals(""))
-            {
-                if (!ValidatorExtensions.IsValid(tb_email.Text))
-                {
-                    p_errorEmail.Visibility = Visibility.Visible;
-                    tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
-                }
-                else
-                {
-                    p_errorEmail.Visibility = Visibility.Collapsed;
-                }
-            }
+            //chk empty branch
+            SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+            //chk empty code
+            SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk empty mobile
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            //validate email
+            SectionData.validateEmail(tb_email, p_errorEmail, tt_email);
+
             string phoneStr = "";
             if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
 
@@ -367,14 +341,16 @@ namespace POS.View
             if (!tb_email.Text.Equals(""))
                 if (!SectionData.IsValid(tb_email.Text))
                     emailError = true;
-            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
+            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
             {
                 if (emailError)
-                    SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
+                    SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                else if (iscodeExist)
+                    SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode);
                 else
                 {
-                    SectionData.genRandomCode("s", "Branch");
-                    tb_code.Text = SectionData.code;
+                    //SectionData.genRandomCode("s", "Branch");
+                    //tb_code.Text = SectionData.code;
 
                     store.code = tb_code.Text;
                     store.name = tb_name.Text;
@@ -395,7 +371,7 @@ namespace POS.View
 
                 }
             }
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
+            //else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
 
             stores = await storeModel.GetBranchesAsync("s");
             storesQuery = stores.Where(s => s.isActive == Convert.ToInt32(tgl_storeIsActive.IsChecked));
@@ -454,29 +430,24 @@ namespace POS.View
             cb_branch.ItemsSource = branchesQuery;
             cb_branch.DisplayMemberPath = "name";
             cb_branch.SelectedValuePath = "branchId";
+            cb_branch.SelectedIndex = -1;
 
             cb_area.SelectedIndex = 0;
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
-            if(cb_branch.Items.Count > 0)
-                cb_branch.SelectedIndex = 0;
+            //if(cb_branch.Items.Count > 0)
+            //    cb_branch.SelectedIndex = 0;
 
             Keyboard.Focus(tb_code);
 
-            SectionData.genRandomCode("s", "Branch");
-            tb_code.Text = SectionData.code;
+            //SectionData.genRandomCode("s", "Branch");
+            //tb_code.Text = SectionData.code;
 
             this.Dispatcher.Invoke(() =>
             {
                 tb_search_TextChanged(null, null);
             });
 
-        }
-
-        private async void tb_search_LostFocus(object sender, RoutedEventArgs e)
-        {
-            var stores = await storeModel.GetBranchesAsync("s");
-            dg_store.ItemsSource = stores;
         }
 
         private async void tb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -520,7 +491,7 @@ namespace POS.View
             cb_area.SelectedIndex = 0;
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
-            cb_branch.SelectedIndex = 0;
+            cb_branch.SelectedIndex = -1;
         }
 
         private async void tgl_storeIsActive_Checked(object sender, RoutedEventArgs e)
@@ -541,40 +512,14 @@ namespace POS.View
 
         private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var bc = new BrushConverter();
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
 
-            if (tb_mobile.Text.Equals(""))
-            {
-                p_errorMobile.Visibility = Visibility.Visible;
-                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
-                tb_mobile.Background = (Brush)bc.ConvertFrom("#15FF0000");
-
-            }
-            else
-            {
-                tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                p_errorMobile.Visibility = Visibility.Collapsed;
-
-            }
         }
 
         private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
 
-            if (tb_mobile.Text.Equals(""))
-            {
-                p_errorMobile.Visibility = Visibility.Visible;
-                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
-                tb_mobile.Background = (Brush)bc.ConvertFrom("#15FF0000");
-
-            }
-            else
-            {
-                tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                p_errorMobile.Visibility = Visibility.Collapsed;
-
-            }
         }
 
         private void btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -624,6 +569,21 @@ namespace POS.View
         private void tb_email_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
+        }
+
+        private void tb_code_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+        }
+
+        private void tb_code_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+        }
+
+        private void cb_branch_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
         }
     }
 }

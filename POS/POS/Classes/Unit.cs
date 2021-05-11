@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +16,15 @@ namespace POS.Classes
     {
         public int      unitId { get; set; }
         public string   name { get; set; }
-        public int?      isSmallest { get; set; }
-        public int?      smallestId { get; set; }
+        public Nullable<int>      isSmallest { get; set; }
+        public Nullable<int> smallestId { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> parentId { get; set; }
         public int? isActive { get; set; }
+        public Boolean canDelete { get; set; }
 
         public async Task<List<Unit>> GetUnitsAsync()
         {
@@ -46,9 +48,15 @@ namespace POS.Classes
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
-
-                    units = JsonConvert.DeserializeObject<List<Unit>>(jsonString);
-
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    units = JsonConvert.DeserializeObject<List<Unit>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
                     return units;
                 }
                 else //web api sent error response 
@@ -94,6 +102,40 @@ namespace POS.Classes
             }
         }
 
+        //public async Task<string> saveUnit(Unit unit)
+        //{
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //    // 
+        //    var myContent = JsonConvert.SerializeObject(unit);
+
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        // encoding parameter to get special characters
+        //        myContent = HttpUtility.UrlEncode(myContent);
+        //        request.RequestUri = new Uri(Global.APIUri + "Unit/Save?unitObject=" + myContent);
+        //        request.Headers.Add("APIKey", Global.APIKey);
+        //        request.Method = HttpMethod.Post;
+        //        //set content type
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        var response = await client.SendAsync(request);
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var message = await response.Content.ReadAsStringAsync();
+        //            message = JsonConvert.DeserializeObject<string>(message);
+        //            return message;
+        //        }
+        //        return "";
+        //    }
+        //}
+
         public async Task<string> saveUnit(Unit unit)
         {
             // ... Use HttpClient.
@@ -111,7 +153,7 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "Unit/Save?unitObject=" + myContent);
+                request.RequestUri = new Uri(Global.APIUri + "Units/Save?unitObject=" + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -127,8 +169,37 @@ namespace POS.Classes
                 return "";
             }
         }
+        //public async Task<string> deleteUnit(int unitId, Boolean final)
+        //{
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-        public async Task<string> deleteUnit(int unitId)
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "Units/Delete");
+        //        request.Headers.Add("APIKey", Global.APIKey);
+        //        request.Headers.Add("unitId", unitId.ToString());
+        //        request.Method = HttpMethod.Post;
+        //        //set content type
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        var response = await client.SendAsync(request);
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var message = await response.Content.ReadAsStringAsync();
+        //            message = JsonConvert.DeserializeObject<string>(message);
+        //            return message;
+        //        }
+        //        return "";
+        //    }
+        //}
+        public async Task<Boolean> deleteUnit(int unitId, int userId, bool final)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -141,9 +212,9 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Units/Delete");
+                request.RequestUri = new Uri(Global.APIUri + "Units/Delete?unitId=" + unitId + "&userId=" + userId + "&final=" + final);
+
                 request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("unitId", unitId.ToString());
                 request.Method = HttpMethod.Post;
                 //set content type
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -151,11 +222,9 @@ namespace POS.Classes
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
+                    return true;
                 }
-                return "";
+                return false;
             }
         }
     }
