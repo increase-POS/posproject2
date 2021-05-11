@@ -438,7 +438,7 @@
                     </Button>
 
                 </Grid>
-              
+
                 <Border Grid.Row="1" Background="White" 
                 CornerRadius="0,0,7,7" Grid.RowSpan="2" >
 
@@ -446,7 +446,7 @@
                     <Grid>
                         <!--////////////////////////////////  Item Data ////////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                      x:Name="grid_itemData" Visibility="Collapsed" >
+                      x:Name="grid_itemData" Visibility="Visible" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="40"/>
@@ -957,19 +957,19 @@
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35" Width="110"  Margin="5,5"  >
                                         </ComboBox>
-                                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                        <Path Fill="#E81123" Name="p_errorValue"  Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                             <Path.ToolTip>
-                                                <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                                <ToolTip x:Name="tt_errorValue"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                             </Path.ToolTip>
                                         </Path>
                                     </Grid>
-                                   
+
                                     <Button x:Name="btn_addProperties" Grid.Row="0" Grid.Column="2"  Width="50"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="5,6"  Padding="0"  Height="Auto" Content="Add" FontSize="12" Click="Btn_addProperties_Click"  />
+                    Margin="0,6,5,6"  Padding="0"  Height="Auto" Content="Add" FontSize="12" Click="Btn_addProperties_Click" HorizontalAlignment="Right"  />
 
                                     <Button x:Name="btn_updateProperties" Grid.Row="0" Grid.Column="3"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
@@ -1048,12 +1048,12 @@
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35" Width="350"  Margin="5,5" >
                                             </TextBox>
-                                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                            <Path Fill="#E81123" Name="p_errorSerial" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                                 <Path.ToolTip>
-                                                    <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                                    <ToolTip x:Name="tt_errorSerial" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                                 </Path.ToolTip>
                                             </Path>
                                         </Grid>
@@ -1099,7 +1099,7 @@
                       materialDesign:DataGridAssist.CornerRadius="5" 
                         IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader" SelectionChanged="dg_serials_SelectionChanged"    >
+                        ColumnWidth="SizeToHeader" SelectionChanged="dg_services_SelectionChanged"    >
                                         <DataGrid.Columns>
                                             <DataGridTextColumn MinWidth="150"  Header="Name" Binding="{Binding Path=name}">
                                                 <DataGridTextColumn.ElementStyle>
@@ -1143,8 +1143,8 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBox  
-                                                 Text="{Binding name, Mode=OneWay}" 
+                                            <TextBox  x:Name="tb_serviceName"
+                                                 Text="{Binding serviceName, Mode=OneWay}" 
                                  Grid.Row="1" Padding="10,5,5,5"
                                  BorderThickness="1" 
                                  materialDesign:HintAssist.Hint="Name..."  
@@ -1152,12 +1152,12 @@
                                  Background="#f8f8f8" BorderBrush="#f8f8f8"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="0"   Height="35" Width="160"  Margin="10,5" />
-                                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                            <Path x:Name="p_errorServiceName" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                                 <Path.ToolTip>
-                                                    <ToolTip   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                                    <ToolTip  x:Name="tt_errorServiceName" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                                 </Path.ToolTip>
                                             </Path>
                                         </Grid>
@@ -1165,7 +1165,7 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBox  
+                                            <TextBox  x:Name="tb_costVal" PreviewTextInput="DecimalValidationTextBox"
                                                  Text="{Binding costVal, Mode=OneWay}" 
                                  Grid.Row="1" Padding="10,5,5,5"
                                  BorderThickness="1" 
@@ -1174,40 +1174,40 @@
                                  Background="#f8f8f8" BorderBrush="#f8f8f8"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="0"   Height="35" Width="160"  Margin="10,5" />
-                                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                            <Path x:Name="p_errorCostVal" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                                 <Path.ToolTip>
-                                                    <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                                    <ToolTip x:Name="tt_errorCostVal" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                                 </Path.ToolTip>
                                             </Path>
                                         </Grid>
 
                                         <Button x:Name="btn_addService" Grid.Row="1" Grid.Column="0"  Width="110" Grid.ColumnSpan="2"
                          BorderThickness="0" Background="#4E4E4E" Content="Add" BorderBrush="{x:Null}"
-                    Padding="0" Height="33" 
+                    Padding="0" Height="Auto" Margin="5,0" Click="Btn_addService_Click" 
                              />
                                         <Button x:Name="btn_updateService" Grid.Row="1" Grid.Column="2"  Width="110" Grid.ColumnSpan="2"
                          BorderThickness="0" Background="#4E4E4E" Content="Update" BorderBrush="{x:Null}"
-                    Padding="0" Height="33" 
+                    Padding="0" Height="33" Click="Btn_updateService_Click" Margin="5,0" VerticalAlignment="Bottom" 
                              />
                                         <Button x:Name="btn_deleteService" Grid.Row="1" Grid.Column="4"  Width="110" Grid.ColumnSpan="2"
                          BorderThickness="0" Background="#4E4E4E" Content="Delete"
-                    Padding="0" Height="33" BorderBrush="{x:Null}" 
+                    Padding="0" Height="33" BorderBrush="{x:Null}" Click="Btn_deleteService_Click" 
                             />
                                     </Grid>
 
 
                                 </Grid>
-                                
+
                             </Grid>
 
 
                         </Grid>
                         <!--////////////////////////////////////    Barcode    ////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                      x:Name="dg_barcode"  Visibility="Visible" >
+                      x:Name="dg_barcode"  Visibility="Collapsed" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="7.5"/>
                                 <RowDefinition Height="auto"/>
@@ -1480,7 +1480,7 @@
                             </Grid>
                             <Image x:Name="img_barcode" Margin="5" Width="250" Height="50"  Grid.Row="9"
                                Stretch="Fill" Grid.ColumnSpan="2"   />
-                           
+
                             <Grid Grid.Row="10"  Grid.ColumnSpan="2" Margin="5,1" >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>

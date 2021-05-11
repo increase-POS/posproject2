@@ -26,7 +26,6 @@ namespace POS.View
         {
             InitializeComponent();
         }
-
         private void translate()
         {
             btn_receiptInvoice.Content = MainWindow.resourcemanager.GetString("trInvoice");
@@ -36,7 +35,6 @@ namespace POS.View
 
 
         }
-
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
@@ -67,8 +65,10 @@ namespace POS.View
 
             btn_offer.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_offer.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-  }
 
+            btn_package.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_package.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+        }
         void refreashBachgroundClick(Button btn)
         {
             refreashBackground();
@@ -82,12 +82,10 @@ namespace POS.View
             uc_receiptInvoice uc = new uc_receiptInvoice();
             grid_main.Children.Add(uc);
         }
-
         private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_statistic);
         }
-
         private void Btn_coupon_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_coupon);
@@ -95,7 +93,6 @@ namespace POS.View
             uc_coupon uc = new uc_coupon();
             grid_main.Children.Add(uc);
         }
-
         private void Btn_offer_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_offer);
@@ -103,7 +100,6 @@ namespace POS.View
             uc_offer uc = new uc_offer();
             grid_main.Children.Add(uc);
         }
-
         private void Btn_package_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_package);

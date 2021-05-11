@@ -74,7 +74,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn MinWidth="125"  Header="Values" Binding="{Binding Path=valuesName}">
+                        <DataGridTextColumn MinWidth="125"  Header="Values" Binding="{Binding Path=propertyValues}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -123,7 +123,7 @@
         <Border Grid.Column="1" Background="White" Margin="10,15"
                 CornerRadius="7" >
             <Grid x:Name="grid_property" >
-                
+
                 <Grid>
                     <Grid.RowDefinitions >
                         <RowDefinition Height="auto"/>
@@ -170,7 +170,7 @@
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
-                            
+
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
@@ -230,10 +230,10 @@
                             </Grid.RowDefinitions>
                             <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Add" Click="Btn_add_Click" />
+                    Margin="1,0"    Content="Add" Click="Btn_add_Click" VerticalAlignment="Top" />
                             <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
-                   Margin="1,0"    Content="Update" Click="Btn_update_Click" />
+                   Margin="1,0"    Content="Update" Click="Btn_update_Click" VerticalAlignment="Top" />
                             <Button x:Name="btn_delete" Grid.Row="0" Grid.Column="2"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,0"    Content="Delete" Click="Btn_delete_Click" />
@@ -288,7 +288,7 @@
                         <Grid  Grid.Row="2" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                               
+
 
                             </Grid.ColumnDefinitions>
 
@@ -300,19 +300,19 @@
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="35" Width="340"  Margin="10"  />
-                            
-                            <Path Fill="#E81123" Stretch="Fill" x:Name="p_errorNameSub"
+
+                                <Path Fill="#E81123" Stretch="Fill" x:Name="p_errorNameSub"
                               HorizontalAlignment="Right" Grid.Column="1"  Visibility="Collapsed" 
                              VerticalAlignment="Center" Width="15"  Height="15" Margin="5,5,15,5"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                <Path.ToolTip>
-                                    <ToolTip x:Name="tt_errorNameSub" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                </Path.ToolTip>
-                            </Path>
-                        </Grid>
-                        
-                        
-                            
+                                    <Path.ToolTip>
+                                        <ToolTip x:Name="tt_errorNameSub" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    </Path.ToolTip>
+                                </Path>
+                            </Grid>
+
+
+
                         </Grid>
                         <Grid Grid.Row="3">
                             <Grid.ColumnDefinitions>
@@ -324,13 +324,13 @@
                           Background="#4E4E4E" BorderBrush="{x:Null}" Width="170" Height="33"
                     Margin="5,0"    Content="Delete" Click="Btn_deleteValue_Click" />
                             <Button x:Name="btn_addValue"  Grid.Column="0"
-                          Background="#4E4E4E" BorderBrush="{x:Null}" Width="170" Height="33"
-                    Margin="5,0"    Content="Add" Click="Btn_addValue_Click" />
+                          Background="#4E4E4E" BorderBrush="{x:Null}" Width="170" Height="Auto"
+                    Margin="5,1,5,0"    Content="Add" Click="Btn_addValue_Click" />
                         </Grid>
                         <Separator Background="#999999"   Width="340"  Margin="5"
                                       Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Grid>
-                    
+
                 </Grid>
 
             </Grid>

@@ -172,6 +172,9 @@
     <Compile Include="View\UC_users.xaml.cs">
       <DependentUpon>UC_users.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_itemsList.xaml.cs">
+      <DependentUpon>wd_itemsList.xaml</DependentUpon>
+    </Compile>
     <Page Include="controlTemplate\UC_rectangleCard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -299,6 +302,10 @@
     <Page Include="View\UC_users.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\windows\wd_itemsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

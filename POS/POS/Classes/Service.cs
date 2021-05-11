@@ -25,12 +25,12 @@ namespace POS.Classes
 
         //*********************************************//
         // ******************add service to item
-        public async Task<Boolean> saveSerial(Serial serial)
+        public async Task<Boolean> saveService(Service service)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             // 
-            var myContent = JsonConvert.SerializeObject(serial);
+            var myContent = JsonConvert.SerializeObject(service);
 
             using (var client = new HttpClient())
             {

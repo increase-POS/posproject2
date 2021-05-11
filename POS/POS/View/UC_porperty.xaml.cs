@@ -26,8 +26,12 @@ namespace POS.View
         public int PropertyId;
         public int propertyItemId;
         bool CanDelete;
+        Property property = new Property();
+        PropertiesItems propertyItem = new PropertiesItems();
+
         Property propertyModel = new Property();
         PropertiesItems PropertiesItemsModel = new PropertiesItems();
+        
         public UC_porperty()
         {
             InitializeComponent();
@@ -106,246 +110,224 @@ namespace POS.View
 
             var properties = await propertyModel.getProperty();
             dg_property.ItemsSource = properties;
-
-            var propertiesItems = await PropertiesItemsModel.GetPropertiesItems();
-            dg_subProperty.ItemsSource = propertiesItems;
         }
 
         private void Dg_subProperty_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             p_errorName.Visibility = Visibility.Collapsed;           
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");            
-
-            PropertiesItems propertiesItems = new PropertiesItems();
+            var bc = new BrushConverter();         
 
             if (dg_subProperty.SelectedIndex != -1)
             {
-                propertiesItems = dg_subProperty.SelectedItem as PropertiesItems;
-                this.DataContext = propertiesItems;
+                propertyItem = dg_subProperty.SelectedItem as PropertiesItems;
+                //this.DataContext = propertyItem;
             }
-            if (propertiesItems != null)
+            if (propertyItem != null)
             {
-                if (propertiesItems.propertyItemId != 0)
+                if (propertyItem.propertyItemId != 0)
                 {
-                    propertyItemId = propertiesItems.propertyItemId;
-                    CanDelete = propertiesItems.canDelete;
-                    MessageBox.Show(propertyItemId.ToString() + " " + CanDelete.ToString());
+                    propertyItemId = propertyItem.propertyItemId;
+                   // CanDelete = propertyItem.canDelete;
+
+                    if (propertyItem.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                    else
+                    {
+                        if (propertyItem.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
+                        else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                    }
                 }
-
-
             }
             
         }
+        //************************************************
+        //******************* update property***************
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {
+            //update
+            property.name = tb_name.Text;
+            property.createUserId = MainWindow.userID;
+            property.updateUserId = MainWindow.userID;
 
+            Boolean res = await propertyModel.saveProperty(property);
 
+            if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-       
-
-
-            private async void Btn_update_Click(object sender, RoutedEventArgs e)
+            var poss = await propertyModel.getProperty();
+            dg_property.ItemsSource = poss;
+        }
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+            p_errorName.Visibility = Visibility.Collapsed;
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_name.Clear();
+            dg_subProperty.ItemsSource = null;
+            property = new Property();
+        }
+        //************************************************
+        //******************* delete property***************
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {
+            if ((!property.canDelete) && (property.isActive == 0))
+                activateProperty();
+            else
             {
-                //update
-                Property property = new Property
-                {
-                    propertyId = PropertyId,
-
-                    name = tb_name.Text,
-                    //balance = 0,
-                    //balance      = decimal.Parse(tb_balance.Text),
-                    //branchId     = 1,
-                    createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                    updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                    createUserId = 2,
-                    updateUserId = 2,
-                    // isActive = 1
-                };
-
-
-                await propertyModel.saveProperty(property);
-
-                var poss = await propertyModel.getProperty();
-                dg_property.ItemsSource = poss;
-
-
-            }
-            private void Btn_clear_Click(object sender, RoutedEventArgs e)
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                var bc = new BrushConverter();
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                tb_name.Text = "";
-            }
-            private async void Btn_delete_Click(object sender, RoutedEventArgs e)
-            {
-                //delete
-              //  await propertyModel.deleteProperty(PropertyId,  CanDelete);
-
-               // var properties = await propertyModel.getProperty();
-          //      dg_property.ItemsSource = properties;
-
                 string popupContent = "";
-                
+                if (property.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                if ((!property.canDelete) && (property.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                int userId = (int)MainWindow.userID;
+                Boolean res = await propertyModel.deleteProperty(property.propertyId, userId, property.canDelete);
 
-                if (CanDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                else popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-
-                bool b = await propertyModel.deleteProperty(PropertyId, CanDelete);
-
-                if (b) SectionData.popUpResponse("", popupContent);
+                if (res) SectionData.popUpResponse("", popupContent);
                 else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-
-                var prop = await propertyModel.getProperty();
-                dg_property.ItemsSource = prop;
-            //clear textBoxs
-            //Btn_clear_Click(sender, e);
             }
 
-            private void Dg_property_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+            var prop = await propertyModel.getProperty();
+            dg_property.ItemsSource = prop;
+            Btn_clear_Click(sender, e);
+        }
+        private async void activateProperty()
+        {//activate
+
+            property.isActive = 1;
+
+            Boolean s = await propertyModel.saveProperty(property);
+
+            if (s) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+        }
+        private async void activatePropertyItem()
+        {//activate
+
+            propertyItem.isActive = 1;
+
+            Boolean s = await PropertiesItemsModel.SavePropertiesItems(propertyItem);
+
+            if (s) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+        }
+        async void Dg_property_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+            p_errorName.Visibility = Visibility.Collapsed;
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+            if (dg_property.SelectedIndex != -1)
             {
-                p_errorName.Visibility = Visibility.Collapsed;
-                // p_errorCode.Visibility = Visibility.Collapsed;
-                // p_errorBalance.Visibility = Visibility.Collapsed;
-                // p_errorSelectBranch.Visibility = Visibility.Collapsed;
-                var bc = new BrushConverter();
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                //  tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                //tb_balance.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                //   tt_errorSelectBranch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-                Property property = new Property();
-
-                if (dg_property.SelectedIndex != -1)
+                property = dg_property.SelectedItem as Property;
+                this.DataContext = property;
+            }
+            if (property != null)
+            {
+                if (property.propertyId != 0)
                 {
-                    property = dg_property.SelectedItem as Property;
-                    this.DataContext = property;
-                }
-                if (property != null)
-                {
-                    if (property.propertyId != 0)
-                    {
-                        PropertyId = property.propertyId;
-                    CanDelete = property.canDelete;
-
-                    }
-
-
+                       
+                   // CanDelete = property.canDelete;
+                    var propItems = await PropertiesItemsModel.GetPropertyItems(property.propertyId);
+                    dg_subProperty.ItemsSource = propItems;
                 }
 
+                if (property.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                else
+                {
+                    if (property.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
+                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                }
             }
 
+        }
 
-            private async void Btn_addValue_Click(object sender, RoutedEventArgs e)
-                {
 
-                    //add
-                    PropertiesItems propertiesItems = new PropertiesItems
-                    {
-                        name  = tb_valueName.Text,
-                        //propertyId = 1,
-                        propertyName = tb_name.Text,
-                        createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                        updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                        createUserId = 2,
-                        updateUserId = 2,
-                         isActive = 1,
-                         isDefault =1,
-                       //  canDelete = true
-                    };
+        private async void Btn_addValue_Click(object sender, RoutedEventArgs e)
+            {
+            //add
+            propertyItem = new PropertiesItems();
+            propertyItem.name = tb_valueName.Text;
+            propertyItem.propertyId = property.propertyId;
+            propertyItem.createUserId = MainWindow.userID;
+            propertyItem.isActive = 1;
 
-            //  await PropertiesItemsModel.Save(propertiesItems);
-            //MessageBox.Show(PropertyId.ToString());
-                     await PropertiesItemsModel.SavePropertiesItems(propertiesItems);
-                     var propertiesItemss = await PropertiesItemsModel.GetPropertiesItems();
-                     dg_subProperty.ItemsSource = propertiesItemss;
+            Boolean res = await PropertiesItemsModel.SavePropertiesItems(propertyItem);
+
+            if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+            tb_valueName.Text = null;
+            var properties = await propertyModel.getProperty();
+            dg_property.ItemsSource = properties;
+
+            var propertiesItemss = await PropertiesItemsModel.GetPropertyItems(property.propertyId);
+            dg_subProperty.ItemsSource = propertiesItemss;
             
-            //get property id
-            //getPropertyID(tb_valueName.Text);
-                    MessageBox.Show(propertiesItemss.Count.ToString());
-                    //add values
-                    
+        }
 
-                }
+       // private async void getPropertyID(string name)
+           //     {
+             //       List<string> names = new List<string>();
+             //       List<int> ids = new List<int>();
 
-                int id = 0;
-        //private string popupContent;
-
-        private async void getPropertyID(string name)
-                {
-                    List<string> names = new List<string>();
-                    List<int> ids = new List<int>();
-
-                    var props = await propertyModel.getProperty();
-                    Property prop = new Property();
+             //       var props = await propertyModel.getProperty();
+             //       Property prop = new Property();
                     // MessageBox.Show(props.Count.ToString());
-                    for (int i = 0; i < props.Count; i++)
-                    {
-                        prop = props[i];
-                        if (prop.name.Trim().Equals(name.Trim()))
-                        {
-                            id = prop.propertyId;
-                            break;
-                        }
-                        //names.Add(prop.name);
-                        //ids.Add(prop.propertyId);
+            //        for (int i = 0; i < props.Count; i++)
+            //        {
+            //            prop = props[i];
+            //            if (prop.name.Trim().Equals(name.Trim()))
+            //            {
+            //                id = prop.propertyId;
+            //                break;
+            //            }
 
-                    }
-                    //for(int i;)
-                    //if (names.Contains(name))
-                    //    id = 
-                    MessageBox.Show(prop.propertyId.ToString());
-                }
+        //
+          //          }
+
+           //         MessageBox.Show(prop.propertyId.ToString());
+            //    }
 
         private async void Btn_deleteValue_Click(object sender, RoutedEventArgs e)
         {
-            string popupContent = "";
-            CanDelete = PropertiesItemsModel.canDelete;
-            
-            if (CanDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-            else popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+            if ((!propertyItem.canDelete) && (propertyItem.isActive == 0))
+                activateProperty();
+            else
+            {
+                string popupContent = "";
+                if (propertyItem.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                if ((!propertyItem.canDelete) && (propertyItem.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                int userId = (int)MainWindow.userID;
+                Boolean res = await PropertiesItemsModel.DeletePropertiesItems(propertyItem.propertyItemId, userId, propertyItem.canDelete);
 
-            bool b = await PropertiesItemsModel.DeletePropertiesItems(propertyItemId, CanDelete);
+                if (res) SectionData.popUpResponse("", popupContent);
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            }
 
-            if (b) SectionData.popUpResponse("", popupContent);
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-
-            var propertiesitems = await PropertiesItemsModel.GetPropertiesItems();
+            var propertiesitems = await PropertiesItemsModel.GetPropertyItems(property.propertyId);
             dg_subProperty.ItemsSource = propertiesitems;       
         }
 
         private async  void Btn_add_Click(object sender, RoutedEventArgs e)
         {
             //add
-            Property property = new Property
+            property = new Property
             {
                 name = tb_name.Text,                
-                createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
                 createUserId = 2,
                 updateUserId = 2,
-                // isActive = 1
+                isActive = 1
             };
-            //PropertiesItems propertiesItems = new PropertiesItems
-            //{
-            //    name = tb_valueName.Text,
-            //    createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-            //    updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-            //    createUserId = 2,
-            //    updateUserId = 2,
-            //    // isActive = 1
-            //};
 
-            MessageBox.Show( await propertyModel.saveProperty(property));
-            //MessageBox.Show(PropertyId.ToString());
+            Boolean res = await propertyModel.saveProperty(property);
+
+            if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+            tb_name.Text = null;
             var properties = await propertyModel.getProperty();
             dg_property.ItemsSource = properties;
-            //get property id
-            //  getPropertyID(tb_valueName.Text);
-            MessageBox.Show(properties.Count.ToString());
-
-            //add values
-            //  var value = await PropertiesItemsModel.Save(propertiesItems);
-            //   dg_subProperty.ItemsSource = value;
         }
     }
  } 

@@ -15,6 +15,7 @@ namespace POS.Classes
     {
         public int propertyId { get; set; }
         public string name { get; set; }
+        public string propertyValues { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
@@ -61,7 +62,7 @@ namespace POS.Classes
 
         }
 
-        public async Task<string> saveProperty(Property property)
+        public async Task<Boolean> saveProperty(Property property)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -87,11 +88,9 @@ namespace POS.Classes
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
+                    return true;
                 }
-                return "";
+                return false;
             }
         }
 
@@ -129,37 +128,7 @@ namespace POS.Classes
             }
         }
 
-        //public async Task<Boolean> deleteProperty(int propertyId, Boolean final)
-        //{
-        //    // ... Use HttpClient.
-        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-        //    using (var client = new HttpClient())
-        //    {
-        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-        //        client.BaseAddress = new Uri(Global.APIUri);
-        //        client.DefaultRequestHeaders.Clear();
-        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-        //        HttpRequestMessage request = new HttpRequestMessage();
-        //        request.RequestUri = new Uri(Global.APIUri + "Property/Delete?propertyId=" + propertyId + "&final=" + final);
-        //        request.Headers.Add("userId", "2");
-        //        request.Headers.Add("APIKey", Global.APIKey);
-        //     //   request.Headers.Add("propertyId", propertyId.ToString());
-        //        request.Method = HttpMethod.Post;
-        //        //set content type
-        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        //        var response = await client.SendAsync(request);
-
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            return true;
-        //        }
-        //        return false;
-        //    }
-        //}
-
-        public async Task<Boolean> deleteProperty(int propertyId, bool final)
+        public async Task<Boolean> deleteProperty(int propertyId,int userId, bool final)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -172,11 +141,9 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Properties/Delete?propertyId="+propertyId+"&final=" + final);
-                //request.RequestUri = new Uri(Global.APIUri + "Agent/Search?type=" + type + "&Searchwords=" + searchWord);
+                request.RequestUri = new Uri(Global.APIUri + "Properties/Delete?propertyId="+propertyId+"&userId="+userId+"&final=" + final);
 
                 request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("userId", "2");
                 request.Method = HttpMethod.Post;
                 //set content type
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

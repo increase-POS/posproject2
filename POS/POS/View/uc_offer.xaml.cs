@@ -108,6 +108,9 @@ namespace POS.View
             dg_offer.Columns[3].Header = MainWindow.resourcemanager.GetString("trStartDate");
             dg_offer.Columns[4].Header = MainWindow.resourcemanager.GetString("trEndDate");
             ///////////////////////////////////////------on Item------///////////////////////////////
+            ///
+
+            /*
             txt_onItemHeader.Text = MainWindow.resourcemanager.GetString("trOnItems");
             tb_items.Text = MainWindow.resourcemanager.GetString("trItems");
             txt_onItemHeader.Text = MainWindow.resourcemanager.GetString("trOnItems");
@@ -121,6 +124,7 @@ namespace POS.View
 
             btn_addItem.Content = MainWindow.resourcemanager.GetString("trAdd");
             btn_deleteItem.Content = MainWindow.resourcemanager.GetString("trDelete");
+            */
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -167,6 +171,7 @@ namespace POS.View
         }
 
         #region Tab
+        /*
         private void Btn_offerTab_Click(object sender, RoutedEventArgs e)
         {
             grid_offerOnItem.Visibility = Visibility.Collapsed;
@@ -184,7 +189,7 @@ namespace POS.View
         }
 
 
-
+        */
 
 
 

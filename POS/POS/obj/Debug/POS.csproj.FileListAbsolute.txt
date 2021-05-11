@@ -800,7 +800,8 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_offer.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_coupon.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_coupon.baml
 E:\GitHub\posproject2\POS\POS\bin\Debug\Tulpep.NotificationWindow.dll
-E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
 E:\GitHub\posproject2\POS\POS\bin\Debug\System.Drawing.Common.dll
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_packageOfItems.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_packageOfItems.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsList.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsList.baml

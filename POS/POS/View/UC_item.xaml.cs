@@ -40,6 +40,7 @@ namespace POS.View
         ItemsProp itemsPropModel = new ItemsProp();
         Serial serialModel = new Serial();
         ItemUnit itemUnitModel = new ItemUnit();
+        Service serviceModel = new Service();
 
         // item object
         Item item = new Item();
@@ -49,7 +50,8 @@ namespace POS.View
         Serial serial = new Serial();
         // item unit object
         ItemUnit itemUnit = new ItemUnit();
-
+        // service object
+        Service service = new Service();
         string selectedType = "" ;
 
         int selectedCategoryId = 0 , selectedMinUnitId = 0 , selectedMaxUnitId = 0;
@@ -63,6 +65,7 @@ namespace POS.View
         List<ItemsProp> itemsProp;
         List<Serial> itemSerials;
         List<ItemUnit> itemUnits;
+        List<Service> services;
         List<string> barcodesList;
 
         static private int _InternalCounter = 0;
@@ -520,6 +523,21 @@ namespace POS.View
             }
         }
         #endregion barcode
+        async void Btn_deleteService_Click(object sender, RoutedEventArgs e)
+        {
+            if(service.costId != 0)
+            {
+                Boolean res = await serviceModel.delete(service.costId);
+
+                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                refreshServicesGrid(item.itemId);
+
+                tb_serviceName.Clear();
+                tb_costVal.Clear();
+            }
+        }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
             if ((!item.canDelete) && (item.isActive == 0))
@@ -576,6 +594,9 @@ namespace POS.View
             cb_selectProperties.SelectedIndex = -1;
             cb_value.SelectedIndex = -1;
             tb_serial.Text = "";
+            tb_serial.Clear();
+            tb_serviceName.Clear();
+            tb_costVal.Clear();
             itemProp = new ItemsProp();
         }
         private void Btn_unitClear(object sender, RoutedEventArgs e)
@@ -806,6 +827,15 @@ namespace POS.View
 
         async void Btn_addProperties_Click(object sender, RoutedEventArgs e)
         {
+            if (cb_value.SelectedValue == null)
+            {
+                p_errorValue.Visibility = Visibility.Visible;
+                tt_errorValue.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorValue.Visibility = Visibility.Collapsed;
+            }
             if (cb_value.SelectedValue != null && item.itemId >0)
             {
                 int propertyItemId = propItems[cb_value.SelectedIndex].propertyItemId;
@@ -832,10 +862,59 @@ namespace POS.View
                 cb_selectProperties.SelectedIndex = -1;
             }
         }
+        // add service to item
+        async void Btn_addService_Click(object sender, RoutedEventArgs e)
+        {
+            if (tb_serviceName.Text.Equals(""))
+            {
+                p_errorServiceName.Visibility = Visibility.Visible;
+                tt_errorServiceName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorServiceName.Visibility = Visibility.Collapsed;
+            }
+            if (tb_costVal.Text.Equals(""))
+            {
+                p_errorCostVal.Visibility = Visibility.Visible;
+                tt_errorCostVal.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorCostVal.Visibility = Visibility.Collapsed;
+            }
+            if (!tb_serviceName.Text.Equals("") && !tb_costVal.Text.Equals(""))
+            {
+                service = new Service();
+                service.name = tb_serviceName.Text;
+                service.itemId = item.itemId;
+                service.costVal = decimal.Parse(tb_costVal.Text);
+                service.createUserId = MainWindow.userID;
+                service.updateUserId = MainWindow.userID;  
+
+                Boolean res = await serviceModel.saveService(service);
+                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                refreshServicesGrid(item.itemId);
+
+                tb_serviceName.Clear();
+                tb_costVal.Clear();
+            }
+        }
         // add serial to item
         async void Btn_addSerial_Click(object sender, RoutedEventArgs e)
         {
-            if (tb_serial.Text != "")
+            if (tb_serial.Text.Equals(""))
+            {
+                p_errorSerial.Visibility = Visibility.Visible;
+                tt_errorSerial.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorSerial.Visibility = Visibility.Collapsed;
+            }
+            if (!tb_serial.Text.Equals(""))
             {
                 Boolean exist = false;
                 if (itemSerials != null)
@@ -876,6 +955,11 @@ namespace POS.View
         {
             itemUnits = await itemUnitModel.GetItemUnits(itemId);
             dg_unit.ItemsSource = itemUnits.ToList();
+        }
+        async void refreshServicesGrid(int itemId)
+        {
+            services = await serviceModel.GetItemServices(item.itemId);
+            dg_service.ItemsSource = services.ToList();
         }
         async void Btn_deleteProperties_Click(object sender, RoutedEventArgs e)
         {
@@ -939,6 +1023,7 @@ namespace POS.View
                 refreshPropertiesGrid(item.itemId);
                 refreshSerials(item.itemId);
                 refreshItemUnitsGrid(item.itemId);
+                refreshServicesGrid(item.itemId);
 
             }
             if (item != null)
@@ -1064,15 +1149,29 @@ namespace POS.View
         }
         private void dg_serials_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorCode.Visibility = Visibility.Collapsed;
+            p_errorSerial.Visibility = Visibility.Collapsed;
+
             var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_serial.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
             if (dg_serials.SelectedIndex != -1)
             {
                 serial = dg_serials.SelectedItem as Serial;
+            }
+        }
+        private void dg_services_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            p_errorServiceName.Visibility = Visibility.Collapsed;
+            p_errorCostVal.Visibility = Visibility.Collapsed;
+
+            var bc = new BrushConverter();
+            tb_serviceName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_costVal.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            if (dg_service.SelectedIndex != -1)
+            {
+                service = dg_service.SelectedItem as Service;
+                tb_serviceName.Text = service.name;
+                tb_costVal.Text = service.costVal.ToString();
             }
         }
         private async void Cb_parentItem_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1114,6 +1213,39 @@ namespace POS.View
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        async void Btn_updateService_Click(object sender, RoutedEventArgs e)
+        {
+            if (tb_serviceName.Text.Equals(""))
+            {
+                p_errorServiceName.Visibility = Visibility.Visible;
+                tt_errorServiceName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorServiceName.Visibility = Visibility.Collapsed;
+            }
+            if (tb_costVal.Text.Equals(""))
+            {
+                p_errorCostVal.Visibility = Visibility.Visible;
+                tt_errorCostVal.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorCostVal.Visibility = Visibility.Collapsed;
+            }
+            if (!tb_serviceName.Text.Equals("") && !tb_costVal.Text.Equals("") && item != null)
+            {
+                service.name = tb_serviceName.Text;
+                service.costVal = decimal.Parse(tb_costVal.Text);
+                service.updateUserId = MainWindow.userID;
+                Boolean res = await serviceModel.saveService(service);
+                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                refreshServicesGrid(item.itemId);
+            }
         }
 
         private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
