@@ -70,6 +70,65 @@ namespace POS_Server.Controllers
             return NotFound();
         }
 
+        //********************************************************
+        //****************** get values of property
+        [HttpGet]
+        [Route("GetPropertyItems")]
+        public IHttpActionResult GetPropertyItems(int propertyId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            Boolean canDelete = false;
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var propertiesList = entity.propertiesItems.Where(p => p.propertyId == propertyId).Select(p => new PropertiesItemModel
+                    {
+                        propertyItemId = p.propertyItemId,
+                        propertyId = p.propertyId,
+                        propertyItemName = p.name,
+                        isDefault = p.isDefault,
+                        createDate = p.createDate,
+                        createUserId = p.createUserId,
+                        updateDate = p.updateDate,
+                        updateUserId = p.updateUserId,
+                        isActive = p.isActive,
+                    })
+                    .ToList();
+
+                    if (propertiesList.Count > 0)
+                    {
+                        for (int i = 0; i < propertiesList.Count; i++)
+                        {
+                            if (propertiesList[i].isActive == 1)
+                            {
+                                int propertyItemId = (int)propertiesList[i].propertyItemId;
+                                var Itemsprop = entity.itemsProp.Where(x => x.propertyItemId == propertyItemId).Select(b => new { b.itemPropId }).FirstOrDefault();
+
+                                if (Itemsprop is null)
+                                    canDelete = true;
+                            }
+                            propertiesList[i].canDelete = canDelete;
+                        }
+                    }
+
+                    if (propertiesList == null)
+                        return NotFound();
+                    else
+                        return Ok(propertiesList);
+                }
+            }
+            return NotFound();
+        }
         // GET api/<controller>
         [HttpGet]
         [Route("GetPropItemByID")]

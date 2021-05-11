@@ -468,5 +468,60 @@ namespace POS_Server.Controllers
             else
                 return NotFound();
         }
+
+        // get Get All branches or stores by type Without Main branch which has id=1  ;
+        #region
+        [HttpGet]
+        [Route("GetAllWithoutMain")]
+        public IHttpActionResult GetAllWithoutMain(string type)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+
+                    var branchesList = entity.branches
+                        .Where(b => b.type == type && b.branchId != 1)
+                   .Select(b => new {
+                       b.branchId,
+                       b.address,
+                       b.createDate,
+                       b.createUserId,
+                       b.email,
+                       b.mobile,
+                       b.name,
+                       b.code,
+                       b.notes,
+                       b.parentId,
+                       b.phone,
+                       b.updateDate,
+                       b.updateUserId,
+                       b.isActive,
+                       b.type
+                   })
+                   .ToList();
+
+                    if (branchesList == null)
+                        return NotFound();
+                    else
+                        return Ok(branchesList);
+
+                }
+            }
+            else
+                return NotFound();
+        }
+        #endregion
     }
 }

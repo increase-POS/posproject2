@@ -8,8 +8,8 @@ using System.Web.Http;
 
 namespace POS_Server.Controllers
 {
-    [RoutePrefix("api/serials")]
-    public class serialsController : ApiController
+    [RoutePrefix("api/servicesCosts")]
+    public class servicesCostsController : ApiController
     {
         // GET api/<controller>
         [HttpGet]
@@ -30,25 +30,25 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var serialsList = entity.serials
-                        .Where(S=> S.itemId == itemId)
+                    var servicesList = entity.servicesCosts
+                        .Where(S => S.itemId == itemId)
                     .Select(S => new
                     {
-                        S.serialId,
+                        S.costId,
+                        S.name,
                         S.itemId,
-                        S.serialNum,
-                        S.isActive,
-                        S.createUserId,
+                        S.costVal,
                         S.createDate,
-                        S.updateUserId,
                         S.updateDate,
+                        S.updateUserId,
+                        S.createUserId
                     })
                     .ToList();
 
-                    if (serialsList == null)
+                    if (servicesList == null)
                         return NotFound();
                     else
-                        return Ok(serialsList);
+                        return Ok(servicesList);
                 }
             }
             //else
@@ -57,7 +57,7 @@ namespace POS_Server.Controllers
         // add or update location
         [HttpPost]
         [Route("Save")]
-        public string Save(string serialObject)
+        public string Save(string serviceObject)
         {
             var re = Request;
             var headers = re.Headers;
@@ -72,34 +72,33 @@ namespace POS_Server.Controllers
 
             if (valid)
             {
-                serialObject = serialObject.Replace("\\", string.Empty);
-                serialObject = serialObject.Trim('"');
-                serials newObject = JsonConvert.DeserializeObject<serials>(serialObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                serviceObject = serviceObject.Replace("\\", string.Empty);
+                serviceObject = serviceObject.Trim('"');
+                servicesCosts newObject = JsonConvert.DeserializeObject<servicesCosts>(serviceObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
 
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-                        var serialEntity = entity.Set<serials>();
-                        if (newObject.serialId == 0)
+                        var serviceEntity = entity.Set<servicesCosts>();
+                        if (newObject.costId == 0)
                         {
                             newObject.createDate = DateTime.Now;
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
 
-                            serialEntity.Add(newObject);
-                            message = "Serial Is Added Successfully";
+                            serviceEntity.Add(newObject);
+                            message = "Service Is Added Successfully";
                         }
                         else
                         {
-                            var tmpSerial = entity.serials.Where(p => p.serialId == newObject.serialId).FirstOrDefault();
-                            tmpSerial.itemId = newObject.itemId;
-                            tmpSerial.serialNum = newObject.serialNum;
-                            tmpSerial.isActive = newObject.isActive;
+                            var tmpSerial = entity.servicesCosts.Where(p => p.costId == newObject.costId).FirstOrDefault();
+                            tmpSerial.name = newObject.name;
+                            tmpSerial.costVal = newObject.costVal;
                             tmpSerial.updateDate = DateTime.Now;
-                            tmpSerial.updateUserId = newObject.createUserId;
+                            tmpSerial.updateUserId = newObject.updateUserId;
 
-                            message = "Serial Is Updated Successfully";
+                            message = "Service Is Updated Successfully";
                         }
                         entity.SaveChanges();
                     }
@@ -115,7 +114,7 @@ namespace POS_Server.Controllers
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int serialId,  int userId, Boolean final)
+        public IHttpActionResult Delete(int costId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -129,42 +128,20 @@ namespace POS_Server.Controllers
             bool valid = validation.CheckApiKey(token);
             if (valid)
             {
-                if (final)
+                try
                 {
-                    try
+                    using (incposdbEntities entity = new incposdbEntities())
                     {
-                        using (incposdbEntities entity = new incposdbEntities())
-                        {
-                            serials serialObj = entity.serials.Find(serialId);
+                        servicesCosts serviceObj = entity.servicesCosts.Find(costId);
 
-                            entity.serials.Remove(serialObj);
-
-                            return Ok("Serial is Deleted Successfully");
-                        }
-                    }
-                    catch
-                    {
-                        return NotFound();
+                        entity.servicesCosts.Remove(serviceObj);
+                        entity.SaveChanges();
+                        return Ok("Service is Deleted Successfully");
                     }
                 }
-                else
+                catch
                 {
-                    try
-                    {
-                        using (incposdbEntities entity = new incposdbEntities())
-                        {
-                            serials serialObj = entity.serials.Find(serialId);
-
-                            serialObj.isActive = 0;
-                            entity.SaveChanges();
-
-                            return Ok("Serial is Deleted Successfully");
-                        }
-                    }
-                    catch
-                    {
-                        return NotFound();
-                    }
+                    return NotFound();
                 }
             }
             else

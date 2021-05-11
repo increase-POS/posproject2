@@ -206,5 +206,35 @@ namespace POS_Server.Controllers
             else
                 return NotFound();
         }
+
+        [HttpGet]
+        [Route("GetAllBarcodes")]
+        public IHttpActionResult GetAllBarcodes()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var barcods = entity.itemsUnits.Select(x => x.barcode).ToList();                                         
+
+                    if (barcods == null)
+                        return NotFound();
+                    else
+                        return Ok(barcods);
+                }
+            }
+            //else
+            return NotFound();
+        }
     }
 }
