@@ -630,7 +630,7 @@
                             Background="#4E4E4E" BorderBrush="{x:Null}"
                        Margin="1,0"    Content="Update"/>
                             <Button x:Name="btn_items" Grid.Row="1" Grid.ColumnSpan="2"
-                              Background="#4E4E4E" BorderBrush="{x:Null}"
+                              Background="#4E4E4E" BorderBrush="{x:Null}" Click="Btn_items_Click"
                         Margin="1,0"    Content="Items"/>
                         </Grid>
                     </Grid>

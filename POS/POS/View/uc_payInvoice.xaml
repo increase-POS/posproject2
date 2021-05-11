@@ -1014,13 +1014,24 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Vendor" x:Name="txt_vendor" Foreground="#737373"
                                  FontSize="10"      VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
                             <Separator Background="#999999"   Width="300"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
+                            <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
+                          Background="{x:Null}" BorderBrush="{x:Null}" 
+                    Margin="5,1"   ToolTip="clear">
+
+                                <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="20" Height="20"/>
+                            </Button>
+
                         </Grid>
+                        
                         <Grid  Grid.Row="1" >
                             <ComboBox x:Name="cb_vendor"  Grid.Row="1"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
@@ -1044,11 +1055,11 @@
                                                      Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
-                            <Button   Padding="0" Width="20" ToolTip="Clear Coupons"
+                            <Button   Padding="0" Width="20" ToolTip="تعديل بيانات المورد"
                           Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right"
                    Margin="0,0,5,0">
-                                <materialDesign:PackIcon Foreground="#178DD2" Kind="FileDocumentEdit"  
-                                  HorizontalAlignment="Center" Grid.Column="0"  ToolTip="تعديل بيانات المورد"
+                                <materialDesign:PackIcon Foreground="#4E4E4E" Kind="FileDocumentEdit"  
+                                  HorizontalAlignment="Center" Grid.Column="0"   
                              VerticalAlignment="Center" Width="17.5" Height="17.5"/>
                             </Button>
                         </Grid>
