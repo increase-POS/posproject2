@@ -228,28 +228,31 @@ namespace POS.Classes
             gridCatigorieItems.Children.Clear();
             int row = 0;
             int column = 0;
+            string isNewString = "";
             foreach (var item in items)
             {
                 //Visible
                 //    Collapsed
-
+                if (item.isNew == 1)
+                    isNewString = "Visible";
+                else isNewString = "Collapsed";
 
                 if (cardType == "sale")
                 {
                     if (language == "ar")
                         FN_createCatalogItem_ar(item.itemId, item.name, item.details
-                           , "0$", item.image, row, column, "Collapsed", "Collapsed");
+                           , "0$", item.image, row, column, isNewString, "Collapsed");
                     else FN_createCatalogItem(item.itemId, item.name, item.details
-                           , "0$", item.image, row, column, "Collapsed", "Collapsed");
+                           , "0$", item.image, row, column, isNewString, "Collapsed");
                 }
                 else
                 {
                     if (language == "ar")
                         FN_createCatalogItemtWithoutPrice_ar(item.itemId, item.name, item.details
-                           , "0$", item.image, row, column, "Collapsed", "Collapsed");
+                           , "0$", item.image, row, column, isNewString, "Collapsed");
                     else
                         FN_createCatalogItemtWithoutPrice(item.itemId, item.name, item.details
-                           , "0$", item.image, row, column, "Collapsed", "Collapsed");
+                           , "0$", item.image, row, column, isNewString, "Collapsed");
                 }
 
                 /*
