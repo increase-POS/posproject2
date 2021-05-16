@@ -8,7 +8,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
-        Title="wd_itemsList" Height="400" Width="550" Background="#00178DD2" >
+        Title="wd_itemsList" Height="400" Width="550" Background="#00178DD2" 
+        Loaded="Window_Loaded">
     <Grid Grid.Column="1" Grid.Row="1" Background="#00178DD2"  >
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -112,11 +113,8 @@
                           VerticalAlignment="Bottom"/>
                 <TextBlock Text="Items" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"
                            Foreground="#999999" FontWeight="SemiBold"  FontSize="16"/>
-                <ListBox Margin="10" Grid.Row="3" MouseDoubleClick="ListBox_MouseDoubleClick" BorderBrush="#999999" BorderThickness="1" >
-                    <ListBoxItem Content="تجربة قطعة 1" />
-                    <ListBoxItem Content="تجربة قطعة 2" />
-                    <ListBoxItem Content="تجربة قطعة 3" />
-                </ListBox>
+                <ListBox x:Name="lst_allItems"
+                    Margin="10" Grid.Row="3" MouseDoubleClick="Lst_allItems_MouseDoubleClick" BorderBrush="#999999" BorderThickness="1" />
                 <Grid Grid.Row="3" Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -166,13 +164,8 @@
                 </Grid>
                 <TextBlock Text="Selcted items" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"
                            Foreground="#999999" FontWeight="SemiBold"  FontSize="16"/>
-                <ListBox Margin="10" Grid.Row="3"  Grid.Column="4"  MouseDoubleClick="ListBox_MouseDoubleClick" BorderBrush="#999999" BorderThickness="1" >
-                    <ListBoxItem Content="تجربة قطعة 1" />
-                    <ListBoxItem Content="تجربة قطعة 2" />
-                    <ListBoxItem Content="تجربة قطعة 3" />
-                </ListBox>
-
-
+                <ListBox  x:Name="lst_selectedItems"
+                    Margin="10" Grid.Row="3"  Grid.Column="4"  MouseDoubleClick="Lst_selectedItems_MouseDoubleClick" BorderBrush="#999999" BorderThickness="1" />
 
                 <Button Content="Save" Grid.Row="5" Grid.ColumnSpan="5"
                         x:Name="btn_add" Margin="10,2.5"

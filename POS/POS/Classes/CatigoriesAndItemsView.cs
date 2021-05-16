@@ -1,4 +1,4 @@
-﻿using client_app.Classes;
+﻿using POS.Classes;
 using POS.controlTemplate;
 using POS.View;
 using System;

@@ -1,17 +1,13 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using POS;
-using POS.Classes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace client_app.Classes
+namespace POS.Classes
 {
     public class Category
     {
@@ -178,12 +174,8 @@ namespace client_app.Classes
                 return categories;
             }
         }
-
-
-        
-
-            public async Task<Category> GetCategoryByID(int posId)
-             {
+        public async Task<Category> GetCategoryByID(int categoryId)
+        {
             Category category = new Category();
 
             // ... Use HttpClient.
@@ -196,9 +188,8 @@ namespace client_app.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Category/GetCategoryByID");
+                request.RequestUri = new Uri(Global.APIUri + "Categories/GetCategoryByID?categoryId="+ categoryId);
                 request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("categoryId", categoryId.ToString());
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var response = await client.SendAsync(request);
@@ -214,7 +205,7 @@ namespace client_app.Classes
 
                 return category;
             }
-        }
+    }
 
         // Get Category Tree By ID
         public async Task<List<Category>> GetCategoryTreeByID(int categoryID)

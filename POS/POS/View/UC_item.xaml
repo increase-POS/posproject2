@@ -65,7 +65,33 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                               
+                                <Button  Grid.Column="1" Padding="0"
+                                    VerticalAlignment="Top" HorizontalAlignment="Left" 
+                            Margin="0" Height="20" x:Name="btn_test"
+                                           Content="Pos> " Background="{x:Null}"
+                                        BorderThickness="0"
+                          FontFamily="{StaticResource Font-cairo-light}" 
+                           Foreground="#6e6e6e"
+                                  FontWeight="Bold"  FontSize="11">
+                                </Button>
+                                <Button  Grid.Column="2" Padding="0"
+                                    VerticalAlignment="Top" HorizontalAlignment="Left" 
+                            Margin="0" Height="20" 
+                                           Content="Program> " Background="{x:Null}"
+                                        BorderThickness="0"
+                          FontFamily="{StaticResource Font-cairo-light}" 
+                           Foreground="#6e6e6e"
+                                 FontSize="11">
+                                </Button>
+                                <Button  Grid.Column="3" Padding="0"
+                                    VerticalAlignment="Top" HorizontalAlignment="Left" 
+                            Margin="0" Height="20"  
+                                           Content="CD  " Background="{x:Null}"
+                                        BorderThickness="0"
+                          FontFamily="{StaticResource Font-cairo-bold}" 
+                           Foreground="#178DD2"
+                                  FontWeight="Bold"  FontSize="11">
+                                </Button>
 
 
                             </Grid>
@@ -381,68 +407,8 @@
                                 <Path Fill="#E8E8E8" Stretch="Fill"
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"
-                              Data="M320.8,309.9c4.1,0,7.4,3.3,7.4,7.4s-3.3,7.4-7.4,7.4s-7.4-3.3-7.4-7.4S316.7,309.9,320.8,309.9z M330.2,354.7
-	c4-0.9,8,1.5,8.9,5.5c0.9,4-1.5,8-5.5,8.9c-4,0.9-8-1.5-8.9-5.5C323.8,359.6,326.2,355.6,330.2,354.7z M306.5,340.5
-	c1.6-3.8,5.9-5.6,9.7-4c3.8,1.6,5.6,5.9,4,9.7c-1.6,3.8-5.9,5.6-9.7,4S304.9,344.3,306.5,340.5z M257,257.3v157.2h94
-	c34.9,0,63.2-28.3,63.2-63.2v-94H257z M378.4,336.6c-3,3.9-8.4,5.2-12.8,2.9c-6.1-3.2-11.4-1.6-13.2,2.2s-0.4,9.6,7.4,14
-	c4.1,2.4,6.1,7.3,4.8,11.9c-1.9,7.4-10.3,14.9-28.9,14.9c-25.7,0-46.5-20.8-46.5-46.5s20.8-46.5,46.5-46.5
-	c14.9-0.1,29,6.6,38.3,18.2C384.3,320.8,383.2,331.3,378.4,336.6z M341.6,308.4c2.9-2.9,7.6-2.9,10.5,0c2.9,2.9,2.9,7.6,0,10.5
-	c-2.9,2.9-7.6,2.9-10.5,0S338.7,311.3,341.6,308.4z M171.8,184.6c-1.5,0-2.7,1.2-2.7,2.7s1.2,2.7,2.7,2.7s2.7-1.2,2.7-2.7
-	C174.6,185.8,173.4,184.6,171.8,184.6z M166.3,165.3h-5.8l-9.2,11.2h-0.1v-11.2H146v24.6h5.2v-7.5l2.3-2.8l7.2,10.3h6.2l-9.7-13.7
-	L166.3,165.3z M179.8,137.3c0-4.9-4-8.9-8.9-8.9s-8.9,4-8.9,8.9v8.9h17.9v-8.9H179.8z M149,85.5c-34.9,0-63.2,28.3-63.2,63.2v94H243
-	V85.5H149z M213.2,213.2h-84.8c-1.2,0-2.2-1-2.2-2.2c0-0.1,0-0.2,0.1-0.3l0,0l8.9-62.5l0,0c0.2-1.1,1-1.9,2.2-1.9h11.2v-8.9
-	c0-12.3,10-22.3,22.3-22.3s22.3,10,22.3,22.3v8.9h11.2c1.1,0,2,0.8,2.2,1.9l0,0l8.9,62.5l0,0c0,0.1,0.1,0.2,0.1,0.3
-	C215.5,212.2,214.5,213.2,213.2,213.2z M188.5,180.5h5.3v0.4c-0.1,3.1-2.4,5.1-5.8,5.1c-4.1,0-6.7-3.3-6.7-8.6
-	c0-5.2,2.4-8.3,6.5-8.3c2.8,0,4.9,1.5,5.6,4.1h5.2c-0.7-5-5.1-8.3-10.8-8.3c-7.2,0-11.7,4.8-11.7,12.6c0,8,4.5,12.8,11.8,12.8
-	c6.9,0,10.9-4.1,10.9-10.8v-2.8h-10.4L188.5,180.5L188.5,180.5z M168.7,352.8c0.1-0.3,0-56.8,0-57.1c0-1.6-1.3-2.8-2.8-2.8
-	c-1.6,0-2.8,1.3-2.8,2.8c0,0.3,0,56.8,0,57.1c-13.2,3.2-11,23.1,2.8,23.1C179.6,376,181.9,356.1,168.7,352.8z M85.8,257.3v94
-	c0,34.9,28.3,63.2,63.2,63.2h94V257.3H85.8z M165.9,385.7c-20.5,0.1-29.3-26.9-12.7-38.8v-54.1c0.3-6.6,5.5-11.9,12.2-12.2
-	c7-0.3,12.9,5.2,13.1,12.2V347C195.2,358.8,186.3,385.9,165.9,385.7z M195.3,341.7h-10.8c-1,0-1.9-0.8-1.9-1.9c0-1,0.8-1.9,1.9-1.9
-	h10.8c1,0,1.9,0.8,1.9,1.9C197.2,340.8,196.3,341.7,195.3,341.7z M195.3,333.8h-10.8c-1,0-1.9-0.8-1.9-1.9c0-1,0.8-1.9,1.9-1.9h10.8
-	c1,0,1.9,0.8,1.9,1.9S196.3,333.8,195.3,333.8z M195.3,326h-10.8c-1,0-1.9-0.8-1.9-1.9c0-1,0.8-1.9,1.9-1.9h10.8
-	c1,0,1.9,0.8,1.9,1.9S196.3,326,195.3,326z M195.3,318.2h-10.8c-1,0-1.9-0.8-1.9-1.9c0-1,0.8-1.9,1.9-1.9h10.8c1,0,1.9,0.8,1.9,1.9
-	C197.2,317.3,196.3,318.2,195.3,318.2z M195.3,310.3h-10.8c-1,0-1.9-0.8-1.9-1.9c0-1,0.8-1.9,1.9-1.9h10.8c1,0,1.9,0.8,1.9,1.9
-	C197.2,309.4,196.3,310.3,195.3,310.3z M195.3,302.5h-10.8c-1,0-1.9-0.9-1.8-1.9c0-1,0.9-1.9,1.9-1.8h10.8c1,0,1.9,0.8,1.9,1.9
-	C197.2,301.7,196.3,302.5,195.3,302.5z M329,159.6c-0.3-0.3-0.7-0.3-1,0s-0.3,0.7,0,1s0.6,0.6,0.9,0.9c0.7,0.7,1.3,1.3,2,2
-	c0.2,0.2,0.6,0.2,0.8,0.2c0.2-0.1,0.4-0.4,0.5-0.6c-0.1-0.3-0.2-0.4-0.3-0.6C331,161.5,330,160.6,329,159.6z M314.5,174.3
-	c-0.1-0.1-0.4-0.2-0.6-0.4c-0.2,0.2-0.5,0.3-0.6,0.5s0,0.6,0.2,0.8c0.9,1,1.9,1.9,2.8,2.8c0.4,0.3,0.8,0.4,1.1,0.1
-	c0.3-0.3,0.3-0.7-0.1-1.1C316.3,176.1,315.4,175.2,314.5,174.3z M310.8,178c-0.2-0.2-0.4-0.2-0.6-0.4c-0.2,0.2-0.5,0.3-0.6,0.5
-	c-0.1,0.3,0,0.7,0.2,0.9c0.9,1,1.8,1.9,2.8,2.8c0.4,0.4,0.8,0.4,1.1,0.1c0.3-0.3,0.3-0.7-0.1-1.1C312.7,179.8,311.7,178.9,310.8,178
-	z M324.9,161.8c-0.6-0.6-1.4-0.7-2-0.1c-0.6,0.6-0.6,1.4,0.1,2c0.7,0.7,1.4,1.4,2,2c0.9,0.9,1.9,1.9,2.8,2.8
-	c0.4,0.4,0.9,0.5,1.5,0.3c0.5-0.2,0.8-0.7,0.8-1.4c-0.1-0.2-0.2-0.6-0.5-0.8C328.1,165,326.5,163.4,324.9,161.8z M321.8,167
-	c-0.2-0.2-0.4-0.2-0.7-0.4c-0.2,0.2-0.5,0.3-0.6,0.5c-0.2,0.3-0.1,0.6,0.2,0.9c0.9,0.9,1.9,1.9,2.8,2.8c0.4,0.4,0.8,0.4,1.1,0.1
-	c0.3-0.3,0.3-0.7-0.1-1.1C323.7,168.8,322.7,167.9,321.8,167z M321,173.4c-1-1-1.9-1.9-2.9-2.9c-0.3-0.3-0.7-0.3-1,0s-0.4,0.7-0.1,1
-	c1,1,2,2,3,3c0.1,0.1,0.5,0.2,0.7,0.1c0.2-0.1,0.3-0.4,0.5-0.5c-0.1-0.2-0.1-0.3-0.1-0.4C321.1,173.6,321,173.5,321,173.4z
-	 M306.5,180.1c-0.2-0.2-0.6-0.3-0.8-0.4c-0.8,0-1.2,0.3-1.4,0.8c-0.2,0.5-0.1,1.1,0.3,1.5c1.6,1.7,3.3,3.3,4.9,4.9
-	c0.6,0.6,1.4,0.5,1.9,0s0.6-1.3,0-1.9C309.8,183.3,308.2,181.7,306.5,180.1z M288.2,198.4c-0.2-0.2-0.6-0.4-0.8-0.4
-	c-0.8,0-1.2,0.3-1.4,0.8c-0.2,0.6-0.1,1.1,0.3,1.5c1.6,1.6,3.3,3.3,4.9,4.9c0.6,0.6,1.4,0.6,1.9,0s0.5-1.4-0.1-1.9
-	C291.5,201.7,289.9,200,288.2,198.4z M296.2,192.6c-0.4-0.4-0.8-0.4-1.1-0.1c-0.3,0.3-0.3,0.7,0.1,1.1c0.9,0.9,1.8,1.8,2.8,2.8
-	c0.1,0.1,0.4,0.2,0.6,0.4c0.2-0.2,0.6-0.3,0.6-0.5c0.1-0.3,0-0.7-0.2-0.9C298.1,194.4,297.1,193.5,296.2,192.6z M292.5,196.2
-	c-0.4-0.4-0.8-0.4-1.1-0.1c-0.3,0.3-0.3,0.7,0,1.1c0.4,0.4,0.8,0.8,1.2,1.3c0.5,0.5,1,1.1,1.6,1.6c0.2,0.2,0.6,0.2,0.8,0.2
-	c0.2-0.1,0.3-0.4,0.5-0.6c-0.2-0.3-0.2-0.5-0.4-0.7C294.4,198.1,293.4,197.2,292.5,196.2z M299.7,188.8c-0.3-0.3-0.7-0.3-1,0
-	s-0.3,0.7,0,1c0.2,0.2,0.4,0.4,0.6,0.6c0.8,0.8,1.5,1.6,2.3,2.3c0.2,0.2,0.6,0.2,0.8,0.2c0.2-0.1,0.4-0.4,0.5-0.6
-	c-0.1-0.3-0.2-0.4-0.3-0.6C301.7,190.8,300.7,189.8,299.7,188.8z M303.4,185.1c-0.3-0.3-0.7-0.2-1,0c-0.3,0.3-0.3,0.7-0.1,1
-	c1,1,2,2,3.1,3c0.1,0.1,0.5,0.1,0.7,0.1c0.2-0.1,0.3-0.4,0.5-0.6c-0.1-0.2-0.1-0.4-0.3-0.5C305.4,187.1,304.4,186.1,303.4,185.1z
-	 M347.3,141.3c-0.3-0.3-0.7-0.3-1,0s-0.4,0.7-0.1,1c1,1,2,2,3,3c0.2,0.1,0.5,0.2,0.7,0.1c0.2-0.1,0.3-0.3,0.5-0.5
-	c-0.1-0.3-0.2-0.5-0.3-0.6C349.3,143.2,348.3,142.2,347.3,141.3z M361.5,125.1c-0.6-0.6-1.4-0.5-1.9,0s-0.5,1.3,0,1.9
-	c1.6,1.7,3.3,3.3,4.9,4.9c0.2,0.2,0.6,0.3,0.7,0.4c0.8,0,1.2-0.3,1.4-0.8c0.2-0.5,0.1-1-0.3-1.5
-	C364.8,128.4,363.2,126.7,361.5,125.1z M354.6,133.9c-0.3-0.3-0.7-0.2-1,0c-0.3,0.3-0.3,0.7-0.1,1c1,1,2,2,3,3
-	c0.1,0.1,0.5,0.2,0.7,0.1c0.2-0.1,0.3-0.4,0.5-0.6c-0.1-0.2-0.1-0.4-0.3-0.5C356.6,135.9,355.6,134.9,354.6,133.9z M358.3,130.3
-	c-0.3-0.3-0.7-0.3-1,0s-0.3,0.7,0,1c0.2,0.2,0.4,0.4,0.6,0.6c0.8,0.8,1.5,1.6,2.3,2.3c0.2,0.2,0.6,0.2,0.8,0.2
-	c0.2-0.1,0.4-0.4,0.5-0.6c-0.1-0.2-0.2-0.4-0.3-0.6C360.3,132.2,359.3,131.2,358.3,130.3z M351,85.5h-94v157.2h157.2v-94
-	C414.2,113.8,385.9,85.5,351,85.5z M384.6,144.2c-0.2,0.7-0.6,1.4-1.1,1.9c-25.3,25.3-75.9,75.9-75.9,75.9l-0.6,0.6
-	c-1.2,1.1-3,1.1-4.1,0l-0.9-0.8c0,0-11.3-11.3-16.9-16.9c-0.7-0.7-1.5-1.4-1.8-2.5c0-0.3-0.1-0.5-0.1-0.8c0.1-1.3,0.9-2.1,1.8-2.9
-	c25.1-25,50.1-50.1,75.1-75.2c0.7-0.7,1.4-1.4,2.5-1.6c0.4,0,0.7,0,1.1,0c1,0.3,1.8,1.1,2.5,1.8c5.6,5.6,11.3,11.3,16.9,16.9
-	c0.8,0.8,1.5,1.5,1.6,2.6C384.6,143.6,384.6,143.9,384.6,144.2z M332.7,156c-0.1-0.1-0.3-0.2-0.6-0.4c-0.2,0.2-0.5,0.3-0.6,0.6
-	c-0.1,0.2,0,0.6,0.2,0.8c0.9,1,1.9,1.9,2.8,2.8c0.4,0.4,0.8,0.4,1.1,0.1c0.3-0.3,0.3-0.7,0-1.1C334.6,157.8,333.7,156.9,332.7,156z
-	 M370.1,133.9c-1.4,0-2.5,1.1-2.5,2.5s1.2,2.5,2.6,2.5s2.5-1.1,2.5-2.5S371.5,133.8,370.1,133.9z M336.4,152.3
-	c-0.1-0.1-0.4-0.2-0.6-0.4c-0.2,0.2-0.5,0.3-0.6,0.6c-0.2,0.3,0,0.6,0.2,0.9c0.9,0.9,1.8,1.8,2.8,2.8c0.4,0.4,0.8,0.4,1.1,0.1
-	c0.3-0.3,0.3-0.7-0.1-1.1C338.3,154.2,337.4,153.2,336.4,152.3z M340.1,148.6c-0.1-0.1-0.3-0.2-0.6-0.3c-0.2,0.2-0.5,0.3-0.6,0.6
-	c-0.1,0.2,0,0.6,0.2,0.8c0.9,1,1.9,1.9,2.8,2.8c0.4,0.4,0.8,0.4,1.1,0c0.3-0.3,0.3-0.7-0.1-1.1C342,150.5,341,149.6,340.1,148.6z
-	 M343.2,143.4c-0.2-0.2-0.5-0.3-0.7-0.4c-0.6-0.1-1.2,0.1-1.5,0.7c-0.3,0.5-0.2,1.1,0.2,1.6c1,1,2,2,3,3c0.6,0.6,1.3,1.3,1.9,1.9
-	c0.4,0.4,0.9,0.5,1.4,0.3s0.8-0.6,0.8-1.4c-0.1-0.2-0.2-0.5-0.5-0.8C346.5,146.6,344.9,145,343.2,143.4z M351.1,137.7
-	c-0.1-0.1-0.4-0.2-0.6-0.4c-0.2,0.2-0.6,0.3-0.6,0.5c-0.1,0.3,0,0.7,0.2,0.8c0.9,1,1.8,1.9,2.8,2.8c0.4,0.4,0.8,0.4,1.1,0.1
-	c0.3-0.3,0.3-0.7-0.1-1.1C352.9,139.5,352,138.6,351.1,137.7z"/>
+                              Data="M7,4v40h34V4H7z M17,38h-4v-4h4V38z M17,30h-4v-4h4V30z M17,22h-4v-4h4V22z M17,14h-4v-4h4V14z M35,38H21v-4h14
+	V38z M35,30H21v-4h14V30z M35,22H21v-4h14V22z M35,14H21v-4h14V14z"/>
                                 <TextBlock x:Name="txt_properties" Text="Properties"  Foreground="#E8E8E8"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="5"/>
@@ -480,7 +446,7 @@
                     <Grid>
                         <!--////////////////////////////////  Item Data ////////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                      x:Name="grid_itemData" Visibility="Visible" >
+                      x:Name="grid_itemData" Visibility="Collapsed" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="40"/>
@@ -564,7 +530,7 @@
                                         <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5"
                                  Grid.Row="2" BorderThickness="1"  materialDesign:HintAssist.Hint="Name..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="#f8f8f8" MaxLength="20" LostFocus="tb_name_LostFocus" TextChanged="Tb_name_TextChanged"
+                                 BorderBrush="#f8f8f8" MaxLength="100" LostFocus="tb_name_LostFocus" TextChanged="Tb_name_TextChanged"
                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
 
                          HorizontalAlignment="Left" VerticalAlignment="Center" 
@@ -624,17 +590,33 @@
                                     <Grid  Grid.Row="1">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="55"/>
+                                            <ColumnDefinition Width="30"/>
+
                                         </Grid.ColumnDefinitions>
                                         <ComboBox x:Name="cb_parentItem"  Grid.Row="2"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
                              materialDesign:HintAssist.Hint="Select Parent Item "  
                            TextBlock.FontSize="12"   Background="#f8f8f8"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
+                Grid.Column="0" Height="35" Width="260"  Margin="10,5,5,5"
                            BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_parentItem_SelectionChanged">
 
                                         </ComboBox>
+                                        <TextBlock Text="Is Defult" Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                   Margin="5"/>
+                                        <CheckBox Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,5,5"/>
 
+
+                                        <!--<WrapPanel Grid.Column="1"  Height="35" Width="50" Background="#f8f8f8" HorizontalAlignment="Left"  VerticalAlignment="Center"
+                                   Margin="5,5,0,5" >
+
+                                            <TextBlock  Text ="Is Default" x:Name="tb_isDefaultSale0s"  Foreground="#4E4E4E" VerticalAlignment="Center"
+                                        Margin="0,5" Padding="10,5,5,5"/>
+                                            <CheckBox  x:Name="tbtn_isDefaultSale1s" VerticalAlignment="Center" Padding="10,15,5,5"
+                                          Margin="5,5,0,0" Height="14" Width="28"  />
+
+                                        </WrapPanel>-->
                                         <Path Fill="#E81123" x:Name="p_errorParentItem" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -654,7 +636,7 @@
                            TextBlock.FontSize="12"   Background="#f8f8f8" 
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="1" Height="35" Width="340"  Margin="10,5" LostFocus="Cb_categorie_LostFocus"
-                           BorderBrush="#737373" BorderThickness="0">
+                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_categorie_SelectionChanged_1">
 
                                         </ComboBox>
                                         <Path Fill="#E81123" x:Name="p_errorCategorie" Stretch="Fill" Margin="5,5,15,5"
@@ -696,7 +678,7 @@
                                                 Package items
                                             </ListBoxItem>
                                         </ComboBox>
-                                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                        <Path x:Name="p_errorType" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -793,7 +775,7 @@
                 Grid.Column="1" Height="35" Width="160"  Margin="10,5"
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" SelectionChanged="Cb_minUnit_SelectionChanged" />
-                                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                        <Path x:Name="p_errorMinUnit" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -840,7 +822,7 @@
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" SelectionChanged="Cb_maxUnit_SelectionChanged" />
 
-                                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                        <Path x:Name="p_errorMaxUnit" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -1225,7 +1207,7 @@
                         </Grid>
                         <!--////////////////////////////////////    Barcode    ////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                      x:Name="dg_barcode"  Visibility="Collapsed" >
+                      x:Name="dg_barcode"  Visibility="Visible" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="7.5"/>
                                 <RowDefinition Height="auto"/>
@@ -1343,12 +1325,12 @@
                           Height="35" Width="350"  Margin="5,5"
                            BorderBrush="#737373" BorderThickness="0" >
                                 </ComboBox>
-                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                <Path x:Name="p_errorSelectUnit" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                     <Path.ToolTip>
-                                        <ToolTip   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        <ToolTip x:Name="tt_errorSelectUnit"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                     </Path.ToolTip>
                                 </Path>
                             </Grid>
@@ -1421,12 +1403,12 @@
                      HorizontalAlignment="Left" VerticalAlignment="Top" 
                   Height="35" Width="170"  Margin="5,5,0,0" />
 
-                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                    <Path x:Name="p_errorCount" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                         <Path.ToolTip>
-                                            <ToolTip   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                            <ToolTip  x:Name="tt_errorCount" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                         </Path.ToolTip>
                                     </Path>
                                 </Grid>
@@ -1442,12 +1424,12 @@
                           Height="35" Width="170"  Margin="5,5"
                            BorderBrush="#737373" BorderThickness="0" >
                                     </ComboBox>
-                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                    <Path x:Name="p_errorUnit" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                         <Path.ToolTip>
-                                            <ToolTip   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                            <ToolTip  x:Name="tt_errorUnit"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                         </Path.ToolTip>
                                     </Path>
                                 </Grid>
@@ -1466,12 +1448,12 @@
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35" Width="350"  Margin="5,5" >
                                 </TextBox>
-                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                <Path x:Name="p_errorPrice" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                     <Path.ToolTip>
-                                        <ToolTip   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        <ToolTip x:Name="tt_errorPrice"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                     </Path.ToolTip>
                                 </Path>
                             </Grid>
@@ -1487,12 +1469,12 @@
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35" Width="350"  Margin="5,5" KeyDown="tb_barcode_Generate" TextChanged="tb_barcode_TextChanged">
                                 </TextBox>
-                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                <Path x:Name="p_errorBarcode" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                     <Path.ToolTip>
-                                        <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        <ToolTip x:Name="tt_errorBarcode"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                     </Path.ToolTip>
                                 </Path>
                             </Grid>

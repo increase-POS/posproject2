@@ -1,5 +1,4 @@
-﻿using client_app.Classes;
-using POS.Classes;
+﻿using POS.Classes;
 using POS.controlTemplate;
 using System;
 using System.Collections.Generic;
@@ -198,12 +197,12 @@ namespace POS.View
             cb_itemType.SelectedIndex = 0;
             cb_minUnit.SelectedIndex = 0;
             cb_maxUnit.SelectedIndex = 0;
-            generateBarcode();
+            generateBarcode("",true);
         }
 
-        private void generateBarcode(string barcodeString="")
+        private void generateBarcode(string barcodeString, Boolean defaultBarcode)
         {
-            if(barcodeString == "")
+            if(barcodeString == "" && defaultBarcode)
             {
                 barcodeString = generateRandomBarcode();
                 if (barcodesList != null)
@@ -212,18 +211,21 @@ namespace POS.View
                     if (exist == true)
                         barcodeString = generateRandomBarcode();
                 }
-                tb_barcode.Text = barcodeString;
+                tb_barcode.Text += barcodeString;
             }
-            tb_barcode.Text = barcodeString;
+            //tb_barcode.Text += barcodeString;
             // create encoding object
             Zen.Barcode.Code128BarcodeDraw barcode = Zen.Barcode.BarcodeDrawFactory.Code128WithChecksum;
 
-            System.Drawing.Bitmap serial_bitmap = (System.Drawing.Bitmap)barcode.Draw(barcodeString, 60);
-            System.Drawing.ImageConverter ic = new System.Drawing.ImageConverter();
-            //generate bitmap
-            img_barcode.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(serial_bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            
-
+            if (barcodeString != "")
+            {
+                System.Drawing.Bitmap serial_bitmap = (System.Drawing.Bitmap)barcode.Draw(barcodeString, 60);
+                System.Drawing.ImageConverter ic = new System.Drawing.ImageConverter();
+                //generate bitmap
+                img_barcode.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(serial_bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            }
+            else
+                img_barcode.Source = null;
         }
 
         static public string generateRandomBarcode()
@@ -306,112 +308,300 @@ namespace POS.View
         // add item with basic information 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            Nullable<int> categoryId = null;
-            if (cb_categorie.SelectedIndex != -1)
-                categoryId = (int)cb_categorie.SelectedValue;
+            //check mandatory values
+            var bc = new BrushConverter();
+            if (tb_code.Text.Equals(""))
+            {
+                p_errorCode.Visibility = Visibility.Visible;
+                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_code.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorCode.Visibility = Visibility.Collapsed;
+                tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (tb_name.Text.Equals(""))
+            {
+                p_errorName.Visibility = Visibility.Visible;
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (cb_categorie.SelectedIndex == -1)
+            {
+                p_errorCategorie.Visibility = Visibility.Visible;
+                tt_categorie.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                cb_categorie.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorCategorie.Visibility = Visibility.Collapsed;
+                cb_categorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (cb_itemType.SelectedIndex == -1)
+            {
+                p_errorType.Visibility = Visibility.Visible;
+                tt_errorType.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                cb_itemType.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorType.Visibility = Visibility.Collapsed;
+                cb_itemType.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (cb_minUnit.SelectedIndex == -1)
+            {
+                p_errorMinUnit.Visibility = Visibility.Visible;
+                tt_errorMinUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                cb_minUnit.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorMinUnit.Visibility = Visibility.Collapsed;
+                cb_minUnit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (cb_maxUnit.SelectedIndex == -1)
+            {
+                p_errorMaxUnit.Visibility = Visibility.Visible;
+                tt_errorMaxUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                cb_maxUnit.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorMaxUnit.Visibility = Visibility.Collapsed;
+                cb_maxUnit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (tb_min.Text.Equals(""))
+            {
+                p_errorMin.Visibility = Visibility.Visible;
+                tt_errorMin.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_min.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorMin.Visibility = Visibility.Collapsed;
+                tb_min.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (tb_max.Text.Equals(""))
+            {
+                p_errorMax.Visibility = Visibility.Visible;
+                tt_errorMax.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_max.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorMax.Visibility = Visibility.Collapsed;
+                tb_max.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1 
+                && cb_minUnit.SelectedIndex != -1 && cb_maxUnit.SelectedIndex != -1 && !tb_min.Text.Equals("") && !tb_max.Text.Equals(""))
+            {
+                Nullable<int> categoryId = null;
+                if (cb_categorie.SelectedIndex != -1)
+                    categoryId = (int)cb_categorie.SelectedValue;
 
-            Nullable<int> parentId = null;
-            if (cb_parentItem.SelectedIndex != -1)
-                parentId = (int)cb_parentItem.SelectedValue;
+                Nullable<int> parentId = null;
+                if (cb_parentItem.SelectedIndex != -1)
+                    parentId = (int)cb_parentItem.SelectedValue;
 
-            int min = 0;
-            int max = 0;
-            decimal taxes = 0;
-           
-            if (tb_min.Text != "")
-                min = int.Parse(tb_min.Text);
-            if (tb_max.Text != "")
-                max = int.Parse(tb_max.Text);
-            if (tb_taxes.Text != "")
-                taxes = decimal.Parse(tb_taxes.Text);
+                int min = 0;
+                int max = 0;
+                decimal taxes = 0;
 
-            Nullable<int> minUnitId = null;
-            if (cb_minUnit.SelectedIndex != -1)
-                minUnitId = units[cb_minUnit.SelectedIndex].unitId;
+                if (tb_min.Text != "")
+                    min = int.Parse(tb_min.Text);
+                if (tb_max.Text != "")
+                    max = int.Parse(tb_max.Text);
+                if (tb_taxes.Text != "")
+                    taxes = decimal.Parse(tb_taxes.Text);
 
-            Nullable<int> maxUnitId = null;
-            if (cb_maxUnit.SelectedIndex != -1)
-                maxUnitId = units[cb_maxUnit.SelectedIndex].unitId;
+                Nullable<int> minUnitId = null;
+                if (cb_minUnit.SelectedIndex != -1)
+                    minUnitId = units[cb_minUnit.SelectedIndex].unitId;
 
-            item.code = tb_code.Text;
-            item.name = tb_name.Text;
-            item.details = tb_details.Text;
-            item.type = selectedType;
-            item.image = "";
-            item.taxes = taxes;
-            item.isActive = 1;
-            item.min = min;
-            item.max = max;
-            item.categoryId = categoryId;
-            item.parentId = parentId;
-            item.createUserId = MainWindow.userID;
-            item.updateUserId = MainWindow.userID;
-            item.minUnitId = minUnitId;
-            item.maxUnitId = maxUnitId;
+                Nullable<int> maxUnitId = null;
+                if (cb_maxUnit.SelectedIndex != -1)
+                    maxUnitId = units[cb_maxUnit.SelectedIndex].unitId;
 
-           string res = await itemModel.saveItem(item);
-            if (res.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                item.code = tb_code.Text;
+                item.name = tb_name.Text;
+                item.details = tb_details.Text;
+                item.type = selectedType;
+                item.image = "";
+                item.taxes = taxes;
+                item.isActive = 1;
+                item.min = min;
+                item.max = max;
+                item.categoryId = categoryId;
+                item.parentId = parentId;
+                item.createUserId = MainWindow.userID;
+                item.updateUserId = MainWindow.userID;
+                item.minUnitId = minUnitId;
+                item.maxUnitId = maxUnitId;
 
-            var items = await itemModel.GetAllItems();
-            dg_items.ItemsSource = items;
-            
-            btn_clear_Click(sender, e);
+                string res = await itemModel.saveItem(item);
+                if (res.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                var items = await itemModel.GetAllItems();
+                dg_items.ItemsSource = items;
+
+                btn_clear_Click(sender, e);
+            }
 
         }
 
         //update item
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {
-            Nullable<int> categoryId = null;
-            if (cb_categorie.SelectedIndex != -1)
-                categoryId = (int)cb_categorie.SelectedValue;
+            //check mandatory values
+            var bc = new BrushConverter();
+            if (tb_code.Text.Equals(""))
+            {
+                p_errorCode.Visibility = Visibility.Visible;
+                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_code.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorCode.Visibility = Visibility.Collapsed;
+                tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (tb_name.Text.Equals(""))
+            {
+                p_errorName.Visibility = Visibility.Visible;
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (cb_categorie.SelectedIndex == -1)
+            {
+                p_errorCategorie.Visibility = Visibility.Visible;
+                tt_categorie.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                cb_categorie.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorCategorie.Visibility = Visibility.Collapsed;
+                cb_categorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (cb_itemType.SelectedIndex == -1)
+            {
+                p_errorType.Visibility = Visibility.Visible;
+                tt_errorType.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                cb_itemType.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorType.Visibility = Visibility.Collapsed;
+                cb_itemType.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (cb_minUnit.SelectedIndex == -1)
+            {
+                p_errorMinUnit.Visibility = Visibility.Visible;
+                tt_errorMinUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                cb_minUnit.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorMinUnit.Visibility = Visibility.Collapsed;
+                cb_minUnit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (cb_maxUnit.SelectedIndex == -1)
+            {
+                p_errorMaxUnit.Visibility = Visibility.Visible;
+                tt_errorMaxUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                cb_maxUnit.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorMaxUnit.Visibility = Visibility.Collapsed;
+                cb_maxUnit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (tb_min.Text.Equals(""))
+            {
+                p_errorMin.Visibility = Visibility.Visible;
+                tt_errorMin.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_min.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorMin.Visibility = Visibility.Collapsed;
+                tb_min.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (tb_max.Text.Equals(""))
+            {
+                p_errorMax.Visibility = Visibility.Visible;
+                tt_errorMax.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_max.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorMax.Visibility = Visibility.Collapsed;
+                tb_max.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1
+                && cb_minUnit.SelectedIndex != -1 && cb_maxUnit.SelectedIndex != -1 && !tb_min.Text.Equals("") && !tb_max.Text.Equals(""))
+            {
+                Nullable<int> categoryId = null;
+                if (cb_categorie.SelectedIndex != -1)
+                    categoryId = (int)cb_categorie.SelectedValue;
 
-            Nullable<int> parentId = null;
-            if (cb_parentItem.SelectedIndex != -1)
-                parentId = (int)cb_parentItem.SelectedValue;
+                Nullable<int> parentId = null;
+                if (cb_parentItem.SelectedIndex != -1)
+                    parentId = (int)cb_parentItem.SelectedValue;
 
-            int min = 0;
-            int max = 0;
-            decimal taxes = 0;
+                int min = 0;
+                int max = 0;
+                decimal taxes = 0;
 
-            if (tb_min.Text != "")
-                min = int.Parse(tb_min.Text);
-            if (tb_max.Text != "")
-                max = int.Parse(tb_max.Text);
-            if (tb_taxes.Text != "")
-                taxes = decimal.Parse(tb_taxes.Text);
+                if (tb_min.Text != "")
+                    min = int.Parse(tb_min.Text);
+                if (tb_max.Text != "")
+                    max = int.Parse(tb_max.Text);
+                if (tb_taxes.Text != "")
+                    taxes = decimal.Parse(tb_taxes.Text);
 
-            Nullable<int> minUnitId = null;
-            if (cb_minUnit.SelectedIndex != -1)
-                minUnitId = units[cb_minUnit.SelectedIndex].unitId;
+                Nullable<int> minUnitId = null;
+                if (cb_minUnit.SelectedIndex != -1)
+                    minUnitId = units[cb_minUnit.SelectedIndex].unitId;
 
-            Nullable<int> maxUnitId = null;
-            if (cb_maxUnit.SelectedIndex != -1)
-                maxUnitId = units[cb_maxUnit.SelectedIndex].unitId;
+                Nullable<int> maxUnitId = null;
+                if (cb_maxUnit.SelectedIndex != -1)
+                    maxUnitId = units[cb_maxUnit.SelectedIndex].unitId;
 
-            item.itemId = item.itemId;
-            item.code = tb_code.Text;
-            item.name = tb_name.Text;
-            item.details = tb_details.Text;
-            item.type = selectedType;
-            item.image = "";
-            item.taxes = taxes;
-            item.min = min;
-            item.max = max;
-            item.categoryId = categoryId;
-            item.parentId = parentId;
-            item.updateUserId = MainWindow.userID;
-            item.minUnitId = minUnitId;
-            item.maxUnitId = maxUnitId;
-            // };
+                item.itemId = item.itemId;
+                item.code = tb_code.Text;
+                item.name = tb_name.Text;
+                item.details = tb_details.Text;
+                item.type = selectedType;
+                item.image = "";
+                item.taxes = taxes;
+                item.min = min;
+                item.max = max;
+                item.categoryId = categoryId;
+                item.parentId = parentId;
+                item.updateUserId = MainWindow.userID;
+                item.minUnitId = minUnitId;
+                item.maxUnitId = maxUnitId;
+                // };
 
-            string res = await itemModel.saveItem(item);
-            if (res.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                string res = await itemModel.saveItem(item);
+                if (res.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-            var items = await itemModel.GetAllItems();
-            dg_items.ItemsSource = items;
+                var items = await itemModel.GetAllItems();
+                dg_items.ItemsSource = items;
+            }
         }
 
         #region barcode
@@ -419,94 +609,203 @@ namespace POS.View
         // add barcode to item
         async void Btn_addBarcode_Click(object sender, RoutedEventArgs e)
         {
-            Nullable<int> unitId = null;
-            if (cb_selectUnit.SelectedIndex != -1)
-                unitId = units[cb_selectUnit.SelectedIndex].unitId;
+            //check mandatory values
+            var bc = new BrushConverter();
+            if (cb_selectUnit.SelectedIndex == -1)
+            {
+                p_errorSelectUnit.Visibility = Visibility.Visible;
+                tt_errorSelectUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                cb_selectUnit.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorSelectUnit.Visibility = Visibility.Collapsed;
+                cb_selectUnit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (tb_count.Text.Equals(""))
+            {
+                p_errorCount.Visibility = Visibility.Visible;
+                tt_errorCount.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_count.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorCount.Visibility = Visibility.Collapsed;
+                tb_count.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (cb_unit.SelectedIndex == -1)
+            {
+                p_errorUnit.Visibility = Visibility.Visible;
+                tt_errorUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                cb_unit.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorUnit.Visibility = Visibility.Collapsed;
+                cb_unit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (tb_price.Text.Equals(""))
+            {
+                p_errorPrice.Visibility = Visibility.Visible;
+                tt_errorPrice.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_price.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorPrice.Visibility = Visibility.Collapsed;
+                tb_price.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (tb_barcode.Text.Equals(""))
+            {
+                p_errorBarcode.Visibility = Visibility.Visible;
+                tt_errorBarcode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_barcode.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorBarcode.Visibility = Visibility.Collapsed;
+                tb_barcode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
+            {
+                Nullable<int> unitId = null;
+                if (cb_selectUnit.SelectedIndex != -1)
+                    unitId = units[cb_selectUnit.SelectedIndex].unitId;
 
-            short defaultBurchase = 0;
-            if (tbtn_isDefaultPurchases.IsChecked == true)
-                defaultBurchase = 1;
+                short defaultBurchase = 0;
+                if (tbtn_isDefaultPurchases.IsChecked == true)
+                    defaultBurchase = 1;
 
-            short defaultSale = 0;
-            if (tbtn_isDefaultSales.IsChecked == true)
-                defaultSale = 1;
+                short defaultSale = 0;
+                if (tbtn_isDefaultSales.IsChecked == true)
+                    defaultSale = 1;
 
-            decimal unitValue = 0;
-            if (tb_count.Text != "")
-                unitValue = decimal.Parse(tb_count.Text);
+                decimal unitValue = 0;
+                if (tb_count.Text != "")
+                    unitValue = decimal.Parse(tb_count.Text);
 
-            Nullable<int> smallUnitId = null;
-            if (cb_unit.SelectedIndex != -1)
-                smallUnitId = units[cb_unit.SelectedIndex].unitId;
+                Nullable<int> smallUnitId = null;
+                if (cb_unit.SelectedIndex != -1)
+                    smallUnitId = units[cb_unit.SelectedIndex].unitId;
 
-            decimal price = 0;
-            if (tb_price.Text != "")
-                price = decimal.Parse(tb_price.Text);
+                decimal price = 0;
+                if (tb_price.Text != "")
+                    price = decimal.Parse(tb_price.Text);
 
-            string barcode = tb_barcode.Text;
+                string barcode = tb_barcode.Text;
 
-            itemUnit.itemId = item.itemId;
-            itemUnit.unitId = unitId;
-            itemUnit.unitValue = unitValue;
-            itemUnit.subUnitId = smallUnitId;
-            itemUnit.defaultSale = defaultSale;
-            itemUnit.defaultPurchase = defaultBurchase;
-            itemUnit.price = price;
-            itemUnit.barcode = barcode;
-            itemUnit.createUserId = MainWindow.userID;
+                itemUnit.itemId = item.itemId;
+                itemUnit.unitId = unitId;
+                itemUnit.unitValue = unitValue;
+                itemUnit.subUnitId = smallUnitId;
+                itemUnit.defaultSale = defaultSale;
+                itemUnit.defaultPurchase = defaultBurchase;
+                itemUnit.price = price;
+                itemUnit.barcode = barcode;
+                itemUnit.createUserId = MainWindow.userID;
 
-            string res = await itemUnit.saveItemUnit(itemUnit);
-            if (res.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                string res = await itemUnit.saveItemUnit(itemUnit);
+                if (res.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-            refreshItemUnitsGrid(item.itemId);
-            Btn_unitClear(sender,e);
+                refreshItemUnitsGrid(item.itemId);
+                Btn_unitClear(sender, e);
+            }
         }
         //**********************************************
         //**************update barcode******************
         async void Btn_updateBarcode_Click(object sender, RoutedEventArgs e)
         {
-            Nullable<int> unitId = null;
-            if (cb_selectUnit.SelectedIndex != -1)
-                unitId = units[cb_selectUnit.SelectedIndex].unitId;
+            //check mandatory values
+            var bc = new BrushConverter();
+            if (tb_count.Text.Equals(""))
+            {
+                p_errorCount.Visibility = Visibility.Visible;
+                tt_errorCount.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_count.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorCount.Visibility = Visibility.Collapsed;
+                tb_count.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (cb_unit.SelectedIndex == -1)
+            {
+                p_errorUnit.Visibility = Visibility.Visible;
+                tt_errorUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                cb_unit.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorUnit.Visibility = Visibility.Collapsed;
+                cb_unit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (tb_price.Text.Equals(""))
+            {
+                p_errorPrice.Visibility = Visibility.Visible;
+                tt_errorPrice.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_price.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorPrice.Visibility = Visibility.Collapsed;
+                tb_price.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (tb_barcode.Text.Equals(""))
+            {
+                p_errorBarcode.Visibility = Visibility.Visible;
+                tt_errorBarcode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_barcode.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorBarcode.Visibility = Visibility.Collapsed;
+                tb_barcode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
+            {
+                Nullable<int> unitId = null;
+                if (cb_selectUnit.SelectedIndex != -1)
+                    unitId = units[cb_selectUnit.SelectedIndex].unitId;
 
-            short defaultBurchase = 0;
-            if (tbtn_isDefaultPurchases.IsChecked == true)
-                defaultBurchase = 1;
+                short defaultBurchase = 0;
+                if (tbtn_isDefaultPurchases.IsChecked == true)
+                    defaultBurchase = 1;
 
-            short defaultSale = 0;
-            if (tbtn_isDefaultSales.IsChecked == true)
-                defaultSale = 1;
+                short defaultSale = 0;
+                if (tbtn_isDefaultSales.IsChecked == true)
+                    defaultSale = 1;
 
-            decimal unitValue = 0;
-            if (tb_count.Text != "")
-                unitValue = decimal.Parse(tb_count.Text);
+                decimal unitValue = 0;
+                if (tb_count.Text != "")
+                    unitValue = decimal.Parse(tb_count.Text);
 
-            Nullable<int> smallUnitId = null;
-            if (cb_unit.SelectedIndex != -1)
-                smallUnitId = units[cb_unit.SelectedIndex].unitId;
+                Nullable<int> smallUnitId = null;
+                if (cb_unit.SelectedIndex != -1)
+                    smallUnitId = units[cb_unit.SelectedIndex].unitId;
 
-            decimal price = 0;
-            if (tb_price.Text != "")
-                price = decimal.Parse(tb_price.Text);
+                decimal price = 0;
+                if (tb_price.Text != "")
+                    price = decimal.Parse(tb_price.Text);
 
-            string barcode = tb_barcode.Text;
+                string barcode = tb_barcode.Text;
 
-            itemUnit.itemId = item.itemId;
-            itemUnit.unitId = unitId;
-            itemUnit.unitValue = unitValue;
-            itemUnit.subUnitId = smallUnitId;
-            itemUnit.defaultSale = defaultSale;
-            itemUnit.defaultPurchase = defaultBurchase;
-            itemUnit.price = price;
-            itemUnit.barcode = barcode;
-            itemUnit.createUserId = MainWindow.userID;
+                itemUnit.itemId = item.itemId;
+                itemUnit.unitId = unitId;
+                itemUnit.unitValue = unitValue;
+                itemUnit.subUnitId = smallUnitId;
+                itemUnit.defaultSale = defaultSale;
+                itemUnit.defaultPurchase = defaultBurchase;
+                itemUnit.price = price;
+                itemUnit.barcode = barcode;
+                itemUnit.createUserId = MainWindow.userID;
 
-            string res = await itemUnit.saveItemUnit(itemUnit);
-            if (res.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                string res = await itemUnit.saveItemUnit(itemUnit);
+                if (res.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-            refreshItemUnitsGrid(item.itemId);
+                refreshItemUnitsGrid(item.itemId);
+            }
         }
         //**********************************************
         //**************delete barcode******************
@@ -576,15 +875,15 @@ namespace POS.View
         }
         private void btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            tb_code.Text = "";
-            tb_name.Text = "";
-            tb_details.Text = "";
+            tb_code.Clear();
+            tb_name.Clear();
+            tb_details.Clear();
             cb_parentItem.SelectedIndex = -1;
             cb_categorie.SelectedIndex = -1;
             cb_itemType.SelectedIndex = -1;
-            tb_taxes.Text = "";
-            tb_min.Text = "";
-            tb_max.Text = "";
+            tb_taxes.Clear();
+            tb_min.Clear();
+            tb_max.Clear();
             cb_minUnit.SelectedIndex = -1;
             cb_maxUnit.SelectedIndex = -1;
             item = new Item();
@@ -608,10 +907,9 @@ namespace POS.View
             cb_unit.SelectedIndex = -1;
             tb_price.Text = "";
 
-            // set random barcode on image
-            generateBarcode();  
-
             itemUnit = new ItemUnit();
+            // set random barcode on image
+            generateBarcode("",true);            
         }
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -1059,6 +1357,7 @@ namespace POS.View
                 else
                     cb_itemType.SelectedValue = -1;
 
+                tb_taxes.Text = item.taxes.ToString();
                 tb_min.Text = item.min.ToString();
                 tb_max.Text = item.max.ToString();
                
@@ -1084,16 +1383,21 @@ namespace POS.View
         }
         private  void tb_barcode_Generate(object sender, KeyEventArgs e)
         {
-            if (e.Key.ToString() == "Return")
-            {
-                string barCode = tb_barcode.Text;
-                generateBarcode(barCode);
-            }
+            TextBox tb = (TextBox)sender;
+            string barCode = "";
+            if (e.Key.ToString() == "Return" && !tb.Text.Equals(""))
+                barCode = tb_barcode.Text;
+              
+            generateBarcode(barCode,false);
         }
         private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string barCode = tb_barcode.Text;
-            generateBarcode(barCode);
+            TextBox tb = (TextBox)sender;
+            string barCode = "";
+            if (!tb.Text.Equals(""))
+                barCode = tb_barcode.Text;
+
+            generateBarcode(barCode,false);
         }
 
         private void dg_unit_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1131,7 +1435,7 @@ namespace POS.View
                 tb_barcode.Text = itemUnit.barcode;
 
                 // drawing barcode on image
-                generateBarcode(itemUnit.barcode);
+                generateBarcode(itemUnit.barcode,false);
             }
         }
         private void dg_propertiesSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1245,6 +1549,17 @@ namespace POS.View
                 else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
                 refreshServicesGrid(item.itemId);
+            }
+        }
+
+        async void Cb_categorie_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+             Category cat = new Category();
+            if (cb_parentItem.SelectedIndex == -1 && cb_categorie.SelectedIndex != -1)
+            {
+                int catId = (int)cb_categorie.SelectedValue;
+                cat = await categoryModel.GetCategoryByID(catId);
+                tb_taxes.Text = cat.taxes.ToString();
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using client_app.Classes;
-using POS.Classes;
+﻿using POS.Classes;
 using POS.controlTemplate;
 using System;
 using System.Collections.Generic;
