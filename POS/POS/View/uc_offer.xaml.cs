@@ -205,6 +205,15 @@ namespace POS.View
             wd_itemsList w = new wd_itemsList();
             w.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#00178DD2"));
             w.ShowDialog();
+            if (w.isActive)
+            {
+                foreach (var item in w.selectedItems)
+                {
+                    MessageBox.Show(item.name + "\t");
+
+                }
+            }
+           
             (((this.Parent as Grid).Parent as Grid).Parent as UserControl).Opacity =1;
         }
     }

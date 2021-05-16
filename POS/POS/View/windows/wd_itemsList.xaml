@@ -113,8 +113,11 @@
                           VerticalAlignment="Bottom"/>
                 <TextBlock Text="Items" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"
                            Foreground="#999999" FontWeight="SemiBold"  FontSize="16"/>
-                <ListBox x:Name="lst_allItems"
-                    Margin="10" Grid.Row="3" MouseDoubleClick="Lst_allItems_MouseDoubleClick" BorderBrush="#999999" BorderThickness="1" />
+                <Border Grid.Row="3"  Margin="10"   BorderBrush="#999999" BorderThickness="1">
+                    <ListView x:Name="lst_allItems" 
+                    MouseDoubleClick="Lst_allItems_MouseDoubleClick" />
+                </Border>
+                
                 <Grid Grid.Row="3" Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -127,7 +130,7 @@
                     
                     
                     <Button Margin="2.5,7.5" Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center"
-                                    Height="25" Width="25"  Padding="0"
+                                    Height="25" Width="25"  Padding="0" x:Name="btn_selectedAll" Click="Btn_selectedAll_Click"
                                      Foreground="#686868"     Background="#DFDFDF"   BorderThickness="0">
                         <Path Fill="#686868" Stretch="Fill" 
                               HorizontalAlignment="Center" Grid.Column="0"  
@@ -135,8 +138,8 @@
                               Data="M7.6,2.8v8.4c0,0.3-0.2,0.5-0.5,0.5c-0.3,0-0.5-0.2-0.5-0.5V2.8c0-0.3,0.2-0.5,0.5-0.5C7.4,2.3,7.6,2.5,7.6,2.8
 	z M6.4,6.4l-3-3.9c-0.2-0.3-0.6,0-0.6,0.6v7.9c0,0.6,0.3,1,0.6,0.6l3-3.9C6.6,7.3,6.6,6.7,6.4,6.4z"/>
                     </Button>
-                    <Button Margin="2.5,7.5" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center"
-                                    Height="25" Width="25"  Padding="0"
+                    <Button  Margin="2.5,7.5" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center"
+                                    Height="25" Width="25"  Padding="0" x:Name="btn_selectedItem" Click="Btn_selectedItem_Click"
                                      Foreground="#686868"     Background="#DFDFDF"   BorderThickness="0">
                         <Path Fill="#686868" Stretch="Fill" 
                               HorizontalAlignment="Center" Grid.Column="0"  
@@ -145,7 +148,7 @@
                     </Button>
                   
                     <Button Margin="2.5,7.5" Grid.Column="4" Grid.Row="3" HorizontalAlignment="Center"
-                                    Height="25" Width="25"  Padding="0"
+                                    Height="25" Width="25"  Padding="0" x:Name="btn_unSelectedItem" Click="Btn_unSelectedItem_Click"
                                      Foreground="#686868"     Background="#DFDFDF"   BorderThickness="0">
                         <Path Fill="#686868" Stretch="Fill" 
                               HorizontalAlignment="Center" Grid.Column="0"  
@@ -153,9 +156,9 @@
                               Data="M6.3,11.6c0.2,0.3,0.6,0,0.6-0.6L6.8,3.1c0-0.6-0.3-1-0.6-0.6l-3,3.9c-0.2,0.4-0.2,1,0,1.3L6.3,11.6z"/>
                     </Button>
                     <Button Margin="2.5,7.5" Grid.Column="4" Grid.Row="4" HorizontalAlignment="Center"
-                                    Height="25" Width="25"  Padding="0"
+                                    Height="25" Width="25"  Padding="0" x:Name="btn_unSelectedAll" Click="Btn_unSelectedAll_Click"
                                      Foreground="#686868"     Background="#DFDFDF"   BorderThickness="0">
-                        <Path Fill="#686868" Stretch="Fill" 
+                        <Path Fill="#686868" Stretch="Fill"  
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="12" Height="12"
                               Data="M2.9,11.3l0-8.5c0-0.3,0.2-0.5,0.4-0.5c0.3,0,0.5,0.2,0.5,0.5l0,8.5c0,0.3-0.2,0.5-0.5,0.5
@@ -164,11 +167,14 @@
                 </Grid>
                 <TextBlock Text="Selcted items" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"
                            Foreground="#999999" FontWeight="SemiBold"  FontSize="16"/>
-                <ListBox  x:Name="lst_selectedItems"
-                    Margin="10" Grid.Row="3"  Grid.Column="4"  MouseDoubleClick="Lst_selectedItems_MouseDoubleClick" BorderBrush="#999999" BorderThickness="1" />
+                <Border  Margin="10" Grid.Row="3"  Grid.Column="4"  BorderBrush="#999999" BorderThickness="1"  >
+                    <ListView  x:Name="lst_selectedItems"
+                     MouseDoubleClick="Lst_selectedItems_MouseDoubleClick"/>
+                </Border>
+                
 
                 <Button Content="Save" Grid.Row="5" Grid.ColumnSpan="5"
-                        x:Name="btn_add" Margin="10,2.5"
+                       Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"
                           Background="#178DD2" BorderBrush="{x:Null}"  />
             </Grid>
             

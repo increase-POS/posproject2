@@ -19,7 +19,7 @@ namespace POS.Classes
 
         //public string language  { get; set; }
         public uc_categorie ucCategorie;
-        public UC_item ucCategorieItem;
+        public UC_item ucItem;
         public uc_payInvoice ucPayInvoice;
 
         public Grid gridCatigories;
@@ -58,13 +58,12 @@ namespace POS.Classes
         {
             if (ucCategorie != null)
             {
-                //ucCategorie.testChangeCategorieIdEvent(_idCatigories);
                 ucCategorie.ChangeCategorieIdEvent(idCatigories);
 
             }
-            else if (ucCategorieItem != null)
+            else if (ucItem != null)
             {
-                //ucCategorieItem.testChangeCategorieIdEvent();
+                ucItem.ChangeCategoryIdEvent(idCatigories);
             }
             else  if (ucPayInvoice != null)
             {
@@ -79,14 +78,9 @@ namespace POS.Classes
         private void INotifyPropertyChangedIdCatigorieItems()
         {
 
-            if (ucCategorie != null)
+             if (ucItem != null)
             {
-                //ucCategorie.testChangeCategorieItemsIdEvent();
-
-            }
-            else if (ucCategorieItem != null)
-            {
-                //ucCategorieItem.testChangeCategorieItemsIdEvent();
+                ucItem.ChangeItemIdEvent(idItem);
             }
             else if (ucPayInvoice != null)
             {

@@ -40,7 +40,10 @@ namespace POS.View
         Serial serialModel = new Serial();
         ItemUnit itemUnitModel = new ItemUnit();
         Service serviceModel = new Service();
-
+        IEnumerable<Category> categoriesQuery;
+        IEnumerable<Item> items;
+        IEnumerable<Item> itemsQuery;
+        Category category = new Category();
         // item object
         Item item = new Item();
         //item property value object
@@ -53,7 +56,8 @@ namespace POS.View
         Service service = new Service();
         string selectedType = "" ;
 
-        int selectedCategoryId = 0 , selectedMinUnitId = 0 , selectedMaxUnitId = 0;
+
+        DataGrid dt = new DataGrid();
 
         List<int> categoryIds = new List<int>();
         List<string> categoryNames = new List<string>();
@@ -66,6 +70,13 @@ namespace POS.View
         List<ItemUnit> itemUnits;
         List<Service> services;
         List<string> barcodesList;
+        public byte tglCategoryState = 1;
+        public byte tglItemState;
+        int? categoryParentId = 0;
+        public string txtItemSearch;
+
+        List<int> unitIds = new List<int>();
+        List<string> unitNames = new List<string>();
 
         static private int _InternalCounter = 0;
         public UC_item()
@@ -138,34 +149,11 @@ namespace POS.View
 
         }
 
-        private void Btn_ItemsInCards_Click(object sender, RoutedEventArgs e)
-        {
-            grid_itemsDatagrid.Visibility = Visibility.Collapsed;
-            grid_ItemsCard.Visibility = Visibility.Visible;
-        }
-
-        private void Btn_ItemsInGrid_Click(object sender, RoutedEventArgs e)
-        {
-            grid_ItemsCard.Visibility = Visibility.Collapsed;
-            grid_itemsDatagrid.Visibility = Visibility.Visible;
-        }
+       
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            catigoriesAndItemsView.ucCategorieItem = this;
-
-            #region Generate catigorie
-            catigoriesAndItemsView.gridCatigories = Grid_categorie;
-            //Categorie categorie = new Categorie();
-            //catigoriesAndItemsView.FN_refrishCatalogCard(categorie.getCategories());
-            #endregion
-
-
-            #region Generate catigorieItems
-            catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
-            //CategorieItem CategorieItem = new CategorieItem();
-            //catigoriesAndItemsView.FN_refrishCatalogItem(CategorieItem.getCategorieItems(), MainWindow.lang, "sale");
-            #endregion
+            catigoriesAndItemsView.ucItem = this;
 
 
             if (MainWindow.lang.Equals("en"))
@@ -178,6 +166,10 @@ namespace POS.View
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucItem.FlowDirection = FlowDirection.RightToLeft;
             }
+            await RefrishItems();
+            await RefrishCategories();
+            Txb_searchitems_TextChanged(null, null);
+
 
             translate();
             fillCategories();           
@@ -185,8 +177,8 @@ namespace POS.View
             fillProperties();
             fillBarcodeList();
 
-            var items = await itemModel.GetAllItems();
-            dg_items.ItemsSource = items;
+            //items = await itemModel.GetAllItems();
+            //dg_items.ItemsSource = items;
             // fill parent items
             cb_parentItem.ItemsSource = items.ToList();
             cb_parentItem.SelectedValuePath = "itemId";
@@ -269,42 +261,8 @@ namespace POS.View
         //3Service
         //4Package items
 
-        private void CB_type_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-           if (cb_itemType.SelectedIndex == 2)
-            {
-                grid_service.Visibility = Visibility.Collapsed;
-                grid_serial.Visibility = Visibility.Visible;
-                line_topService.Visibility = Visibility.Collapsed;
-
-
-            }
-            else if(cb_itemType.SelectedIndex == 3)
-            {
-                grid_serial.Visibility = Visibility.Collapsed;
-                grid_service.Visibility = Visibility.Visible;
-                line_topService.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                grid_serial.Visibility = Visibility.Collapsed;
-                grid_service.Visibility = Visibility.Collapsed;
-                line_topService.Visibility = Visibility.Visible;
-            }
-
-            switch (cb_itemType.SelectedIndex)
-            {
-                case 0: selectedType = "n"; break;
-                case 1: selectedType = "d"; break;
-                case 2: selectedType = "sn"; break;
-                case 3: selectedType = "sr"; break;
-                case 4: selectedType = "p"; break;
-            }
-
-
-
-        }
-
+       
+        #region add update delete 
         // add item with basic information 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
@@ -398,7 +356,7 @@ namespace POS.View
                 p_errorMax.Visibility = Visibility.Collapsed;
                 tb_max.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
-            if (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1 
+            if (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1
                 && cb_minUnit.SelectedIndex != -1 && cb_maxUnit.SelectedIndex != -1 && !tb_min.Text.Equals("") && !tb_max.Text.Equals(""))
             {
                 Nullable<int> categoryId = null;
@@ -448,9 +406,10 @@ namespace POS.View
                 if (res.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
                 else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-                var items = await itemModel.GetAllItems();
-                dg_items.ItemsSource = items;
-
+                //var items = await itemModel.GetAllItems();
+                //dg_items.ItemsSource = items;
+                await RefrishItems();
+                Txb_searchitems_TextChanged(null, null);
                 btn_clear_Click(sender, e);
             }
 
@@ -599,10 +558,242 @@ namespace POS.View
                 if (res.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
                 else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-                var items = await itemModel.GetAllItems();
-                dg_items.ItemsSource = items;
+                await RefrishItems();
+                Txb_searchitems_TextChanged(null,null);
+                //var items = await itemModel.GetAllItems();
+                //dg_items.ItemsSource = items;
             }
         }
+        async void Btn_deleteService_Click(object sender, RoutedEventArgs e)
+        {
+            if (service.costId != 0)
+            {
+                Boolean res = await serviceModel.delete(service.costId);
+
+                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                refreshServicesGrid(item.itemId);
+
+                tb_serviceName.Clear();
+                tb_costVal.Clear();
+            }
+        }
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {//delete
+            if ((!item.canDelete) && (item.isActive == 0))
+                activate();
+            else
+            {
+                string popupContent = "";
+                if (item.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                if ((!item.canDelete) && (item.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                int userId = (int)MainWindow.userID;
+                Boolean res = await itemModel.deleteItem(item.itemId, userId, item.canDelete);
+
+                if (res) SectionData.popUpResponse("", popupContent);
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            }
+
+            var items = await itemModel.GetAllItems();
+            dg_items.ItemsSource = items;
+
+            // tb_search_TextChanged(null, null);
+
+            //clear textBoxs
+            btn_clear_Click(sender, e);
+
+        }
+        private async void activate()
+        {//activate
+
+            item.isActive = 1;
+
+            string s = await itemModel.saveItem(item);
+
+            if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+        }
+
+        async void Btn_addProperties_Click(object sender, RoutedEventArgs e)
+        {
+            if (cb_value.SelectedValue == null)
+            {
+                p_errorValue.Visibility = Visibility.Visible;
+                tt_errorValue.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorValue.Visibility = Visibility.Collapsed;
+            }
+            if (cb_value.SelectedValue != null && item.itemId > 0)
+            {
+                int propertyItemId = propItems[cb_value.SelectedIndex].propertyItemId;
+                int itemId = (int)item.itemId;
+
+                // check if property assigned previously to item
+                Boolean exist = itemsProp.Any(x => x.propertyItemId == propertyItemId && x.itemId == itemId);
+
+                if (!exist)
+                {
+                    ItemsProp itemspropObj = new ItemsProp();
+                    itemspropObj.propertyItemId = propItems[cb_value.SelectedIndex].propertyItemId;
+                    itemspropObj.itemId = itemId;
+                    itemspropObj.updateUserId = MainWindow.userID;
+                    itemspropObj.createUserId = MainWindow.userID;
+
+                    Boolean res = await itemsPropModel.Save(itemspropObj);
+                    if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                    else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                    refreshPropertiesGrid(itemId);
+                }
+                cb_value.SelectedIndex = -1;
+                cb_selectProperties.SelectedIndex = -1;
+            }
+        }
+        // add service to item
+        async void Btn_addService_Click(object sender, RoutedEventArgs e)
+        {
+            if (tb_serviceName.Text.Equals(""))
+            {
+                p_errorServiceName.Visibility = Visibility.Visible;
+                tt_errorServiceName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorServiceName.Visibility = Visibility.Collapsed;
+            }
+            if (tb_costVal.Text.Equals(""))
+            {
+                p_errorCostVal.Visibility = Visibility.Visible;
+                tt_errorCostVal.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorCostVal.Visibility = Visibility.Collapsed;
+            }
+            if (!tb_serviceName.Text.Equals("") && !tb_costVal.Text.Equals(""))
+            {
+                service = new Service();
+                service.name = tb_serviceName.Text;
+                service.itemId = item.itemId;
+                service.costVal = decimal.Parse(tb_costVal.Text);
+                service.createUserId = MainWindow.userID;
+                service.updateUserId = MainWindow.userID;
+
+                Boolean res = await serviceModel.saveService(service);
+                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                refreshServicesGrid(item.itemId);
+
+                tb_serviceName.Clear();
+                tb_costVal.Clear();
+            }
+        }
+        // add serial to item
+        async void Btn_addSerial_Click(object sender, RoutedEventArgs e)
+        {
+            if (tb_serial.Text.Equals(""))
+            {
+                p_errorSerial.Visibility = Visibility.Visible;
+                tt_errorSerial.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorSerial.Visibility = Visibility.Collapsed;
+            }
+            if (!tb_serial.Text.Equals(""))
+            {
+                Boolean exist = false;
+                if (itemSerials != null)
+                    exist = itemSerials.Any(x => x.serialNum == tb_serial.Text && x.itemId == item.itemId);
+
+                if (!exist)
+                {
+                    Serial serial = new Serial();
+                    serial.serialNum = tb_serial.Text;
+                    serial.itemId = item.itemId;
+                    serial.isActive = 1;
+
+                    Boolean res = await serialModel.saveSerial(serial);
+
+                    if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                    else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                    // refresh  serials grid
+                    refreshSerials(item.itemId);
+                }
+                tb_serial.Clear();
+            }
+        }
+        async void Btn_deleteProperties_Click(object sender, RoutedEventArgs e)
+        {
+            if (itemProp.itemPropId != 0)
+            {
+                int propertyItemId = (int)itemProp.propertyItemId;
+                int itemId = item.itemId;
+
+                Boolean res = await itemsPropModel.Delete(itemProp.itemPropId);
+
+                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                refreshPropertiesGrid(item.itemId);
+            }
+        }
+        async void Btn_deleteSerial_Click(object sender, RoutedEventArgs e)
+        {
+            if (serial.serialId != 0)
+            {
+                Boolean final = false;
+                if (serial.isActive == 1)
+                    final = true;
+                Boolean res = await serialModel.delete(serial.serialId, (int)MainWindow.userID, final);
+
+                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                refreshSerials(item.itemId);
+            }
+        }
+        async void Btn_updateService_Click(object sender, RoutedEventArgs e)
+        {
+            if (tb_serviceName.Text.Equals(""))
+            {
+                p_errorServiceName.Visibility = Visibility.Visible;
+                tt_errorServiceName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorServiceName.Visibility = Visibility.Collapsed;
+            }
+            if (tb_costVal.Text.Equals(""))
+            {
+                p_errorCostVal.Visibility = Visibility.Visible;
+                tt_errorCostVal.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+            }
+            else
+            {
+                p_errorCostVal.Visibility = Visibility.Collapsed;
+            }
+            if (!tb_serviceName.Text.Equals("") && !tb_costVal.Text.Equals("") && item != null)
+            {
+                service.name = tb_serviceName.Text;
+                service.costVal = decimal.Parse(tb_costVal.Text);
+                service.updateUserId = MainWindow.userID;
+                Boolean res = await serviceModel.saveService(service);
+                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                refreshServicesGrid(item.itemId);
+            }
+        }
+
+
+        #endregion
 
         #region barcode
         //*****************************************8
@@ -821,96 +1012,29 @@ namespace POS.View
                 refreshItemUnitsGrid(item.itemId);
             }
         }
+
+
+        private void tb_barcode_Generate(object sender, KeyEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            string barCode = "";
+            if (e.Key.ToString() == "Return" && !tb.Text.Equals(""))
+                barCode = tb_barcode.Text;
+
+            generateBarcode(barCode, false);
+        }
+        private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            string barCode = "";
+            if (!tb.Text.Equals(""))
+                barCode = tb_barcode.Text;
+
+            generateBarcode(barCode, false);
+        }
         #endregion barcode
-        async void Btn_deleteService_Click(object sender, RoutedEventArgs e)
-        {
-            if(service.costId != 0)
-            {
-                Boolean res = await serviceModel.delete(service.costId);
 
-                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
-                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-
-                refreshServicesGrid(item.itemId);
-
-                tb_serviceName.Clear();
-                tb_costVal.Clear();
-            }
-        }
-        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
-        {//delete
-            if ((!item.canDelete) && (item.isActive == 0))
-                activate();
-            else
-            {
-                string popupContent = "";
-                if (item.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                if ((!item.canDelete) && (item.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-                int userId = (int)MainWindow.userID;
-                Boolean res = await itemModel.deleteItem(item.itemId,userId, item.canDelete);
-
-                if (res) SectionData.popUpResponse("", popupContent);
-                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-            }
-
-            var items = await itemModel.GetAllItems();
-            dg_items.ItemsSource = items;
-
-           // tb_search_TextChanged(null, null);
-
-            //clear textBoxs
-            btn_clear_Click(sender, e);
-
-        }
-        private async void activate()
-        {//activate
-
-            item.isActive = 1;
-
-            string s = await itemModel.saveItem(item);
-
-            if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-
-        }
-        private void btn_clear_Click(object sender, RoutedEventArgs e)
-        {//clear
-            tb_code.Clear();
-            tb_name.Clear();
-            tb_details.Clear();
-            cb_parentItem.SelectedIndex = -1;
-            cb_categorie.SelectedIndex = -1;
-            cb_itemType.SelectedIndex = -1;
-            tb_taxes.Clear();
-            tb_min.Clear();
-            tb_max.Clear();
-            cb_minUnit.SelectedIndex = -1;
-            cb_maxUnit.SelectedIndex = -1;
-            item = new Item();
-        }
-        private void btn_clearPropertiesClick(object sender, RoutedEventArgs e)
-        {
-            cb_selectProperties.SelectedIndex = -1;
-            cb_value.SelectedIndex = -1;
-            tb_serial.Text = "";
-            tb_serial.Clear();
-            tb_serviceName.Clear();
-            tb_costVal.Clear();
-            itemProp = new ItemsProp();
-        }
-        private void Btn_unitClear(object sender, RoutedEventArgs e)
-        {
-            cb_selectUnit.SelectedIndex = -1;
-            tbtn_isDefaultPurchases.IsChecked = false;
-            tbtn_isDefaultSales.IsChecked = false;
-            tb_count.Text = "";
-            cb_unit.SelectedIndex = -1;
-            tb_price.Text = "";
-
-            itemUnit = new ItemUnit();
-            // set random barcode on image
-            generateBarcode("",true);            
-        }
+        #region validate
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -978,25 +1102,6 @@ namespace POS.View
                 tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
         }
-
-        //private void Cb_parentItem_LostFocus(object sender, RoutedEventArgs e)
-        //{
-        //    var bc = new BrushConverter();
-
-        //    if (cb_parentItem.Text.Equals(""))
-        //    {
-        //        p_errorParentItem.Visibility = Visibility.Visible;
-        //        tt_errorParentItem.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-        //        cb_parentItem.Background = (Brush)bc.ConvertFrom("#15FF0000");
-        //    }
-        //    else
-        //    {
-        //        p_errorParentItem.Visibility = Visibility.Collapsed;
-        //        cb_parentItem.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-        //    }
-        //}
-
-
         private void Cb_categorie_LostFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -1014,7 +1119,7 @@ namespace POS.View
             }
         }
 
-        
+
         private void Tb_min_LostFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -1048,7 +1153,7 @@ namespace POS.View
                 tb_max.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
         }
-       
+
         private void Tb_taxes_LostFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -1066,23 +1171,35 @@ namespace POS.View
             }
         }
 
-        private void Cb_categorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            //selectedCategoryId = categoryIds[cb_categorie.SelectedIndex];
+            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                e.Handled = false;
+
+            else
+                e.Handled = true;
         }
-
-       
-
-        DataGrid dt = new DataGrid();
-        async void fillCategories()
+        private void tb_upperLimit_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            categories = await categoryModel.GetAllCategories();
+            e.Handled = e.Key == Key.Space;
+        }
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+        #endregion
+
+
+        #region fill
+         void fillCategories()
+        {
+            //categories = await categoryModel.GetAllCategories();
             cb_categorie.ItemsSource = categories.ToList();
             cb_categorie.SelectedValuePath = "categoryId";
             cb_categorie.DisplayMemberPath = "name";
         }
-        List<int> unitIds = new List<int>();
-        List<string> unitNames = new List<string>();
         private async void fillUnits()
         {
             units = await unitModel.GetUnitsAsync();
@@ -1104,7 +1221,7 @@ namespace POS.View
         }
         async void fillProperties()
         {
-             properties = await propertyModel.getProperty();
+            properties = await propertyModel.getProperty();
             cb_selectProperties.ItemsSource = properties.ToList();
             cb_selectProperties.SelectedValuePath = "propertyId";
             cb_selectProperties.DisplayMemberPath = "name";
@@ -1113,137 +1230,59 @@ namespace POS.View
         {
             barcodesList = await itemUnitModel.getAllBarcodes();
         }
-        private void Cb_minUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-           // selectedMinUnitId  = unitIds[cb_minUnit.SelectedIndex];
+
+        #endregion
+
+
+
+
+
+        #region refresh
+
+        private void btn_clear_Click(object sender, RoutedEventArgs e)
+        {//clear
+            tb_code.Clear();
+            tb_name.Clear();
+            tb_details.Clear();
+            cb_parentItem.SelectedIndex = -1;
+            cb_categorie.SelectedIndex = -1;
+            cb_itemType.SelectedIndex = -1;
+            tb_taxes.Clear();
+            tb_min.Clear();
+            tb_max.Clear();
+            cb_minUnit.SelectedIndex = -1;
+            cb_maxUnit.SelectedIndex = -1;
+            item = new Item();
         }
-
-        private void Cb_maxUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void btn_clearPropertiesClick(object sender, RoutedEventArgs e)
         {
-            //selectedMaxUnitId = unitIds[cb_maxUnit.SelectedIndex];
+            cb_selectProperties.SelectedIndex = -1;
+            cb_value.SelectedIndex = -1;
+            tb_serial.Text = "";
+            tb_serial.Clear();
+            tb_serviceName.Clear();
+            tb_costVal.Clear();
+            itemProp = new ItemsProp();
         }
-
-        async void Btn_addProperties_Click(object sender, RoutedEventArgs e)
+        private void Btn_unitClear(object sender, RoutedEventArgs e)
         {
-            if (cb_value.SelectedValue == null)
-            {
-                p_errorValue.Visibility = Visibility.Visible;
-                tt_errorValue.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorValue.Visibility = Visibility.Collapsed;
-            }
-            if (cb_value.SelectedValue != null && item.itemId >0)
-            {
-                int propertyItemId = propItems[cb_value.SelectedIndex].propertyItemId;
-                int itemId = (int) item.itemId;
+            cb_selectUnit.SelectedIndex = -1;
+            tbtn_isDefaultPurchases.IsChecked = false;
+            tbtn_isDefaultSales.IsChecked = false;
+            tb_count.Text = "";
+            cb_unit.SelectedIndex = -1;
+            tb_price.Text = "";
 
-                // check if property assigned previously to item
-                Boolean exist = itemsProp.Any(x => x.propertyItemId == propertyItemId && x.itemId == itemId);
-
-                if (!exist)
-                {
-                    ItemsProp itemspropObj = new ItemsProp();
-                    itemspropObj.propertyItemId = propItems[cb_value.SelectedIndex].propertyItemId;
-                    itemspropObj.itemId = itemId;
-                    itemspropObj.updateUserId = MainWindow.userID;
-                    itemspropObj.createUserId = MainWindow.userID;
-
-                    Boolean res = await itemsPropModel.Save(itemspropObj);
-                    if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                    else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-
-                    refreshPropertiesGrid(itemId);
-                }
-                cb_value.SelectedIndex = -1;
-                cb_selectProperties.SelectedIndex = -1;
-            }
+            itemUnit = new ItemUnit();
+            // set random barcode on image
+            generateBarcode("", true);
         }
-        // add service to item
-        async void Btn_addService_Click(object sender, RoutedEventArgs e)
-        {
-            if (tb_serviceName.Text.Equals(""))
-            {
-                p_errorServiceName.Visibility = Visibility.Visible;
-                tt_errorServiceName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorServiceName.Visibility = Visibility.Collapsed;
-            }
-            if (tb_costVal.Text.Equals(""))
-            {
-                p_errorCostVal.Visibility = Visibility.Visible;
-                tt_errorCostVal.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorCostVal.Visibility = Visibility.Collapsed;
-            }
-            if (!tb_serviceName.Text.Equals("") && !tb_costVal.Text.Equals(""))
-            {
-                service = new Service();
-                service.name = tb_serviceName.Text;
-                service.itemId = item.itemId;
-                service.costVal = decimal.Parse(tb_costVal.Text);
-                service.createUserId = MainWindow.userID;
-                service.updateUserId = MainWindow.userID;  
-
-                Boolean res = await serviceModel.saveService(service);
-                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-
-                refreshServicesGrid(item.itemId);
-
-                tb_serviceName.Clear();
-                tb_costVal.Clear();
-            }
-        }
-        // add serial to item
-        async void Btn_addSerial_Click(object sender, RoutedEventArgs e)
-        {
-            if (tb_serial.Text.Equals(""))
-            {
-                p_errorSerial.Visibility = Visibility.Visible;
-                tt_errorSerial.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorSerial.Visibility = Visibility.Collapsed;
-            }
-            if (!tb_serial.Text.Equals(""))
-            {
-                Boolean exist = false;
-                if (itemSerials != null)
-                    exist = itemSerials.Any(x => x.serialNum == tb_serial.Text && x.itemId == item.itemId);
-
-                if (!exist)
-                {
-                    Serial serial = new Serial();
-                    serial.serialNum = tb_serial.Text;
-                    serial.itemId = item.itemId;
-                    serial.isActive = 1;
-
-                    Boolean res = await serialModel.saveSerial(serial);
-
-                    if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                    else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-
-                    // refresh  serials grid
-                    refreshSerials(item.itemId);
-                }
-                tb_serial.Clear();
-            }
-        }
-
         async void refreshSerials(int itemId)
         {
             // get all item serials
             itemSerials = await serialModel.GetItemSerials(itemId);
             dg_serials.ItemsSource = itemSerials;
         }
-
         async void refreshPropertiesGrid(int itemId)
         {
             itemsProp = await itemsPropModel.Get(item.itemId);
@@ -1259,51 +1298,15 @@ namespace POS.View
             services = await serviceModel.GetItemServices(item.itemId);
             dg_service.ItemsSource = services.ToList();
         }
-        async void Btn_deleteProperties_Click(object sender, RoutedEventArgs e)
-        {
-            if (itemProp.itemPropId != 0)
-            {
-                int propertyItemId = (int)itemProp.propertyItemId;
-                int itemId = item.itemId;
+        #endregion
 
-                Boolean res = await itemsPropModel.Delete(itemProp.itemPropId);
+      
 
-                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
-                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+      
 
-                refreshPropertiesGrid(item.itemId); 
-            }
-        }
-        async void Btn_deleteSerial_Click(object sender, RoutedEventArgs e)
-        {
-            if (serial.serialId != 0)
-            {
-                Boolean final = false;
-                if (serial.isActive == 1)
-                    final = true;
-                Boolean res = await serialModel.delete(serial.serialId,(int)MainWindow.userID,final);
 
-                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
-                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-                refreshSerials(item.itemId);
-            }
-        }
-
-        async void Cb_selectProperties_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (cb_selectProperties.SelectedIndex != -1)
-            {
-                int propertyId = properties[cb_selectProperties.SelectedIndex].propertyId;
-                propItems = await propertyModel.GetPropertyValues(propertyId);
-                cb_value.ItemsSource = propItems.ToList();
-                cb_value.SelectedValuePath = "propertyItemId";
-                cb_value.DisplayMemberPath = "propertyItemName";
-            }
-        }
-
-        
-
+        /*
         private void dg_itemsSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             p_errorName.Visibility = Visibility.Collapsed;
@@ -1311,7 +1314,6 @@ namespace POS.View
             var bc = new BrushConverter();
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-          //  tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             
             if (dg_items.SelectedIndex != -1)
             {
@@ -1381,25 +1383,9 @@ namespace POS.View
 
             }
         }
-        private  void tb_barcode_Generate(object sender, KeyEventArgs e)
-        {
-            TextBox tb = (TextBox)sender;
-            string barCode = "";
-            if (e.Key.ToString() == "Return" && !tb.Text.Equals(""))
-                barCode = tb_barcode.Text;
-              
-            generateBarcode(barCode,false);
-        }
-        private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            TextBox tb = (TextBox)sender;
-            string barCode = "";
-            if (!tb.Text.Equals(""))
-                barCode = tb_barcode.Text;
+        */
 
-            generateBarcode(barCode,false);
-        }
-
+        #region SelectionChanged
         private void dg_unit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             p_errorName.Visibility = Visibility.Collapsed;
@@ -1416,7 +1402,7 @@ namespace POS.View
                     cb_selectUnit.SelectedValue = (int)itemUnit.unitId;
                 else
                     cb_selectUnit.SelectedValue = -1;
-        
+
                 if (itemUnit.smallUnit != null)
                     cb_unit.SelectedValue = (int)itemUnit.subUnitId;
                 else
@@ -1434,8 +1420,7 @@ namespace POS.View
                 tb_price.Text = itemUnit.price.ToString();
                 tb_barcode.Text = itemUnit.barcode;
 
-                // drawing barcode on image
-                generateBarcode(itemUnit.barcode,false);
+                generateBarcode(itemUnit.barcode, false);
             }
         }
         private void dg_propertiesSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1482,7 +1467,7 @@ namespace POS.View
         {
             Item parentItem = new Item();
             int parentId = 0;
-            if(cb_parentItem.SelectedIndex != -1 && item.itemId ==0 )
+            if (cb_parentItem.SelectedIndex != -1 && item.itemId == 0)
             {
                 parentItem = await itemModel.GetItemByID((int)cb_parentItem.SelectedValue);
                 parentId = parentItem.itemId;
@@ -1491,7 +1476,6 @@ namespace POS.View
                     cb_categorie.SelectedValue = (int)parentItem.categoryId;
                 if (parentItem.type != null)
                 {
-                    //cb_itemType.SelectedValue = parentItem.type;
                     switch (parentItem.type)
                     {
                         case "n": cb_itemType.SelectedIndex = 0; break;
@@ -1511,50 +1495,21 @@ namespace POS.View
                 if (parentItem.maxUnitId != null)
                     cb_maxUnit.SelectedValue = (int)parentItem.maxUnitId;
             }
-       }
-
-        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
         }
-
-        async void Btn_updateService_Click(object sender, RoutedEventArgs e)
+        async void Cb_selectProperties_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (tb_serviceName.Text.Equals(""))
+            if (cb_selectProperties.SelectedIndex != -1)
             {
-                p_errorServiceName.Visibility = Visibility.Visible;
-                tt_errorServiceName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorServiceName.Visibility = Visibility.Collapsed;
-            }
-            if (tb_costVal.Text.Equals(""))
-            {
-                p_errorCostVal.Visibility = Visibility.Visible;
-                tt_errorCostVal.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorCostVal.Visibility = Visibility.Collapsed;
-            }
-            if (!tb_serviceName.Text.Equals("") && !tb_costVal.Text.Equals("") && item != null)
-            {
-                service.name = tb_serviceName.Text;
-                service.costVal = decimal.Parse(tb_costVal.Text);
-                service.updateUserId = MainWindow.userID;
-                Boolean res = await serviceModel.saveService(service);
-                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-
-                refreshServicesGrid(item.itemId);
+                int propertyId = properties[cb_selectProperties.SelectedIndex].propertyId;
+                propItems = await propertyModel.GetPropertyValues(propertyId);
+                cb_value.ItemsSource = propItems.ToList();
+                cb_value.SelectedValuePath = "propertyItemId";
+                cb_value.DisplayMemberPath = "propertyItemName";
             }
         }
-
-        async void Cb_categorie_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        async void Cb_categorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-             Category cat = new Category();
+            Category cat = new Category();
             if (cb_parentItem.SelectedIndex == -1 && cb_categorie.SelectedIndex != -1)
             {
                 int catId = (int)cb_categorie.SelectedValue;
@@ -1562,20 +1517,598 @@ namespace POS.View
                 tb_taxes.Text = cat.taxes.ToString();
             }
         }
-
-        private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
+        private void CB_type_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
-                e.Handled = false;
+            if (cb_itemType.SelectedIndex == 2)
+            {
+                grid_service.Visibility = Visibility.Collapsed;
+                grid_serial.Visibility = Visibility.Visible;
+                line_topService.Visibility = Visibility.Collapsed;
 
+
+            }
+            else if (cb_itemType.SelectedIndex == 3)
+            {
+                grid_serial.Visibility = Visibility.Collapsed;
+                grid_service.Visibility = Visibility.Visible;
+                line_topService.Visibility = Visibility.Collapsed;
+            }
             else
-                e.Handled = true;
+            {
+                grid_serial.Visibility = Visibility.Collapsed;
+                grid_service.Visibility = Visibility.Collapsed;
+                line_topService.Visibility = Visibility.Visible;
+            }
+
+            switch (cb_itemType.SelectedIndex)
+            {
+                case 0: selectedType = "n"; break;
+                case 1: selectedType = "d"; break;
+                case 2: selectedType = "sn"; break;
+                case 3: selectedType = "sr"; break;
+                case 4: selectedType = "p"; break;
+            }
+
+
+
         }
-        private void tb_upperLimit_PreviewKeyDown(object sender, KeyEventArgs e)
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+        #region Categor and Item
+        #region Refrish Y
+        /// <summary>
+        /// Category
+        /// </summary>
+        /// <returns></returns>
+        async Task<IEnumerable<Category>> RefrishCategories()
         {
-            e.Handled = e.Key == Key.Space;
+            categories = await categoryModel.GetAllCategories();
+            return categories;
         }
+        async void RefrishCategoriesCard()
+        {
+          
+            if (categories is null)
+                await RefrishCategories();
+            categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == categoryParentId);
+            catigoriesAndItemsView.gridCatigories = grid_categoryCards;
+            catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
+        }
+
+        /// <summary>
+        /// Item
+        /// </summary>
+        /// <returns></returns>
+
+        async Task<IEnumerable<Item>> RefrishItems()
+        {
+            if(category.categoryId == 0)
+                items = await itemModel.GetAllItems();
+            else items = await itemModel.GetItem(category.categoryId);
+            return items;
+        }
+
+        void RefrishItemsDatagrid(IEnumerable<Item> _items)
+        {
+            dg_items.ItemsSource = _items;
+        }
+
+        void RefrishItemsCard(IEnumerable<Item> _items)
+        {
+
+            catigoriesAndItemsView.gridCatigorieItems = grid_itemContainerCard;
+            catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
+        }
+        #endregion
+        #region Get Id By Click  Y
+        private void dg_items_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+            p_errorName.Visibility = Visibility.Collapsed;
+            p_errorCode.Visibility = Visibility.Collapsed;
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+            if (dg_items.SelectedIndex != -1)
+            {
+                item = dg_items.SelectedItem as Item;
+                this.DataContext = item;
+
+                refreshPropertiesGrid(item.itemId);
+                refreshSerials(item.itemId);
+                refreshItemUnitsGrid(item.itemId);
+                refreshServicesGrid(item.itemId);
+
+            }
+            if (item != null)
+            {
+                tb_code.Text = item.code;
+                tb_name.Text = item.name;
+                tb_details.Text = item.details;
+                if (item.parentId != null && item.parentId != 0)
+                {
+                    cb_parentItem.SelectedValue = (int)item.parentId;
+                }
+                else
+                    cb_parentItem.SelectedValue = -1;
+
+                if (item.categoryId != null)
+                {
+                    cb_categorie.SelectedValue = (int)item.categoryId;
+                }
+                else
+                    cb_categorie.SelectedValue = -1;
+
+                if (item.type != null)
+                {
+                    cb_itemType.SelectedValue = item.type;
+                    switch (item.type)
+                    {
+                        case "n": cb_itemType.SelectedIndex = 0; break;
+                        case "d": cb_itemType.SelectedIndex = 1; break;
+                        case "sn": cb_itemType.SelectedIndex = 2; break;
+                        case "sr": cb_itemType.SelectedIndex = 3; break;
+                        case "p": cb_itemType.SelectedIndex = 4; break;
+                    }
+                }
+                else
+                    cb_itemType.SelectedValue = -1;
+
+                tb_taxes.Text = item.taxes.ToString();
+                tb_min.Text = item.min.ToString();
+                tb_max.Text = item.max.ToString();
+
+                if (item.minUnitId != null)
+                    cb_minUnit.SelectedValue = (int)item.minUnitId;
+                else
+                    cb_minUnit.SelectedValue = -1;
+
+                if (item.maxUnitId != null)
+                    cb_maxUnit.SelectedValue = (int)item.maxUnitId;
+                else
+                    cb_minUnit.SelectedValue = -1;
+
+                if (item.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                else
+                {
+                    if (item.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
+                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                }
+
+            }
+
+            
+        }
+        public async void ChangeCategoryIdEvent(int categoryId)
+        {
+            category = categories.ToList().Find(c => c.categoryId == categoryId);
+
+            if (categories.Where(x =>
+            x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
+            {
+                categoryParentId = category.categoryId;
+                RefrishCategoriesCard();
+            }
+           
+            generateTrack(categoryId);
+            await RefrishItems();
+            Txb_searchitems_TextChanged(null, null);
+        }
+
+        public void ChangeItemIdEvent(int itemId)
+        {
+
+            p_errorName.Visibility = Visibility.Collapsed;
+            p_errorCode.Visibility = Visibility.Collapsed;
+            var bc = new BrushConverter();
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+            item = items.ToList().Find(c => c.itemId == itemId);
+            if (item != null)
+            {
+                this.DataContext = item;
+
+
+                refreshPropertiesGrid(item.itemId);
+                refreshSerials(item.itemId);
+                refreshItemUnitsGrid(item.itemId);
+                refreshServicesGrid(item.itemId);
+
+                tb_code.Text = item.code;
+                tb_name.Text = item.name;
+                tb_details.Text = item.details;
+                if (item.parentId != null && item.parentId != 0)
+                {
+                    cb_parentItem.SelectedValue = (int)item.parentId;
+                }
+                else
+                    cb_parentItem.SelectedValue = -1;
+
+                if (item.categoryId != null)
+                {
+                    cb_categorie.SelectedValue = (int)item.categoryId;
+                }
+                else
+                    cb_categorie.SelectedValue = -1;
+
+                if (item.type != null)
+                {
+                    cb_itemType.SelectedValue = item.type;
+                    switch (item.type)
+                    {
+                        case "n": cb_itemType.SelectedIndex = 0; break;
+                        case "d": cb_itemType.SelectedIndex = 1; break;
+                        case "sn": cb_itemType.SelectedIndex = 2; break;
+                        case "sr": cb_itemType.SelectedIndex = 3; break;
+                        case "p": cb_itemType.SelectedIndex = 4; break;
+                    }
+                }
+                else
+                    cb_itemType.SelectedValue = -1;
+
+                tb_taxes.Text = item.taxes.ToString();
+                tb_min.Text = item.min.ToString();
+                tb_max.Text = item.max.ToString();
+
+                if (item.minUnitId != null)
+                    cb_minUnit.SelectedValue = (int)item.minUnitId;
+                else
+                    cb_minUnit.SelectedValue = -1;
+
+                if (item.maxUnitId != null)
+                    cb_maxUnit.SelectedValue = (int)item.maxUnitId;
+                else
+                    cb_minUnit.SelectedValue = -1;
+
+                if (item.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                else
+                {
+                    if (item.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
+                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                }
+
+            }
+        }
+       
+        #endregion
+        #region Toggle Button Y
+        /// <summary>
+        /// Category
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// 
+        /*
+        private void Tgl_categoryIsActive_Checked(object sender, RoutedEventArgs e)
+        {
+            tglCategoryState = 1;
+            RefrishCategoriesCard();
+
+
+
+        }
+        private void Tgl_categorIsActive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            tglCategoryState = 0;
+            RefrishCategoriesCard();
+        }
+        */
+        /// <summary>
+        /// Item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Tgl_itemIsActive_Checked(object sender, RoutedEventArgs e)
+        {
+            //if (categories is null)
+            //    await RefrishCategories();
+            tglItemState = 1;
+            //tgl_categoryCardIsActive.IsChecked =
+            //    tgl_categoryDatagridIsActive.IsChecked = true;
+            Txb_searchitems_TextChanged(null, null);
+
+
+        }
+        private void Tgl_itemIsActive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            //if (categories is null)
+            //    await RefrishCategories();
+            //categoriesQuery = categories.Where(x => x.isActive == 0);
+            tglItemState = 0;
+            //tgl_categoryCardIsActive.IsChecked =
+            //    tgl_categoryDatagridIsActive.IsChecked = false;
+            Txb_searchitems_TextChanged(null, null);
+        }
+        #endregion
+        #region Switch Card/DataGrid Y
+
+        private void Btn_itemsInCards_Click(object sender, RoutedEventArgs e)
+        {
+            grid_itemsDatagrid.Visibility = Visibility.Collapsed;
+            grid_itemCards.Visibility = Visibility.Visible;
+            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+
+            tgl_itemIsActive.IsChecked = (tglItemState == 1) ? true : false;
+            Txb_searchitems_TextChanged(null, null);
+
+        }
+
+        private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
+        {
+            grid_itemCards.Visibility = Visibility.Collapsed;
+            grid_itemsDatagrid.Visibility = Visibility.Visible;
+            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+
+            tgl_itemIsActive.IsChecked = (tglItemState == 1) ? true : false;
+            Txb_searchitems_TextChanged(null, null);
+        }
+        #endregion
+        #region Search Y
+
+
+
+        /// <summary>
+        /// Item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (items is null)
+                await RefrishItems();
+            txtItemSearch = txb_searchitems.Text.ToLower();
+            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+            x.name.ToLower().Contains(txtItemSearch) ||
+            x.details.ToLower().Contains(txtItemSearch)
+            ) && x.isActive == tglItemState);
+            RefrishItemsDatagrid(itemsQuery);
+            paginationSetting(itemsQuery);
+        }
+       
+        #endregion
+        #region Pagination Y
+        public int pageIndex = 1;
+        private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+            itemsQuery = items.Where(x => x.isActive == tglItemState);
+
+            if (tb_pageNumberSearch.Text.Equals(""))
+            {
+                pageIndex = 1;
+            }
+            else if (((itemsQuery.Count() - 1) / 20) + 1 < int.Parse(tb_pageNumberSearch.Text))
+            {
+                pageIndex = ((itemsQuery.Count() - 1) / 20) + 1;
+            }
+            else
+            {
+                pageIndex = int.Parse(tb_pageNumberSearch.Text);
+            }
+            paginationSetting();
+        }
+        void pageNumberActive(Button btn, int indexContent)
+        {
+            btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            btn.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn.Content = indexContent.ToString();
+        }
+        void pageNumberDisActive(Button btn, int indexContent)
+        {
+            btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#DFDFDF"));
+            btn.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#686868"));
+            btn.Content = indexContent.ToString();
+
+        }
+        async void paginationSetting(IEnumerable<Item> _items = null)
+        {
+            if (_items is null)
+            {
+                if (items is null)
+                {
+                    await RefrishItems();
+                    _items = items;
+                }
+                else
+                    _items = items;
+            }
+
+
+            _items = _items.Where(x => x.isActive == tglItemState);
+            if (2 >= ((_items.Count() - 1) / 20))
+            {
+                if (pageIndex == 1)
+                {
+                    pageNumberActive(btn_prevPage, 1);
+                    pageNumberDisActive(btn_activePage, 2);
+                    pageNumberDisActive(btn_nextPage, 3);
+                }
+                else if (pageIndex == 2)
+                {
+                    pageNumberDisActive(btn_prevPage, 1);
+                    pageNumberActive(btn_activePage, 2);
+                    pageNumberDisActive(btn_nextPage, 3);
+                }
+                else
+                {
+
+                    pageNumberDisActive(btn_prevPage, 1);
+                    pageNumberDisActive(btn_activePage, 2);
+                    pageNumberActive(btn_nextPage, 3);
+
+                }
+                if (0 >= ((_items.Count() - 1) / 20))
+                {
+                    btn_activePage.IsEnabled = false;
+                    btn_nextPage.IsEnabled = false;
+                }
+                else if (1 >= ((_items.Count() - 1) / 20))
+                {
+                    btn_activePage.IsEnabled = true;
+                    btn_nextPage.IsEnabled = false;
+                }
+                btn_firstPage.IsEnabled = false;
+                btn_lastPage.IsEnabled = false;
+            }
+            else if (pageIndex == 1)
+            {
+                btn_firstPage.IsEnabled = false;
+                btn_lastPage.IsEnabled = true;
+                pageNumberActive(btn_prevPage, pageIndex);
+                pageNumberDisActive(btn_activePage, pageIndex + 1);
+                pageNumberDisActive(btn_nextPage, pageIndex + 2);
+            }
+            else if (pageIndex == 2)
+            {
+                pageNumberDisActive(btn_prevPage, 1);
+                pageNumberActive(btn_activePage, 2);
+                pageNumberDisActive(btn_nextPage, 3);
+            }
+            /////prev last
+            else if (pageIndex == ((_items.Count() - 1) / 20))
+            {
+                btn_lastPage.IsEnabled = false;
+                btn_firstPage.IsEnabled = true;
+
+                pageNumberDisActive(btn_prevPage, pageIndex - 1);
+                pageNumberActive(btn_activePage, pageIndex);
+                pageNumberDisActive(btn_nextPage, pageIndex + 1);
+
+            }
+            ///// last
+            else if ((pageIndex - 1) >= ((_items.Count() - 1) / 20))
+            {
+                btn_lastPage.IsEnabled = false;
+                btn_firstPage.IsEnabled = true;
+
+                pageNumberDisActive(btn_prevPage, pageIndex - 2);
+                pageNumberDisActive(btn_activePage, pageIndex - 1);
+                pageNumberActive(btn_nextPage, pageIndex);
+
+            }
+            else
+            {
+                pageNumberDisActive(btn_prevPage, pageIndex - 1);
+                pageNumberActive(btn_activePage, pageIndex);
+                pageNumberDisActive(btn_nextPage, pageIndex + 1);
+                btn_lastPage.IsEnabled = true;
+                btn_firstPage.IsEnabled = true;
+
+            }
+
+            itemsQuery = _items.Skip((pageIndex - 1) * 20).Take(20);
+            RefrishItemsCard(itemsQuery);
+        }
+
+
+        private void Btn_firstPage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = 1;
+            paginationSetting();
+        }
+
+        private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = int.Parse(btn_prevPage.Content.ToString());
+            paginationSetting();
+        }
+
+        private void Btn_activePage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = int.Parse(btn_activePage.Content.ToString());
+            paginationSetting();
+        }
+
+        private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = int.Parse(btn_nextPage.Content.ToString());
+            paginationSetting();
+        }
+
+        private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
+        {
+
+            itemsQuery = items.Where(x => x.isActive == tglItemState);
+            pageIndex = ((itemsQuery.Count() - 1) / 20) + 1;
+            paginationSetting();
+        }
+        #endregion
+        #region categoryPathControl Y
+
+        async void generateTrack(int categorypaPathId)
+        {
+            grid_categoryControlPath.Children.Clear();
+            IEnumerable<Category> categoriesPath = await
+            categoryModel.GetCategoryTreeByID(categorypaPathId);
+
+            int count = 0;
+            foreach (var item in categoriesPath.Reverse())
+            {
+                if (categories.Where(x => x.parentId == item.categoryId).Count() != 0)
+                {
+                    Button b = new Button();
+                    b.Content = " > " + item.name + " ";
+                    b.Padding = new Thickness(0);
+                    b.Margin = new Thickness(0);
+                    b.Background = null;
+                    b.BorderThickness = new Thickness(0);
+                    b.FontFamily = Application.Current.Resources["Font-cairo-light"] as FontFamily;
+                    b.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
+                    b.FontSize = 14;
+                    Grid.SetColumn(b, count);
+                    b.DataContext = item;
+                    b.Name = "category" + item.categoryId;
+                    b.Tag = item.categoryId;
+                    b.Click += new RoutedEventHandler(getCategoryIdFromPath);
+                    count++;
+                    grid_categoryControlPath.Children.Add(b);
+                }
+            }
+
+
+        }
+        private void getCategoryIdFromPath(object sender, RoutedEventArgs e)
+        {
+            Button b = (Button)sender;
+
+            if (!string.IsNullOrEmpty(b.Tag.ToString()))
+            {
+                generateTrack(int.Parse(b.Tag.ToString()));
+                categoryParentId = int.Parse(b.Tag.ToString());
+                RefrishCategoriesCard();
+            }
+
+
+        }
+        private async void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
+        {
+            categoryParentId = 0;
+            RefrishCategoriesCard();
+            grid_categoryControlPath.Children.Clear();
+            category.categoryId = 0;
+            await RefrishItems();
+            Txb_searchitems_TextChanged(null, null);
+        }
+
+        #endregion
+        #endregion
 
     }
 }

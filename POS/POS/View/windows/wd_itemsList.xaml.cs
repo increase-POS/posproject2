@@ -24,35 +24,49 @@ namespace POS.View.windows
         {
             InitializeComponent();
         }
+        public bool isActive;
         Item item = new Item();
         List<Item> allItems = new List<Item>();
-        List<Item> selectedItems = new List<Item>();
+        public List<Item> selectedItems = new List<Item>();
         Item itemModel = new Item();
+        /// <summary>
+        /// Selcted Items if selectedItems Have Items At the beginning
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             allItems = await itemModel.GetAllItems();
+
+            foreach (var item in selectedItems)
+            {
+                allItems.Remove(item);
+
+            }
+            selectedItems.AddRange(selectedItems);
+
+
             lst_allItems.ItemsSource = allItems;
+            lst_selectedItems.ItemsSource = selectedItems;
+
+
+
             lst_allItems.SelectedValuePath = "itemId";
             lst_selectedItems.SelectedValuePath = "itemId";
             lst_allItems.DisplayMemberPath = "name";
             lst_selectedItems.DisplayMemberPath = "name";
         }
-      
-        void ok()
-        {
-            //ArrayPerson = new int[lst_selectedItems.Items.Count];
 
-            //for (int i = 0; i < lst_selectedItems.Items.Count; i++)
-            //{
-            //    lst_selectedItems.SelectedIndex = i;
-            //    ArrayPerson[i] = (int)lst_selectedItems.SelectedValue;
-            //}
-            //this.Close();
+        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        {
+            isActive = true;
+            this.Close();
         }
 
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-           this.Close();
+            isActive = false;
+            this.Close();
         }
 
         private void Lst_allItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -62,15 +76,50 @@ namespace POS.View.windows
             selectedItems.Add(item);
             lst_allItems.ItemsSource = allItems;
             lst_selectedItems.ItemsSource = selectedItems;
+            lst_allItems.Items.Refresh();
+            lst_selectedItems.Items.Refresh();
+
         }
 
         private void Lst_selectedItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            item = lst_allItems.SelectedItem as Item;
-            allItems.Add(item);
+            item = lst_selectedItems.SelectedItem as Item;
             selectedItems.Remove(item);
+            allItems.Add(item);
             lst_allItems.ItemsSource = allItems;
+            lst_allItems.Items.Refresh();
             lst_selectedItems.ItemsSource = selectedItems;
+            lst_selectedItems.Items.Refresh();
         }
+
+        
+
+        private void Btn_selectedItem_Click(object sender, RoutedEventArgs e)
+        {
+            Lst_allItems_MouseDoubleClick(null, null);
+        }
+
+        private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
+        {
+            allItems = await itemModel.GetAllItems();
+            lst_selectedItems.ItemsSource = allItems;
+            lst_allItems.ItemsSource = null;
+        }
+
+        private  void Btn_unSelectedItem_Click(object sender, RoutedEventArgs e)
+        {
+            Lst_selectedItems_MouseDoubleClick(null, null);
+        }
+
+        private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
+        {
+            allItems = await itemModel.GetAllItems();
+            lst_allItems.ItemsSource = allItems;
+            lst_selectedItems.ItemsSource = null;
+
+        }
+
+       
+        
     }
 }

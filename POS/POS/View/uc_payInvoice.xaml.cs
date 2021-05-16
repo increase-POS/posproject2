@@ -129,16 +129,7 @@ namespace POS.View
             translate();
 
             catigoriesAndItemsView.ucPayInvoice = this;
-            #region Generate catigorie
-            //catigoriesAndItemsView.gridCatigories = Grid_categorie;
-            //Categorie categorie = new Categorie();
-            //catigoriesAndItemsView.FN_refrishCatalogCard(categorie.getCategories());
-            #endregion
-            #region Generate catigorieItems
-            //catigoriesAndItemsView.gridCatigorieItems = Grid_CategorieItem;
-            //CategorieItem CategorieItem = new CategorieItem();
-            //catigoriesAndItemsView.FN_refrishCatalogItem(CategorieItem.getCategorieItems(),MainWindow.lang,"");
-            #endregion
+            
 
             #region Style Date
             dp_desrvedDate.Loaded += delegate
@@ -154,9 +145,7 @@ namespace POS.View
 
             #endregion
             grid_vendor.Visibility = Visibility.Collapsed;
-
-
-
+             
         }
         #region bill
 
@@ -282,11 +271,7 @@ namespace POS.View
         }
        
 
-        private void UserControl_Loaded_1(object sender, RoutedEventArgs e)
-        {
-
-        }
-
+        
         #region Categor and Item
         #region Refrish Y
         /// <summary>
@@ -553,7 +538,6 @@ namespace POS.View
         }
         */
         #endregion
-
         #region Pagination Y
         public int pageIndex = 1;
         private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
