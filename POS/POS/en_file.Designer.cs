@@ -727,6 +727,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The phone number cannot be blank.
+        /// </summary>
+        internal static string trEmptyPhoneToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyPhoneToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username can&apos;t be empty!.
         /// </summary>
         internal static string trEmptyUserNameToolTip {

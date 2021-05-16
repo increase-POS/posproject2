@@ -700,6 +700,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لا يمكن أن يكون رقم الهاتف فارغ.
+        /// </summary>
+        internal static string trEmptyPhoneToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyPhoneToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اسم المستخدم لا بمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyUserNameToolTip {

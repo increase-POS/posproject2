@@ -452,8 +452,6 @@ namespace POS.View
 
         private async void tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            var bc = new BrushConverter();
-
             p_errorName.Visibility = Visibility.Collapsed;
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 

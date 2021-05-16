@@ -135,10 +135,15 @@ namespace POS.View
             //SectionData.genRandomCode("b", "Branch");
             //tb_code.Text = SectionData.code;
 
-            this.Dispatcher.Invoke(() =>
-            {
-                tb_search_TextChanged(null, null);
-            });
+            //this.Dispatcher.Invoke(() =>
+            //{
+            //    tb_search_TextChanged(null, null);
+            //});
+
+            //branches = await branchModel.GetAllWithoutMain("b");
+            //MessageBox.Show(Convert.ToString(branches.Count()));
+            //branches = await branchModel.GetBranchesAsync("b");
+            //MessageBox.Show(Convert.ToString(branches.Count()));
 
 
         }
@@ -309,7 +314,7 @@ namespace POS.View
             }
             //else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
 
-            branches = await branchModel.GetBranchesAsync("b");
+            branches = await branchModel.GetAllWithoutMain("b");
             branchesQuery = branches.Where(s => s.isActive == Convert.ToInt32(tgl_branchIsActive.IsChecked));
             dg_branch.ItemsSource = branchesQuery;
 
@@ -372,7 +377,7 @@ namespace POS.View
             }
             //else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
 
-            branches = await branchModel.GetBranchesAsync("b");
+            branches = await branchModel.GetAllWithoutMain("b");
             branchesQuery = branches.Where(s => s.isActive == Convert.ToInt32(tgl_branchIsActive.IsChecked));
             dg_branch.ItemsSource = branchesQuery;
 
@@ -394,7 +399,7 @@ namespace POS.View
                 else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
             }
 
-            branches = await branchModel.GetBranchesAsync("b");
+            branches = await branchModel.GetAllWithoutMain("b");
             branchesQuery = branches.Where(s => s.isActive == Convert.ToInt32(tgl_branchIsActive.IsChecked));
             dg_branch.ItemsSource = branchesQuery;
 
@@ -475,7 +480,7 @@ namespace POS.View
 
         async Task<IEnumerable<Branch>> RefreshBranchesList()
         {
-            branches = await branchModel.GetBranchesAsync("b");
+            branches = await branchModel.GetAllWithoutMain("b");
             return branches;
         }
         void RefreshBranchView()

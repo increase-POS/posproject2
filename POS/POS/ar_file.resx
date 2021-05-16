@@ -750,4 +750,7 @@
   <data name="trEmptyBranchToolTip" xml:space="preserve">
     <value>لا يمكن أن يكون الفرع الأب فارغاً</value>
   </data>
+  <data name="trEmptyPhoneToolTip" xml:space="preserve">
+    <value>لا يمكن أن يكون رقم الهاتف فارغ</value>
+  </data>
 </root>
