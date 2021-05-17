@@ -575,7 +575,7 @@
                 Grid.Row="1" Background="White">
                     <Grid>
                         <!--////////////////////////////// payinvoice////////////////////////////////////-->
-                        <Grid x:Name="grid_payinvoice" Visibility="Visible" >
+                        <Grid x:Name="grid_payinvoice" Visibility="Collapsed" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
@@ -999,7 +999,7 @@
                         </Grid>
                         <!--////////////////////////////// vendor////////////////////////////////////-->
 
-                        <Grid  x:Name="grid_vendor" Visibility="Collapsed"   >
+                        <Grid  x:Name="grid_vendor" Visibility="Visible"   >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="45"/>
@@ -1059,7 +1059,7 @@
                                     </Path.ToolTip>
                                 </Path>
                                 <Button   Padding="0" Width="20" ToolTip="تعديل بيانات المورد"
-                          Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right"
+                          Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" x:Name="btn_updateVendor" Click="Btn_updateVendor_Click"
                    Margin="0,0,5,0">
                                     <materialDesign:PackIcon Foreground="#4E4E4E" Kind="FileDocumentEdit"  
                                   HorizontalAlignment="Center" Grid.Column="0"   

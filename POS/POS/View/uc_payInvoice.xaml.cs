@@ -1,4 +1,5 @@
 ﻿using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -717,6 +718,22 @@ namespace POS.View
         }
 
         #endregion
+
         #endregion
+
+        private void Btn_updateVendor_Click(object sender, RoutedEventArgs e)
+        {
+            (((this.Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 0.2;
+            //if ((((this.Parent as Grid).Parent as Grid).Parent as UserControl) != null)
+            //((((this.Parent as Grid).Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 0.2;
+            wd_updateVendor w = new wd_updateVendor();
+            //// pass agent id to update windows
+            w.agent.agentId = 22;
+            //w.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#00178DD2"));
+            w.ShowDialog();
+
+
+            (((this.Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 1;
+        }
     }
 }
