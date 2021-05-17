@@ -723,7 +723,8 @@ namespace POS.View
 
         private void Btn_updateVendor_Click(object sender, RoutedEventArgs e)
         {
-            (((this.Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 0.2;
+            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+          
             //if ((((this.Parent as Grid).Parent as Grid).Parent as UserControl) != null)
             //((((this.Parent as Grid).Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 0.2;
             wd_updateVendor w = new wd_updateVendor();
@@ -733,7 +734,7 @@ namespace POS.View
             w.ShowDialog();
 
 
-            (((this.Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 1;
+            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
         }
     }
 }

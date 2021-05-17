@@ -199,11 +199,11 @@ namespace POS.View
 
         private void Btn_items_Click(object sender, RoutedEventArgs e)
         {
-            (((this.Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 0.2;
+            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
             //if ((((this.Parent as Grid).Parent as Grid).Parent as UserControl) != null)
             //((((this.Parent as Grid).Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 0.2;
             wd_itemsList w = new wd_itemsList();
-            w.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#00178DD2"));
+            //w.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#00178DD2"));
             w.ShowDialog();
             if (w.isActive)
             {
@@ -213,8 +213,8 @@ namespace POS.View
 
                 }
             }
-           
-            (((this.Parent as Grid).Parent as Grid).Parent as UserControl).Opacity =1;
+
+            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
         }
     }
 }

@@ -73,51 +73,67 @@ namespace POS.View.windows
 
         private void Lst_allItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            item = lst_allItems.SelectedItem as Item;
-            allItems.Remove(item);
-            selectedItems.Add(item);
-            lst_allItems.ItemsSource = allItems;
-            lst_selectedItems.ItemsSource = selectedItems;
-            lst_allItems.Items.Refresh();
-            lst_selectedItems.Items.Refresh();
+
+            Btn_selectedItem_Click(null, null);
 
         }
 
         private void Lst_selectedItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            item = lst_selectedItems.SelectedItem as Item;
-            selectedItems.Remove(item);
-            allItems.Add(item);
-            lst_allItems.ItemsSource = allItems;
-            lst_allItems.Items.Refresh();
-            lst_selectedItems.ItemsSource = selectedItems;
-            lst_selectedItems.Items.Refresh();
+            Btn_unSelectedItem_Click(null, null);
+
         }
 
-        
-
-        private void Btn_selectedItem_Click(object sender, RoutedEventArgs e)
-        {
-            Lst_allItems_MouseDoubleClick(null, null);
-        }
-
+       
         private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
         {
-            allItems = await itemModel.GetAllItems();
-            lst_selectedItems.ItemsSource = allItems;
-            lst_allItems.ItemsSource = null;
+            selectedItems = await itemModel.GetAllItems();
+            allItems.Clear();
+            lst_allItems.ItemsSource = allItems;
+            lst_selectedItems.ItemsSource = selectedItems;
+            lst_allItems.Items.Refresh();
+            lst_selectedItems.Items.Refresh();
+        }
+        private void Btn_selectedItem_Click(object sender, RoutedEventArgs e)
+        {
+            item = lst_allItems.SelectedItem as Item;
+            if (item != null)
+            {
+                allItems.Remove(item);
+                selectedItems.Add(item);
+                lst_allItems.ItemsSource = allItems;
+                lst_selectedItems.ItemsSource = selectedItems;
+                lst_allItems.Items.Refresh();
+                lst_selectedItems.Items.Refresh();
+            }
+           
         }
 
-        private  void Btn_unSelectedItem_Click(object sender, RoutedEventArgs e)
+
+        private void Btn_unSelectedItem_Click(object sender, RoutedEventArgs e)
         {
-            Lst_selectedItems_MouseDoubleClick(null, null);
+
+            item = lst_selectedItems.SelectedItem as Item;
+            if (item != null)
+            {
+                selectedItems.Remove(item);
+                allItems.Add(item);
+
+                lst_allItems.ItemsSource = allItems;
+                lst_allItems.Items.Refresh();
+                lst_selectedItems.ItemsSource = selectedItems;
+                lst_selectedItems.Items.Refresh();
+            }
         }
 
         private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
         {
             allItems = await itemModel.GetAllItems();
+            selectedItems.Clear();
             lst_allItems.ItemsSource = allItems;
-            lst_selectedItems.ItemsSource = null;
+            lst_allItems.Items.Refresh();
+            lst_selectedItems.ItemsSource = selectedItems;
+            lst_selectedItems.Items.Refresh();
 
         }
 

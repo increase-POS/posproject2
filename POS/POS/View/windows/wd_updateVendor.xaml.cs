@@ -99,7 +99,7 @@ namespace POS.View.windows
 
         }
 
-        private  void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_wdVendor.FlowDirection = FlowDirection.LeftToRight; }
@@ -107,11 +107,62 @@ namespace POS.View.windows
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_wdVendor.FlowDirection = FlowDirection.RightToLeft; }
 
             translate();
-
+             agents = await agentModel.GetAgentsAsync("v");
             agent = agents.ToList().Find(c => c.agentId == agent.agentId);
             if (agent != null)
             {
                 this.DataContext = agent;
+
+                //mobile
+                if ((agent.mobile != null) && (agent.mobile.ToArray().Length > 4))
+                {
+                    string area = new string(agent.mobile.Take(4).ToArray());
+                    var mobile = agent.mobile.Substring(4, agent.mobile.Length - 4);
+
+                    cb_areaMobile.Text = area;
+                    tb_mobile.Text = mobile.ToString();
+                }
+                else
+                {
+                    cb_areaMobile.SelectedIndex = -1;
+                    tb_mobile.Clear();
+                }
+                //phone
+                if ((agent.phone != null) && (agent.phone.ToArray().Length > 7))
+                {
+                    string area = new string(agent.phone.Take(4).ToArray());
+                    string areaLocal = new string(agent.phone.Substring(4, agent.phone.Length - 4).Take(3).ToArray());
+
+                    var phone = agent.phone.Substring(7, agent.phone.Length - 7);
+
+                    cb_areaPhone.Text = area;
+                    cb_areaPhoneLocal.Text = areaLocal;
+                    tb_phone.Text = phone.ToString();
+                }
+                else
+                {
+                    cb_areaPhone.SelectedIndex = -1;
+                    cb_areaPhoneLocal.SelectedIndex = -1;
+                    tb_phone.Clear();
+                }
+                //fax
+                if ((agent.fax != null) && (agent.fax.ToArray().Length > 7))
+                {
+                    string area = new string(agent.fax.Take(4).ToArray());
+                    string areaLocal = new string(agent.fax.Substring(4, agent.fax.Length - 4).Take(3).ToArray());
+
+                    var fax = agent.fax.Substring(7, agent.fax.Length - 7);
+
+                    cb_areaFax.Text = area;
+                    cb_areaFaxLocal.Text = areaLocal;
+                    tb_fax.Text = fax.ToString();
+                }
+                else
+                {
+                    cb_areaFax.SelectedIndex = -1;
+                    cb_areaFaxLocal.SelectedIndex = -1;
+                    tb_fax.Clear();
+                }
             }
 
                 Keyboard.Focus(tb_name);
