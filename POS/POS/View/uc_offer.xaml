@@ -165,8 +165,9 @@
                 </TextBlock>
             </Grid>
         </Grid>
-
-        <Grid Grid.Column="2" Margin="15">
+        <Border Grid.Column="1"  Margin="10,15,10,15" 
+                CornerRadius="7" >
+            <Grid Grid.Column="2">
             <Grid.RowDefinitions >
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
@@ -736,5 +737,6 @@
                 </Grid>
             </Border>
         </Grid>
+        </Border>
     </Grid>
 </UserControl>

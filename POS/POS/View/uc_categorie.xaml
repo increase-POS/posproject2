@@ -593,6 +593,7 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="45"/>
                                     <RowDefinition Height="45"/>
+                                    <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -662,6 +663,9 @@
                                 </Grid>
 
 
+                                <Separator Grid.Row="5"
+                            Background="#999999"   Width="360"  Margin="10,0,10,0"
+                         VerticalAlignment="Center" />
                             </Grid>
 
                         </Grid>

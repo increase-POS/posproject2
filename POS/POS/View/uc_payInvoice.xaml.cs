@@ -41,7 +41,7 @@ namespace POS.View
 
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
         int? parentCategorieSelctedValue;
-        public byte tglCategoryState;
+        public byte tglCategoryState = 1;
         public byte tglItemState;
         public string txtItemSearch;
         //tglItemState
@@ -65,7 +65,7 @@ namespace POS.View
             
 
         }
-        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        private  void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
@@ -118,7 +118,7 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
             {
@@ -132,9 +132,11 @@ namespace POS.View
             }
 
             translate();
-
             catigoriesAndItemsView.ucPayInvoice = this;
-            
+            await RefrishItems();
+            await RefrishCategories();
+            RefrishCategoriesCard();
+            Txb_searchitems_TextChanged(null, null);
 
             #region Style Date
             dp_desrvedDate.Loaded += delegate
@@ -277,7 +279,6 @@ namespace POS.View
 
 
 
-
         #region Categor and Item
         #region Refrish Y
         /// <summary>
@@ -326,18 +327,18 @@ namespace POS.View
         private void dg_items_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-          
-
             if (dg_items.SelectedIndex != -1)
             {
                 item = dg_items.SelectedItem as Item;
                 this.DataContext = item;
 
+              
 
             }
             if (item != null)
             {
-                
+               
+
             }
 
 
@@ -361,14 +362,15 @@ namespace POS.View
         public void ChangeItemIdEvent(int itemId)
         {
 
-         
+          
+
             item = items.ToList().Find(c => c.itemId == itemId);
             if (item != null)
             {
                 this.DataContext = item;
 
 
-                
+
             }
         }
 
