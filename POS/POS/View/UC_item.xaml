@@ -325,6 +325,7 @@
 
                                     </Grid>
                                     <TextBox  Grid.Column="1" x:Name="tb_pageNumberSearch"  TextChanged="Tb_pageNumberSearch_TextChanged"   
+                                               PreviewTextInput="NumberValidationTextBox"
                         Padding="10,5,5,5" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="..."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
@@ -715,8 +716,8 @@
                                     <Grid  Grid.Row="1">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="55"/>
-                                            <ColumnDefinition Width="30"/>
+                                            <!--<ColumnDefinition Width="55"/>
+                                            <ColumnDefinition Width="30"/>-->
 
                                         </Grid.ColumnDefinitions>
                                         <ComboBox x:Name="cb_parentItem"  Grid.Row="2"
@@ -724,13 +725,13 @@
                              materialDesign:HintAssist.Hint="Select Parent Item "  
                            TextBlock.FontSize="12"   Background="#f8f8f8"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="0" Height="35" Width="260"  Margin="10,5,5,5"
+                Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
                            BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_parentItem_SelectionChanged">
 
                                         </ComboBox>
-                                        <TextBlock Text="Is Defult" Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                        <!--<TextBlock Text="Is Defult" Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                    Margin="5"/>
-                                        <CheckBox Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,5,5"/>
+                                        <CheckBox Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,5,5"/>-->
 
 
                                         <!--<WrapPanel Grid.Column="1"  Height="35" Width="50" Background="#f8f8f8" HorizontalAlignment="Left"  VerticalAlignment="Center"

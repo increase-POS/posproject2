@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -222,7 +223,11 @@ namespace POS.View
         }
         #endregion
 
-
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
 
         #region Tab
         private void Btn_newInvoice_Click(object sender, RoutedEventArgs e)

@@ -322,10 +322,10 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock x:Name="tb_code"  Text="{Binding code, Mode=OneWay}" Padding="10,5,5,5" 
                                      materialDesign:HintAssist.Hint="Code..."  
-                                     TextBlock.FontSize="12"
+                                     TextBlock.FontSize="12" Foreground="#4E4E4E"  FontWeight="SemiBold"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                     Height="35" Width="200" Margin="5,5,0,5" Grid.ColumnSpan="2" 
+                                      Width="200" Margin="5,5,0,5" Grid.ColumnSpan="2" 
                                      KeyboardNavigation.IsTabStop="False">
                                 <TextBlock.ToolTip>
                                     <ToolTip x:Name="tt_code" Content="Code"
@@ -344,27 +344,7 @@
                                 </Path.ToolTip>
                             </Path>
                         </Grid>
-                        <!--<Grid  Grid.Row="2" Margin="5,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-
-                            </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_address"  Text="{Binding address, Mode=OneWay}" Padding="10,5,5,5" 
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Address..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue" MaxLength="100"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="35" Width="200" Margin="5,5,0,5" Grid.ColumnSpan="2" />
-                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                <Path.ToolTip>
-                                    <ToolTip x:Name="tt_error_address" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                </Path.ToolTip>
-                            </Path>
-                        </Grid>-->
+                      
 
 
 
@@ -408,6 +388,7 @@
                             <RowDefinition Height="45"/>
                             <RowDefinition Height="45"/>
                             <RowDefinition Height="45"/>
+                            <RowDefinition Height="45"/>
 
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -430,10 +411,10 @@
                                 <ColumnDefinition Width="75"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <ComboBox x:Name="cb_areaMobile" Padding="10,11,5,5" 
+                            <ComboBox x:Name="cb_areaMobile" Padding="5" 
                                       TextBlock.Foreground="#4E4E4E"
                                       SelectedIndex="0"
-                                    TextBlock.FontSize="12" Margin="10,0,5,5"
+                                    TextBlock.FontSize="12" Margin="10,5,5,5"
                                     HorizontalAlignment="Center" VerticalAlignment="Bottom" 
                                     Height="35" Width="60"  
                                     Background="#f8f8f8"  TabIndex="2"
@@ -496,7 +477,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <ComboBox x:Name="cb_areaPhone" Padding="10,11,5,5" TextBlock.Foreground="#4E4E4E"
+                            <ComboBox x:Name="cb_areaPhone" Padding="10,5,5,5" TextBlock.Foreground="#4E4E4E"
                             SelectedIndex="0"  Grid.Column="0"
                            TextBlock.FontSize="12" Margin="10,5,5,5"
                      HorizontalAlignment="Center" VerticalAlignment="Center" 
@@ -518,7 +499,7 @@
                                     +950
                                 </ListBoxItem>
                             </ComboBox>
-                            <ComboBox x:Name="cb_areaPhoneLocal" Padding="15,11,5,5" TextBlock.Foreground="#4E4E4E"
+                            <ComboBox x:Name="cb_areaPhoneLocal" Padding="10,5,5,5" TextBlock.Foreground="#4E4E4E"
                             SelectedIndex="0"
                            TextBlock.FontSize="12" Margin="10,5,5,5"
                      HorizontalAlignment="Center" VerticalAlignment="Center" 
@@ -566,71 +547,13 @@
                         </Grid>
 
 
-                        <!--<TextBox x:Name="tb_emccail"  Text="{Binding email, Mode=OneWay}" Grid.Row="3" Padding="10,5,5,5"
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Email..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="#f8f8f8"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="1"  Height="35" Width="340"  Margin="10,5" />-->
-
-                        <Grid  Grid.Column="1" Grid.Row="4"  Margin="5,0,5,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-
-                            </Grid.ColumnDefinitions>
-
-
-                            <TextBox x:Name="tb_email"  Text="{Binding email, Mode=OneWay}" Grid.Row="2"  Padding="10,5,5,5"   
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Email..."    
-                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                     BorderBrush="AliceBlue" MaxLength="100"
-                                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                     Height="35" Width="170"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
-                                     LostFocus="Tb_email_LostFocus" TabIndex="10" PreviewKeyDown="tb_email_PreviewKeyDown">
-                                <TextBox.ToolTip>
-                                    <ToolTip x:Name="tt_email" Content="Email"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                                </TextBox.ToolTip>
-                            </TextBox>
-                            <TextBox x:Name="tb_address"  Text="{Binding email, Mode=OneWay}" Grid.Column="1"  Padding="10,5,5,5"   
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Address..."    
-                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                     BorderBrush="AliceBlue" MaxLength="100"
-                                     HorizontalAlignment="Left" VerticalAlignment="Bottom" 
-                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                     Height="35" Width="170"  Margin="5,0,0,5" 
-                                     LostFocus="Tb_email_LostFocus" TabIndex="11">
-                                <TextBox.ToolTip>
-                                    <ToolTip x:Name="tt_address" Content="Address"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                                </TextBox.ToolTip>
-                            </TextBox>
-
-                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                                  x:Name="p_errorEmail"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                <Path.ToolTip>
-                                    <ToolTip  x:Name="tt_errorEmail"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                </Path.ToolTip>
-                            </Path>
-                        </Grid>
                         <Grid  Grid.Row="3"  Margin="0,0,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <ComboBox x:Name="cb_areaFax" Padding="10,11,5,5" TextBlock.Foreground="#4E4E4E"
+                            <ComboBox x:Name="cb_areaFax" Padding="10,5,5,5" TextBlock.Foreground="#4E4E4E"
                             SelectedIndex="0"  Grid.Column="0"
                            TextBlock.FontSize="12" Margin="10,5,5,5"
                      HorizontalAlignment="Center" VerticalAlignment="Center" 
@@ -652,7 +575,7 @@
                                     +950
                                 </ListBoxItem>
                             </ComboBox>
-                            <ComboBox x:Name="cb_areaFaxLocal" Padding="15,11,5,5" TextBlock.Foreground="#4E4E4E"
+                            <ComboBox x:Name="cb_areaFaxLocal" Padding="10,5,5,5" TextBlock.Foreground="#4E4E4E"
                             SelectedIndex="0"
                            TextBlock.FontSize="12" Margin="10,5,5,5"
                      HorizontalAlignment="Center" VerticalAlignment="Center" 
@@ -697,6 +620,72 @@
                             </Path>
 
                         </Grid>
+
+                        <Grid  Grid.Column="1" Grid.Row="4"  Margin="5,0,5,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="tb_email"  Text="{Binding email, Mode=OneWay}" Grid.Row="2"  Padding="10,5,5,5"   
+                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Email..."    
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                     BorderBrush="AliceBlue" MaxLength="100"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                     Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
+                                     LostFocus="Tb_email_LostFocus" TabIndex="10" PreviewKeyDown="tb_email_PreviewKeyDown">
+                                <TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_email" Content="Email"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                                </TextBox.ToolTip>
+                            </TextBox>
+                            
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                  x:Name="p_errorEmail"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorEmail"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
+
+                        <Grid  Grid.Column="1" Grid.Row="5"  Margin="5,0,5,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="tb_address"  Text="{Binding email, Mode=OneWay}" Grid.Column="1"  Padding="10,5,5,5"   
+                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Address..."    
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                     BorderBrush="AliceBlue" MaxLength="100"
+                                     HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                     Height="35" Width="340"  Margin="5,0,0,5" 
+                                     LostFocus="Tb_email_LostFocus" TabIndex="11">
+                                <TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_address" Content="Address"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                                </TextBox.ToolTip>
+                            </TextBox>
+
+
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
+                        
+                   
                     </Grid>
                     <Grid  Grid.Row="3" >
                         <Grid.RowDefinitions >

@@ -155,7 +155,49 @@ namespace POS.View
             cb_areaPhoneLocal.SelectedIndex = 0;
         }
 
-       
+        #region Numeric
+
+
+        private int _numValue = 0;
+
+        public int NumValue
+        {
+            get { return _numValue; }
+            set
+            {
+                _numValue = value;
+                tb_workHours.Text = value.ToString();
+            }
+        }
+
+
+
+        private void cmdUp_Click(object sender, RoutedEventArgs e)
+        {
+            NumValue++;
+        }
+
+        private void cmdDown_Click(object sender, RoutedEventArgs e)
+        {
+            NumValue--;
+        }
+
+        private void tb_discountValue_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (tb_workHours == null)
+            {
+                return;
+            }
+
+            if (!int.TryParse(tb_workHours.Text, out _numValue))
+                tb_workHours.Text = _numValue.ToString();
+        }
+
+        private void tb_discountValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+        #endregion
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             User user = new User

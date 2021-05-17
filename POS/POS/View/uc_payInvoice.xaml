@@ -88,7 +88,7 @@
                                  FontSize="11">
                                 </Button>-->
 
-                                <Grid    Grid.Column="13"   Margin="5,5,5,0"  >
+                                <!--<Grid    Grid.Column="13"   Margin="5,5,5,0"  >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="45"/>
                                         <ColumnDefinition Width="auto"/>
@@ -100,7 +100,7 @@
                                     <ToggleButton Grid.Column="1"  x:Name="tgl_categoryIsActive"  Checked="Tgl_categoryIsActive_Checked" Unchecked="Tgl_categorIsActive_Unchecked"
                              VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                           Margin="0,0,5,0" Height="13" Width="28" />
-                                </Grid>
+                                </Grid>-->
 
                             </Grid>
                             <ScrollViewer  Grid.Row="1"  VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Margin="0"
@@ -196,7 +196,8 @@
                         <Border BorderThickness="0" Grid.Row="0" 
                     CornerRadius="7,7,0,0" BorderBrush="Black" Background="#178DD2">
                             <Grid >
-                                --><!--<Button Margin="2"   Width="15" Height="12"   Padding="0"
+                                -->
+                    <!--<Button Margin="2"   Width="15" Height="12"   Padding="0"
                                         Background="{x:Null}" BorderBrush="{x:Null}">
                                     <Path Fill="White" Stretch="Fill"
                           Width="15" Height="12" 
@@ -205,7 +206,8 @@
 	c0.1-0.3,0.4-0.5,0.7-0.5c0.1,0,0.2,0,0.3,0.1L20,20l14-6.2c0.1,0,0.2-0.1,0.3-0.1c0.3,0,0.5,0.2,0.7,0.5c0.2,0.4,0,0.8-0.4,1
 	L20,21.6L5.4,15.1z M5.4,25.5c-0.4-0.2-0.5-0.6-0.4-1C5.2,24.2,5.4,24,5.7,24c0.1,0,0.2,0,0.3,0.1l14,6.3l14-6.3
 	c0.1,0,0.2-0.1,0.3-0.1c0.3,0,0.5,0.2,0.7,0.5c0.2,0.4,0,0.8-0.4,1L20,32L5.4,25.5z"/>
-                                </Button>--><!--
+                                </Button>-->
+                    <!--
                             </Grid>
                         </Border>
 
@@ -324,6 +326,7 @@
 
                                     </Grid>
                                     <TextBox  Grid.Column="1" x:Name="tb_pageNumberSearch"  TextChanged="Tb_pageNumberSearch_TextChanged"   
+                                               PreviewTextInput="NumberValidationTextBox"
                         Padding="10,5,5,5" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="..."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
@@ -572,7 +575,7 @@
                 Grid.Row="1" Background="White">
                 <Grid>
  <!--////////////////////////////// payinvoice////////////////////////////////////-->
-                    <Grid x:Name="grid_payinvoice" Visibility="Collapsed" >
+                    <Grid x:Name="grid_payinvoice" Visibility="Visible" >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
@@ -996,7 +999,7 @@
                     </Grid>
  <!--////////////////////////////// vendor////////////////////////////////////-->
 
-                    <Grid  x:Name="grid_vendor" Visibility="Visible"   >
+                    <Grid  x:Name="grid_vendor" Visibility="Collapsed"   >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="45"/>

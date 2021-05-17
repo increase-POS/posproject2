@@ -213,6 +213,8 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
 
 
                         </Grid.RowDefinitions>
@@ -238,13 +240,7 @@
                          VerticalAlignment="Center" Width="20" Height="20"/>
                             </Button>
                         </Grid>
-                        <!--<TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Grid.Row="1" Padding="10,5,5,5" 
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="POS Name..."   
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="340"  Margin="10,5" >
-                        </TextBox>-->
+                      
 
                         <Grid   Grid.Row="1"  Margin="5,0,0,0">
                             <Grid.ColumnDefinitions>
@@ -267,13 +263,7 @@
                             </Path>
                         </Grid>
 
-                        <!--<TextBox x:Name="tb_code"  Text="{Binding code, Mode=OneWay}"  Padding="10,5,5,5"
-                                 Grid.Row="2" BorderThickness="1"   
-                                 materialDesign:HintAssist.Hint="POS Code..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="#f8f8f8"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="340"  Margin="10,5" />-->
+                      
 
                         <Grid   Grid.Row="2"  Margin="5,0,0,0">
                             <Grid.ColumnDefinitions>
@@ -318,10 +308,43 @@
                                 </Path.ToolTip>
                             </Path>
                         </Grid>
-                    </Grid>
-              
+                        <Grid   Grid.Row="4"  Margin="5,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="tb_notes"  Text="{Binding notes, Mode=OneWay}" 
+                                 Padding="10,5,5,5"   TabIndex="9"
+                                 BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
+                                 Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
+                                 BorderBrush="AliceBlue"  TextWrapping="Wrap" AcceptsReturn="True"
+                                 HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="100" 
+                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                 Height="70" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
+                                <TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_notes" Content="Notes"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                                </TextBox.ToolTip>
+                            </TextBox>
 
-                </Grid>
+                            <Path Fill="#E81123" Stretch="Fill" Margin="15,12,15,5"
+                              HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
+                         VerticalAlignment="Top" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_error_note" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
+                        <Separator Grid.Row="5"
+                                    Background="#999999"   Width="360"  Margin="10,5,10,0"
+                                 VerticalAlignment="Center" />
+            </Grid>
+          
+
+        </Grid>
                 <Grid Grid.Row="1" Margin="5,1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

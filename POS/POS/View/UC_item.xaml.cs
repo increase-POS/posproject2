@@ -1192,7 +1192,6 @@ namespace POS.View
         }
         #endregion
 
-
         #region fill
          void fillCategories()
         {
@@ -1233,9 +1232,6 @@ namespace POS.View
         }
 
         #endregion
-
-
-
 
 
         #region refresh
@@ -1300,91 +1296,6 @@ namespace POS.View
             dg_service.ItemsSource = services.ToList();
         }
         #endregion
-
-      
-
-      
-
-
-
-        /*
-        private void dg_itemsSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorCode.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            
-            if (dg_items.SelectedIndex != -1)
-            {
-                item = dg_items.SelectedItem as Item;
-                this.DataContext = item;
-
-                refreshPropertiesGrid(item.itemId);
-                refreshSerials(item.itemId);
-                refreshItemUnitsGrid(item.itemId);
-                refreshServicesGrid(item.itemId);
-
-            }
-            if (item != null)
-            {
-                tb_code.Text = item.code;
-                tb_name.Text = item.name;
-                tb_details.Text = item.details;
-                if (item.parentId != null && item.parentId != 0)
-                {
-                    cb_parentItem.SelectedValue = (int)item.parentId;
-                }
-                else
-                    cb_parentItem.SelectedValue = -1;
-
-                if (item.categoryId != null)
-                {
-                    cb_categorie.SelectedValue = (int)item.categoryId;
-                }
-                else
-                    cb_categorie.SelectedValue = -1;
-              
-                if (item.type != null)
-                {
-                    cb_itemType.SelectedValue = item.type;
-                    switch (item.type){
-                        case "n": cb_itemType.SelectedIndex = 0; break;
-                        case "d": cb_itemType.SelectedIndex = 1; break;
-                        case "sn":cb_itemType.SelectedIndex = 2; break;
-                        case "sr": cb_itemType.SelectedIndex = 3; break;
-                        case "p": cb_itemType.SelectedIndex = 4; break;
-                    }
-                }
-                else
-                    cb_itemType.SelectedValue = -1;
-
-                tb_taxes.Text = item.taxes.ToString();
-                tb_min.Text = item.min.ToString();
-                tb_max.Text = item.max.ToString();
-               
-                if (item.minUnitId != null)
-                    cb_minUnit.SelectedValue = (int) item.minUnitId;
-                else
-                    cb_minUnit.SelectedValue = -1;
-
-                if (item.maxUnitId != null)
-                    cb_maxUnit.SelectedValue = (int)item.maxUnitId;
-                else
-                    cb_minUnit.SelectedValue = -1;
- 
-                if (item.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
-
-                else
-                {
-                    if (item.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
-                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
-                }
-
-            }
-        }
-        */
 
         #region SelectionChanged
         private void dg_unit_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1554,16 +1465,6 @@ namespace POS.View
 
         }
         #endregion
-
-
-
-
-
-
-
-
-
-
 
 
         #region Categor and Item

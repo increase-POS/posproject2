@@ -8,9 +8,9 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
-        Title="wd_itemsList" Height="400" Width="550" Background="#00178DD2" 
+        Title="wd_itemsList" Height="400" Width="550" Background="#EDEDED" 
         Loaded="Window_Loaded">
-    <Grid Grid.Column="1" Grid.Row="1" Background="#00178DD2"  >
+    <Grid Grid.Column="1" Grid.Row="1"  Background="#EDEDED"  >
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
@@ -18,7 +18,7 @@
         <Grid.Effect>
             <DropShadowEffect Color="#d7d7d7" BlurRadius="10" Direction="225"  RenderingBias="Quality" ShadowDepth="10" Opacity="0.35"/>
         </Grid.Effect>
-        <Grid   Background="Yellow" >
+        <Grid   Background="#EDEDED" >
             <Border  BorderThickness="0" Grid.Row="0" 
                     CornerRadius="7,7,0,0"  Background="#178DD2">
                 <Grid>
@@ -75,7 +75,7 @@
         </Grid>
         <Border BorderThickness="1,0,1,1"  Grid.Row="1"
                     CornerRadius="0,0,7,7" BorderBrush="#999999"  Background="White">
-            <Grid Background="#00178DD2">
+            <Grid  >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="auto"/>
@@ -90,7 +90,7 @@
                 </Grid.RowDefinitions>
                 
                 <Grid   Width="225"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0">
-                    <TextBox   Width="225"
+                    <TextBox   Width="225"  x:Name="txb_searchitems"  TextChanged="Txb_searchitems_TextChanged"
                         Padding="10,5,5,5" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"

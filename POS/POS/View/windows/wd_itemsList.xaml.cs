@@ -29,6 +29,8 @@ namespace POS.View.windows
         List<Item> allItems = new List<Item>();
         public List<Item> selectedItems = new List<Item>();
         Item itemModel = new Item();
+        public string txtItemSearch;
+
         /// <summary>
         /// Selcted Items if selectedItems Have Items At the beginning
         /// </summary>
@@ -119,7 +121,16 @@ namespace POS.View.windows
 
         }
 
-       
-        
+        private void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+            //if (items is null)
+            //    await RefrishItems();
+            txtItemSearch = txb_searchitems.Text.ToLower();
+            lst_allItems.ItemsSource = allItems.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+            x.name.ToLower().Contains(txtItemSearch) ||
+            x.details.ToLower().Contains(txtItemSearch)
+            ) && x.isActive == 1);
+        }
     }
 }

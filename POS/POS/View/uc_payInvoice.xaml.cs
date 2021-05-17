@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -64,7 +65,11 @@ namespace POS.View
             
 
         }
-       
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
 
         private void translate()
         {
@@ -269,9 +274,10 @@ namespace POS.View
         {
             grid_returnInvoice.Visibility = Visibility.Collapsed;
         }
-       
 
-        
+
+
+
         #region Categor and Item
         #region Refrish Y
         /// <summary>
@@ -285,21 +291,12 @@ namespace POS.View
         }
         async void RefrishCategoriesCard()
         {
-            //if (_categories)
-            //{
-
-            //}
-            //else
-            //{
-                if (categories is null)
-                    await RefrishCategories();
-                categoriesQuery = categories.Where(x => x.isActive == tglCategoryState  && x.parentId == categoryParentId);
-                catigoriesAndItemsView.gridCatigories = grid_categoryCards;
-                catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
-            //}
-            
+            if (categories is null)
+                await RefrishCategories();
+            categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == categoryParentId);
+            catigoriesAndItemsView.gridCatigories = grid_categoryCards;
+            catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
         }
-
         /// <summary>
         /// Item
         /// </summary>
@@ -307,7 +304,9 @@ namespace POS.View
 
         async Task<IEnumerable<Item>> RefrishItems()
         {
-            items = await itemModel.GetAllItems();
+            if (category.categoryId == 0)
+                items = await itemModel.GetAllItems();
+            else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
             return items;
         }
 
@@ -320,33 +319,30 @@ namespace POS.View
         {
 
             catigoriesAndItemsView.gridCatigorieItems = grid_itemContainerCard;
-            catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(),"en", "purchase");
+            catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
         }
         #endregion
         #region Get Id By Click  Y
         private void dg_items_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /*
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorCode.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            */
+
+          
 
             if (dg_items.SelectedIndex != -1)
             {
                 item = dg_items.SelectedItem as Item;
-                //this.DataContext = category;
+                this.DataContext = item;
+
+
+            }
+            if (item != null)
+            {
+                
             }
 
 
-            
-
-            
         }
-        public void ChangeCategoryIdEvent(int categoryId)
+        public async void ChangeCategoryIdEvent(int categoryId)
         {
             category = categories.ToList().Find(c => c.categoryId == categoryId);
 
@@ -356,54 +352,35 @@ namespace POS.View
                 categoryParentId = category.categoryId;
                 RefrishCategoriesCard();
             }
-            //{
-            //    categoryParentId = category.categoryId;
-            //    categoriesQuery = categories.Where(x =>
-            //x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            //}
+
             generateTrack(categoryId);
+            await RefrishItems();
+            Txb_searchitems_TextChanged(null, null);
         }
 
-        public void ChangeItemIdEvent(int categoryId)
+        public void ChangeItemIdEvent(int itemId)
         {
-            //////////////
-            ///
-            /*
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorCode.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            */
-            //////////////
 
-            //_categorieId = categoryId;
-            //category = categories.ToList().Find(c => c.categoryId == categoryId);
-            //this.DataContext = category;
-            //cb_parentCategorie.SelectedValue = category.parentId;
-
-            //if (categories.Where(x => (x.categoryCode.Contains(txtItemSearch) ||
-            // x.name.Contains(txtItemSearch) ||
-            // x.details.Contains(txtItemSearch)
-            // ) && x.isActive == tglItemState && x.parentId == category.categoryId).Count() != 0)
-            //    categoryParentId = category.categoryId;
+         
+            item = items.ToList().Find(c => c.itemId == itemId);
+            if (item != null)
+            {
+                this.DataContext = item;
 
 
-            //Txb_searchcategories_TextChanged(null, null);
-            MessageBox.Show("I'm in ChangeItemIdEvent");
+                
+            }
         }
-        //public void testChangeCategorieItemsIdEvent()
-        //{
-        //    MessageBox.Show("Hello World!!  CategorieItems Id");
-        //}
+
         #endregion
         #region Toggle Button Y
-            /// <summary>
-            /// Category
-            /// </summary>
-            /// <param name="sender"></param>
-            /// <param name="e"></param>
+        /// <summary>
+        /// Category
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// 
+        /*
         private void Tgl_categoryIsActive_Checked(object sender, RoutedEventArgs e)
         {
             tglCategoryState = 1;
@@ -417,6 +394,7 @@ namespace POS.View
             tglCategoryState = 0;
             RefrishCategoriesCard();
         }
+        */
         /// <summary>
         /// Item
         /// </summary>
@@ -471,7 +449,7 @@ namespace POS.View
         #endregion
         #region Search Y
 
-        
+
 
         /// <summary>
         /// Item
@@ -483,60 +461,15 @@ namespace POS.View
             if (items is null)
                 await RefrishItems();
             txtItemSearch = txb_searchitems.Text.ToLower();
-            //categoriesQuery = new List<Category>();
-            /*
-            if(categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
-            x.name.Contains(txtCategorySearch) ||
-            x.details.Contains(txtCategorySearch)
-            ) && x.isActive == tglCategoryState && x.parentId == categoryParentId).Count() == 0)
-            {
-                categoriesQuery = categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
-            x.name.Contains(txtCategorySearch) ||
-            x.details.Contains(txtCategorySearch)
-            ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            }
-            else
-            {
-                categoriesQuery = categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
-            x.name.Contains(txtCategorySearch) ||
-            x.details.Contains(txtCategorySearch)
-            ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            }
-            */
             itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState );
-            //txt_Count.Text = categoriesQuery.Count().ToString();
+            ) && x.isActive == tglItemState);
             RefrishItemsDatagrid(itemsQuery);
+            pageIndex = 1;
             paginationSetting(itemsQuery);
         }
-        /*
-        private async void Txb_searchcategoriesDatagrid_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (categories is null)
-                await RefrishCategories();
-            
-            categoriesQuery = categories.Where(x => (x.categoryCode.Contains(txb_searchcategoriesDatagrid.Text) ||
-            x.name.Contains(txb_searchcategoriesDatagrid.Text) ||
-            x.details.Contains(txb_searchcategoriesDatagrid.Text)
-            ) && x.isActive == tglCategoryState);
-            RefrishCategoriesDatagrid(categoriesQuery);
-        }
-        private async void Txb_searchcategoriesCard_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (categories is null)
-                await RefrishCategories();
-            
-            categoriesQuery = categories.Where(x => (x.categoryCode.Contains(txb_searchcategoriesCard.Text) ||
-            x.name.Contains(txb_searchcategoriesCard.Text) ||
-            x.details.Contains(txb_searchcategoriesCard.Text)
-            ) && x.isActive == tglCategoryState);
-            pageIndex = 1;
-            paginationSetting(categoriesQuery);
 
-        }
-        */
         #endregion
         #region Pagination Y
         public int pageIndex = 1;
@@ -545,18 +478,19 @@ namespace POS.View
 
             itemsQuery = items.Where(x => x.isActive == tglItemState);
 
-            if (tb_pageNumberSearch.Text.Equals(""))
+            if (tb_pageNumberSearch.Text.Equals("") || int.Parse(tb_pageNumberSearch.Text) <= 0)
             {
                 pageIndex = 1;
             }
-            else if (((itemsQuery.Count() - 1) / 20) + 1 < int.Parse(tb_pageNumberSearch.Text))
+            else if (((itemsQuery.Count() - 1) / 9) + 1 < int.Parse(tb_pageNumberSearch.Text))
             {
-                pageIndex = ((itemsQuery.Count() - 1) / 20) + 1;
+                pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
             }
             else
             {
                 pageIndex = int.Parse(tb_pageNumberSearch.Text);
             }
+            //pageIndex = tb_pageNumberSearch.Text.Equals("") ? 1 : int.Parse(tb_pageNumberSearch.Text);
             paginationSetting();
         }
         void pageNumberActive(Button btn, int indexContent)
@@ -564,6 +498,7 @@ namespace POS.View
             btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             btn.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
             btn.Content = indexContent.ToString();
+            //pageIndex = indexContent;
         }
         void pageNumberDisActive(Button btn, int indexContent)
         {
@@ -578,6 +513,7 @@ namespace POS.View
             {
                 if (items is null)
                 {
+
                     await RefrishItems();
                     _items = items;
                 }
@@ -587,7 +523,7 @@ namespace POS.View
 
 
             _items = _items.Where(x => x.isActive == tglItemState);
-            if (2 >= ((_items.Count() - 1) / 20))
+            if (2 >= ((_items.Count() - 1) / 9))
             {
                 if (pageIndex == 1)
                 {
@@ -603,20 +539,16 @@ namespace POS.View
                 }
                 else
                 {
-
                     pageNumberDisActive(btn_prevPage, 1);
                     pageNumberDisActive(btn_activePage, 2);
                     pageNumberActive(btn_nextPage, 3);
-
                 }
-                if (0 >= ((_items.Count() - 1) / 20))
+                if (0 >= ((_items.Count() - 1) / 9))
                 {
                     btn_activePage.IsEnabled = false;
-                    btn_nextPage.IsEnabled = false;
                 }
-                else if (1 >= ((_items.Count() - 1) / 20))
+                if (1 >= ((_items.Count() - 1) / 9))
                 {
-                    btn_activePage.IsEnabled = true;
                     btn_nextPage.IsEnabled = false;
                 }
                 btn_firstPage.IsEnabled = false;
@@ -637,7 +569,7 @@ namespace POS.View
                 pageNumberDisActive(btn_nextPage, 3);
             }
             /////prev last
-            else if (pageIndex == ((_items.Count() - 1) / 20))
+            else if (pageIndex == ((_items.Count() - 1) / 9))
             {
                 btn_lastPage.IsEnabled = false;
                 btn_firstPage.IsEnabled = true;
@@ -648,7 +580,7 @@ namespace POS.View
 
             }
             ///// last
-            else if ((pageIndex - 1) >= ((_items.Count() - 1) / 20))
+            else if ((pageIndex - 1) >= ((_items.Count() - 1) / 9))
             {
                 btn_lastPage.IsEnabled = false;
                 btn_firstPage.IsEnabled = true;
@@ -667,9 +599,23 @@ namespace POS.View
                 btn_firstPage.IsEnabled = true;
 
             }
+            if (0 < ((_items.Count() - 1) / 9))
+            {
+                btn_activePage.IsEnabled = true;
+            }
+            if (1 < ((_items.Count() - 1) / 9))
+            {
+                btn_nextPage.IsEnabled = true;
+            }
+            if (2 < ((_items.Count() - 1) / 9))
+            {
+                btn_firstPage.IsEnabled = true;
+                btn_lastPage.IsEnabled = true;
+            }
 
-            itemsQuery = _items.Skip((pageIndex - 1) * 20).Take(20);
+            itemsQuery = _items.Skip((pageIndex - 1) * 9).Take(9);
             RefrishItemsCard(itemsQuery);
+            //RefrishItemCard(items.Skip(pageIndex - 1 * 9).Take(9));
         }
 
 
@@ -701,46 +647,11 @@ namespace POS.View
         {
 
             itemsQuery = items.Where(x => x.isActive == tglItemState);
-            pageIndex = ((itemsQuery.Count() - 1) / 20) + 1;
+            pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
             paginationSetting();
         }
         #endregion
-        /*
-        #region Excel
-        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Dispatcher.Invoke(() =>
-            {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
-        }
-        void FN_ExportToExcel()
-        {
 
-            var QueryExcel = categoriesQuery.AsEnumerable().Select(x => new
-            {
-                Code = x.categoryCode,
-                Name = x.name,
-                Details = x.details,
-                parentId = x.parentId,
-                Taxes = x.taxes,
-
-            });
-            var DTForExcel = QueryExcel.ToDataTable();
-            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trCodeHint");
-            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trNameHint");
-            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trDetailsHint");
-            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trParentCategorieHint");
-            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trTaxesHint");
-
-
-            ExportToExcel.Export(DTForExcel);
-
-        }
-        #endregion
-        */
         #region categoryPathControl Y
 
         async void generateTrack(int categorypaPathId)
@@ -775,7 +686,7 @@ namespace POS.View
 
 
         }
-        private void getCategoryIdFromPath(object sender, RoutedEventArgs e)
+        private async void getCategoryIdFromPath(object sender, RoutedEventArgs e)
         {
             Button b = (Button)sender;
 
@@ -784,17 +695,23 @@ namespace POS.View
                 generateTrack(int.Parse(b.Tag.ToString()));
                 categoryParentId = int.Parse(b.Tag.ToString());
                 RefrishCategoriesCard();
+
+
+                category.categoryId = int.Parse(b.Tag.ToString());
+
             }
-               
+            await RefrishItems();
+            Txb_searchitems_TextChanged(null, null);
 
         }
-        private void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
+        private async void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
         {
             categoryParentId = 0;
             RefrishCategoriesCard();
             grid_categoryControlPath.Children.Clear();
-
-
+            category.categoryId = 0;
+            await RefrishItems();
+            Txb_searchitems_TextChanged(null, null);
         }
 
         #endregion
