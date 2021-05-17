@@ -72,10 +72,6 @@ namespace POS.View.windows
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            SectionData.genRandomCode("v");
-            tb_code.Text = SectionData.code;
-
-            agent.agentId = 0;
             tb_address.Clear();
             tb_fax.Clear();
             tb_company.Clear();

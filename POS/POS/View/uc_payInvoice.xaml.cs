@@ -616,6 +616,24 @@ namespace POS.View
                 btn_lastPage.IsEnabled = true;
             }
 
+            // if 1 2 3 thin 
+            if (2 >= pageIndex)
+            {
+                btn_firstPage.IsEnabled = false;
+            }
+            if (2 >= ((_items.Count() - 1) / 9) && 2 >= pageIndex)
+            {
+                btn_lastPage.IsEnabled = false;
+            }
+            // last
+            if ((pageIndex - 1) >= ((_items.Count() - 1) / 9))
+            {
+                btn_lastPage.IsEnabled = false;
+            }
+
+
+
+
             itemsQuery = _items.Skip((pageIndex - 1) * 9).Take(9);
             RefrishItemsCard(itemsQuery);
             //RefrishItemCard(items.Skip(pageIndex - 1 * 9).Take(9));

@@ -1833,7 +1833,7 @@ namespace POS.View
                     _items = items;
             }
 
-            
+
             _items = _items.Where(x => x.isActive == tglItemState);
             if (2 >= ((_items.Count() - 1) / 9))
             {
@@ -1911,20 +1911,37 @@ namespace POS.View
                 btn_firstPage.IsEnabled = true;
 
             }
-             if (0 < ((_items.Count() - 1) / 9))
-                {
-                    btn_activePage.IsEnabled = true;
-                }
-                if (1 < ((_items.Count() - 1) / 9))
-                {
-                    btn_nextPage.IsEnabled = true;
-                }
+            #region
+            if (0 < ((_items.Count() - 1) / 9))
+            {
+                btn_activePage.IsEnabled = true;
+            }
+            if (1 < ((_items.Count() - 1) / 9))
+            {
+                btn_nextPage.IsEnabled = true;
+            }
             if (2 < ((_items.Count() - 1) / 9))
             {
                 btn_firstPage.IsEnabled = true;
                 btn_lastPage.IsEnabled = true;
+
+
             }
-               
+            // if 1 2 3 thin 
+            if (2 >= pageIndex)
+            {
+                btn_firstPage.IsEnabled = false;
+            }
+            if (2 >= ((_items.Count() - 1) / 9) && 2 >= pageIndex)
+            {
+                btn_lastPage.IsEnabled = false;
+            }
+            // last
+            if ((pageIndex - 1) >= ((_items.Count() - 1) / 9))
+            {
+                btn_lastPage.IsEnabled = false;
+            }
+            #endregion
             itemsQuery = _items.Skip((pageIndex - 1) * 9).Take(9);
             RefrishItemsCard(itemsQuery);
             //RefrishItemCard(items.Skip(pageIndex - 1 * 9).Take(9));
@@ -1963,7 +1980,6 @@ namespace POS.View
             paginationSetting();
         }
         #endregion
-
         #region categoryPathControl Y
 
         async void generateTrack(int categorypaPathId)

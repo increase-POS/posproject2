@@ -70,7 +70,7 @@ namespace POS.View
         {
             txt_branch.Text = MainWindow.resourcemanager.GetString("trBranch");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-         //   MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectBranchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trSelectBranchHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trCodeHint"));
@@ -139,12 +139,6 @@ namespace POS.View
             //{
             //    tb_search_TextChanged(null, null);
             //});
-
-            //branches = await branchModel.GetAllWithoutMain("b");
-            //MessageBox.Show(Convert.ToString(branches.Count()));
-            //branches = await branchModel.GetBranchesAsync("b");
-            //MessageBox.Show(Convert.ToString(branches.Count()));
-
 
         }
 

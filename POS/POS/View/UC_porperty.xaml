@@ -248,6 +248,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="7.5"/>
 
                         </Grid.RowDefinitions>
@@ -284,7 +285,9 @@
                             </DataGrid.Columns>
 
                         </DataGrid>
-                        <Grid  Grid.Row="2" >
+                        <Separator Background="#999999"   Width="340"  Margin="5"
+                                      Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <Grid  Grid.Row="3" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
@@ -315,7 +318,7 @@
                                       Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
                         </Grid>
-                        <Grid Grid.Row="3">
+                        <Grid Grid.Row="4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="auto"/>

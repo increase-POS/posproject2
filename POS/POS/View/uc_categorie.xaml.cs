@@ -558,7 +558,36 @@ namespace POS.View
                 btn_firstPage.IsEnabled = true;
 
             }
+            #region
+            if (0 < ((_categories.Count() - 1) / 9))
+            {
+                btn_activePage.IsEnabled = true;
+            }
+            if (1 < ((_categories.Count() - 1) / 9))
+            {
+                btn_nextPage.IsEnabled = true;
+            }
+            if (2 < ((_categories.Count() - 1) / 9))
+            {
+                btn_firstPage.IsEnabled = true;
+                btn_lastPage.IsEnabled = true;
+            }
 
+            // if 1 2 3 thin 
+            if (2 >= pageIndex)
+            {
+                btn_firstPage.IsEnabled = false;
+            }
+            if (2 >= ((_categories.Count() - 1) / 9) && 2 >= pageIndex)
+            {
+                btn_lastPage.IsEnabled = false;
+            }
+            // last
+            if ((pageIndex - 1) >= ((_categories.Count() - 1) / 9))
+            {
+                btn_lastPage.IsEnabled = false;
+            }
+            #endregion
             categoriesQuery = _categories.Skip((pageIndex - 1) * 20).Take(20);
             RefrishCategoriesCard(categoriesQuery);
         }

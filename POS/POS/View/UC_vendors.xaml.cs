@@ -25,18 +25,20 @@ namespace POS.View
     /// </summary>
     public partial class UC_vendors : UserControl
     {
+        Agent agentModel = new Agent();
+
+        Agent agent = new Agent();
+
+        IEnumerable<Agent> agentsQuery;
+        IEnumerable<Agent> agents;
+        byte tgl_vendorState;
+        string searchText = "";
 
         public UC_vendors()
         {
             InitializeComponent();
         }
 
-        Agent agentModel = new Agent();
-        Agent agent = new Agent();
-        IEnumerable<Agent> agentsQuery;
-        IEnumerable<Agent> agents;
-        byte tgl_vendorState;
-        string searchText = "";
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");

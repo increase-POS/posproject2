@@ -328,7 +328,7 @@
     <value>اختر اسم البنك</value>
   </data>
   <data name="trSelectBranchHint" xml:space="preserve">
-    <value>اختر اسم الفرع</value>
+    <value>الفرع الأب ...</value>
   </data>
   <data name="trSelectJobHint" xml:space="preserve">
     <value>اختر عمل...</value>
@@ -752,5 +752,11 @@
   </data>
   <data name="trEmptyPhoneToolTip" xml:space="preserve">
     <value>لا يمكن أن يكون رقم الهاتف فارغ</value>
+  </data>
+  <data name="trPassword" xml:space="preserve">
+    <value>كلمة المرور</value>
+  </data>
+  <data name="trSearch" xml:space="preserve">
+    <value>بحث</value>
   </data>
 </root>

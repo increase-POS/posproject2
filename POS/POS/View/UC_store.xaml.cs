@@ -132,56 +132,14 @@ namespace POS.View
 
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //var bc = new BrushConverter();
-
-            //if (tb_name.Text.Equals(""))
-            //{
-            //    p_errorName.Visibility = Visibility.Visible;
-            //    tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            //    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            //}
-            //else
-            //{
-            //    p_errorName.Visibility = Visibility.Collapsed;
-            //    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            //}
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
         }
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
         {
-            //var bc = new BrushConverter();
-
-            //if (tb_name.Text.Equals(""))
-            //{
-            //    p_errorName.Visibility = Visibility.Visible;
-            //    tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            //    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            //}
-            //else
-            //{
-            //    p_errorName.Visibility = Visibility.Collapsed;
-            //    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            //}
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
         }
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
-            //var bc = new BrushConverter();
-
-            //if (!tb_email.Text.Equals(""))
-            //{
-            //    if (!ValidatorExtensions.IsValid(tb_email.Text))
-            //    {
-            //        p_errorEmail.Visibility = Visibility.Visible;
-            //        tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
-            //        tb_email.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            //    }
-            //    else
-            //    {
-            //        p_errorEmail.Visibility = Visibility.Collapsed;
-            //        tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            //    }
-            //}
             SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
 
         }
@@ -190,7 +148,7 @@ namespace POS.View
         {
             txt_store.Text = MainWindow.resourcemanager.GetString("trStore");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-           // MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectStoreHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trSelectBranchHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trCodeHint"));

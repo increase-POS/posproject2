@@ -328,7 +328,7 @@
     <value>Select Bank Name</value>
   </data>
   <data name="trSelectBranchHint" xml:space="preserve">
-    <value>Select Branch Name</value>
+    <value>Parent Branch ...</value>
   </data>
   <data name="trSelectJobHint" xml:space="preserve">
     <value>Select Job ...</value>
@@ -770,5 +770,11 @@
   </data>
   <data name="trEmptyPhoneToolTip" xml:space="preserve">
     <value>The phone number cannot be blank</value>
+  </data>
+  <data name="trPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="trSearch" xml:space="preserve">
+    <value>Search</value>
   </data>
 </root>
