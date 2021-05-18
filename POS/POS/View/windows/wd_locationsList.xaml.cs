@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
+using POS.Classes;
 namespace POS.View.windows
 {
     /// <summary>
@@ -23,7 +23,7 @@ namespace POS.View.windows
         {
             InitializeComponent();
         }
-        /*
+       
         public bool isActive;
         Item item = new Item();
         List<Item> allItems = new List<Item>();
@@ -148,7 +148,7 @@ namespace POS.View.windows
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == 1);
         }
-        */
+        
     }
 
 }
