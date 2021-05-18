@@ -1150,6 +1150,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to كلمة المرور.
+        /// </summary>
+        internal static string trPassword {
+            get {
+                return ResourceManager.GetString("trPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to كلمة المرور....
         /// </summary>
         internal static string trPasswordHint {
@@ -1438,6 +1447,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to بحث.
+        /// </summary>
+        internal static string trSearch {
+            get {
+                return ResourceManager.GetString("trSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to أدخل هنا للبدء بالبحث....
         /// </summary>
         internal static string trSearchHint {
@@ -1474,7 +1492,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to اختر اسم الفرع.
+        ///   Looks up a localized string similar to الفرع الأب ....
         /// </summary>
         internal static string trSelectBranchHint {
             get {

@@ -34,13 +34,57 @@ namespace POS.View
         byte tgl_bankState;
         string searchText = "";
 
+        //phone variabels
+        IEnumerable<CountryCode> countrynum;
+        IEnumerable<City> citynum;
+        IEnumerable<City> citynumofcountry;
 
+        int? countryid;
+        Boolean firstchange = false;
+
+        CountryCode countrycodes = new CountryCode();
+        City cityCodes = new City();
         BrushConverter bc = new BrushConverter();
         public UC_bank()
         {
             InitializeComponent();
         }
+        //area code methods
+        async Task<IEnumerable<CountryCode>> RefreshCountry()
+        {
+            countrynum = await countrycodes.GetAllCountries();
+            return countrynum;
+        }
+        private async void fillCountries()
+        {
+            if (countrynum is null)
+                await RefreshCountry();
 
+            cb_areaPhone.ItemsSource = countrynum.ToList();
+            cb_areaPhone.SelectedValuePath = "countryId";
+            cb_areaPhone.DisplayMemberPath = "code";
+
+            cb_area.ItemsSource = countrynum.ToList();
+            cb_area.SelectedValuePath = "countryId";
+            cb_area.DisplayMemberPath = "code";
+
+
+
+        }
+
+        async Task<IEnumerable<City>> RefreshCity()
+        {
+            citynum = await cityCodes.Get();
+            return citynum;
+        }
+        private async void fillCity()
+        {
+            if (citynum is null)
+                await RefreshCity();
+
+
+        }
+        //end areacod
         private void translate()
         {
             txt_bank.Text = MainWindow.resourcemanager.GetString("trBank");
@@ -96,7 +140,8 @@ namespace POS.View
             cb_area.SelectedIndex = 0;
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
-
+            fillCountries();
+            fillCity();
             Keyboard.Focus(tb_name);
 
             this.Dispatcher.Invoke(() =>
@@ -176,13 +221,13 @@ namespace POS.View
             SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyPhoneToolTip");
 
             string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
+            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
 
             if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_phone.Text.Equals("")) && (!tb_accNumber.Text.Equals("")))
             {
                 bank.name = tb_name.Text;
                 bank.phone = phoneStr;
-                bank.mobile = cb_area.Text + tb_mobile.Text;
+                bank.mobile = cb_area.Text + "-" + tb_mobile.Text;
                 bank.address = tb_address.Text;
                 bank.accNumber = tb_accNumber.Text;
                 bank.notes = tb_notes.Text;
@@ -215,14 +260,14 @@ namespace POS.View
             //chk empty acc
             SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyPhoneToolTip");
             string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
+            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
 
             if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_phone.Text.Equals("")) && (!tb_accNumber.Text.Equals("")))
             {
 
                 bank.name = tb_name.Text;
                 bank.phone = phoneStr;
-                bank.mobile = cb_area.Text + tb_mobile.Text;
+                bank.mobile = cb_area.Text + "-" + tb_mobile.Text;
                 bank.address = tb_address.Text;
                 bank.accNumber = tb_accNumber.Text;
                 bank.notes = tb_notes.Text;
@@ -297,13 +342,30 @@ namespace POS.View
             if (bank != null)
             {
                 //mobile
-                if ((bank.mobile != null) && (bank.mobile.ToArray().Length > 4))
+
+                if ((bank.mobile != null))
                 {
-                    string area = new string(bank.mobile.Take(4).ToArray());
-                    var mobile = bank.mobile.Substring(4, bank.mobile.Length - 4);
+                    string area = bank.mobile;
+                    string[] pharr = area.Split('-');
+                    int j = 0;
+                    string phone = "";
+
+                    foreach (string strpart in pharr)
+                    {
+                        if (j == 0)
+                        {
+                            area = strpart;
+                        }
+                        else
+                        {
+                            phone = phone + strpart;
+                        }
+                        j++;
+                    }
 
                     cb_area.Text = area;
-                    tb_mobile.Text = mobile.ToString();
+
+                    tb_mobile.Text = phone.ToString();
                 }
                 else
                 {
@@ -311,12 +373,33 @@ namespace POS.View
                     tb_mobile.Clear();
                 }
                 //phone
-                if ((bank.phone != null) && (bank.phone.ToArray().Length > 7))
+                if ((bank.phone != null))
                 {
-                    string area = new string(bank.phone.Take(4).ToArray());
-                    string areaLocal = new string(bank.phone.Substring(4, bank.phone.Length - 4).Take(3).ToArray());
+                    string area = bank.phone;
+                    string[] pharr = area.Split('-');
+                    int j = 0;
+                    string phone = "";
+                    string areaLocal = "";
+                    foreach (string strpart in pharr)
+                    {
+                        if (j == 0)
+                        {
+                            area = strpart;
 
-                    var phone = bank.phone.Substring(7, bank.phone.Length - 7);
+                        }
+                        else if (j == 1)
+                        {
+                            areaLocal = strpart;
+
+
+                        }
+                        else
+                        {
+                            phone = phone + strpart;
+
+                        }
+                        j++;
+                    }
 
                     cb_areaPhone.Text = area;
                     cb_areaPhoneLocal.Text = areaLocal;
@@ -327,13 +410,6 @@ namespace POS.View
                     cb_areaPhone.SelectedIndex = -1;
                     cb_areaPhoneLocal.SelectedIndex = -1;
                     tb_phone.Clear();
-                }
-                if (bank.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
-
-                else
-                {
-                    if (bank.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
-                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
                 }
             }
 
@@ -451,6 +527,38 @@ namespace POS.View
             ) && s.isActive == tgl_bankState);
             RefreshBankView();
 
+        }
+
+        private void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (firstchange == true)
+            {
+                if (cb_areaPhone.SelectedValue != null)
+                {
+                    if (cb_areaPhone.SelectedIndex >= 0)
+                        countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
+
+                    citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
+
+                    cb_areaPhoneLocal.ItemsSource = citynumofcountry;
+                    cb_areaPhoneLocal.SelectedValuePath = "cityId";
+                    cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
+                    if (citynumofcountry.Count() > 0)
+                    {
+
+                        cb_areaPhoneLocal.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        cb_areaPhoneLocal.Visibility = Visibility.Hidden;
+                    }
+
+                }
+            }
+            else
+            {
+                firstchange = true;
+            }
         }
     }
 }

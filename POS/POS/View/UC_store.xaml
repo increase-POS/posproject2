@@ -355,6 +355,7 @@
                             <ComboBox x:Name="cb_branch" Padding="10,11,5,5" 
                                       TextBlock.Foreground="#4E4E4E"
                                       TabIndex="2"  
+                                      materialDesign:HintAssist.Hint="Parent Branch..."   
                                       TextBlock.FontSize="12" Margin="5,1,10,10"
                                       HorizontalAlignment="Center" VerticalAlignment="Center" 
                                       Height="35" Width="340"  Background="#f8f8f8" 
@@ -451,20 +452,7 @@
                                       Background="#f8f8f8" 
                                       BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
-                             Grid.Row="0" >
-                                <ListBoxItem>
-                                    +963
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +961
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +966
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +950
-                                </ListBoxItem>
-                            </ComboBox>
+                             Grid.Row="0" />
                             <!--<TextBox x:Name="tb_mobile"  Text="{Binding mobile, Mode=OneWay}"  Grid.Column="1" Padding="10,5,5,5"
                                                              BorderThickness="1"  materialDesign:HintAssist.Hint="Mobile..."  
                                                        Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
@@ -527,20 +515,7 @@
                                       Background="#f8f8f8"  TabIndex="6"
                                       BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
-                             Grid.Row="2" >
-                                <ListBoxItem>
-                                    +963
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +961
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +966
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +950
-                                </ListBoxItem>
-                            </ComboBox>
+                             Grid.Row="2" SelectionChanged="Cb_areaPhone_SelectionChanged" />
                             <ComboBox x:Name="cb_areaPhoneLocal" Padding="15,11,5,5" 
                                       TextBlock.Foreground="#4E4E4E"
                                       SelectedIndex="0"  TabIndex="7"
@@ -549,20 +524,7 @@
                                       Height="35" Width="50"  Grid.Column="1"
                                       Background="#f8f8f8" 
                                       BorderBrush="#737373"       BorderThickness="0" 
-                                      FontFamily="{StaticResource Font-cairo-light}" >
-                                <ListBoxItem>
-                                    011
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    021
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    021
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    041
-                                </ListBoxItem>
-                            </ComboBox>
+                                      FontFamily="{StaticResource Font-cairo-light}" />
                             <TextBox x:Name="tb_phone"  Text="{Binding phone, Mode=OneWay}" Grid.Column="2"  
                                      Padding="10,5,5,5"    TabIndex="8"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Phone..."    

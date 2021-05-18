@@ -84,7 +84,9 @@
     <Compile Include="Classes\Branch.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\CatigoriesAndItemsView.cs" />
+    <Compile Include="Classes\City.cs" />
     <Compile Include="Classes\ClassStaticy.cs" />
+    <Compile Include="Classes\CountryCode.cs" />
     <Compile Include="Classes\ExportToExcel.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\ItemsProp.cs" />

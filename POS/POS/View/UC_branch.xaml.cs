@@ -38,12 +38,56 @@ namespace POS.View
         int ParentId = 0;
 
         BrushConverter bc = new BrushConverter();
+        //phone variabels
+        IEnumerable<CountryCode> countrynum;
+        IEnumerable<City> citynum;
+        IEnumerable<City> citynumofcountry;
 
+        int? countryid;
+        Boolean firstchange = false;
+
+        CountryCode countrycodes = new CountryCode();
+        City cityCodes = new City();
         public UC_branch()
         {
             InitializeComponent();
         }
+          //area code methods
+        async Task<IEnumerable<CountryCode>> RefreshCountry()
+        {
+            countrynum = await countrycodes.GetAllCountries();
+            return countrynum;
+        }
+        private async void fillCountries()
+        {
+            if (countrynum is null)
+                await RefreshCountry();
 
+            cb_areaPhone.ItemsSource = countrynum.ToList();
+            cb_areaPhone.SelectedValuePath = "countryId";
+            cb_areaPhone.DisplayMemberPath = "code";
+
+            cb_area.ItemsSource = countrynum.ToList();
+            cb_area.SelectedValuePath = "countryId";
+            cb_area.DisplayMemberPath = "code";
+
+          
+
+        }
+
+        async Task<IEnumerable<City>> RefreshCity()
+        {
+            citynum = await cityCodes.Get();
+            return citynum;
+        }
+        private async void fillCity()
+        {
+            if (citynum is null)
+                await RefreshCity();
+
+
+        }
+        //end areacod
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
             SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
@@ -70,7 +114,7 @@ namespace POS.View
         {
             txt_branch.Text = MainWindow.resourcemanager.GetString("trBranch");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-         //   MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectBranchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trSelectBranchHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trCodeHint"));
@@ -129,7 +173,9 @@ namespace POS.View
             cb_areaPhoneLocal.SelectedIndex = 0;
             //if (cb_branch.Items.Count > 0)
             //    cb_branch.SelectedIndex = 0;
+            fillCountries();
 
+            fillCity();
             Keyboard.Focus(tb_code);
 
             //SectionData.genRandomCode("b", "Branch");
@@ -139,12 +185,6 @@ namespace POS.View
             //{
             //    tb_search_TextChanged(null, null);
             //});
-
-            //branches = await branchModel.GetAllWithoutMain("b");
-            //MessageBox.Show(Convert.ToString(branches.Count()));
-            //branches = await branchModel.GetBranchesAsync("b");
-            //MessageBox.Show(Convert.ToString(branches.Count()));
-
 
         }
 
@@ -171,13 +211,30 @@ namespace POS.View
             if (branch != null)
             {
                 //mobile
-                if ((branch.mobile != null) && (branch.mobile.ToArray().Length > 4))
+
+                if ((branch.mobile != null))
                 {
-                    string area = new string(branch.mobile.Take(4).ToArray());
-                    var mobile = branch.mobile.Substring(4, branch.mobile.Length - 4);
+                    string area = branch.mobile;
+                    string[] pharr = area.Split('-');
+                    int j = 0;
+                    string phone = "";
+
+                    foreach (string strpart in pharr)
+                    {
+                        if (j == 0)
+                        {
+                            area = strpart;
+                        }
+                        else
+                        {
+                            phone = phone + strpart;
+                        }
+                        j++;
+                    }
 
                     cb_area.Text = area;
-                    tb_mobile.Text = mobile.ToString();
+
+                    tb_mobile.Text = phone.ToString();
                 }
                 else
                 {
@@ -185,12 +242,33 @@ namespace POS.View
                     tb_mobile.Clear();
                 }
                 //phone
-                if ((branch.phone != null) && (branch.phone.ToArray().Length > 7))
+                if ((branch.phone != null))
                 {
-                    string area = new string(branch.phone.Take(4).ToArray());
-                    string areaLocal = new string(branch.phone.Substring(4, branch.phone.Length - 4).Take(3).ToArray());
+                    string area = branch.phone;
+                    string[] pharr = area.Split('-');
+                    int j = 0;
+                    string phone = "";
+                    string areaLocal = "";
+                    foreach (string strpart in pharr)
+                    {
+                        if (j == 0)
+                        {
+                            area = strpart;
 
-                    var phone = branch.phone.Substring(7, branch.phone.Length - 7);
+                        }
+                        else if (j == 1)
+                        {
+                            areaLocal = strpart;
+
+
+                        }
+                        else
+                        {
+                            phone = phone + strpart;
+
+                        }
+                        j++;
+                    }
 
                     cb_areaPhone.Text = area;
                     cb_areaPhoneLocal.Text = areaLocal;
@@ -272,7 +350,7 @@ namespace POS.View
             SectionData.validateEmail(tb_email ,p_errorEmail ,tt_email);
            
             string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
+            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
 
             bool emailError = false;
 
@@ -298,7 +376,7 @@ namespace POS.View
                     branch.address = tb_address.Text;
                     branch.email = tb_email.Text;
                     branch.phone = phoneStr;
-                    branch.mobile = cb_area.Text + tb_mobile.Text;
+                    branch.mobile = cb_area.Text + "-" + tb_mobile.Text;
                     branch.createUserId = MainWindow.userID;
                     branch.updateUserId = MainWindow.userID;
                     branch.type = "b";
@@ -336,7 +414,7 @@ namespace POS.View
             SectionData.validateEmail(tb_email, p_errorEmail, tt_email);
 
             string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
+            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
 
             bool emailError = false;
 
@@ -360,7 +438,7 @@ namespace POS.View
                     branch.address = tb_address.Text;
                     branch.email = tb_email.Text;
                     branch.phone = phoneStr;
-                    branch.mobile = cb_area.Text + tb_mobile.Text;
+                    branch.mobile = cb_area.Text + "-" + tb_mobile.Text;
                     branch.updateUserId = MainWindow.userID;
                     branch.type = "b";
                     branch.isActive = 1;
@@ -554,6 +632,40 @@ namespace POS.View
         {
             SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch,"trEmptyBranchToolTip");
         }
+
+        private void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (firstchange == true)
+            {
+                if (cb_areaPhone.SelectedValue != null)
+                {
+                    if (cb_areaPhone.SelectedIndex >= 0)
+                        countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
+
+                    citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
+
+                    cb_areaPhoneLocal.ItemsSource = citynumofcountry;
+                    cb_areaPhoneLocal.SelectedValuePath = "cityId";
+                    cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
+                    if (citynumofcountry.Count() > 0)
+                    {
+
+                        cb_areaPhoneLocal.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        cb_areaPhoneLocal.Visibility = Visibility.Hidden;
+                    }
+
+                }
+            }
+            else
+            {
+                firstchange = true;
+            }
+        }
+
+      
     }
 }
 

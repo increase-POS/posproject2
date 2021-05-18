@@ -425,20 +425,7 @@
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
-                             Grid.Row="2">
-                                <ListBoxItem>
-                                    +963
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +961
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +966
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +950
-                                </ListBoxItem>
-                            </ComboBox>
+                             Grid.Row="2"/>
 
 
 
@@ -490,20 +477,7 @@
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
-                             Grid.Row="2"  >
-                                <ListBoxItem>
-                                    +963
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +961
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +966
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +950
-                                </ListBoxItem>
-                            </ComboBox>
+                             Grid.Row="2" SelectionChanged="Cb_areaPhone_SelectionChanged"  />
                             <ComboBox x:Name="cb_areaPhoneLocal" Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
                             SelectedIndex="0"  TabIndex="5"
                            TextBlock.FontSize="12" Margin="10,5,5,5"
@@ -511,20 +485,7 @@
                 Height="35" Width="60"  Grid.Column="1"
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" 
-                            FontFamily="{StaticResource Font-cairo-light}"  >
-                                <ListBoxItem>
-                                    11
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    21
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    21
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    41
-                                </ListBoxItem>
-                            </ComboBox>
+                            FontFamily="{StaticResource Font-cairo-light}"  />
                             <TextBox x:Name="tb_phone"  Text="{Binding phone, Mode=OneWay}" Grid.Column="2"  Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Phone..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
@@ -569,20 +530,7 @@
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
-                             Grid.Row="2"  >
-                                <ListBoxItem>
-                                    +963
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +961
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +966
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    +950
-                                </ListBoxItem>
-                            </ComboBox>
+                             Grid.Row="2" SelectionChanged="Cb_areaFax_SelectionChanged"  />
                             <ComboBox x:Name="cb_areaFaxLocal" Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
                             SelectedIndex="0"
                            TextBlock.FontSize="12" Margin="10,5,5,5"
@@ -590,20 +538,7 @@
                 Height="35" Width="60"  Grid.Column="1"  TabIndex="8"
                                   Background="#f8f8f8" 
                            BorderBrush="#737373"       BorderThickness="0" 
-                            FontFamily="{StaticResource Font-cairo-light}"  >
-                                <ListBoxItem>
-                                    11
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    21
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    21
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    41
-                                </ListBoxItem>
-                            </ComboBox>
+                            FontFamily="{StaticResource Font-cairo-light}"  />
                             <TextBox x:Name="tb_fax"  Text="{Binding fax, Mode=OneWay}" Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Fax..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"

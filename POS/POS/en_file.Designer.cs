@@ -1195,6 +1195,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        internal static string trPassword {
+            get {
+                return ResourceManager.GetString("trPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password....
         /// </summary>
         internal static string trPasswordHint {
@@ -1483,6 +1492,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        internal static string trSearch {
+            get {
+                return ResourceManager.GetString("trSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter Here To Start Search .....
         /// </summary>
         internal static string trSearchHint {
@@ -1519,7 +1537,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Branch Name.
+        ///   Looks up a localized string similar to Parent Branch ....
         /// </summary>
         internal static string trSelectBranchHint {
             get {

@@ -25,18 +25,66 @@ namespace POS.View
     /// </summary>
     public partial class UC_vendors : UserControl
     {
-
-        public UC_vendors()
-        {
-            InitializeComponent();
-        }
-
         Agent agentModel = new Agent();
+
         Agent agent = new Agent();
+
         IEnumerable<Agent> agentsQuery;
         IEnumerable<Agent> agents;
         byte tgl_vendorState;
         string searchText = "";
+        //phone variabels
+        IEnumerable<CountryCode> countrynum;
+        IEnumerable<City> citynum;
+        IEnumerable<City> citynumofcountry;
+
+        int? countryid;
+        Boolean firstchange = false;
+        Boolean firstchangefax = false;
+        CountryCode countrycodes = new CountryCode();
+        City cityCodes = new City();
+        public UC_vendors()
+        {
+            InitializeComponent();
+        }
+        //area code methods
+        async Task<IEnumerable<CountryCode>> RefreshCountry()
+        {
+            countrynum = await countrycodes.GetAllCountries();
+            return countrynum;
+        }
+        private async void fillCountries()
+        {
+            if (countrynum is null)
+                await RefreshCountry();
+
+            cb_areaPhone.ItemsSource = countrynum.ToList();
+            cb_areaPhone.SelectedValuePath = "countryId";
+            cb_areaPhone.DisplayMemberPath = "code";
+
+            cb_areaMobile.ItemsSource = countrynum.ToList();
+            cb_areaMobile.SelectedValuePath = "countryId";
+            cb_areaMobile.DisplayMemberPath = "code";
+
+            cb_areaFax.ItemsSource = countrynum.ToList();
+            cb_areaFax.SelectedValuePath = "countryId";
+            cb_areaFax.DisplayMemberPath = "code";
+
+        }
+
+        async Task<IEnumerable<City>> RefreshCity()
+        {
+            citynum = await cityCodes.Get();
+            return citynum;
+        }
+        private async void fillCity()
+        {
+            if (citynum is null)
+                await RefreshCity();
+
+
+        }
+        //end areacod
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
@@ -63,13 +111,29 @@ namespace POS.View
             {
 
                 //mobile
-                if ((agent.mobile != null) && (agent.mobile.ToArray().Length > 4))
+                if ((agent.mobile != null))
                 {
-                    string area = new string(agent.mobile.Take(4).ToArray());
-                    var mobile = agent.mobile.Substring(4, agent.mobile.Length - 4);
+                    string area = agent.mobile;
+                    string[] pharr = area.Split('-');
+                    int j = 0;
+                    string phone = "";
+
+                    foreach (string strpart in pharr)
+                    {
+                        if (j == 0)
+                        {
+                            area = strpart;
+                        }
+                        else
+                        {
+                            phone = phone + strpart;
+                        }
+                        j++;
+                    }
 
                     cb_areaMobile.Text = area;
-                    tb_mobile.Text = mobile.ToString();
+
+                    tb_mobile.Text = phone.ToString();
                 }
                 else
                 {
@@ -77,12 +141,35 @@ namespace POS.View
                     tb_mobile.Clear();
                 }
                 //phone
-                if ((agent.phone != null) && (agent.phone.ToArray().Length > 7))
+                if ((agent.phone != null))
                 {
-                    string area = new string(agent.phone.Take(4).ToArray());
-                    string areaLocal = new string(agent.phone.Substring(4, agent.phone.Length - 4).Take(3).ToArray());
+                    string area = agent.phone;
+                    string[] pharr = area.Split('-');
+                    int j = 0;
+                    string phone = "";
+                    string areaLocal = "";
+                    foreach (string strpart in pharr)
+                    {
+                        if (j == 0)
+                        {
+                            area = strpart;
+                        
+                        }
+                        else if (j == 1)
+                        {
+                            areaLocal = strpart;
 
-                    var phone = agent.phone.Substring(7, agent.phone.Length - 7);
+                           
+                        }
+                        else
+                        {
+                            phone = phone + strpart;
+                          
+                        }
+                        j++;
+                    }
+                   
+            
 
                     cb_areaPhone.Text = area;
                     cb_areaPhoneLocal.Text = areaLocal;
@@ -95,12 +182,32 @@ namespace POS.View
                     tb_phone.Clear();
                 }
                 //fax
-                if ((agent.fax != null) && (agent.fax.ToArray().Length > 7))
+                if ((agent.fax != null))
                 {
-                    string area = new string(agent.fax.Take(4).ToArray());
-                    string areaLocal = new string(agent.fax.Substring(4, agent.fax.Length - 4).Take(3).ToArray());
+                    string area = agent.fax;
+                    string[] pharr = area.Split('-');
+                    int j = 0;
+                    string fax = "";
+                    string areaLocal = "";
+                    foreach (string strpart in pharr)
+                    {
+                        if (j == 0)
+                        {
+                            area = strpart;
+                        
+                        }
+                        else if (j == 1)
+                        {
+                            areaLocal = strpart;
 
-                    var fax = agent.fax.Substring(7, agent.fax.Length - 7);
+                        }
+                        else
+                        {
+                            fax = fax + strpart;
+                      
+                        }
+                        j++;
+                    }
 
                     cb_areaFax.Text = area;
                     cb_areaFaxLocal.Text = areaLocal;
@@ -112,7 +219,7 @@ namespace POS.View
                     cb_areaFaxLocal.SelectedIndex = -1;
                     tb_fax.Clear();
                 }
-
+                //end fax
                 if (agent.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
 
                 else
@@ -222,7 +329,9 @@ namespace POS.View
                 tb_search_TextChanged(null, null);
             });
 
+            fillCountries();
 
+            fillCity();
             Keyboard.Focus(tb_name);
 
             SectionData.genRandomCode("v");
@@ -263,10 +372,10 @@ namespace POS.View
                 }
             }
             string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
+            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
 
             string faxStr = "";
-            if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + cb_areaFaxLocal.Text + tb_fax.Text;
+            if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
 
             bool emailError = false;
             if (!tb_email.Text.Equals(""))
@@ -292,7 +401,7 @@ namespace POS.View
                     agent.address = tb_address.Text;
                     agent.email = tb_email.Text;
                     agent.phone = phoneStr;
-                    agent.mobile = cb_areaMobile.Text + tb_mobile.Text;
+                    agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
                     agent.image = "";
                     agent.type = "v";
                     agent.accType = "";
@@ -354,10 +463,10 @@ namespace POS.View
                 }
             }
             string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
+            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
 
             string faxStr = "";
-            if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + cb_areaFaxLocal.Text + tb_fax.Text;
+            if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
 
             bool emailError = false;
             if (!tb_email.Text.Equals(""))
@@ -380,7 +489,7 @@ namespace POS.View
                     agent.address = tb_address.Text;
                     agent.email = tb_email.Text;
                     agent.phone = phoneStr;
-                    agent.mobile = cb_areaMobile.Text + tb_mobile.Text;
+                    agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
                     agent.image = "";
                     agent.updateUserId = MainWindow.userID;
                     agent.notes = tb_notes.Text;
@@ -646,6 +755,72 @@ namespace POS.View
         private void tb_email_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
+        }
+
+        private void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+       
+            if (firstchange == true)
+            {
+                if (cb_areaPhone.SelectedValue != null)
+                {
+                    if (cb_areaPhone.SelectedIndex >= 0)
+                        countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
+                 
+                    citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
+                 
+                    cb_areaPhoneLocal.ItemsSource = citynumofcountry;
+                    cb_areaPhoneLocal.SelectedValuePath = "cityId";
+                    cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
+                    if (citynumofcountry.Count() > 0)
+                    {
+
+                        cb_areaPhoneLocal.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        cb_areaPhoneLocal.Visibility = Visibility.Hidden;
+                    }
+
+                }
+            }
+            else
+            {
+                firstchange = true;
+            }
+        }
+
+        private void Cb_areaFax_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (firstchangefax == true)
+            {
+                if (cb_areaFax.SelectedValue != null)
+                {
+                    if (cb_areaFax.SelectedIndex >= 0)
+                        countryid = int.Parse(cb_areaFax.SelectedValue.ToString());
+
+                    citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
+
+                    cb_areaFaxLocal.ItemsSource = citynumofcountry;
+                    cb_areaFaxLocal.SelectedValuePath = "cityId";
+                    cb_areaFaxLocal.DisplayMemberPath = "cityCode";
+                    if (citynumofcountry.Count() > 0)
+                    {
+
+                        cb_areaFaxLocal.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        cb_areaFaxLocal.Visibility = Visibility.Hidden;
+                    }
+
+                }
+            }
+            else
+            {
+                firstchangefax = true;
+            }
+
         }
     }
 
