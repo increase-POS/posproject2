@@ -8,7 +8,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
-        Title="wd_itemsList" Height="400" Width="550" Background="#000000" 
+        Title="wd_itemsList" Height="400" Width="550" Background="#333333" 
         Loaded="Window_Loaded">
     <Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  >
         <Grid.RowDefinitions>
@@ -18,7 +18,7 @@
         <Grid.Effect>
             <DropShadowEffect Color="#d7d7d7" BlurRadius="10" Direction="225"  RenderingBias="Quality" ShadowDepth="10" Opacity="0.35"/>
         </Grid.Effect>
-        <Grid   Background="#000000" >
+        <Grid   Background="#333333" >
             <Border  BorderThickness="0" Grid.Row="0" 
                     CornerRadius="7,7,0,0"  Background="#178DD2">
                 <Grid>

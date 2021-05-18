@@ -646,7 +646,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لا يمكن أن يكون الفرع الأب فارغاً.
+        ///   Looks up a localized string similar to الفرع لا يمكن أن يكون فارغاً.
         /// </summary>
         internal static string trEmptyBranchToolTip {
             get {

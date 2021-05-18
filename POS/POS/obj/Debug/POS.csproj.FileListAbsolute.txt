@@ -805,7 +805,6 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_packageOfItems.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_packageOfItems.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsList.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsList.baml
-E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
 C:\Users\YasinIdlbiPC\Desktop\POS\POS\bin\Debug\POS.exe.config
 C:\Users\YasinIdlbiPC\Desktop\POS\POS\bin\Debug\POS.exe
 C:\Users\YasinIdlbiPC\Desktop\POS\POS\bin\Debug\POS.pdb
@@ -976,3 +975,14 @@ D:\gitpos\POS\POS\obj\Debug\POS.csproj.CoreCompileInputs.cache
 D:\gitpos\POS\POS\obj\Debug\POS.csproj.CopyComplete
 D:\gitpos\POS\POS\obj\Debug\POS.exe
 D:\gitpos\POS\POS\obj\Debug\POS.pdb
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_storage.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_storage.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_locations.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_locations.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_home.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_section.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_home.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\uc_section.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_locationsList.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_locationsList.baml

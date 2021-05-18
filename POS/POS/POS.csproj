@@ -91,6 +91,7 @@
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\ItemsProp.cs" />
     <Compile Include="Classes\ItemUnit.cs" />
+    <Compile Include="Classes\Pagination.cs" />
     <Compile Include="Classes\Pos.cs" />
     <Compile Include="Classes\PropertiesItems.cs" />
     <Compile Include="Classes\Property.cs" />
@@ -134,8 +135,14 @@
       <DependentUpon>uc_coupon.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UC_customer.xaml.cs" />
+    <Compile Include="View\uc_home.xaml.cs">
+      <DependentUpon>uc_home.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UC_item.xaml.cs">
       <DependentUpon>UC_item.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\uc_locations.xaml.cs">
+      <DependentUpon>uc_locations.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\uc_offer.xaml.cs">
       <DependentUpon>uc_offer.xaml</DependentUpon>
@@ -161,7 +168,13 @@
     <Compile Include="View\uc_sales.xaml.cs">
       <DependentUpon>uc_sales.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\uc_section.xaml.cs">
+      <DependentUpon>uc_section.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UC_sectionData.xaml.cs" />
+    <Compile Include="View\uc_storage.xaml.cs">
+      <DependentUpon>uc_storage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UC_store.xaml.cs">
       <DependentUpon>UC_store.xaml</DependentUpon>
     </Compile>
@@ -176,6 +189,9 @@
     </Compile>
     <Compile Include="View\windows\wd_itemsList.xaml.cs">
       <DependentUpon>wd_itemsList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_locationsList.xaml.cs">
+      <DependentUpon>wd_locationsList.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\wd_updateVendor.xaml.cs">
       <DependentUpon>wd_updateVendor.xaml</DependentUpon>
@@ -252,9 +268,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\uc_home.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\UC_item.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\uc_locations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\uc_offer.xaml">
       <SubType>Designer</SubType>
@@ -288,9 +312,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\uc_section.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\UC_sectionData.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\uc_storage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UC_store.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -309,6 +341,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\windows\wd_itemsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_locationsList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

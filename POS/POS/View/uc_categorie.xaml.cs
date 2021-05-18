@@ -35,10 +35,11 @@ namespace POS.View
         IEnumerable<Category> categories;
         IEnumerable<Category> categoriesQuery;
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
+       
+
         int? parentCategorieSelctedValue;
         public byte tglCategoryState;
         public string txtCategorySearch;
-
         public uc_categorie()
         {
             InitializeComponent();
@@ -69,6 +70,7 @@ namespace POS.View
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
            
         }
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             catigoriesAndItemsView.ucCategorie = this;
@@ -84,7 +86,7 @@ namespace POS.View
             }
             translate();
             fillCategories();
-
+            btns = new Button[]  { btn_firstPage,btn_prevPage ,btn_activePage,btn_nextPage,btn_lastPage };
         }
         private void Cb_parentCategorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -426,11 +428,15 @@ namespace POS.View
 
             
             RefrishCategoriesDatagrid(categoriesQuery);
-            paginationSetting(categoriesQuery);
+
+            RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery , pageIndex, btns));
         }
         #endregion
         #region Pagination Y
+
         public int pageIndex = 1;
+        Pagination pagination = new Pagination();
+        Button[] btns;
         private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             
@@ -448,181 +454,78 @@ namespace POS.View
             {
                 pageIndex = int.Parse(tb_pageNumberSearch.Text);
             }
-            paginationSetting();
-        }
-        void pageNumberActive(Button btn, int indexContent)
-        {
-            btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            btn.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-            btn.Content = indexContent.ToString();
-        }
-        void pageNumberDisActive(Button btn, int indexContent)
-        {
-            btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#DFDFDF"));
-            btn.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#686868"));
-            btn.Content = indexContent.ToString();
 
-        }
-        async void paginationSetting(IEnumerable<Category> _categories = null)
-        {
-            if (_categories is null)
-            {
-                if (categories is null)
-                {
-                    await RefrishCategories();
-                    _categories = categories;
-                }
-                else
-                    _categories = categories;
-            }
-
-            
-            _categories = _categories.Where(x => x.isActive == tglCategoryState);
-            if (2 >= ((_categories.Count() - 1) / 20))
-            {
-                if (pageIndex == 1)
-                {
-                    pageNumberActive(btn_prevPage, 1);
-                    pageNumberDisActive(btn_activePage, 2);
-                    pageNumberDisActive(btn_nextPage, 3);
-                }
-                else if (pageIndex == 2)
-                {
-                    pageNumberDisActive(btn_prevPage, 1);
-                    pageNumberActive(btn_activePage, 2);
-                    pageNumberDisActive(btn_nextPage, 3);
-                }
-                else
-                {
-                   
-                        pageNumberDisActive(btn_prevPage, 1);
-                    pageNumberDisActive(btn_activePage, 2);
-                    pageNumberActive(btn_nextPage, 3);
-                    
-                }
-                if (0 >= ((_categories.Count() - 1) / 20))
-                {
-                    btn_activePage.IsEnabled = false;
-                    btn_nextPage.IsEnabled = false;
-                } 
-                else if (1 >= ((_categories.Count() - 1) / 20))
-                {
-                    btn_activePage.IsEnabled = true;
-                    btn_nextPage.IsEnabled = false;
-                }
-                btn_firstPage.IsEnabled = false;
-                btn_lastPage.IsEnabled = false;
-            }
-            else if (pageIndex == 1)
-            {
-                btn_firstPage.IsEnabled = false;
-                btn_lastPage.IsEnabled = true;
-                pageNumberActive(btn_prevPage, pageIndex);
-                pageNumberDisActive(btn_activePage, pageIndex + 1);
-                pageNumberDisActive(btn_nextPage, pageIndex + 2);
-            }
-            else if (pageIndex == 2)
-            {
-                pageNumberDisActive(btn_prevPage, 1);
-                pageNumberActive(btn_activePage, 2);
-                pageNumberDisActive(btn_nextPage, 3);
-            }
-            /////prev last
-            else if (pageIndex == ((_categories.Count() - 1) / 20))
-            {
-                btn_lastPage.IsEnabled = false;
-                btn_firstPage.IsEnabled = true;
-
-                pageNumberDisActive(btn_prevPage, pageIndex - 1);
-                pageNumberActive(btn_activePage, pageIndex);
-                pageNumberDisActive(btn_nextPage, pageIndex + 1);
-
-            }
-            ///// last
-            else if ((pageIndex - 1) >= ((_categories.Count() - 1) / 20))
-            {
-                btn_lastPage.IsEnabled = false;
-                btn_firstPage.IsEnabled = true;
-
-                pageNumberDisActive(btn_prevPage, pageIndex - 2);
-                pageNumberDisActive(btn_activePage, pageIndex - 1);
-                pageNumberActive(btn_nextPage, pageIndex);
-
-            }
-            else
-            {
-                pageNumberDisActive(btn_prevPage, pageIndex - 1);
-                pageNumberActive(btn_activePage, pageIndex);
-                pageNumberDisActive(btn_nextPage, pageIndex + 1);
-                btn_lastPage.IsEnabled = true;
-                btn_firstPage.IsEnabled = true;
-
-            }
             #region
-            if (0 < ((_categories.Count() - 1) / 9))
-            {
-                btn_activePage.IsEnabled = true;
-            }
-            if (1 < ((_categories.Count() - 1) / 9))
-            {
-                btn_nextPage.IsEnabled = true;
-            }
-            if (2 < ((_categories.Count() - 1) / 9))
-            {
-                btn_firstPage.IsEnabled = true;
-                btn_lastPage.IsEnabled = true;
-            }
-
-            // if 1 2 3 thin 
-            if (2 >= pageIndex)
-            {
-                btn_firstPage.IsEnabled = false;
-            }
-            if (2 >= ((_categories.Count() - 1) / 9) && 2 >= pageIndex)
-            {
-                btn_lastPage.IsEnabled = false;
-            }
-            // last
-            if ((pageIndex - 1) >= ((_categories.Count() - 1) / 9))
-            {
-                btn_lastPage.IsEnabled = false;
-            }
+            categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+             x.name.ToLower().Contains(txtCategorySearch) ||
+             x.details.ToLower().Contains(txtCategorySearch)
+             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+            txt_Count.Text = categoriesQuery.Count().ToString();
+            RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
             #endregion
-            categoriesQuery = _categories.Skip((pageIndex - 1) * 20).Take(20);
-            RefrishCategoriesCard(categoriesQuery);
         }
 
 
         private void Btn_firstPage_Click(object sender, RoutedEventArgs e)
         {
             pageIndex = 1;
-            paginationSetting();
+            #region
+            categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+             x.name.ToLower().Contains(txtCategorySearch) ||
+             x.details.ToLower().Contains(txtCategorySearch)
+             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+            txt_Count.Text = categoriesQuery.Count().ToString();
+            RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
+            #endregion
         }
-
         private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
         {
             pageIndex = int.Parse(btn_prevPage.Content.ToString());
-            paginationSetting();
+            #region
+            categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+             x.name.ToLower().Contains(txtCategorySearch) ||
+             x.details.ToLower().Contains(txtCategorySearch)
+             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+            txt_Count.Text = categoriesQuery.Count().ToString();
+            RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
+            #endregion
         }
-
         private void Btn_activePage_Click(object sender, RoutedEventArgs e)
         {
             pageIndex = int.Parse(btn_activePage.Content.ToString());
-            paginationSetting();
+            #region
+            categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+             x.name.ToLower().Contains(txtCategorySearch) ||
+             x.details.ToLower().Contains(txtCategorySearch)
+             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+            txt_Count.Text = categoriesQuery.Count().ToString();
+            RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
+            #endregion
         }
-
         private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
         {
             pageIndex = int.Parse(btn_nextPage.Content.ToString());
-            paginationSetting();
+            #region
+            categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+             x.name.ToLower().Contains(txtCategorySearch) ||
+             x.details.ToLower().Contains(txtCategorySearch)
+             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+            txt_Count.Text = categoriesQuery.Count().ToString();
+            RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
+            #endregion
         }
-
         private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
         {
-             
             categoriesQuery = categories.Where(x => x.isActive ==tglCategoryState);
             pageIndex = ((categoriesQuery.Count() - 1) / 20) + 1;
-            paginationSetting();
+            #region
+            categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+             x.name.ToLower().Contains(txtCategorySearch) ||
+             x.details.ToLower().Contains(txtCategorySearch)
+             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+            txt_Count.Text = categoriesQuery.Count().ToString();
+            RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
+            #endregion
         }
         #endregion
         #region Excel

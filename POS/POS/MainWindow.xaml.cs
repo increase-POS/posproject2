@@ -180,6 +180,10 @@ namespace POS
             FN_pathVisible(path_openHome);
             fn_ColorIconRefreash(path_iconHome);
 
+            GRID_Main.Children.Clear();
+            uc_home uc = new uc_home();
+            GRID_Main.Children.Add(uc);
+
         }
 
         private void BTN_SectionData_Click(object sender, RoutedEventArgs e)
@@ -263,6 +267,10 @@ namespace POS
             colorTextRefreash(txt_storage);
             FN_pathVisible(path_openStorage);
             fn_ColorIconRefreash(path_iconStorage);
+
+            GRID_Main.Children.Clear();
+            uc_storage uc = new uc_storage();
+            GRID_Main.Children.Add(uc);
         }
     }
 }

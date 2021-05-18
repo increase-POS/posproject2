@@ -575,7 +575,7 @@
                 Grid.Row="1" Background="White">
                     <Grid>
                         <!--////////////////////////////// payinvoice////////////////////////////////////-->
-                        <Grid x:Name="grid_payinvoice" Visibility="Collapsed" >
+                        <Grid x:Name="grid_payinvoice" Visibility="Visible" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
@@ -606,13 +606,7 @@
                                     <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                                 </Grid>
-                                <!--<Button Grid.Row="1" Grid.Column="0" Padding="0"
-                          Background="{x:Null}" BorderBrush="{x:Null}"
-                    Margin="5,1"   ToolTip="NewDraft"  >
-                            <materialDesign:PackIcon Foreground="#178DD2" Kind="PlusBox"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="30" Height="30"/>
-                        </Button>-->
+                               
                                 <Grid Grid.Row="1"  Grid.Column="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
@@ -640,7 +634,7 @@
                         Grid.Column="1"  Height="30" Width="340"  Margin="5,1" />
                                     <!--///////////////////////////////////////////////////////  SUB Invoice  /////////////////////////-->
                                     <DataGrid  x:Name="dg_invoice"  Margin="5" Grid.Row="3" Grid.ColumnSpan="2" Height="200"   Background="White"
-                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
+                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Collapsed"
                          IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
@@ -718,7 +712,7 @@
                                 </Button>
                                 <!--////////////////////////////////////////////   SUB Draft   ///////////////////////////////////-->
                                 <DataGrid x:Name="dg_draft" Margin="5" Grid.Row="2" Grid.ColumnSpan="2" Height="200"   Background="White"
-                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Collapsed"
+                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
@@ -914,11 +908,11 @@
                         HorizontalAlignment="Center" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
                                         <TextBlock  Grid.Column="1"
-                            Margin="1,0" Text="150$" Foreground="#6e6e6e"
+                           Margin="1,1"  Text="150$" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
                                         <TextBlock x:Name="txt_tax" Grid.Column="2"
-                             Margin="1,0"   Text="Tax" Foreground="#6e6e6e"
+                            Margin="1,1"    Text="Tax" Foreground="#6e6e6e"
                         HorizontalAlignment="Center" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
                                         <TextBlock Grid.Column="3"
@@ -974,13 +968,13 @@
                                     </Grid.ColumnDefinitions>
                                     <Button x:Name="btn_preview" Grid.Row="0" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Preview" />
+                    Margin="1,1"   Content="Preview" />
                                     <Button x:Name="btn_pdf" Grid.Row="0" Grid.Column="1"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
-                   Margin="1,0"    Content="PDF" />
+                  Margin="1,1"    Content="PDF" />
                                     <Button x:Name="btn_print" Grid.Row="0" Grid.Column="2"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Print" />
+                   Margin="1,1"    Content="Print" />
                                 </Grid>
                                 <Grid Grid.Row="1" Margin="5,1" >
                                     <Grid.ColumnDefinitions>
@@ -989,17 +983,17 @@
                                     </Grid.ColumnDefinitions>
                                     <Button x:Name="btn_cash" Grid.Column="0" 
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Cash" />
+                   Margin="1,1"   Content="Cash" />
                                     <Button x:Name="btn_creditcard" Grid.Column="1" 
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"     Content="Credit card" />
+                    Margin="1,1"     Content="Credit card" />
                                 </Grid>
 
                             </Grid>
                         </Grid>
                         <!--////////////////////////////// vendor////////////////////////////////////-->
 
-                        <Grid  x:Name="grid_vendor" Visibility="Visible"   >
+                        <Grid  x:Name="grid_vendor" Visibility="Collapsed"   >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="45"/>
@@ -1234,7 +1228,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Button x:Name="btn_save" Grid.Row="0" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,0"    Content="Save" />
+                   Margin="1,1"    Content="Save" />
                                 <!--<Button Grid.Row="0" Grid.Column="1"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="1,0"    Content="Update" />

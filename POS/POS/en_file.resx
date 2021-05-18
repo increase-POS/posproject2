@@ -766,7 +766,7 @@
     <value>Code is not valid</value>
   </data>
   <data name="trEmptyBranchToolTip" xml:space="preserve">
-    <value>Parent branch can not be empty</value>
+    <value>Branch can not be empty</value>
   </data>
   <data name="trEmptyPhoneToolTip" xml:space="preserve">
     <value>The phone number cannot be blank</value>

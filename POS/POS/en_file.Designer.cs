@@ -664,7 +664,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parent branch can not be empty.
+        ///   Looks up a localized string similar to Branch can not be empty.
         /// </summary>
         internal static string trEmptyBranchToolTip {
             get {

@@ -23,6 +23,9 @@ namespace POS.Classes
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public Nullable<byte> isActive { get; set; }
+        public Boolean canDelete { get; set; }
+        public string note { get; set; }
+        public string branchName { get; set; }
 
         public async Task<List<Pos>> GetPosAsync()
         {
@@ -128,7 +131,38 @@ namespace POS.Classes
             }
         }
 
-        public async Task<string> deletePos(int posId)
+        //public async Task<string> deletePos(int posId)
+        //{
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "Users/Delete");
+        //        request.Headers.Add("APIKey", Global.APIKey);
+        //        request.Headers.Add("posId", posId.ToString());
+        //        request.Method = HttpMethod.Post;
+        //        //set content type
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        var response = await client.SendAsync(request);
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var message = await response.Content.ReadAsStringAsync();
+        //            message = JsonConvert.DeserializeObject<string>(message);
+        //            return message;
+        //        }
+        //        return "";
+        //    }
+        //}
+
+        public async Task<Boolean> deletePos(int posId, int userId, bool final)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -141,9 +175,8 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Users/Delete");
+                request.RequestUri = new Uri(Global.APIUri + "Pos/Delete?posId=" + posId + "&userId=" + userId + "&final=" + final);
                 request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("posId", posId.ToString());
                 request.Method = HttpMethod.Post;
                 //set content type
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -151,13 +184,12 @@ namespace POS.Classes
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
+                    return true;
                 }
-                return "";
+                return false;
             }
         }
+
 
     }
 }

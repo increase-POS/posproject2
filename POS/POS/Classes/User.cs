@@ -138,39 +138,8 @@ namespace POS.Classes
                 return user;
             }
         }
-        //public async Task<string> deleteUser(int userId)
-        //{
-        //    // ... Use HttpClient.
-        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-        //    using (var client = new HttpClient())
-        //    {
-        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-        //        client.BaseAddress = new Uri(Global.APIUri);
-        //        client.DefaultRequestHeaders.Clear();
-        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-        //        HttpRequestMessage request = new HttpRequestMessage();
-        //        request.RequestUri = new Uri(Global.APIUri + "Users/Delete");
-        //        request.Headers.Add("APIKey", Global.APIKey);
-        //        request.Headers.Add("delUserId", userId.ToString());
-        //        request.Headers.Add("userId", "1");
-        //        request.Method = HttpMethod.Post;
-        //        //set content type
-        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        //        var response = await client.SendAsync(request);
-
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            var message = await response.Content.ReadAsStringAsync();
-        //            message = JsonConvert.DeserializeObject<string>(message);
-        //            return message;
-        //        }
-        //        return "";
-        //    }
-        //}
-
-        public async Task<Boolean> deleteUser(int userId, int delUserId, bool final)
+      
+        public async Task<Boolean> deleteUser(int delUserId, int userId, bool final)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -183,7 +152,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Users/Delete?userId=" + userId + "&delUserId=" + userId + "&final=" + final);
+                request.RequestUri = new Uri(Global.APIUri + "Users/Delete?delUserId=" + delUserId  + "&userId=" + userId + "&final=" + final);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

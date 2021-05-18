@@ -38,7 +38,7 @@ namespace POS.View
         
         Agent agent = new Agent();
         //phone variabels
-       IEnumerable<CountryCode> countrynum;
+        IEnumerable<CountryCode> countrynum;
         IEnumerable<City> citynum;
         IEnumerable<City> citynumofcountry;
 
@@ -86,8 +86,6 @@ namespace POS.View
         {
             if (citynum is null)
                 await RefreshCity();
-
-
         }
         //end areacod
         private void translate()
@@ -626,94 +624,26 @@ namespace POS.View
 
         private void tb_name_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
-
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
         }
 
         private void tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var bc = new BrushConverter();
-
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
         }
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
-
-            if (!tb_email.Text.Equals(""))
-            {
-                if (!ValidatorExtensions.IsValid(tb_email.Text))
-                {
-                    p_errorEmail.Visibility = Visibility.Visible;
-                    tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
-                    tb_email.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                }
-                else
-                {
-                    p_errorEmail.Visibility = Visibility.Collapsed;
-                    tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                }
-            }
+            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
         }
 
         private void Tb_mobile_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
-            
-            if (tb_mobile.Text.Equals(""))
-            {
-                p_errorMobile.Visibility = Visibility.Visible;
-                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
-                tb_mobile.Background = (Brush)bc.ConvertFrom("#15FF0000");
-
-            }
-            else
-            {
-                tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                p_errorMobile.Visibility = Visibility.Collapsed;
-
-            }
-
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
         }
 
         private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var bc = new BrushConverter();
-
-            if (tb_mobile.Text.Equals(""))
-            {
-                p_errorMobile.Visibility = Visibility.Visible;
-                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
-                tb_mobile.Background = (Brush)bc.ConvertFrom("#15FF0000");
-
-            }
-            else
-            {
-                tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                p_errorMobile.Visibility = Visibility.Collapsed;
-
-            }
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)

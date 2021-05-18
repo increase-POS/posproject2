@@ -748,7 +748,7 @@
     <value>الرمز غير صالح</value>
   </data>
   <data name="trEmptyBranchToolTip" xml:space="preserve">
-    <value>لا يمكن أن يكون الفرع الأب فارغاً</value>
+    <value>الفرع لا يمكن أن يكون فارغاً</value>
   </data>
   <data name="trEmptyPhoneToolTip" xml:space="preserve">
     <value>لا يمكن أن يكون رقم الهاتف فارغ</value>
