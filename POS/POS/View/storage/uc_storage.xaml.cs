@@ -52,6 +52,13 @@ namespace POS.View
             btn_section.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_section.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
+            btn_receiptOfPurchaseInvoice.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_receiptOfPurchaseInvoice.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_itemsStorage.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_itemsStorage.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+
             btn_itemsImport.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_itemsImport.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
@@ -71,7 +78,6 @@ namespace POS.View
             uc_locations uc = new uc_locations();
             grid_main.Children.Add(uc);
         }
-
         private void Btn_section_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_section);
@@ -86,7 +92,6 @@ namespace POS.View
             uc_receiptOfPurchaseInvoice uc = new uc_receiptOfPurchaseInvoice();
             grid_main.Children.Add(uc);
         }
-
         private void Btn_itemsStorage_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_itemsStorage);
@@ -96,12 +101,17 @@ namespace POS.View
         }
         private void Btn_itemsImport_Click(object sender, RoutedEventArgs e)
         {
-
+            refreashBachgroundClick(btn_itemsImport);
+            grid_main.Children.Clear();
+            uc_itemsImport uc = new uc_itemsImport();
+            grid_main.Children.Add(uc);
         }
-
         private void Btn_itemsExport_Click(object sender, RoutedEventArgs e)
         {
-
+            refreashBachgroundClick(btn_itemsExport);
+            grid_main.Children.Clear();
+            uc_itemsExport uc = new uc_itemsExport();
+            grid_main.Children.Add(uc);
         }
 
       

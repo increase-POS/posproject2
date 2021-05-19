@@ -22,6 +22,8 @@ namespace POS.Classes
         public uc_categorie ucCategorie;
         public UC_item ucItem;
         public uc_payInvoice ucPayInvoice;
+        public uc_itemsImport ucItemsImport;
+        public uc_itemsExport ucItemsExport;
         public uc_receiptOfPurchaseInvoice ucreceiptOfPurchaseInvoice;
 
         public Grid gridCatigories;
@@ -29,6 +31,8 @@ namespace POS.Classes
         private int _idCatigories;
         private int _idItem;
         private int _idPayInvoice;
+        private int _idItemsImport;
+        private int _idItemsExport;
         private int _idReceiptOfPurchaseInvoice;
         public int idCatigories
         {
@@ -58,6 +62,24 @@ namespace POS.Classes
                 INotifyPropertyChangedIdCatigorieItems();
             }
         }
+        public int idItemsImport
+        {
+            get => _idItemsImport; set
+            {
+
+                _idItemsImport = value;
+                INotifyPropertyChangedIdCatigorieItems();
+            }
+        }
+        public int idItemsExport
+        {
+            get => _idItemsExport; set
+            {
+
+                _idItemsExport = value;
+                INotifyPropertyChangedIdCatigorieItems();
+            }
+        }
         public int idReceiptOfPurchaseInvoice
         {
             get => _idReceiptOfPurchaseInvoice; set
@@ -83,6 +105,16 @@ namespace POS.Classes
                 ucPayInvoice.ChangeCategoryIdEvent(idCatigories);
 
             }
+            else if (ucItemsImport != null)
+            {
+                ucItemsImport.ChangeCategoryIdEvent(idCatigories);
+
+            }
+            else if (ucItemsExport != null)
+            {
+                ucItemsExport.ChangeCategoryIdEvent(idCatigories);
+
+            }
             else if (ucreceiptOfPurchaseInvoice != null)
             {
                 ucreceiptOfPurchaseInvoice.ChangeCategoryIdEvent(idCatigories);
@@ -103,6 +135,16 @@ namespace POS.Classes
             else if (ucPayInvoice != null)
             {
                 ucPayInvoice.ChangeItemIdEvent(idItem);
+
+            }
+            else if (ucItemsImport != null)
+            {
+                ucItemsImport.ChangeItemIdEvent(idItem);
+
+            }
+            else if (ucItemsExport != null)
+            {
+                ucItemsExport.ChangeItemIdEvent(idItem);
 
             }
             else if (ucreceiptOfPurchaseInvoice != null)

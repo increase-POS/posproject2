@@ -320,7 +320,7 @@ namespace POS.View
                 p_errorType.Visibility = Visibility.Collapsed;
                 cb_itemType.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
-            if (cb_minUnit.SelectedIndex == -1)
+            if (cb_minUnit.SelectedIndex == -1 && cb_itemType.SelectedIndex != 3)
             {
                 p_errorMinUnit.Visibility = Visibility.Visible;
                 tt_errorMinUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
@@ -331,7 +331,7 @@ namespace POS.View
                 p_errorMinUnit.Visibility = Visibility.Collapsed;
                 cb_minUnit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
-            if (cb_maxUnit.SelectedIndex == -1)
+            if (cb_maxUnit.SelectedIndex == -1 && cb_itemType.SelectedIndex != 3)
             {
                 p_errorMaxUnit.Visibility = Visibility.Visible;
                 tt_errorMaxUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
@@ -342,7 +342,7 @@ namespace POS.View
                 p_errorMaxUnit.Visibility = Visibility.Collapsed;
                 cb_maxUnit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
-            if (tb_min.Text.Equals(""))
+            if (tb_min.Text.Equals("") && cb_itemType.SelectedIndex != 3)
             {
                 p_errorMin.Visibility = Visibility.Visible;
                 tt_errorMin.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
@@ -353,7 +353,7 @@ namespace POS.View
                 p_errorMin.Visibility = Visibility.Collapsed;
                 tb_min.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
-            if (tb_max.Text.Equals(""))
+            if (tb_max.Text.Equals("") && cb_itemType.SelectedIndex != 3)
             {
                 p_errorMax.Visibility = Visibility.Visible;
                 tt_errorMax.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
@@ -364,8 +364,9 @@ namespace POS.View
                 p_errorMax.Visibility = Visibility.Collapsed;
                 tb_max.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
-            if (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1
-                && cb_minUnit.SelectedIndex != -1 && cb_maxUnit.SelectedIndex != -1 && !tb_min.Text.Equals("") && !tb_max.Text.Equals(""))
+            if ( (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1
+                && cb_minUnit.SelectedIndex != -1 && cb_maxUnit.SelectedIndex != -1 && !tb_min.Text.Equals("") && !tb_max.Text.Equals("")) ||
+               (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1 && cb_itemType.SelectedIndex == 3))
             {
                 Nullable<int> categoryId = null;
                 if (cb_categorie.SelectedIndex != -1)
@@ -1443,7 +1444,7 @@ namespace POS.View
                 grid_service.Visibility = Visibility.Collapsed;
                 grid_serial.Visibility = Visibility.Visible;
                 line_topService.Visibility = Visibility.Collapsed;
-
+                gd_minMaxUnit.Visibility = Visibility.Visible;
 
             }
             else if (cb_itemType.SelectedIndex == 3)
@@ -1451,12 +1452,14 @@ namespace POS.View
                 grid_serial.Visibility = Visibility.Collapsed;
                 grid_service.Visibility = Visibility.Visible;
                 line_topService.Visibility = Visibility.Collapsed;
+                gd_minMaxUnit.Visibility = Visibility.Collapsed;
             }
             else
             {
                 grid_serial.Visibility = Visibility.Collapsed;
                 grid_service.Visibility = Visibility.Collapsed;
                 line_topService.Visibility = Visibility.Visible;
+                gd_minMaxUnit.Visibility = Visibility.Visible;
             }
 
             switch (cb_itemType.SelectedIndex)

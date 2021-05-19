@@ -119,6 +119,10 @@ namespace POS.View
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+
+            // for pagination
+            btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());

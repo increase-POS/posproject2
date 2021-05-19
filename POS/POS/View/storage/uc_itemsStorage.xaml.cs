@@ -57,6 +57,30 @@ namespace POS.View.storage
             dg_billDetails.ItemsSource = billDetails;
             #endregion
             translate();
+
+            #region Style Date
+            dp_startDate.Loaded += delegate
+            {
+
+                var textBox1 = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
+                if (textBox1 != null)
+                {
+                    textBox1.Background = dp_startDate.Background;
+                    textBox1.BorderThickness = dp_startDate.BorderThickness;
+                }
+            };
+            dp_endDate.Loaded += delegate
+            {
+
+                var textBox1 = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
+                if (textBox1 != null)
+                {
+                    textBox1.Background = dp_endDate.Background;
+                    textBox1.BorderThickness = dp_endDate.BorderThickness;
+                }
+            };
+
+            #endregion
         }
 
         private void translate()

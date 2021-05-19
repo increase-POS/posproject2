@@ -1,8 +1,7 @@
 ﻿
 
-FE:\GitHub\posproject2\POS\POS\View\storage\uc_itemsStorage.xaml;;
-FE:\GitHub\posproject2\POS\POS\View\storage\uc_receiptOfPurchaseInvoice.xaml;;
-FE:\GitHub\posproject2\POS\POS\View\sales\uc_coupon.xaml;;
-FE:\GitHub\posproject2\POS\POS\View\storage\uc_locations.xaml;;
-FE:\GitHub\posproject2\POS\POS\View\storage\uc_section.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\storage\uc_itemsExport.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\storage\uc_itemsImport.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\UC_item.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\purchases\uc_payInvoice.xaml;;
 

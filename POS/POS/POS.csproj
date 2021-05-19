@@ -122,6 +122,12 @@
       <DependentUpon>UC_squareCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\ValidatorExtensions.cs" />
+    <Compile Include="View\storage\uc_itemsExport.xaml.cs">
+      <DependentUpon>uc_itemsExport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\storage\uc_itemsImport.xaml.cs">
+      <DependentUpon>uc_itemsImport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\storage\uc_itemsStorage.xaml.cs">
       <DependentUpon>uc_itemsStorage.xaml</DependentUpon>
     </Compile>
@@ -253,6 +259,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\storage\uc_itemsExport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\storage\uc_itemsImport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\storage\uc_itemsStorage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
