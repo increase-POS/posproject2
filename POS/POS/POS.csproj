@@ -87,6 +87,7 @@
     <Compile Include="Classes\City.cs" />
     <Compile Include="Classes\ClassStaticy.cs" />
     <Compile Include="Classes\CountryCode.cs" />
+    <Compile Include="Classes\Coupon.cs" />
     <Compile Include="Classes\ExportToExcel.cs" />
     <Compile Include="Classes\ImageProcess.cs" />
     <Compile Include="Classes\Item.cs" />

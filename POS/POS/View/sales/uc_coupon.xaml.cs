@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using POS.Classes;
 namespace POS.View
 {
     /// <summary>
@@ -22,6 +22,8 @@ namespace POS.View
     /// </summary>
     public partial class uc_coupon : UserControl
     {
+        Coupon coupon = new Coupon();
+        Coupon couponModel = new Coupon();
         public uc_coupon()
         {
             InitializeComponent();
@@ -113,6 +115,18 @@ namespace POS.View
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+           
+         
+
+            var dislist = new[] {
+    new { Text = "Value", Value = "1" },
+    new { Text = "Rate", Value = "2" },
+  
+};
+             cb_typeDiscount.DisplayMemberPath = "Text";
+            cb_typeDiscount.SelectedValuePath = "Value";
+            cb_typeDiscount.ItemsSource= dislist;
+           
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -176,5 +190,40 @@ namespace POS.View
 
         #endregion
 
+        private async void Btn_add_Click(object sender, RoutedEventArgs e)
+        {
+            
+            coupon.code = tb_code.Text;
+            coupon.name = tb_name.Text;
+            coupon.notes = tb_note.Text;
+            coupon.barcode = tb_barcode.Text;
+            coupon.isActive = Convert.ToByte(tgl_ActiveCoupon.IsChecked);
+            coupon.discountType = cb_typeDiscount.SelectedValue.ToString();
+
+            coupon.discountValue = decimal.Parse(tb_discountValue.Text);
+            coupon.invMin = decimal.Parse(tb_MinInvoiceValue.Text);
+            coupon.invMax = decimal.Parse(tb_MaxInvoiceValue.Text);
+            coupon.quantity =Int32.Parse( tb_quantity.Text);
+            coupon.notes = tb_note.Text;
+
+            
+            
+
+            string s = await couponModel.Save(coupon);
+
+            if (s.Equals("true")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
+            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+        }
+
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        
+           
+        }
     }
 }

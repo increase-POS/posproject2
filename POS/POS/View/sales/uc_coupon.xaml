@@ -257,7 +257,7 @@
                                           Grid.Column="1" VerticalAlignment="Center" />
                                         <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
                               Background="{x:Null}" BorderBrush="{x:Null}" 
-                        Margin="5,1"   ToolTip="clear">
+                        Margin="5,1"   ToolTip="clear" Click="Btn_clear_Click">
 
                                             <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
                                   HorizontalAlignment="Center" Grid.Column="0"  
@@ -325,7 +325,7 @@
                                             </Path.ToolTip>
                                         </Path>
                                     </Grid>
-                                    <Image Grid.Row="4" Margin="5" Width="250" Height="50"  
+                                    <Image  x:Name="img_barcode" Grid.Row="4" Margin="5" Width="250" Height="50"  
                                  Source="/pic/barcode.png" Stretch="Fill" Grid.ColumnSpan="2"   />
 
 
@@ -338,7 +338,7 @@
                                 Margin="5,0,5,0" Text="is Active" Foreground="#6e6e6e"
                             HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontSize="12"/>
-                                        <ToggleButton Grid.Column="1"    
+                                        <ToggleButton x:Name="tgl_ActiveCoupon" Grid.Column="1"    
                                  VerticalAlignment="Center" Padding="10,15,5,5"
                                               Margin="0" Height="13" Width="28" />
                                     </Grid>
@@ -382,14 +382,7 @@
                                       Background="#f8f8f8" 
                                BorderBrush="#737373"       BorderThickness="0" 
                                 FontFamily="Segoe UI"   
-                                 Grid.Row="0"  >
-                                            <ListBoxItem>
-                                                Value
-                                            </ListBoxItem>
-                                            <ListBoxItem>
-                                                Rate
-                                            </ListBoxItem>
-                                        </ComboBox>
+                                 Grid.Row="0" SelectionChanged="Cb_typeDiscount_SelectionChanged"  />
 
 
                                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
@@ -615,7 +608,7 @@
 
                                 <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0"
                               Background="#4E4E4E" BorderBrush="{x:Null}"
-                       Margin="1,1"    Content="Add"/>
+                       Margin="1,1"    Content="Add" Click="Btn_add_Click"/>
                                 <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"
                             Background="#4E4E4E" BorderBrush="{x:Null}"
                      Margin="1,1"    Content="Update"/>
