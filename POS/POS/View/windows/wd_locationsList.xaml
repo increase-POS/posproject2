@@ -10,7 +10,7 @@
         ResizeMode="NoResize" Margin="0"
         Title="wd_itemsList" Height="400" Width="550" Background="#333333" 
         Loaded="Window_Loaded">
-    <Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  >
+    <!--<Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  >
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
@@ -181,5 +181,5 @@
         </Border>
 
 
-    </Grid>
+    </Grid>-->
 </Window>

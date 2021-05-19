@@ -18,11 +18,7 @@ namespace POS.View
 
         Unit unitModel = new Unit();
         Unit unit = new Unit();
-        List<Unit> units;
-        private int smallestUnitId = 0;
-
-        int IsSmallest = 0;
-
+        List<Unit> units = new List<Unit>();
         public UC_unit()
         {
             InitializeComponent();
@@ -65,18 +61,6 @@ namespace POS.View
             cb_smallestUnitId.ItemsSource = names;
         }
 
-        private void Tbtn_isSmallest_Checked(object sender, RoutedEventArgs e)
-        {
-            cb_smallestUnitId.Visibility = Visibility.Collapsed;
-            IsSmallest = 1;
-        }
-
-        private void Tbtn_isSmallest_unckecked(object sender, RoutedEventArgs e)
-        {
-            cb_smallestUnitId.Visibility = Visibility.Visible;
-            IsSmallest = 0;
-        }
-
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -115,6 +99,7 @@ namespace POS.View
             txt_unit.Text = MainWindow.resourcemanager.GetString("trUnit");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelestUnitNameHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trUnitNameHint"));
             tb_isSmallest.Text = MainWindow.resourcemanager.GetString("trIsSmallestHint");
@@ -153,7 +138,7 @@ namespace POS.View
         }
         async void refreshUnitsGrid()
         {
-            var units = await unitModel.GetUnitsAsync();
+            units = await unitModel.GetUnitsAsync();
             dg_unit.ItemsSource = units;
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
@@ -172,20 +157,24 @@ namespace POS.View
             }
             if (!tb_name.Equals(""))
             {
-               
-                unit = new Unit
+                // check if new unit doesn't match old units
+                var unitObj = units.Find( x => x.name == tb_name.Text);
+                if (unitObj is null)
                 {
-                    name = tb_name.Text,
-                    createUserId = MainWindow.userID,
-                    updateUserId = MainWindow.userID,
-                    isActive = 1,
-                };
-                Boolean res = await unitModel.saveUnit(unit);
-                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    unit = new Unit
+                    {
+                        name = tb_name.Text,
+                        createUserId = MainWindow.userID,
+                        updateUserId = MainWindow.userID,
+                        isActive = 1,
+                    };
+                    Boolean res = await unitModel.saveUnit(unit);
+                    if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                    else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-                refreshUnitsGrid();
-                tb_name.Clear();
+                    refreshUnitsGrid();
+                    tb_name.Clear();
+                }
             }
         }
 
@@ -242,13 +231,18 @@ namespace POS.View
             }
             if (!tb_name.Equals(""))
             {
-                unit.name = tb_name.Text;
+                // check if new unit doesn't match old units
+                var unitObj = units.Find(x => x.name == tb_name.Text);
+                if (unitObj is null)
+                {
+                    unit.name = tb_name.Text;
 
-               Boolean res = await unitModel.saveUnit(unit);
-                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    Boolean res = await unitModel.saveUnit(unit);
+                    if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                    else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-                refreshUnitsGrid();
+                    refreshUnitsGrid();
+                }
 
             }
         }

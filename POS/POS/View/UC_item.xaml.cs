@@ -152,10 +152,12 @@ namespace POS.View
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            catigoriesAndItemsView.ucItem = this;
             // for pagination
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
 
+
+            catigoriesAndItemsView.ucItem = this;
+          
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -1955,10 +1957,12 @@ namespace POS.View
         #endregion
 
         #endregion
-
+        #region Excel
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
 
         }
+        #endregion
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using POS.Classes;
 using POS.controlTemplate;
 using POS.View;
+using POS.View.storage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,12 +22,14 @@ namespace POS.Classes
         public uc_categorie ucCategorie;
         public UC_item ucItem;
         public uc_payInvoice ucPayInvoice;
+        public uc_receiptOfPurchaseInvoice ucreceiptOfPurchaseInvoice;
 
         public Grid gridCatigories;
         public Grid gridCatigorieItems;
         private int _idCatigories;
         private int _idItem;
         private int _idPayInvoice;
+        private int _idReceiptOfPurchaseInvoice;
         public int idCatigories
         {
             get => _idCatigories; set
@@ -45,12 +48,22 @@ namespace POS.Classes
                 INotifyPropertyChangedIdCatigorieItems();
             }
         }
+        
         public int idPayInvoice
         {
             get => _idPayInvoice; set
             {
 
                 _idPayInvoice = value;
+                INotifyPropertyChangedIdCatigorieItems();
+            }
+        }
+        public int idReceiptOfPurchaseInvoice
+        {
+            get => _idReceiptOfPurchaseInvoice; set
+            {
+
+                _idReceiptOfPurchaseInvoice = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
         }
@@ -70,6 +83,11 @@ namespace POS.Classes
                 ucPayInvoice.ChangeCategoryIdEvent(idCatigories);
 
             }
+            else if (ucreceiptOfPurchaseInvoice != null)
+            {
+                ucreceiptOfPurchaseInvoice.ChangeCategoryIdEvent(idCatigories);
+
+            }
 
 
         }
@@ -85,6 +103,11 @@ namespace POS.Classes
             else if (ucPayInvoice != null)
             {
                 ucPayInvoice.ChangeItemIdEvent(idItem);
+
+            }
+            else if (ucreceiptOfPurchaseInvoice != null)
+            {
+                ucreceiptOfPurchaseInvoice.ChangeItemIdEvent(idItem);
 
             }
         }

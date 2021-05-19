@@ -88,13 +88,16 @@
     <Compile Include="Classes\ClassStaticy.cs" />
     <Compile Include="Classes\CountryCode.cs" />
     <Compile Include="Classes\ExportToExcel.cs" />
+    <Compile Include="Classes\ImageProcess.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\ItemsProp.cs" />
     <Compile Include="Classes\ItemUnit.cs" />
+    <Compile Include="Classes\Location.cs" />
     <Compile Include="Classes\Pagination.cs" />
     <Compile Include="Classes\Pos.cs" />
     <Compile Include="Classes\PropertiesItems.cs" />
     <Compile Include="Classes\Property.cs" />
+    <Compile Include="Classes\SectionCls.cs" />
     <Compile Include="Classes\SectionData.cs" />
     <Compile Include="Classes\Serial.cs" />
     <Compile Include="Classes\Service.cs" />
@@ -118,20 +121,26 @@
     <Compile Include="controlTemplate\UC_squareCard.xaml.cs">
       <DependentUpon>UC_squareCard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ValidatorExtensions.cs" />
+    <Compile Include="Classes\ValidatorExtensions.cs" />
+    <Compile Include="View\storage\uc_itemsStorage.xaml.cs">
+      <DependentUpon>uc_itemsStorage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\storage\uc_receiptOfPurchaseInvoice.xaml.cs">
+      <DependentUpon>uc_receiptOfPurchaseInvoice.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UC_bank.xaml.cs">
       <DependentUpon>UC_bank.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UC_branch.xaml.cs">
       <DependentUpon>UC_branch.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UC_catalog.xaml.cs">
+    <Compile Include="View\catalog\UC_catalog.xaml.cs">
       <DependentUpon>UC_catalog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\uc_categorie.xaml.cs">
       <DependentUpon>uc_categorie.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\uc_coupon.xaml.cs">
+    <Compile Include="View\sales\uc_coupon.xaml.cs">
       <DependentUpon>uc_coupon.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UC_customer.xaml.cs" />
@@ -141,16 +150,16 @@
     <Compile Include="View\UC_item.xaml.cs">
       <DependentUpon>UC_item.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\uc_locations.xaml.cs">
+    <Compile Include="View\storage\uc_locations.xaml.cs">
       <DependentUpon>uc_locations.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\uc_offer.xaml.cs">
+    <Compile Include="View\sales\uc_offer.xaml.cs">
       <DependentUpon>uc_offer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\uc_packageOfItems.xaml.cs">
+    <Compile Include="View\sales\uc_packageOfItems.xaml.cs">
       <DependentUpon>uc_packageOfItems.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\uc_payInvoice.xaml.cs">
+    <Compile Include="View\purchases\uc_payInvoice.xaml.cs">
       <DependentUpon>uc_payInvoice.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UC_porperty.xaml.cs">
@@ -159,20 +168,20 @@
     <Compile Include="View\UC_pos.xaml.cs">
       <DependentUpon>UC_pos.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\uc_purchases.xaml.cs">
+    <Compile Include="View\purchases\uc_purchases.xaml.cs">
       <DependentUpon>uc_purchases.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\uc_receiptInvoice.xaml.cs">
+    <Compile Include="View\sales\uc_receiptInvoice.xaml.cs">
       <DependentUpon>uc_receiptInvoice.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\uc_sales.xaml.cs">
+    <Compile Include="View\sales\uc_sales.xaml.cs">
       <DependentUpon>uc_sales.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\uc_section.xaml.cs">
+    <Compile Include="View\storage\uc_section.xaml.cs">
       <DependentUpon>uc_section.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UC_sectionData.xaml.cs" />
-    <Compile Include="View\uc_storage.xaml.cs">
+    <Compile Include="View\sectionData\UC_sectionData.xaml.cs" />
+    <Compile Include="View\storage\uc_storage.xaml.cs">
       <DependentUpon>uc_storage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UC_store.xaml.cs">
@@ -244,6 +253,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\storage\uc_itemsStorage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\storage\uc_receiptOfPurchaseInvoice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\UC_bank.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -252,7 +269,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\UC_catalog.xaml">
+    <Page Include="View\catalog\UC_catalog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -260,7 +277,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\uc_coupon.xaml">
+    <Page Include="View\sales\uc_coupon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -276,19 +293,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\uc_locations.xaml">
+    <Page Include="View\storage\uc_locations.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\uc_offer.xaml">
+    <Page Include="View\sales\uc_offer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\uc_packageOfItems.xaml">
+    <Page Include="View\sales\uc_packageOfItems.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\uc_payInvoice.xaml">
+    <Page Include="View\purchases\uc_payInvoice.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -300,27 +317,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\uc_purchases.xaml">
+    <Page Include="View\purchases\uc_purchases.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\uc_receiptInvoice.xaml">
+    <Page Include="View\sales\uc_receiptInvoice.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\uc_sales.xaml">
+    <Page Include="View\sales\uc_sales.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\uc_section.xaml">
+    <Page Include="View\storage\uc_section.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UC_sectionData.xaml">
+    <Page Include="View\sectionData\UC_sectionData.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\uc_storage.xaml">
+    <Page Include="View\storage\uc_storage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -451,6 +468,9 @@
     <Resource Include="pic\no-image-icon-40x40.png" />
     <Resource Include="pic\no-image-icon-512x512.png" />
     <Resource Include="pic\no-image-icon-90x90.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Thumb\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
