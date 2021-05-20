@@ -20,6 +20,7 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
+            Boolean canDelete = false;
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -33,26 +34,44 @@ namespace POS_Server.Controllers
                 {
                     var couponsList = entity.coupons
                   
-                   .Select(c => new {
-                     c.cId,
-                    c.name , 
-                   c.code,  
-                    c.isActive, 
-                    c.discountType,  
-                    c.discountValue, 
-                    c.startDate, 
-                    c.notes, 
-                    c.quantity,
-                    c.remainQ, 
-                    c.invMin, 
-                    c.invMax ,
-                    c.createDate, 
-                    c.updateDate ,
-                    c.createUserId,
-                   c.updateUserId ,
-                       c.barcode,
+                   .Select(c => new CouponModel{
+                    cId= c.cId,
+                       name =   c.name ,
+                       code = c.code,
+                       isActive = c.isActive,
+                       discountType = c.discountType,
+                       discountValue = c.discountValue,
+                       startDate =  c.startDate,
+                       notes  =c.notes,
+                       quantity  =  c.quantity,
+                       remainQ = c.remainQ,
+                       invMin  = c.invMin,
+                       invMax  = c.invMax ,
+                       createDate = c.createDate,
+                       updateDate = c.updateDate ,
+                       createUserId=  c.createUserId,
+                       updateUserId =  c.updateUserId ,
+                       barcode = c.barcode,
                    })
                    .ToList();
+
+                    // can delet or not
+                    if (couponsList.Count > 0)
+                    {
+                        foreach(CouponModel couponitem  in couponsList)
+                        {
+                            canDelete = false;
+                            if (couponitem.isActive == 1)
+                            {
+                                int cId = (int)couponitem.cId;
+                                var copinv = entity.couponsInvoices.Where(x => x.couponId == cId).Select(x => new { x.id }).FirstOrDefault();
+                      
+                                if ((copinv is null) )
+                                    canDelete = true;
+                            }
+                            couponitem.canDelete = canDelete;
+                        }
+                    }
 
                     if (couponsList == null)
                         return NotFound();
@@ -234,7 +253,46 @@ namespace POS_Server.Controllers
                 return NotFound();
         }
 
+        // GET api/<controller>  Get Coupon By code
+        [HttpGet]
+        [Route("IsExistcode")]
+        public IHttpActionResult IsExistcode(string code)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+           
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+           
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
 
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var coupon = entity.coupons
+                   .Where(c => c.code == code)
+                   .Select(c => new {
+                       c.name,
+                       c.code,
+                   
+                       c.barcode,
+                   })
+                   .FirstOrDefault();
+
+                    if (coupon == null)
+                        return NotFound();
+                    else
+                        return Ok(coupon);
+                }
+            }
+            else
+                return NotFound();
+        }
         // GET api/<controller>  Get Coupon By is active
         [HttpGet]
         [Route("GetByisActive")]
@@ -294,12 +352,12 @@ namespace POS_Server.Controllers
         // add or update coupon 
         [HttpPost]
         [Route("Save")]
-        public string Save(string couponObject)
+        public bool Save(string couponObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            string message = "";
+            
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -319,8 +377,12 @@ namespace POS_Server.Controllers
                         var couponEntity = entity.Set<coupons>();
                         if (Object.cId == 0)
                         {
+
+                            Object.createDate = DateTime.Now;
+                            Object.updateDate = DateTime.Now;
+                            Object.updateUserId = Object.createUserId;
                             couponEntity.Add(Object);
-                            message = "coupon Is Added Successfully";
+                          //  message = "coupon Is Added Successfully";
                         }
                         else
                         {
@@ -338,25 +400,27 @@ namespace POS_Server.Controllers
                             tmpcoupon.remainQ = Object.remainQ;
                             tmpcoupon.invMin = Object.invMin;
                             tmpcoupon.invMax = Object.invMax;
-                            tmpcoupon.createDate = Object.createDate;
-                            tmpcoupon.updateDate = Object.updateDate;
-                            tmpcoupon.createUserId = Object.createUserId;
+                         
+                            tmpcoupon.updateDate = DateTime.Now;// server current date;
+                           
                             tmpcoupon.updateUserId = Object.updateUserId;
                             tmpcoupon.barcode = Object.barcode;
 
 
-                            message = "coupon Is Updated Successfully";
+                            //message = "coupon Is Updated Successfully";
                         }
                         entity.SaveChanges();
-                    }  
-               }
+                    }
+                    return true;
+                }
 
                 catch
                 {
-                   message ="an error ocurred";
+                    return false;
                 }
             }
-                return message;
+            else
+                return false;
         }
 
         [HttpPost]

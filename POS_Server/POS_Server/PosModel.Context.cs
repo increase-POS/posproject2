@@ -31,6 +31,8 @@ namespace POS_Server
         public virtual DbSet<branchesUsers> branchesUsers { get; set; }
         public virtual DbSet<cashTransfer> cashTransfer { get; set; }
         public virtual DbSet<categories> categories { get; set; }
+        public virtual DbSet<cities> cities { get; set; }
+        public virtual DbSet<countriesCodes> countriesCodes { get; set; }
         public virtual DbSet<coupons> coupons { get; set; }
         public virtual DbSet<couponsInvoices> couponsInvoices { get; set; }
         public virtual DbSet<Expenses> Expenses { get; set; }
@@ -52,10 +54,13 @@ namespace POS_Server
         public virtual DbSet<posUsers> posUsers { get; set; }
         public virtual DbSet<properties> properties { get; set; }
         public virtual DbSet<propertiesItems> propertiesItems { get; set; }
+        public virtual DbSet<sections> sections { get; set; }
         public virtual DbSet<serials> serials { get; set; }
+        public virtual DbSet<servicesCosts> servicesCosts { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<units> units { get; set; }
         public virtual DbSet<users> users { get; set; }
         public virtual DbSet<usersLogs> usersLogs { get; set; }
-        public virtual DbSet<servicesCosts> servicesCosts { get; set; }
+        public virtual DbSet<branchStore> branchStore { get; set; }
     }
 }

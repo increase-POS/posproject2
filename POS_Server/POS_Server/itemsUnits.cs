@@ -17,6 +17,7 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public itemsUnits()
         {
+            this.itemsLocations = new HashSet<itemsLocations>();
             this.itemsOffers = new HashSet<itemsOffers>();
         }
     
@@ -35,6 +36,8 @@ namespace POS_Server
         public Nullable<int> subUnitId { get; set; }
     
         public virtual items items { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemsLocations> itemsLocations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsOffers> itemsOffers { get; set; }
         public virtual units units { get; set; }

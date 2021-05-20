@@ -58,14 +58,15 @@ namespace POS_Server.Controllers
                     {
                         for (int i = 0; i < branchesList.Count; i++)
                         {
+                            canDelete = false;
                             if (branchesList[i].isActive == 1)
                             {
                                 int branchId = (int)branchesList[i].branchId;
                                 var parentBrancheL = entity.branches.Where(x => x.parentId == branchId).Select(x => new { x.branchId }).FirstOrDefault();
                                 var posL = entity.pos.Where(x => x.branchId == branchId).Select(b => new { b.posId }).FirstOrDefault();
-                                var locationsL = entity.locations.Where(x => x.branchId == branchId).Select(x => new { x.locationId }).FirstOrDefault();
+                               // var locationsL = entity.locations.Where(x => x.branchId == branchId).Select(x => new { x.locationId }).FirstOrDefault();
                                 var usersL = entity.branchesUsers.Where(x => x.branchId == branchId).Select(x => new { x.branchsUsersId }).FirstOrDefault();
-                                if ((parentBrancheL is null)&&(posL is null) && (locationsL is null) && (usersL is null))
+                                if ((parentBrancheL is null)&&(posL is null)  && (usersL is null))
                                     canDelete = true;
                             }
                             branchesList[i].canDelete = canDelete;

@@ -2,9 +2,11 @@
 using POS_Server.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace POS_Server.Controllers
@@ -57,6 +59,7 @@ namespace POS_Server.Controllers
                     {
                         for (int i = 0; i < categoriesList.Count; i++)
                         {
+                            canDelete = false;
                             if (categoriesList[i].isActive == 1)
                             {
                                 int categoryId = (int)categoriesList[i].categoryId;
@@ -205,12 +208,11 @@ namespace POS_Server.Controllers
         // add or update category
         [HttpPost]
         [Route("Save")]
-        public string Save(string categoryObject)
+        public int Save(string categoryObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            string message = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -236,24 +238,23 @@ namespace POS_Server.Controllers
                 }
                 try
                 {
+                    categories tmpCategory;
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-                        var categoryEntity = entity.Set<categories>();
+                        var categoryEntity = entity.Set<categories>();                      
                         if (newObject.categoryId == 0)
                         {
                             newObject.createDate = DateTime.Now;
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
 
-                            categoryEntity.Add(newObject);
-                            message = "Category Is Added Successfully";
+                            tmpCategory= categoryEntity.Add(newObject); 
                         }
                         else
                         {
-                            var tmpCategory = entity.categories.Where(p => p.categoryId == newObject.categoryId).First();
+                            tmpCategory = entity.categories.Where(p => p.categoryId == newObject.categoryId).First();
                             tmpCategory.categoryCode = newObject.categoryCode;
                             tmpCategory.details = newObject.details;
-                            tmpCategory.image = newObject.image;
                             tmpCategory.name = newObject.name;
                             tmpCategory.notes = newObject.notes;
                             tmpCategory.parentId = newObject.parentId;
@@ -262,18 +263,17 @@ namespace POS_Server.Controllers
                             tmpCategory.updateUserId = newObject.updateUserId;
                             tmpCategory.isActive = newObject.isActive;
 
-                            message = "Category Is Updated Successfully";
                         }
-                        entity.SaveChanges();
+                        entity.SaveChanges();                       
                     }
+                    return tmpCategory.categoryId;
                 }
-
                 catch
                 {
-                    message = "an error ocurred";
+                    return 0;
                 }
             }
-            return message;
+            return 0;
         }
         [HttpPost]
         [Route("Delete")]
@@ -435,6 +435,142 @@ namespace POS_Server.Controllers
             }
             else
                 return NotFound();
+        }
+
+        [Route("PostCategoryImage")]
+        public IHttpActionResult PostCategoryImage()
+        {
+
+            try
+            {
+                var httpRequest = HttpContext.Current.Request;
+
+                foreach (string file in httpRequest.Files)
+                {
+
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+
+                    var postedFile = httpRequest.Files[file];
+                    string imageName = postedFile.FileName;
+                    if (postedFile != null && postedFile.ContentLength > 0)
+                    {
+
+                        int MaxContentLength = 1024 * 1024 * 1; //Size = 1 MB
+
+                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png" };
+                        var ext = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf('.'));
+                        var extension = ext.ToLower();
+
+                        if (!AllowedFileExtensions.Contains(extension))
+                        {
+
+                            var message = string.Format("Please Upload image of type .jpg,.gif,.png.");
+                            return Ok(message);
+                        }
+                        else if (postedFile.ContentLength > MaxContentLength)
+                        {
+
+                            var message = string.Format("Please Upload a file upto 1 mb.");
+
+                            return Ok(message);
+                        }
+                        else
+                        {
+                            var filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\category"), imageName);
+                            //  check if image exist
+                            if (File.Exists(filePath))
+                            {
+                                File.Delete(filePath);
+                            }
+                            //Userimage myfolder name where i want to save my image
+                            postedFile.SaveAs(filePath);
+
+                        }
+                    }
+
+                    var message1 = string.Format("Image Updated Successfully.");
+                    return Ok(message1);
+                }
+                var res = string.Format("Please Upload a image.");
+
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                var res = string.Format("some Message");
+
+                return Ok(res);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetImage")]
+        public HttpResponseMessage GetImage(string imageName)
+        {
+            if (String.IsNullOrEmpty(imageName))
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+
+            string localFilePath;
+
+            localFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\category"), imageName);
+
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Content = new StreamContent(new FileStream(localFilePath, FileMode.Open, FileAccess.Read));
+            response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            response.Content.Headers.ContentDisposition.FileName = imageName;
+
+            return response;
+        }
+        [HttpPost]
+        [Route("UpdateImage")]
+        public int UpdateImage(string categoryObject)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            categoryObject = categoryObject.Replace("\\", string.Empty);
+            categoryObject = categoryObject.Trim('"');
+
+            categories catObj = JsonConvert.DeserializeObject<categories>(categoryObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+            if (catObj.updateUserId == 0 || catObj.updateUserId == null)
+            {
+                Nullable<int> id = null;
+                catObj.updateUserId = id;
+            }
+            if (catObj.createUserId == 0 || catObj.createUserId == null)
+            {
+                Nullable<int> id = null;
+                catObj.createUserId = id;
+            }
+            if (valid)
+            {
+                try
+                {
+                    categories category;
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var agentEntity = entity.Set<agents>();
+                        category = entity.categories.Where(p => p.categoryId == catObj.categoryId).First();
+                        category.image = catObj.image;
+                        entity.SaveChanges();
+                    }
+                    return category.categoryId;
+                }
+
+                catch
+                {
+                    return 0;
+                }
+            }
+            else
+                return 0;
         }
     }
 }

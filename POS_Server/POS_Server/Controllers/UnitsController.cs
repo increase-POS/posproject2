@@ -54,16 +54,18 @@ namespace POS_Server.Controllers
                     {
                         for (int i = 0; i < unitsList.Count; i++)
                         {
+                            canDelete = false;
                             if (unitsList[i].isActive == 1)
                             {
                                 int unitId = (int)unitsList[i].unitId;
-                                var itemsL = entity.items.Where(x => x.minUnitId == unitId || x.maxUnitId == unitId).Select(b => new { b.itemId }).FirstOrDefault();
+                                var itemsL = entity.items.Where(x => x.minUnitId == unitId ).Select(b => new { b.itemId }).ToList();
                                 var itemsMatL = entity.itemsMaterials.Where(x => x.unitId == unitId ).Select(x => new { x.itemMatId }).FirstOrDefault();
                                 var itemsUnitL = entity.itemsUnits.Where(x => x.unitId == unitId).Select(x => new { x.itemUnitId }).FirstOrDefault();
                                 var unitsL = entity.units.Where(x => x.parentid == unitId).Select(x => new { x.unitId }).FirstOrDefault();
-                                if ((itemsL is null) && (itemsMatL is null) && (itemsUnitL is null) && (unitsL is null))
-                                    canDelete = true;
+                                if ((itemsL.Count == 0) && (itemsMatL is null) && (itemsUnitL is null) && (unitsL is null))
+                                    canDelete = true; 
                             }
+                            
                             unitsList[i].canDelete = canDelete;
                         }
                     }
@@ -297,19 +299,11 @@ namespace POS_Server.Controllers
                     {
                         using (incposdbEntities entity = new incposdbEntities())
                         {
-                            var itemUnits = entity.itemsUnits.Where(u => u.unitId == unitId).FirstOrDefault();
-                            var relatedUnits = entity.units.Where(u => u.parentid == unitId || u.smallestId == unitId)
-                                .Select(u => new { u.unitId })
-                                .FirstOrDefault();
-                            if (itemUnits == null && relatedUnits == null)
-                            {
-                                units unitDelete = entity.units.Find(unitId);
-                                entity.units.Remove(unitDelete);
-                                entity.SaveChanges();
-                                return Ok("Unit is Deleted Successfully");
-                            }
-                            else
-                                return Ok("Can't Delete This Unit");
+
+                            units unitDelete = entity.units.Find(unitId);
+                            entity.units.Remove(unitDelete);
+                            entity.SaveChanges();
+                            return Ok("Unit is Deleted Successfully");
                         }
                     }
                     catch
@@ -322,20 +316,13 @@ namespace POS_Server.Controllers
                     try
                     {
                         using (incposdbEntities entity = new incposdbEntities())
-                        {
-                            var itemUnits = entity.itemsUnits.Where(u => u.unitId == unitId).FirstOrDefault();
-                            var relatedUnits = entity.units.Where(u => u.parentid == unitId || u.smallestId == unitId)
-                                .Select(u => new { u.unitId })
-                                .FirstOrDefault();
-                            if (itemUnits == null && relatedUnits == null)
-                            {
-                                units unitDelete = entity.units.Find(unitId);
-                                entity.units.Remove(unitDelete);
-                                entity.SaveChanges();
-                                return Ok("Unit is Deleted Successfully");
-                            }
-                            else
-                                return Ok("Can't Delete This Unit");
+                        {                          
+                            units unitDelete = entity.units.Find(unitId);
+                            unitDelete.isActive = 0;
+                            unitDelete.updateDate = DateTime.Now;
+                            unitDelete.updateUserId = userId;
+                            entity.SaveChanges();
+                            return Ok("Unit is Deleted Successfully");                         
                         }
                     }
                     catch

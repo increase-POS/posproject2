@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Data.Entity;
 using POS_Server.Models;
+using System.Web;
+using System.IO;
 
 namespace POS_Server.Controllers
 {
@@ -25,7 +27,7 @@ namespace POS_Server.Controllers
             var headers = re.Headers;
             string token = "";
             Boolean canDelete = false;
-
+            DateTime cmpdate = DateTime.Now.AddDays(newdays);
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -61,7 +63,9 @@ namespace POS_Server.Controllers
                                       createDate = I.createDate,
                                       updateDate = I.updateDate,
                                       createUserId = I.createUserId,
-                                      updateUserId = I.updateUserId
+                                      updateUserId = I.updateUserId,
+                                      isNew=0,
+                                      
                                    })
                                    .ToList();
 
@@ -69,6 +73,7 @@ namespace POS_Server.Controllers
                     {
                         for (int i = 0; i < itemsList.Count; i++)
                         {
+                            canDelete = false;
                             if (itemsList[i].isActive == 1)
                             {
                                 int itemId = (int)itemsList[i].itemId;
@@ -76,14 +81,28 @@ namespace POS_Server.Controllers
                                 var itemsPropL = entity.itemsProp.Where(x => x.itemId == itemId).Select(b => new { b.itemPropId }).FirstOrDefault();
                                 var ordersL = entity.orderscontents.Where(x => x.itemId == itemId).Select(b => new { b.orderId }).FirstOrDefault();
                                 var itemUnitsL = entity.itemsUnits.Where(x => x.itemId == itemId).Select(b => new { b.itemUnitId }).FirstOrDefault();
-                                var itemLocationsL = entity.itemsLocations.Where(x => x.itemId == itemId).Select(b => new { b.itemsLocId }).FirstOrDefault();
+                                //var itemLocationsL = entity.itemsLocations.Where(x => x.itemId == itemId).Select(b => new { b.itemsLocId }).FirstOrDefault();
                                 var itemsMaterials = entity.itemsMaterials.Where(x => x.itemId == itemId).Select(b => new { b.itemMatId }).FirstOrDefault();
                                 var serials = entity.serials.Where(x => x.itemId == itemId).Select(b => new { b.serialId }).FirstOrDefault();
 
-                                if ((childItemL is null)&&(itemsPropL is null) && (ordersL is null) && (itemUnitsL is null) && (itemLocationsL is null) && (itemsMaterials is null) && (serials is null))
+                                if ((childItemL is null)&&(itemsPropL is null) && (ordersL is null) && (itemUnitsL is null)  && (itemsMaterials is null) && (serials is null))
                                     canDelete = true;
                             }
                             itemsList[i].canDelete = canDelete;
+
+                            // is new
+                            
+                           
+
+                                int res = DateTime.Compare((DateTime)itemsList[i].createDate, cmpdate);
+                                if (res >= 0)
+                                {
+                                itemsList[i].isNew= 1;
+                                }
+
+
+
+                            
                         }
                     }
 
@@ -284,11 +303,24 @@ namespace POS_Server.Controllers
         [Route("GetItemsInCategoryAndSub")]
         public IHttpActionResult GetItemsInCategoryAndSub(int categoryId)
         {
-            using (incposdbEntities entity = new incposdbEntities())
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
             {
-                // get all sub categories of categoryId
-                List<categories> categoriesList = entity.categories
-                      .Where(c => c.isActive == 1).ToList()
+                token = headers.GetValues("APIKey").First();
+            }
+
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    // get all sub categories of categoryId
+                    List<categories> categoriesList = entity.categories
+                     .ToList()
                       .Select(p => new categories
                       {
                           categoryId = p.categoryId,
@@ -297,35 +329,79 @@ namespace POS_Server.Controllers
                       })
                      .ToList();
 
-                categoriesId = new List<int>();
-                categoriesId.Add(categoryId);
+                    categoriesId = new List<int>();
+                    categoriesId.Add(categoryId);
 
-                // get items
-                var result = Recursive(categoriesList,categoryId);
-                var items = entity.items
-                    .Where(t => categoriesId.Contains((int)t.categoryId))
-                    .Select(I => new {
-                        I.itemId,
-                        I.name,
-                        I.code,
-                        
-                        I.max,
-                        I.maxUnitId,
-                        I.minUnitId,
-                        I.min,
-                        I.parentId,
-                       
-                        I.image,
-                        I.type,
-                        I.details,
-                        I.taxes,
-                        I.createDate,
-                        I.updateDate,
-                        I.createUserId,
-                        I.updateUserId
-                    })
-                    .ToList();
-                return Ok(items);
+                    // get items
+                    var result = Recursive(categoriesList, categoryId);
+                    // end sub cat
+
+                    var items = (from itm in entity.items
+                                     join cat in entity.categories on itm.categoryId equals cat.categoryId
+                                    
+                                     select new ItemSalePurModel()
+                                     {
+                                         itemId = itm.itemId,
+                                         name = itm.name,
+                                         code = itm.code,
+                                         image = itm.image,
+                                         details = itm.details,
+                                         type = itm.type,
+                                         createUserId = itm.createUserId,
+                                         updateUserId = itm.updateUserId,
+                                         createDate = itm.createDate,
+                                         updateDate = itm.updateDate,
+                                         max = itm.max,
+                                         min = itm.min,
+                                         maxUnitId = itm.maxUnitId,
+                                         minUnitId = itm.minUnitId,
+
+                                         categoryId = itm.categoryId,
+                                         categoryName = cat.name,
+
+
+
+                                         parentId = itm.parentId,
+                                         isActive = itm.isActive,
+                                         taxes = itm.taxes,
+                                        
+                                         isNew = 0,
+                                        
+                                     }).Where(p =>  categoriesId.Contains((int)p.categoryId)).ToList();
+
+                    //.Where(t => categoriesId.Contains((int)t.categoryId))
+                    // end test
+
+                    //  set is new
+
+                    DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                    foreach (var item in items)
+                    {
+
+                        int res = DateTime.Compare((DateTime)item.createDate, cmpdate);
+                        if (res >= 0)
+                        {
+                            item.isNew = 1;
+                        }
+
+
+
+                    }
+
+                    //  if (itemsunit == null)
+                    //if (itemsofferslist == null)
+                    if (items == null)
+                        return NotFound();
+                    else
+                        return Ok(items);
+
+
+                }
+
+            }
+            else
+            {
+                return NotFound();
             }
 
         }
@@ -346,12 +422,11 @@ namespace POS_Server.Controllers
         // add or update item
         [HttpPost]
         [Route("Save")]
-        public string Save(string itemObject)
+        public int Save(string itemObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            string message = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -392,6 +467,7 @@ namespace POS_Server.Controllers
             {
                 try
                 {
+                    items itemModel;
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var ItemEntity = entity.Set<items>();
@@ -402,12 +478,11 @@ namespace POS_Server.Controllers
                             itemObj.updateDate = DateTime.Now;
                             itemObj.updateUserId = itemObj.createUserId;
 
-                            ItemEntity.Add(itemObj);
-                            message = "Item Is Added Successfully";
+                            itemModel = ItemEntity.Add(itemObj);
                         }
                         else
                         {
-                            var itemModel = entity.items.Where(p => p.itemId == itemObj.itemId).First();
+                            itemModel = entity.items.Where(p => p.itemId == itemObj.itemId).First();
                             itemModel.code = itemObj.code;
                             itemModel.categoryId = itemObj.categoryId;
                             itemModel.parentId = itemObj.parentId;
@@ -424,18 +499,17 @@ namespace POS_Server.Controllers
                             itemModel.updateDate = DateTime.Now;
                             itemModel.updateUserId = itemObj.updateUserId;
                             itemModel.isActive = itemObj.isActive;
-
-                            message = "Item Is Updated Successfully";
                         }
                         entity.SaveChanges();
+                        return itemModel.itemId;
                     }
                 }
                 catch
                 {
-                    message = "an error ocurred";
+                    return 0;
                 }
             }
-            return message;
+            return 0;
         }
         [HttpPost]
         [Route("Delete")]
@@ -579,6 +653,140 @@ namespace POS_Server.Controllers
             }
             else
                 return NotFound();
+        }
+
+        [Route("PostItemImage")]
+        public IHttpActionResult PostItemImage()
+        {
+
+            try
+            {
+                var httpRequest = HttpContext.Current.Request;
+
+                foreach (string file in httpRequest.Files)
+                {
+
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+
+                    var postedFile = httpRequest.Files[file];
+                    string imageName = postedFile.FileName;
+                    if (postedFile != null && postedFile.ContentLength > 0)
+                    {
+
+                        int MaxContentLength = 1024 * 1024 * 1; //Size = 1 MB
+
+                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png" };
+                        var ext = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf('.'));
+                        var extension = ext.ToLower();
+
+                        if (!AllowedFileExtensions.Contains(extension))
+                        {
+
+                            var message = string.Format("Please Upload image of type .jpg,.gif,.png.");
+                            return Ok(message);
+                        }
+                        else if (postedFile.ContentLength > MaxContentLength)
+                        {
+                            var message = string.Format("Please Upload a file upto 1 mb.");
+
+                            return Ok(message);
+                        }
+                        else
+                        {
+                            var filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\item"), imageName);
+                            //  check if image exist
+                            if (File.Exists(filePath))
+                            {
+                                File.Delete(filePath);
+                            }
+                            //Userimage myfolder name where i want to save my image
+                            postedFile.SaveAs(filePath);
+
+                        }
+                    }
+
+                    var message1 = string.Format("Image Updated Successfully.");
+                    return Ok(message1);
+                }
+                var res = string.Format("Please Upload a image.");
+
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                var res = string.Format("some Message");
+
+                return Ok(res);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetImage")]
+        public HttpResponseMessage GetImage(string imageName)
+        {
+            if (String.IsNullOrEmpty(imageName))
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+
+            string localFilePath;
+
+            localFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\item"), imageName);
+
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Content = new StreamContent(new FileStream(localFilePath, FileMode.Open, FileAccess.Read));
+            response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            response.Content.Headers.ContentDisposition.FileName = imageName;
+
+            return response;
+        }
+        [HttpPost]
+        [Route("UpdateImage")]
+        public int UpdateImage(string itemObject)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            itemObject = itemObject.Replace("\\", string.Empty);
+            itemObject = itemObject.Trim('"');
+
+            items itemObj = JsonConvert.DeserializeObject<items>(itemObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+            if (itemObj.updateUserId == 0 || itemObj.updateUserId == null)
+            {
+                Nullable<int> id = null;
+                itemObj.updateUserId = id;
+            }
+            if (itemObj.createUserId == 0 || itemObj.createUserId == null)
+            {
+                Nullable<int> id = null;
+                itemObj.createUserId = id;
+            }
+            if (valid)
+            {
+                try
+                {
+                    items item;
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var itemEntity = entity.Set<items>();
+                        item = entity.items.Where(p => p.itemId == itemObj.itemId).First();
+                        item.image = itemObj.image;
+                        entity.SaveChanges();
+                    }
+                    return item.itemId;
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+            else
+                return 0;
         }
 
         // get all items where defaultSale is 1 and set isNew=1 if new item  and set isOffer=1 if Has Active Offer 

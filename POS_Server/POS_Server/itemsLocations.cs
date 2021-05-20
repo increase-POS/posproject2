@@ -15,18 +15,18 @@ namespace POS_Server
     public partial class itemsLocations
     {
         public int itemsLocId { get; set; }
-        public Nullable<int> itemId { get; set; }
         public Nullable<int> locationId { get; set; }
         public Nullable<long> quantity { get; set; }
-        public Nullable<int> quantityMod { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public Nullable<System.DateTime> startDate { get; set; }
         public Nullable<System.DateTime> endDate { get; set; }
+        public Nullable<int> itemUnitId { get; set; }
+        public string note { get; set; }
     
-        public virtual items items { get; set; }
+        public virtual itemsUnits itemsUnits { get; set; }
         public virtual locations locations { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }

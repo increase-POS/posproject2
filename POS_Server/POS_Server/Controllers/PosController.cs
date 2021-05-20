@@ -34,26 +34,28 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var posList = (from p in entity.pos
-                                  join b in entity.branches on p.branchId equals b.branchId into lj
+                                   join b in entity.branches on p.branchId equals b.branchId into lj
                                    from x in lj.DefaultIfEmpty()
-                                   select  new PosModel (){
-                                      posId = p.posId,
-                                      balance = p.balance,
-                                      branchId =p.branchId,
-                                      code=p.code,
-                                      name= p.name,
-                                      branchName = x.name,
-                                      createDate= p.createDate,
-                                      updateDate= p.updateDate,
-                                      createUserId=p.createUserId,
-                                      updateUserId= p.updateUserId,
-                                      isActive = p.isActive,
-                    }).ToList();
+                                   select new PosModel() {
+                                       posId = p.posId,
+                                       balance = p.balance,
+                                       branchId = p.branchId,
+                                       code = p.code,
+                                       name = p.name,
+                                       branchName = x.name,
+                                       createDate = p.createDate,
+                                       updateDate = p.updateDate,
+                                       createUserId = p.createUserId,
+                                       updateUserId = p.updateUserId,
+                                       isActive = p.isActive,
+                                       note = p.note,
+                                   }).ToList();
 
                     if (posList.Count > 0)
                     {
                         for (int i = 0; i < posList.Count; i++)
                         {
+                            canDelete = false;
                             if (posList[i].isActive == 1)
                             {
                                 int posId = (int)posList[i].posId;
@@ -63,6 +65,7 @@ namespace POS_Server.Controllers
                                 if ((cashTransferL is null) && (posUsersL is null))
                                     canDelete = true;
                             }
+                           
                             posList[i].canDelete = canDelete;
                         }
                     }
@@ -117,6 +120,7 @@ namespace POS_Server.Controllers
                                        createUserId = p.createUserId,
                                        updateUserId = p.updateUserId,
                                        isActive = p.isActive,
+                                       note = p.note,
                                    })
                                    .Where(p=> (p.name.Contains(searchWords) || p.code.Contains(searchWords) || p.branchName.Contains(searchWords) || p.balance == balance ))
                                    .ToList();
@@ -163,6 +167,7 @@ namespace POS_Server.Controllers
                        p.createUserId,
                        p.updateUserId,
                        p.isActive,
+                       p.note,
                    })
                    .FirstOrDefault();
 
@@ -227,6 +232,7 @@ namespace POS_Server.Controllers
                             tmpPos.name = newObject.name;
                             tmpPos.code = newObject.code;
                             tmpPos.branchId = newObject.branchId;
+                            tmpPos.note = newObject.note;
                             tmpPos.updateDate = DateTime.Now;
                             tmpPos.updateUserId = newObject.updateUserId;
                             tmpPos.isActive = newObject.isActive;

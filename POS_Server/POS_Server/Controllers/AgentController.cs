@@ -8,8 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace POS_Server.Controllers
@@ -71,6 +74,7 @@ namespace POS_Server.Controllers
                     {
                         for (int i = 0; i < agentsList.Count; i++)
                         {
+                            canDelete = false;
                             if (agentsList[i].isActive == 1)
                             {
                                 int agentId = (int)agentsList[i].agentId;
@@ -241,7 +245,7 @@ namespace POS_Server.Controllers
         // add or update agent
         [HttpPost]
         [Route("Save")]
-        public bool Save(string agentObject)
+        public int Save(string agentObject)
         {
             var re = Request;
             var headers = re.Headers;
@@ -271,6 +275,7 @@ namespace POS_Server.Controllers
             {
                 try
                 {
+                    agents agent;
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var agentEntity = entity.Set<agents>();
@@ -279,40 +284,40 @@ namespace POS_Server.Controllers
                             agentObj.createDate = DateTime.Now;
                             agentObj.updateDate = DateTime.Now;
                             agentObj.updateUserId = agentObj.createUserId;
-                            agentEntity.Add(agentObj);
+                           agent = agentEntity.Add(agentObj);
                         }
                         else
                         {
-                            var tmpAgent = entity.agents.Where(p => p.agentId == agentObj.agentId).First();
-                            tmpAgent.accType = agentObj.accType;
-                            tmpAgent.address = agentObj.address;
-                            tmpAgent.code = agentObj.code;
-                            tmpAgent.company = agentObj.company;
-                            tmpAgent.email = agentObj.email;
-                            tmpAgent.image = agentObj.image;
-                            tmpAgent.mobile = agentObj.mobile;
-                            tmpAgent.name = agentObj.name;
-                            tmpAgent.notes = agentObj.notes;
-                            tmpAgent.phone = agentObj.phone;
-                            tmpAgent.type = agentObj.type;
-                            tmpAgent.maxDeserve = agentObj.maxDeserve;
-                            tmpAgent.fax = agentObj.fax;
-                            tmpAgent.updateDate = DateTime.Now;// server current date
-                            tmpAgent.updateUserId = agentObj.updateUserId;
-                            tmpAgent.isActive = agentObj.isActive;
+                            agent = entity.agents.Where(p => p.agentId == agentObj.agentId).First();
+                            agent.accType = agentObj.accType;
+                            agent.address = agentObj.address;
+                            agent.code = agentObj.code;
+                            agent.company = agentObj.company;
+                            agent.email = agentObj.email;
+                            agent.image = agentObj.image;
+                            agent.mobile = agentObj.mobile;
+                            agent.name = agentObj.name;
+                            agent.notes = agentObj.notes;
+                            agent.phone = agentObj.phone;
+                            agent.type = agentObj.type;
+                            agent.maxDeserve = agentObj.maxDeserve;
+                            agent.fax = agentObj.fax;
+                            agent.updateDate = DateTime.Now;// server current date
+                            agent.updateUserId = agentObj.updateUserId;
+                            agent.isActive = agentObj.isActive;
                         }
                         entity.SaveChanges();
                     }
-                    return true;
+                    return agent.agentId;
                 }
 
                 catch
                 {
-                    return false;
+                    return 0;
                 }
             }
             else
-                return false;
+                return 0;
         }
         [HttpPost]
         [Route("Delete")]
@@ -379,6 +384,142 @@ namespace POS_Server.Controllers
             }
             else
                 return false;
+        }
+
+        [Route("PostUserImage")]
+        public  IHttpActionResult PostUserImage()
+        {
+          
+            try
+            {
+                var httpRequest = HttpContext.Current.Request;
+
+                foreach (string file in httpRequest.Files)
+                {
+
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+
+                    var postedFile = httpRequest.Files[file];
+                    string imageName = postedFile.FileName;
+                    if (postedFile != null && postedFile.ContentLength > 0)
+                    {
+
+                        int MaxContentLength = 1024 * 1024 * 1; //Size = 1 MB
+
+                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png" };
+                        var ext = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf('.'));
+                        var extension = ext.ToLower();
+
+                        if (!AllowedFileExtensions.Contains(extension))
+                        {
+
+                            var message = string.Format("Please Upload image of type .jpg,.gif,.png.");
+                            return Ok(message);
+                        }
+                        else if (postedFile.ContentLength > MaxContentLength)
+                        {
+
+                            var message = string.Format("Please Upload a file upto 1 mb.");
+
+                            return Ok(message);
+                        }
+                        else
+                        {
+                            var filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\agent"), imageName );
+                            //  check if image exist
+                            if (File.Exists(filePath))
+                            {
+                                File.Delete(filePath);
+                            }
+                            //Userimage myfolder name where i want to save my image
+                            postedFile.SaveAs(filePath);
+
+                        }
+                    }
+
+                    var message1 = string.Format("Image Updated Successfully.");
+                    return Ok(message1);
+                }
+                var res = string.Format("Please Upload a image.");
+
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                var res = string.Format("some Message");
+
+                return Ok(res);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetImage")]
+        public HttpResponseMessage GetImage(string imageName)
+        {
+            if (String.IsNullOrEmpty(imageName))
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+
+            string localFilePath;
+
+            localFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\agent"), imageName);
+
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Content = new StreamContent(new FileStream(localFilePath, FileMode.Open, FileAccess.Read));
+            response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            response.Content.Headers.ContentDisposition.FileName = imageName;
+
+            return response;
+        }
+        [HttpPost]
+        [Route("UpdateImage")]
+        public int UpdateImage(string agentObject)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            agentObject = agentObject.Replace("\\", string.Empty);
+            agentObject = agentObject.Trim('"');
+
+            agents agentObj = JsonConvert.DeserializeObject<agents>(agentObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+            if (agentObj.updateUserId == 0 || agentObj.updateUserId == null)
+            {
+                Nullable<int> id = null;
+                agentObj.updateUserId = id;
+            }
+            if (agentObj.createUserId == 0 || agentObj.createUserId == null)
+            {
+                Nullable<int> id = null;
+                agentObj.createUserId = id;
+            }
+            if (valid)
+            {
+                try
+                {
+                    agents agent;
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var agentEntity = entity.Set<agents>();                      
+                        agent = entity.agents.Where(p => p.agentId == agentObj.agentId).First();
+                        agent.image = agentObj.image;
+                        entity.SaveChanges();
+                    }
+                    return agent.agentId;
+                }
+
+                catch
+                {
+                    return 0;
+                }
+            }
+            else
+                return 0;
         }
 
     }

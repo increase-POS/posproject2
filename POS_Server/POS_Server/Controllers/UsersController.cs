@@ -1,9 +1,13 @@
 ﻿using Newtonsoft.Json;
+using POS_Server.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Web;
 using System.Web.Http;
 
 namespace POS_Server.Controllers
@@ -49,7 +53,8 @@ namespace POS_Server.Controllers
                         u.email,
                         u.notes,
                         u.address,
-                        u.isOnline
+                        u.isOnline,
+                        u.image,
                     })
                     .ToList();
 
@@ -71,6 +76,7 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
+            Boolean canDelete = false;
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -83,28 +89,47 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var usersList = entity.users
-                    .Select(u => new
+                    .Select(u => new UserModel()
                     {
-                        u.userId,
-                        u.username,
-                        u.password,
-                        u.name,
-                        u.lastname,
-                        u.job,
-                        u.workHours,
-                        u.createDate,
-                        u.updateDate,
-                        u.createUserId,
-                        u.updateUserId,
-                        u.phone,
-                        u.mobile,
-                        u.email,
-                        u.notes,
-                        u.address,
-                        u.isActive,
-                        u.isOnline
+                        userId = u.userId,
+                        username = u.username,
+                        password = u.password,
+                        name = u.name,
+                        lastname = u.lastname,
+                        job = u.job,
+                        workHours = u.workHours,
+                        createDate = u.createDate,
+                        updateDate = u.updateDate,
+                        createUserId = u.createUserId,
+                        updateUserId = u.updateUserId,
+                        phone = u.phone,
+                        mobile = u.mobile,
+                        email = u.email,
+                        notes = u.notes,
+                        address = u.address,
+                        isActive = u.isActive,
+                        isOnline = u.isOnline,
+                        image = u.image,
+                        
                     })
                     .ToList();
+
+                    if (usersList.Count > 0)
+                    {
+                        for (int i = 0; i < usersList.Count; i++)
+                        {
+                            canDelete = false;
+                            if (usersList[i].isActive == 1)
+                            {
+                                int userId = (int)usersList[i].userId;
+                                var usersPos = entity.posUsers.Where(x => x.userId == userId).Select(b => new { b.posUserId }).FirstOrDefault();
+                                if (usersPos is null)
+                                    canDelete = true;
+                            }
+
+                            usersList[i].canDelete = canDelete;
+                        }
+                    }
 
                     if (usersList == null)
                         return NotFound();
@@ -159,7 +184,8 @@ namespace POS_Server.Controllers
                        u.email,
                        u.notes,
                        u.address,
-                       u.isOnline
+                       u.isOnline,
+                       u.image,
                    })
                    .FirstOrDefault();
 
@@ -212,7 +238,8 @@ namespace POS_Server.Controllers
                         u.notes,
                         u.address,
                         u.isActive,
-                        u.isOnline
+                        u.isOnline,
+                        u.image,
                     })
                     .ToList();
 
@@ -228,12 +255,12 @@ namespace POS_Server.Controllers
         // add or update unit
         [HttpPost]
         [Route("Save")]
-        public string Save(string userObject)
+        public int Save(string userObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            string message = "";
+            users tmpUser = new users();
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -259,7 +286,7 @@ namespace POS_Server.Controllers
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
-                    {
+                    { 
                         var unitEntity = entity.Set<users>();
                         if (newObject.userId == 0)
                         {
@@ -267,39 +294,36 @@ namespace POS_Server.Controllers
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
 
-                            unitEntity.Add(newObject);
-                            message = "User Is Added Successfully";
+                            tmpUser= unitEntity.Add(newObject);
                         }
                         else
                         {
-                            var tmpUnit = entity.users.Where(p => p.userId == newObject.userId).FirstOrDefault();
-                            tmpUnit.name = newObject.name;
-                            tmpUnit.username = newObject.username;
-                            tmpUnit.password = newObject.password;
-                            tmpUnit.name = newObject.name;
-                            tmpUnit.lastname = newObject.lastname;
-                            tmpUnit.job = newObject.job;
-                            tmpUnit.workHours = newObject.workHours;
-                            tmpUnit.updateDate = DateTime.Now;
-                            tmpUnit.updateUserId = newObject.updateUserId;
-                            tmpUnit.phone = newObject.phone;
-                            tmpUnit.mobile = newObject.mobile;
-                            tmpUnit.email = newObject.email;
-                            tmpUnit.notes = newObject.notes;
-                            tmpUnit.address = newObject.address;
-                            tmpUnit.isActive = newObject.isActive;
-                            message = "User Is Updated Successfully";
+                            tmpUser = entity.users.Where(p => p.userId == newObject.userId).FirstOrDefault();
+                            tmpUser.name = newObject.name;
+                            tmpUser.username = newObject.username;
+                            tmpUser.password = newObject.password;
+                            tmpUser.name = newObject.name;
+                            tmpUser.lastname = newObject.lastname;
+                            tmpUser.job = newObject.job;
+                            tmpUser.workHours = newObject.workHours;
+                            tmpUser.updateDate = DateTime.Now;
+                            tmpUser.updateUserId = newObject.updateUserId;
+                            tmpUser.phone = newObject.phone;
+                            tmpUser.mobile = newObject.mobile;
+                            tmpUser.email = newObject.email;
+                            tmpUser.notes = newObject.notes;
+                            tmpUser.address = newObject.address;
+                            tmpUser.isActive = newObject.isActive;
                         }
                         entity.SaveChanges();
                     }
                 }
-
                 catch
                 {
-                    message = "an error ocurred";
+                    return 0;
                 }
             }
-            return message;
+            return tmpUser.userId;
         }
 
         [HttpPost]
@@ -348,6 +372,142 @@ namespace POS_Server.Controllers
             }
             else
                 return NotFound();
+        }
+
+        [Route("PostUserImage")]
+        public IHttpActionResult PostUserImage()
+        {
+
+            try
+            {
+                var httpRequest = HttpContext.Current.Request;
+
+                foreach (string file in httpRequest.Files)
+                {
+
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+
+                    var postedFile = httpRequest.Files[file];
+                    string imageName = postedFile.FileName;
+                    if (postedFile != null && postedFile.ContentLength > 0)
+                    {
+
+                        int MaxContentLength = 1024 * 1024 * 1; //Size = 1 MB
+
+                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png" };
+                        var ext = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf('.'));
+                        var extension = ext.ToLower();
+
+                        if (!AllowedFileExtensions.Contains(extension))
+                        {
+
+                            var message = string.Format("Please Upload image of type .jpg,.gif,.png.");
+                            return Ok(message);
+                        }
+                        else if (postedFile.ContentLength > MaxContentLength)
+                        {
+
+                            var message = string.Format("Please Upload a file upto 1 mb.");
+
+                            return Ok(message);
+                        }
+                        else
+                        {
+                            var filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\user"), imageName);
+                            //  check if image exist
+                            if (File.Exists(filePath))
+                            {
+                                File.Delete(filePath);
+                            }
+                            //Userimage myfolder name where i want to save my image
+                            postedFile.SaveAs(filePath);
+
+                        }
+                    }
+
+                    var message1 = string.Format("Image Updated Successfully.");
+                    return Ok(message1);
+                }
+                var res = string.Format("Please Upload a image.");
+
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                var res = string.Format("some Message");
+
+                return Ok(res);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetImage")]
+        public HttpResponseMessage GetImage(string imageName)
+        {
+            if (String.IsNullOrEmpty(imageName))
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+
+            string localFilePath;
+
+            localFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\user"), imageName);
+
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Content = new StreamContent(new FileStream(localFilePath, FileMode.Open, FileAccess.Read));
+            response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            response.Content.Headers.ContentDisposition.FileName = imageName;
+
+            return response;
+        }
+        [HttpPost]
+        [Route("UpdateImage")]
+        public int UpdateImage(string userObject)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            userObject = userObject.Replace("\\", string.Empty);
+            userObject = userObject.Trim('"');
+
+            users userObj = JsonConvert.DeserializeObject<users>(userObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+            if (userObj.updateUserId == 0 || userObj.updateUserId == null)
+            {
+                Nullable<int> id = null;
+                userObj.updateUserId = id;
+            }
+            if (userObj.createUserId == 0 || userObj.createUserId == null)
+            {
+                Nullable<int> id = null;
+                userObj.createUserId = id;
+            }
+            if (valid)
+            {
+                try
+                {
+                    users user;
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var userEntity = entity.Set<users>();
+                        user = entity.users.Where(p => p.userId == userObj.userId).First();
+                        user.image = userObj.image;
+                        entity.SaveChanges();
+                    }
+                    return user.userId;
+                }
+
+                catch
+                {
+                    return 0;
+                }
+            }
+            else
+                return 0;
         }
     }
 }

@@ -44,7 +44,9 @@ namespace POS_Server.Controllers
                             createDate=b.createDate,
                             updateDate=b.updateDate,
                             createUserId=b.createUserId,
-                            updateUserId=b.updateUserId
+                            updateUserId=b.updateUserId,
+                            isActive=b.isActive,
+
                         })
                         .ToList();
 
@@ -52,6 +54,7 @@ namespace POS_Server.Controllers
                     {
                         for (int i = 0; i < banksList.Count; i++)
                         {
+                            canDelete = false;
                             if (banksList[i].isActive == 1)
                             {
                                 int bankId = (int)banksList[i].bankId;

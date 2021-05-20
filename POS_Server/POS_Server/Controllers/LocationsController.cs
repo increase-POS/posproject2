@@ -40,12 +40,13 @@ namespace POS_Server.Controllers
                        x =  L.x,
                        y = L.y,
                         z = L.z,
-                        branchId= L.branchId,
+                       // branchId= L.branchId,
                         createDate=L.createDate,
                         updateDate=L.updateDate,
                         createUserId= L.createUserId,
                         updateUserId=L.updateUserId,
                         isActive=L.isActive,
+                        sectionId=L.sectionId,
                     })
                     .ToList();
 
@@ -58,7 +59,7 @@ namespace POS_Server.Controllers
                                 int locationId = (int)locationsList[i].locationId;
                                 var itemsLocationL = entity.itemsLocations.Where(x => x.locationId == locationId).Select(b => new { b.itemsLocId }).FirstOrDefault();
                                 var itemsTransferL = entity.itemsTransfer.Where(x => x.locationIdNew == locationId || x.locationIdOld == locationId).Select(x => new { x.itemsTransId }).FirstOrDefault();
-                                
+                               
                                 if ((itemsLocationL is null) && (itemsTransferL is null) )
                                     canDelete = true;
                             }
@@ -103,12 +104,14 @@ namespace POS_Server.Controllers
                        L.x,
                        L.y,
                        L.z,
-                       L.branchId,
+                     //  L.branchId,
                        L.createDate,
                        L.updateDate,
                        L.createUserId,
                        L.updateUserId,
                        L.isActive,
+                       L.sectionId,
+                       
                    })
                    .FirstOrDefault();
 
@@ -153,6 +156,11 @@ namespace POS_Server.Controllers
                     Nullable<int> id = null;
                     newObject.createUserId = id;
                 }
+                if (newObject.sectionId == 0 || newObject.sectionId == null)
+                {
+                    Nullable<int> id = null;
+                    newObject.sectionId = id;
+                }
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
@@ -173,10 +181,10 @@ namespace POS_Server.Controllers
                             tmpLocation.x = newObject.x;
                             tmpLocation.y = newObject.y;
                             tmpLocation.z = newObject.z;
-                            tmpLocation.branchId = newObject.branchId;
+                           // tmpLocation.branchId = newObject.branchId;
                             tmpLocation.updateDate = DateTime.Now;
                             tmpLocation.updateUserId = newObject.updateUserId;
-
+                            tmpLocation.sectionId = newObject.sectionId;
                             message = "Location Is Updated Successfully";
                         }
                         entity.SaveChanges();
@@ -192,7 +200,7 @@ namespace POS_Server.Controllers
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int locationId, int userId,Boolean final)
+        public bool Delete(int locationId, int userId,Boolean final)
         {
             var re = Request;
             var headers = re.Headers;
@@ -217,12 +225,12 @@ namespace POS_Server.Controllers
                             entity.locations.Remove(locationDelete);
                             entity.SaveChanges();
 
-                            return Ok("Location is Deleted Successfully");
+                            return true;
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        return false;
                     }
                 }
                 else
@@ -238,17 +246,17 @@ namespace POS_Server.Controllers
                             locationDelete.updateDate = DateTime.Now;
                             entity.SaveChanges();
 
-                            return Ok("Location is Deleted Successfully");
+                            return true;
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        return false;
                     }
                 }
             }
             else
-                return NotFound();
+                return false;
         }
     }
 }

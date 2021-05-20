@@ -209,10 +209,16 @@
     <Compile Include="branchesUsers.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="branchStore.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="cashTransfer.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="categories.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="cities.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Classes\Calculate.cs" />
@@ -220,6 +226,8 @@
     <Compile Include="Controllers\BanksController.cs" />
     <Compile Include="Controllers\BranchesController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\cityController.cs" />
+    <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\couponsController.cs" />
     <Compile Include="Controllers\couponsInvoices.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -229,6 +237,7 @@
     <Compile Include="Controllers\itemsPropController.cs" />
     <Compile Include="Controllers\ItemsTransferController.cs" />
     <Compile Include="Controllers\ItemsUnitsController.cs" />
+    <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\PosController.cs" />
     <Compile Include="Controllers\PropertiesController.cs" />
@@ -238,6 +247,9 @@
     <Compile Include="Controllers\UnitsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\OffersController.cs" />
+    <Compile Include="countriesCodes.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="coupons.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
@@ -281,17 +293,20 @@
     <Compile Include="Models\BankModel.cs" />
     <Compile Include="Models\BranchModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
+    <Compile Include="Models\CouponModel.cs" />
     <Compile Include="Models\ItemOfferModel.cs" />
     <Compile Include="Models\ItemSalePurModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\ItemTransferModel.cs" />
     <Compile Include="Models\ItemUnitModel.cs" />
+    <Compile Include="Models\SectionModel.cs" />
     <Compile Include="Models\LocationModel.cs" />
     <Compile Include="Models\OfferModel.cs" />
     <Compile Include="Models\PosModel.cs" />
     <Compile Include="Models\PropertiesItemModel.cs" />
     <Compile Include="Models\PropertyModel.cs" />
     <Compile Include="Models\UnitModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\Validation.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -337,10 +352,16 @@
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sections.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="serials.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="servicesCosts.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="units.cs">

@@ -28,6 +28,23 @@ namespace POS_Server.Models
         public Nullable<int> maxUnitId { get; set; }
         public Boolean canDelete { get; set; }
 
+        // new units and offers an is new
+        //units
+        public Nullable<int> unitId { get; set; }
+        public string unitName { get; set; }
+        public Nullable<decimal> price { get; set; }
+        //offer
+        public Nullable<decimal> desPrice { get; set; }
+        public Nullable<int> isNew { get; set; }
+        public Nullable<int> isOffer { get; set; }
+        public string offerName { get; set; }
+        public Nullable<System.DateTime> startDate { get; set; }
+        public Nullable<System.DateTime> endDate { get; set; }
+        public byte? isActiveOffer { get; set; }
+        public Nullable<int> itemUnitId { get; set; }
+        public Nullable<int> offerId { get; set; }
+        public Nullable<decimal> priceTax { get; set; }
+
 
     }
 }
