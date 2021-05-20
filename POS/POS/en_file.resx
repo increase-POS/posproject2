@@ -786,4 +786,7 @@
   <data name="trErrorPasswordLengthToolTip" xml:space="preserve">
     <value>Password can not be less than 6 characters</value>
   </data>
+  <data name="trEmptyBarcodeToolTip" xml:space="preserve">
+    <value>Barcode can not be empty</value>
+  </data>
 </root>

@@ -192,27 +192,69 @@ namespace POS.View
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {
-            
+            bool codeNotExist = await SectionData.CouponCodeNotExist( tb_code.Text);
+
+            //  MessageBox.Show(codeExist.ToString());
+
+
+           
+            //chk empty code
+            SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trEmptyBarcodeToolTip");
+
+            //validate email
+
+
+            /*
+                        string phoneStr = "";
+                        if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+
+                        bool emailError = false;
+
+                        if (!tb_email.Text.Equals(""))
+                            if (!SectionData.IsValid(tb_email.Text))
+                                emailError = true;
+
+                        if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
+                        {
+                            if (emailError)
+                                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                            //duplicate
+                            else if (iscodeExist)
+                                SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode);
+                            else
+                            {*/
+
+            if (tb_code.Text != "") {
+            }
+            #region
+            coupon.cId = 0;
+
             coupon.code = tb_code.Text;
             coupon.name = tb_name.Text;
             coupon.notes = tb_note.Text;
             coupon.barcode = tb_barcode.Text;
             coupon.isActive = Convert.ToByte(tgl_ActiveCoupon.IsChecked);
             coupon.discountType = cb_typeDiscount.SelectedValue.ToString();
-
+            coupon.startDate = DateTime.Parse(dp_startDate.Text);
+            coupon.endDate = DateTime.Parse(dp_endDate.Text);
             coupon.discountValue = decimal.Parse(tb_discountValue.Text);
             coupon.invMin = decimal.Parse(tb_MinInvoiceValue.Text);
             coupon.invMax = decimal.Parse(tb_MaxInvoiceValue.Text);
-            coupon.quantity =Int32.Parse( tb_quantity.Text);
+            coupon.quantity = Int32.Parse(tb_quantity.Text);
             coupon.notes = tb_note.Text;
+            coupon.createUserId = MainWindow.userID; ;
 
-            
-            
 
             string s = await couponModel.Save(coupon);
-
             if (s.Equals("true")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+            #endregion
+
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
@@ -224,6 +266,11 @@ namespace POS.View
         {
         
            
+        }
+
+        private void Btn_update_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

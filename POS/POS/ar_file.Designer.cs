@@ -646,6 +646,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الباركود لايمكن ان يكون فارغ.
+        /// </summary>
+        internal static string trEmptyBarcodeToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyBarcodeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الفرع لا يمكن أن يكون فارغاً.
         /// </summary>
         internal static string trEmptyBranchToolTip {

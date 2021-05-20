@@ -768,4 +768,7 @@
   <data name="trErrorPasswordLengthToolTip" xml:space="preserve">
     <value>لا يمكن أن تكون كلمة المرور أقل من 6 محارف</value>
   </data>
+  <data name="trEmptyBarcodeToolTip" xml:space="preserve">
+    <value>الباركود لايمكن ان يكون فارغ</value>
+  </data>
 </root>

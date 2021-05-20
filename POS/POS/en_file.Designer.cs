@@ -664,6 +664,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Barcode can not be empty.
+        /// </summary>
+        internal static string trEmptyBarcodeToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyBarcodeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Branch can not be empty.
         /// </summary>
         internal static string trEmptyBranchToolTip {

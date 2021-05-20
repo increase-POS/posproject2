@@ -19,6 +19,7 @@ namespace POS.Classes
         public static Agent agentModel = new Agent();
 
         public static Branch branchModel = new Branch();
+        public static Coupon couponModel = new Coupon();
 
         public static string code;
 
@@ -160,7 +161,23 @@ namespace POS.Classes
             catch { }
             return iscodeExist;
         }
+        public static async Task<bool> CouponCodeNotExist(string randomNum)
+        {
+            iscodeExist = false;
+            try
+            {
+                Coupon coupon = new Coupon();
+                coupon = await couponModel.Existcode(randomNum);
+                if (coupon.code == randomNum)
+                {
+                    return false;
+                }
+                else return true;
 
+            }
+            catch { return true; }
+            //return "no";
+        }
 
         public static bool IsValid(string txt)
         {
