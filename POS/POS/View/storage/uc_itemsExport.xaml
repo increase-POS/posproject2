@@ -307,50 +307,6 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="45"/>
                                 </Grid.RowDefinitions>
-                                <!--<Grid  Width="{Binding ActualWidth, ElementName=dg_categories}" >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid     Width="275" VerticalAlignment="Bottom" Grid.Column="0">
-                                        <TextBox    x:Name="txb_searchcategoriesDatagrid"  TextChanged="Txb_searchcategoriesDatagrid_TextChanged" 
-                        Padding="10,5,5,5" BorderBrush="{x:Null}"
-                          materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
-                 Foreground="#4e4e4e" TextBlock.FontSize="14"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="30"  Width="225"  Margin="5,5,5,0"/>
-                                        <Grid Margin="0,0,0,3"  HorizontalAlignment="Right" VerticalAlignment="Bottom"  Background="White" Width="30" Height="30">
-                                            <Path Fill="#4e4e4e" Stretch="Fill"   Margin="5,2.5,7.5,0"
-                             Grid.Column="0"   HorizontalAlignment="Left"
-                         VerticalAlignment="Center" Width="17.5" Height="17.5"
-                              Data="M111.6,16.4c-17.9-17.9-47-17.9-65,0C31,32.1,28.7,56.7,41.3,75c1,1.4,2,2.7,3.1,4L40.3,83l-4.9-4.9L5.9,108.2
-	C2,112,2,118.3,5.9,122.1s10.1,3.9,13.9,0c0,0,0,0,0,0l29.5-30.1l-3.6-3.6l0,0l-0.9-0.9l4.1-4.1c1.1,0.9,2.2,1.8,3.3,2.6
-	c20.6,14.8,49.3,10,64.1-10.6C129.5,57.4,127.5,32.3,111.6,16.4L111.6,16.4z M101.6,71.4c-12.4,12.4-32.6,12.5-45,0s-12.5-32.6,0-45
-	s32.6-12.5,45,0c6,6,9.4,14.1,9.4,22.5C110.9,57.3,107.6,65.4,101.6,71.4z M92.7,45.5c-7.5,0-13.6-6.1-13.6-13.6
-	c0-1.4,0.2-2.8,0.6-4.2C68,27.3,58.3,36.5,57.9,48.2C57.5,60,66.7,69.7,78.5,70.1c11.7,0.4,21.5-8.8,21.9-20.6c0.1-2-0.2-4-0.7-5.9
-	C97.6,44.8,95.2,45.5,92.7,45.5z"/>
-
-                                        </Grid>
-
-                                    </Grid>
-
-                                    <Grid    Grid.Column="2" HorizontalAlignment="Right"   Margin="5,5,5,0"  >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="45"/>
-                                            <ColumnDefinition Width="auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" 
-                            Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                              FontSize="12"/>
-                                        <ToggleButton Grid.Column="1"  x:Name="tgl_categoryDatagridIsActive"  Checked="Tgl_categoryIsActive_Checked" Unchecked="Tgl_categorIsActive_Unchecked"
-                             VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
-                                          Margin="0" Height="13" Width="28" />
-                                    </Grid>
-                                    <Separator Width="1000" Background="#999999"      Margin="5,0,5,0"
-                                      Grid.ColumnSpan="5" VerticalAlignment="Bottom" />
-                                </Grid>-->
                                 <DataGrid x:Name="dg_items"  Margin="5" Grid.Row="0"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="True" CanUserAddRows="False" 
@@ -579,7 +535,7 @@
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Return Order" x:Name="txt_returnOrder" Foreground="#737373"
+                                    <TextBlock Text="Order" x:Name="txt_order" Foreground="#737373"
                                  FontSize="10"       VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
                                     <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
@@ -595,11 +551,11 @@
                             Margin="10,5,5,5" Text="Order" x:Name="txt_orderToggle" Foreground="#6e6e6e"
                         HorizontalAlignment="Center" VerticalAlignment="Center" 
                               FontSize="12"  />
-                                    <ToggleButton Grid.Column="1"  x:Name="tgl_ReturnOrderDropDown"  Checked="Tgl_ReturnOrderDropDown_Checked" Unchecked="Tgl_ReturnOrderDropDown_Unchecked"
+                                    <ToggleButton Grid.Column="1"  x:Name="tgl_orderDropDown"  Checked="Tgl_orderDropDown_Checked" Unchecked="Tgl_orderDropDown_Unchecked"
                              VerticalAlignment="Center" Padding="10,15,5,5"
                                           Margin="0,0,0,0" Height="13" Width="28" />
                                 </Grid>
-                                <Grid x:Name="grid_returnOrder"  Grid.Row="2" Visibility="Collapsed">
+                                <Grid x:Name="grid_order"  Grid.Row="2" Visibility="Collapsed">
                                     <Grid.RowDefinitions >
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="*"/>
@@ -613,104 +569,18 @@
                         Grid.Column="1"  Height="30" Width="340"  Margin="5,1" />
                                     <!--///////////////////////////////////////////////////////  SUB Order  /////////////////////////-->
                                     <DataGrid  x:Name="dg_order"  Margin="5" Grid.Row="3" Grid.ColumnSpan="2" Height="200"   Background="White"
-                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Collapsed"
+                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn MinWidth="150"  Header="Order Number" Binding="{Binding Path=Id}">
-                                                <DataGridTextColumn.ElementStyle>
-                                                    <Style TargetType="{x:Type TextBlock}">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding isActive}" Value="0">
-                                                                <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </DataGridTextColumn.ElementStyle>
-                                            </DataGridTextColumn>
-
+                                            <DataGridTextColumn MinWidth="150"  Header="Order Number" Binding="{Binding Path=test}"/>
+                                            <DataGridTextColumn MinWidth="150"  Header="Branch/Store" Binding="{Binding Path=test}"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
-
                                 </Grid>
-
                             </Grid>
-                            <Grid Grid.Row="1">
-                                <Grid.RowDefinitions >
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Grid Grid.ColumnSpan="2" >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Draft" x:Name="txt_draft" Foreground="#737373"
-                                 FontSize="10"       VerticalAlignment="Center"
-                                       HorizontalAlignment="Left" Margin="5,5,0,5"/>
-                                    <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
-                                      Grid.Column="1" VerticalAlignment="Center" />
-                                </Grid>
-
-                                <Grid Grid.Row="1"  Grid.Column="0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" x:Name="txt_draftToggle" 
-                            Margin="10,0,5,0" Text="Draft" Foreground="#6e6e6e"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                              FontSize="12"/>
-                                    <ToggleButton Grid.Column="1"  x:Name="tgl_draftDropDown"  Checked="Tgl_draftDropDown_Checked" Unchecked="Tgl_draftDropDown_Unchecked"
-                             VerticalAlignment="Center" Padding="10,15,5,5"
-                                          Margin="0" Height="13" Width="28" />
-                                </Grid>
-                                <Button Grid.Row="1" Grid.Column="1" Padding="0"
-                          Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right"
-                    Margin="5,0"   ToolTip="NewDraft"  >
-                                    <materialDesign:PackIcon Foreground="#178DD2" Kind="PlusBox"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="30" Height="30"/>
-                                </Button>
-                                <!--////////////////////////////////////////////   SUB Draft   ///////////////////////////////////-->
-                                <DataGrid x:Name="dg_draft" Margin="5" Grid.Row="2" Grid.ColumnSpan="2" Height="200"   Background="White"
-                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Collapsed"
-                         IsReadOnly="True" CanUserAddRows="False" 
-                        AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"    >
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn MinWidth="150"  Header="Bill Number" Binding="{Binding Path=Id}">
-                                            <DataGridTextColumn.ElementStyle>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding isActive}" Value="0">
-                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </DataGridTextColumn.ElementStyle>
-                                        </DataGridTextColumn>
-                                        <DataGridTextColumn MinWidth="125"  Header="Total" Binding="{Binding Path=Total}">
-                                            <DataGridTextColumn.ElementStyle>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding isActive}" Value="0">
-                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </DataGridTextColumn.ElementStyle>
-                                        </DataGridTextColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </Grid>
+                           
                             <Grid Grid.Row="2">
                                 <Grid.RowDefinitions >
                                     <RowDefinition Height="auto"/>
@@ -722,28 +592,11 @@
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Order" x:Name="txt_order" Foreground="#737373"
+                                    <TextBlock Text="Order details" x:Name="txt_orderDetails" Foreground="#737373"
                                  FontSize="10"       VerticalAlignment="Center"  Grid.Column="0"
                                        HorizontalAlignment="Left" Margin="6,5,0,5"/>
                                     <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
-                                </Grid>
-                                <Grid Grid.Row="1"  >
-                                    <ComboBox   Grid.Row="1" x:Name="cb_branch"
-                                             Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Store... "  
-                           TextBlock.FontSize="12"   Background="#f8f8f8" 
-                         HorizontalAlignment="Left" VerticalAlignment="Center" 
-                          Height="35" Width="340"  Margin="5,5"
-                           BorderBrush="#737373" BorderThickness="0" />
-                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                        <Path.ToolTip>
-                                            <ToolTip   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                        </Path.ToolTip>
-                                    </Path>
                                 </Grid>
                                 <DataGrid x:Name="dg_billDetails"  Margin="1,5" Grid.Row="2"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
@@ -813,15 +666,14 @@
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
-
                             <Grid Grid.Row="4"  >
                                 <Grid Grid.Row="4"  >
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
-                                    <Button x:Name="btn_save" Grid.Row="0" Grid.Column="0"
+                                    <Button x:Name="btn_export" Grid.Row="0" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,1"   Content="Save" />
+                    Margin="1,1"   Content="Export" />
 
                                 </Grid>
                             </Grid>

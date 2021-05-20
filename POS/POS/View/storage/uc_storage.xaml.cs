@@ -114,6 +114,19 @@ namespace POS.View
             grid_main.Children.Add(uc);
         }
 
-      
+        private void Btn_itemsDestroy_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_statistic_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_inventory_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

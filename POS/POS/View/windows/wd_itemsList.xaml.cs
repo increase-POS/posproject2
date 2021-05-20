@@ -38,7 +38,7 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            allItems = await itemModel.GetAllItems();
+            allItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList();
 
             foreach (var item in selectedItems)
             {
@@ -87,7 +87,7 @@ namespace POS.View.windows
        
         private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
         {
-            selectedItems = await itemModel.GetAllItems();
+            selectedItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList() ;
             allItems.Clear();
             lst_allItems.ItemsSource = allItems;
             lst_selectedItems.ItemsSource = selectedItems;
@@ -128,7 +128,7 @@ namespace POS.View.windows
 
         private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
         {
-            allItems = await itemModel.GetAllItems();
+            allItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList();
             selectedItems.Clear();
             lst_allItems.ItemsSource = allItems;
             lst_allItems.Items.Refresh();

@@ -298,17 +298,7 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn MinWidth="150"  Header="Invoice Number" Binding="{Binding Path=Id}">
-                                                <DataGridTextColumn.ElementStyle>
-                                                    <Style TargetType="{x:Type TextBlock}">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding isActive}" Value="0">
-                                                                <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </DataGridTextColumn.ElementStyle>
-                                            </DataGridTextColumn>
+                                            <DataGridTextColumn MinWidth="150"  Header="Invoice Number" Binding="{Binding Path=Id}"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </Grid>
@@ -349,50 +339,10 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTextColumn   MinWidth="10"   Header="Num"  Binding="{Binding Path=ID}">
-                                            <DataGridTextColumn.ElementStyle>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding isActive}" Value="0">
-                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </DataGridTextColumn.ElementStyle>
-                                        </DataGridTextColumn>
-                                        <DataGridTextColumn MinWidth="90"  Header="Item" Binding="{Binding Path=Product}">
-                                            <DataGridTextColumn.ElementStyle>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding isActive}" Value="0">
-                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </DataGridTextColumn.ElementStyle>
-                                        </DataGridTextColumn>
-                                        <DataGridTextColumn MinWidth="90"  Header="Unit" Binding="{Binding Path=test}">
-                                            <DataGridTextColumn.ElementStyle>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding isActive}" Value="0">
-                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </DataGridTextColumn.ElementStyle>
-                                        </DataGridTextColumn>
-                                        <DataGridTextColumn MinWidth="10"  Header="Amount" Binding="{Binding Path=Count}">
-                                            <DataGridTextColumn.ElementStyle>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding isActive}" Value="0">
-                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </DataGridTextColumn.ElementStyle>
-                                        </DataGridTextColumn>
+                                        <DataGridTextColumn   MinWidth="10"   Header="Num"  Binding="{Binding Path=ID}"/>
+                                        <DataGridTextColumn MinWidth="90"  Header="Item" Binding="{Binding Path=Product}"/>
+                                        <DataGridTextColumn MinWidth="90"  Header="Unit" Binding="{Binding Path=test}"/>
+                                        <DataGridTextColumn MinWidth="10"  Header="Amount" Binding="{Binding Path=Count}"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
@@ -482,12 +432,13 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox x:Name="tb_x"  Text="{Binding x, Mode=OneWay}" Padding="10,5,5,5"   
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="X..."    
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                 BorderBrush="AliceBlue"  
-                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="35" Width="110"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                                    <ComboBox   Grid.Row="1" x:Name="cb_x"
+                                             Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
+                             materialDesign:HintAssist.Hint="x... "  
+                           TextBlock.FontSize="12"   Background="#f8f8f8" 
+                         HorizontalAlignment="Left" VerticalAlignment="Center" 
+                          Height="35" Width="110"  Margin="5,5,0,5"
+                           BorderBrush="#737373" BorderThickness="0" />
 
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorX"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
@@ -502,12 +453,13 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox x:Name="tb_y"  Text="{Binding y, Mode=OneWay}" Padding="10,5,5,5"   
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Y..."    
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                 BorderBrush="AliceBlue"  
-                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="35" Width="110"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                                    <ComboBox   Grid.Row="1" x:Name="cb_Y"
+                                             Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
+                             materialDesign:HintAssist.Hint="Y... "  
+                           TextBlock.FontSize="12"   Background="#f8f8f8" 
+                         HorizontalAlignment="Left" VerticalAlignment="Center" 
+                          Height="35" Width="110"  Margin="5,5,0,5"
+                           BorderBrush="#737373" BorderThickness="0" />
 
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorY"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
@@ -522,12 +474,13 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox x:Name="tb_z"  Text="{Binding z, Mode=OneWay}" Padding="10,5,5,5"   
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Z..."    
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                 BorderBrush="AliceBlue"  
-                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="35" Width="110"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                                    <ComboBox   Grid.Row="1" x:Name="cb_z"
+                                             Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
+                             materialDesign:HintAssist.Hint="Z... "  
+                           TextBlock.FontSize="12"   Background="#f8f8f8" 
+                         HorizontalAlignment="Left" VerticalAlignment="Center" 
+                          Height="35" Width="110"  Margin="5,5,0,5"
+                           BorderBrush="#737373" BorderThickness="0" />
 
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorZ"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 

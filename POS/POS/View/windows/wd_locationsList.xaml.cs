@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POS.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,136 +25,126 @@ namespace POS.View.windows
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+       
+        public bool isActive;
+        Location location = new Location();
+        List<Location> allLocations = new List<Location>();
+        public List<Location> selectedLocations = new List<Location>();
+        Location locationModel = new Location();
+
+        /// <summary>
+        /// Selcted Locations if selectedLocations Have Locations At the beginning
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            allLocations = (await locationModel.Get()).Where(x => x.isActive == 1).ToList();
+
+            foreach (var location in selectedLocations)
+            {
+                allLocations.Remove(location);
+
+            }
+            selectedLocations.AddRange(selectedLocations);
+
+
+            lst_allLocations.ItemsSource = allLocations;
+            lst_selectedLocations.ItemsSource = selectedLocations;
+
+
+
+            lst_allLocations.SelectedValuePath = "locationId";
+            lst_selectedLocations.SelectedValuePath = "locationId";
+            lst_allLocations.DisplayMemberPath = "name";
+            lst_selectedLocations.DisplayMemberPath = "name";
+        }
+
+        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        {
+            isActive = true;
+            this.Close();
+        }
+
+        private void Btn_colse_Click(object sender, RoutedEventArgs e)
+        {
+            isActive = false;
+            this.Close();
+        }
+
+        private void Lst_allLocations_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
+            Btn_selectedLocation_Click(null, null);
+
         }
-        /*
-public bool isActive;
-Item item = new Item();
-List<Item> allItems = new List<Item>();
-public List<Item> selectedItems = new List<Item>();
-Item itemModel = new Item();
-public string txtItemSearch;
 
-/// <summary>
-/// Selcted Items if selectedItems Have Items At the beginning
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="e"></param>
-private async void Window_Loaded(object sender, RoutedEventArgs e)
-{
-   allItems = await itemModel.GetAllItems();
+        private void Lst_selectedLocations_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Btn_unSelectedLocation_Click(null, null);
 
-   foreach (var item in selectedItems)
-   {
-       allItems.Remove(item);
-
-   }
-   selectedItems.AddRange(selectedItems);
+        }
 
 
-   lst_allItems.ItemsSource = allItems;
-   lst_selectedItems.ItemsSource = selectedItems;
+        private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
+        {
+            selectedLocations =( await locationModel.Get() ).Where(x => x.isActive == 1).ToList();
+            allLocations.Clear();
+            lst_allLocations.ItemsSource = allLocations;
+            lst_selectedLocations.ItemsSource = selectedLocations;
+            lst_allLocations.Items.Refresh();
+            lst_selectedLocations.Items.Refresh();
+        }
+        private void Btn_selectedLocation_Click(object sender, RoutedEventArgs e)
+        {
+            location = lst_allLocations.SelectedItem as Location;
+            if (location != null)
+            {
+                allLocations.Remove(location);
+                selectedLocations.Add(location);
+                lst_allLocations.ItemsSource = allLocations;
+                lst_selectedLocations.ItemsSource = selectedLocations;
+                lst_allLocations.Items.Refresh();
+                lst_selectedLocations.Items.Refresh();
+            }
+
+        }
 
 
+        private void Btn_unSelectedLocation_Click(object sender, RoutedEventArgs e)
+        {
 
-   lst_allItems.SelectedValuePath = "itemId";
-   lst_selectedItems.SelectedValuePath = "itemId";
-   lst_allItems.DisplayMemberPath = "name";
-   lst_selectedItems.DisplayMemberPath = "name";
-}
+            location = lst_selectedLocations.SelectedItem as Location;
+            if (location != null)
+            {
+                selectedLocations.Remove(location);
+                allLocations.Add(location);
 
-private void Btn_save_Click(object sender, RoutedEventArgs e)
-{
-   isActive = true;
-   this.Close();
-}
+                lst_allLocations.ItemsSource = allLocations;
+                lst_allLocations.Items.Refresh();
+                lst_selectedLocations.ItemsSource = selectedLocations;
+                lst_selectedLocations.Items.Refresh();
+            }
+        }
 
-private void Btn_colse_Click(object sender, RoutedEventArgs e)
-{
-   isActive = false;
-   this.Close();
-}
+        private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
+        {
+            allLocations = (await locationModel.Get()).Where(x => x.isActive == 1).ToList();
+            selectedLocations.Clear();
+            lst_allLocations.ItemsSource = allLocations;
+            lst_allLocations.Items.Refresh();
+            lst_selectedLocations.ItemsSource = selectedLocations;
+            lst_selectedLocations.Items.Refresh();
 
-private void Lst_allItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-{
+        }
 
-   Btn_selectedItem_Click(null, null);
-
-}
-
-private void Lst_selectedItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-{
-   Btn_unSelectedItem_Click(null, null);
-
-}
-
-
-private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
-{
-   selectedItems = await itemModel.GetAllItems();
-   allItems.Clear();
-   lst_allItems.ItemsSource = allItems;
-   lst_selectedItems.ItemsSource = selectedItems;
-   lst_allItems.Items.Refresh();
-   lst_selectedItems.Items.Refresh();
-}
-private void Btn_selectedItem_Click(object sender, RoutedEventArgs e)
-{
-   item = lst_allItems.SelectedItem as Item;
-   if (item != null)
-   {
-       allItems.Remove(item);
-       selectedItems.Add(item);
-       lst_allItems.ItemsSource = allItems;
-       lst_selectedItems.ItemsSource = selectedItems;
-       lst_allItems.Items.Refresh();
-       lst_selectedItems.Items.Refresh();
-   }
-
-}
-
-
-private void Btn_unSelectedItem_Click(object sender, RoutedEventArgs e)
-{
-
-   item = lst_selectedItems.SelectedItem as Item;
-   if (item != null)
-   {
-       selectedItems.Remove(item);
-       allItems.Add(item);
-
-       lst_allItems.ItemsSource = allItems;
-       lst_allItems.Items.Refresh();
-       lst_selectedItems.ItemsSource = selectedItems;
-       lst_selectedItems.Items.Refresh();
-   }
-}
-
-private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
-{
-   allItems = await itemModel.GetAllItems();
-   selectedItems.Clear();
-   lst_allItems.ItemsSource = allItems;
-   lst_allItems.Items.Refresh();
-   lst_selectedItems.ItemsSource = selectedItems;
-   lst_selectedItems.Items.Refresh();
-
-}
-
-private void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
-{
-
-   //if (items is null)
-   //    await RefrishItems();
-   txtItemSearch = txb_searchitems.Text.ToLower();
-   lst_allItems.ItemsSource = allItems.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-   x.name.ToLower().Contains(txtItemSearch) ||
-   x.details.ToLower().Contains(txtItemSearch)
-   ) && x.isActive == 1);
-}
-*/
+        private void Txb_searchlocations_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            lst_allLocations.ItemsSource = allLocations.Where(x => (x.x.ToLower().Contains(txb_searchX.Text.ToLower()) &&
+            x.y.ToLower().Contains(txb_searchY.Text.ToLower()) &&
+            x.z.ToLower().Contains(txb_searchZ.Text.ToLower())
+            ) && x.isActive == 1);
+        }
     }
 
 }

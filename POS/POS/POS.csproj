@@ -135,26 +135,26 @@
     <Compile Include="View\storage\uc_receiptOfPurchaseInvoice.xaml.cs">
       <DependentUpon>uc_receiptOfPurchaseInvoice.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UC_bank.xaml.cs">
+    <Compile Include="View\sectionData\UC_bank.xaml.cs">
       <DependentUpon>UC_bank.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UC_branch.xaml.cs">
+    <Compile Include="View\sectionData\UC_branch.xaml.cs">
       <DependentUpon>UC_branch.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\catalog\UC_catalog.xaml.cs">
       <DependentUpon>UC_catalog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\uc_categorie.xaml.cs">
+    <Compile Include="View\catalog\uc_categorie.xaml.cs">
       <DependentUpon>uc_categorie.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\sales\uc_coupon.xaml.cs">
       <DependentUpon>uc_coupon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UC_customer.xaml.cs" />
-    <Compile Include="View\uc_home.xaml.cs">
+    <Compile Include="View\sectionData\UC_customer.xaml.cs" />
+    <Compile Include="View\home\uc_home.xaml.cs">
       <DependentUpon>uc_home.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UC_item.xaml.cs">
+    <Compile Include="View\catalog\UC_item.xaml.cs">
       <DependentUpon>UC_item.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\storage\uc_locations.xaml.cs">
@@ -169,10 +169,10 @@
     <Compile Include="View\purchases\uc_payInvoice.xaml.cs">
       <DependentUpon>uc_payInvoice.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UC_porperty.xaml.cs">
+    <Compile Include="View\catalog\UC_porperty.xaml.cs">
       <DependentUpon>UC_porperty.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UC_pos.xaml.cs">
+    <Compile Include="View\sectionData\UC_pos.xaml.cs">
       <DependentUpon>UC_pos.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\purchases\uc_purchases.xaml.cs">
@@ -191,16 +191,16 @@
     <Compile Include="View\storage\uc_storage.xaml.cs">
       <DependentUpon>uc_storage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UC_store.xaml.cs">
+    <Compile Include="View\sectionData\UC_store.xaml.cs">
       <DependentUpon>UC_store.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UC_unit.xaml.cs">
+    <Compile Include="View\catalog\UC_unit.xaml.cs">
       <DependentUpon>UC_unit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UC_vendors.xaml.cs">
+    <Compile Include="View\sectionData\UC_vendors.xaml.cs">
       <DependentUpon>UC_vendors.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UC_users.xaml.cs">
+    <Compile Include="View\sectionData\UC_users.xaml.cs">
       <DependentUpon>UC_users.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\wd_itemsList.xaml.cs">
@@ -276,11 +276,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UC_bank.xaml">
+    <Page Include="View\sectionData\UC_bank.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\UC_branch.xaml">
+    <Page Include="View\sectionData\UC_branch.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -288,7 +288,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\uc_categorie.xaml">
+    <Page Include="View\catalog\uc_categorie.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -296,15 +296,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UC_customer.xaml">
+    <Page Include="View\sectionData\UC_customer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\uc_home.xaml">
+    <Page Include="View\home\uc_home.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UC_item.xaml">
+    <Page Include="View\catalog\UC_item.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -324,11 +324,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\UC_porperty.xaml">
+    <Page Include="View\catalog\UC_porperty.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\UC_pos.xaml">
+    <Page Include="View\sectionData\UC_pos.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -356,19 +356,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UC_store.xaml">
+    <Page Include="View\sectionData\UC_store.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\UC_unit.xaml">
+    <Page Include="View\catalog\UC_unit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\UC_vendors.xaml">
+    <Page Include="View\sectionData\UC_vendors.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\UC_users.xaml">
+    <Page Include="View\sectionData\UC_users.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -76,7 +76,7 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    >
                     <DataGrid.Columns>
-                        <DataGridTextColumn MinWidth="100"  Header="Code" Binding="{Binding Path=name}">
+                        <DataGridTextColumn MinWidth="100"  Header="Code" Binding="{Binding Path=test}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -98,7 +98,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn MinWidth="100"  Header="Value" Binding="{Binding Path=name}">
+                        <DataGridTextColumn MinWidth="100"  Header="Value" Binding="{Binding Path=test}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -109,7 +109,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn MinWidth="125"  Header="Quantity" Binding="{Binding Path=name}">
+                        <DataGridTextColumn MinWidth="125"  Header="Quantity" Binding="{Binding Path=test}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -120,7 +120,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn MinWidth="125"  Header="Remain Quantity" Binding="{Binding Path=name}">
+                        <DataGridTextColumn MinWidth="125"  Header="Remain Quantity" Binding="{Binding Path=test}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>

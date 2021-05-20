@@ -11,9 +11,19 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class Location
+    public class Location
     {
         public int locationId { get; set; }
+        public string name {
+            get
+            {
+                return $"{x} - {y} - {z}";
+            }
+            set
+            {
+                name = value;
+            }
+        }
         public string x { get; set; }
         public string y { get; set; }
         public string z { get; set; }
