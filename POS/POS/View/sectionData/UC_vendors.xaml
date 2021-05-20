@@ -265,11 +265,12 @@
 
                         </Grid>
                         <Button  Grid.Row="1" 
-                               Grid.RowSpan="3"
+                               Grid.RowSpan="3" x:Name="img_vendor"
                              HorizontalAlignment="Center" VerticalAlignment="Center"   
-                            BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="5"  Height="125" Width="125" Grid.Column="1">
+                            BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="5"  Height="125" Width="125" Grid.Column="1" Click="Img_vendor_Click">
                             <Button.Background>
-                                <ImageBrush Stretch="Fill"  x:Name="IMG_customer" ImageSource="/pic/profilePhotos_3.jpg"   />
+                                <ImageBrush Stretch="Fill"  x:Name="IMG_customer"
+                                            ImageSource="/pic/no-image-icon-125x125.png"   />
                             </Button.Background>
                         </Button>
 

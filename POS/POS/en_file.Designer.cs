@@ -682,6 +682,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job can npt be empty.
+        /// </summary>
+        internal static string trEmptyJobToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyJobToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Name can&apos;t be empty!.
         /// </summary>
         internal static string trEmptyLastNameToolTip {
@@ -763,11 +772,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Username is already exist.
+        /// </summary>
+        internal static string trErrorDuplicateUserNameToolTip {
+            get {
+                return ResourceManager.GetString("trErrorDuplicateUserNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email address is not valid.
         /// </summary>
         internal static string trErrorEmailToolTip {
             get {
                 return ResourceManager.GetString("trErrorEmailToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password can not be less than 6 characters.
+        /// </summary>
+        internal static string trErrorPasswordLengthToolTip {
+            get {
+                return ResourceManager.GetString("trErrorPasswordLengthToolTip", resourceCulture);
             }
         }
         

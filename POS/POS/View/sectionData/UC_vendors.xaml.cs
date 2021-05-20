@@ -17,6 +17,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Microsoft.Win32;
+using System.Windows.Resources;
+using System.IO;
 
 namespace POS.View
 {
@@ -43,6 +46,11 @@ namespace POS.View
         Boolean firstchangefax = false;
         CountryCode countrycodes = new CountryCode();
         City cityCodes = new City();
+
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+
+        ImageBrush brush = new ImageBrush();
+
         public UC_vendors()
         {
             InitializeComponent();
@@ -91,7 +99,7 @@ namespace POS.View
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void DG_supplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void DG_supplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
@@ -110,7 +118,7 @@ namespace POS.View
             if (agent != null)
             {
 
-                //mobile
+                #region mobile
                 if ((agent.mobile != null))
                 {
                     string area = agent.mobile;
@@ -140,7 +148,9 @@ namespace POS.View
                     cb_areaMobile.SelectedIndex = -1;
                     tb_mobile.Clear();
                 }
-                //phone
+                #endregion
+
+                #region phone
                 if ((agent.phone != null))
                 {
                     string area = agent.phone;
@@ -181,7 +191,9 @@ namespace POS.View
                     cb_areaPhoneLocal.SelectedIndex = -1;
                     tb_phone.Clear();
                 }
-                //fax
+                #endregion
+
+                #region fax
                 if ((agent.fax != null))
                 {
                     string area = agent.fax;
@@ -219,7 +231,9 @@ namespace POS.View
                     cb_areaFaxLocal.SelectedIndex = -1;
                     tb_fax.Clear();
                 }
-                //end fax
+                #endregion
+
+                #region delete
                 if (agent.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
 
                 else
@@ -227,8 +241,38 @@ namespace POS.View
                     if (agent.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
                     else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
                 }
+                #endregion
+
+                #region img
+                if (agent.image.Equals(""))
+                {
+                    Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+                    StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+
+                    BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                    brush.ImageSource = temp;
+
+                    img_vendor.Background = brush;
+                }
+                else
+                {
+                    byte[] imageBuffer = await agentModel.downloadImage(agent.image); // read this as BLOB from your DB
+
+                    var bitmapImage = new BitmapImage();
+
+                    using (var memoryStream = new MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+
+                    img_vendor.Background = new ImageBrush(bitmapImage);
+                }
+                #endregion
             }
-           
+
         }
 
         private void translate()
@@ -294,6 +338,12 @@ namespace POS.View
             cb_areaMobile.SelectedIndex = 0;
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
+            //clear img
+            Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            brush.ImageSource = temp;
+            img_vendor.Background = brush;
 
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
@@ -336,6 +386,13 @@ namespace POS.View
 
             SectionData.genRandomCode("v");
             tb_code.Text = SectionData.code;
+
+            //default img
+            Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            brush.ImageSource = temp;
+            img_vendor.Background = brush;
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
@@ -402,7 +459,7 @@ namespace POS.View
                     agent.email = tb_email.Text;
                     agent.phone = phoneStr;
                     agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
-                    agent.image = "";
+                    //agent.image = "";
                     agent.type = "v";
                     agent.accType = "";
                     agent.balance = 0;
@@ -415,9 +472,11 @@ namespace POS.View
 
                     string s = await agentModel.saveAgent(agent);
 
-                    if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                    if (!s.Equals("0")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
+                    int agentId = int.Parse(s);
+                    await agentModel.uploadImage(openFileDialog.FileName, agentId);
                 }
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
@@ -490,16 +549,22 @@ namespace POS.View
                     agent.email = tb_email.Text;
                     agent.phone = phoneStr;
                     agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
-                    agent.image = "";
+                    //agent.image = "";
                     agent.updateUserId = MainWindow.userID;
                     agent.notes = tb_notes.Text;
                     agent.fax = faxStr;
                     agent.maxDeserve = maxDeserveValue;
 
                     string s = await agentModel.saveAgent(agent);
+                    
 
-                    if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+
+
+                    if (!s.Equals("0")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                    int agentId = int.Parse(s);
+                    await agentModel.uploadImage(openFileDialog.FileName, agentId);
 
                 }
             }
@@ -821,6 +886,16 @@ namespace POS.View
                 firstchangefax = true;
             }
 
+        }
+
+        private void Img_vendor_Click(object sender, RoutedEventArgs e)
+        {//select image
+            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                img_vendor.Background = brush;
+            }
         }
     }
 

@@ -193,7 +193,7 @@ namespace POS.Classes
 
         public static void validateEmptyComboBox(ComboBox cb, Path p_error, ToolTip tt_error, string tr)
         {
-            if (cb.Text.Equals(""))
+            if (cb.SelectedIndex == -1)
             {
                 p_error.Visibility = Visibility.Visible;
                 tt_error.Content = MainWindow.resourcemanager.GetString(tr);

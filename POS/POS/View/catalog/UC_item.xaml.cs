@@ -154,8 +154,6 @@ namespace POS.View
         {
             // for pagination
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-
-
             catigoriesAndItemsView.ucItem = this;
           
             if (MainWindow.lang.Equals("en"))

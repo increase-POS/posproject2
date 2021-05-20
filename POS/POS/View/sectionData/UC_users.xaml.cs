@@ -1,6 +1,8 @@
-﻿using POS.Classes;
+﻿using Microsoft.Win32;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Reflection;
@@ -17,6 +19,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Resources;
 using System.Windows.Shapes;
 
 namespace POS.View
@@ -47,6 +50,10 @@ namespace POS.View
        
         CountryCode countrycodes = new CountryCode();
         City cityCodes = new City();
+
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+
+        ImageBrush brush = new ImageBrush();
         public UC_users()
         {
             InitializeComponent();
@@ -70,8 +77,6 @@ namespace POS.View
             cb_areaMobile.SelectedValuePath = "countryId";
             cb_areaMobile.DisplayMemberPath = "code";
 
-          
-
         }
 
         async Task<IEnumerable<City>> RefreshCity()
@@ -83,9 +88,41 @@ namespace POS.View
         {
             if (citynum is null)
                 await RefreshCity();
-
-
         }
+
+        private async void fillJobCombo()
+        {
+            if (users == null) users = await userModel.GetUsersAsync();
+            usersQuery = users.Where(s => s.isActive == 1);
+            List<User> userList = new List<User>();
+            userList.AddRange(usersQuery.ToList());
+            for (int i = 0; i < userList.Count(); i++)
+                if (!cb_job.Items.Contains(userList[i].job))
+                    cb_job.Items.Add(userList[i].job);
+        }
+
+        private async Task<bool> chkIfUserNameIsExists(string username )
+        {
+            if (users == null) users = await userModel.GetUsersAsync();
+            List<User> userList = new List<User>();
+            bool b = false;
+            userList.AddRange(users.ToList());
+           
+            for (int i = 0; i < userList.Count(); i++)
+                if ((userList[i].username.Equals(username)) && (userList[i].userId != user.userId))
+                { b = true; break; }
+
+            return b;
+        }
+
+        private bool chkPasswordLength(string password)
+        {
+           bool b = false;
+            if (password.Length < 6)
+                b = true;
+           return b;
+        }
+
         //end areacod
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -93,7 +130,7 @@ namespace POS.View
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void DG_users_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void DG_users_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             p_errorFirstName.Visibility = Visibility.Collapsed;
             p_errorLastName.Visibility = Visibility.Collapsed;
@@ -117,8 +154,8 @@ namespace POS.View
                 {
                     pb_password.Password = tb_password.Text.Trim();
                 }
-                //mobile
-               
+                
+                #region mobile
                 if ((user.mobile != null))
                 {
                     string area = user.mobile;
@@ -148,7 +185,9 @@ namespace POS.View
                     cb_areaMobile.SelectedIndex = -1;
                     tb_mobile.Clear();
                 }
-                //phone
+                #endregion
+
+                #region phone
                 if ((user.phone != null))
                 {
                     string area = user.phone;
@@ -187,6 +226,9 @@ namespace POS.View
                     cb_areaPhoneLocal.SelectedIndex = -1;
                     tb_phone.Clear();
                 }
+                #endregion
+
+                #region delete
                 if (user.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
 
                 else
@@ -194,8 +236,36 @@ namespace POS.View
                     if (user.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
                     else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
                 }
+                #endregion
 
-                //MessageBox.Show("det : "+user.details+" "+"pass : "+ user.password+" "+"phone : "+user.phone);
+                #region img
+                if (string.IsNullOrEmpty(user.image))
+                {
+                    Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+                    StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+
+                    BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                    brush.ImageSource = temp;
+
+                    img_user.Background = brush;
+                }
+                else
+                {
+                    byte[] imageBuffer = await userModel.downloadImage(user.image); // read this as BLOB from your DB
+
+                    var bitmapImage = new BitmapImage();
+
+                    using (var memoryStream = new MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+
+                    img_user.Background = new ImageBrush(bitmapImage);
+                }
+                #endregion
             }
 
         }
@@ -250,7 +320,7 @@ namespace POS.View
 
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
-        {
+        {//clear
             tb_address.Clear();
             tb_password.Clear();
             tb_userName.Clear();
@@ -266,6 +336,12 @@ namespace POS.View
             cb_areaPhoneLocal.SelectedIndex = 0;
             tb_mobile.Clear();
             tb_email.Clear();
+            //clear img
+            Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            brush.ImageSource = temp;
+            img_user.Background = brush;
 
             p_errorFirstName.Visibility = Visibility.Collapsed;
             p_errorLastName.Visibility = Visibility.Collapsed;
@@ -308,17 +384,6 @@ namespace POS.View
             {
                 Tb_search_TextChanged(null, null);
             });
-        }
-
-        private async void fillJobCombo()
-        {
-            if (users == null) users = await userModel.GetUsersAsync();
-            usersQuery = users.Where(s => s.isActive == 1);
-            List<User> userList = new List<User>();
-            userList.AddRange(usersQuery.ToList());
-            for (int i = 0; i < userList.Count(); i++)
-                if (!cb_job.Items.Contains(userList[i].job))
-                    cb_job.Items.Add(userList[i].job);
         }
 
         #region Numeric
@@ -364,6 +429,7 @@ namespace POS.View
 
         }
         #endregion
+
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             user.userId = 0;
@@ -378,10 +444,16 @@ namespace POS.View
             SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
             //chk empty password
             SectionData.validateEmptyTextBox(tb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
+            if (tb_password.Text.Equals(""))
+            { p_showPassword.Visibility = Visibility.Collapsed; pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000"); }
             //validate email
             SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-
-
+            //chk duplicate userName
+            bool duplicateUserName = false;
+            duplicateUserName = await chkIfUserNameIsExists(tb_userName.Text);
+            //chk password length
+            bool passLength = false;
+            passLength = chkPasswordLength(pb_password.Password);
             string phoneStr = "";
             if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
 
@@ -394,10 +466,28 @@ namespace POS.View
             if ((!tb_firstName.Text.Equals("")) && (!tb_lastName.Text.Equals("")) && (!tb_userName.Text.Equals("")) && 
                                                    (!pb_password.Password.Equals("")) && (!cb_job.Text.Equals("")))
             {
-                if (emailError)
-                    SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                if ((emailError) || (duplicateUserName) || (passLength))
+                {
+                    if (emailError)
+                        SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                    if (duplicateUserName)
+                    {
+                        p_errorUserName.Visibility = Visibility.Visible;
+                        tt_errorUserName.Content = MainWindow.resourcemanager.GetString("trErrorDuplicateUserNameToolTip");
+                        tb_userName.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    }
+                    if (passLength)
+                    {
+                        p_errorPassword.Visibility = Visibility.Visible;
+                        p_showPassword.Visibility = Visibility.Collapsed;
+                        tt_errorPassword.Content = MainWindow.resourcemanager.GetString("trErrorPasswordLengthToolTip");
+                        tb_password.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    }
+                }
                 else
                 {
+                    tb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                    pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                     user.username = tb_userName.Text;
                     user.password = pb_password.Password;
                     user.name = tb_firstName.Text;
@@ -417,9 +507,12 @@ namespace POS.View
                     user.role = "";
 
                     string s = await userModel.saveUser(user);
-
-                    if (s.Equals("User Is Added Successfully")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
+                    //if (s.Equals("User Is Added Successfully")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
+                    if (!s.Equals("0")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                    int userId = int.Parse(s);
+                    await userModel.uploadImage(openFileDialog.FileName, userId);
                 }
             }
 
@@ -433,7 +526,9 @@ namespace POS.View
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-         //chk empty name
+            //var user1 = new User();
+
+            //chk empty name
             SectionData.validateEmptyTextBox(tb_firstName, p_errorFirstName, tt_errorFirstName, "trEmptyNameToolTip");
             //chk empty last name
             SectionData.validateEmptyTextBox(tb_lastName, p_errorLastName, tt_errorLastName, "trEmptyLastNameToolTip");
@@ -445,6 +540,9 @@ namespace POS.View
             SectionData.validateEmptyTextBox(tb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
             //validate email
             SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+            //chk duplicate userName
+            bool duplicateUserName = false;
+            duplicateUserName = await chkIfUserNameIsExists(tb_userName.Text);
 
             string phoneStr = "";
             if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
@@ -458,12 +556,24 @@ namespace POS.View
             if ((!tb_firstName.Text.Equals("")) && (!tb_lastName.Text.Equals("")) && (!tb_userName.Text.Equals("")) &&
                                                    (!pb_password.Password.Equals("")) && (!cb_job.Text.Equals("")))
             {
-                if (emailError)
-                    SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                if ((emailError) || (duplicateUserName))
+                {
+                    if (emailError)
+                        SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                    if (duplicateUserName)
+                    {
+                        p_errorUserName.Visibility = Visibility.Visible;
+                        tt_errorUserName.Content = MainWindow.resourcemanager.GetString("trErrorDuplicateUserNameToolTip");
+                        tb_userName.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    }
+                }
                 else
                 {
+                    tb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                    pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                    user.userId = user.userId;
                     user.username = tb_userName.Text;
-                    user.password = pb_password.Password;
+                    //user.password = pb_password.Password;//password update is not valid
                     user.name = tb_firstName.Text;
                     user.lastname = tb_lastName.Text;
                     user.job = cb_job.Text;
@@ -481,10 +591,30 @@ namespace POS.View
                     user.role = "";
 
                     string s = await userModel.saveUser(user);
-
-                    if (s.Equals("User Is Updated Successfully")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate")); Btn_clear_Click(null, null); }
+                    
+                    //if (s.Equals("User Is Updated Successfully")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate")); Btn_clear_Click(null, null); }
+                    if (!s.Equals("0")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));  }
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                    int userId = int.Parse(s);
+                    await userModel.uploadImage(openFileDialog.FileName, userId);
+
+                    byte[] imageBuffer = await userModel.downloadImage(user.image); // read this as BLOB from your DB
+
+                    var bitmapImage = new BitmapImage();
+
+                    using (var memoryStream = new MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+
+                    img_user.Background = new ImageBrush(bitmapImage);
                 }
+               // user = user1;
+               //this.DataContext = user;
             }
 
             users = await userModel.GetUsersAsync();
@@ -709,7 +839,6 @@ namespace POS.View
                     {
                         cb_areaPhoneLocal.Visibility = Visibility.Hidden;
                     }
-
                 }
             }
             else
@@ -717,6 +846,17 @@ namespace POS.View
                 firstchange = true;
             }
         }
+
+        private void Img_user_Click(object sender, RoutedEventArgs e)
+        {//select image
+            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                img_user.Background = brush;
+            }
+        }
+
     }
 }
 

@@ -1029,4 +1029,5 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\sectionData\UC_store.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\UC_unit.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sectionData\UC_vendors.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sectionData\UC_users.baml
-E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsDestroy.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsDestroy.baml

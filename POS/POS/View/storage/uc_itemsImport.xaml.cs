@@ -55,7 +55,6 @@ namespace POS.View.storage
         IEnumerable<Item> items;
         IEnumerable<Item> itemsQuery;
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
-        int? parentCategorieSelctedValue;
         public byte tglCategoryState = 1;
         public byte tglItemState = 1;
         public string txtItemSearch;

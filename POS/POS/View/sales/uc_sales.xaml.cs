@@ -107,5 +107,15 @@ namespace POS.View
             uc_packageOfItems uc = new uc_packageOfItems();
             grid_main.Children.Add(uc);
         }
+
+        private void Btn_pricesView_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_loyaltyCard_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -24,7 +24,9 @@ namespace POS.Classes
         public uc_payInvoice ucPayInvoice;
         public uc_itemsImport ucItemsImport;
         public uc_itemsExport ucItemsExport;
+        public uc_itemsDestroy ucItemsDestroy;
         public uc_receiptOfPurchaseInvoice ucreceiptOfPurchaseInvoice;
+        public uc_packageOfItems ucPackageOfItems;
 
         public Grid gridCatigories;
         public Grid gridCatigorieItems;
@@ -33,7 +35,9 @@ namespace POS.Classes
         private int _idPayInvoice;
         private int _idItemsImport;
         private int _idItemsExport;
+        private int _idItemsDestroy;
         private int _idReceiptOfPurchaseInvoice;
+        private int _idPackageOfItems;
         public int idCatigories
         {
             get => _idCatigories; set
@@ -80,12 +84,30 @@ namespace POS.Classes
                 INotifyPropertyChangedIdCatigorieItems();
             }
         }
+        public int idItemsDestroy
+        {
+            get => _idItemsDestroy; set
+            {
+
+                _idItemsDestroy = value;
+                INotifyPropertyChangedIdCatigorieItems();
+            }
+        }
         public int idReceiptOfPurchaseInvoice
         {
             get => _idReceiptOfPurchaseInvoice; set
             {
 
                 _idReceiptOfPurchaseInvoice = value;
+                INotifyPropertyChangedIdCatigorieItems();
+            }
+        }
+        public int idPackageOfItems
+        {
+            get => _idPackageOfItems; set
+            {
+
+                _idPackageOfItems = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
         }
@@ -115,9 +137,19 @@ namespace POS.Classes
                 ucItemsExport.ChangeCategoryIdEvent(idCatigories);
 
             }
+            else if (ucItemsDestroy != null)
+            {
+                ucItemsDestroy.ChangeCategoryIdEvent(idCatigories);
+
+            }
             else if (ucreceiptOfPurchaseInvoice != null)
             {
                 ucreceiptOfPurchaseInvoice.ChangeCategoryIdEvent(idCatigories);
+
+            }
+            else if (ucPackageOfItems != null)
+            {
+                ucPackageOfItems.ChangeCategoryIdEvent(idCatigories);
 
             }
 
@@ -150,6 +182,11 @@ namespace POS.Classes
             else if (ucreceiptOfPurchaseInvoice != null)
             {
                 ucreceiptOfPurchaseInvoice.ChangeItemIdEvent(idItem);
+
+            }
+            else if (ucPackageOfItems != null)
+            {
+                ucPackageOfItems.ChangeItemIdEvent(idItem);
 
             }
         }

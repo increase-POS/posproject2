@@ -64,6 +64,14 @@ namespace POS.View
 
             btn_itemsExport.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_itemsExport.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+
+            btn_itemsDestroy.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_itemsDestroy.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+
+            btn_inventory.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_inventory.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
         void refreashBachgroundClick(Button btn)
         {
@@ -116,13 +124,13 @@ namespace POS.View
 
         private void Btn_itemsDestroy_Click(object sender, RoutedEventArgs e)
         {
-
+            refreashBachgroundClick(btn_itemsDestroy);
+            grid_main.Children.Clear();
+            uc_itemsDestroy uc = new uc_itemsDestroy();
+            grid_main.Children.Add(uc);
         }
 
-        private void Btn_statistic_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+    
 
         private void Btn_inventory_Click(object sender, RoutedEventArgs e)
         {

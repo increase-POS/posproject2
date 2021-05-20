@@ -664,6 +664,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to العمل لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyJobToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyJobToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الاسم الأخير لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyLastNameToolTip {
@@ -736,11 +745,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to اسم المستخدم محجوز مسبقاً.
+        /// </summary>
+        internal static string trErrorDuplicateUserNameToolTip {
+            get {
+                return ResourceManager.GetString("trErrorDuplicateUserNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to عنوان البريد غير صالح.
         /// </summary>
         internal static string trErrorEmailToolTip {
             get {
                 return ResourceManager.GetString("trErrorEmailToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يمكن أن تكون كلمة المرور أقل من 6 محارف.
+        /// </summary>
+        internal static string trErrorPasswordLengthToolTip {
+            get {
+                return ResourceManager.GetString("trErrorPasswordLengthToolTip", resourceCulture);
             }
         }
         

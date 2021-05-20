@@ -626,7 +626,7 @@
                     <Grid>
                         <!--////////////////////////////////  Item Data ////////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                      x:Name="grid_itemData" Visibility="Collapsed" >
+                      x:Name="grid_itemData" Visibility="Visible" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="40"/>
@@ -1387,7 +1387,7 @@
                         </Grid>
                         <!--////////////////////////////////////    Barcode    ////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                      x:Name="dg_barcode"  Visibility="Visible" >
+                      x:Name="dg_barcode"  Visibility="Collapsed" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="7.5"/>
                                 <RowDefinition Height="auto"/>

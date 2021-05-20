@@ -759,4 +759,13 @@
   <data name="trSearch" xml:space="preserve">
     <value>بحث</value>
   </data>
+  <data name="trEmptyJobToolTip" xml:space="preserve">
+    <value>العمل لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trErrorDuplicateUserNameToolTip" xml:space="preserve">
+    <value>اسم المستخدم محجوز مسبقاً</value>
+  </data>
+  <data name="trErrorPasswordLengthToolTip" xml:space="preserve">
+    <value>لا يمكن أن تكون كلمة المرور أقل من 6 محارف</value>
+  </data>
 </root>
