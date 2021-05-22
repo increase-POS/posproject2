@@ -403,15 +403,15 @@ namespace POS.View.storage
         private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
 
-            categoriesQuery = categories.Where(x => x.isActive == tglCategoryState);
+            itemsQuery = items.Where(x => x.isActive == tglItemState);
 
             if (tb_pageNumberSearch.Text.Equals(""))
             {
                 pageIndex = 1;
             }
-            else if (((categoriesQuery.Count() - 1) / 20) + 1 < int.Parse(tb_pageNumberSearch.Text))
+            else if (((itemsQuery.Count() - 1) / 9) + 1 < int.Parse(tb_pageNumberSearch.Text))
             {
-                pageIndex = ((categoriesQuery.Count() - 1) / 20) + 1;
+                pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
             }
             else
             {

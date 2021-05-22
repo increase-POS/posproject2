@@ -446,6 +446,7 @@ namespace POS.View
             {
                 pageIndex = 1;
             }
+            
             else if (((categoriesQuery.Count() - 1) / 20) + 1 < int.Parse(tb_pageNumberSearch.Text))
             {
                 pageIndex = ((categoriesQuery.Count() - 1) / 20) + 1;
