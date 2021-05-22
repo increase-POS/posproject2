@@ -24,5 +24,39 @@ namespace POS.View.accounts
         {
             InitializeComponent();
         }
+
+        private void Btn_confirm_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            #region Style Date
+            /////////////////////////////////////////////////////////////
+            dp_startSearchDate.Loaded += delegate
+            {
+
+                var textBox1 = (TextBox)dp_startSearchDate.Template.FindName("PART_TextBox", dp_startSearchDate);
+                if (textBox1 != null)
+                {
+                    textBox1.Background = dp_startSearchDate.Background;
+                    textBox1.BorderThickness = dp_startSearchDate.BorderThickness;
+                }
+            };
+            /////////////////////////////////////////////////////////////
+            dp_endSearchDate.Loaded += delegate
+            {
+
+                var textBox1 = (TextBox)dp_endSearchDate.Template.FindName("PART_TextBox", dp_endSearchDate);
+                if (textBox1 != null)
+                {
+                    textBox1.Background = dp_endSearchDate.Background;
+                    textBox1.BorderThickness = dp_endSearchDate.BorderThickness;
+                }
+            };
+            /////////////////////////////////////////////////////////////
+            #endregion
+        }
     }
 }

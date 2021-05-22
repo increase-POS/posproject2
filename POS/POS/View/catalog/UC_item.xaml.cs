@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -78,6 +79,8 @@ namespace POS.View
         List<string> unitNames = new List<string>();
 
         static private int _InternalCounter = 0;
+        static private int _BarcodeLength = 0;
+        static private string _BarCode = "";
         public UC_item()
         {
             InitializeComponent();
@@ -192,14 +195,22 @@ namespace POS.View
             cb_maxUnit.SelectedIndex = 0;
             generateBarcode("",true);
 
-
-            
-
-
+            //barcode reader port connected
+            SerialPort port;
+            foreach (string sp in SerialPort.GetPortNames())
+            {
+                port = new SerialPort(sp)
+                {
+                    Encoding = Encoding.GetEncoding("Windows-1252")
+                };
+              //  port.DataReceived += new
+              //  SerialDataReceivedEventHandler(port.DataReceived);
+                port.Open();
+            }
         }
 
         private void generateBarcode(string barcodeString, Boolean defaultBarcode)
-        {
+       {
             if(barcodeString == "" && defaultBarcode)
             {
                 barcodeString = generateRandomBarcode();
@@ -211,7 +222,6 @@ namespace POS.View
                 }
                 tb_barcode.Text += barcodeString;
             }
-            //tb_barcode.Text += barcodeString;
             // create encoding object
             Zen.Barcode.Code128BarcodeDraw barcode = Zen.Barcode.BarcodeDrawFactory.Code128WithChecksum;
 
@@ -235,7 +245,7 @@ namespace POS.View
 
             var counter = _InternalCounter++ % 100;
 
-            return days.ToString("00000") + seconds.ToString("00000") + counter.ToString("00");
+            return days.ToString("00000") + seconds.ToString("00000") + counter.ToString("000");
         }
         private void Btn_itemData_Click(object sender, RoutedEventArgs e)
         {
@@ -820,7 +830,7 @@ namespace POS.View
                 p_errorSelectUnit.Visibility = Visibility.Collapsed;
                 cb_selectUnit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
-            if (tb_count.Text.Equals(""))
+            if (tb_count.Text.Equals("") && cb_itemType.SelectedIndex != 3)
             {
                 p_errorCount.Visibility = Visibility.Visible;
                 tt_errorCount.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
@@ -831,7 +841,7 @@ namespace POS.View
                 p_errorCount.Visibility = Visibility.Collapsed;
                 tb_count.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
-            if (cb_unit.SelectedIndex == -1)
+            if (cb_unit.SelectedIndex == -1 && cb_itemType.SelectedIndex != 3)
             {
                 p_errorUnit.Visibility = Visibility.Visible;
                 tt_errorUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
@@ -864,7 +874,8 @@ namespace POS.View
                 p_errorBarcode.Visibility = Visibility.Collapsed;
                 tb_barcode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
-            if (cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
+            if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
+                || ( !tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
             {
                 Nullable<int> unitId = null;
                 if (cb_selectUnit.SelectedIndex != -1)
@@ -916,7 +927,7 @@ namespace POS.View
         {
             //check mandatory values
             var bc = new BrushConverter();
-            if (tb_count.Text.Equals(""))
+            if (tb_count.Text.Equals("") && cb_itemType.SelectedIndex != 3)
             {
                 p_errorCount.Visibility = Visibility.Visible;
                 tt_errorCount.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
@@ -927,7 +938,7 @@ namespace POS.View
                 p_errorCount.Visibility = Visibility.Collapsed;
                 tb_count.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
-            if (cb_unit.SelectedIndex == -1)
+            if (cb_unit.SelectedIndex == -1 && cb_itemType.SelectedIndex != 3)
             {
                 p_errorUnit.Visibility = Visibility.Visible;
                 tt_errorUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
@@ -960,7 +971,8 @@ namespace POS.View
                 p_errorBarcode.Visibility = Visibility.Collapsed;
                 tb_barcode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
-            if (cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
+            if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
+                || ( !tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
             {
                 Nullable<int> unitId = null;
                 if (cb_selectUnit.SelectedIndex != -1)
@@ -1026,9 +1038,31 @@ namespace POS.View
             TextBox tb = (TextBox)sender;
             string barCode = "";
             if (e.Key.ToString() == "Return" && !tb.Text.Equals(""))
-                barCode = tb_barcode.Text;
+            {
+                Keyboard.Focus(tb_barcode);
 
+                barCode = tb_barcode.Text;
+                int barcodeLength = tb_barcode.Text.Length;
+                int subStrLength = barcodeLength - _BarcodeLength;
+                barCode = tb_barcode.Text.Substring(0, subStrLength);
+                tb_barcode.Text = barCode;
+            }
             generateBarcode(barCode, false);
+        }
+        private void moveFocusToBarcode(object sender, KeyEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (e.Key.ToString() == "Return")
+            {
+                Keyboard.Focus(tb_barcode);
+                _BarCode = tb.Text;
+               if(_BarCode != "") tb_barcode.Text = _BarCode;               
+            }
+        }
+        private void tb_barcodeGotFocus(object sender, RoutedEventArgs e)
+        {
+            _BarcodeLength = tb_barcode.Text.Length;
+           tb_barcode.Select( 0,0);
         }
         private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -1187,7 +1221,7 @@ namespace POS.View
             else
                 e.Handled = true;
         }
-        private void tb_upperLimit_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void space_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
         }
@@ -1275,6 +1309,7 @@ namespace POS.View
             tb_count.Text = "";
             cb_unit.SelectedIndex = -1;
             tb_price.Text = "";
+            tb_barcode.Clear();
 
             itemUnit = new ItemUnit();
             // set random barcode on image
@@ -1443,6 +1478,7 @@ namespace POS.View
                 grid_serial.Visibility = Visibility.Visible;
                 line_topService.Visibility = Visibility.Collapsed;
                 gd_minMaxUnit.Visibility = Visibility.Visible;
+                gd_countUnit.Visibility = Visibility.Visible;
 
             }
             else if (cb_itemType.SelectedIndex == 3)
@@ -1451,6 +1487,7 @@ namespace POS.View
                 grid_service.Visibility = Visibility.Visible;
                 line_topService.Visibility = Visibility.Collapsed;
                 gd_minMaxUnit.Visibility = Visibility.Collapsed;
+                gd_countUnit.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -1458,6 +1495,7 @@ namespace POS.View
                 grid_service.Visibility = Visibility.Collapsed;
                 line_topService.Visibility = Visibility.Visible;
                 gd_minMaxUnit.Visibility = Visibility.Visible;
+                gd_countUnit.Visibility = Visibility.Visible;
             }
 
             switch (cb_itemType.SelectedIndex)
@@ -1468,9 +1506,6 @@ namespace POS.View
                 case 3: selectedType = "sr"; break;
                 case 4: selectedType = "p"; break;
             }
-
-
-
         }
         #endregion
 
@@ -1805,15 +1840,15 @@ namespace POS.View
         private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
 
-            itemsQuery = items.Where(x => x.isActive == tglItemState);
+            categoriesQuery = categories.Where(x => x.isActive == tglCategoryState);
 
             if (tb_pageNumberSearch.Text.Equals(""))
             {
                 pageIndex = 1;
             }
-            else if (((itemsQuery.Count() - 1) / 9) + 1 < int.Parse(tb_pageNumberSearch.Text))
+            else if (((categoriesQuery.Count() - 1) / 20) + 1 < int.Parse(tb_pageNumberSearch.Text))
             {
-                pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
+                pageIndex = ((categoriesQuery.Count() - 1) / 20) + 1;
             }
             else
             {
@@ -1963,7 +1998,9 @@ namespace POS.View
         {
 
         }
+
         #endregion
 
+       
     }
 }

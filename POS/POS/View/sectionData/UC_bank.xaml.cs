@@ -25,15 +25,13 @@ namespace POS.View
     /// </summary>
     public partial class UC_bank : UserControl
     {
+
         Bank bankModel = new Bank();
-
         Bank bank = new Bank();
-
         IEnumerable<Bank> banksQuery;
         IEnumerable<Bank> banks;
         byte tgl_bankState;
         string searchText = "";
-
         //phone variabels
         IEnumerable<CountryCode> countrynum;
         IEnumerable<City> citynum;
