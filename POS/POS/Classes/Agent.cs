@@ -14,6 +14,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using System.Windows;
 
 namespace POS.Classes
 {
@@ -271,11 +272,12 @@ namespace POS.Classes
 
         }
 
-        public async Task<Boolean> uploadImage(string imagePath, int agentId)
+        //public async Task<Boolean> uploadImage(string imagePath, int agentId)
+        public async Task<Boolean> uploadImage(string imagePath, string imageName , int agentId)
         {
             if (imagePath != "")
             {
-                string imageName = agentId.ToString();
+                //string imageName = agentId.ToString();
                 MultipartFormDataContent form = new MultipartFormDataContent();
                 // get file extension
                 var ext = imagePath.Substring(imagePath.LastIndexOf('.'));

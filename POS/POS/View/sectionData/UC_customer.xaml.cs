@@ -58,6 +58,7 @@ namespace POS.View
 
         BrushConverter bc = new BrushConverter();
 
+        int index = 0; 
         public UC_Customer()
         {
             InitializeComponent();
@@ -143,7 +144,6 @@ namespace POS.View
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
 
-
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
@@ -213,6 +213,7 @@ namespace POS.View
             {
                 agent = dg_customer.SelectedItem as Agent;
                 this.DataContext = agent;
+
             }
             if (agent != null)
             {
@@ -361,37 +362,12 @@ namespace POS.View
                 }
                 #endregion 
 
-                #region img
-                if (agent.image.Equals(""))
-                {
-                    Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
-                    StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+                getImg();
 
-                    BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
-                    brush.ImageSource = temp;
-
-                    img_customer.Background = brush;
-                }
-                else
-                {
-                    byte[] imageBuffer = await agentModel.downloadImage(agent.image); // read this as BLOB from your DB
-
-                    var bitmapImage = new BitmapImage();
-
-                    using (var memoryStream = new MemoryStream(imageBuffer))
-                    {
-                        bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                    }
-
-                    img_customer.Background = new ImageBrush(bitmapImage);
-                }
-                #endregion
+                index = dg_customer.SelectedIndex;
             }
         }
-
+       
         private async void  Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             agent.agentId = 0;
@@ -480,7 +456,8 @@ namespace POS.View
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
                     int agentId = int.Parse(s);
-                    await agentModel.uploadImage(openFileDialog.FileName, agentId);
+                    //await agentModel.uploadImage(openFileDialog.FileName, agentId);
+                    await agentModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m"+agentId.ToString()), agentId);
                 }
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
@@ -490,6 +467,8 @@ namespace POS.View
             dg_customer.ItemsSource = agentsQuery;
 
         }
+
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if(MainWindow.lang.Equals("en"))
@@ -532,13 +511,6 @@ namespace POS.View
 
             SectionData.genRandomCode("c");
             tb_code.Text = SectionData.code;
-
-            //default img
-            Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
-            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
-            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
-            brush.ImageSource = temp;
-            img_customer.Background = brush;
 
         }
 
@@ -627,8 +599,7 @@ namespace POS.View
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
                     int agentId = int.Parse(s);
-                    await agentModel.uploadImage(openFileDialog.FileName, agentId);
-                    //tb_search_TextChanged(null, null);
+                    await agentModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
                 }
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
@@ -636,11 +607,46 @@ namespace POS.View
             agents = await agentModel.GetAgentsAsync("c");
             agentsQuery = agents.Where(s => s.isActive == Convert.ToInt32(tgl_customerIsActive.IsChecked));
             dg_customer.ItemsSource = agentsQuery;
+
+            dg_customer.UnselectAll();
+            Btn_clear_Click(null, null);
+            dg_customer.SelectedIndex = index;
+
+        }
+
+        private async void getImg()
+        {
+            if (string.IsNullOrEmpty(agent.image))
+            {
+                Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+                StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                brush.ImageSource = temp;
+
+                img_customer.Background = brush;
+            }
+            else
+            {
+                byte[] imageBuffer = await agentModel.downloadImage(agent.image); // read this as BLOB from your DB
+
+                var bitmapImage = new BitmapImage();
+
+                using (var memoryStream = new MemoryStream(imageBuffer))
+                {
+                    bitmapImage.BeginInit();
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapImage.StreamSource = memoryStream;
+                    bitmapImage.EndInit();
+                }
+
+                img_customer.Background = new ImageBrush(bitmapImage);
+            }
+
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            MessageBox.Show(agent.canDelete.ToString() + " " + agent.isActive.ToString());
             if ((!agent.canDelete) && (agent.isActive == 0))
                 activate();
             else

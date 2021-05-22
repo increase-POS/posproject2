@@ -54,6 +54,8 @@ namespace POS.View
         OpenFileDialog openFileDialog = new OpenFileDialog();
 
         ImageBrush brush = new ImageBrush();
+
+        int index = 0;
         public UC_users()
         {
             InitializeComponent();
@@ -266,6 +268,9 @@ namespace POS.View
                     img_user.Background = new ImageBrush(bitmapImage);
                 }
                 #endregion
+
+                index = dg_users.SelectedIndex;
+
             }
 
         }
@@ -357,7 +362,7 @@ namespace POS.View
 
         }
         private  void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucUsers.FlowDirection = FlowDirection.LeftToRight; }
             else
@@ -489,7 +494,8 @@ namespace POS.View
                     tb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                     pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                     user.username = tb_userName.Text;
-                    user.password = pb_password.Password;
+                    //user.password = pb_password.Password;
+                    user.password = Md5Encription.MD5Hash("Inc-m" + pb_password.Password);
                     user.name = tb_firstName.Text;
                     user.lastname = tb_lastName.Text;
                     user.job = cb_job.Text;
@@ -510,9 +516,9 @@ namespace POS.View
                     //if (s.Equals("User Is Added Successfully")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
                     if (!s.Equals("0")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-
+                   
                     int userId = int.Parse(s);
-                    await userModel.uploadImage(openFileDialog.FileName, userId);
+                    await userModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
                 }
             }
 
@@ -597,24 +603,10 @@ namespace POS.View
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
                     int userId = int.Parse(s);
-                    await userModel.uploadImage(openFileDialog.FileName, userId);
+                    await userModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
 
-                    byte[] imageBuffer = await userModel.downloadImage(user.image); // read this as BLOB from your DB
-
-                    var bitmapImage = new BitmapImage();
-
-                    using (var memoryStream = new MemoryStream(imageBuffer))
-                    {
-                        bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                    }
-
-                    img_user.Background = new ImageBrush(bitmapImage);
                 }
-               // user = user1;
-               //this.DataContext = user;
+              
             }
 
             users = await userModel.GetUsersAsync();
@@ -623,6 +615,9 @@ namespace POS.View
 
             fillJobCombo();
 
+            dg_users.UnselectAll();
+            Btn_clear_Click(null , null);
+            dg_users.SelectedIndex = index;
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
@@ -635,11 +630,12 @@ namespace POS.View
                 if (user.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                 if ((!user.canDelete) && (user.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
+                //MessageBox.Show(user.userId.ToString()+" "+ MainWindow.userID.Value.ToString() +" "+ user.canDelete.ToString());
+
                 bool b = await userModel.deleteUser(user.userId, MainWindow.userID.Value, user.canDelete);
 
                 if (b) SectionData.popUpResponse("", popupContent);
                 else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-
             }
 
             users = await userModel.GetUsersAsync();

@@ -26,7 +26,7 @@ namespace POS.View
         {
             InitializeComponent();
 
-            BTN_Customers_Click(null, null);
+            Btn_suppliers_Click(null, null);
         }
         void refreashBackground()
         {
@@ -139,7 +139,7 @@ namespace POS.View
 
 
             GRID_Main.Children.Clear();
-            UC_pos uc = new UC_pos();
+            UC_posAccounts uc = new UC_posAccounts();
             GRID_Main.Children.Add(uc);
         }
 

@@ -51,6 +51,8 @@ namespace POS.View
 
         ImageBrush brush = new ImageBrush();
 
+        int index = 0;
+
         public UC_vendors()
         {
             InitializeComponent();
@@ -271,6 +273,8 @@ namespace POS.View
                     img_vendor.Background = new ImageBrush(bitmapImage);
                 }
                 #endregion
+
+                index = dg_vendor.SelectedIndex;
             }
 
         }
@@ -476,7 +480,7 @@ namespace POS.View
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
                     int agentId = int.Parse(s);
-                    await agentModel.uploadImage(openFileDialog.FileName, agentId);
+                    await agentModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
                 }
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
@@ -564,8 +568,7 @@ namespace POS.View
                     else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
                     int agentId = int.Parse(s);
-                    await agentModel.uploadImage(openFileDialog.FileName, agentId);
-
+                    await agentModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
                 }
             }
             else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
@@ -573,6 +576,11 @@ namespace POS.View
             agents = await agentModel.GetAgentsAsync("v");
             agentsQuery = agents.Where(s => s.isActive == Convert.ToInt32(tgl_vendorIsActive.IsChecked));
             dg_vendor.ItemsSource = agentsQuery;
+
+            dg_vendor.UnselectAll();
+            Btn_clear_Click(null, null);
+            dg_vendor.SelectedIndex = index;
+
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)

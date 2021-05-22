@@ -498,66 +498,87 @@
                                     </Grid.ColumnDefinitions>
 
                                     <TextBlock Text="Base Infomation" Foreground="#737373"
-                                 FontSize="10"   x:Name="txt_baseInformation"    VerticalAlignment="Center"
-                                       HorizontalAlignment="Left" Margin="5,5,0,5"/>
+                                               FontSize="10"   x:Name="txt_baseInformation"    
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left" Margin="5,5,0,5"/>
                                     <Separator Background="#999999"   Width="274"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                                     <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
-                          Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click"
-                    Margin="5,1"   ToolTip="clear">
-
+                                            Background="{x:Null}" BorderBrush="{x:Null}" 
+                                            Click="Btn_clear_Click"
+                                            Margin="5,1"   ToolTip="clear">
                                         <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="20" Height="20"/>
+                                                                 HorizontalAlignment="Center" Grid.Column="0"  
+                                                                 VerticalAlignment="Center" 
+                                                                 Width="20" Height="20"/>
                                     </Button>
-
                                 </Grid>
+                                
                                 <Button  Grid.Row="1" 
-                               Grid.RowSpan="3" x:Name="img_calegorieImg"
-                             HorizontalAlignment="Center" VerticalAlignment="Center"   
-                            BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="5"  Height="125" Width="125" Grid.Column="1">
+                                         Grid.RowSpan="3" x:Name="img_calegory"
+                                         HorizontalAlignment="Center" VerticalAlignment="Center"   
+                                         BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="5"  
+                                         Height="125" Width="125" Grid.Column="1" Click="Img_calegorieImg_Click">
                                     <Button.Background>
-                                        <ImageBrush Stretch="Fill"  x:Name="img_category" ImageSource="/pic/EPSON-thermal-printer3.png"   />
+                                        <ImageBrush Stretch="Fill"   
+                                                    ImageSource="/pic/no-image-icon-125x125.png"   />
                                     </Button.Background>
                                 </Button>
+                                
                                 <Grid  Grid.Row="1" >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBox x:Name="tb_categoryCode"  Text="{Binding categoryCode, Mode=OneWay}"
-                                         Grid.Row="1" Padding="10,5,5,5" MaxLength="20" LostFocus="Tb_categoryCode_LostFocus"
+                                             Grid.Row="1" Padding="10,5,5,5" MaxLength="20" LostFocus="Tb_categoryCode_LostFocus"
                                              TextChanged="Tb_categoryCode_TextChanged"
                                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Code..."   
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue" 
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="195"  Margin="10,5" >
+                                             BorderThickness="1"  materialDesign:HintAssist.Hint="Code..."   
+                                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                             BorderBrush="AliceBlue" 
+                                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                             Height="35" Width="195"  Margin="10,5" >
+                                        <TextBox.ToolTip>
+                                            <ToolTip x:Name="tt_code" Content="Code"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                                        </TextBox.ToolTip>
                                     </TextBox>
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorCode"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                          HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                          VerticalAlignment="Center" Width="15"  Height="15"
+                                          Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                         <Path.ToolTip>
                                             <ToolTip x:Name="tt_errorCode" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                         </Path.ToolTip>
                                     </Path>
                                 </Grid>
+                                
                                 <Grid  Grid.Row="2" >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5"
-                                 Grid.Row="2" BorderThickness="1"  materialDesign:HintAssist.Hint="Name..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="#f8f8f8" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                             Grid.Row="2" BorderThickness="1"  materialDesign:HintAssist.Hint="Name..."  
+                                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                             BorderBrush="#f8f8f8" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                              LostFocus="Tb_name_LostFocus" TextChanged="Tb_name_TextChanged"
-                         HorizontalAlignment="Left" VerticalAlignment="Center" 
-                         Height="35" Width="195"  Margin="10,5" />
+                                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                             Height="35" Width="195"  Margin="10,5" >
+                                        <TextBox.ToolTip>
+                                            <ToolTip x:Name="tt_name" Content="Name"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                                        </TextBox.ToolTip>
+                                    </TextBox>
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                          HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                          VerticalAlignment="Center" Width="15"  Height="15"
+                                          Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                         <Path.ToolTip>
                                             <ToolTip x:Name="tt_errorName" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                         </Path.ToolTip>
@@ -569,24 +590,29 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBox x:Name="tb_details"  Text="{Binding details, Mode=OneWay}"  Padding="10,5,5,5"
-                                 Grid.Row="3" BorderThickness="1"   
-                                 materialDesign:HintAssist.Hint="Details..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="#f8f8f8" MaxLength="100" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="195"  Margin="10,5" />
+                                             Grid.Row="3" BorderThickness="1"   
+                                             materialDesign:HintAssist.Hint="Details..."  
+                                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                             BorderBrush="#f8f8f8" MaxLength="100" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                             Height="35" Width="195"  Margin="10,5" >
+                                        <TextBox.ToolTip>
+                                            <ToolTip x:Name="tt_details" Content="Details"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                                        </TextBox.ToolTip>
+                                    </TextBox>
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                          HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                          VerticalAlignment="Center" Width="15"  Height="15"
+                                          Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                         <Path.ToolTip>
                                             <ToolTip x:Name="tt_errorDetails" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                         </Path.ToolTip>
                                     </Path>
                                 </Grid>
-
-
-
 
                             </Grid>
                             <Grid Grid.Row="2" >
@@ -616,16 +642,25 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <ComboBox x:Name="cb_parentCategorie"  Grid.Row="1"
-                                  Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Select Parent category "  
-                           TextBlock.FontSize="12"   Background="#f8f8f8"  SelectionChanged="Cb_parentCategorie_SelectionChanged"
-                         HorizontalAlignment="Left" VerticalAlignment="Center" 
-                         Grid.Column="1" Height="35" Width="340"  Margin="10,5"
-                           BorderBrush="#737373" BorderThickness="0"/>
+                                              Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
+                                              materialDesign:HintAssist.Hint="Select Parent category "  
+                                              TextBlock.FontSize="12"   Background="#f8f8f8"  
+                                              SelectionChanged="Cb_parentCategorie_SelectionChanged"
+                                              HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                              Grid.Column="1" Height="35" Width="340"  Margin="10,5"
+                                              BorderBrush="#737373" BorderThickness="0">
+                                        <ComboBox.ToolTip>
+                                            <ToolTip x:Name="tt_parentCategory" Content="Parent Category"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                                        </ComboBox.ToolTip>
+                                    </ComboBox>
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52
+                                          HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                          VerticalAlignment="Center" Width="15"  Height="15"
+                                          Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52
                                           6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 
                                           17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8
                                           C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12
@@ -646,17 +681,24 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBox x:Name="tb_taxes"  Text="{Binding taxes, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5" MaxLength="15" PreviewTextInput="NumberValidationTextBox"
-                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Taxes..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="#f8f8f8"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="35" Width="340"  Margin="10,5" />
+                                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                             BorderThickness="1"  materialDesign:HintAssist.Hint="Taxes..."  
+                                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                             BorderBrush="#f8f8f8"
+                                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                             Grid.Column="1"  Height="35" Width="340"  Margin="10,5" >
+                                        <TextBox.ToolTip>
+                                            <ToolTip x:Name="tt_taxes" Content="Taxes"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                                        </TextBox.ToolTip>
+                                    </TextBox>
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                          HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                          VerticalAlignment="Center" Width="15"  Height="15"
+                                          Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                         <Path.ToolTip>
                                             <ToolTip x:Name="tt_errorTaxes" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                         </Path.ToolTip>

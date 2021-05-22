@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using POS.View;
+using POS.View.accounts;
 
 namespace POS
 {
@@ -246,6 +247,10 @@ namespace POS
             colorTextRefreash(txt_accounting);
             FN_pathVisible(path_openAccount);
             fn_ColorIconRefreash(path_iconAccounts);
+
+            GRID_Main.Children.Clear();
+            uc_accounts uc = new uc_accounts();
+            GRID_Main.Children.Add(uc);
         }
 
         private void BTN_reports_Click(object sender, RoutedEventArgs e)

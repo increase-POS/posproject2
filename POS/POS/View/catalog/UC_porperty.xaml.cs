@@ -329,5 +329,10 @@ namespace POS.View
             var properties = await propertyModel.getProperty();
             dg_property.ItemsSource = properties;
         }
+
+        private void Btn_updateValue_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
  } 

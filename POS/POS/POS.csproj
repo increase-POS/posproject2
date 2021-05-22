@@ -94,6 +94,7 @@
     <Compile Include="Classes\ItemsProp.cs" />
     <Compile Include="Classes\ItemUnit.cs" />
     <Compile Include="Classes\Location.cs" />
+    <Compile Include="Classes\Md5Encription.cs" />
     <Compile Include="Classes\Pagination.cs" />
     <Compile Include="Classes\Pos.cs" />
     <Compile Include="Classes\PropertiesItems.cs" />
@@ -123,6 +124,12 @@
       <DependentUpon>UC_squareCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\ValidatorExtensions.cs" />
+    <Compile Include="View\accounts\uc_accounts.xaml.cs">
+      <DependentUpon>uc_accounts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\accounts\uc_posAccounts.xaml.cs">
+      <DependentUpon>uc_posAccounts.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\storage\uc_itemsDestroy.xaml.cs">
       <DependentUpon>uc_itemsDestroy.xaml</DependentUpon>
     </Compile>
@@ -263,6 +270,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\accounts\uc_accounts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\accounts\uc_posAccounts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\storage\uc_itemsDestroy.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

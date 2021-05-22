@@ -168,11 +168,12 @@ namespace POS.Classes
             }
         }
 
-        public async Task<Boolean> uploadImage(string imagePath, int userId)
+        public async Task<Boolean> uploadImage(string imagePath, string imageName, int userId)
+        //public async Task<Boolean> uploadImage(string imagePath, int userId)
         {
             if (imagePath != "")
             {
-                string imageName = userId.ToString();
+                //string imageName = userId.ToString();
                 MultipartFormDataContent form = new MultipartFormDataContent();
                 // get file extension
                 var ext = imagePath.Substring(imagePath.LastIndexOf('.'));

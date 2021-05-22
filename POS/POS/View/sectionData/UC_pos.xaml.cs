@@ -23,7 +23,7 @@ namespace POS.View
     /// <summary>
     /// Interaction logic for UC_pos.xaml
     /// </summary>
-    public partial class UC_pos : UserControl
+    public partial class UC_posAccounts : UserControl
     {
         Pos posModel = new Pos();
 
@@ -39,7 +39,7 @@ namespace POS.View
         string searchText = "";
 
         BrushConverter bc = new BrushConverter();
-        public UC_pos() 
+        public UC_posAccounts() 
          {
             InitializeComponent();
         }

@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using Microsoft.Win32;
+using POS.Classes;
 using POS.controlTemplate;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,11 @@ namespace POS.View
         int? parentCategorieSelctedValue;
         public byte tglCategoryState;
         public string txtCategorySearch;
+
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+
+        ImageBrush brush = new ImageBrush();
+
         public uc_categorie()
         {
             InitializeComponent();
@@ -85,7 +91,11 @@ namespace POS.View
                 grid_ucCategorie.FlowDirection = FlowDirection.RightToLeft;
             }
             translate();
+
+            Keyboard.Focus(tb_categoryCode);
+
             fillCategories();
+
             btns = new Button[]  { btn_firstPage,btn_prevPage ,btn_activePage,btn_nextPage,btn_lastPage };
         }
         private void Cb_parentCategorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -97,9 +107,6 @@ namespace POS.View
 
         }
       
-       
-      
-     
         #region
 
        
@@ -180,7 +187,7 @@ namespace POS.View
         #endregion
         #region Add - Update - Delete _ Clear
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
-        {
+        {//add
             decimal tax;
             if (string.IsNullOrEmpty(tb_taxes.Text))
                 tax = 0;
@@ -210,8 +217,7 @@ namespace POS.View
             Txb_searchcategories_TextChanged(null, null);
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
-        {
-            //update
+        {//update
             decimal tax;
             if (string.IsNullOrEmpty(tb_taxes.Text))
                 tax = 0;
@@ -242,7 +248,7 @@ namespace POS.View
             Txb_searchcategories_TextChanged(null, null);
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
-        {
+        {//clear
             // p_errorName.Visibility = Visibility.Collapsed;
             // var bc = new BrushConverter();
             //  tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
@@ -253,8 +259,7 @@ namespace POS.View
             cb_parentCategorie.Text = "";
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
-        {
-            //delete
+        {//delete
             await categoryModel.deleteCategory(category.categoryId, MainWindow.userID);
 
             //var categories = await categoryModel.GetAllCategories();
@@ -446,7 +451,6 @@ namespace POS.View
             {
                 pageIndex = 1;
             }
-            
             else if (((categoriesQuery.Count() - 1) / 20) + 1 < int.Parse(tb_pageNumberSearch.Text))
             {
                 pageIndex = ((categoriesQuery.Count() - 1) / 20) + 1;
@@ -669,7 +673,17 @@ namespace POS.View
         }
 
         #endregion
+
         #endregion
 
+        private void Img_calegorieImg_Click(object sender, RoutedEventArgs e)
+        {//select image
+            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                img_calegory.Background = brush;
+            }
+        }
     }
 }
