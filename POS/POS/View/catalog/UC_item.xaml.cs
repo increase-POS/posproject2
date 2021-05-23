@@ -1478,7 +1478,7 @@ namespace POS.View
                 grid_serial.Visibility = Visibility.Visible;
                 line_topService.Visibility = Visibility.Collapsed;
                 gd_minMaxUnit.Visibility = Visibility.Visible;
-                gd_countUnit.Visibility = Visibility.Visible;
+                //gd_countUnit.Visibility = Visibility.Visible;
 
             }
             else if (cb_itemType.SelectedIndex == 3)
@@ -1487,7 +1487,7 @@ namespace POS.View
                 grid_service.Visibility = Visibility.Visible;
                 line_topService.Visibility = Visibility.Collapsed;
                 gd_minMaxUnit.Visibility = Visibility.Collapsed;
-                gd_countUnit.Visibility = Visibility.Collapsed;
+                //gd_countUnit.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -1495,7 +1495,7 @@ namespace POS.View
                 grid_service.Visibility = Visibility.Collapsed;
                 line_topService.Visibility = Visibility.Visible;
                 gd_minMaxUnit.Visibility = Visibility.Visible;
-                gd_countUnit.Visibility = Visibility.Visible;
+                //gd_countUnit.Visibility = Visibility.Visible;
             }
 
             switch (cb_itemType.SelectedIndex)
@@ -1999,8 +1999,9 @@ namespace POS.View
 
         }
 
+
         #endregion
 
-       
+        
     }
 }

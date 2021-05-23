@@ -30,18 +30,14 @@ namespace POS.View.accounts
         void refreashBackground()
         {
 
-            btn_customers.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_customers.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-
-            btn_suppliers.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_suppliers.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-
-            btn_users.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_users.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+       
 
            
             btn_pos.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_pos.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_payments.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_payments.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
             btn_banks.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_banks.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -54,8 +50,7 @@ namespace POS.View.accounts
             btn_managerialExpenses.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_managerialExpenses.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_expenditure.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_expenditure.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+          
 
             btn_statistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_statistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -122,13 +117,11 @@ namespace POS.View.accounts
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_ucAccounts.FlowDirection = FlowDirection.LeftToRight;
-                sv_menu.FlowDirection = FlowDirection.RightToLeft;
 
             }
             else
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucAccounts.FlowDirection = FlowDirection.RightToLeft;
-                sv_menu.FlowDirection = FlowDirection.LeftToRight;
 
             }
             translate();
@@ -136,11 +129,14 @@ namespace POS.View.accounts
 
         private void translate()
         {
-            btn_customers.Content = MainWindow.resourcemanager.GetString("trCustomers");
-            btn_suppliers.Content = MainWindow.resourcemanager.GetString("trSuppliers");
-            btn_users.Content = MainWindow.resourcemanager.GetString("trUsers");
+          
             btn_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
             btn_banks.Content = MainWindow.resourcemanager.GetString("trBanks");
+        }
+
+        private void Btn_payments_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

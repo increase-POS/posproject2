@@ -58,5 +58,40 @@ namespace POS.View.accounts
             /////////////////////////////////////////////////////////////
             #endregion
         }
+
+        private void Dg_posAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void Btn_add_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_update_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
