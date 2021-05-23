@@ -638,12 +638,18 @@ namespace POS.View
 
         private void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
-
+            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+            wd_invoice w = new wd_invoice();
+            w.ShowDialog();
+            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
         }
 
         private void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
         {
-
+            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+            wd_invoice w = new wd_invoice();
+            w.ShowDialog();
+            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
         }
     }
 }

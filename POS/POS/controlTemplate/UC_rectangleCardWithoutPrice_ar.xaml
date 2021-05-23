@@ -65,7 +65,7 @@
               FontSize="14"/>
                     </Grid>-->
                 </Grid>
-                <Image Grid.Column="0"  Source="{Binding rectangleCardWithoutPriceImageSource_ar}" Margin="5,5,0,5" />
+                <Image FlowDirection="LeftToRight"   Grid.Column="0"  Source="{Binding rectangleCardWithoutPriceImageSource_ar}" Margin="5,5,0,5" />
                 <!--<Image Grid.Column="0"  Source="/pic/EPSON-thermal-printer4.png" Margin="5,5,0,5" />-->
                 <Path Fill="#FFA926" Stretch="Fill" x:Name="path_new" Visibility="{Binding rectangleCardWithoutPriceNew_ar}"
                           Width="18" Height="18" VerticalAlignment="Bottom" HorizontalAlignment="Left"

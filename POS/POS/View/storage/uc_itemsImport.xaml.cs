@@ -36,8 +36,6 @@ namespace POS.View.storage
             items.Add(new Bill() { Id = 336551515, Total = 150 });
             items.Add(new Bill() { Id = 336555162, Total = 840 });
             items.Add(new Bill() { Id = 336558897, Total = 325 });
-            dg_draft.ItemsSource = items;
-            dg_order.ItemsSource = items;
             billDetails = LoadCollectionData();
             dg_billDetails.ItemsSource = billDetails;
             #endregion
@@ -68,8 +66,6 @@ namespace POS.View.storage
         private void translate()
         {
             ////////////////////////////////----Order----/////////////////////////////////
-            txt_draft.Text = MainWindow.resourcemanager.GetString("trDraft");
-            txt_draftToggle.Text = MainWindow.resourcemanager.GetString("trDraft");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trBranchHint"));
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
@@ -195,23 +191,7 @@ namespace POS.View.storage
         }
         #endregion
 
-        private void Tgl_draftDropDown_Checked(object sender, RoutedEventArgs e)
-        {
-            dg_draft.Visibility = Visibility.Visible;
-        }
-        private void Tgl_draftDropDown_Unchecked(object sender, RoutedEventArgs e)
-        {
-            dg_draft.Visibility = Visibility.Collapsed;
-        }
-        private void Tgl_ReturnOrderDropDown_Checked(object sender, RoutedEventArgs e)
-        {
-            grid_returnOrder.Visibility = Visibility.Visible;
-        }
-        private void Tgl_ReturnOrderDropDown_Unchecked(object sender, RoutedEventArgs e)
-        {
-            grid_returnOrder.Visibility = Visibility.Collapsed;
-        }
-
+      
         #region Categor and Item
         #region Refrish Y
         /// <summary>
@@ -575,6 +555,20 @@ namespace POS.View.storage
 
         }
         #endregion
-       
+
+        private void Btn_newDraft_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_draft_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -27,7 +27,9 @@ namespace POS.View.accounts
             InitializeComponent();
             Btn_pos_Click(null, null);
         }
-        void refreashBackground()
+
+     
+            void refreashBackground()
         {
 
        
@@ -42,13 +44,6 @@ namespace POS.View.accounts
             btn_banks.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_banks.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-
-            btn_bonds.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_bonds.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-
-
-            btn_managerialExpenses.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_managerialExpenses.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
           
 
@@ -71,49 +66,36 @@ namespace POS.View.accounts
             uc_posAccounts uc = new uc_posAccounts();
             grid_main.Children.Add(uc);
         }
-
-        private void Btn_suppliers_Click(object sender, RoutedEventArgs e)
+        private void Btn_payments_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void Btn_customers_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Btn_users_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void Btn_banks_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void Btn_bonds_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Btn_expenditure_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Btn_managerialExpenses_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
+       
+     
         private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {
 
         }
-
+        private void HandleKeyPress(object sender, KeyEventArgs e)
+        {
+            MessageBox.Show(e.Key.ToString());
+        }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+
+            var window = Window.GetWindow(this);
+            window.KeyDown += HandleKeyPress;
+
+
+
+
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_ucAccounts.FlowDirection = FlowDirection.LeftToRight;
@@ -134,9 +116,6 @@ namespace POS.View.accounts
             btn_banks.Content = MainWindow.resourcemanager.GetString("trBanks");
         }
 
-        private void Btn_payments_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
     }
 }

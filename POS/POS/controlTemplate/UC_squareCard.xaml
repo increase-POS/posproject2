@@ -30,7 +30,7 @@
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             <Grid  Grid.Row="0" >
-                <Border 
+                <Border FlowDirection="LeftToRight" 
                     CornerRadius="10" BorderBrush="{Binding squareCardBorderBrush }" BorderThickness="1.3"
                     Background="White">
                     <Image Source="{Binding squareCardImageSource}" Margin="5" x:Name="BImage"/>

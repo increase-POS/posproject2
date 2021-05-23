@@ -6,9 +6,10 @@
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="675" d:DesignWidth="1150"
-             Loaded="UserControl_Loaded">
-    <Grid x:Name="grid_ucItem">
+             d:DesignHeight="675" d:DesignWidth="1150" 
+             Loaded="UserControl_Loaded" 
+             >
+    <Grid x:Name="grid_ucItem" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="380"/>
@@ -626,7 +627,7 @@
                     <Grid>
                         <!--////////////////////////////////  Item Data ////////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                      x:Name="grid_itemData" Visibility="Visible" >
+                      x:Name="grid_itemData" Visibility="Collapsed" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="40"/>
@@ -770,6 +771,9 @@
                                     <Grid  Grid.Row="1">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
+                                            <!--<ColumnDefinition Width="55"/>
+                                            <ColumnDefinition Width="30"/>-->
+
                                         </Grid.ColumnDefinitions>
                                         <ComboBox x:Name="cb_parentItem"  Grid.Row="2"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
@@ -780,6 +784,20 @@
                            BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_parentItem_SelectionChanged">
 
                                         </ComboBox>
+                                        <!--<TextBlock Text="Is Defult" Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                   Margin="5"/>
+                                        <CheckBox Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,5,5"/>-->
+
+
+                                        <!--<WrapPanel Grid.Column="1"  Height="35" Width="50" Background="#f8f8f8" HorizontalAlignment="Left"  VerticalAlignment="Center"
+                                   Margin="5,5,0,5" >
+
+                                            <TextBlock  Text ="Is Default" x:Name="tb_isDefaultSale0s"  Foreground="#4E4E4E" VerticalAlignment="Center"
+                                        Margin="0,5" Padding="10,5,5,5"/>
+                                            <CheckBox  x:Name="tbtn_isDefaultSale1s" VerticalAlignment="Center" Padding="10,15,5,5"
+                                          Margin="5,5,0,0" Height="14" Width="28"  />
+
+                                        </WrapPanel>-->
                                         <Path Fill="#E81123" x:Name="p_errorParentItem" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -861,7 +879,7 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBox x:Name="tb_taxes"  Text="{Binding taxes, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5" MaxLength="20" 
-                                             PreviewTextInput="DecimalValidationTextBox"  
+                                             PreviewTextInput="DecimalValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
                                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"   
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Taxes..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
@@ -905,7 +923,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBox x:Name="tb_min" MaxLength="20" PreviewTextInput="NumberValidationTextBox"
-                                                 
+                                                 PreviewKeyDown="space_PreviewKeyDown"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" LostFocus="Tb_min_LostFocus"
                                                  Text="{Binding min, Mode=OneWay}" 
                                  Grid.Row="1" Padding="10,5,5,5"
@@ -952,7 +970,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBox x:Name="tb_max"  MaxLength="20" PreviewTextInput="NumberValidationTextBox"
-                                                 
+                                                PreviewKeyDown="space_PreviewKeyDown"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" LostFocus="Tb_max_LostFocus"
                                                  Text="{Binding max, Mode=OneWay}" 
                                  Grid.Row="2" Padding="10,5,5,5"
@@ -1370,7 +1388,7 @@
                         </Grid>
                         <!--////////////////////////////////////    Barcode    ////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                      x:Name="dg_barcode"  Visibility="Collapsed" >
+                      x:Name="dg_barcode"  Visibility="Visible" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="7.5"/>
                                 <RowDefinition Height="auto"/>
@@ -1391,16 +1409,17 @@
                             <Grid Grid.ColumnSpan="2" Grid.Row="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="114*"/>
+                                    <ColumnDefinition Width="193*"/>
                                     <ColumnDefinition Width="auto"/>
 
                                 </Grid.ColumnDefinitions>
                                 <TextBlock x:Name="txt_unit" Text="Unit" Foreground="#737373"
                                  FontSize="10"       VerticalAlignment="Center"
-                                       HorizontalAlignment="Left" Margin="5,5,0,5"/>
-                                <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
-                                      Grid.Column="1" VerticalAlignment="Center" />
-                                <Button x:Name="btn_clearProperties" Grid.Row="1" Grid.Column="2" Padding="0"
+                                       HorizontalAlignment="Left" Margin="5,10,0,10" Grid.ColumnSpan="2"/>
+                                <Separator Background="#999999"   Width="320"  Margin="5,16,12,16"
+                                      Grid.Column="1" VerticalAlignment="Center" Grid.ColumnSpan="3" />
+                                <Button x:Name="btn_clearProperties" Grid.Column="3" Padding="0"
                           Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_unitClear"
                     Margin="5,1"   ToolTip="clear">
 
@@ -1476,26 +1495,26 @@
                             <Separator Grid.Row="3"
                             Background="#999999"   Width="360"  Margin="10,0,10,0"
                          VerticalAlignment="Center" Height="20"/>
-                            <Grid Grid.Row="4" Grid.RowSpan="3" Visibility="Visible">
+                            <Grid x:Name="gd_countUnit" Grid.Row="4" Grid.RowSpan="3" Visibility="Visible" >
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Grid  Grid.Row="0" >
+                                <Grid  Grid.Row="0"  >
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="7*"/>
+                                        <ColumnDefinition Width="17*"/>
                                     </Grid.ColumnDefinitions>
-                                    <ComboBox x:Name="cb_selectUnit" Grid.Row="1"
+                                    <ComboBox x:Name="cb_selectUnit"
                                              Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
                              materialDesign:HintAssist.Hint="Select Unit... "  
                            TextBlock.FontSize="12"   Background="#f8f8f8" 
                          HorizontalAlignment="Left" VerticalAlignment="Center" 
-                          Height="35" Width="350"  Margin="5,5"
-                           BorderBrush="#737373" BorderThickness="0" >
-                                    </ComboBox>
-                                    <Path x:Name="p_errorSelectUnit" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                          Height="35" Width="350"  Margin="5,5,0,5"
+                           BorderBrush="#737373" BorderThickness="0" Grid.ColumnSpan="2" />
+                                    <Path x:Name="p_errorSelectUnit" Fill="#E81123" Stretch="Fill" Margin="0,15,15,15"
+                              HorizontalAlignment="Right" Grid.Column="1"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                         <Path.ToolTip>
@@ -1544,7 +1563,7 @@
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Count..."   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" PreviewTextInput="DecimalValidationTextBox"
-                                             
+                                            KeyDown="moveFocusToBarcode"  PreviewKeyDown="space_PreviewKeyDown"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Top" 
                   Height="35" Width="170"  Margin="5,5,0,0" />
@@ -1581,8 +1600,8 @@
                                     </Grid>
                                 </Grid>
                             </Grid >
-                            
-                            
+
+
                             <Grid  Grid.Row="7" Grid.Column="1" >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -1592,7 +1611,7 @@
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Price..."   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" PreviewTextInput="DecimalValidationTextBox"
-                                         
+                                   KeyDown="moveFocusToBarcode"  PreviewKeyDown="space_PreviewKeyDown"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                   Height="35" Width="350"  Margin="5,5" >
@@ -1608,18 +1627,18 @@
                             </Grid>
                             <Grid  Grid.Row="8" Grid.ColumnSpan="2"  >
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="7*"/>
+                                    <ColumnDefinition Width="11*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox x:Name="tb_barcode"   Text="{Binding test, Mode=OneWay}"
-                                         Grid.Row="1" Padding="10,5,5,5" 
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..."   
+                                <TextBox x:Name="tb_barcode"   Text="{Binding test, Mode=OneWay}" Padding="10,5,5,5" 
+                            BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue" 
+                                 BorderBrush="AliceBlue"  PreviewKeyDown="space_PreviewKeyDown"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="350"  Margin="5,5" KeyDown="tb_barcode_Generate" TextChanged="tb_barcode_TextChanged">
-                                </TextBox>
-                                <Path x:Name="p_errorBarcode" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                  Height="35" Width="350"  Margin="5,5,0,5" GotFocus="tb_barcodeGotFocus" MouseEnter="tb_barcodeGotFocus"
+                                         KeyDown="tb_barcode_Generate" TextChanged="tb_barcode_TextChanged" Grid.ColumnSpan="2"/>
+                                <Path x:Name="p_errorBarcode" Fill="#E81123" Stretch="Fill" Margin="0,15,15,15"
+                              HorizontalAlignment="Right" Grid.Column="1"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                     <Path.ToolTip>

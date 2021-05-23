@@ -60,7 +60,7 @@
               FontSize="14"/>
                     </Grid>
                 </Grid>
-                <Image Grid.Column="1"  Source="{Binding rectangleCardPriceImageSource}" Margin="0,5,5,5" />
+                <Image FlowDirection="LeftToRight"  Grid.Column="1"  Source="{Binding rectangleCardPriceImageSource}" Margin="0,5,5,5" />
                 <Path Fill="#FFA926" Stretch="Fill" x:Name="path_new" Grid.ColumnSpan="2"
                       Visibility="{Binding rectangleCardPriceNew}"
                           Width="18" Height="18" VerticalAlignment="Bottom" 

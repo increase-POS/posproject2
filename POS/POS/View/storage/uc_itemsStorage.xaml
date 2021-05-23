@@ -354,6 +354,7 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -428,28 +429,28 @@
                                     </Path>
                                 </Grid>
 
-                                <Grid   Grid.Row="3"  Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,0">
+                                <Grid   Grid.Row="3"  Grid.Column="0" Grid.ColumnSpan="6" Margin="0,0,0,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <ComboBox   Grid.Row="1" x:Name="cb_x"
+                                    <ComboBox   Grid.Row="1" x:Name="cb_XYZ"
                                              Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="x... "  
+                             materialDesign:HintAssist.Hint="X Y Z... "  
                            TextBlock.FontSize="12"   Background="#f8f8f8" 
                          HorizontalAlignment="Left" VerticalAlignment="Center" 
-                          Height="35" Width="110"  Margin="5,5,0,5"
+                          Height="35" Width="340"  Margin="5,5,0,5"
                            BorderBrush="#737373" BorderThickness="0" />
 
-                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorX"
+                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorXYZ"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                         <Path.ToolTip>
-                                            <ToolTip  x:Name="tt_errorX"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                            <ToolTip  x:Name="tt_errorXYZ"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                         </Path.ToolTip>
                                     </Path>
                                 </Grid>
-                                <Grid   Grid.Row="3"  Grid.Column="2"  Grid.ColumnSpan="2" Margin="0,0,0,0">
+                                <!--<Grid   Grid.Row="3"  Grid.Column="2"  Grid.ColumnSpan="2" Margin="0,0,0,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
@@ -490,7 +491,7 @@
                                             <ToolTip  x:Name="tt_errorZ"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                         </Path.ToolTip>
                                     </Path>
-                                </Grid>
+                                </Grid>-->
 
                                 <Grid   Grid.Row="4"  Grid.Column="0" Grid.ColumnSpan="6" Margin="0,0,0,0">
                                     <Grid.ColumnDefinitions>
@@ -571,8 +572,9 @@
                                         </Path.ToolTip>
                                     </Path>
                                 </Grid>
-                                
 
+                                <Separator  Grid.Row="6" Background="#999999"   Width="400"  Margin="5,0,5,0"
+                                      Grid.ColumnSpan="10" VerticalAlignment="Center" />
                             </Grid>
 
                             <Grid Grid.Row="4"  >

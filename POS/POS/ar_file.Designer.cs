@@ -1771,7 +1771,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to المزودون.
+        ///   Looks up a localized string similar to الموردون.
         /// </summary>
         internal static string trSuppliers {
             get {

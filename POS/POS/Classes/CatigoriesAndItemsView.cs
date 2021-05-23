@@ -144,7 +144,7 @@ namespace POS.Classes
             }
             else if (ucreceiptOfPurchaseInvoice != null)
             {
-                ucreceiptOfPurchaseInvoice.ChangeCategoryIdEvent(idCatigories);
+                //ucreceiptOfPurchaseInvoice.ChangeCategoryIdEvent(idCatigories);
 
             }
             else if (ucPackageOfItems != null)
@@ -181,7 +181,7 @@ namespace POS.Classes
             }
             else if (ucreceiptOfPurchaseInvoice != null)
             {
-                ucreceiptOfPurchaseInvoice.ChangeItemIdEvent(idItem);
+                //ucreceiptOfPurchaseInvoice.ChangeItemIdEvent(idItem);
 
             }
             else if (ucPackageOfItems != null)

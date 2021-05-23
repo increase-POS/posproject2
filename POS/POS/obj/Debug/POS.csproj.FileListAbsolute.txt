@@ -1067,6 +1067,8 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\sectionData\UC_vendors.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\sectionData\UC_users.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_accounts.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_accounts.baml
-E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_posAccounts.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_posAccounts.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_invoice.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_invoice.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache

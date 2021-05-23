@@ -32,7 +32,7 @@ namespace POS.View
         Category categoryModel = new Category();
         List<Category> categories;
         static private int _InternalCounter = 0;
-        List<string> barcodesList;
+        List<ItemUnit> barcodesList;
         ItemUnit itemUnitModel = new ItemUnit();
 
         // item object
@@ -115,8 +115,8 @@ namespace POS.View
                 barcodeString = generateRandomBarcode();
                 if (barcodesList != null)
                 {
-                    Boolean exist = barcodesList.Any(x => barcodeString.Contains(x));
-                    if (exist == true)
+                    ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == barcodeString);
+                    if (unit1 != null)
                         barcodeString = generateRandomBarcode();
                 }
                 tb_barcode.Text = barcodeString;
@@ -144,7 +144,7 @@ namespace POS.View
             tb_price.Text = "";
             // set random barcode on image
             generateBarcode();
-        itemUnit = new ItemUnit();
+            itemUnit = new ItemUnit();
         }
         static public string generateRandomBarcode()
         {
@@ -178,19 +178,19 @@ namespace POS.View
 
 
 
-           
+
             btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
             ///////////////////////////Barcode
-           
+
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_price, MainWindow.resourcemanager.GetString("trPriceHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
 
 
 
-          
+
 
 
         }
@@ -387,7 +387,7 @@ namespace POS.View
                 item = dg_items.SelectedItem as Item;
                 this.DataContext = item;
 
-               
+
 
             }
             if (item != null)
@@ -395,7 +395,7 @@ namespace POS.View
                 tb_code.Text = item.code;
                 tb_name.Text = item.name;
                 tb_details.Text = item.details;
-                
+
 
                 if (item.categoryId != null)
                 {
@@ -404,11 +404,11 @@ namespace POS.View
                 else
                     cb_categorie.SelectedValue = -1;
 
-              
+
 
                 tb_taxes.Text = item.taxes.ToString();
 
-               
+
 
                 if (item.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
 
@@ -457,7 +457,7 @@ namespace POS.View
                 tb_code.Text = item.code;
                 tb_name.Text = item.name;
                 tb_details.Text = item.details;
-                
+
 
                 if (item.categoryId != null)
                 {
@@ -466,11 +466,11 @@ namespace POS.View
                 else
                     cb_categorie.SelectedValue = -1;
 
-             
+
 
                 tb_taxes.Text = item.taxes.ToString();
 
-             
+
 
                 if (item.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
 

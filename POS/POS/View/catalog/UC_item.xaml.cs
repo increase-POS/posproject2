@@ -22,6 +22,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static POS.View.uc_categorie;
 
+
 namespace POS.View
 {
     /// <summary>
@@ -54,7 +55,7 @@ namespace POS.View
         ItemUnit itemUnit = new ItemUnit();
         // service object
         Service service = new Service();
-        string selectedType = "" ;
+        string selectedType = "";
 
 
         DataGrid dt = new DataGrid();
@@ -69,7 +70,7 @@ namespace POS.View
         List<Serial> itemSerials;
         List<ItemUnit> itemUnits;
         List<Service> services;
-        List<string> barcodesList;
+        List<ItemUnit> barcodesList;
         public byte tglCategoryState = 1;
         public byte tglItemState;
         int? categoryParentId = 0;
@@ -81,6 +82,10 @@ namespace POS.View
         static private int _InternalCounter = 0;
         static private int _BarcodeLength = 0;
         static private string _BarCode = "";
+
+
+        DateTime _lastKeystroke = new DateTime(0);
+        List<char> _barcode = new List<char>(10);
         public UC_item()
         {
             InitializeComponent();
@@ -151,14 +156,33 @@ namespace POS.View
 
         }
 
-       
 
+        private async void userControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            MessageBox.Show(e.Key.ToString());
+            // check timing (keystrokes within 100 ms)
+            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+            if (elapsed.TotalMilliseconds > 100)
+                _barcode.Clear();
+
+            // record keystroke & timestamp
+            _barcode.Add((char)e.Key);
+            _lastKeystroke = DateTime.Now;
+
+            // process barcode
+            if ((char)e.Key == 13 && _barcode.Count > 0)
+            {
+                string msg = new String(_barcode.ToArray());
+                MessageBox.Show(msg);
+                _barcode.Clear();
+            }
+        }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             // for pagination
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             catigoriesAndItemsView.ucItem = this;
-          
+
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -176,7 +200,7 @@ namespace POS.View
 
 
             translate();
-            fillCategories();           
+            fillCategories();
             fillUnits();
             fillProperties();
             fillBarcodeList();
@@ -193,31 +217,20 @@ namespace POS.View
             cb_itemType.SelectedIndex = 0;
             cb_minUnit.SelectedIndex = 0;
             cb_maxUnit.SelectedIndex = 0;
-            generateBarcode("",true);
+            generateBarcode("", true);
 
-            //barcode reader port connected
-            SerialPort port;
-            foreach (string sp in SerialPort.GetPortNames())
-            {
-                port = new SerialPort(sp)
-                {
-                    Encoding = Encoding.GetEncoding("Windows-1252")
-                };
-              //  port.DataReceived += new
-              //  SerialDataReceivedEventHandler(port.DataReceived);
-                port.Open();
-            }
+
         }
 
         private void generateBarcode(string barcodeString, Boolean defaultBarcode)
-       {
-            if(barcodeString == "" && defaultBarcode)
+        {
+            if (barcodeString == "" && defaultBarcode)
             {
                 barcodeString = generateRandomBarcode();
                 if (barcodesList != null)
                 {
-                    Boolean exist = barcodesList.Any(x => barcodeString.Contains(x));
-                    if (exist == true)
+                    var exist = barcodesList.Where(x => x.barcode == barcodeString).FirstOrDefault();
+                    if (exist != null)
                         barcodeString = generateRandomBarcode();
                 }
                 tb_barcode.Text += barcodeString;
@@ -234,6 +247,7 @@ namespace POS.View
             }
             else
                 img_barcode.Source = null;
+
         }
 
         static public string generateRandomBarcode()
@@ -257,17 +271,17 @@ namespace POS.View
 
         private void Btn_barcode_Click(object sender, RoutedEventArgs e)
         {
-            grid_itemData.Visibility   = grid_properties.Visibility = Visibility.Collapsed;
+            grid_itemData.Visibility = grid_properties.Visibility = Visibility.Collapsed;
             dg_barcode.Visibility = Visibility.Visible;
             brd_itemDataTab.BorderBrush = brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
             brd_barcodeTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-        } 
+        }
 
         private void Btn_properties_Click(object sender, RoutedEventArgs e)
         {
             grid_itemData.Visibility = dg_barcode.Visibility = Visibility.Collapsed;
             grid_properties.Visibility = Visibility.Visible;
-            brd_barcodeTab.BorderBrush = brd_itemDataTab.BorderBrush =  (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            brd_barcodeTab.BorderBrush = brd_itemDataTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
             brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
 
@@ -277,7 +291,7 @@ namespace POS.View
         //3Service
         //4Package items
 
-       
+
         #region add update delete 
         // add item with basic information 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
@@ -372,7 +386,7 @@ namespace POS.View
                 p_errorMax.Visibility = Visibility.Collapsed;
                 tb_max.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
-            if ( (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1
+            if ((!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1
                 && cb_minUnit.SelectedIndex != -1 && cb_maxUnit.SelectedIndex != -1 && !tb_min.Text.Equals("") && !tb_max.Text.Equals("")) ||
                (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1 && cb_itemType.SelectedIndex == 3))
             {
@@ -576,7 +590,7 @@ namespace POS.View
                 else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
                 await RefrishItems();
-                Txb_searchitems_TextChanged(null,null);
+                Txb_searchitems_TextChanged(null, null);
                 //var items = await itemModel.GetAllItems();
                 //dg_items.ItemsSource = items;
             }
@@ -875,7 +889,7 @@ namespace POS.View
                 tb_barcode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
             if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
-                || ( !tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
+                || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
             {
                 Nullable<int> unitId = null;
                 if (cb_selectUnit.SelectedIndex != -1)
@@ -972,7 +986,7 @@ namespace POS.View
                 tb_barcode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
             if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
-                || ( !tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
+                || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
             {
                 Nullable<int> unitId = null;
                 if (cb_selectUnit.SelectedIndex != -1)
@@ -1037,6 +1051,7 @@ namespace POS.View
         {
             TextBox tb = (TextBox)sender;
             string barCode = "";
+
             if (e.Key.ToString() == "Return" && !tb.Text.Equals(""))
             {
                 Keyboard.Focus(tb_barcode);
@@ -1048,6 +1063,19 @@ namespace POS.View
                 tb_barcode.Text = barCode;
             }
             generateBarcode(barCode, false);
+
+            // get item matches barcode
+            if (barcodesList != null)
+            {
+                ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == barCode);
+                if (unit1 != null)
+                {
+                    MessageBox.Show(unit1.itemId.ToString());
+                    int itemId = (int)unit1.itemId;
+                    if (unit1.itemId != 0)
+                        ChangeItemIdEvent(itemId);
+                }
+            }
         }
         private void moveFocusToBarcode(object sender, KeyEventArgs e)
         {
@@ -1056,13 +1084,13 @@ namespace POS.View
             {
                 Keyboard.Focus(tb_barcode);
                 _BarCode = tb.Text;
-               if(_BarCode != "") tb_barcode.Text = _BarCode;               
+                if (_BarCode != "") tb_barcode.Text = _BarCode;
             }
         }
         private void tb_barcodeGotFocus(object sender, RoutedEventArgs e)
         {
             _BarcodeLength = tb_barcode.Text.Length;
-           tb_barcode.Select( 0,0);
+            tb_barcode.Select(0, 0);
         }
         private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -1233,7 +1261,7 @@ namespace POS.View
         #endregion
 
         #region fill
-         void fillCategories()
+        void fillCategories()
         {
             //categories = await categoryModel.GetAllCategories();
             cb_categorie.ItemsSource = categories.ToList();
@@ -1478,7 +1506,7 @@ namespace POS.View
                 grid_serial.Visibility = Visibility.Visible;
                 line_topService.Visibility = Visibility.Collapsed;
                 gd_minMaxUnit.Visibility = Visibility.Visible;
-                //gd_countUnit.Visibility = Visibility.Visible;
+                gd_countUnit.Visibility = Visibility.Visible;
 
             }
             else if (cb_itemType.SelectedIndex == 3)
@@ -1487,7 +1515,7 @@ namespace POS.View
                 grid_service.Visibility = Visibility.Visible;
                 line_topService.Visibility = Visibility.Collapsed;
                 gd_minMaxUnit.Visibility = Visibility.Collapsed;
-                //gd_countUnit.Visibility = Visibility.Collapsed;
+                gd_countUnit.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -1495,7 +1523,7 @@ namespace POS.View
                 grid_service.Visibility = Visibility.Collapsed;
                 line_topService.Visibility = Visibility.Visible;
                 gd_minMaxUnit.Visibility = Visibility.Visible;
-                //gd_countUnit.Visibility = Visibility.Visible;
+                gd_countUnit.Visibility = Visibility.Visible;
             }
 
             switch (cb_itemType.SelectedIndex)
@@ -1536,7 +1564,7 @@ namespace POS.View
 
         async Task<IEnumerable<Item>> RefrishItems()
         {
-            if(category.categoryId == 0)
+            if (category.categoryId == 0)
                 items = await itemModel.GetAllItems();
             else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
             return items;
@@ -1557,7 +1585,7 @@ namespace POS.View
         #region Get Id By Click  Y
         private void dg_items_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorCode.Visibility = Visibility.Collapsed;
             var bc = new BrushConverter();
@@ -1633,7 +1661,7 @@ namespace POS.View
 
             }
 
-            
+
         }
         public async void ChangeCategoryIdEvent(int categoryId)
         {
@@ -1645,7 +1673,7 @@ namespace POS.View
                 categoryParentId = category.categoryId;
                 RefrishCategoriesCard();
             }
-           
+
             generateTrack(categoryId);
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
@@ -1727,7 +1755,7 @@ namespace POS.View
 
             }
         }
-       
+
         #endregion
         #region Toggle Button Y
         /// <summary>
@@ -2002,6 +2030,5 @@ namespace POS.View
 
         #endregion
 
-        
     }
 }

@@ -918,11 +918,11 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
                                         <DataGridTextColumn   MinWidth="10"   Header="Num"  Binding="{Binding Path=ID}"/>
-                                        <DataGridTextColumn MinWidth="90"  Header="Item" Binding="{Binding Path=Product}"/>
-                                        <DataGridTextColumn MinWidth="90"  Header="Unit" Binding="{Binding Path=test}"/>
-                                        <DataGridTextColumn MinWidth="10"  Header="Amount" Binding="{Binding Path=Count}"/>
-                                        <DataGridTextColumn MinWidth="20"  Header="Price" Binding="{Binding Path=Price}"/>
-                                        <DataGridTextColumn MinWidth="20"  Header="Total" Binding="{Binding Path=Total}"/>
+                                        <DataGridTextColumn  Header="Item" Binding="{Binding Path=Product}"/>
+                                        <DataGridTextColumn  Header="Unit" Binding="{Binding Path=test}"/>
+                                        <DataGridTextColumn  Header="Amount" Binding="{Binding Path=Count}"/>
+                                        <DataGridTextColumn  Header="Price" Binding="{Binding Path=Price}"/>
+                                        <DataGridTextColumn  Header="Total" Binding="{Binding Path=Total}"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
@@ -1038,14 +1038,18 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Button x:Name="btn_preview" Grid.Row="0" Grid.Column="0"
+                                    <Button x:Name="btn_invoiceImage" Grid.Row="0" Grid.Column="0"
+                          Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,1"   Content="Image" />
+                                    <Button x:Name="btn_preview" Grid.Row="0" Grid.Column="1"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1"   Content="Preview" />
-                                    <Button x:Name="btn_pdf" Grid.Row="0" Grid.Column="1"
+                                    <Button x:Name="btn_pdf" Grid.Row="0" Grid.Column="2"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                   Margin="1,1"    Content="PDF" />
-                                    <Button x:Name="btn_print" Grid.Row="0" Grid.Column="2"
+                                    <Button x:Name="btn_print" Grid.Row="0" Grid.Column="3"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="1,1"    Content="Print" />
                                 </Grid>

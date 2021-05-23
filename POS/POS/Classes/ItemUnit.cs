@@ -75,9 +75,9 @@ namespace POS.Classes
         //***************************************
         // get all barcodes from DB , return list of string represent barcodes
         //***************************************
-        public async Task<List<string>> getAllBarcodes()
+        public async Task<List<ItemUnit>> getAllBarcodes()
         {
-            List<string> barcodes = null;
+            List<ItemUnit> barcodes = null;
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -105,12 +105,12 @@ namespace POS.Classes
                         Converters = new List<JsonConverter> { new BadDateFixingConverter() },
                         DateParseHandling = DateParseHandling.None
                     };
-                    barcodes = JsonConvert.DeserializeObject<List<string>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    barcodes = JsonConvert.DeserializeObject<List<ItemUnit>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
                     return barcodes;
                 }
                 else //web api sent error response 
                 {
-                    barcodes = new List<string>();
+                    barcodes = new List<ItemUnit>();
                 }
                 return barcodes;
             }

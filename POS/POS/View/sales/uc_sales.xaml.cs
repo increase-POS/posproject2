@@ -108,7 +108,7 @@ namespace POS.View
             grid_main.Children.Add(uc);
         }
 
-        private void Btn_pricesView_Click(object sender, RoutedEventArgs e)
+        private void Btn_quotations_Click(object sender, RoutedEventArgs e)
         {
 
         }
@@ -117,5 +117,7 @@ namespace POS.View
         {
 
         }
+
+        
     }
 }
