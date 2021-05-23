@@ -40,8 +40,6 @@ namespace POS.View
             items.Add(new Bill() { Id = 336551515, Total = 150 });
             items.Add(new Bill() { Id = 336555162, Total = 840 });
             items.Add(new Bill() { Id = 336558897, Total = 325 });
-            dg_draft.ItemsSource = items;
-            dg_invoice.ItemsSource = items;
             billDetails = LoadCollectionData();
             dg_billDetails.ItemsSource = billDetails;
             #endregion
@@ -74,12 +72,6 @@ namespace POS.View
         {
             ////////////////////////////////----invoice----/////////////////////////////////
             txt_invoiceHeader.Text = MainWindow.resourcemanager.GetString("trInvoice");
-            txt_returnInvoice.Text = MainWindow.resourcemanager.GetString("trReturnInvoice");
-            txt_invoiceToggle.Text = MainWindow.resourcemanager.GetString("trInvoice");
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_InvoicenName, MainWindow.resourcemanager.GetString("trInvoiceHint"));
-
-            txt_draft.Text = MainWindow.resourcemanager.GetString("trDraft");
-            txt_draftToggle.Text = MainWindow.resourcemanager.GetString("trDraft");
             txt_invoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trBranchHint"));
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
@@ -97,11 +89,6 @@ namespace POS.View
             btn_print.Content = MainWindow.resourcemanager.GetString("trPrint");
             btn_cash.Content = MainWindow.resourcemanager.GetString("trCash");
             btn_creditcard.Content = MainWindow.resourcemanager.GetString("trCreditCard");
-            dg_invoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
-            dg_invoice.Columns[1].Header = MainWindow.resourcemanager.GetString("trTotal");
-
-            dg_draft.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
-            dg_draft.Columns[1].Header = MainWindow.resourcemanager.GetString("trTotal");
 
             ////////////////////////////////----vendor----/////////////////////////////////
 
@@ -264,22 +251,7 @@ namespace POS.View
         }
         #endregion
 
-        private void Tgl_draftDropDown_Checked(object sender, RoutedEventArgs e)
-        {
-            dg_draft.Visibility = Visibility.Visible;
-        }
-        private void Tgl_draftDropDown_Unchecked(object sender, RoutedEventArgs e)
-        {
-            dg_draft.Visibility = Visibility.Collapsed;
-        }
-        private void Tgl_ReturnInvoiceDropDown_Checked(object sender, RoutedEventArgs e)
-        {
-            grid_returnInvoice.Visibility = Visibility.Visible;
-        }
-        private void Tgl_ReturnInvoiceDropDown_Unchecked(object sender, RoutedEventArgs e)
-        {
-            grid_returnInvoice.Visibility = Visibility.Collapsed;
-        }
+        
         private void Btn_updateVendor_Click(object sender, RoutedEventArgs e)
         {
             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
@@ -658,5 +630,20 @@ namespace POS.View
 
         }
         #endregion
+
+        private void Btn_newDraft_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_draft_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

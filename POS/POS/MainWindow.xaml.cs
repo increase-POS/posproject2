@@ -248,9 +248,9 @@ namespace POS
             FN_pathVisible(path_openAccount);
             fn_ColorIconRefreash(path_iconAccounts);
 
-            //GRID_Main.Children.Clear();
-            //uc_accounts uc = new uc_accounts();
-            //GRID_Main.Children.Add(uc);
+            GRID_Main.Children.Clear();
+            uc_accounts uc = new uc_accounts();
+            GRID_Main.Children.Add(uc);
         }
 
         private void BTN_reports_Click(object sender, RoutedEventArgs e)

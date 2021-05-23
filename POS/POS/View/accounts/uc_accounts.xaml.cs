@@ -68,7 +68,7 @@ namespace POS.View.accounts
 
 
             grid_main.Children.Clear();
-            UC_posAccounts uc = new UC_posAccounts();
+            uc_posAccounts uc = new uc_posAccounts();
             grid_main.Children.Add(uc);
         }
 
