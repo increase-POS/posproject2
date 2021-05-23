@@ -120,14 +120,14 @@ namespace POS.View
             if (dg_subProperty.SelectedIndex != -1)
             {
                 propertyItem = dg_subProperty.SelectedItem as PropertiesItems;
-                //this.DataContext = propertyItem;
+                
             }
             if (propertyItem != null)
             {
+                tb_valueName.Text = propertyItem.propertyItemName;
                 if (propertyItem.propertyItemId != 0)
                 {
                     propertyItemId = propertyItem.propertyItemId;
-                   // CanDelete = propertyItem.canDelete;
 
                     if (propertyItem.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
 
@@ -245,24 +245,40 @@ namespace POS.View
 
         private async void Btn_addValue_Click(object sender, RoutedEventArgs e)
             {
-            //add
-            propertyItem = new PropertiesItems();
-            propertyItem.name = tb_valueName.Text;
-            propertyItem.propertyId = property.propertyId;
-            propertyItem.createUserId = MainWindow.userID;
-            propertyItem.isActive = 1;
 
-            Boolean res = await PropertiesItemsModel.SavePropertiesItems(propertyItem);
+            var bc = new BrushConverter();
+            if (tb_valueName.Text.Equals(""))
+            {
+                p_errorNameSub.Visibility = Visibility.Visible;
+                tt_errorNameSub.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_valueName.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorNameSub.Visibility = Visibility.Collapsed;
+                tb_valueName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (!tb_valueName.Text.Equals(""))
+            {
+                //add
+                propertyItem = new PropertiesItems();
+                propertyItem.name = tb_valueName.Text;
+                propertyItem.propertyId = property.propertyId;
+                propertyItem.createUserId = MainWindow.userID;
+                propertyItem.isActive = 1;
 
-            if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                Boolean res = await PropertiesItemsModel.SavePropertiesItems(propertyItem);
 
-            tb_valueName.Text = null;
-            var properties = await propertyModel.getProperty();
-            dg_property.ItemsSource = properties;
+                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
 
-            var propertiesItemss = await PropertiesItemsModel.GetPropertyItems(property.propertyId);
-            dg_subProperty.ItemsSource = propertiesItemss;
+                tb_valueName.Text = null;
+                var properties = await propertyModel.getProperty();
+                dg_property.ItemsSource = properties;
+
+                var propertiesItemss = await PropertiesItemsModel.GetPropertyItems(property.propertyId);
+                dg_subProperty.ItemsSource = propertiesItemss;
+            }
             
         }
 
@@ -330,9 +346,34 @@ namespace POS.View
             dg_property.ItemsSource = properties;
         }
 
-        private void Btn_updateValue_Click(object sender, RoutedEventArgs e)
+        private async void Btn_updateValue_Click(object sender, RoutedEventArgs e)
         {
+            //check mandatory values
+            var bc = new BrushConverter();
+            if (tb_valueName.Text.Equals(""))
+            {
+                p_errorNameSub.Visibility = Visibility.Visible;
+                tt_errorNameSub.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_valueName.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorNameSub.Visibility = Visibility.Collapsed;
+                tb_valueName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if(!tb_valueName.Text.Equals(""))
+            {
+                propertyItem.name = tb_valueName.Text;
+                propertyItem.updateUserId = MainWindow.userID;
 
+                Boolean res = await PropertiesItemsModel.SavePropertiesItems(propertyItem);
+
+                if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+
+                var propertiesItemss = await PropertiesItemsModel.GetPropertyItems(property.propertyId);
+                dg_subProperty.ItemsSource = propertiesItemss;
+            }
         }
     }
  } 

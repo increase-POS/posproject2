@@ -94,12 +94,12 @@ namespace POS.View.accounts
 
         }
 
-        private void Tgl_Isdone_Checked(object sender, RoutedEventArgs e)
+        private void Tgl_IsReceived_Checked(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void Tgl_Isdone_Unchecked(object sender, RoutedEventArgs e)
+        private void Tgl_IsReceived_Unchecked(object sender, RoutedEventArgs e)
         {
 
         }

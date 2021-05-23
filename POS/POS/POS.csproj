@@ -127,6 +127,9 @@
     <Compile Include="View\accounts\uc_accounts.xaml.cs">
       <DependentUpon>uc_accounts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\accounts\uc_paymentsAccounts.xaml.cs">
+      <DependentUpon>uc_paymentsAccounts.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\accounts\uc_posAccounts.xaml.cs">
       <DependentUpon>uc_posAccounts.xaml</DependentUpon>
     </Compile>
@@ -274,6 +277,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\accounts\uc_accounts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\accounts\uc_paymentsAccounts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

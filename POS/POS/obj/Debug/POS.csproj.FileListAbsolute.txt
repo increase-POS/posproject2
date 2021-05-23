@@ -1072,3 +1072,5 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_posAccounts.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_invoice.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_invoice.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_paymentsAccounts.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_paymentsAccounts.baml

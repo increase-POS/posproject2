@@ -68,10 +68,19 @@ namespace POS.View.accounts
         }
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
         {
+            refreashBachgroundClick(btn_payments);
 
+            grid_main.Children.Clear();
+            uc_paymentsAccounts uc = new uc_paymentsAccounts();
+            grid_main.Children.Add(uc);
         }
 
+        private void Btn_received_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_received);
 
+           
+        }
         private void Btn_banks_Click(object sender, RoutedEventArgs e)
         {
 
@@ -83,18 +92,15 @@ namespace POS.View.accounts
         {
 
         }
-        private void HandleKeyPress(object sender, KeyEventArgs e)
-        {
-            MessageBox.Show(e.Key.ToString());
-        }
+        //private void HandleKeyPress(object sender, KeyEventArgs e)
+        //{
+        //    MessageBox.Show(e.Key.ToString());
+        //}
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
 
-            var window = Window.GetWindow(this);
-            window.KeyDown += HandleKeyPress;
-
-
-
+            //var window = Window.GetWindow(this);
+            //window.KeyDown += HandleKeyPress;
 
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -116,6 +122,6 @@ namespace POS.View.accounts
             btn_banks.Content = MainWindow.resourcemanager.GetString("trBanks");
         }
 
-        
+       
     }
 }
