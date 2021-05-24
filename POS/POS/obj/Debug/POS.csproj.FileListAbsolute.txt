@@ -1071,6 +1071,14 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_posAccounts.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_posAccounts.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_invoice.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_invoice.baml
-E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_paymentsAccounts.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_paymentsAccounts.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_receivedAccounts.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_receivedAccounts.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_banksAccounts.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_banksAccounts.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_uploadImage.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_uploadImage.baml
+E:\GitHub\posproject2\POS\POS\bin\Debug\netoaster.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\netoaster.pdb

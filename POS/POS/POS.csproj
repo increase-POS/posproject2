@@ -127,11 +127,17 @@
     <Compile Include="View\accounts\uc_accounts.xaml.cs">
       <DependentUpon>uc_accounts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\accounts\uc_banksAccounts.xaml.cs">
+      <DependentUpon>uc_banksAccounts.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\accounts\uc_paymentsAccounts.xaml.cs">
       <DependentUpon>uc_paymentsAccounts.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\accounts\uc_posAccounts.xaml.cs">
       <DependentUpon>uc_posAccounts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\accounts\uc_receivedAccounts.xaml.cs">
+      <DependentUpon>uc_receivedAccounts.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\storage\uc_itemsDestroy.xaml.cs">
       <DependentUpon>uc_itemsDestroy.xaml</DependentUpon>
@@ -228,6 +234,9 @@
     <Compile Include="View\windows\wd_updateVendor.xaml.cs">
       <DependentUpon>wd_updateVendor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_uploadImage.xaml.cs">
+      <DependentUpon>wd_uploadImage.xaml</DependentUpon>
+    </Compile>
     <Page Include="controlTemplate\UC_rectangleCard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -280,11 +289,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\accounts\uc_banksAccounts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\accounts\uc_paymentsAccounts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\accounts\uc_posAccounts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\accounts\uc_receivedAccounts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -420,6 +437,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\windows\wd_uploadImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -522,6 +543,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Thumb\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\netoaster\netoaster.csproj">
+      <Project>{211d37ef-74f8-4e4f-9ed0-da4566f423f5}</Project>
+      <Name>netoaster</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

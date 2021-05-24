@@ -35,7 +35,7 @@ namespace POS.Classes
             //popup.BorderColor = System.Drawing.Color.FromArgb(0, 0, 0);
             //popup.ContentColor = System.Drawing.Color.FromArgb(255, 255, 255);
             //popup.ContentFont = new System.Drawing.Font("Tahoma", 8F);
-            popup.Popup();// show  
+            popup.Popup(); 
         }
 
         public static long genRandomCode(string type)

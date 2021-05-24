@@ -285,7 +285,7 @@
                                  BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="5"  
                                  Height="125" Width="125" Grid.Column="1" Click="Img_customer_Click" >
                             <Button.Background>
-                                <ImageBrush Stretch="Fill"  x:Name="IMG_customer" 
+                                <ImageBrush Stretch="UniformToFill"  x:Name="IMG_customer" 
                                             ImageSource="/pic/no-image-icon-125x125.png"   />
                             </Button.Background>
                         </Button>

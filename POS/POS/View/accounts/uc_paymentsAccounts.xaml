@@ -73,22 +73,7 @@
                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
                             Grid.Column="2"  Height="35" Width="150"  Margin="5,5" />
 
-                    <!--<Grid VerticalAlignment="Center"    Grid.Column="4" HorizontalAlignment="Right"   
-                          Margin="5,5,5,0"  >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" 
-                                   Margin="5,0,5,0" Text="Received" Foreground="#6e6e6e" ToolTip="الاسم بحاجة لتغيير"
-                                   HorizontalAlignment="Left" VerticalAlignment="Center"
-                                   FontSize="12"/>
-                        <ToggleButton Grid.Column="1"  x:Name="tgl_Isdone"  
-                                      VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
-                                      Margin="0" Height="13" Width="28"  TabIndex="14" 
-                                      Checked="Tgl_Isdone_Checked" 
-                                      Unchecked="Tgl_Isdone_Unchecked"/>
-                    </Grid>-->
+                 
 
                 </Grid>
 
@@ -292,20 +277,20 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <ComboBox x:Name="cb_depositedTo"  Grid.Row="2" ToolTip="and to salary"
+                        <ComboBox x:Name="cb_depositTo"  Grid.Row="2" ToolTip="and to salary"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Deposited To..."  
+                             materialDesign:HintAssist.Hint="Deposit To..."  
                            TextBlock.FontSize="12"   Background="#f8f8f8"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                 Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
                            BorderBrush="#737373" BorderThickness="0" >
                         </ComboBox>
-                        <Path Fill="#E81123" x:Name="p_errorDepositedTo" Stretch="Fill" Margin="5,5,15,5"
+                        <Path Fill="#E81123" x:Name="p_errorDepositTo" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                             <Path.ToolTip>
-                                <ToolTip x:Name="tt_errorDepositedTo" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                <ToolTip x:Name="tt_errorDepositTo" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
                     </Grid>
@@ -383,15 +368,18 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-
-                    <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0" TabIndex="10"
+                    <Button x:Name="btn_image" Grid.Row="0" Grid.ColumnSpan="3" TabIndex="10"
+                          Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,1"    Content="Image" Click="Btn_image_Click" />
+                    <Button x:Name="btn_add" Grid.Row="1" Grid.Column="0" TabIndex="10"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1"    Content="Add" Click="Btn_add_Click" />
-                    <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1" TabIndex="11"
+                    <Button x:Name="btn_update" Grid.Row="1" Grid.Column="1" TabIndex="11"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="1,1"    Content="Update" Click="Btn_update_Click" />
-                    <Button x:Name="btn_delete" Grid.Row="0" Grid.Column="2" TabIndex="12"
+                    <Button x:Name="btn_delete" Grid.Row="1" Grid.Column="2" TabIndex="12"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1"    Content="Delete" Click="Btn_delete_Click" />
                   

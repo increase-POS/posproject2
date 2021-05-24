@@ -27,30 +27,48 @@ namespace POS.View.accounts
             InitializeComponent();
             Btn_pos_Click(null, null);
         }
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_ucAccounts.FlowDirection = FlowDirection.LeftToRight;
 
-     
-            void refreashBackground()
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_ucAccounts.FlowDirection = FlowDirection.RightToLeft;
+
+            }
+            translate();
+        }
+
+        private void translate()
         {
 
-       
+            btn_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
+            btn_banks.Content = MainWindow.resourcemanager.GetString("trBanks");
+        }
 
-           
+        void refreashBackground()
+        {
             btn_pos.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_pos.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
             btn_payments.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_payments.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
+            btn_received.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_received.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
             btn_banks.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_banks.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
 
-          
-
             btn_statistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_statistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
-
         void refreashBachgroundClick(Button btn)
         {
             refreashBackground();
@@ -79,11 +97,17 @@ namespace POS.View.accounts
         {
             refreashBachgroundClick(btn_received);
 
-           
+            grid_main.Children.Clear();
+            uc_receivedAccounts uc = new uc_receivedAccounts();
+            grid_main.Children.Add(uc);
         }
         private void Btn_banks_Click(object sender, RoutedEventArgs e)
         {
+            refreashBachgroundClick(btn_banks);
 
+            grid_main.Children.Clear();
+            uc_banksAccounts uc = new uc_banksAccounts();
+            grid_main.Children.Add(uc);
         }
 
        
@@ -92,35 +116,7 @@ namespace POS.View.accounts
         {
 
         }
-        //private void HandleKeyPress(object sender, KeyEventArgs e)
-        //{
-        //    MessageBox.Show(e.Key.ToString());
-        //}
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-
-            //var window = Window.GetWindow(this);
-            //window.KeyDown += HandleKeyPress;
-
-            if (MainWindow.lang.Equals("en"))
-            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucAccounts.FlowDirection = FlowDirection.LeftToRight;
-
-            }
-            else
-            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucAccounts.FlowDirection = FlowDirection.RightToLeft;
-
-            }
-            translate();
-        }
-
-        private void translate()
-        {
-          
-            btn_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
-            btn_banks.Content = MainWindow.resourcemanager.GetString("trBanks");
-        }
+       
 
        
     }

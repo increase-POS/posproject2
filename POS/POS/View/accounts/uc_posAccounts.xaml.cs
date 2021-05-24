@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -32,6 +34,20 @@ namespace POS.View.accounts
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_ucposAccounts.FlowDirection = FlowDirection.LeftToRight;
+
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_ucposAccounts.FlowDirection = FlowDirection.RightToLeft;
+
+
+            }
             #region Style Date
             /////////////////////////////////////////////////////////////
             dp_startSearchDate.Loaded += delegate
