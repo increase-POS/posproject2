@@ -1082,3 +1082,9 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_uploadImage.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_uploadImage.baml
 E:\GitHub\posproject2\POS\POS\bin\Debug\netoaster.dll
 E:\GitHub\posproject2\POS\POS\bin\Debug\netoaster.pdb
+E:\GitHub\posproject2\POS\POS\bin\Debug\LiveCharts.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\LiveCharts.Wpf.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\LiveCharts.pdb
+E:\GitHub\posproject2\POS\POS\bin\Debug\LiveCharts.xml
+E:\GitHub\posproject2\POS\POS\bin\Debug\LiveCharts.Wpf.pdb
+E:\GitHub\posproject2\POS\POS\bin\Debug\LiveCharts.Wpf.xml

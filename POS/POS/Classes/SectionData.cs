@@ -24,7 +24,6 @@ namespace POS.Classes
         public static string code;
 
         public static BrushConverter bc = new BrushConverter();
-
         public static void popUpResponse(string title, string content)
         {
             PopupNotifier popup = new PopupNotifier();
@@ -37,7 +36,6 @@ namespace POS.Classes
             //popup.ContentFont = new System.Drawing.Font("Tahoma", 8F);
             popup.Popup(); 
         }
-
         public static long genRandomCode(string type)
         {
             Random rnd = new Random();

@@ -53,7 +53,6 @@ namespace POS.View
         ImageBrush brush = new ImageBrush();
 
         int index = 0;
-        public Window parentWindow;
 
         public UC_vendors()
         {
@@ -368,7 +367,7 @@ namespace POS.View
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucVendor.FlowDirection = FlowDirection.LeftToRight; }
             else
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucVendor.FlowDirection = FlowDirection.RightToLeft; }
-            parentWindow = Window.GetWindow(this);
+            //parentWindow = Window.GetWindow(this);
             translate();
            
             var agents = await agentModel.GetAgentsAsync("v");
@@ -453,7 +452,7 @@ namespace POS.View
             {
                 if (emailError)
                    //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
-                Toaster.ShowWarning(parentWindow, message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
 
                 else
                 {
@@ -481,9 +480,9 @@ namespace POS.View
                     string s = await agentModel.saveAgent(agent);
 
                     if (!s.Equals("0"))// SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                        Toaster.ShowSuccess(parentWindow, message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                        Toaster.ShowWarning(parentWindow, message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
 
                     int agentId = int.Parse(s);
@@ -492,7 +491,7 @@ namespace POS.View
             }
             else
                 //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
-            Toaster.ShowWarning(parentWindow, message: MainWindow.resourcemanager.GetString("trPopAddValidate"), animation: ToasterAnimation.FadeIn);
+            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAddValidate"), animation: ToasterAnimation.FadeIn);
 
 
             agents = await agentModel.GetAgentsAsync("v");
@@ -554,7 +553,7 @@ namespace POS.View
             {
                 if (emailError)
                     //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
-                Toaster.ShowWarning(parentWindow, message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
 
                 else
                 {
@@ -578,15 +577,15 @@ namespace POS.View
 
                     if (!s.Equals("0"))
                         //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                         Toaster.ShowSuccess(parentWindow, message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                     else
                         //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(parentWindow, message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     int agentId = int.Parse(s);
                     await agentModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
                 }
             }
-            else Toaster.ShowWarning(parentWindow, message: MainWindow.resourcemanager.GetString("trPopUpdateValidate"), animation: ToasterAnimation.FadeIn);
+            else Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdateValidate"), animation: ToasterAnimation.FadeIn);
             //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
 
             agents = await agentModel.GetAgentsAsync("v");
@@ -612,9 +611,9 @@ namespace POS.View
                 bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
 
                 if (b) //SectionData.popUpResponse("", popupContent);
-                Toaster.ShowWarning(parentWindow, message: popupContent, animation: ToasterAnimation.FadeIn);
+                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(parentWindow, message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
 
             agents = await agentModel.GetAgentsAsync("v");
@@ -635,9 +634,9 @@ namespace POS.View
             string s = await agentModel.saveAgent(agent);
 
             if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
-            Toaster.ShowSuccess(parentWindow, message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else // SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-            Toaster.ShowWarning(parentWindow, message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
         }
 
         private void tb_name_TextChanged(object sender, TextChangedEventArgs e)

@@ -28,6 +28,7 @@ namespace POS
 
         public static ResourceManager resourcemanager;
         bool menuState = false;
+
         public MainWindow()
         {
             InitializeComponent();

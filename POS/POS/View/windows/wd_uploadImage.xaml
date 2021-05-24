@@ -80,7 +80,7 @@
                           Background="#E65B65" BorderBrush="{x:Null}"  />
                 <Button Content="Save" Grid.Row="5" Grid.Column="1"
                        Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"
-                          Background="#219653" BorderBrush="{x:Null}"  />
+                          Background="#0086D7" BorderBrush="{x:Null}"  />
             </Grid>
 
         </Border>

@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using netoaster;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -235,8 +236,10 @@ namespace POS.View
                
                 string s = await bankModel.saveBank(bank);
 
-                if (s.Equals("Bank Is Added Successfully")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
-                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                if (s.Equals("Bank Is Added Successfully"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             }
 
@@ -275,8 +278,10 @@ namespace POS.View
 
                 string s = await bankModel.saveBank(bank);
 
-                if (s.Equals("Bank Is Updated Successfully")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                if (s.Equals("Bank Is Updated Successfully"))// SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
 
             banks = await bankModel.GetBanksAsync();
@@ -298,8 +303,10 @@ namespace POS.View
                 MessageBox.Show(bank.canDelete.ToString() + " " + bank.isActive);
                 bool b = await bankModel.deleteBank(bank.bankId, MainWindow.userID.Value, bank.canDelete);
 
-                if (b) SectionData.popUpResponse("", popupContent);
-                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                if (b) //SectionData.popUpResponse("", popupContent);
+                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             }
 
@@ -317,8 +324,10 @@ namespace POS.View
 
             string s = await bankModel.saveBank(bank);
 
-            if (s.Equals("Bank Is Updated Successfully")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            if (s.Equals("Bank Is Updated Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
         }
         private void Dg_bank_SelectionChanged(object sender, SelectionChangedEventArgs e)

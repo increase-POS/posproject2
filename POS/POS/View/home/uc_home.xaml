@@ -5,8 +5,255 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" 
+               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             d:DesignHeight="700" d:DesignWidth="1100"
+             Loaded="UserControl_Loaded">
+    <Grid Margin="5" Background="#E8E8E8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2.5*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions >
+            <RowDefinition Height="130"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.RowSpan="2" Grid.Column="1"  Margin="25,25,25,10" Background="White">
+            <Grid.RowDefinitions >
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Background="#FFB36B">
+                <TextBlock Text="Increase POS" FontSize="20" FontWeight="Bold" Foreground="White"
+                       VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,5,5,5"/>
+            </Grid>
+            <Grid Grid.Row="1" Margin="0,15,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="75"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel  VerticalAlignment="Center" Orientation="Vertical" Grid.Column="0" Margin="10,10,10,10">
+                    <TextBlock  Text="Stores" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="Count" FontSize="14" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                </StackPanel>
+                <TextBlock Text="3" Grid.Column="1"  FontSize="16"  FontWeight="Bold"  Foreground="#9B9B9B"
+                       VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5,5,15,5"/>
+                <Separator Background="#999999" Grid.Row="2"   Width="500"  Margin="5,0,5,0"
+                                      Grid.ColumnSpan="2" VerticalAlignment="Center" />
+            </Grid>
+
+            <Grid Grid.Row="2" Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="75"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel  VerticalAlignment="Center" Orientation="Vertical" Grid.Column="0" Margin="10,10,10,10">
+                    <TextBlock  Text="Branches" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="Count" FontSize="14" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                </StackPanel>
+                <TextBlock Text="1" Grid.Column="1"  FontSize="14"  FontWeight="Bold"  Foreground="#9B9B9B"
+                       VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5,5,15,5"/>
+                <Separator Background="#999999" Grid.Row="2"   Width="500"  Margin="5,0,5,0"
+                                      Grid.ColumnSpan="2" VerticalAlignment="Center" />
+            </Grid>
+            <Grid Grid.Row="3" Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="75"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel  VerticalAlignment="Center" Orientation="Vertical" Grid.Column="0" Margin="10,10,10,10">
+                    <TextBlock  Text="Pos" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="Count" FontSize="14" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                </StackPanel>
+                <TextBlock Text="17" Grid.Column="1"  FontSize="16"  FontWeight="Bold"  Foreground="#9B9B9B"
+                       VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5,5,15,5"/>
+                <Separator Background="#999999" Grid.Row="2"   Width="500"  Margin="5,0,5,0"
+                                      Grid.ColumnSpan="2" VerticalAlignment="Center" />
+            </Grid>
+            <Grid Grid.Row="4" Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="75"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel  VerticalAlignment="Center" Orientation="Vertical" Grid.Column="0" Margin="10,10,10,10">
+                    <TextBlock  Text="Vendors" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="Count" FontSize="14" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                </StackPanel>
+                <TextBlock Text="53" Grid.Column="1"  FontSize="16"  FontWeight="Bold"  Foreground="#9B9B9B"
+                       VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5,5,15,5"/>
+                <Separator Background="#999999" Grid.Row="2"   Width="500"  Margin="5,0,5,0"
+                                      Grid.ColumnSpan="2" VerticalAlignment="Center" />
+            </Grid>
+            <Grid Grid.Row="5" Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="75"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel  VerticalAlignment="Center" Orientation="Vertical" Grid.Column="0" Margin="10,10,10,10">
+                    <TextBlock  Text="Customers" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="Count" FontSize="14" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                </StackPanel>
+                <TextBlock Text="89" Grid.Column="1"  FontSize="16"  FontWeight="Bold"  Foreground="#9B9B9B"
+                       VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5,5,15,5"/>
+                <Separator Background="#999999" Grid.Row="2"   Width="500"  Margin="5,0,5,0"
+                                      Grid.ColumnSpan="2" VerticalAlignment="Center" />
+            </Grid>
+            <Grid Grid.Row="6" Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="75"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel  VerticalAlignment="Center" Orientation="Vertical" Grid.Column="0" Margin="10,10,10,10">
+                    <TextBlock  Text="Categories" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="Count" FontSize="14" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                </StackPanel>
+                <TextBlock Text="47" Grid.Column="1"  FontSize="16"  FontWeight="Bold"  Foreground="#9B9B9B"
+                       VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5,5,15,5"/>
+                <Separator Background="#999999" Grid.Row="2"   Width="500"  Margin="5,0,5,0"
+                                      Grid.ColumnSpan="2" VerticalAlignment="Center" />
+            </Grid>
+            <Grid Grid.Row="7" Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="75"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel  VerticalAlignment="Center" Orientation="Vertical" Grid.Column="0" Margin="10,10,10,10">
+                    <TextBlock  Text="Items" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="Count" FontSize="14" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                </StackPanel>
+                <TextBlock Text="964" Grid.Column="1"  FontSize="16"  FontWeight="Bold"  Foreground="#9B9B9B"
+                       VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5,5,15,5"/>
+                <Separator Background="#999999" Grid.Row="2"   Width="500"  Margin="5,0,5,0"
+                                      Grid.ColumnSpan="2" VerticalAlignment="Center" />
+            </Grid>
+        </Grid>
+
+        <Grid Margin="15,15,0,0"  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Margin="10" Grid.Column="0" Background="White" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Background="#BC80EF">
+                    <materialDesign:PackIcon VerticalAlignment="Center" HorizontalAlignment="Center"
+                                             Foreground="#E8E8E8" Kind="Dollar" 
+                                         Width="40" Height="40"/>
+                </Grid>
+                <StackPanel  Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical"  Margin="15,5,5,5">
+                    <TextBlock  Text="Items" FontSize="16" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="964" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Grid>
+            <Grid Margin="10" Grid.Column="1" Background="White" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Background="#49BBEB" Grid.RowSpan="2">
+                    <materialDesign:PackIcon VerticalAlignment="Center" HorizontalAlignment="Center"
+                                             Foreground="#E8E8E8" Kind="Dollar" 
+                                         Width="40" Height="40"/>
+                </Grid>
+                <StackPanel  Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical"  Margin="15,5,5,5">
+                    <TextBlock  Text="Count" FontSize="16" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="982" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                </StackPanel>
+                <StackPanel  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Orientation="Vertical"  Margin="15,5,5,5">
+                    <TextBlock  Text="Sales" FontSize="16" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="34.506$" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Grid>
+
+            <Grid Margin="10" Grid.Column="2" Background="White" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Background="#FF5D6F" Grid.RowSpan="2">
+                    <materialDesign:PackIcon VerticalAlignment="Center" HorizontalAlignment="Center"
+                                             Foreground="#E8E8E8" Kind="Dollar" 
+                                         Width="40" Height="40"/>
+                </Grid>
+                <StackPanel  Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical"  Margin="15,5,5,5">
+                    <TextBlock  Text="Count" FontSize="16" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="653" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                </StackPanel>
+                <StackPanel  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Orientation="Vertical"  Margin="15,5,5,5">
+                    <TextBlock  Text="Purchases" FontSize="16" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="22.586$" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Grid>
+
+         
+
+
+        </Grid>
+        
+        <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Right" Grid.Row="1" Margin="25,10,10,10"  Background="White" >
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Title="Sales" LabelFormatter="{Binding YFormatter}"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis Title="Month" Labels="{Binding Labels}"></lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+        </lvc:CartesianChart>
+
+
+        <TextBlock Grid.Row="4" Grid.Column="0"  FontSize="12" 
+                   FontWeight="Normal" Foreground="#9B9B9B"
+                       VerticalAlignment="Center" Margin="25,5,5,5"
+                   Text="2012 © AllRight Reserved for Increase"/>
+        
     </Grid>
 </UserControl>

@@ -602,13 +602,6 @@
                             <Separator Background="#999999"   Width="260"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                         </Grid>
-                        <!--<TextBox x:Name="tb_job"  Text="{Binding job, Mode=OneWay}" Grid.Row="1" Padding="10,5,5,5"
-                                 BorderThickness="1"  materialDesign:HintAssist.Hint="Job..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="#f8f8f8"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="1"   Height="35" Width="340"  Margin="10,5" />-->
-
                         <Grid   Grid.Row="1"  Margin="5,0,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
