@@ -24,6 +24,16 @@ namespace POS.View
     /// </summary>
     public partial class uc_packageOfItems : UserControl
     {
+        private static uc_packageOfItems _instance;
+        public static uc_packageOfItems Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_packageOfItems();
+                return _instance;
+            }
+        }
         public uc_packageOfItems()
         {
             InitializeComponent();
@@ -755,5 +765,9 @@ namespace POS.View
         }
         #endregion
 
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -1,5 +1,5 @@
-﻿using netoaster;
-using POS.Classes;
+﻿using POS.Classes;
+using netoaster;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +49,17 @@ namespace POS.View
 
         CountryCode countrycodes = new CountryCode();
         City cityCodes = new City();
+
+        private static UC_branch _instance;
+        public static UC_branch Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new UC_branch();
+                return _instance;
+            }
+        }
         public UC_branch()
         {
             InitializeComponent();
@@ -145,6 +156,7 @@ namespace POS.View
             tt_email.Content = MainWindow.resourcemanager.GetString("trEmail");
             tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
             tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
@@ -211,76 +223,10 @@ namespace POS.View
 
             if (branch != null)
             {
-                //mobile
+                SectionData.getMobile(branch.mobile, cb_area, tb_mobile);
 
-                if ((branch.mobile != null))
-                {
-                    string area = branch.mobile;
-                    string[] pharr = area.Split('-');
-                    int j = 0;
-                    string phone = "";
-
-                    foreach (string strpart in pharr)
-                    {
-                        if (j == 0)
-                        {
-                            area = strpart;
-                        }
-                        else
-                        {
-                            phone = phone + strpart;
-                        }
-                        j++;
-                    }
-
-                    cb_area.Text = area;
-
-                    tb_mobile.Text = phone.ToString();
-                }
-                else
-                {
-                    cb_area.SelectedIndex = -1;
-                    tb_mobile.Clear();
-                }
-                //phone
-                if ((branch.phone != null))
-                {
-                    string area = branch.phone;
-                    string[] pharr = area.Split('-');
-                    int j = 0;
-                    string phone = "";
-                    string areaLocal = "";
-                    foreach (string strpart in pharr)
-                    {
-                        if (j == 0)
-                        {
-                            area = strpart;
-
-                        }
-                        else if (j == 1)
-                        {
-                            areaLocal = strpart;
-
-
-                        }
-                        else
-                        {
-                            phone = phone + strpart;
-
-                        }
-                        j++;
-                    }
-
-                    cb_areaPhone.Text = area;
-                    cb_areaPhoneLocal.Text = areaLocal;
-                    tb_phone.Text = phone.ToString();
-                }
-                else
-                {
-                    cb_areaPhone.SelectedIndex = -1;
-                    cb_areaPhoneLocal.SelectedIndex = -1;
-                    tb_phone.Clear();
-                }
+                SectionData.getPhone(branch.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);  
+                
                 //parent branch
                 try
                 {
@@ -290,9 +236,8 @@ namespace POS.View
                 {
                     cb_branch.SelectedValue = -1;
                 }
-
+                //delete
                 if (branch.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
-
                 else
                 {
                     if (branch.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
@@ -361,11 +306,14 @@ namespace POS.View
 
             if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
             {
-                if (emailError)
-                    SectionData.validateEmail(tb_email , p_errorEmail , tt_errorEmail);
-                //duplicate
-                else if (iscodeExist)
-                    SectionData.validateDuplicateCode(tb_code ,  p_errorCode, tt_errorCode);
+                if ((emailError) || (iscodeExist))
+                {
+                    if (emailError)
+                        SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                    //duplicate
+                    if (iscodeExist)
+                        SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode);
+                }
                 else
                 {
                     //SectionData.genRandomCode("b", "Branch");
@@ -382,28 +330,23 @@ namespace POS.View
                     branch.updateUserId = MainWindow.userID;
                     branch.type = "b";
                     branch.isActive = 1;
-                    branch.parentId = ParentId;
+                    branch.parentId = Convert.ToInt32(cb_branch.SelectedValue);
 
                     string s = await branchModel.saveBranch(branch);
 
-                    if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                    else // SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    if (s.Equals("true"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); 
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-
+                    await RefreshBranchesList();
+                    tb_search_TextChanged(null, null);
                 }
             }
-            //else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
-
-            branches = await branchModel.GetAllWithoutMain("b");
-            branchesQuery = branches.Where(s => s.isActive == Convert.ToInt32(tgl_branchIsActive.IsChecked));
-            dg_branch.ItemsSource = branchesQuery;
 
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-
             bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "b", "Branch" , branch.branchId);
 
             //chk empty branch
@@ -427,10 +370,13 @@ namespace POS.View
                     emailError = true;
             if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
             {
-                if (emailError)
-                    SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-                else if (iscodeExist)
-                    SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode);
+                if ((emailError) || (iscodeExist))
+                {
+                    if (emailError)
+                        SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                    if (iscodeExist)
+                        SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode);
+                }
                 else
                 {
                     //SectionData.genRandomCode("b" , "Branch");
@@ -446,53 +392,54 @@ namespace POS.View
                     branch.updateUserId = MainWindow.userID;
                     branch.type = "b";
                     branch.isActive = 1;
-                    branch.parentId = ParentId;
-                    
+                    branch.parentId = Convert.ToInt32(cb_branch.SelectedValue);
+
                     string s = await branchModel.saveBranch(branch);
 
                     if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-
                     //var branches = await branchModel.GetBranchesAsync("b");
                     //dg_branch.ItemsSource = branches;
+
+                    await RefreshBranchesList();
+                    tb_search_TextChanged(null, null);
+
+                    cb_branch.SelectedValue = branch.parentId;
+
+                    SectionData.getMobile(branch.mobile, cb_area, tb_mobile);
+
+                    SectionData.getPhone(branch.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
                 }
             }
-            //else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
-
-            branches = await branchModel.GetAllWithoutMain("b");
-            branchesQuery = branches.Where(s => s.isActive == Convert.ToInt32(tgl_branchIsActive.IsChecked));
-            dg_branch.ItemsSource = branchesQuery;
 
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if ((!branch.canDelete) && (branch.isActive == 0))
-                activate();
-            else
-            {
-                string popupContent = "";
-                if (branch.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                if ((!branch.canDelete) && (branch.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+            if (branch.branchId != 0)
+            { 
+                if ((!branch.canDelete) && (branch.isActive == 0))
+                    activate();
+                else
+                {
+                    string popupContent = "";
+                    if (branch.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                    if ((!branch.canDelete) && (branch.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                bool b = await branchModel.deleteBranch(branch.branchId, MainWindow.userID.Value ,branch.canDelete);
+                    bool b = await branchModel.deleteBranch(branch.branchId, MainWindow.userID.Value, branch.canDelete);
 
-                if (b) //SectionData.popUpResponse("", popupContent);
+                    if (b) //SectionData.popUpResponse("", popupContent);
                 Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
 
+                await RefreshBranchesList();
+                tb_search_TextChanged(null, null);
             }
-
-            branches = await branchModel.GetAllWithoutMain("b");
-            branchesQuery = branches.Where(s => s.isActive == Convert.ToInt32(tgl_branchIsActive.IsChecked));
-            dg_branch.ItemsSource = branchesQuery;
-
             //clear textBoxs
             Btn_clear_Click(sender, e);
 
@@ -504,11 +451,13 @@ namespace POS.View
 
             string s = await branchModel.saveBranch(branch);
 
-            if (s.Equals("true"))// SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
-            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-
-            else // SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+            await RefreshBranchesList();
+            tb_search_TextChanged(null, null);
 
         }
 
@@ -625,12 +574,12 @@ namespace POS.View
         private void cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            try
-            {
-                ParentId = Convert.ToInt32(cb_branch.SelectedValue);
-            }
-            catch 
-            { ParentId = 0; }
+            //try
+            //{
+            //    ParentId = Convert.ToInt32(cb_branch.SelectedValue);
+            //}
+            //catch 
+            //{ ParentId = 0; }
         }
 
         private void tb_code_LostFocus(object sender, RoutedEventArgs e)
@@ -680,7 +629,10 @@ namespace POS.View
             }
         }
 
-      
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshBranchesList();
+        }
     }
 }
 

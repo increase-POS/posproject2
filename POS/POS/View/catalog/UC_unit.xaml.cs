@@ -1,4 +1,5 @@
 ﻿using POS.Classes;
+using netoaster;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -19,6 +20,17 @@ namespace POS.View
         Unit unitModel = new Unit();
         Unit unit = new Unit();
         List<Unit> units = new List<Unit>();
+        private static UC_unit _instance;
+        public static UC_unit Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new UC_unit();
+                return _instance;
+            }
+        }
+        
         public UC_unit()
         {
             InitializeComponent();
@@ -99,7 +111,6 @@ namespace POS.View
             txt_unit.Text = MainWindow.resourcemanager.GetString("trUnit");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelestUnitNameHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trUnitNameHint"));
             tb_isSmallest.Text = MainWindow.resourcemanager.GetString("trIsSmallestHint");
@@ -169,8 +180,10 @@ namespace POS.View
                         isActive = 1,
                     };
                     Boolean res = await unitModel.saveUnit(unit);
-                    if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                    else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     refreshUnitsGrid();
                     tb_name.Clear();
@@ -190,8 +203,10 @@ namespace POS.View
                 int userId = (int)MainWindow.userID;
                 Boolean res = await unitModel.deleteUnit(unit.unitId, userId, unit.canDelete);
 
-                if (res) SectionData.popUpResponse("", popupContent);
-                else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                if (res) //SectionData.popUpResponse("", popupContent);
+                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
 
             var units = await unitModel.GetUnitsAsync();
@@ -205,8 +220,10 @@ namespace POS.View
 
             Boolean s = await unitModel.saveUnit(unit);
 
-            if (s) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            if (s) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
         }
 
@@ -238,13 +255,30 @@ namespace POS.View
                     unit.name = tb_name.Text;
 
                     Boolean res = await unitModel.saveUnit(unit);
-                    if (res) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                    else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     refreshUnitsGrid();
                 }
 
             }
+        }
+
+        private void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+            refreshUnitsGrid();
         }
     }
 }

@@ -22,6 +22,16 @@ namespace POS.View.accounts
     /// </summary>
     public partial class uc_banksAccounts : UserControl
     {
+        private static uc_banksAccounts _instance;
+        public static uc_banksAccounts Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_banksAccounts();
+                return _instance;
+            }
+        }
         public uc_banksAccounts()
         {
             InitializeComponent();
@@ -112,6 +122,11 @@ namespace POS.View.accounts
         }
 
         private void Btn_image_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
 
         }

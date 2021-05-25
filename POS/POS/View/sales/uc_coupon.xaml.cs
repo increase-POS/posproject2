@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using netoaster;
 using POS.Classes;
 namespace POS.View
 {
@@ -22,8 +23,19 @@ namespace POS.View
     /// </summary>
     public partial class uc_coupon : UserControl
     {
+
         Coupon coupon = new Coupon();
         Coupon couponModel = new Coupon();
+        private static uc_coupon _instance;
+        public static uc_coupon Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_coupon();
+                return _instance;
+            }
+        }
         public uc_coupon()
         {
             InitializeComponent();
@@ -250,9 +262,10 @@ namespace POS.View
 
 
             string s = await couponModel.Save(coupon);
-            if (s.Equals("true")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-
+            if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); 
+            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             #endregion
 
         }
@@ -269,6 +282,11 @@ namespace POS.View
         }
 
         private void Btn_update_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
 
         }

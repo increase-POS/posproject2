@@ -22,6 +22,17 @@ namespace POS.View
     /// </summary>
     public partial class UC_SectionData : UserControl
     {
+
+        private static UC_SectionData _instance;
+        public static UC_SectionData Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new UC_SectionData();
+                return _instance;
+            }
+        }
         public UC_SectionData()
         {
             InitializeComponent();
@@ -67,9 +78,11 @@ namespace POS.View
         {
             refreashBachgroundClick(btn_customers);
 
-            GRID_Main.Children.Clear();
-            UC_Customer uc = new UC_Customer();
-            GRID_Main.Children.Add(uc);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(UC_Customer.Instance);
+
+            //UC_Customer uc = new UC_Customer();
+            //grid_main.Children.Add(uc);
         }
 
         private void Btn_suppliers_Click(object sender, RoutedEventArgs e)
@@ -77,9 +90,11 @@ namespace POS.View
             refreashBachgroundClick(btn_suppliers);
 
 
-            GRID_Main.Children.Clear();
-            UC_vendors uc = new UC_vendors();
-            GRID_Main.Children.Add(uc);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(UC_vendors.Instance);
+
+            //UC_vendors uc = new UC_vendors();
+            //grid_main.Children.Add(uc);
 
         }
 
@@ -108,9 +123,11 @@ namespace POS.View
             refreashBachgroundClick(btn_users);
 
 
-            GRID_Main.Children.Clear();
-            UC_users uc = new UC_users();
-            GRID_Main.Children.Add(uc);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(UC_users.Instance);
+
+            //UC_users uc = new UC_users();
+            //grid_main.Children.Add(uc);
         }
 
         private void Btn_branches_Click(object sender, RoutedEventArgs e)
@@ -118,9 +135,11 @@ namespace POS.View
             refreashBachgroundClick(btn_branches);
 
 
-            GRID_Main.Children.Clear();
-            UC_branch uc = new UC_branch();
-            GRID_Main.Children.Add(uc);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(UC_branch.Instance);
+
+            //UC_branch uc = new UC_branch();
+            //grid_main.Children.Add(uc);
         }
 
         private void Btn_stores_Click(object sender, RoutedEventArgs e)
@@ -128,9 +147,11 @@ namespace POS.View
             refreashBachgroundClick(btn_stores);
 
 
-            GRID_Main.Children.Clear();
-            UC_store uc = new UC_store();
-            GRID_Main.Children.Add(uc);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(UC_store.Instance);
+
+            //UC_store uc = new UC_store();
+            //grid_main.Children.Add(uc);
         }
 
         private void Btn_pos_Click(object sender, RoutedEventArgs e)
@@ -138,9 +159,11 @@ namespace POS.View
             refreashBachgroundClick(btn_pos);
 
 
-            GRID_Main.Children.Clear();
-            UC_posAccounts uc = new UC_posAccounts();
-            GRID_Main.Children.Add(uc);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(UC_posAccounts.Instance);
+
+            //UC_posAccounts uc = new UC_posAccounts();
+            //grid_main.Children.Add(uc);
         }
 
         private void Btn_banks_Click(object sender, RoutedEventArgs e)
@@ -148,9 +171,11 @@ namespace POS.View
             refreashBachgroundClick(btn_banks);
 
 
-            GRID_Main.Children.Clear();
-            UC_bank uc = new UC_bank();
-            GRID_Main.Children.Add(uc);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(UC_bank.Instance);
+
+            //UC_bank uc = new UC_bank();
+            //grid_main.Children.Add(uc);
         }
 
       

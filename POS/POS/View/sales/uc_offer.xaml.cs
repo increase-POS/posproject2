@@ -23,6 +23,16 @@ namespace POS.View
     /// </summary>
     public partial class uc_offer : UserControl
     {
+        private static uc_offer _instance;
+        public static uc_offer Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_offer();
+                return _instance;
+            }
+        }
         public uc_offer()
         {
             InitializeComponent();
@@ -215,6 +225,11 @@ namespace POS.View
             }
 
             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

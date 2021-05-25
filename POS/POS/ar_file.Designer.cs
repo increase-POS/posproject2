@@ -1186,6 +1186,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الفئة الأب.
+        /// </summary>
+        internal static string trParentCategory {
+            get {
+                return ResourceManager.GetString("trParentCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to كلمة المرور.
         /// </summary>
         internal static string trPassword {
@@ -1992,6 +2001,24 @@ namespace POS {
         internal static string trVendorInvoiceDetails {
             get {
                 return ResourceManager.GetString("trVendorInvoiceDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to العرض على شكل قائمة.
+        /// </summary>
+        internal static string trViewGrid {
+            get {
+                return ResourceManager.GetString("trViewGrid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to العرض على شكل عناصر.
+        /// </summary>
+        internal static string trViewItems {
+            get {
+                return ResourceManager.GetString("trViewItems", resourceCulture);
             }
         }
         

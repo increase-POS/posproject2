@@ -22,6 +22,16 @@ namespace POS.View.accounts
     /// </summary>
     public partial class uc_accounts : UserControl
     {
+        private static uc_accounts _instance;
+        public static uc_accounts Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_accounts();
+                return _instance;
+            }
+        }
         public uc_accounts()
         {
             InitializeComponent();
@@ -81,16 +91,18 @@ namespace POS.View.accounts
 
 
             grid_main.Children.Clear();
-            uc_posAccounts uc = new uc_posAccounts();
-            grid_main.Children.Add(uc);
+            grid_main.Children.Add(uc_posAccounts.Instance);
+            //uc_posAccounts uc = new uc_posAccounts();
+            //grid_main.Children.Add(uc);
         }
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_payments);
 
             grid_main.Children.Clear();
-            uc_paymentsAccounts uc = new uc_paymentsAccounts();
-            grid_main.Children.Add(uc);
+            grid_main.Children.Add(uc_paymentsAccounts.Instance);
+            //uc_paymentsAccounts uc = new uc_paymentsAccounts();
+            //grid_main.Children.Add(uc);
         }
 
         private void Btn_received_Click(object sender, RoutedEventArgs e)
@@ -98,16 +110,18 @@ namespace POS.View.accounts
             refreashBachgroundClick(btn_received);
 
             grid_main.Children.Clear();
-            uc_receivedAccounts uc = new uc_receivedAccounts();
-            grid_main.Children.Add(uc);
+            grid_main.Children.Add(uc_receivedAccounts.Instance);
+            //uc_receivedAccounts uc = new uc_receivedAccounts();
+            //grid_main.Children.Add(uc);
         }
         private void Btn_banks_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_banks);
 
             grid_main.Children.Clear();
-            uc_banksAccounts uc = new uc_banksAccounts();
-            grid_main.Children.Add(uc);
+            grid_main.Children.Add(uc_banksAccounts.Instance);
+            //uc_banksAccounts uc = new uc_banksAccounts();
+            //grid_main.Children.Add(uc);
         }
 
        

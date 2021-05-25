@@ -26,6 +26,16 @@ namespace POS.View
     /// </summary>
     public partial class uc_receiptInvoice : UserControl
     {
+        private static uc_receiptInvoice _instance;
+        public static uc_receiptInvoice Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_receiptInvoice();
+                return _instance;
+            }
+        }
         public uc_receiptInvoice()
         {
             InitializeComponent();

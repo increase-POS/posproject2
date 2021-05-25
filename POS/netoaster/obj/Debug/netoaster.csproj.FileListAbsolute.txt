@@ -43,7 +43,6 @@ E:\Backup Project\2015\YFS\18\YFS\netoaster\obj\Debug\netoaster.csprojAssemblyRe
 E:\Backup Project\2015\YFS\18\YFS\netoaster\obj\Debug\netoaster.csproj.CoreCompileInputs.cache
 E:\GitHub\posproject2\POS\netoaster\bin\Debug\netoaster.dll
 E:\GitHub\posproject2\POS\netoaster\bin\Debug\netoaster.pdb
-E:\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
 E:\GitHub\posproject2\POS\netoaster\obj\Debug\ToasterWindow.g.cs
 E:\GitHub\posproject2\POS\netoaster\obj\Debug\GeneratedInternalTypeHelper.g.cs
 E:\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster_MarkupCompile.cache

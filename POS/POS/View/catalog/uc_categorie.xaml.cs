@@ -1,9 +1,11 @@
 ﻿using Microsoft.Win32;
+using netoaster;
 using POS.Classes;
 using POS.controlTemplate;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -19,6 +21,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Resources;
 using System.Windows.Shapes;
 
 namespace POS.View
@@ -38,13 +41,17 @@ namespace POS.View
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
        
 
-        int? parentCategorieSelctedValue;
+        int parentCategorieSelctedValue = 0;
         public byte tglCategoryState;
         public string txtCategorySearch;
 
         OpenFileDialog openFileDialog = new OpenFileDialog();
 
         ImageBrush brush = new ImageBrush();
+
+        BrushConverter bc = new BrushConverter();
+
+        string img_fileName = "pic/no-image-icon-125x125.png";
 
         public uc_categorie()
         {
@@ -74,7 +81,21 @@ namespace POS.View
             btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
             btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
-           
+
+            tt_name.Content = MainWindow.resourcemanager.GetString("trName");
+            tt_code.Content = MainWindow.resourcemanager.GetString("trCode");
+            tt_details.Content = MainWindow.resourcemanager.GetString("trDetails");
+            tt_parentCategory.Content = MainWindow.resourcemanager.GetString("trParentCategory");
+            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+            tt_taxes.Content = MainWindow.resourcemanager.GetString("trTax");
+            tt_grid.Content = MainWindow.resourcemanager.GetString("trViewGrid");
+            tt_items.Content = MainWindow.resourcemanager.GetString("trViewItems");
+
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -97,13 +118,19 @@ namespace POS.View
             fillCategories();
 
             btns = new Button[]  { btn_firstPage,btn_prevPage ,btn_activePage,btn_nextPage,btn_lastPage };
+
+            //this.Dispatcher.Invoke(() =>
+            //{
+            //    Txb_searchcategories_TextChanged(null, null);
+            //});
+
         }
         private void Cb_parentCategorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cb_parentCategorie.SelectedValue != null)
-            {
                 parentCategorieSelctedValue = int.Parse(cb_parentCategorie.SelectedValue.ToString());
-            }
+            else
+                parentCategorieSelctedValue = 0;
 
         }
       
@@ -112,72 +139,23 @@ namespace POS.View
        
         private void Tb_categoryCode_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
-
-            if (tb_categoryCode.Text.Equals(""))
-            {
-                p_errorCode.Visibility = Visibility.Visible;
-                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_categoryCode.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorCode.Visibility = Visibility.Collapsed;
-                tt_errorCode.Visibility = Visibility.Collapsed;
-                tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            SectionData.validateEmptyTextBox(tb_categoryCode, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
         }
 
         private void Tb_categoryCode_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var bc = new BrushConverter();
-
-            if (tb_categoryCode.Text.Equals(""))
-            {
-                p_errorCode.Visibility = Visibility.Visible;
-                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_categoryCode.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                tt_errorCode.Visibility = Visibility.Collapsed;
-                tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            SectionData.validateEmptyTextBox(tb_categoryCode, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
         }
 
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
-
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
 
         }
 
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var bc = new BrushConverter();
-
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -188,86 +166,138 @@ namespace POS.View
         #region Add - Update - Delete _ Clear
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
+            category.categoryId = 0;
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk empty code
+            SectionData.validateEmptyTextBox(tb_categoryCode, p_errorName, tt_errorName, "trEmptyCodeToolTip");
             decimal tax;
             if (string.IsNullOrEmpty(tb_taxes.Text))
                 tax = 0;
             else tax = decimal.Parse(tb_taxes.Text);
 
-            Category category = new Category
+            if ((!tb_name.Text.Equals("")) && (!tb_categoryCode.Text.Equals("")))
             {
+                category.categoryCode = tb_categoryCode.Text;
+                category.name = tb_name.Text;
+                category.details = tb_details.Text;
+                category.taxes = tax;
+                category.parentId = parentCategorieSelctedValue;
+                category.createUserId = MainWindow.userID;
+                category.updateUserId = MainWindow.userID;
+                category.isActive = 1;
 
-                categoryCode = tb_categoryCode.Text,
-                name = tb_name.Text,
-                details = tb_details.Text,
-                image = "/pic/no-image-icon-125x125.png",
-                taxes = tax,
-                parentId = parentCategorieSelctedValue,
-                //createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                //updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                createUserId = 2,
-                updateUserId = 2,
-                isActive = 1
-            };
+                string s = await categoryModel.saveCategory(category);
 
-            await categoryModel.saveCategory(category);
+                if (!s.Equals("0"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);  
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-            //var Categories = await categoryModel.GetAllCategories();
-            //dg_categories.ItemsSource = Categories;
-            await RefrishCategories();
-            Txb_searchcategories_TextChanged(null, null);
+                int categoryId = int.Parse(s);
+                await categoryModel.uploadImage(img_fileName, Md5Encription.MD5Hash("Inc-m" + categoryId.ToString()), categoryId);
+
+                await RefrishCategories();
+                Txb_searchcategories_TextChanged(null, null);
+            }
+
+          
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk empty code
+            SectionData.validateEmptyTextBox(tb_categoryCode, p_errorName, tt_errorName, "trEmptyCodeToolTip");
             decimal tax;
             if (string.IsNullOrEmpty(tb_taxes.Text))
                 tax = 0;
             else tax = decimal.Parse(tb_taxes.Text);
 
-            //Category category = new Category
-            //{
-            //category.categoryId = _categorieId;
-            category.categoryCode = tb_categoryCode.Text;
-            category.name = tb_name.Text;
-            category.details = tb_details.Text;
-            category.image = "/pic/no-image-icon-125x125.png";
-            category.taxes = tax;
-            category.parentId = parentCategorieSelctedValue;
-            //createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-            //updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-            //createUserId = 2,
-            category.updateUserId = 4;
-            //isActive = 1
-            //};
+            if ((!tb_name.Text.Equals("")) && (!tb_categoryCode.Text.Equals("")))
+            {
+                category.categoryCode = tb_categoryCode.Text;
+                category.name = tb_name.Text;
+                category.details = tb_details.Text;
+                category.taxes = tax;
+                category.parentId = parentCategorieSelctedValue;
+                category.updateUserId = MainWindow.userID ;
 
+                string s = await categoryModel.saveCategory(category);
 
-            await categoryModel.saveCategory(category);
+                if (!s.Equals("0")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate")); 
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-            //var categories = await categoryModel.GetAllCategories();
-            //dg_categories.ItemsSource = categories;
-            await RefrishCategories();
-            Txb_searchcategories_TextChanged(null, null);
+                int categoryId = int.Parse(s);
+                await categoryModel.uploadImage(img_fileName, Md5Encription.MD5Hash("Inc-m" + categoryId.ToString()), categoryId);
+
+                await RefrishCategories();
+                Txb_searchcategories_TextChanged(null, null);
+            }
+
+        
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            // p_errorName.Visibility = Visibility.Collapsed;
-            // var bc = new BrushConverter();
-            //  tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_name.Text = "";
-            tb_taxes.Text = "";
-            tb_details.Text = "";
-            tb_categoryCode.Text = "";
-            cb_parentCategorie.Text = "";
+            tb_name.Clear();
+            tb_taxes.Clear();
+            tb_details.Clear();
+            tb_categoryCode.Clear();
+            cb_parentCategorie.SelectedIndex = -1;
+            //clear img
+            Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            brush.ImageSource = temp;
+            img_category.Background = brush;
+
+            p_errorName.Visibility = Visibility.Collapsed;
+            p_errorCode.Visibility = Visibility.Collapsed;
+
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            await categoryModel.deleteCategory(category.categoryId, MainWindow.userID);
+            if (category.categoryId != 0)
+            {
+                if ((!category.canDelete) && (category.isActive == 0))
+                    activate();
+                else
+                {
+                    string popupContent = "";
+                    if (category.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                    if ((!category.canDelete) && (category.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-            //var categories = await categoryModel.GetAllCategories();
-            //dg_categories.ItemsSource = categories;
+                    bool b = await categoryModel.deleteCategory(category.categoryId, MainWindow.userID.Value, category.canDelete);
 
+                    if (b) //SectionData.popUpResponse("", popupContent);
+                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+
+                await RefrishCategories();
+                Txb_searchcategories_TextChanged(null, null);
+            }
             //clear textBoxs
-            // Btn_clear_Click(sender, e);
-            Btn_clear_Click(null, null);
+            Btn_clear_Click(sender, e);
+
+        }
+
+        private async void activate()
+        {//activate
+            category.isActive = 1;
+
+            string s = await categoryModel.saveCategory(category);
+
+            if (!s.Equals("0")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
             await RefrishCategories();
             Txb_searchcategories_TextChanged(null, null);
 
@@ -275,7 +305,7 @@ namespace POS.View
 
         #endregion
 
-      
+
         #region Categor and Item
         #region Refrish Y
         async Task<IEnumerable<Category>> RefrishCategories()
@@ -290,8 +320,6 @@ namespace POS.View
             dg_categories.ItemsSource = _categories;
         }
 
-     
-
         void RefrishCategoriesCard(IEnumerable<Category> _categories)
         {
             //catigoriesAndItemsView.gridCatigorieItems = grid_itemCard;
@@ -303,7 +331,7 @@ namespace POS.View
         #endregion
         #region Get Id By Click  Y
         int datagridSelectedItemId;
-        private void dg_categories_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void dg_categories_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (dg_categories.SelectedItem as Category == null || dg_categories.SelectedIndex == -1)
                 return;
@@ -316,9 +344,6 @@ namespace POS.View
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tt_errorParentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            ////////////////////////////////
-
-            
 
             if (dg_categories.SelectedIndex != -1)
             {
@@ -326,11 +351,24 @@ namespace POS.View
                 datagridSelectedItemId = (dg_categories.SelectedItem as Category).categoryId;
                 this.DataContext = category;
                 cb_parentCategorie.SelectedValue = category.parentId;
+
+                //await Img.getImg(category.image , "category");
+                getImg();
+
+                #region delete
+                if (category.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                else
+                {
+                    if (category.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
+                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                }
+                #endregion 
             }
             if (categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
-         x.name.Contains(txtCategorySearch) ||
-         x.details.Contains(txtCategorySearch)
-         ) && x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
+                                    x.name.Contains(txtCategorySearch) ||
+                                    x.details.Contains(txtCategorySearch)
+                                    ) && x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
             {
                 categoryParentId = category.categoryId;
                 Txb_searchcategories_TextChanged(null, null);
@@ -340,7 +378,7 @@ namespace POS.View
 
         }
 
-        public void ChangeCategorieIdEvent(int categoryId)
+        public async void ChangeCategorieIdEvent(int categoryId)
         {
             //////////////
             p_errorName.Visibility = Visibility.Collapsed;
@@ -355,7 +393,6 @@ namespace POS.View
              category = categories.ToList().Find(c => c.categoryId == categoryId);
             this.DataContext = category;
             cb_parentCategorie.SelectedValue = category.parentId;
-
             if (categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
              x.name.Contains(txtCategorySearch) ||
              x.details.Contains(txtCategorySearch)
@@ -366,11 +403,24 @@ namespace POS.View
             }
 
             generateTrack(category.categoryId);
+
+            //await Img.getImg(category.image , "category");
+            getImg();
+
+            #region delete
+            if (category.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+            else
+            {
+                if (category.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
+                else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+            }
+            #endregion
         }
-      
+
         #endregion
         #region Toggle Button Y
-        
+
         private  void Tgl_categoryIsActive_Checked(object sender, RoutedEventArgs e)
         {
             //if (categories is null)
@@ -420,7 +470,7 @@ namespace POS.View
         #endregion
         #region Search Y
         private async void Txb_searchcategories_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        {//search
             if (categories is null)
                 await RefrishCategories();
             txtCategorySearch = txb_searchcategories.Text.ToLower();
@@ -678,12 +728,54 @@ namespace POS.View
 
         private void Img_calegorieImg_Click(object sender, RoutedEventArgs e)
         {//select image
-            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp";
+            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
             if (openFileDialog.ShowDialog() == true)
             {
                 brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                img_calegory.Background = brush;
+                img_fileName = openFileDialog.FileName;
+                img_category.Background = brush;
             }
+        }
+
+        private async void getImg()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(category.image))
+                {
+                    Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+                    StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+
+                    BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                    brush.ImageSource = temp;
+
+                    img_category.Background = brush;
+
+                }
+                else
+                {
+                    byte[] imageBuffer = await categoryModel.downloadImage(category.image); // read this as BLOB from your DB
+
+                    var bitmapImage = new BitmapImage();
+                   
+                    using (var memoryStream = new MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+                    img_category.Background = new ImageBrush(bitmapImage);
+                 
+            }
+            }
+            catch { }
+        }
+
+        private  void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+            RefrishCategories();
+            
         }
     }
 }

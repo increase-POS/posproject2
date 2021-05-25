@@ -182,9 +182,10 @@ namespace POS
             FN_pathVisible(path_openHome);
             fn_ColorIconRefreash(path_iconHome);
 
-            GRID_Main.Children.Clear();
-            uc_home uc = new uc_home();
-            GRID_Main.Children.Add(uc);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_home.Instance);
+            //uc_home uc = new uc_home();
+            //grid_main.Children.Add(uc);
 
         }
 
@@ -193,9 +194,10 @@ namespace POS
             colorTextRefreash(txt_sectiondata);
             FN_pathVisible(path_openSectionData);
             fn_ColorIconRefreash(path_iconSectionData);
-            GRID_Main.Children.Clear();
-            UC_SectionData uc = new UC_SectionData();
-            GRID_Main.Children.Add(uc);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(UC_SectionData.Instance);
+            //UC_SectionData uc = new UC_SectionData();
+            //grid_main.Children.Add(uc);
 
         }
 
@@ -204,9 +206,11 @@ namespace POS
             colorTextRefreash(txt_catalog);
             FN_pathVisible(path_openCatalog);
             fn_ColorIconRefreash(path_iconCatalog);
-            GRID_Main.Children.Clear();
-            UC_catalog uc = new UC_catalog();
-            GRID_Main.Children.Add(uc);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(UC_catalog.Instance);
+
+            //UC_catalog uc = new UC_catalog();
+            //grid_main.Children.Add(uc);
         }
 
         public static string lang = "ar";
@@ -219,7 +223,7 @@ namespace POS
             else
             { resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_mainWindow.FlowDirection = FlowDirection.RightToLeft; }
             translate();
-
+            BTN_Home_Click(null, null);
         }
 
        
@@ -228,9 +232,11 @@ namespace POS
             colorTextRefreash(txt_purchases);
             FN_pathVisible(path_openPurchases);
             fn_ColorIconRefreash(path_iconPurchases);
-            GRID_Main.Children.Clear();
-            uc_purchases uc = new uc_purchases();
-            GRID_Main.Children.Add(uc);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_purchases.Instance);
+
+            //uc_purchases uc = new uc_purchases();
+            //grid_main.Children.Add(uc);
         }
 
         private void BTN_sales_Click(object sender, RoutedEventArgs e)
@@ -238,9 +244,10 @@ namespace POS
             colorTextRefreash(txt_sales);
             FN_pathVisible(path_openSales);
             fn_ColorIconRefreash(path_iconSales);
-            GRID_Main.Children.Clear();
-            uc_sales uc = new uc_sales();
-            GRID_Main.Children.Add(uc);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_sales.Instance);
+            //uc_sales uc = new uc_sales();
+            //grid_main.Children.Add(uc);
         }
 
         private void BTN_accounts_Click(object sender, RoutedEventArgs e)
@@ -249,9 +256,11 @@ namespace POS
             FN_pathVisible(path_openAccount);
             fn_ColorIconRefreash(path_iconAccounts);
 
-            GRID_Main.Children.Clear();
-            uc_accounts uc = new uc_accounts();
-            GRID_Main.Children.Add(uc);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_accounts.Instance);
+
+            //uc_accounts uc = new uc_accounts();
+            //grid_main.Children.Add(uc);
         }
 
         private void BTN_reports_Click(object sender, RoutedEventArgs e)
@@ -274,9 +283,10 @@ namespace POS
             FN_pathVisible(path_openStorage);
             fn_ColorIconRefreash(path_iconStorage);
 
-            GRID_Main.Children.Clear();
-            uc_storage uc = new uc_storage();
-            GRID_Main.Children.Add(uc);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_storage.Instance);
+            //uc_storage uc = new uc_storage();
+            //grid_main.Children.Add(uc);
         }
     }
 }

@@ -57,6 +57,19 @@ namespace POS.View
         ImageBrush brush = new ImageBrush();
 
         int index = 0;
+
+        string img_fileName = "pic/no-image-icon-125x125.png";
+
+        private static UC_users _instance;
+        public static UC_users Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new UC_users();
+                return _instance;
+            }
+        }
         public UC_users()
         {
             InitializeComponent();
@@ -104,7 +117,7 @@ namespace POS.View
                     cb_job.Items.Add(userList[i].job);
         }
 
-        private async Task<bool> chkIfUserNameIsExists(string username )
+        private async Task<bool> chkIfUserNameIsExists(string username , int uId)
         {
             if (users == null) users = await userModel.GetUsersAsync();
             List<User> userList = new List<User>();
@@ -112,7 +125,7 @@ namespace POS.View
             userList.AddRange(users.ToList());
            
             for (int i = 0; i < userList.Count(); i++)
-                if ((userList[i].username.Equals(username)) && (userList[i].userId != user.userId))
+                if ((userList[i].username.Equals(username)) && (userList[i].userId != uId))
                 { b = true; break; }
 
             return b;
@@ -140,11 +153,15 @@ namespace POS.View
             p_errorUserName.Visibility = Visibility.Collapsed;
             p_errorPassword.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
+            p_errorJob.Visibility = Visibility.Collapsed;
 
             tb_firstName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_lastName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_userName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            cb_job.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
             if (dg_users.SelectedIndex != -1)
             {
@@ -157,89 +174,10 @@ namespace POS.View
                 {
                     pb_password.Password = tb_password.Text.Trim();
                 }
-                
-                #region mobile
-                if ((user.mobile != null))
-                {
-                    string area = user.mobile;
-                    string[] pharr = area.Split('-');
-                    int j = 0;
-                    string phone = "";
 
-                    foreach (string strpart in pharr)
-                    {
-                        if (j == 0)
-                        {
-                            area = strpart;
-                        }
-                        else
-                        {
-                            phone = phone + strpart;
-                        }
-                        j++;
-                    }
+                SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
 
-                    cb_areaMobile.Text = area;
-
-                    tb_mobile.Text = phone.ToString();
-                }
-                else
-                {
-                    cb_areaMobile.SelectedIndex = -1;
-                    tb_mobile.Clear();
-                }
-                #endregion
-
-                #region phone
-                if ((user.phone != null))
-                {
-                    string area = user.phone;
-                    string[] pharr = area.Split('-');
-                    int j = 0;
-                    string phone = "";
-                    string areaLocal = "";
-                    foreach (string strpart in pharr)
-                    {
-                        if (j == 0)
-                        {
-                            area = strpart;
-
-                        }
-                        else if (j == 1)
-                        {
-                            areaLocal = strpart;
-
-
-                        }
-                        else
-                        {
-                            phone = phone + strpart;
-
-                        }
-                        j++;
-                    }
-
-                    cb_areaPhone.Text = area;
-                    cb_areaPhoneLocal.Text = areaLocal;
-                    tb_phone.Text = phone.ToString();
-                }
-                else
-                {
-                    cb_areaPhone.SelectedIndex = -1;
-                    cb_areaPhoneLocal.SelectedIndex = -1;
-                    tb_phone.Clear();
-                }
-                #endregion
-
-                #region delete
-                if (user.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
-
-                else
-                {
-                    if (user.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
-                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
-                }
-                #endregion
+                SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
 
                 #region img
                 if (string.IsNullOrEmpty(user.image))
@@ -269,6 +207,16 @@ namespace POS.View
                     img_user.Background = new ImageBrush(bitmapImage);
                 }
                 #endregion
+
+                #region delete
+                if (user.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                else
+                {
+                    if (user.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
+                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                }
+                #endregion 
 
                 index = dg_users.SelectedIndex;
 
@@ -327,6 +275,8 @@ namespace POS.View
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
+
+            user.userId = 0;
             tb_address.Clear();
             tb_password.Clear();
             tb_userName.Clear();
@@ -386,6 +336,7 @@ namespace POS.View
             fillCountries();
 
             fillCity();
+
             this.Dispatcher.Invoke(() =>
             {
                 Tb_search_TextChanged(null, null);
@@ -456,7 +407,7 @@ namespace POS.View
             SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
             //chk duplicate userName
             bool duplicateUserName = false;
-            duplicateUserName = await chkIfUserNameIsExists(tb_userName.Text);
+            duplicateUserName = await chkIfUserNameIsExists(tb_userName.Text , 0);
             //chk password length
             bool passLength = false;
             passLength = chkPasswordLength(pb_password.Password);
@@ -514,30 +465,32 @@ namespace POS.View
                     user.role = "";
 
                     string s = await userModel.saveUser(user);
-                    //if (s.Equals("User Is Added Successfully")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
-                    if (!s.Equals("0")) 
-                      //  SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    //if (s.Equals("User Is Added Successfully")) { //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
+                    if (!s.Equals("0"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);  
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     int userId = int.Parse(s);
                     await userModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
+
+                    await RefreshUsersList();
+                    Tb_search_TextChanged(null, null);
+
+                    fillJobCombo();
+
+                    SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
+
+                    SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
                 }
             }
-
-            users = await userModel.GetUsersAsync();
-            usersQuery = users.Where(s => s.isActive == Convert.ToInt32(tgl_userIsActive.IsChecked));
-            dg_users.ItemsSource = usersQuery;
-
-            fillJobCombo();
-
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            //var user1 = new User();
-
+         //var user1 = new User();
+          
             //chk empty name
             SectionData.validateEmptyTextBox(tb_firstName, p_errorFirstName, tt_errorFirstName, "trEmptyNameToolTip");
             //chk empty last name
@@ -547,12 +500,14 @@ namespace POS.View
             //chk empty username
             SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
             //chk empty password
-            SectionData.validateEmptyTextBox(tb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
+            //SectionData.validateEmptyTextBox(tb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
+            //if (tb_password.Text.Equals(""))
+            //{ p_showPassword.Visibility = Visibility.Collapsed; pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000"); }
             //validate email
             SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
             //chk duplicate userName
             bool duplicateUserName = false;
-            duplicateUserName = await chkIfUserNameIsExists(tb_userName.Text);
+            duplicateUserName = await chkIfUserNameIsExists(tb_userName.Text , user.userId);
 
             string phoneStr = "";
             if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
@@ -563,8 +518,7 @@ namespace POS.View
                 if (!SectionData.IsValid(tb_email.Text))
                     emailError = true;
 
-            if ((!tb_firstName.Text.Equals("")) && (!tb_lastName.Text.Equals("")) && (!tb_userName.Text.Equals("")) &&
-                                                   (!pb_password.Password.Equals("")) && (!cb_job.Text.Equals("")))
+            if ((!tb_firstName.Text.Equals("")) && (!tb_lastName.Text.Equals("")) && (!tb_userName.Text.Equals("")) && (!cb_job.Text.Equals("")))
             {
                 if ((emailError) || (duplicateUserName))
                 {
@@ -602,61 +556,78 @@ namespace POS.View
 
                     string s = await userModel.saveUser(user);
                     
-                    //if (s.Equals("User Is Updated Successfully")) { SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate")); Btn_clear_Click(null, null); }
-                    if (!s.Equals("0"))
-                        //  SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));  
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                    else// SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    //if (s.Equals("User Is Updated Successfully")) { //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate")); Btn_clear_Click(null, null); }
+                    if (!s.Equals("0"))   //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));   
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     int userId = int.Parse(s);
-                    await userModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
+                    await userModel.uploadImage(img_fileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
+
+                    await RefreshUsersList();
+                    Tb_search_TextChanged(null, null);
+
+                    SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
+
+                    SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
+                    fillJobCombo();
+
+
+                    //dg_users.UnselectAll();
+                    //Btn_clear_Click(null, null);
+                    //dg_users.SelectedIndex = index;
+
+                    //img_user.ClearValue(Control.BackgroundProperty);
+
+                    //tb_userName.Text = user.username ;
+                    //tb_firstName.Text = user.name;
+                    //tb_lastName.Text = user.lastname ;
+                    //cb_job.Text = user.job ;
+                    //tb_workHours.Text = user.workHours ;
+                    //SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
+                    //SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+                    //tb_email.Text = user.email ;
+                    //tb_address.Text = user.address ;
+                    //tb_details.Text = user.notes ;
+
+                    //brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                    //img_user.Background = brush;
+
 
                 }
-              
             }
-
-            users = await userModel.GetUsersAsync();
-            usersQuery = users.Where(s => s.isActive == Convert.ToInt32(tgl_userIsActive.IsChecked));
-            dg_users.ItemsSource = usersQuery;
-
-            fillJobCombo();
-
-            dg_users.UnselectAll();
-            Btn_clear_Click(null , null);
-            dg_users.SelectedIndex = index;
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if ((!user.canDelete) && (user.isActive == 0))
-                activate();
-            else
+            if (user.userId != 0)
             {
-                string popupContent = "";
-                if (user.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                if ((!user.canDelete) && (user.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                if ((!user.canDelete) && (user.isActive == 0))
+                    activate();
+                else
+                {
+                    string popupContent = "";
+                    if (user.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                    if ((!user.canDelete) && (user.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                //MessageBox.Show(user.userId.ToString()+" "+ MainWindow.userID.Value.ToString() +" "+ user.canDelete.ToString());
+                    bool b = await userModel.deleteUser(user.userId, MainWindow.userID.Value, user.canDelete);
 
-                bool b = await userModel.deleteUser(user.userId, MainWindow.userID.Value, user.canDelete);
+                    if (b) //SectionData.popUpResponse("", popupContent);
+                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
 
-                if (b) //SectionData.popUpResponse("", popupContent);
-                Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                else //  SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                await RefreshUsersList();
+                Tb_search_TextChanged(null, null);
 
+                fillJobCombo();
             }
-
-            users = await userModel.GetUsersAsync();
-            usersQuery = users.Where(s => s.isActive == Convert.ToInt32(tgl_userIsActive.IsChecked));
-            dg_users.ItemsSource = usersQuery;
 
             //clear textBoxs
             Btn_clear_Click(sender, e);
-
-            fillJobCombo();
-
         }
 
         private async void activate()
@@ -666,11 +637,12 @@ namespace POS.View
             string s = await userModel.saveUser(user);
 
             if (s.Equals("User Is Updated Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
-            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-
-            else // SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
+            await RefreshUsersList();
+            Tb_search_TextChanged(null, null);
 
         }
 
@@ -859,15 +831,25 @@ namespace POS.View
 
         private void Img_user_Click(object sender, RoutedEventArgs e)
         {//select image
-            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp";
+            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
             if (openFileDialog.ShowDialog() == true)
             {
                 brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
                 img_user.Background = brush;
+                img_fileName = openFileDialog.FileName;
+            }
+            else
+            {
+                brush.ImageSource = new BitmapImage(new Uri("pic/no-image-icon-125x125.png", UriKind.Relative));
+                img_user.Background = brush;
             }
         }
 
-      
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshUsersList();
+
+        }
     }
 }
 

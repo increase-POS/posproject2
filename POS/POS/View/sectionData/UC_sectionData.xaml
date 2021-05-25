@@ -120,6 +120,6 @@
            
         </Grid>
 
-        <Grid Grid.Column="1" x:Name="GRID_Main"/>
+        <Grid Grid.Column="1" x:Name="grid_main"/>
     </Grid>
 </UserControl>

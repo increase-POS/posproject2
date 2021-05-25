@@ -22,6 +22,16 @@ namespace POS.View
     /// </summary>
     public partial class uc_sales : UserControl
     {
+        private static uc_sales _instance;
+        public static uc_sales Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_sales();
+                return _instance;
+            }
+        }
         public uc_sales()
         {
             InitializeComponent();
@@ -79,8 +89,9 @@ namespace POS.View
         {
             refreashBachgroundClick(btn_receiptInvoice);
             grid_main.Children.Clear();
-            uc_receiptInvoice uc = new uc_receiptInvoice();
-            grid_main.Children.Add(uc);
+            grid_main.Children.Add(uc_receiptInvoice.Instance);
+            //uc_receiptInvoice uc = new uc_receiptInvoice();
+            //grid_main.Children.Add(uc);
         }
         private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {
@@ -90,22 +101,25 @@ namespace POS.View
         {
             refreashBachgroundClick(btn_coupon);
             grid_main.Children.Clear();
-            uc_coupon uc = new uc_coupon();
-            grid_main.Children.Add(uc);
+            grid_main.Children.Add(uc_coupon.Instance);
+            //uc_coupon uc = new uc_coupon();
+            //grid_main.Children.Add(uc);
         }
         private void Btn_offer_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_offer);
             grid_main.Children.Clear();
-            uc_offer uc = new uc_offer();
-            grid_main.Children.Add(uc);
+            grid_main.Children.Add(uc_offer.Instance);
+            //uc_offer uc = new uc_offer();
+            //grid_main.Children.Add(uc);
         }
         private void Btn_package_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_package);
             grid_main.Children.Clear();
-            uc_packageOfItems uc = new uc_packageOfItems();
-            grid_main.Children.Add(uc);
+            grid_main.Children.Add(uc_packageOfItems.Instance);
+            //uc_packageOfItems uc = new uc_packageOfItems();
+            //grid_main.Children.Add(uc);
         }
 
         private void Btn_quotations_Click(object sender, RoutedEventArgs e)
@@ -113,7 +127,7 @@ namespace POS.View
 
         }
 
-        private void Btn_loyaltyCard_Click(object sender, RoutedEventArgs e)
+        private void Btn_membershipCard_Click(object sender, RoutedEventArgs e)
         {
 
         }

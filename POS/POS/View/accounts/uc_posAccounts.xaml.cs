@@ -22,6 +22,16 @@ namespace POS.View.accounts
     /// </summary>
     public partial class uc_posAccounts : UserControl
     {
+        private static uc_posAccounts _instance;
+        public static uc_posAccounts Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_posAccounts();
+                return _instance;
+            }
+        }
         public uc_posAccounts()
         {
             InitializeComponent();
@@ -116,6 +126,11 @@ namespace POS.View.accounts
         }
 
         private void Tgl_IsReceived_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
 
         }

@@ -25,6 +25,16 @@ namespace POS.View.storage
     /// </summary>
     public partial class uc_itemsImport : UserControl
     {
+        private static uc_itemsImport _instance;
+        public static uc_itemsImport Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_itemsImport();
+                return _instance;
+            }
+        }
         public uc_itemsImport()
         {
             InitializeComponent();
@@ -567,6 +577,11 @@ namespace POS.View.storage
         }
 
         private void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
 
         }

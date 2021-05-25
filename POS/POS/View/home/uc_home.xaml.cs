@@ -23,6 +23,17 @@ namespace POS.View
     /// </summary>
     public partial class uc_home : UserControl
     {
+
+        private static uc_home _instance;
+        public static uc_home Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_home();
+                return _instance;
+            }
+        }
         public uc_home()
         {
             InitializeComponent();

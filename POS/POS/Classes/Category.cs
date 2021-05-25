@@ -2,10 +2,13 @@
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace POS.Classes
 {
@@ -23,6 +26,7 @@ namespace POS.Classes
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public Nullable<byte> isActive { get; set; }
+        public Boolean canDelete { get; set; }
 
         // adding or editing  category by calling API metod "save"
         // if categoryId = 0 will call save else call edit
@@ -104,7 +108,37 @@ namespace POS.Classes
                 return categories;
             }
         }
-        public async Task<string> deleteCategory(int categoryId,int? userId)
+        //public async Task<string> deleteCategory(int categoryId,int? userId)
+        //{
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "Categories/Delete?categoryId=" + categoryId + "&userId=" + userId);
+        //        request.Headers.Add("APIKey", Global.APIKey);
+        //        request.Method = HttpMethod.Post;
+        //        //set content type
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        var response = await client.SendAsync(request);
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var message = await response.Content.ReadAsStringAsync();
+        //            message = JsonConvert.DeserializeObject<string>(message);
+        //            return message;
+        //        }
+        //        return "";
+        //    }
+        //}
+
+        public async Task<Boolean> deleteCategory(int categoryId, int userId, bool final)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -117,7 +151,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Categories/Delete?categoryId=" + categoryId + "&userId=" + userId);
+                request.RequestUri = new Uri(Global.APIUri + "Categories/Delete?categoryId=" + categoryId + "&userId=" + userId + "&final=" + final);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -126,14 +160,13 @@ namespace POS.Classes
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
+                    return true;
                 }
-                return "";
+                return false;
             }
         }
-        
+
+
         public async Task<List<Category>> GetAllCategories()
         {
             List<Category> categories = null;
@@ -246,6 +279,142 @@ namespace POS.Classes
                     categories = new List<Category>();
                 }
                 return categories;
+            }
+        }
+
+        public async Task<Boolean> uploadImage(string imagePath, string imageName, int categoryId)
+        {
+            if (imagePath != "")
+            {
+                MultipartFormDataContent form = new MultipartFormDataContent();
+                // get file extension
+                var ext = imagePath.Substring(imagePath.LastIndexOf('.'));
+                var extension = ext.ToLower();
+                try
+                {
+                    // configure trmporery path
+                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string tmpPath = Path.Combine(dir, Global.TMPFolder);
+                    tmpPath = Path.Combine(tmpPath, imageName + extension);
+                    if (System.IO.File.Exists(tmpPath))
+                    {
+                        System.IO.File.Delete(tmpPath);
+                    }
+                    // resize image
+                    ImageProcess imageP = new ImageProcess(150, imagePath);
+                    imageP.ScaleImage(tmpPath);
+
+                    // read image file
+                    var stream = new FileStream(tmpPath, FileMode.Open, FileAccess.Read);
+
+                    // create http client request
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(Global.APIUri);
+                        client.Timeout = System.TimeSpan.FromSeconds(3600);
+                        string boundary = string.Format("----WebKitFormBoundary{0}", DateTime.Now.Ticks.ToString("x"));
+                        HttpContent content = new StreamContent(stream);
+                        content.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+                        content.Headers.Add("client", "true");
+
+                        string fileName = imageName + extension;
+                        content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                        {
+                            Name = imageName,
+                            FileName = fileName
+                        };
+                        form.Add(content, "fileToUpload");
+
+                        var response = await client.PostAsync(@"Categories/PostCategoryImage", form);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            // save image name in DB
+                            Category category = new Category();
+                            category.categoryId = categoryId;
+                            category.image = fileName;
+                            await updateImage(category);
+                            //await saveAgent();
+                            return true;
+                        }
+                    }
+                    stream.Dispose();
+                    //delete tmp image
+                    if (System.IO.File.Exists(tmpPath))
+                    {
+                        System.IO.File.Delete(tmpPath);
+                    }
+                }
+                catch (Exception ex) { return false; }
+            }
+            return false;
+        }
+
+        public async Task<string> updateImage(Category category)
+        {
+            string message = "";
+
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            string myContent = JsonConvert.SerializeObject(category);
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+
+                HttpRequestMessage request = new HttpRequestMessage();
+
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+
+                request.RequestUri = new Uri(Global.APIUri + "Categories/UpdateImage?categoryObject=" + myContent);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
+                }
+                return message;
+            }
+        }
+
+        public async Task<byte[]> downloadImage(string imageName)
+        {
+            Stream jsonString = null;
+            byte[] byteImg = null;
+            Image img = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Categories/GetImage?imageName=" + imageName);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    jsonString = await response.Content.ReadAsStreamAsync();
+                    img = Bitmap.FromStream(jsonString);
+                    byteImg = await response.Content.ReadAsByteArrayAsync();
+                }
+                return byteImg;
             }
         }
     }

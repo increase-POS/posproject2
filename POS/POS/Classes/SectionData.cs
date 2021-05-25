@@ -24,6 +24,7 @@ namespace POS.Classes
         public static string code;
 
         public static BrushConverter bc = new BrushConverter();
+        /*
         public static void popUpResponse(string title, string content)
         {
             PopupNotifier popup = new PopupNotifier();
@@ -34,8 +35,9 @@ namespace POS.Classes
             //popup.BorderColor = System.Drawing.Color.FromArgb(0, 0, 0);
             //popup.ContentColor = System.Drawing.Color.FromArgb(255, 255, 255);
             //popup.ContentFont = new System.Drawing.Font("Tahoma", 8F);
-            popup.Popup(); 
+            popup.Popup();// show  
         }
+        */
         public static long genRandomCode(string type)
         {
             Random rnd = new Random();
@@ -247,5 +249,71 @@ namespace POS.Classes
             tt_error.Content = MainWindow.resourcemanager.GetString("trDuplicateCodeToolTip");
             tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
         }
+
+        public static void getMobile(string _mobile , ComboBox _area , TextBox _tb)
+        {//mobile
+            if ((_mobile != null))
+            {
+                string area = _mobile;
+                string[] pharr = area.Split('-');
+                int j = 0;
+                string phone = "";
+
+                foreach (string strpart in pharr)
+                {
+                    if (j == 0)
+                    {
+                        area = strpart;
+                    }
+                    else
+                    {
+                        phone = phone + strpart;
+                    }
+                    j++;
+                }
+
+                _area.Text = area;
+
+                _tb.Text = phone.ToString();
+            }
+            else
+            {
+                _area.SelectedIndex = -1;
+                _tb.Clear();
+            }
+        }
+
+        public static void getPhone(string _phone , ComboBox _area , ComboBox _areaLocal , TextBox _tb)
+        {//phone
+            if ((_phone != null))
+            {
+                string area = _phone;
+                string[] pharr = area.Split('-');
+                int j = 0;
+                string phone = "";
+                string areaLocal = "";
+                foreach (string strpart in pharr)
+                {
+                    if (j == 0)
+                        area = strpart;
+                    else if (j == 1)
+                        areaLocal = strpart;
+                    else
+                        phone = phone + strpart;
+                    j++;
+                }
+
+                _area.Text = area;
+                _areaLocal.Text = areaLocal;
+                _tb.Text = phone.ToString();
+            }
+            else
+            {
+                _area.SelectedIndex = -1;
+                _areaLocal.SelectedIndex = -1;
+                _tb.Clear();
+            }
+        }
+
     }
 }

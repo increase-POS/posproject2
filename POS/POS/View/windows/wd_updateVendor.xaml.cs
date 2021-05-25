@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using netoaster;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -336,7 +337,8 @@ namespace POS.View.windows
             if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
             {
                 if (emailError)
-                    SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
+                    //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
                 else
                 {
                     agent.name = tb_name.Text;
@@ -354,12 +356,15 @@ namespace POS.View.windows
 
                     string s = await agentModel.saveAgent(agent);
 
-                    if (s.Equals("true")) SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                    else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 }
             }
-            else SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
+            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
+            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdateValidate"), animation: ToasterAnimation.FadeIn);
 
             agents = await agentModel.GetAgentsAsync("v");
         }

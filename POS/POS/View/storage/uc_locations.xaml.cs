@@ -20,6 +20,16 @@ namespace POS.View
     /// </summary>
     public partial class uc_locations : UserControl
     {
+        private static uc_locations _instance;
+        public static uc_locations Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_locations();
+                return _instance;
+            }
+        }
         public uc_locations()
         {
             InitializeComponent();
@@ -77,6 +87,11 @@ namespace POS.View
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
 
         }

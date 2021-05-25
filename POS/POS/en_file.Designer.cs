@@ -1231,6 +1231,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parent category.
+        /// </summary>
+        internal static string trParentCategory {
+            get {
+                return ResourceManager.GetString("trParentCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         internal static string trPassword {
@@ -2046,6 +2055,24 @@ namespace POS {
         internal static string trVendorInvoiceDetails {
             get {
                 return ResourceManager.GetString("trVendorInvoiceDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View list.
+        /// </summary>
+        internal static string trViewGrid {
+            get {
+                return ResourceManager.GetString("trViewGrid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View items.
+        /// </summary>
+        internal static string trViewItems {
+            get {
+                return ResourceManager.GetString("trViewItems", resourceCulture);
             }
         }
         

@@ -22,6 +22,17 @@ namespace POS.View
     /// </summary>
     public partial class UC_catalog : UserControl
     {
+
+        private static UC_catalog _instance;
+        public static UC_catalog Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new UC_catalog();
+                return _instance;
+            }
+        }
         public UC_catalog()
         {
             InitializeComponent();
@@ -36,7 +47,7 @@ namespace POS.View
 
 
         }
-        
+      
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             Btn_categorie_Click(null, null);
@@ -95,8 +106,10 @@ namespace POS.View
             refreashBachgroundClick(btn_item);
 
             grid_main.Children.Clear();
-            UC_item uc= new UC_item();
-            grid_main.Children.Add(uc);
+            grid_main.Children.Add(UC_item.Instance);
+
+            //UC_item uc = new UC_item();
+            //grid_main.Children.Add(uc);
 
 
         }
@@ -106,16 +119,18 @@ namespace POS.View
             refreashBachgroundClick(btn_properties);
 
             grid_main.Children.Clear();
-            UC_porperty uc = new UC_porperty();
-            grid_main.Children.Add(uc);
+            grid_main.Children.Add(UC_porperty.Instance);
+            //UC_porperty uc = new UC_porperty();
+            //grid_main.Children.Add(uc);
         }
 
         private void Btn_units_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_units);
             grid_main.Children.Clear();
-            UC_unit uc = new UC_unit();
-            grid_main.Children.Add(uc);
+            grid_main.Children.Add(UC_unit.Instance);
+            //UC_unit uc = new UC_unit();
+            //grid_main.Children.Add(uc);
         }
 
     }

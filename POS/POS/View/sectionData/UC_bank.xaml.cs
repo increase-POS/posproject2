@@ -1,5 +1,5 @@
-﻿using netoaster;
-using POS.Classes;
+﻿using POS.Classes;
+using netoaster;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +44,17 @@ namespace POS.View
         CountryCode countrycodes = new CountryCode();
         City cityCodes = new City();
         BrushConverter bc = new BrushConverter();
+
+        private static UC_bank _instance;
+        public static UC_bank Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new UC_bank();
+                return _instance;
+            }
+        }
         public UC_bank()
         {
             InitializeComponent();
@@ -114,6 +125,7 @@ namespace POS.View
             tt_phone.Content = MainWindow.resourcemanager.GetString("trPhone");
             tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
             tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
@@ -209,7 +221,6 @@ namespace POS.View
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             bank.bankId = 0;
-
             //chk empty name
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             //chk empty mobile
@@ -236,17 +247,14 @@ namespace POS.View
                
                 string s = await bankModel.saveBank(bank);
 
-                if (s.Equals("Bank Is Added Successfully"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                if (s.Equals("Bank Is Added Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); 
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
+                await RefreshBanksList();
+                Tb_search_TextChanged(null , null);
             }
-
-            banks = await bankModel.GetBanksAsync();
-            banksQuery = banks.Where(s => s.isActive == Convert.ToInt32(tgl_bankIsActive.IsChecked));
-            dg_bank.ItemsSource = banksQuery;
-
 
         }
 
@@ -265,7 +273,6 @@ namespace POS.View
 
             if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_phone.Text.Equals("")) && (!tb_accNumber.Text.Equals("")))
             {
-
                 bank.name = tb_name.Text;
                 bank.phone = phoneStr;
                 bank.mobile = cb_area.Text + "-" + tb_mobile.Text;
@@ -278,42 +285,45 @@ namespace POS.View
 
                 string s = await bankModel.saveBank(bank);
 
-                if (s.Equals("Bank Is Updated Successfully"))// SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                if (s.Equals("Bank Is Updated Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-            }
 
-            banks = await bankModel.GetBanksAsync();
-            banksQuery = banks.Where(s => s.isActive == Convert.ToInt32(tgl_bankIsActive.IsChecked));
-            dg_bank.ItemsSource = banksQuery;
+                await RefreshBanksList();
+                Tb_search_TextChanged(null, null);
+
+                SectionData.getMobile(bank.mobile, cb_area, tb_mobile);
+
+                SectionData.getPhone(bank.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
+            }
 
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if ((!bank.canDelete) && (bank.isActive == 0))
-             activate();  
-            else
+            if (bank.bankId != 0)
             {
-                string popupContent = "";
-                if (bank.canDelete)  popupContent = MainWindow.resourcemanager.GetString("trPopDelete"); 
-                if ((!bank.canDelete) && (bank.isActive == 1))  popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                if ((!bank.canDelete) && (bank.isActive == 0))
+                    activate();
+                else
+                {
+                    string popupContent = "";
+                    if (bank.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                    if ((!bank.canDelete) && (bank.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                MessageBox.Show(bank.canDelete.ToString() + " " + bank.isActive);
-                bool b = await bankModel.deleteBank(bank.bankId, MainWindow.userID.Value, bank.canDelete);
+                    bool b = await bankModel.deleteBank(bank.bankId, MainWindow.userID.Value, bank.canDelete);
 
-                if (b) //SectionData.popUpResponse("", popupContent);
+                    if (b) //SectionData.popUpResponse("", popupContent);
                 Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
+                }
+                await RefreshBanksList();
+                Tb_search_TextChanged(null, null);
             }
-
-            banks = await bankModel.GetBanksAsync();
-            banksQuery = banks.Where(s => s.isActive == Convert.ToInt32(tgl_bankIsActive.IsChecked));
-            dg_bank.ItemsSource = banksQuery;
-
             //clear textBoxs
             Btn_clear_Click(sender, e);
         }
@@ -328,6 +338,9 @@ namespace POS.View
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+            await RefreshBanksList();
+            Tb_search_TextChanged(null, null);
 
         }
         private void Dg_bank_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -348,76 +361,19 @@ namespace POS.View
 
             if (bank != null)
             {
-                //mobile
+                SectionData.getMobile(bank.mobile , cb_area ,tb_mobile);
 
-                if ((bank.mobile != null))
-                {
-                    string area = bank.mobile;
-                    string[] pharr = area.Split('-');
-                    int j = 0;
-                    string phone = "";
+                SectionData.getPhone(bank.phone , cb_areaPhone , cb_areaPhoneLocal ,tb_phone);
 
-                    foreach (string strpart in pharr)
-                    {
-                        if (j == 0)
-                        {
-                            area = strpart;
-                        }
-                        else
-                        {
-                            phone = phone + strpart;
-                        }
-                        j++;
-                    }
+               #region delete
+                if (bank.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
 
-                    cb_area.Text = area;
-
-                    tb_mobile.Text = phone.ToString();
-                }
                 else
                 {
-                    cb_area.SelectedIndex = -1;
-                    tb_mobile.Clear();
+                    if (bank.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
+                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
                 }
-                //phone
-                if ((bank.phone != null))
-                {
-                    string area = bank.phone;
-                    string[] pharr = area.Split('-');
-                    int j = 0;
-                    string phone = "";
-                    string areaLocal = "";
-                    foreach (string strpart in pharr)
-                    {
-                        if (j == 0)
-                        {
-                            area = strpart;
-
-                        }
-                        else if (j == 1)
-                        {
-                            areaLocal = strpart;
-
-
-                        }
-                        else
-                        {
-                            phone = phone + strpart;
-
-                        }
-                        j++;
-                    }
-
-                    cb_areaPhone.Text = area;
-                    cb_areaPhoneLocal.Text = areaLocal;
-                    tb_phone.Text = phone.ToString();
-                }
-                else
-                {
-                    cb_areaPhone.SelectedIndex = -1;
-                    cb_areaPhoneLocal.SelectedIndex = -1;
-                    tb_phone.Clear();
-                }
+                #endregion 
             }
 
         }
@@ -566,6 +522,11 @@ namespace POS.View
             {
                 firstchange = true;
             }
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshBanksList();
         }
     }
 }

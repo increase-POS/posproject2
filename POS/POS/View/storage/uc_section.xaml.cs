@@ -21,6 +21,17 @@ namespace POS.View
     /// </summary>
     public partial class uc_section : UserControl
     {
+
+        private static uc_section _instance;
+        public static uc_section Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_section();
+                return _instance;
+            }
+        }
         public uc_section()
         {
             InitializeComponent();
@@ -57,6 +68,11 @@ namespace POS.View
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
 
         }

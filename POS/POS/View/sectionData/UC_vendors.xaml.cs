@@ -1,4 +1,5 @@
 ﻿using POS.Classes;
+using netoaster;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,6 @@ using System.Threading;
 using Microsoft.Win32;
 using System.Windows.Resources;
 using System.IO;
-using netoaster;
 
 namespace POS.View
 {
@@ -54,6 +54,16 @@ namespace POS.View
 
         int index = 0;
 
+        private static UC_vendors _instance;
+        public static UC_vendors Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new UC_vendors();
+                return _instance;
+            }
+        }
         public UC_vendors()
         {
             InitializeComponent();
@@ -121,120 +131,11 @@ namespace POS.View
             if (agent != null)
             {
 
-                #region mobile
-                if ((agent.mobile != null))
-                {
-                    string area = agent.mobile;
-                    string[] pharr = area.Split('-');
-                    int j = 0;
-                    string phone = "";
+                SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
 
-                    foreach (string strpart in pharr)
-                    {
-                        if (j == 0)
-                        {
-                            area = strpart;
-                        }
-                        else
-                        {
-                            phone = phone + strpart;
-                        }
-                        j++;
-                    }
+                SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
 
-                    cb_areaMobile.Text = area;
-
-                    tb_mobile.Text = phone.ToString();
-                }
-                else
-                {
-                    cb_areaMobile.SelectedIndex = -1;
-                    tb_mobile.Clear();
-                }
-                #endregion
-
-                #region phone
-                if ((agent.phone != null))
-                {
-                    string area = agent.phone;
-                    string[] pharr = area.Split('-');
-                    int j = 0;
-                    string phone = "";
-                    string areaLocal = "";
-                    foreach (string strpart in pharr)
-                    {
-                        if (j == 0)
-                        {
-                            area = strpart;
-                        
-                        }
-                        else if (j == 1)
-                        {
-                            areaLocal = strpart;
-
-                           
-                        }
-                        else
-                        {
-                            phone = phone + strpart;
-                          
-                        }
-                        j++;
-                    }
-                   
-            
-
-                    cb_areaPhone.Text = area;
-                    cb_areaPhoneLocal.Text = areaLocal;
-                    tb_phone.Text = phone.ToString();
-                }
-                else
-                {
-                    cb_areaPhone.SelectedIndex = -1;
-                    cb_areaPhoneLocal.SelectedIndex = -1;
-                    tb_phone.Clear();
-                }
-                #endregion
-
-                #region fax
-                if ((agent.fax != null))
-                {
-                    string area = agent.fax;
-                    string[] pharr = area.Split('-');
-                    int j = 0;
-                    string fax = "";
-                    string areaLocal = "";
-                    foreach (string strpart in pharr)
-                    {
-                        if (j == 0)
-                        {
-                            area = strpart;
-                        
-                        }
-                        else if (j == 1)
-                        {
-                            areaLocal = strpart;
-
-                        }
-                        else
-                        {
-                            fax = fax + strpart;
-                      
-                        }
-                        j++;
-                    }
-
-                    cb_areaFax.Text = area;
-                    cb_areaFaxLocal.Text = areaLocal;
-                    tb_fax.Text = fax.ToString();
-                }
-                else
-                {
-                    cb_areaFax.SelectedIndex = -1;
-                    cb_areaFaxLocal.SelectedIndex = -1;
-                    tb_fax.Clear();
-                }
-                #endregion
+                SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
 
                 #region delete
                 if (agent.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
@@ -367,7 +268,7 @@ namespace POS.View
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucVendor.FlowDirection = FlowDirection.LeftToRight; }
             else
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucVendor.FlowDirection = FlowDirection.RightToLeft; }
-            //parentWindow = Window.GetWindow(this);
+
             translate();
            
             var agents = await agentModel.GetAgentsAsync("v");
@@ -403,41 +304,18 @@ namespace POS.View
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             agent.agentId = 0;
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-            }
-            if (tb_mobile.Text.Equals(""))
-            {
-                p_errorMobile.Visibility = Visibility.Visible;
-                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
-            }
-            else
-            {
-                p_errorMobile.Visibility = Visibility.Collapsed;
-            }
-            if (!tb_email.Text.Equals(""))
-            {
-                if (!ValidatorExtensions.IsValid(tb_email.Text))
-                {
-                    p_errorEmail.Visibility = Visibility.Visible;
-                    tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
-                }
-                else
-                {
-                    p_errorEmail.Visibility = Visibility.Collapsed;
-                }
-            }
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk empty mobile
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            //validate email
+            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+
             string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
 
             string faxStr = "";
-            if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
+            if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + cb_areaFaxLocal.Text + tb_fax.Text;
 
             bool emailError = false;
             if (!tb_email.Text.Equals(""))
@@ -451,22 +329,21 @@ namespace POS.View
             if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
             {
                 if (emailError)
-                   //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
+                    //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
-
                 else
                 {
                     SectionData.genRandomCode("v");
                     tb_code.Text = SectionData.code;
-                   
+
                     agent.name = tb_name.Text;
                     agent.code = tb_code.Text;
                     agent.company = tb_company.Text;
                     agent.address = tb_address.Text;
                     agent.email = tb_email.Text;
                     agent.phone = phoneStr;
-                    agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
-                    //agent.image = "";
+                    agent.mobile = cb_areaMobile.Text + tb_mobile.Text;
+                    agent.image = "";
                     agent.type = "v";
                     agent.accType = "";
                     agent.balance = 0;
@@ -479,61 +356,30 @@ namespace POS.View
 
                     string s = await agentModel.saveAgent(agent);
 
-                    if (!s.Equals("0"))// SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    if (!s.Equals("0"))   //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);  
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     int agentId = int.Parse(s);
                     await agentModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+
+                    await RefreshVendorsList();
+                    tb_search_TextChanged(null, null);
                 }
             }
-            else
-                //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAddValidate"));
-            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAddValidate"), animation: ToasterAnimation.FadeIn);
 
-
-            agents = await agentModel.GetAgentsAsync("v");
-            agentsQuery = agents.Where(s => s.isActive == Convert.ToInt32(tgl_vendorIsActive.IsChecked));
-            dg_vendor.ItemsSource = agentsQuery;
-
-            Btn_clear_Click(null, null);
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-            }
-            if (tb_mobile.Text.Equals(""))
-            {
-                p_errorMobile.Visibility = Visibility.Visible;
-                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
-            }
-            else
-            {
-                p_errorMobile.Visibility = Visibility.Collapsed;
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk empty mobile
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            //validate email
+            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
 
-            }
-            if (!tb_email.Text.Equals(""))
-            {
-                if (!ValidatorExtensions.IsValid(tb_email.Text))
-                {
-                    p_errorEmail.Visibility = Visibility.Visible;
-                    tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
-                }
-                else
-                {
-                    p_errorEmail.Visibility = Visibility.Collapsed;
-                }
-            }
             string phoneStr = "";
             if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
 
@@ -554,7 +400,6 @@ namespace POS.View
                 if (emailError)
                     //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
-
                 else
                 {
                     agent.name = tb_name.Text;
@@ -571,60 +416,57 @@ namespace POS.View
                     agent.maxDeserve = maxDeserveValue;
 
                     string s = await agentModel.saveAgent(agent);
-                    
 
-
-
-                    if (!s.Equals("0"))
-                        //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                    else
-                        //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    if (!s.Equals("0")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
                     int agentId = int.Parse(s);
                     await agentModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+
+                    await RefreshVendorsList();
+                    tb_search_TextChanged(null, null);
+
+                    SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
+
+                    SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
+                    SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
+
+                    dg_vendor.UnselectAll();
+                    //Btn_clear_Click(null, null);
+                    dg_vendor.SelectedIndex = index;
                 }
             }
-            else Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdateValidate"), animation: ToasterAnimation.FadeIn);
-            //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
-
-            agents = await agentModel.GetAgentsAsync("v");
-            agentsQuery = agents.Where(s => s.isActive == Convert.ToInt32(tgl_vendorIsActive.IsChecked));
-            dg_vendor.ItemsSource = agentsQuery;
-
-            dg_vendor.UnselectAll();
-            Btn_clear_Click(null, null);
-            dg_vendor.SelectedIndex = index;
 
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if ((!agent.canDelete) && (agent.isActive == 0))
-                activate();
-            else
+            if (agent.agentId != 0)
             {
-                string popupContent = "";
-                if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                if ((!agent.canDelete) && (agent.isActive == 0))
+                    activate();
+                else
+                {
+                    string popupContent = "";
+                    if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                    if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
+                    bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
 
-                if (b) //SectionData.popUpResponse("", popupContent);
+                    if (b) //SectionData.popUpResponse("", popupContent);
                 Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+
+                await RefreshVendorsList();
+                tb_search_TextChanged(null, null);
             }
-
-            agents = await agentModel.GetAgentsAsync("v");
-            agentsQuery = agents;
-            dg_vendor.ItemsSource = agentsQuery;
-            txt_Count.Text = agentsQuery.Count().ToString();
-            tb_search_TextChanged(null, null);
-
             //clear textBoxs
             Btn_clear_Click(sender, e);
-
         }
 
         private async void activate()
@@ -634,9 +476,14 @@ namespace POS.View
             string s = await agentModel.saveAgent(agent);
 
             if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
-            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-            else // SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+            await RefreshVendorsList();
+            tb_search_TextChanged(null, null);
+
+
         }
 
         private void tb_name_TextChanged(object sender, TextChangedEventArgs e)
@@ -916,12 +763,18 @@ namespace POS.View
 
         private void Img_vendor_Click(object sender, RoutedEventArgs e)
         {//select image
-            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp";
+            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
             if (openFileDialog.ShowDialog() == true)
             {
                 brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
                 img_vendor.Background = brush;
             }
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshVendorsList();
+
         }
     }
 

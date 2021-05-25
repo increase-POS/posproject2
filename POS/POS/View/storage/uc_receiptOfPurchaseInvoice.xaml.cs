@@ -25,6 +25,17 @@ namespace POS.View.storage
     /// </summary>
     public partial class uc_receiptOfPurchaseInvoice : UserControl
     {
+
+        private static uc_receiptOfPurchaseInvoice _instance;
+        public static uc_receiptOfPurchaseInvoice Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_receiptOfPurchaseInvoice();
+                return _instance;
+            }
+        }
         public uc_receiptOfPurchaseInvoice()
         {
             InitializeComponent();
@@ -218,6 +229,21 @@ namespace POS.View.storage
         }
 
         private void Tb_search_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Tgl_IsActive_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
 
         }

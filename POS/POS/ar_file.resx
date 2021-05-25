@@ -771,4 +771,13 @@
   <data name="trEmptyBarcodeToolTip" xml:space="preserve">
     <value>الباركود لايمكن ان يكون فارغ</value>
   </data>
+  <data name="trParentCategory" xml:space="preserve">
+    <value>الفئة الأب</value>
+  </data>
+  <data name="trViewGrid" xml:space="preserve">
+    <value>العرض على شكل قائمة</value>
+  </data>
+  <data name="trViewItems" xml:space="preserve">
+    <value>العرض على شكل عناصر</value>
+  </data>
 </root>

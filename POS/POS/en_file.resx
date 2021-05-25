@@ -789,4 +789,13 @@
   <data name="trEmptyBarcodeToolTip" xml:space="preserve">
     <value>Barcode can not be empty</value>
   </data>
+  <data name="trParentCategory" xml:space="preserve">
+    <value>Parent category</value>
+  </data>
+  <data name="trViewGrid" xml:space="preserve">
+    <value>View list</value>
+  </data>
+  <data name="trViewItems" xml:space="preserve">
+    <value>View items</value>
+  </data>
 </root>

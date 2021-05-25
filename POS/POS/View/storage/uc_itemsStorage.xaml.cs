@@ -24,6 +24,16 @@ namespace POS.View.storage
     /// </summary>
     public partial class uc_itemsStorage : UserControl
     {
+        private static uc_itemsStorage _instance;
+        public static uc_itemsStorage Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_itemsStorage();
+                return _instance;
+            }
+        }
         public uc_itemsStorage()
         {
             InitializeComponent();
@@ -227,6 +237,11 @@ namespace POS.View.storage
         }
 
         private void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
 
         }

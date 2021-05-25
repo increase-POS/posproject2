@@ -25,6 +25,16 @@ namespace POS.View.storage
     /// </summary>
     public partial class uc_itemsExport : UserControl
     {
+        private static UC_item _instance;
+        public static UC_item Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new UC_item();
+                return _instance;
+            }
+        }
         public uc_itemsExport()
         {
             InitializeComponent();
@@ -563,5 +573,9 @@ namespace POS.View.storage
         }
         #endregion
 
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

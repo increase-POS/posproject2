@@ -1,6 +1,6 @@
-﻿using netoaster;
-using POS.Classes;
+﻿using POS.Classes;
 using System;
+using netoaster;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -40,6 +40,17 @@ namespace POS.View
         string searchText = "";
 
         BrushConverter bc = new BrushConverter();
+
+        private static UC_posAccounts _instance;
+        public static UC_posAccounts Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new UC_posAccounts();
+                return _instance;
+            }
+        }
         public UC_posAccounts() 
          {
             InitializeComponent();
@@ -239,15 +250,15 @@ namespace POS.View
 
                 string s = await posModel.savePos(pos);
                 MessageBox.Show(s);
-                if (s.Equals("Pos Is Added Successfully"))  // SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); 
+                if (s.Equals("Pos Is Added Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); 
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                await RefreshPosList();
+                Tb_search_TextChanged(null, null);
             }
 
-            poss = await posModel.GetPosAsync();
-            possQuery = poss.Where(s => s.isActive == Convert.ToInt32(tgl_posIsActive.IsChecked));
-            dg_pos.ItemsSource = possQuery;
 
         }
 
@@ -269,41 +280,41 @@ namespace POS.View
 
                 string s = await posModel.savePos(pos);
 
-                if (s.Equals("Pos Is Updated Successfully")) // SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate")); Btn_clear_Click(null, null);  
+                if (s.Equals("Pos Is Updated Successfully"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-            }
 
-            poss = await posModel.GetPosAsync();
-            possQuery = poss.Where(s => s.isActive == Convert.ToInt32(tgl_posIsActive.IsChecked));
-            dg_pos.ItemsSource = possQuery;
+                await RefreshPosList();
+                Tb_search_TextChanged(null, null);
+            }
 
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if ((!pos.canDelete) && (pos.isActive == 0))
-                activate();
-            else
+            if (pos.posId != 0)
             {
-                string popupContent = "";
-                if (pos.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                if ((!pos.canDelete) && (pos.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                if ((!pos.canDelete) && (pos.isActive == 0))
+                    activate();
+                else
+                {
+                    string popupContent = "";
+                    if (pos.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                    if ((!pos.canDelete) && (pos.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                bool b = await posModel.deletePos(pos.posId, MainWindow.userID.Value, pos.canDelete);
+                    bool b = await posModel.deletePos(pos.posId, MainWindow.userID.Value, pos.canDelete);
 
-                if (b) //SectionData.popUpResponse("", popupContent);
-                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    if (b) //SectionData.popUpResponse("", popupContent);
+                Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
+                }
+
+                await RefreshPosList();
+                Tb_search_TextChanged(null, null);
             }
-
-            poss = await posModel.GetPosAsync();
-            possQuery = poss.Where(s => s.isActive == Convert.ToInt32(tgl_posIsActive.IsChecked));
-            dg_pos.ItemsSource = possQuery;
-
             //clear textBoxs
             Btn_clear_Click(sender, e);
 
@@ -314,11 +325,14 @@ namespace POS.View
             pos.isActive = 1;
 
             string s = await posModel.savePos(pos);
-
+             
             if (s.Equals("Pos Is Updated Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+            await RefreshPosList();
+            Tb_search_TextChanged(null, null);
 
         }
 
@@ -396,6 +410,11 @@ namespace POS.View
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
             });
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshPosList();
         }
     }
 }

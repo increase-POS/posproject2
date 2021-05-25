@@ -27,7 +27,16 @@ namespace POS.View
     /// </summary>
     public partial class uc_payInvoice : UserControl
     {
-       
+        private static uc_payInvoice _instance;
+        public static uc_payInvoice Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_payInvoice();
+                return _instance;
+            }
+        }
         public uc_payInvoice()
         {
             InitializeComponent();
@@ -658,6 +667,11 @@ namespace POS.View
             wd_uploadImage w = new wd_uploadImage();
             w.ShowDialog();
             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
