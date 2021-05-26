@@ -51,6 +51,24 @@
       <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -61,6 +79,7 @@
       <HintPath>..\packages\System.Drawing.Common.5.0.2\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -99,6 +118,7 @@
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\ItemsProp.cs" />
     <Compile Include="Classes\ItemUnit.cs" />
+    <Compile Include="Classes\LocalReportExtensions.cs" />
     <Compile Include="Classes\Location.cs" />
     <Compile Include="Classes\Md5Encription.cs" />
     <Compile Include="Classes\Pagination.cs" />
@@ -131,6 +151,7 @@
       <DependentUpon>UC_squareCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\ValidatorExtensions.cs" />
+    <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="View\accounts\uc_accounts.xaml.cs">
       <DependentUpon>uc_accounts.xaml</DependentUpon>
     </Compile>
@@ -475,6 +496,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\VendorReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Resource Include="fonts\cairo-font\cairo bold.ttf" />
     <Resource Include="fonts\cairo-font\cairo-light.ttf" />
     <Resource Include="fonts\en-fonts\SF-Pro-Display-Light.otf" />
@@ -484,6 +508,7 @@
     <Resource Include="fonts\NotoKufiArabic\NotoKufiArabic-Bold.ttf" />
     <Resource Include="fonts\NotoKufiArabic\NotoKufiArabic-Regular.ttf" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\POS.Classes.Agent.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -556,6 +581,21 @@
       <Project>{211d37ef-74f8-4e4f-9ed0-da4566f423f5}</Project>
       <Name>netoaster</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

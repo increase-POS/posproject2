@@ -21,6 +21,9 @@ using System.Threading;
 using Microsoft.Win32;
 using System.Windows.Resources;
 using System.IO;
+using Microsoft.Reporting.WinForms;
+
+using System.Data;
 
 namespace POS.View
 {
@@ -750,6 +753,32 @@ namespace POS.View
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            string path = Directory.GetCurrentDirectory();
+          
+           int pos1= path.LastIndexOf("\\");
+            string path2 = path.Substring(0, pos1);
+            pos1 = path2.LastIndexOf("\\");
+
+             path2=path2.Substring(0, pos1);
+            string repPath = path2 + @"\Reports\VendorReport.rdlc";
+           // MessageBox.Show(path+"=="+pos1.ToString()+"after="+ repPath);
+         
+            LocalReport rep = new LocalReport();
+            //  List<Agent> agentlist = new List<Agent>();
+
+
+            // D:\gitpos\POS\POS\bin\debug"
+            // rep.ReportPath = @"D:\gitpos\POS\POS\Reports\VendorReport.rdlc";
+            rep.ReportPath = repPath;
+             rep.DataSources.Clear();
+            rep.DataSources.Add(new  ReportDataSource("AgentDataSet", agentsQuery));
+            rep.Refresh();
+            LocalReportExtensions.PrintToPrinter(rep);
+           
         }
     }
 
