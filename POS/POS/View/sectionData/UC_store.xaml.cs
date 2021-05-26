@@ -275,7 +275,7 @@ namespace POS.View
                         SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
                     //duplicate
                     if (iscodeExist)
-                        SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode);
+                        SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode , "trDuplicateCodeToolTip");
                 }
                 else
                 {
@@ -294,10 +294,13 @@ namespace POS.View
 
                     string s = await storeModel.saveBranch(store);
 
-                    if (s.Equals("true"))   //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);  
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    if (s.Equals("true"))   //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);  }
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
+                    }
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     await RefreshStoresList();
                     tb_search_TextChanged(null, null);
@@ -336,7 +339,7 @@ namespace POS.View
                     if (emailError)
                         SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
                     if (iscodeExist)
-                        SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode);
+                        SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode , "trDuplicateCodeToolTip");
                 }
                 else
                 {

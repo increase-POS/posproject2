@@ -502,7 +502,9 @@
                                          BorderBrush="AliceBlue" MaxLength="9" 
                                          PreviewTextInput="NumberValidationTextBox"
                                          HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                         Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2" TextChanged="tb_mobile_TextChanged" LostFocus="tb_mobile_LostFocus" PreviewKeyDown="tb_mobile_PreviewKeyDown" >
+                                         Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
+                                         TextChanged="tb_mobile_TextChanged" LostFocus="tb_mobile_LostFocus" 
+                                         PreviewKeyDown="tb_mobile_PreviewKeyDown" >
                                     <TextBox.ToolTip>
                                         <ToolTip x:Name="tt_mobile" Content="Mobile"
                                                  Placement="left" 

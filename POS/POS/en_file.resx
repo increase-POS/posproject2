@@ -798,4 +798,46 @@
   <data name="trViewItems" xml:space="preserve">
     <value>View items</value>
   </data>
+  <data name="trEmptyAccNumberToolTip" xml:space="preserve">
+    <value>Account Number can not be empty</value>
+  </data>
+  <data name="trEmptyPropertyToolTip" xml:space="preserve">
+    <value>Property can not be empty</value>
+  </data>
+  <data name="trEmptyValueToolTip" xml:space="preserve">
+    <value>Value can not be empty</value>
+  </data>
+  <data name="trErrorDuplicateBarcodeToolTip" xml:space="preserve">
+    <value>Barcode is already exist</value>
+  </data>
+  <data name="trErrorEmptyBarcodeToolTip" xml:space="preserve">
+    <value>Barcode can not be empty</value>
+  </data>
+  <data name="trErrorEmptyCategoryToolTip" xml:space="preserve">
+    <value>Category can not be empty</value>
+  </data>
+  <data name="trErrorEmptyCountToolTip" xml:space="preserve">
+    <value>Count can not be empty</value>
+  </data>
+  <data name="trErrorEmptyMaxToolTip" xml:space="preserve">
+    <value>Max can not be empty</value>
+  </data>
+  <data name="trErrorEmptyMinToolTip" xml:space="preserve">
+    <value>Min can not be empty</value>
+  </data>
+  <data name="trErrorEmptyPriceToolTip" xml:space="preserve">
+    <value>Price can not be empty!</value>
+  </data>
+  <data name="trErrorEmptyTypeToolTip" xml:space="preserve">
+    <value>Type can not be empty</value>
+  </data>
+  <data name="trErrorEmptyUnitToolTip" xml:space="preserve">
+    <value>Unit can not be empty</value>
+  </data>
+  <data name="trErrorEnglishBarcodeToolTip" xml:space="preserve">
+    <value>Barcode can not be written in arabic</value>
+  </data>
+  <data name="trPopBankExist" xml:space="preserve">
+    <value>The bank already exists</value>
+  </data>
 </root>

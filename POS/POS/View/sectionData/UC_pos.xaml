@@ -149,7 +149,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn MinWidth="150"  Header="Balance" Binding="{Binding Path=balance}">
+                        <DataGridTextColumn MinWidth="150"  Header="Notes" Binding="{Binding Path=note}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -415,7 +415,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_notes"  Text="{Binding notes, Mode=OneWay}" 
+                            <TextBox x:Name="tb_notes"  Text="{Binding note, Mode=OneWay}" 
                                      Padding="10,5,5,5"   TabIndex="3"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 

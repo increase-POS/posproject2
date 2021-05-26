@@ -51,33 +51,6 @@ namespace POS.View
        
         private void translate()
         {
-            /*
-            txt_location.Text = MainWindow.resourcemanager.GetString("trLocation");
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trLocationNameHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_accNumber, MainWindow.resourcemanager.GetString("trAccNumberHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_area, MainWindow.resourcemanager.GetString("trAreaHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_mobile, MainWindow.resourcemanager.GetString("trMobileHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_phone, MainWindow.resourcemanager.GetString("trPhoneHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_address, MainWindow.resourcemanager.GetString("trAdressHint"));
-            txt_moreInformation.Text = MainWindow.resourcemanager.GetString("trAnotherInfomation");
-          
-            dg_location.Columns[0].Header = MainWindow.resourcemanager.GetString("trLocationName");
-            dg_location.Columns[1].Header = MainWindow.resourcemanager.GetString("trAccNumber");
-            dg_location.Columns[2].Header = MainWindow.resourcemanager.GetString("trAddress");
-            dg_location.Columns[3].Header = MainWindow.resourcemanager.GetString("trMobile");
-
-
-            tt_name.Content = MainWindow.resourcemanager.GetString("trName");
-            tt_accNum.Content = MainWindow.resourcemanager.GetString("trAccNumber");
-            tt_mobile.Content = MainWindow.resourcemanager.GetString("trMobile");
-            tt_phone.Content = MainWindow.resourcemanager.GetString("trPhone");
-            tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
-            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
-            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
-
-            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
-            */
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
@@ -140,11 +113,11 @@ namespace POS.View
         bool validate(Location location = null)
         {
             
-            //chk empty name
+            //chk empty x
             SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyNameToolTip");
-            //chk empty mobile
+            //chk empty x
             SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "trEmptyMobileToolTip");
-            //chk empty phone
+            //chk empty x
             SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyPhoneToolTip");
 
             if ((!tb_x.Text.Equals("")) && (!tb_y.Text.Equals("")) && (!tb_z.Text.Equals("")))
@@ -202,7 +175,6 @@ namespace POS.View
 
 
             }
-
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
@@ -275,14 +247,29 @@ namespace POS.View
             }
 
         }
-        private void validationTextbox_LostFocus(object sender, RoutedEventArgs e)
+        private void validationControl_LostFocus(object sender, RoutedEventArgs e)
         {
-            validate();
+            if((sender as Control).Name == "tb_x")
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyNameToolTip");
+           else if((sender as Control).Name == "tb_y")
+                //chk empty mobile
+                SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "trEmptyMobileToolTip");
+            else if ((sender as Control).Name == "tb_z")
+                //chk empty phone
+                SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyPhoneToolTip");
         }
-
         private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            validate();
+            if ((sender as TextBox).Name == "tb_x")
+                //chk empty x
+                SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyNameToolTip");
+            else if ((sender as TextBox).Name == "tb_y")
+                //chk empty y
+                SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "trEmptyMobileToolTip");
+            else if ((sender as TextBox).Name == "tb_z")
+                //chk empty z
+                SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyPhoneToolTip");
         }
         void handleSpace_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -324,8 +311,7 @@ namespace POS.View
             s.z.Contains(searchText)
             ) && s.isActive == tgl_locationState);
             RefreshLocationView();
-        }
-     
+        } 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             RefreshLocationsList();
@@ -345,11 +331,9 @@ namespace POS.View
             
             var QueryExcel = locationsQuery.AsEnumerable().Select(x => new
             {
-                Name = x.name,
-                AccNumber = x.x,
-                Mobile = x.y,
-                Phone = x.z,
-                //Address = x.sectionName,
+                X = x.x,
+                Y = x.y,
+                Z = x.z,
                 Notes = x.note
             });
             var DTForExcel = QueryExcel.ToDataTable();
@@ -359,18 +343,10 @@ namespace POS.View
             DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trAccNum");
             DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trMobile");
             DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trPhone");
-            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trAddress");
-            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trNote");
             */
 
             ExportToExcel.Export(DTForExcel);
         }
-
-
-        
-      
-     
-
 
     }
 }

@@ -58,7 +58,9 @@ namespace POS.View
 
         int index = 0;
 
-        string img_fileName = "pic/no-image-icon-125x125.png";
+        string imgFileName = "pic/no-image-icon-125x125.png";
+
+        bool isImgPressed = false;
 
         private static UC_users _instance;
         public static UC_users Instance
@@ -467,12 +469,19 @@ namespace POS.View
                     string s = await userModel.saveUser(user);
                     //if (s.Equals("User Is Added Successfully")) { //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
                     if (!s.Equals("0"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);  
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
+                    }
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    int userId = int.Parse(s);
-                    await userModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
+                    if (isImgPressed)
+                    {
+                        int userId = int.Parse(s);
+                        await userModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
+                        isImgPressed = false;
+                    }
 
                     await RefreshUsersList();
                     Tb_search_TextChanged(null, null);
@@ -562,39 +571,26 @@ namespace POS.View
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    int userId = int.Parse(s);
-                    await userModel.uploadImage(img_fileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
-
                     await RefreshUsersList();
                     Tb_search_TextChanged(null, null);
 
+                    if (isImgPressed)
+                    {
+                        int userId = int.Parse(s);
+                        bool b = await userModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
+                        isImgPressed = false;
+                        if (b)
+                        {
+                            brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                            img_user.Background = brush;
+                        }
+                    }
+                   
                     SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
 
                     SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
 
                     fillJobCombo();
-
-
-                    //dg_users.UnselectAll();
-                    //Btn_clear_Click(null, null);
-                    //dg_users.SelectedIndex = index;
-
-                    //img_user.ClearValue(Control.BackgroundProperty);
-
-                    //tb_userName.Text = user.username ;
-                    //tb_firstName.Text = user.name;
-                    //tb_lastName.Text = user.lastname ;
-                    //cb_job.Text = user.job ;
-                    //tb_workHours.Text = user.workHours ;
-                    //SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
-                    //SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
-                    //tb_email.Text = user.email ;
-                    //tb_address.Text = user.address ;
-                    //tb_details.Text = user.notes ;
-
-                    //brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                    //img_user.Background = brush;
-
 
                 }
             }
@@ -831,12 +827,13 @@ namespace POS.View
 
         private void Img_user_Click(object sender, RoutedEventArgs e)
         {//select image
+            isImgPressed = true;
             openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
             if (openFileDialog.ShowDialog() == true)
             {
                 brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
                 img_user.Background = brush;
-                img_fileName = openFileDialog.FileName;
+                imgFileName = openFileDialog.FileName;
             }
             else
             {

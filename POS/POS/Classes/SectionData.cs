@@ -19,6 +19,9 @@ namespace POS.Classes
         public static Agent agentModel = new Agent();
 
         public static Branch branchModel = new Branch();
+        public static Category categoryModel = new Category();
+        public static Pos posModel = new Pos();
+
         public static Coupon couponModel = new Coupon();
 
         public static string code;
@@ -113,7 +116,30 @@ namespace POS.Classes
                             codes.Add(branch.code.Trim());
                     }
                 }
+                else if (_class.Equals("Category"))
+                {
+                    List<Category> categories = await categoryModel.GetAllCategories();
 
+                    Category category = new Category();
+                    for (int i = 0; i < categories.Count; i++)
+                    {
+                        category = categories[i];
+                        if (category.categoryId != id)
+                            codes.Add(category.categoryCode.Trim());
+                    }
+                }
+                else if (_class.Equals("Pos"))
+                {
+                    List<Pos> poss = await posModel.GetPosAsync();
+
+                    Pos pos = new Pos();
+                    for (int i = 0; i < poss.Count; i++)
+                    {
+                        pos = poss[i];
+                        if (pos.posId != id)
+                            codes.Add(pos.code.Trim());
+                    }
+                }
                 if (codes.Contains(randomNum.Trim()))
                     iscodeExist = true;
                 else
@@ -208,6 +234,12 @@ namespace POS.Classes
             }
         }
 
+        public static void clearValidate(TextBox tb , Path p_error)
+        {
+            tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            p_error.Visibility = Visibility.Collapsed;
+        }
+
         public static void validateEmptyComboBox(ComboBox cb, Path p_error, ToolTip tt_error, string tr)
         {
             if (cb.SelectedIndex == -1)
@@ -243,10 +275,10 @@ namespace POS.Classes
             }
         }
 
-        public static void validateDuplicateCode(TextBox tb, Path p_error, ToolTip tt_error)
+        public static void validateDuplicateCode(TextBox tb, Path p_error, ToolTip tt_error ,string tr)
         {
             p_error.Visibility = Visibility.Visible;
-            tt_error.Content = MainWindow.resourcemanager.GetString("trDuplicateCodeToolTip");
+            tt_error.Content = MainWindow.resourcemanager.GetString(tr);
             tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
         }
 

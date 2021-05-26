@@ -228,35 +228,53 @@ namespace POS.View
             //chk empty phone
             SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
             //chk empty acc
-            SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyPhoneToolTip");
+            SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyAccNumberToolTip");
 
             string phoneStr = "";
             if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
 
             if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_phone.Text.Equals("")) && (!tb_accNumber.Text.Equals("")))
             {
-                bank.name = tb_name.Text;
-                bank.phone = phoneStr;
-                bank.mobile = cb_area.Text + "-" + tb_mobile.Text;
-                bank.address = tb_address.Text;
-                bank.accNumber = tb_accNumber.Text;
-                bank.notes = tb_notes.Text;
-                bank.createUserId = MainWindow.userID;
-                bank.updateUserId = MainWindow.userID;
-                bank.isActive = 1;
-               
-                string s = await bankModel.saveBank(bank);
+                bool isBankExist = await chkDuplicateBank();
+                if (isBankExist)
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopBankExist"), animation: ToasterAnimation.FadeIn);
+                    p_errorName.Visibility = Visibility.Visible;
+                    tt_errorName.Content = MainWindow.resourcemanager.GetString("trPopBankExist");
+                    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    p_errorAccNum.Visibility = Visibility.Visible;
+                    tt_errorAccNum.Content = MainWindow.resourcemanager.GetString("trPopBankExist");
+                    tb_accNumber.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                }
+                else
+                {
+                    bank.name = tb_name.Text;
+                    bank.phone = phoneStr;
+                    bank.mobile = cb_area.Text + "-" + tb_mobile.Text;
+                    bank.address = tb_address.Text;
+                    bank.accNumber = tb_accNumber.Text;
+                    bank.notes = tb_notes.Text;
+                    bank.createUserId = MainWindow.userID;
+                    bank.updateUserId = MainWindow.userID;
+                    bank.isActive = 1;
 
-                if (s.Equals("Bank Is Added Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); 
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    string s = await bankModel.saveBank(bank);
 
-                await RefreshBanksList();
-                Tb_search_TextChanged(null , null);
+                    if (s.Equals("Bank Is Added Successfully")) //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
+                    }
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                    await RefreshBanksList();
+                    Tb_search_TextChanged(null, null);
+                }
             }
 
         }
+
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
             //chk empty name
@@ -272,33 +290,48 @@ namespace POS.View
 
             if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_phone.Text.Equals("")) && (!tb_accNumber.Text.Equals("")))
             {
-                bank.name = tb_name.Text;
-                bank.phone = phoneStr;
-                bank.mobile = cb_area.Text + "-" + tb_mobile.Text;
-                bank.address = tb_address.Text;
-                bank.accNumber = tb_accNumber.Text;
-                bank.notes = tb_notes.Text;
-                bank.createUserId = MainWindow.userID;
-                bank.updateUserId = MainWindow.userID;
-                bank.isActive = 1;
+                bool isBankExist = await chkDuplicateBank();
+                if (isBankExist)
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopBankExist"), animation: ToasterAnimation.FadeIn);
+                    p_errorName.Visibility = Visibility.Visible;
+                    tt_errorName.Content = MainWindow.resourcemanager.GetString("trPopBankExist");
+                    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    p_errorAccNum.Visibility = Visibility.Visible;
+                    tt_errorAccNum.Content = MainWindow.resourcemanager.GetString("trPopBankExist");
+                    tb_accNumber.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                }
+                else
+                {
 
-                string s = await bankModel.saveBank(bank);
+                    bank.name = tb_name.Text;
+                    bank.phone = phoneStr;
+                    bank.mobile = cb_area.Text + "-" + tb_mobile.Text;
+                    bank.address = tb_address.Text;
+                    bank.accNumber = tb_accNumber.Text;
+                    bank.notes = tb_notes.Text;
+                    bank.createUserId = MainWindow.userID;
+                    bank.updateUserId = MainWindow.userID;
+                    bank.isActive = 1;
 
-                if (s.Equals("Bank Is Updated Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    string s = await bankModel.saveBank(bank);
 
-                await RefreshBanksList();
-                Tb_search_TextChanged(null, null);
+                    if (s.Equals("Bank Is Updated Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                SectionData.getMobile(bank.mobile, cb_area, tb_mobile);
+                    await RefreshBanksList();
+                    Tb_search_TextChanged(null, null);
 
-                SectionData.getPhone(bank.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+                    SectionData.getMobile(bank.mobile, cb_area, tb_mobile);
 
+                    SectionData.getPhone(bank.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+                }
             }
 
         }
+
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
             if (bank.bankId != 0)
@@ -325,6 +358,7 @@ namespace POS.View
             //clear textBoxs
             Btn_clear_Click(sender, e);
         }
+
         private async void activate()
         {//activate
             bank.isActive = 1;
@@ -374,34 +408,42 @@ namespace POS.View
             }
 
         }
+
         private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
         {
             SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
         }
+
         private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
         {
             SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
         }
+
         private void tb_phone_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
         }
+
         private void Tb_phone_TextChanged(object sender, TextChangedEventArgs e)
         {
             SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
         }
+
         private void Tb_phone_LostFocus(object sender, RoutedEventArgs e)
         {
             SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
         }
+
         private void Tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
         }
+
         private void Tb_accNumber_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
         }
+
         void FN_ExportToExcel()
         {
             var QueryExcel = banksQuery.AsEnumerable().Select(x => new
@@ -423,6 +465,7 @@ namespace POS.View
 
             ExportToExcel.Export(DTForExcel);
         }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.Dispatcher.Invoke(() =>
@@ -433,6 +476,7 @@ namespace POS.View
             });
 
         }
+
         private async void Tgl_bankIsActive_Checked(object sender, RoutedEventArgs e)
         {
             if (banks is null)
@@ -440,6 +484,7 @@ namespace POS.View
             tgl_bankState = 1;
             Tb_search_TextChanged(null, null);
         }
+
         private async void Tgl_bankIsActive_Unchecked(object sender, RoutedEventArgs e)
         {
             if (banks is null)
@@ -447,6 +492,7 @@ namespace POS.View
             tgl_bankState = 0;
             Tb_search_TextChanged(null, null);
         }
+
         async Task<IEnumerable<Bank>> RefreshBanksList()
         {
             banks = await bankModel.GetBanksAsync();
@@ -460,6 +506,7 @@ namespace POS.View
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
         }
+
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
             p_errorName.Visibility = Visibility.Collapsed;
@@ -475,6 +522,7 @@ namespace POS.View
             RefreshBankView();
 
         }
+
         private void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (firstchange == true)
@@ -506,9 +554,29 @@ namespace POS.View
                 firstchange = true;
             }
         }
+
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             RefreshBanksList();
+        }
+
+        private async Task<bool> chkDuplicateBank()
+        {
+            bool b = false;
+
+            List<Bank> banks = await bankModel.GetBanksAsync();
+            Bank bank1 = new Bank();
+
+            for (int i = 0; i < banks.Count(); i++)
+            {
+                bank1 = banks[i];
+                if ((bank1.name.Equals(tb_name.Text.Trim())) && 
+                    (bank1.accNumber.Equals(tb_accNumber.Text.Trim())) &&
+                    (bank1.bankId != bank.bankId))
+                { b = true; break; }
+            }
+
+            return b;
         }
     }
 }

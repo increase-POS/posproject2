@@ -61,6 +61,10 @@ namespace POS.View
 
         int index = 0;
 
+        string imgFileName = "pic/no-image-icon-125x125.png";
+
+        bool isImgPressed = false;
+
         private static UC_Customer _instance;
         public static UC_Customer Instance
         {
@@ -322,15 +326,21 @@ namespace POS.View
                     //};
 
                     string s = await agentModel.saveAgent(agent);
-                    if (!s.Equals("0"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); 
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    if (!s.Equals("0"))  //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
+                    }
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    int agentId = int.Parse(s);
-                    //await agentModel.uploadImage(openFileDialog.FileName, agentId);
-                    await agentModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
-
+                    if (isImgPressed)
+                    {
+                        int agentId = int.Parse(s);
+                        //await agentModel.uploadImage(openFileDialog.FileName, agentId);
+                        await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                        isImgPressed = false;
+                    }
                     await RefreshCustomersList();
                     tb_search_TextChanged(null, null);
 
@@ -449,15 +459,20 @@ namespace POS.View
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    int agentId = int.Parse(s);
-                    await agentModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
-
                     await RefreshCustomersList();
-                    tb_search_TextChanged(null, null);
+                    tb_search_TextChanged(null, null); 
 
-                    dg_customer.UnselectAll();
-                    //Btn_clear_Click(null, null);
-                    dg_customer.SelectedIndex = index;
+                    if (isImgPressed)
+                    {
+                        int agentId = int.Parse(s);
+                        bool b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                        isImgPressed = false;
+                        if (b)
+                        {
+                            brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                            img_customer.Background = brush;
+                        }
+                    }
 
                     SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
 
@@ -795,11 +810,13 @@ namespace POS.View
 
         private void Img_customer_Click(object sender, RoutedEventArgs e)
         {//select image
+            isImgPressed = true;
             openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
             if (openFileDialog.ShowDialog() == true)
             {
                 brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
                 img_customer.Background = brush;
+                imgFileName = openFileDialog.FileName;
             }
         }
 

@@ -51,7 +51,9 @@ namespace POS.View
 
         BrushConverter bc = new BrushConverter();
 
-        string img_fileName = "pic/no-image-icon-125x125.png";
+        string imgFileName = "pic/no-image-icon-125x125.png";
+
+        bool isImgPressed = false;
 
         public uc_categorie()
         {
@@ -127,10 +129,10 @@ namespace POS.View
         }
         private void Cb_parentCategorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_parentCategorie.SelectedValue != null)
-                parentCategorieSelctedValue = int.Parse(cb_parentCategorie.SelectedValue.ToString());
-            else
-                parentCategorieSelctedValue = 0;
+            //if (cb_parentCategorie.SelectedValue != null)
+            //    parentCategorieSelctedValue = int.Parse(cb_parentCategorie.SelectedValue.ToString());
+            //else
+            //    parentCategorieSelctedValue = 0;
 
         }
       
@@ -167,6 +169,8 @@ namespace POS.View
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             category.categoryId = 0;
+            //duplicate
+            bool iscodeExist = await SectionData.isCodeExist(tb_categoryCode.Text, "", "Category", 0);
             //chk empty name
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             //chk empty code
@@ -176,35 +180,61 @@ namespace POS.View
                 tax = 0;
             else tax = decimal.Parse(tb_taxes.Text);
 
+            if (cb_parentCategorie.Text.Equals("")) parentCategorieSelctedValue = 0;
+            else parentCategorieSelctedValue = Convert.ToInt32(cb_parentCategorie.SelectedValue);
+
             if ((!tb_name.Text.Equals("")) && (!tb_categoryCode.Text.Equals("")))
             {
-                category.categoryCode = tb_categoryCode.Text;
-                category.name = tb_name.Text;
-                category.details = tb_details.Text;
-                category.taxes = tax;
-                category.parentId = parentCategorieSelctedValue;
-                category.createUserId = MainWindow.userID;
-                category.updateUserId = MainWindow.userID;
-                category.isActive = 1;
+                if (iscodeExist)
+                    SectionData.validateDuplicateCode(tb_categoryCode, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                else
+                {
+                    category.categoryCode = tb_categoryCode.Text;
+                    category.name = tb_name.Text;
+                    category.details = tb_details.Text;
+                    category.taxes = tax;
+                    category.parentId = parentCategorieSelctedValue;
+                    category.createUserId = MainWindow.userID;
+                    category.updateUserId = MainWindow.userID;
+                    category.isActive = 1;
 
-                string s = await categoryModel.saveCategory(category);
+                    string s = await categoryModel.saveCategory(category);
 
-                if (!s.Equals("0"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);  
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    if (!s.Equals("0"))  //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);  }
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
+                    }
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                int categoryId = int.Parse(s);
-                await categoryModel.uploadImage(img_fileName, Md5Encription.MD5Hash("Inc-m" + categoryId.ToString()), categoryId);
+                    await RefrishCategories();
+                    Txb_searchcategories_TextChanged(null, null);
 
-                await RefrishCategories();
-                Txb_searchcategories_TextChanged(null, null);
+                    if (isImgPressed)
+                    {
+                        int categoryId = int.Parse(s);
+                        bool b = await categoryModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + categoryId.ToString()), categoryId);
+                        isImgPressed = false;
+                        if (b)
+                        {
+                            brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                            img_category.Background = brush;
+                        }
+                    }
+                    ////////categoryParentId = parentCategorieSelctedValue;???????????????????
+                   
+
+                    fillCategories();
+                }
             }
 
           
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
+            //duplicate
+            bool iscodeExist = await SectionData.isCodeExist(tb_categoryCode.Text, "", "Category", category.categoryId);
             //chk empty name
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             //chk empty code
@@ -214,27 +244,45 @@ namespace POS.View
                 tax = 0;
             else tax = decimal.Parse(tb_taxes.Text);
 
+            if (cb_parentCategorie.Text.Equals("")) parentCategorieSelctedValue = 0;
+            else parentCategorieSelctedValue = Convert.ToInt32(cb_parentCategorie.SelectedValue);
+
             if ((!tb_name.Text.Equals("")) && (!tb_categoryCode.Text.Equals("")))
             {
-                category.categoryCode = tb_categoryCode.Text;
-                category.name = tb_name.Text;
-                category.details = tb_details.Text;
-                category.taxes = tax;
-                category.parentId = parentCategorieSelctedValue;
-                category.updateUserId = MainWindow.userID ;
+                if (iscodeExist)
+                    SectionData.validateDuplicateCode(tb_categoryCode, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                else
+                {
+                    category.categoryCode = tb_categoryCode.Text;
+                    category.name = tb_name.Text;
+                    category.details = tb_details.Text;
+                    category.taxes = tax;
+                    category.parentId = parentCategorieSelctedValue;
+                    category.updateUserId = MainWindow.userID;
 
-                string s = await categoryModel.saveCategory(category);
+                    string s = await categoryModel.saveCategory(category);
 
-                if (!s.Equals("0")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate")); 
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    if (!s.Equals("0")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate")); 
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                int categoryId = int.Parse(s);
-                await categoryModel.uploadImage(img_fileName, Md5Encription.MD5Hash("Inc-m" + categoryId.ToString()), categoryId);
+                    await RefrishCategories();
+                    Txb_searchcategories_TextChanged(null, null);
 
-                await RefrishCategories();
-                Txb_searchcategories_TextChanged(null, null);
+                    if (isImgPressed)
+                    {
+                        int categoryId = int.Parse(s);
+                        bool b = await categoryModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + categoryId.ToString()), categoryId);
+                        isImgPressed = false;
+                        if (b)
+                        {
+                            brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                            img_category.Background = brush;
+                        }
+                    }
+                   
+                }
             }
 
         
@@ -246,6 +294,7 @@ namespace POS.View
             tb_details.Clear();
             tb_categoryCode.Clear();
             cb_parentCategorie.SelectedIndex = -1;
+            
             //clear img
             Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
             StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
@@ -352,7 +401,6 @@ namespace POS.View
                 this.DataContext = category;
                 cb_parentCategorie.SelectedValue = category.parentId;
 
-                //await Img.getImg(category.image , "category");
                 getImg();
 
                 #region delete
@@ -728,11 +776,12 @@ namespace POS.View
 
         private void Img_calegorieImg_Click(object sender, RoutedEventArgs e)
         {//select image
+            isImgPressed = true;
             openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
             if (openFileDialog.ShowDialog() == true)
             {
                 brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                img_fileName = openFileDialog.FileName;
+                imgFileName = openFileDialog.FileName;
                 img_category.Background = brush;
             }
         }
@@ -748,7 +797,6 @@ namespace POS.View
 
                     BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
                     brush.ImageSource = temp;
-
                     img_category.Background = brush;
 
                 }
@@ -769,13 +817,26 @@ namespace POS.View
                  
             }
             }
-            catch { }
+            catch
+            {
+                Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+                StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                brush.ImageSource = temp;
+                img_category.Background = brush;
+            }
         }
 
         private  void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             RefrishCategories();
-            
+        }
+
+     
+        private void Tb_categoryCode_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
         }
     }
 }

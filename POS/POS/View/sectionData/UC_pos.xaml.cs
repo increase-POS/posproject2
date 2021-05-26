@@ -159,7 +159,7 @@ namespace POS.View
             dg_pos.Columns[0].Header = MainWindow.resourcemanager.GetString("trPosName");
             dg_pos.Columns[1].Header = MainWindow.resourcemanager.GetString("trPosCode");
             dg_pos.Columns[2].Header = MainWindow.resourcemanager.GetString("trBranchName");
-            dg_pos.Columns[3].Header = MainWindow.resourcemanager.GetString("trBalance");
+            dg_pos.Columns[3].Header = MainWindow.resourcemanager.GetString("trNote");
 
             tt_name.Content = MainWindow.resourcemanager.GetString("trName");
             tt_code.Content = MainWindow.resourcemanager.GetString("trCode");
@@ -232,6 +232,7 @@ namespace POS.View
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             pos.posId = 0;
+            bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "", "Pos", 0);
             //chk empty name
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             //chk empty code
@@ -240,23 +241,32 @@ namespace POS.View
             SectionData.validateEmptyComboBox(cb_branch, p_errorSelectBranch, tt_errorSelectBranch, "trEmptyBranchToolTip");
             if ((!tb_name.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
             {
-                pos.code = tb_code.Text;
-                pos.name = tb_name.Text;
-                pos.branchId = Convert.ToInt32(cb_branch.SelectedValue);
-                pos.createUserId = MainWindow.userID.Value;
-                pos.updateUserId = MainWindow.userID.Value;
-                pos.isActive = 1;
-                pos.note = tb_notes.Text;
+                //duplicate
+                if (iscodeExist)
+                    SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                else
+                {
+                    pos.code = tb_code.Text;
+                    pos.name = tb_name.Text;
+                    pos.branchId = Convert.ToInt32(cb_branch.SelectedValue);
+                    pos.createUserId = MainWindow.userID.Value;
+                    pos.updateUserId = MainWindow.userID.Value;
+                    pos.isActive = 1;
+                    pos.note = tb_notes.Text;
 
-                string s = await posModel.savePos(pos);
-                MessageBox.Show(s);
-                if (s.Equals("Pos Is Added Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); 
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    string s = await posModel.savePos(pos);
 
-                await RefreshPosList();
-                Tb_search_TextChanged(null, null);
+                    if (s.Equals("Pos Is Added Successfully")) //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
+                    }
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                    await RefreshPosList();
+                    Tb_search_TextChanged(null, null);
+                }
             }
 
 
@@ -264,6 +274,7 @@ namespace POS.View
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
+            bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "", "Pos", pos.posId);
             //chk empty name
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             //chk empty code
@@ -272,21 +283,27 @@ namespace POS.View
             SectionData.validateEmptyComboBox(cb_branch, p_errorSelectBranch, tt_errorSelectBranch, "trEmptyBranchToolTip");
             if ((!tb_name.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
             {
-                pos.code = tb_code.Text;
-                pos.name = tb_name.Text;
-                pos.branchId = Convert.ToInt32(cb_branch.SelectedValue);
-                pos.updateUserId = MainWindow.userID.Value;
-                pos.note = tb_notes.Text;
+                //duplicate
+                if (iscodeExist)
+                    SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                else
+                {
+                    pos.code = tb_code.Text;
+                    pos.name = tb_name.Text;
+                    pos.branchId = Convert.ToInt32(cb_branch.SelectedValue);
+                    pos.updateUserId = MainWindow.userID.Value;
+                    pos.note = tb_notes.Text;
 
-                string s = await posModel.savePos(pos);
+                    string s = await posModel.savePos(pos);
 
-                if (s.Equals("Pos Is Updated Successfully"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    if (s.Equals("Pos Is Updated Successfully"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                await RefreshPosList();
-                Tb_search_TextChanged(null, null);
+                    await RefreshPosList();
+                    Tb_search_TextChanged(null, null);
+                }
             }
 
         }
@@ -314,9 +331,12 @@ namespace POS.View
 
                 await RefreshPosList();
                 Tb_search_TextChanged(null, null);
+
+                //clear textBoxs
+                Btn_clear_Click(sender, e);
+
             }
-            //clear textBoxs
-            Btn_clear_Click(sender, e);
+           
 
         }
 

@@ -780,4 +780,46 @@
   <data name="trViewItems" xml:space="preserve">
     <value>العرض على شكل عناصر</value>
   </data>
+  <data name="trEmptyAccNumberToolTip" xml:space="preserve">
+    <value>رقم الحساب لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyPropertyToolTip" xml:space="preserve">
+    <value>الخاصية لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trEmptyValueToolTip" xml:space="preserve">
+    <value>القيمة لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trErrorDuplicateBarcodeToolTip" xml:space="preserve">
+    <value>الباركود محجوز مسبقاً</value>
+  </data>
+  <data name="trErrorEmptyBarcodeToolTip" xml:space="preserve">
+    <value>الباركود لا يمكن أن يكون فارغاً</value>
+  </data>
+  <data name="trErrorEmptyCategoryToolTip" xml:space="preserve">
+    <value>الفئة لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trErrorEmptyCountToolTip" xml:space="preserve">
+    <value>العدد لا يمكن أن يكون فارغاً</value>
+  </data>
+  <data name="trErrorEmptyMaxToolTip" xml:space="preserve">
+    <value>الحد الأعلى لا يمكن أن يكون فارغاً</value>
+  </data>
+  <data name="trErrorEmptyMinToolTip" xml:space="preserve">
+    <value>الحد الأدنى لايمكن أن يكون فارغاً</value>
+  </data>
+  <data name="trErrorEmptyPriceToolTip" xml:space="preserve">
+    <value>السعر لا يمكن أن يكون فارغاً</value>
+  </data>
+  <data name="trErrorEmptyTypeToolTip" xml:space="preserve">
+    <value>النوع لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trErrorEmptyUnitToolTip" xml:space="preserve">
+    <value>الوحدة لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trErrorEnglishBarcodeToolTip" xml:space="preserve">
+    <value>الباركود لا يمكن كتابته بالعربية</value>
+  </data>
+  <data name="trPopBankExist" xml:space="preserve">
+    <value>البنك موجود مسبقاً</value>
+  </data>
 </root>

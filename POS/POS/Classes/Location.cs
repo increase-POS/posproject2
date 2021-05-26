@@ -29,6 +29,7 @@ namespace POS.Classes
         public string z { get; set; }
         public string note { get; set; }
         public Nullable<int> branchId { get; set; }
+        public string sectionName { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }

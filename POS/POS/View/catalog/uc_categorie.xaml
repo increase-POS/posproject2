@@ -583,7 +583,7 @@
                                              Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                              BorderBrush="AliceBlue"   TabIndex="0"
                                              HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                             Height="35" Width="195"  Margin="10,5" >
+                                             Height="35" Width="195"  Margin="10,5"  PreviewKeyDown="Tb_categoryCode_PreviewKeyDown" >
                                         <TextBox.ToolTip>
                                             <ToolTip x:Name="tt_code" Content="Code"
                                               Placement="left" 

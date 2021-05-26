@@ -622,7 +622,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_address"  Text="{Binding email, Mode=OneWay}" Grid.Column="1"  Padding="10,5,5,5"   
+                            <TextBox x:Name="tb_address"  Text="{Binding address, Mode=OneWay}" Grid.Column="1"  Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Address..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="100"

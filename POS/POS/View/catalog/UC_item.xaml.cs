@@ -81,8 +81,6 @@ namespace POS.View
         List<string> unitNames = new List<string>();
 
         static private int _InternalCounter = 0;
-        static private int _BarcodeLength = 0;
-        static private string _BarCode = "";
 
 
         DateTime _lastKeystroke = new DateTime(0);
@@ -204,23 +202,32 @@ namespace POS.View
                 if (barcodesList != null)
                 {
                     ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text);
+                   
                     if (unit1 != null)
                     {
-                        int itemId = (int)unit1.itemId;
-                        if (unit1.itemId != 0)
-                            ChangeItemIdEvent(itemId);
+                        if (dg_barcode.Visibility == Visibility.Visible)
+                        {
+                           if( ! checkBarcodeValidity(tb_barcode.Text))
+                            {
+                                SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorDuplicateBarcodeToolTip");
+                            }
+                        }
+                        else
+                        {
+                            int itemId = (int)unit1.itemId;
+                            if (unit1.itemId != 0)
+                                ChangeItemIdEvent(itemId);
+                        }
                     }
                 }
                 drawBarcode(tb_barcode.Text);
            }
         }
+
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             var window = Window.GetWindow(this);
             window.KeyDown += HandleKeyPress;
-            // Window.Current.CoreWindow.KeyDown =
-           // uc_userControl.GetForCurrentThread().KeyDown += KeyDowns;
-            // Application.Current.MainWindow.KeyDown += new KeyEventHandler(HandleKeyPress);
 
             // for pagination
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
@@ -263,6 +270,20 @@ namespace POS.View
             generateBarcode("", true);
         }
 
+        private Boolean checkBarcodeValidity(string barcode)
+        {
+            fillBarcodeList();
+            if (barcodesList != null)
+            {
+                var exist = barcodesList.Where(x => x.barcode == barcode).FirstOrDefault();
+                if (exist != null)
+                    return false;
+                else
+                    return true;
+            }
+            return true;
+        }
+     
         private void generateBarcode(string barcodeString, Boolean defaultBarcode)
         {
             if (barcodeString == "" && defaultBarcode)
@@ -270,13 +291,11 @@ namespace POS.View
                 barcodeString = generateRandomBarcode();
                 if (barcodesList != null)
                 {
-                    var exist = barcodesList.Where(x => x.barcode == barcodeString).FirstOrDefault();
-                    if (exist != null)
+                   if(! checkBarcodeValidity(barcodeString))
                         barcodeString = generateRandomBarcode();
                 }
                 tb_barcode.Text += barcodeString;
             }
-
             drawBarcode(tb_barcode.Text);
         }
         private void drawBarcode(string barcodeStr)
@@ -338,104 +357,45 @@ namespace POS.View
         //3Service
         //4Package items
 
+        #region add update delete , validate
+        private void validateItemValues()
+        {
+            SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            SectionData.validateEmptyComboBox(cb_categorie, p_errorCategorie, tt_categorie, "trErrorEmptyCategoryToolTip");
+            SectionData.validateEmptyComboBox(cb_itemType, p_errorType, tt_errorType, "trErrorEmptyTypeToolTip");
+            SectionData.validateEmptyComboBox(cb_minUnit, p_errorMinUnit, tt_errorMinUnit, "trErrorEmptyUnitToolTip");
+            SectionData.validateEmptyComboBox(cb_maxUnit, p_errorMaxUnit, tt_errorMaxUnit, "trErrorEmptyUnitToolTip");
+            SectionData.validateEmptyTextBox(tb_min, p_errorMin, tt_errorMin, "trErrorEmptyMinToolTip");
+            SectionData.validateEmptyTextBox(tb_max, p_errorMax, tt_errorMax, "trErrorEmptyMaxToolTip");
+        }
+        private async Task<Boolean> checkCodeAvailabiltiy()
+        {
+            List<string> itemsCodes = await itemModel.GetItemsCodes();
+            string code = tb_code.Text;
+            var match = itemsCodes.FirstOrDefault(stringToCheck => stringToCheck.Contains(code));
 
-        #region add update delete 
+            if (match != null)
+            {
+                SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                return false;
+            }
+            else
+            {
+                SectionData.clearValidate(tb_code, p_errorCode);
+                return true;
+            }
+        }
         // add item with basic information 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            //check mandatory values
-            var bc = new BrushConverter();
-            if (tb_code.Text.Equals(""))
-            {
-                p_errorCode.Visibility = Visibility.Visible;
-                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_code.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorCode.Visibility = Visibility.Collapsed;
-                tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (cb_categorie.SelectedIndex == -1)
-            {
-                p_errorCategorie.Visibility = Visibility.Visible;
-                tt_categorie.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                cb_categorie.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorCategorie.Visibility = Visibility.Collapsed;
-                cb_categorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (cb_itemType.SelectedIndex == -1)
-            {
-                p_errorType.Visibility = Visibility.Visible;
-                tt_errorType.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                cb_itemType.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorType.Visibility = Visibility.Collapsed;
-                cb_itemType.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (cb_minUnit.SelectedIndex == -1 && cb_itemType.SelectedIndex != 3)
-            {
-                p_errorMinUnit.Visibility = Visibility.Visible;
-                tt_errorMinUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                cb_minUnit.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorMinUnit.Visibility = Visibility.Collapsed;
-                cb_minUnit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (cb_maxUnit.SelectedIndex == -1 && cb_itemType.SelectedIndex != 3)
-            {
-                p_errorMaxUnit.Visibility = Visibility.Visible;
-                tt_errorMaxUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                cb_maxUnit.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorMaxUnit.Visibility = Visibility.Collapsed;
-                cb_maxUnit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (tb_min.Text.Equals("") && cb_itemType.SelectedIndex != 3)
-            {
-                p_errorMin.Visibility = Visibility.Visible;
-                tt_errorMin.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_min.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorMin.Visibility = Visibility.Collapsed;
-                tb_min.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (tb_max.Text.Equals("") && cb_itemType.SelectedIndex != 3)
-            {
-                p_errorMax.Visibility = Visibility.Visible;
-                tt_errorMax.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_max.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorMax.Visibility = Visibility.Collapsed;
-                tb_max.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            //validate values
+            validateItemValues();
+            Boolean codeAvailable = await  checkCodeAvailabiltiy();
+
             if ((!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1
-                && cb_minUnit.SelectedIndex != -1 && cb_maxUnit.SelectedIndex != -1 && !tb_min.Text.Equals("") && !tb_max.Text.Equals("")) ||
-               (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1 && cb_itemType.SelectedIndex == 3))
+                && cb_minUnit.SelectedIndex != -1 && cb_maxUnit.SelectedIndex != -1 && !tb_min.Text.Equals("") && !tb_max.Text.Equals("")) && codeAvailable ||
+               (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1 && cb_itemType.SelectedIndex == 3 && codeAvailable))
             {
                 Nullable<int> categoryId = null;
                 if (cb_categorie.SelectedIndex != -1)
@@ -492,102 +452,15 @@ namespace POS.View
                 Txb_searchitems_TextChanged(null, null);
                 btn_clear_Click(sender, e);
             }
-            tb_barcode.Focus();
+            tb_code.Focus();
         }
 
         //update item
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {
-            //check mandatory values
-            var bc = new BrushConverter();
-            if (tb_code.Text.Equals(""))
-            {
-                p_errorCode.Visibility = Visibility.Visible;
-                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_code.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorCode.Visibility = Visibility.Collapsed;
-                tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (cb_categorie.SelectedIndex == -1)
-            {
-                p_errorCategorie.Visibility = Visibility.Visible;
-                tt_categorie.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                cb_categorie.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorCategorie.Visibility = Visibility.Collapsed;
-                cb_categorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (cb_itemType.SelectedIndex == -1)
-            {
-                p_errorType.Visibility = Visibility.Visible;
-                tt_errorType.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                cb_itemType.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorType.Visibility = Visibility.Collapsed;
-                cb_itemType.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (cb_minUnit.SelectedIndex == -1)
-            {
-                p_errorMinUnit.Visibility = Visibility.Visible;
-                tt_errorMinUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                cb_minUnit.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorMinUnit.Visibility = Visibility.Collapsed;
-                cb_minUnit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (cb_maxUnit.SelectedIndex == -1)
-            {
-                p_errorMaxUnit.Visibility = Visibility.Visible;
-                tt_errorMaxUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                cb_maxUnit.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorMaxUnit.Visibility = Visibility.Collapsed;
-                cb_maxUnit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (tb_min.Text.Equals(""))
-            {
-                p_errorMin.Visibility = Visibility.Visible;
-                tt_errorMin.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_min.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorMin.Visibility = Visibility.Collapsed;
-                tb_min.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (tb_max.Text.Equals(""))
-            {
-                p_errorMax.Visibility = Visibility.Visible;
-                tt_errorMax.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_max.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorMax.Visibility = Visibility.Collapsed;
-                tb_max.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            //validate values
+            validateItemValues();
+
             if (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1
                 && cb_minUnit.SelectedIndex != -1 && cb_maxUnit.SelectedIndex != -1 && !tb_min.Text.Equals("") && !tb_max.Text.Equals(""))
             {
@@ -645,7 +518,7 @@ namespace POS.View
                 //var items = await itemModel.GetAllItems();
                 //dg_items.ItemsSource = items;
             }
-            tb_barcode.Focus();
+            tb_code.Focus();
         }
         async void Btn_deleteService_Click(object sender, RoutedEventArgs e)
         {
@@ -690,7 +563,7 @@ namespace POS.View
 
             //clear textBoxs
             btn_clear_Click(sender, e);
-            tb_barcode.Focus();
+            tb_code.Focus();
         }
         private async void activate()
         {//activate
@@ -706,19 +579,16 @@ namespace POS.View
 
             tb_barcode.Focus();
         }
-
+        private void validatePropertyValues()
+        {
+            SectionData.validateEmptyComboBox(cb_selectProperties, p_errorProperty, tt_errorProperty, "trEmptyPropertyToolTip");
+            SectionData.validateEmptyComboBox(cb_value, p_errorValue, tt_errorValue, "trEmptyValueToolTip");    
+        }
         async void Btn_addProperties_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_value.SelectedValue == null)
-            {
-                p_errorValue.Visibility = Visibility.Visible;
-                tt_errorValue.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorValue.Visibility = Visibility.Collapsed;
-            }
-            if (cb_value.SelectedValue != null && item.itemId > 0)
+            validatePropertyValues();
+
+            if (cb_selectProperties.SelectedValue != null  && cb_value.SelectedValue != null && item.itemId > 0)
             {
                 int propertyItemId = propItems[cb_value.SelectedIndex].propertyItemId;
                 int itemId = (int)item.itemId;
@@ -745,29 +615,19 @@ namespace POS.View
                 cb_value.SelectedIndex = -1;
                 cb_selectProperties.SelectedIndex = -1;
             }
-            tb_barcode.Focus();
+            cb_selectProperties.Focus();
+        }
+
+        private void validateServiceValues()
+        {
+            SectionData.validateEmptyTextBox(tb_serviceName, p_errorServiceName, tt_errorServiceName, "trEmptyNameToolTip");
+            SectionData.validateEmptyTextBox(tb_costVal, p_errorCostVal, tt_errorCostVal, "trEmptyValueToolTip");
         }
         // add service to item
         async void Btn_addService_Click(object sender, RoutedEventArgs e)
         {
-            if (tb_serviceName.Text.Equals(""))
-            {
-                p_errorServiceName.Visibility = Visibility.Visible;
-                tt_errorServiceName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorServiceName.Visibility = Visibility.Collapsed;
-            }
-            if (tb_costVal.Text.Equals(""))
-            {
-                p_errorCostVal.Visibility = Visibility.Visible;
-                tt_errorCostVal.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorCostVal.Visibility = Visibility.Collapsed;
-            }
+            validateServiceValues();
+            
             if (!tb_serviceName.Text.Equals("") && !tb_costVal.Text.Equals(""))
             {
                 service = new Service();
@@ -788,20 +648,17 @@ namespace POS.View
                 tb_serviceName.Clear();
                 tb_costVal.Clear();
             }
-            tb_barcode.Focus();
+            cb_selectProperties.Focus();
+        }
+        private void validateSerialValues()
+        {
+            SectionData.validateEmptyTextBox(tb_serial, p_errorSerial, tt_errorSerial, "trEmptyCodeToolTip");
         }
         // add serial to item
         async void Btn_addSerial_Click(object sender, RoutedEventArgs e)
         {
-            if (tb_serial.Text.Equals(""))
-            {
-                p_errorSerial.Visibility = Visibility.Visible;
-                tt_errorSerial.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorSerial.Visibility = Visibility.Collapsed;
-            }
+            validateSerialValues();
+
             if (!tb_serial.Text.Equals(""))
             {
                 Boolean exist = false;
@@ -845,7 +702,7 @@ namespace POS.View
 
                 refreshPropertiesGrid(item.itemId);
             }
-            tb_barcode.Focus();
+            cb_selectProperties.Focus();
         }
         async void Btn_deleteSerial_Click(object sender, RoutedEventArgs e)
         {
@@ -863,28 +720,12 @@ namespace POS.View
 
                 refreshSerials(item.itemId);
             }
-            tb_barcode.Focus();
+            cb_selectProperties.Focus();
         }
         async void Btn_updateService_Click(object sender, RoutedEventArgs e)
         {
-            if (tb_serviceName.Text.Equals(""))
-            {
-                p_errorServiceName.Visibility = Visibility.Visible;
-                tt_errorServiceName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorServiceName.Visibility = Visibility.Collapsed;
-            }
-            if (tb_costVal.Text.Equals(""))
-            {
-                p_errorCostVal.Visibility = Visibility.Visible;
-                tt_errorCostVal.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorCostVal.Visibility = Visibility.Collapsed;
-            }
+            validateServiceValues();
+           
             if (!tb_serviceName.Text.Equals("") && !tb_costVal.Text.Equals("") && item != null)
             {
                 service.name = tb_serviceName.Text;
@@ -898,7 +739,7 @@ namespace POS.View
 
                 refreshServicesGrid(item.itemId);
             }
-            tb_barcode.Focus();
+            cb_selectProperties.Focus();
         }
 
 
@@ -906,74 +747,30 @@ namespace POS.View
 
         #region barcode
         //*****************************************8
+        private void validateUnitValues()
+        {
+            SectionData.validateEmptyComboBox(cb_selectUnit, p_errorSelectUnit, tt_errorSelectUnit, "trErrorEmptyUnitToolTip");
+            SectionData.validateEmptyTextBox(tb_count, p_errorCount, tt_errorCount, "trErrorEmptyCountToolTip");
+            SectionData.validateEmptyComboBox(cb_unit, p_errorUnit, tt_errorUnit, "trErrorEmptyUnitToolTip");
+            SectionData.validateEmptyTextBox(tb_price, p_errorPrice, tt_errorPrice, "trErrorEmptyPriceToolTip");
+            SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trEmptyBarcodeToolTip");
+
+        }
         // add barcode to item
         async void Btn_addBarcode_Click(object sender, RoutedEventArgs e)
         {
             //check mandatory values
-            var bc = new BrushConverter();
-            if (cb_selectUnit.SelectedIndex == -1)
-            {
-                p_errorSelectUnit.Visibility = Visibility.Visible;
-                tt_errorSelectUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                cb_selectUnit.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorSelectUnit.Visibility = Visibility.Collapsed;
-                cb_selectUnit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (tb_count.Text.Equals("") && cb_itemType.SelectedIndex != 3)
-            {
-                p_errorCount.Visibility = Visibility.Visible;
-                tt_errorCount.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_count.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorCount.Visibility = Visibility.Collapsed;
-                tb_count.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (cb_unit.SelectedIndex == -1 && cb_itemType.SelectedIndex != 3)
-            {
-                p_errorUnit.Visibility = Visibility.Visible;
-                tt_errorUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                cb_unit.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorUnit.Visibility = Visibility.Collapsed;
-                cb_unit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (tb_price.Text.Equals(""))
-            {
-                p_errorPrice.Visibility = Visibility.Visible;
-                tt_errorPrice.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_price.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorPrice.Visibility = Visibility.Collapsed;
-                tb_price.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (tb_barcode.Text.Equals(""))
-            {
-                p_errorBarcode.Visibility = Visibility.Visible;
-                tt_errorBarcode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_barcode.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorBarcode.Visibility = Visibility.Collapsed;
-                tb_barcode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            validateUnitValues();
+           
             if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
                 || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
             {
                 // check barcode value if assigned to any item
-                ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text);
-
-                //barcode is available
-                if (unit1 == null)
+                if (!checkBarcodeValidity(tb_barcode.Text))
+                {
+                    SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorDuplicateBarcodeToolTip");
+                }
+                else //barcode is available
                 {
                     Nullable<int> unitId = null;
                     if (cb_selectUnit.SelectedIndex != -1)
@@ -1028,97 +825,62 @@ namespace POS.View
         async void Btn_updateBarcode_Click(object sender, RoutedEventArgs e)
         {
             //check mandatory values
-            var bc = new BrushConverter();
-            if (tb_count.Text.Equals("") && cb_itemType.SelectedIndex != 3)
-            {
-                p_errorCount.Visibility = Visibility.Visible;
-                tt_errorCount.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_count.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorCount.Visibility = Visibility.Collapsed;
-                tb_count.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (cb_unit.SelectedIndex == -1 && cb_itemType.SelectedIndex != 3)
-            {
-                p_errorUnit.Visibility = Visibility.Visible;
-                tt_errorUnit.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                cb_unit.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorUnit.Visibility = Visibility.Collapsed;
-                cb_unit.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (tb_price.Text.Equals(""))
-            {
-                p_errorPrice.Visibility = Visibility.Visible;
-                tt_errorPrice.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_price.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorPrice.Visibility = Visibility.Collapsed;
-                tb_price.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (tb_barcode.Text.Equals(""))
-            {
-                p_errorBarcode.Visibility = Visibility.Visible;
-                tt_errorBarcode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_barcode.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorBarcode.Visibility = Visibility.Collapsed;
-                tb_barcode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            validateUnitValues();
+
             if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
                 || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
             {
-                Nullable<int> unitId = null;
-                if (cb_selectUnit.SelectedIndex != -1)
-                    unitId = units[cb_selectUnit.SelectedIndex].unitId;
+                // check barcode value if assigned to any item
+                if (!checkBarcodeValidity(tb_barcode.Text))
+                {
+                    SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorDuplicateBarcodeToolTip");
+                }
+                else //barcode is available
+                {
+                    Nullable<int> unitId = null;
+                    if (cb_selectUnit.SelectedIndex != -1)
+                        unitId = units[cb_selectUnit.SelectedIndex].unitId;
 
-                short defaultBurchase = 0;
-                if (tbtn_isDefaultPurchases.IsChecked == true)
-                    defaultBurchase = 1;
+                    short defaultBurchase = 0;
+                    if (tbtn_isDefaultPurchases.IsChecked == true)
+                        defaultBurchase = 1;
 
-                short defaultSale = 0;
-                if (tbtn_isDefaultSales.IsChecked == true)
-                    defaultSale = 1;
+                    short defaultSale = 0;
+                    if (tbtn_isDefaultSales.IsChecked == true)
+                        defaultSale = 1;
 
-                decimal unitValue = 0;
-                if (tb_count.Text != "")
-                    unitValue = decimal.Parse(tb_count.Text);
+                    decimal unitValue = 0;
+                    if (tb_count.Text != "")
+                        unitValue = decimal.Parse(tb_count.Text);
 
-                Nullable<int> smallUnitId = null;
-                if (cb_unit.SelectedIndex != -1)
-                    smallUnitId = units[cb_unit.SelectedIndex].unitId;
+                    Nullable<int> smallUnitId = null;
+                    if (cb_unit.SelectedIndex != -1)
+                        smallUnitId = units[cb_unit.SelectedIndex].unitId;
 
-                decimal price = 0;
-                if (tb_price.Text != "")
-                    price = decimal.Parse(tb_price.Text);
+                    decimal price = 0;
+                    if (tb_price.Text != "")
+                        price = decimal.Parse(tb_price.Text);
 
-                string barcode = tb_barcode.Text;
+                    string barcode = tb_barcode.Text;
 
-                itemUnit.itemId = item.itemId;
-                itemUnit.unitId = unitId;
-                itemUnit.unitValue = unitValue;
-                itemUnit.subUnitId = smallUnitId;
-                itemUnit.defaultSale = defaultSale;
-                itemUnit.defaultPurchase = defaultBurchase;
-                itemUnit.price = price;
-                itemUnit.barcode = barcode;
-                itemUnit.createUserId = MainWindow.userID;
+                    itemUnit.itemId = item.itemId;
+                    itemUnit.unitId = unitId;
+                    itemUnit.unitValue = unitValue;
+                    itemUnit.subUnitId = smallUnitId;
+                    itemUnit.defaultSale = defaultSale;
+                    itemUnit.defaultPurchase = defaultBurchase;
+                    itemUnit.price = price;
+                    itemUnit.barcode = barcode;
+                    itemUnit.createUserId = MainWindow.userID;
 
-                string res = await itemUnit.saveItemUnit(itemUnit);
-                if (res.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    string res = await itemUnit.saveItemUnit(itemUnit);
+                    if (res.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                refreshItemUnitsGrid(item.itemId);
+                    refreshItemUnitsGrid(item.itemId);
+                }
             }
             tb_barcode.Focus();
         }
@@ -1140,85 +902,47 @@ namespace POS.View
             tb_barcode.Focus();
         }
 
-        private void moveFocusToBarcode(object sender, KeyEventArgs e)
-        {
-            TextBox tb = (TextBox)sender;
-            if (e.Key.ToString() == "Return")
-            {
-                Keyboard.Focus(tb_barcode);
-                _BarCode = tb.Text;
-                if (_BarCode != "") tb_barcode.Text = _BarCode;
-            }
-            tb_barcode.Focus();
-        }
-        private void tb_barcodeGotFocus(object sender, RoutedEventArgs e)
-        {
-            _BarcodeLength = tb_barcode.Text.Length;
-            tb_barcode.Select(0, 0);
-        }
-        private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            TextBox tb = (TextBox)sender;
-            string barCode = "";
-            if (!tb.Text.Equals(""))
-                barCode = tb_barcode.Text;
-
-            generateBarcode(barCode, false);
-        }
         #endregion barcode
 
         #region validate
-        private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var bc = new BrushConverter();
 
-            if (tb_name.Text.Equals(""))
+        private  void input_LostFocus(object sender, RoutedEventArgs e)
+        {
+           string name = sender.GetType().Name;
+            if (name == "TextBox")
             {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
         }
-
         private void tb_name_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
-
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
         }
 
         private void Tb_code_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
-
-            if (tb_code.Text.Equals(""))
+            SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");         
+        }
+        private void cb_selectUnit_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SectionData.validateEmptyComboBox(cb_selectUnit, p_errorSelectUnit, tt_errorSelectUnit, "trErrorEmptyUnitToolTip");
+        }
+        private void tb_count_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SectionData.validateEmptyTextBox(tb_count, p_errorCount, tt_errorCount, "trErrorEmptyCountToolTip");
+        }
+        private void cb_barcode_LostFocus(object sender, RoutedEventArgs e)
+        {      
+            if (!checkBarcodeValidity(tb_barcode.Text))
             {
-                p_errorCode.Visibility = Visibility.Visible;
-                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_code.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorDuplicateBarcodeToolTip");
             }
             else
             {
-                p_errorCode.Visibility = Visibility.Collapsed;
-                tt_errorCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorEmptyBarcodeToolTip");
             }
+            
         }
-
         private void Tb_code_TextChanged(object sender, TextChangedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -1316,6 +1040,29 @@ namespace POS.View
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
+        }
+        private void english_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex objAlphaPattern = new Regex(@"^[a-zA-Z0-9_@.-\\s\\r]*$", RegexOptions.CultureInvariant | RegexOptions.Singleline);
+       
+            bool isEnglish = objAlphaPattern.IsMatch(e.TextComposition.Text);
+ 
+            if (!isEnglish && e.TextComposition.Text.Equals(""))
+            {
+                SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorEnglishBarcodeToolTip");
+                e.Handled = true;
+            }
+            else
+                SectionData.clearValidate(tb_barcode, p_errorBarcode);
+        }
+        private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            string barCode = "";
+            if (!tb.Text.Equals(""))
+               barCode = tb_barcode.Text;
+            
+            drawBarcode(barCode);
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
