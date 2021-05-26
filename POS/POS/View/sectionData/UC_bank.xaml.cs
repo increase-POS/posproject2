@@ -257,7 +257,6 @@ namespace POS.View
             }
 
         }
-
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
             //chk empty name
@@ -300,7 +299,6 @@ namespace POS.View
             }
 
         }
-
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
             if (bank.bankId != 0)
@@ -327,7 +325,6 @@ namespace POS.View
             //clear textBoxs
             Btn_clear_Click(sender, e);
         }
-
         private async void activate()
         {//activate
             bank.isActive = 1;
@@ -377,42 +374,34 @@ namespace POS.View
             }
 
         }
-
         private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
         {
             SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
         }
-
         private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
         {
             SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
         }
-
         private void tb_phone_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
         }
-
         private void Tb_phone_TextChanged(object sender, TextChangedEventArgs e)
         {
             SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
         }
-
         private void Tb_phone_LostFocus(object sender, RoutedEventArgs e)
         {
             SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
         }
-
         private void Tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
         }
-
         private void Tb_accNumber_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
         }
-
         void FN_ExportToExcel()
         {
             var QueryExcel = banksQuery.AsEnumerable().Select(x => new
@@ -434,7 +423,6 @@ namespace POS.View
 
             ExportToExcel.Export(DTForExcel);
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.Dispatcher.Invoke(() =>
@@ -445,7 +433,6 @@ namespace POS.View
             });
 
         }
-
         private async void Tgl_bankIsActive_Checked(object sender, RoutedEventArgs e)
         {
             if (banks is null)
@@ -453,7 +440,6 @@ namespace POS.View
             tgl_bankState = 1;
             Tb_search_TextChanged(null, null);
         }
-
         private async void Tgl_bankIsActive_Unchecked(object sender, RoutedEventArgs e)
         {
             if (banks is null)
@@ -461,7 +447,6 @@ namespace POS.View
             tgl_bankState = 0;
             Tb_search_TextChanged(null, null);
         }
-
         async Task<IEnumerable<Bank>> RefreshBanksList()
         {
             banks = await bankModel.GetBanksAsync();
@@ -475,7 +460,6 @@ namespace POS.View
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
         }
-
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
             p_errorName.Visibility = Visibility.Collapsed;
@@ -491,7 +475,6 @@ namespace POS.View
             RefreshBankView();
 
         }
-
         private void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (firstchange == true)
@@ -523,7 +506,6 @@ namespace POS.View
                 firstchange = true;
             }
         }
-
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             RefreshBanksList();

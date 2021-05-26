@@ -27,6 +27,7 @@ namespace POS.Classes
         public string x { get; set; }
         public string y { get; set; }
         public string z { get; set; }
+        public string note { get; set; }
         public Nullable<int> branchId { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }

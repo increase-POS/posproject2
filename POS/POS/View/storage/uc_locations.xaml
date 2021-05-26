@@ -8,7 +8,7 @@
             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="700" d:DesignWidth="985" Loaded="UserControl_Loaded" >
 
-    <Grid x:Name="grid_ucLocations" >
+    <Grid x:Name="grid_ucLocation" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="380"/>
@@ -51,7 +51,7 @@
                               Foreground="#4e4e4e" TextBlock.FontSize="14"
                               HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Height="35"   Width="250" Margin="10,5" 
-                              TextChanged="Tb_search_TextChanged" GotFocus="Tb_search_GotFocus" />
+                              TextChanged="Tb_search_TextChanged"   />
                     <!--<ComboBox x:Name="cb_search"  Grid.Row="2" 
                                   Padding="10,5,5,5" 
                                    TextBlock.Foreground="#4E4E4E"
@@ -70,9 +70,9 @@
                             Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                               FontSize="12"/>
-                        <ToggleButton Grid.Column="1"  x:Name="tgl_IsActive"  
-                                      Checked="Tgl_IsActive_Checked" 
-                                      Unchecked="Tgl_IsActive_Unchecked"
+                        <ToggleButton Grid.Column="1"  x:Name="tgl_isActive"  
+                                      Checked="Tgl_isActive_Checked" 
+                                      Unchecked="Tgl_isActive_Unchecked"
                                       VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                       Margin="0" Height="13" Width="28"  />
                     </Grid>
@@ -129,7 +129,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn MinWidth="150"  Header="z"  Binding="{Binding Path=Z}">
+                        <DataGridTextColumn MinWidth="150"  Header="z"  Binding="{Binding Path=z}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -140,7 +140,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn MinWidth="150"  Header="Note"  Binding="{Binding Path=note}">
+                        <DataGridTextColumn MinWidth="150"  Header="Section"  Binding="{Binding Path=sectionName}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -195,7 +195,7 @@
                         </Path.ToolTip>
                     </Path>
                 </Button>
-                <TextBlock   Background="{x:Null}" x:Name="txt_Count"   Grid.Column="2" Margin="0,0,0,5" VerticalAlignment="Bottom"
+                <TextBlock   Background="{x:Null}" x:Name="txt_count"   Grid.Column="2" Margin="0,0,0,5" VerticalAlignment="Bottom"
                             Padding="10"   Text="0" Foreground="#378500" FontSize="12"  >
                     <TextBlock.ToolTip>
                         <ToolTip x:Name="tt_count" Content="Customers Count"
@@ -295,8 +295,8 @@
                             <TextBox x:Name="tb_x"  Text="{Binding x, Mode=OneWay}" Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="X..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue" 
-                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                 BorderBrush="AliceBlue"  MaxLength="20" LostFocus="validationTextbox_LostFocus" TextChanged="validationTextbox_TextChanged"
+                     HorizontalAlignment="Left" VerticalAlignment="Center"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorX"
@@ -315,7 +315,7 @@
                             <TextBox x:Name="tb_y"  Text="{Binding y, Mode=OneWay}" Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Y..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                 BorderBrush="AliceBlue"  
+                                 BorderBrush="AliceBlue"   LostFocus="validationTextbox_LostFocus" TextChanged="validationTextbox_TextChanged"
                      HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
@@ -335,7 +335,7 @@
                             <TextBox x:Name="tb_z"  Text="{Binding z, Mode=OneWay}" Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Z..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                 BorderBrush="AliceBlue"  
+                                 BorderBrush="AliceBlue"   LostFocus="validationTextbox_LostFocus" TextChanged="validationTextbox_TextChanged"
                      HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
 
@@ -352,9 +352,9 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_notes"  Text="{Binding notes, Mode=OneWay}" 
+                            <TextBox x:Name="tb_notes"  Text="{Binding note, Mode=OneWay}" 
                                  Padding="10,5,5,5"   
-                                 BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
+                                 BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Notes..."    
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"  TextWrapping="Wrap" AcceptsReturn="True"
                                  HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="100" 
