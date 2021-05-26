@@ -290,5 +290,10 @@ namespace POS.View
         {
 
         }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

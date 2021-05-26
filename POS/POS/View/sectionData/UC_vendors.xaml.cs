@@ -532,7 +532,7 @@ namespace POS.View
         void RefreshVendorView()
         {
             dg_vendor.ItemsSource = agentsQuery;
-            txt_Count.Text = agentsQuery.Count().ToString();
+            txt_count.Text = agentsQuery.Count().ToString();
             cb_areaMobile.SelectedIndex = 0;
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
@@ -745,6 +745,11 @@ namespace POS.View
 
                 img_vendor.Background = new ImageBrush(bitmapImage);
             }
+        }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 

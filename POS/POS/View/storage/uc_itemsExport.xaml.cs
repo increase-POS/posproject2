@@ -397,7 +397,7 @@ namespace POS.View.storage
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
-            txt_Count.Text = itemsQuery.Count().ToString();
+            txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
             RefrishItemsDatagrid(itemsQuery);
@@ -433,7 +433,7 @@ namespace POS.View.storage
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
-            txt_Count.Text = itemsQuery.Count().ToString();
+            txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
         }
@@ -447,7 +447,7 @@ namespace POS.View.storage
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
-            txt_Count.Text = itemsQuery.Count().ToString();
+            txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
         }
@@ -459,7 +459,7 @@ namespace POS.View.storage
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
-            txt_Count.Text = itemsQuery.Count().ToString();
+            txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
         }
@@ -471,7 +471,7 @@ namespace POS.View.storage
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
-            txt_Count.Text = itemsQuery.Count().ToString();
+            txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
         }
@@ -483,7 +483,7 @@ namespace POS.View.storage
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
-            txt_Count.Text = itemsQuery.Count().ToString();
+            txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
         }
@@ -496,7 +496,7 @@ namespace POS.View.storage
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
-            txt_Count.Text = itemsQuery.Count().ToString();
+            txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
         }

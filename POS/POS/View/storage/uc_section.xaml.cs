@@ -342,7 +342,6 @@ namespace POS.View
             //DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trAccNum");
             //DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trNote");
             
-
             ExportToExcel.Export(DTForExcel);
         }
 
@@ -370,7 +369,6 @@ namespace POS.View
 
                 }
             }
-
             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
         }
     }

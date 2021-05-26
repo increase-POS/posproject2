@@ -137,6 +137,7 @@ namespace POS.View
                 location.createUserId = MainWindow.userID;
                 location.updateUserId = MainWindow.userID;
                 location.isActive = 1;
+                location.sectionId = null;
 
                 string s = await locationModel.saveLocation(location);
 
@@ -159,7 +160,7 @@ namespace POS.View
             {
                 location.x=  tb_x.Text;
                 location.y = tb_y.Text;
-                location.z = tb_x.Text;
+                location.z = tb_z.Text;
                 location.note = tb_notes.Text;
                 location.updateUserId = MainWindow.userID;
 
@@ -191,7 +192,7 @@ namespace POS.View
                     bool b = await locationModel.Delete(location.locationId, MainWindow.userID.Value, location.canDelete);
 
                     if (b) //SectionData.popUpResponse("", popupContent);
-                        Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
@@ -331,19 +332,12 @@ namespace POS.View
             
             var QueryExcel = locationsQuery.AsEnumerable().Select(x => new
             {
-                X = x.x,
-                Y = x.y,
-                Z = x.z,
+                Name = x.name,
                 Notes = x.note
             });
             var DTForExcel = QueryExcel.ToDataTable();
-
-            /*
             DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
-            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trAccNum");
-            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trMobile");
-            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trPhone");
-            */
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trNotes");
 
             ExportToExcel.Export(DTForExcel);
         }

@@ -531,7 +531,7 @@ namespace POS.View
         void RefreshBranchView()
         {
             dg_branch.ItemsSource = branchesQuery;
-            txt_Count.Text = branchesQuery.Count().ToString();
+            txt_count.Text = branchesQuery.Count().ToString();
             cb_area.SelectedIndex = 0;
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
@@ -635,6 +635,11 @@ namespace POS.View
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             RefreshBranchesList();
+        }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

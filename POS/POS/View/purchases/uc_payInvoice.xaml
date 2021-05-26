@@ -503,7 +503,7 @@
                                 </Path.ToolTip>
                             </Path>
                         </Button>
-                        <TextBlock   Height="15" Background="{x:Null}" x:Name="txt_Count"   Grid.Column="2"
+                        <TextBlock   Height="15" Background="{x:Null}" x:Name="txt_count"   Grid.Column="2"
                                      Margin="0,0,0,0" VerticalAlignment="Bottom"
                               Text="0" Foreground="#378500" FontSize="12"  >
                             <TextBlock.ToolTip>

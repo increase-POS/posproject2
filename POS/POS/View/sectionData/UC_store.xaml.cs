@@ -492,7 +492,7 @@ namespace POS.View
         void RefreshStoreView()
         {
             dg_store.ItemsSource = storesQuery;
-            txt_Count.Text = storesQuery.Count().ToString();
+            txt_count.Text = storesQuery.Count().ToString();
             cb_area.SelectedIndex = 0;
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
@@ -527,7 +527,7 @@ namespace POS.View
 
         }
 
-        private void btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
             this.Dispatcher.Invoke(() =>
             {

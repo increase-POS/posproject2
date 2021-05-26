@@ -527,7 +527,7 @@ namespace POS.View
             x.name.ToLower().Contains(txtCategorySearch) ||
             x.details.ToLower().Contains(txtCategorySearch)
             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            txt_Count.Text = categoriesQuery.Count().ToString();
+            txt_count.Text = categoriesQuery.Count().ToString();
 
             
             RefrishCategoriesDatagrid(categoriesQuery);
@@ -563,7 +563,7 @@ namespace POS.View
              x.name.ToLower().Contains(txtCategorySearch) ||
              x.details.ToLower().Contains(txtCategorySearch)
              ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            txt_Count.Text = categoriesQuery.Count().ToString();
+            txt_count.Text = categoriesQuery.Count().ToString();
             RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
             #endregion
         }
@@ -577,7 +577,7 @@ namespace POS.View
              x.name.ToLower().Contains(txtCategorySearch) ||
              x.details.ToLower().Contains(txtCategorySearch)
              ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            txt_Count.Text = categoriesQuery.Count().ToString();
+            txt_count.Text = categoriesQuery.Count().ToString();
             RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
             #endregion
         }
@@ -589,7 +589,7 @@ namespace POS.View
              x.name.ToLower().Contains(txtCategorySearch) ||
              x.details.ToLower().Contains(txtCategorySearch)
              ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            txt_Count.Text = categoriesQuery.Count().ToString();
+            txt_count.Text = categoriesQuery.Count().ToString();
             RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
             #endregion
         }
@@ -601,7 +601,7 @@ namespace POS.View
              x.name.ToLower().Contains(txtCategorySearch) ||
              x.details.ToLower().Contains(txtCategorySearch)
              ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            txt_Count.Text = categoriesQuery.Count().ToString();
+            txt_count.Text = categoriesQuery.Count().ToString();
             RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
             #endregion
         }
@@ -613,7 +613,7 @@ namespace POS.View
              x.name.ToLower().Contains(txtCategorySearch) ||
              x.details.ToLower().Contains(txtCategorySearch)
              ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            txt_Count.Text = categoriesQuery.Count().ToString();
+            txt_count.Text = categoriesQuery.Count().ToString();
             RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
             #endregion
         }
@@ -626,7 +626,7 @@ namespace POS.View
              x.name.ToLower().Contains(txtCategorySearch) ||
              x.details.ToLower().Contains(txtCategorySearch)
              ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            txt_Count.Text = categoriesQuery.Count().ToString();
+            txt_count.Text = categoriesQuery.Count().ToString();
             RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
             #endregion
         }

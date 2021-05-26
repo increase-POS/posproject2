@@ -370,7 +370,7 @@ namespace POS.View
             //var agents = await agentModel.GetAgentsAsync("c");
             //agentsQuery = agents;
             //dg_customer.ItemsSource = agentsQuery;
-            //txt_Count.Text = agentsQuery.Count().ToString();
+            //txt_count.Text = agentsQuery.Count().ToString();
             //dg_customer.ItemsSource = agents;
             //Dispatcher.BeginInvoke(new Action(() => { GetGridData(null, 0)}));
             //tb_search_TextChanged(null, null);
@@ -660,7 +660,7 @@ namespace POS.View
         void RefreshCustomerView()
         {
             dg_customer.ItemsSource = agentsQuery;
-            txt_Count.Text = agentsQuery.Count().ToString();
+            txt_count.Text = agentsQuery.Count().ToString();
             cb_areaMobile.SelectedIndex = 0;
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;

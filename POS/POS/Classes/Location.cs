@@ -17,7 +17,7 @@ namespace POS.Classes
         public string name {
             get
             {
-                return $"{x} - {y} - {z}";
+                return $"{x}{y}{z}";
             }
             set
             {
