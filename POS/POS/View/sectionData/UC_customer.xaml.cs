@@ -25,6 +25,10 @@ using System.Windows.Resources;
 using System.IO;
 using System.Drawing;
 
+using Microsoft.Reporting.WinForms;
+
+using System.Data;
+
 namespace POS.View
 {
     /// <summary>
@@ -54,7 +58,8 @@ namespace POS.View
         City cityCodes = new City();
 
         OpenFileDialog openFileDialog = new OpenFileDialog();
-
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        ReportCls reportclass = new ReportCls();
         ImageBrush brush = new ImageBrush();
 
         BrushConverter bc = new BrushConverter();
@@ -834,6 +839,41 @@ namespace POS.View
             RefreshCustomersList();
             Tb_search_TextChanged(null, null);
 
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            LocalReport rep = new LocalReport();
+            string addpath = @"\Reports\VendorReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("AgentDataSet", agentsQuery));
+            rep.Refresh();
+
+            saveFileDialog.Filter = "PDF|*.pdf;";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+
+                string filepath = saveFileDialog.FileName;
+                LocalReportExtensions.ExportToPDF(rep, filepath);
+            }
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            LocalReport rep = new LocalReport();
+            string addpath = @"\Reports\VendorReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+
+            rep.DataSources.Add(new ReportDataSource("AgentDataSet", agentsQuery));
+            rep.Refresh();
+            LocalReportExtensions.PrintToPrinter(rep);
         }
     }
 }

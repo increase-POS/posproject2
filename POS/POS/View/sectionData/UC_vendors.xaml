@@ -162,9 +162,9 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Border Background="White" CornerRadius="0,0,7,7" Grid.ColumnSpan="10" />
-                <Button   Background="{x:Null}"    Grid.Column="0" Margin="10,0,5,0"
+                <Button x:Name="Btn_pdf"   Background="{x:Null}"    Grid.Column="0" Margin="10,0,5,0"
                           Padding="0" Height="35" 
-                          BorderBrush="{x:Null}">
+                          BorderBrush="{x:Null}" Click="Btn_pdf_Click">
                     <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="22" Height="22">

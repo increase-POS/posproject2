@@ -52,6 +52,8 @@ namespace POS.View
         City cityCodes = new City();
 
         OpenFileDialog openFileDialog = new OpenFileDialog();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        ReportCls reportclass = new ReportCls();
 
         ImageBrush brush = new ImageBrush();
 
@@ -769,15 +771,15 @@ namespace POS.View
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
             string path = Directory.GetCurrentDirectory();
-          
-           int pos1= path.LastIndexOf("\\");
+
+            int pos1 = path.LastIndexOf("\\");
             string path2 = path.Substring(0, pos1);
             pos1 = path2.LastIndexOf("\\");
 
-             path2=path2.Substring(0, pos1);
+            path2 = path2.Substring(0, pos1);
             string repPath = path2 + @"\Reports\VendorReport.rdlc";
-           // MessageBox.Show(path+"=="+pos1.ToString()+"after="+ repPath);
-         
+            // MessageBox.Show(path+"=="+pos1.ToString()+"after="+ repPath);
+
             LocalReport rep = new LocalReport();
             //  List<Agent> agentlist = new List<Agent>();
 
@@ -785,12 +787,48 @@ namespace POS.View
             // D:\gitpos\POS\POS\bin\debug"
             // rep.ReportPath = @"D:\gitpos\POS\POS\Reports\VendorReport.rdlc";
             rep.ReportPath = repPath;
-             rep.DataSources.Clear();
-            rep.DataSources.Add(new  ReportDataSource("AgentDataSet", agentsQuery));
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("AgentDataSet", agentsQuery));
             rep.Refresh();
             LocalReportExtensions.PrintToPrinter(rep);
-           
+
         }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+
+            LocalReport rep = new LocalReport();
+            string addpath = @"\Reports\VendorReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            //MessageBox.Show(reppath);
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("AgentDataSet", agentsQuery));
+            rep.Refresh();
+
+            saveFileDialog.Filter = "PDF|*.pdf;";
+            //saveFileDialog.Filter = "WORD|*.doc;";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                // string filname= saveFileDialog.SafeFileName;
+
+                string filepath = saveFileDialog.FileName;
+
+
+
+                LocalReportExtensions.ExportToPDF(rep, filepath);
+                // LocalReportExtensions.ExportToWORD(rep, filepath);
+                // MessageBox.Show("File saved");
+            }
+
+
+
+
+
+
+        }
+
+      
     }
 
 

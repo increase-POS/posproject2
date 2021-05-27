@@ -63,7 +63,7 @@ namespace Microsoft.Reporting.WinForms
                 Print();
             }
         }
-        public static void ExportToPDF(LocalReport report, String DirPath, String Filename)
+        public static void ExportToPDF(LocalReport report, String FullPath)
         {/*
             Warning[] warnings;
             string[] streamIds;
@@ -87,24 +87,45 @@ namespace Microsoft.Reporting.WinForms
                   
                     "  <EmbedFonts>None</EmbedFonts>" +
                     "</DeviceInfo>";
+            /*
             string mimeType;
             string encoding;
             string fileNameExtension;
             Warning[] warnings;
             string[] streams;
-            string fullpath = Path.Combine(DirPath, Filename);
-            byte[] renderedBytes = report.Render("PDF", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+            */
+          //  byte[] renderedBytes = report.Render("PDF", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
 
             byte[] Bytes = report.Render(format: "PDF", deviceInfo: deviceInfo);
             // File.SetAttributes(savePath, FileAttributes.Normal);
 
-            using (FileStream stream = new FileStream(fullpath, FileMode.Create))
+            using (FileStream stream = new FileStream(FullPath, FileMode.Create))
             {
                 stream.Write(Bytes, 0, Bytes.Length);
             }
 
         }
+        public static void ExportToWORD(LocalReport report, String FullPath)
+        {
 
+            string deviceInfo = "<DeviceInfo>" +
+                    "  <OutputFormat>WORD</OutputFormat>" +
+
+                    "  <EmbedFonts>None</EmbedFonts>" +
+                    "</DeviceInfo>";
+         
+
+         //   byte[] renderedBytes = report.Render("WORD", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+
+            byte[] Bytes = report.Render(format: "WORD", deviceInfo: deviceInfo);
+            // File.SetAttributes(savePath, FileAttributes.Normal);
+
+            using (FileStream stream = new FileStream(FullPath, FileMode.Create))
+            {
+                stream.Write(Bytes, 0, Bytes.Length);
+            }
+
+        }
         // Handler for PrintPageEvents
         public static void PrintPage(object sender, PrintPageEventArgs e)
         {

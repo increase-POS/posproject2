@@ -125,6 +125,7 @@
     <Compile Include="Classes\Pos.cs" />
     <Compile Include="Classes\PropertiesItems.cs" />
     <Compile Include="Classes\Property.cs" />
+    <Compile Include="Classes\ReportCls.cs" />
     <Compile Include="Classes\Section.cs" />
     <Compile Include="Classes\SectionCls.cs" />
     <Compile Include="Classes\SectionData.cs" />
