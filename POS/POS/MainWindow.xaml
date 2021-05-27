@@ -38,6 +38,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -521,5 +522,7 @@
                 </Button>
             </Grid>
         </Grid>
+        <Grid  Grid.Row="2" Grid.Column="0"   Grid.ColumnSpan="2"
+              Background="#178DD2"  />
     </Grid>
 </Window>

@@ -1252,3 +1252,5 @@ E:\GitHub\posproject2\POS\POS\bin\Debug\ru\Microsoft.ReportViewer.WinForms.resou
 E:\GitHub\posproject2\POS\POS\bin\Debug\zh-CHS\Microsoft.ReportViewer.WinForms.resources.dll
 E:\GitHub\posproject2\POS\POS\bin\Debug\zh-CHT\Microsoft.ReportViewer.WinForms.resources.dll
 E:\GitHub\posproject2\POS\POS\obj\Debug\POS_Content.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\RdlCompile.cache
+E:\GitHub\posproject2\POS\POS\obj\Debug\RdlCompile.compiled

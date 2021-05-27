@@ -358,14 +358,14 @@
 
                     <Grid Height="25" Width="50" Grid.RowSpan="2"
                       VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                      Margin="10,5,10,10">
+                      Margin="10,5,10,5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Border Background="White"  CornerRadius="0,0,0,0" Grid.ColumnSpan="10" BorderThickness="0,1,0,0" BorderBrush="#377EB8" />
+                        <Border Background="White"  CornerRadius="0,0,0,0" Grid.ColumnSpan="10" BorderThickness="0,0,0,1" BorderBrush="#377EB8" />
                         <Button   Height="20"  Grid.Column="0"  Background="{x:Null}" TabIndex="15" VerticalAlignment="Bottom"
-                               Padding="0" BorderBrush="{x:Null}" x:Name="btn_categoriesInGrid" 
+                               Padding="0" BorderBrush="{x:Null}" x:Name="btn_categoriesInGrid" Margin="0,0,0,5"
                                   Click="Btn_categoriesInGrid_Click">
                             <Button.ToolTip>
                                 <ToolTip x:Name="tt_grid" Content="Grid"
@@ -385,7 +385,7 @@
 	C20.1,6,21,5.1,21,4V2C21,0.9,20.1,0,18.9,0 M11.6,0H9.4C8.3,0,7.4,0.9,7.4,2v2c0,1.1,0.9,2,2.1,2h2.1c1.2,0,2.1-0.9,2.1-2V2
 	C13.6,0.9,12.7,0,11.6,0 M6.3,2v2c0,1.1-0.9,2-2.1,2H2.1C0.9,6,0,5.1,0,4V2c0-1.1,0.9-2,2.1-2h2.1C5.4,0,6.3,0.9,6.3,2"/>
                         </Button>
-                        <Button Background="{x:Null}"    Grid.Column="1"
+                        <Button Background="{x:Null}"    Grid.Column="1" Margin="0,0,0,5"
                                 Padding="0" Height="20" x:Name="btn_categoriesInCards" 
                                 Click="Btn_categoriesInCards_Click" VerticalAlignment="Bottom"
                                 TabIndex="16"  BorderBrush="{x:Null}">
@@ -406,7 +406,6 @@
 	c0,4.4-3.6,8-8,8H360c-4.4,0-8-3.6-8-8v-16c0-4.4,3.6-8,8-8h144c4.4,0,8,3.6,8,8V184z"/>
                         </Button>
                     </Grid>
-                    
                     <Grid Height="30"   Grid.RowSpan="2" 
                       VerticalAlignment="Bottom" HorizontalAlignment="Right"
                       Margin="10,5,70,5">
@@ -418,7 +417,7 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Border Background="White"  CornerRadius="0,0,0,0" Grid.ColumnSpan="10" BorderThickness="0,1,0,0" BorderBrush="#377EB8" />
+                        <Border Background="White"  CornerRadius="0,0,0,0" Grid.ColumnSpan="10" BorderThickness="0,0,0,1" BorderBrush="#377EB8" />
                         <Button   Background="{x:Null}"    Grid.Column="0" Margin="2.5,0,2.5,0"
                           Padding="0" Height="30" 
                           BorderBrush="{x:Null}">

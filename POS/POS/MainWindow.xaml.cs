@@ -32,6 +32,8 @@ namespace POS
         public MainWindow()
         {
             InitializeComponent();
+            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 15;
+
         }
         void FN_tooltipVisibility(Button btn)
         {

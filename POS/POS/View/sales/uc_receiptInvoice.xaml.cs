@@ -382,20 +382,20 @@ namespace POS.View
         #endregion
         #region Switch Card/DataGrid Y
 
-        private void Btn_ItemsInCards_Click(object sender, RoutedEventArgs e)
+        private void Btn_itemsInCards_Click(object sender, RoutedEventArgs e)
         {
             grid_itemsDatagrid.Visibility = Visibility.Collapsed;
             grid_ItemsCard.Visibility = Visibility.Visible;
-            path_ItemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_ItemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
         }
 
-        private void Btn_ItemsInGrid_Click(object sender, RoutedEventArgs e)
+        private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
         {
             grid_ItemsCard.Visibility = Visibility.Collapsed;
             grid_itemsDatagrid.Visibility = Visibility.Visible;
-            path_ItemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_ItemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
         }
         #endregion
         #region Search Y
