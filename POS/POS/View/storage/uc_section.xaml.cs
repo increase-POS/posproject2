@@ -101,8 +101,9 @@ namespace POS.View
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             tb_name.Clear();
-            cb_branch.SelectedIndex = -1;
             tb_note.Clear();
+            cb_branch.SelectedIndex = -1;
+            cb_branch.SelectedIndex = -1;
 
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorSelectBranch.Visibility = Visibility.Collapsed;
@@ -189,7 +190,7 @@ namespace POS.View
                     bool b = await sectionModel.Delete(section.sectionId, MainWindow.userID.Value, section.canDelete);
 
                     if (b) 
-                        Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                     else 
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
@@ -347,8 +348,8 @@ namespace POS.View
 
         private async void fillBranches()
         {
-            //var branches = await branchModel.GetBranchesAsync("b");
-            var branches = await branchModel.Get();
+            var branches = await branchModel.GetBranchesAsync("b");
+            //var branches = await branchModel.Get();
             cb_branch.ItemsSource = branches;
             cb_branch.SelectedValuePath = "branchId";
             cb_branch.DisplayMemberPath = "name";
@@ -371,5 +372,7 @@ namespace POS.View
             }
             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
         }
+
+       
     }
 }
