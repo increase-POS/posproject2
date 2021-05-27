@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Resources;
 using System.Windows.Shapes;
 using Tulpep.NotificationWindow;
 
@@ -27,6 +29,8 @@ namespace POS.Classes
         public static string code;
 
         public static BrushConverter bc = new BrushConverter();
+
+        public static ImageBrush brush = new ImageBrush();
         /*
         public static void popUpResponse(string title, string content)
         {
@@ -247,7 +251,6 @@ namespace POS.Classes
                 p_error.Visibility = Visibility.Visible;
                 tt_error.Content = MainWindow.resourcemanager.GetString(tr);
                 cb.Background = (Brush)bc.ConvertFrom("#15FF0000");
-
             }
             else
             {
@@ -347,5 +350,14 @@ namespace POS.Classes
             }
         }
 
+        public static void clearImg(Button img)
+        {
+            Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            brush.ImageSource = temp;
+            img.Background = brush;
+        }
     }
 }

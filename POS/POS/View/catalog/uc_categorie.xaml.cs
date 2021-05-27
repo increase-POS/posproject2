@@ -221,6 +221,10 @@ namespace POS.View
                             brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
                             img_category.Background = brush;
                         }
+                        else
+                        {
+                            MessageBox.Show("حدث خطأ في تحميل الصورة");
+                        }
                     }
                     ////////categoryParentId = parentCategorieSelctedValue;???????????????????
                    
@@ -279,6 +283,11 @@ namespace POS.View
                         {
                             brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
                             img_category.Background = brush;
+                        }
+                        else
+                        {
+                            SectionData.clearImg(img_category);
+                            MessageBox.Show("حدث خطأ في تحميل الصورة");
                         }
                     }
                    
@@ -792,13 +801,7 @@ namespace POS.View
             {
                 if (string.IsNullOrEmpty(category.image))
                 {
-                    Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
-                    StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
-
-                    BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
-                    brush.ImageSource = temp;
-                    img_category.Background = brush;
-
+                    SectionData.clearImg(img_category);
                 }
                 else
                 {
@@ -831,6 +834,7 @@ namespace POS.View
         private  void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             RefrishCategories();
+            Txb_searchcategories_TextChanged(null ,null);
         }
 
      
@@ -838,5 +842,34 @@ namespace POS.View
         {
             e.Handled = e.Key == Key.Space;
         }
+
+        private void Tb_categoryCode_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (e.Key >= Key.A && e.Key <= Key.Z)
+            {
+            }
+            else if (e.Key >= Key.D0 && e.Key <= Key.D9)
+            {
+            }
+            else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
+            {
+            }
+            else if (e.Key == Key.Tab)
+            {
+
+            }
+            else
+            {
+                e.Handled = true;
+            }
+            ////?????????????????????????arabic
+            //   Regex regex = new Regex("[^0-9]+");
+            //e.Handled = false;
+            //Regex regex1 = new Regex("[^a-z]+");
+
+
+        }
+
     }
 }

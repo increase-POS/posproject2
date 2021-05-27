@@ -181,34 +181,7 @@ namespace POS.View
 
                 SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
 
-                #region img
-                if (string.IsNullOrEmpty(user.image))
-                {
-                    Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
-                    StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
-
-                    BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
-                    brush.ImageSource = temp;
-
-                    img_user.Background = brush;
-                }
-                else
-                {
-                    byte[] imageBuffer = await userModel.downloadImage(user.image); // read this as BLOB from your DB
-
-                    var bitmapImage = new BitmapImage();
-
-                    using (var memoryStream = new MemoryStream(imageBuffer))
-                    {
-                        bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                    }
-
-                    img_user.Background = new ImageBrush(bitmapImage);
-                }
-                #endregion
+                getImg();
 
                 #region delete
                 if (user.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
@@ -479,8 +452,17 @@ namespace POS.View
                     if (isImgPressed)
                     {
                         int userId = int.Parse(s);
-                        await userModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
+                        bool b = await userModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
                         isImgPressed = false;
+                        if (b)
+                        {
+                            brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                            img_user.Background = brush;
+                        }
+                        else
+                        {
+                            MessageBox.Show("حدث خطأ في تحميل الصورة");
+                        }
                     }
 
                     await RefreshUsersList();
@@ -583,6 +565,11 @@ namespace POS.View
                         {
                             brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
                             img_user.Background = brush;
+                        }
+                        else
+                        {
+                            SectionData.clearImg(img_user);
+                            MessageBox.Show("حدث خطأ في تحميل الصورة");
                         }
                     }
                    
@@ -693,7 +680,8 @@ namespace POS.View
         }
         private void Cb_job_LostFocus(object sender, RoutedEventArgs e)
         {
-            SectionData.validateEmptyComboBox(cb_job, p_errorJob, tt_errorJob, "trEmptyJobToolTip");
+            if (x == 0)
+                 SectionData.validateEmptyComboBox(cb_job, p_errorJob, tt_errorJob, "trEmptyJobToolTip");
         }
         private void P_showPassword_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -845,7 +833,56 @@ namespace POS.View
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             RefreshUsersList();
+            Tb_search_TextChanged(null, null);
 
+
+        }
+
+        private async void getImg()
+        {
+            if (string.IsNullOrEmpty(user.image))
+            {
+                SectionData.clearImg(img_user);
+            }
+            else
+            {
+                byte[] imageBuffer = await userModel.downloadImage(user.image); // read this as BLOB from your DB
+
+                var bitmapImage = new BitmapImage();
+
+                using (var memoryStream = new MemoryStream(imageBuffer))
+                {
+                    bitmapImage.BeginInit();
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapImage.StreamSource = memoryStream;
+                    bitmapImage.EndInit();
+                }
+
+                img_user.Background = new ImageBrush(bitmapImage);
+            }
+        }
+
+        private void ComboBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //if (cb_job.Text.Equals(""))
+            //{
+            //    p_errorJob.Visibility = Visibility.Visible;
+            //    tt_errorJob.Content = MainWindow.resourcemanager.GetString("trEmptyJob");
+            //    cb_job.Background = (Brush)bc.ConvertFrom("#15FF0000");
+
+            //}
+            //else
+            //{
+            //    cb_job.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            //    p_errorJob.Visibility = Visibility.Collapsed;
+
+            //}
+        }
+
+        int x = 0;
+        private void Cb_job_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            /////?????????????????
         }
     }
 }

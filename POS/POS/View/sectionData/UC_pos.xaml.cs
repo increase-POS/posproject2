@@ -435,6 +435,7 @@ namespace POS.View
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             RefreshPosList();
+            Tb_search_TextChanged(null, null);
         }
     }
 }

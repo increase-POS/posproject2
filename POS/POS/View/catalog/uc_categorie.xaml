@@ -356,14 +356,15 @@
                         </Grid>
                     </Border>
 
-                    <Grid Height="15" Width="40" Grid.RowSpan="2"
+                    <Grid Height="25" Width="50" Grid.RowSpan="2"
                       VerticalAlignment="Bottom" HorizontalAlignment="Right"
                       Margin="10,5,10,10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button   Height="15"  Grid.Column="0"  Background="{x:Null}" TabIndex="15"
+                        <Border Background="White"  CornerRadius="0,0,0,0" Grid.ColumnSpan="10" BorderThickness="0,1,0,0" BorderBrush="#377EB8" />
+                        <Button   Height="20"  Grid.Column="0"  Background="{x:Null}" TabIndex="15" VerticalAlignment="Bottom"
                                Padding="0" BorderBrush="{x:Null}" x:Name="btn_categoriesInGrid" 
                                   Click="Btn_categoriesInGrid_Click">
                             <Button.ToolTip>
@@ -374,7 +375,7 @@
                                               VerticalOffset="-10"/>
                             </Button.ToolTip>
                             <Path Fill="#4e4e4e" Stretch="Fill"
-                          Width="15" Height="15"  x:Name="path_categoriesInGrid"
+                          Width="18" Height="18"  x:Name="path_categoriesInGrid"
                           Data="M18.9,14h-2.1c-1.2,0-2.1,0.9-2.1,2v2c0,1.1,0.9,2,2.1,2h2.1c1.2,0,2.1-0.9,2.1-2v-2
 	C21,14.9,20.1,14,18.9,14 M11.6,14H9.4c-1.2,0-2.1,0.9-2.1,2v2c0,1.1,0.9,2,2.1,2h2.1c1.2,0,2.1-0.9,2.1-2v-2
 	C13.6,14.9,12.7,14,11.6,14 M4.2,14H2.1C0.9,14,0,14.9,0,16v2c0,1.1,0.9,2,2.1,2h2.1c1.2,0,2.1-0.9,2.1-2v-2C6.3,14.9,5.4,14,4.2,14
@@ -385,8 +386,8 @@
 	C13.6,0.9,12.7,0,11.6,0 M6.3,2v2c0,1.1-0.9,2-2.1,2H2.1C0.9,6,0,5.1,0,4V2c0-1.1,0.9-2,2.1-2h2.1C5.4,0,6.3,0.9,6.3,2"/>
                         </Button>
                         <Button Background="{x:Null}"    Grid.Column="1"
-                                Padding="0" Height="15" x:Name="btn_categoriesInCards" 
-                                Click="Btn_categoriesInCards_Click"
+                                Padding="0" Height="20" x:Name="btn_categoriesInCards" 
+                                Click="Btn_categoriesInCards_Click" VerticalAlignment="Bottom"
                                 TabIndex="16"  BorderBrush="{x:Null}">
                             <Button.ToolTip>
                                 <ToolTip x:Name="tt_items" Content="Items"
@@ -396,7 +397,7 @@
                                               VerticalOffset="-10"/>
                             </Button.ToolTip>
                             <Path Fill="#178DD2" Stretch="Fill"
-                          Width="15" Height="15"  x:Name="path_categoriesInCards"
+                          Width="18" Height="18"  x:Name="path_categoriesInCards"
                           Data="M528,32H48C21.5,32,0,53.5,0,80v352c0,26.5,21.5,48,48,48h480c26.5,0,48-21.5,48-48V80
 	C576,53.5,554.5,32,528,32z M176,128c35.3,0,64,28.7,64,64s-28.7,64-64,64s-64-28.7-64-64S140.7,128,176,128z M288,364.8
 	c0,10.6-10,19.2-22.4,19.2H86.4C74,384,64,375.4,64,364.8v-19.2c0-31.8,30.1-57.6,67.2-57.6h5c12.3,5.1,25.7,8,39.8,8
@@ -405,22 +406,25 @@
 	c0,4.4-3.6,8-8,8H360c-4.4,0-8-3.6-8-8v-16c0-4.4,3.6-8,8-8h144c4.4,0,8,3.6,8,8V184z"/>
                         </Button>
                     </Grid>
-                    <Grid Height="20"   Grid.RowSpan="2"
+                    
+                    <Grid Height="30"   Grid.RowSpan="2" 
                       VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                      Margin="10,5,60,10">
+                      Margin="10,5,70,5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-
-                        <Button VerticalAlignment="Bottom"  Height="15" Background="{x:Null}"    
-                                Grid.Column="0" Margin="2.5,0,2.5,0"
-                                Padding="0" TabIndex="13"
-                                       BorderBrush="{x:Null}">
+                        <Border Background="White"  CornerRadius="0,0,0,0" Grid.ColumnSpan="10" BorderThickness="0,1,0,0" BorderBrush="#377EB8" />
+                        <Button   Background="{x:Null}"    Grid.Column="0" Margin="2.5,0,2.5,0"
+                          Padding="0" Height="30" 
+                          BorderBrush="{x:Null}">
                             <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
                               HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="15" Height="15">
+                         VerticalAlignment="Center" Width="22" Height="22">
                                 <materialDesign:PackIcon.ToolTip>
                                     <ToolTip x:Name="tt_report" Content="Report"
                                               Placement="left" 
@@ -430,11 +434,72 @@
                                 </materialDesign:PackIcon.ToolTip>
                             </materialDesign:PackIcon>
                         </Button>
-                        <Button  Height="15"  Background="{x:Null}" VerticalAlignment="Bottom"    Grid.Column="1" Margin="2.5,0,2.5,0"
-                                 Padding="0"   x:Name="btn_exportToExcel"   Click="Btn_exportToExcel_Click"
-                                       BorderBrush="{x:Null}" TabIndex="14">
+                        <Button   Background="{x:Null}"    Grid.Column="1" Margin="2.5,0,2.5,0"
+                          Padding="0" Height="30"  x:Name="btn_print"
+                          BorderBrush="{x:Null}">
+                            <materialDesign:PackIcon Foreground="#313131" Kind="Printer"  
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="22" Height="22">
+                                <materialDesign:PackIcon.ToolTip>
+                                    <ToolTip x:Name="tt_print" Content="Print"
+                                              Placement="left" 
+                                              HorizontalOffset="5"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="-10"/>
+                                </materialDesign:PackIcon.ToolTip>
+                            </materialDesign:PackIcon>
+                        </Button>
+                        <Button FlowDirection="LeftToRight"   Background="{x:Null}"    Grid.Column="2" Margin="2.5,0,2.5,0" 
+                            Padding="0" Height="20" Width="25"   x:Name="btn_pieChart"   
+                                       BorderBrush="{x:Null}">
+                            <Grid Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Path Width="8.8" Height="9.6" Stretch="Fill" Data="M27.7,8.3l-10.2,7.8l9.1,9.1c2.1-2.5,3.4-5.7,3.4-9.2C30,13.1,29.1,10.5,27.7,8.3z" Fill="#DD191B"
+                              RenderTransformOrigin="5,5" >
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="0"/>
+                                            <TranslateTransform  X="6.5" Y="0.2"/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Path Width="7.2" Height="7.2" Stretch="Fill" Data="M17,14l9.4-7.3c-2.4-2.6-5.7-4.4-9.4-4.7V14z" Fill="#F74110" RenderTransformOrigin="0,0">
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform  X="6.2" Y="-6"/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Path Fill="#377EB8" Width="16" Height="17" Stretch="Fill" Data="M15.3,16.7C15.3,16.7,15.3,16.7,15.3,16.7C15.2,16.6,15.2,16.6,15.3,16.7c-0.1-0.1-0.1-0.2-0.1-0.2c0-0.1-0.1-0.1-0.1-0.2
+   s0-0.1,0-0.2c0,0,0-0.1,0-0.1V2.1C7.7,2.6,2,8.6,2,16c0,7.7,6.3,14,14,14c3.5,0,6.7-1.3,9.2-3.4L15.3,16.7z" RenderTransformOrigin="0,0">
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                   
+                                </Path>
+                            </Grid>
+                            <Button.ToolTip>
+                                <ToolTip x:Name="tt_pieChart" Content="Pie Chart"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="-10"/>
+                            </Button.ToolTip>
+                        </Button>
+                        <Button   Background="{x:Null}"    Grid.Column="3" Margin="2.5,0,2.5,0" 
+                            Padding="0" Height="30"   x:Name="btn_exportToExcel"   Click="Btn_exportToExcel_Click"
+                                       BorderBrush="{x:Null}">
                             <Path Fill="#378500" Stretch="Fill"
-                          Width="15" Height="15" 
+                          Width="20" Height="20" 
                            FlowDirection="LeftToRight" Data="M25.162,3H16v2.984h3.031v2.031H16V10h3v2h-3v2h3v2h-3v2h3v2h-3v3h9.162   C25.623,23,26,22.609,26,22.13V3.87C26,3.391,25.623,3,25.162,3z M24,20h-4v-2h4V20z M24,16h-4v-2h4V16z M24,12h-4v-2h4V12z M24,8   h-4V6h4V8z 
 	                     M0,2.889v20.223L15,26V0L0,2.889z M9.488,18.08l-1.745-3.299c-0.066-0.123-0.134-0.349-0.205-0.678   H7.511C7.478,14.258,7.4,14.494,7.277,14.81l-1.751,3.27H2.807l3.228-5.064L3.082,7.951h2.776l1.448,3.037   c0.113,0.24,0.214,0.525,0.304,0.854h0.028c0.057-0.198,0.163-0.492,0.318-0.883l1.61-3.009h2.542l-3.037,5.022l3.122,5.107 
                           L9.488,18.08L9.488,18.08z"  >
@@ -447,12 +512,10 @@
                                 </Path.ToolTip>
                             </Path>
                         </Button>
-                        <TextBlock   Height="15" Background="{x:Null}" x:Name="txt_count"   
-                                     Grid.Column="2"
-                                     Margin="0,0,0,0" VerticalAlignment="Bottom"
-                                     Text="0" Foreground="#378500" FontSize="12"  >
+                        <TextBlock   Background="{x:Null}" x:Name="txt_count"   Grid.Column="4" Margin="0,0,0,3" VerticalAlignment="Bottom"
+                            Padding="10"   Text="0" Foreground="#378500" FontSize="12" Height="30"   >
                             <TextBlock.ToolTip>
-                                <ToolTip x:Name="tt_count" Content="Category Count"
+                                <ToolTip x:Name="tt_count" Content="Customers Count"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,25,0,0"
@@ -582,14 +645,16 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBox x:Name="tb_categoryCode"  Text="{Binding categoryCode, Mode=OneWay}"
-                                             Grid.Row="1" Padding="10,5,5,5" MaxLength="20" LostFocus="Tb_categoryCode_LostFocus"
+                                             Grid.Row="1" Padding="10,5,5,5" MaxLength="20" 
+                                             LostFocus="Tb_categoryCode_LostFocus"
                                              TextChanged="Tb_categoryCode_TextChanged"
                                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                              BorderThickness="1"  materialDesign:HintAssist.Hint="Code..."   
                                              Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                              BorderBrush="AliceBlue"   TabIndex="0"
                                              HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                             Height="35" Width="195"  Margin="10,5"  PreviewKeyDown="Tb_categoryCode_PreviewKeyDown" >
+                                             Height="35" Width="195"  Margin="10,5"  
+                                             KeyDown="Tb_categoryCode_KeyDown" >
                                         <TextBox.ToolTip>
                                             <ToolTip x:Name="tt_code" Content="Code"
                                               Placement="left" 
@@ -735,7 +800,8 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBox x:Name="tb_taxes"  Text="{Binding taxes, Mode=OneWay}"
-                                             Grid.Row="2" Padding="10,5,5,5" MaxLength="15" PreviewTextInput="NumberValidationTextBox"
+                                             Grid.Row="2" Padding="10,5,5,5" MaxLength="15" 
+                                             PreviewTextInput="NumberValidationTextBox"
                                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                              BorderThickness="1"  materialDesign:HintAssist.Hint="Taxes..."  
                                              Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"

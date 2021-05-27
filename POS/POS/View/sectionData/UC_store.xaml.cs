@@ -303,7 +303,7 @@ namespace POS.View
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     await RefreshStoresList();
-                    tb_search_TextChanged(null, null);
+                    Tb_search_TextChanged(null, null);
                 }
             }
             
@@ -366,7 +366,7 @@ namespace POS.View
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     await RefreshStoresList();
-                    tb_search_TextChanged(null, null);
+                    Tb_search_TextChanged(null, null);
 
                     cb_branch.SelectedValue = store.parentId;
 
@@ -399,7 +399,7 @@ namespace POS.View
                 }
 
                 await RefreshStoresList();
-                tb_search_TextChanged(null, null);
+                Tb_search_TextChanged(null, null);
             }
             //clear textBoxs
             Btn_clear_Click(sender, e);
@@ -418,7 +418,7 @@ namespace POS.View
             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             await RefreshStoresList();
-            tb_search_TextChanged(null, null);
+            Tb_search_TextChanged(null, null);
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -451,12 +451,12 @@ namespace POS.View
 
             this.Dispatcher.Invoke(() =>
             {
-                tb_search_TextChanged(null, null);
+                Tb_search_TextChanged(null, null);
             });
 
         }
 
-        private async void tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
             p_errorName.Visibility = Visibility.Collapsed;
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
@@ -504,7 +504,7 @@ namespace POS.View
             if (stores is null)
                 await RefreshStoresList();
             tgl_storeState = 1;
-            tb_search_TextChanged(null, null);
+            Tb_search_TextChanged(null, null);
         }
 
         private async void tgl_storeIsActive_Unchecked(object sender, RoutedEventArgs e)
@@ -512,7 +512,7 @@ namespace POS.View
             if (stores is null)
                 await RefreshStoresList();
             tgl_storeState = 0;
-            tb_search_TextChanged(null, null);
+            Tb_search_TextChanged(null, null);
         }
 
         private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
@@ -626,6 +626,9 @@ namespace POS.View
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             RefreshStoresList();
+            Tb_search_TextChanged(null, null);
+
+
         }
     }
 }

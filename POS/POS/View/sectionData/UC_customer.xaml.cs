@@ -338,11 +338,21 @@ namespace POS.View
                     {
                         int agentId = int.Parse(s);
                         //await agentModel.uploadImage(openFileDialog.FileName, agentId);
-                        await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                        bool b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
                         isImgPressed = false;
+                        if (b)
+                        {
+                            brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                            img_customer.Background = brush;
+                        }
+                        else
+                        {
+                            MessageBox.Show("حدث خطأ في تحميل الصورة");
+                        }
                     }
+
                     await RefreshCustomersList();
-                    tb_search_TextChanged(null, null);
+                    Tb_search_TextChanged(null, null);
 
                  
                 }
@@ -373,11 +383,11 @@ namespace POS.View
             //txt_count.Text = agentsQuery.Count().ToString();
             //dg_customer.ItemsSource = agents;
             //Dispatcher.BeginInvoke(new Action(() => { GetGridData(null, 0)}));
-            //tb_search_TextChanged(null, null);
+            //Tb_search_TextChanged(null, null);
 
             this.Dispatcher.Invoke(() =>
             {
-                tb_search_TextChanged(null, null);
+                Tb_search_TextChanged(null, null);
             });
 
             cb_areaMobile.SelectedIndex = 0;
@@ -460,7 +470,7 @@ namespace POS.View
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     await RefreshCustomersList();
-                    tb_search_TextChanged(null, null); 
+                    Tb_search_TextChanged(null, null); 
 
                     if (isImgPressed)
                     {
@@ -471,6 +481,11 @@ namespace POS.View
                         {
                             brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
                             img_customer.Background = brush;
+                        }
+                        else
+                        {
+                            SectionData.clearImg(img_customer);
+                            MessageBox.Show("حدث خطأ في تحميل الصورة");
                         }
                     }
 
@@ -488,13 +503,7 @@ namespace POS.View
         {
             if (string.IsNullOrEmpty(agent.image))
             {
-                Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
-                StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
-
-                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
-                brush.ImageSource = temp;
-
-                img_customer.Background = brush;
+                SectionData.clearImg(img_customer);
             }
             else
             {
@@ -536,7 +545,7 @@ namespace POS.View
                 }
 
                 await RefreshCustomersList();
-                tb_search_TextChanged(null, null);
+                Tb_search_TextChanged(null, null);
             }
             //clear textBoxs
             Btn_clear_Click(sender , e);
@@ -556,7 +565,7 @@ namespace POS.View
             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             await RefreshCustomersList();
-            tb_search_TextChanged(null, null);
+            Tb_search_TextChanged(null, null);
 
         }
 
@@ -641,7 +650,7 @@ namespace POS.View
             if (agents is null)
                 await RefreshCustomersList();
             tgl_customerState = 1;
-            tb_search_TextChanged(null, null);
+            Tb_search_TextChanged(null, null);
             
         }
 
@@ -650,7 +659,7 @@ namespace POS.View
             if (agents is null)
                 await RefreshCustomersList();
             tgl_customerState = 0;
-            tb_search_TextChanged(null, null);
+            Tb_search_TextChanged(null, null);
         }
         async Task<IEnumerable<Agent>> RefreshCustomersList()
         {
@@ -668,7 +677,7 @@ namespace POS.View
             cb_areaFaxLocal.SelectedIndex = 0;
         }
         
-        private async void tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (agents is null)
                 await RefreshCustomersList();
@@ -823,6 +832,8 @@ namespace POS.View
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             RefreshCustomersList();
+            Tb_search_TextChanged(null, null);
+
         }
     }
 }

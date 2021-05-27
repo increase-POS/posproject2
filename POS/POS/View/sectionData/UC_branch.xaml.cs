@@ -635,6 +635,8 @@ namespace POS.View
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             RefreshBranchesList();
+            tb_search_TextChanged(null, null);
+
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)

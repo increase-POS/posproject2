@@ -263,7 +263,7 @@ namespace POS.View
 
             this.Dispatcher.Invoke(() =>
             {
-                tb_search_TextChanged(null, null);
+                Tb_search_TextChanged(null, null);
             });
 
             fillCountries();
@@ -348,12 +348,21 @@ namespace POS.View
                     if (isImgPressed)
                     {
                         int agentId = int.Parse(s);
-                        await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                        bool b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
                         isImgPressed = false;
+                        if (b)
+                        {
+                            brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                            img_vendor.Background = brush;
+                            //getImg();
+                        }
+                        else
+                        {
+                            MessageBox.Show("حدث خطأ في تحميل الصورة");
+                        }
                     }
-
                     await RefreshVendorsList();
-                    tb_search_TextChanged(null, null);
+                    Tb_search_TextChanged(null, null);
                 }
             }
 
@@ -411,7 +420,7 @@ namespace POS.View
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     await RefreshVendorsList();
-                    tb_search_TextChanged(null, null);
+                    Tb_search_TextChanged(null, null);
 
                     if (isImgPressed)
                     {
@@ -422,6 +431,12 @@ namespace POS.View
                         {
                             brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
                             img_vendor.Background = brush;
+                            getImg();
+                        }
+                        else
+                        {
+                            SectionData.clearImg(img_vendor);
+                            MessageBox.Show("حدث خطأ في تحميل الصورة");
                         }
                     }
 
@@ -460,7 +475,7 @@ namespace POS.View
                 }
 
                 await RefreshVendorsList();
-                tb_search_TextChanged(null, null);
+                Tb_search_TextChanged(null, null);
             }
             //clear textBoxs
             Btn_clear_Click(sender, e);
@@ -478,7 +493,7 @@ namespace POS.View
             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             await RefreshVendorsList();
-            tb_search_TextChanged(null, null);
+            Tb_search_TextChanged(null, null);
 
 
         }
@@ -492,7 +507,7 @@ namespace POS.View
             SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
         }
 
-        private async void tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
             var bc = new BrushConverter();
 
@@ -603,7 +618,7 @@ namespace POS.View
             if (agents is null)
                 await RefreshVendorsList();
             tgl_vendorState = 1;
-            tb_search_TextChanged(null, null);
+            Tb_search_TextChanged(null, null);
         }
 
         private async void tgl_vendorIsActive_Unchecked(object sender, RoutedEventArgs e)
@@ -611,7 +626,7 @@ namespace POS.View
             if (agents is null)
                 await RefreshVendorsList();
             tgl_vendorState = 0;
-            tb_search_TextChanged(null, null);
+            Tb_search_TextChanged(null, null);
         }
 
        
@@ -717,7 +732,8 @@ namespace POS.View
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             RefreshVendorsList();
-            RefreshVendorView();
+            Tb_search_TextChanged(null, null);
+
 
         }
 
@@ -725,12 +741,7 @@ namespace POS.View
         {
             if (agent.image.Equals(""))
             {
-                Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
-                StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
-
-                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
-                brush.ImageSource = temp;
-                img_vendor.Background = brush;
+                SectionData.clearImg(img_vendor);
             }
             else
             {
