@@ -7,6 +7,7 @@ using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Threading.Tasks;
 
 namespace POS.View
 {
@@ -126,6 +127,8 @@ namespace POS.View
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
             tb_name.Clear();
+            tb_notes.Clear();
+
             unit = new Unit();
         }
 
@@ -152,21 +155,16 @@ namespace POS.View
             units = await unitModel.GetUnitsAsync();
             dg_unit.ItemsSource = units;
         }
+        private void validateEmptyValues()
+        {
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+        }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            var bc = new BrushConverter();
-            if (tb_name.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (!tb_name.Equals(""))
+            //validate values
+            validateEmptyValues();
+           
+            if (!tb_name.Text.Equals(""))
             {
                 // check if new unit doesn't match old units
                 var unitObj = units.Find( x => x.name == tb_name.Text);
@@ -175,18 +173,20 @@ namespace POS.View
                     unit = new Unit
                     {
                         name = tb_name.Text,
+                        notes = tb_notes.Text,
                         createUserId = MainWindow.userID,
                         updateUserId = MainWindow.userID,
                         isActive = 1,
                     };
                     Boolean res = await unitModel.saveUnit(unit);
-                    if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    if (res) 
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     refreshUnitsGrid();
-                    tb_name.Clear();
+
+                    Btn_clear_Click(null, null);
                 }
             }
         }
@@ -194,7 +194,7 @@ namespace POS.View
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
             if ((!unit.canDelete) && (unit.isActive == 0))
-                activate();
+               await activate();
             else
             {
                 string popupContent = "";
@@ -203,27 +203,26 @@ namespace POS.View
                 int userId = (int)MainWindow.userID;
                 Boolean res = await unitModel.deleteUnit(unit.unitId, userId, unit.canDelete);
 
-                if (res) //SectionData.popUpResponse("", popupContent);
-                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                if (res) 
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                else 
+                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
+            refreshUnitsGrid();
 
-            var units = await unitModel.GetUnitsAsync();
-            dg_unit.ItemsSource = units;
             Btn_clear_Click(sender,e);
         }
-        private async void activate()
+        private async Task activate()
         {//activate
 
             unit.isActive = 1;
 
             Boolean s = await unitModel.saveUnit(unit);
 
-            if (s) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+            if (s) 
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            else 
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
         }
 
@@ -234,33 +233,29 @@ namespace POS.View
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            var bc = new BrushConverter();
-            if (tb_name.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (!tb_name.Equals(""))
+         //validate values
+            validateEmptyValues();
+
+            if (!tb_name.Text.Equals(""))
             {
                 // check if new unit doesn't match old units
                 var unitObj = units.Find(x => x.name == tb_name.Text);
-                if (unitObj is null)
+                if (unitObj is null || unitObj.name == unit.name)
                 {
                     unit.name = tb_name.Text;
+                    unit.notes = tb_notes.Text;
 
                     Boolean res = await unitModel.saveUnit(unit);
-                    if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    if (res)
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    else 
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     refreshUnitsGrid();
+                }
+                else
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorDuplicateUnitNameToolTip"), animation: ToasterAnimation.FadeIn);
                 }
 
             }

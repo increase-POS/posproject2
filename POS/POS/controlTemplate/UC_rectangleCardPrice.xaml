@@ -61,12 +61,15 @@
                     </Grid>
                 </Grid>
                 <!--<Image FlowDirection="LeftToRight"  Grid.Column="1"  Source="{Binding rectangleCardPriceImageSource}" Margin="0,5,5,5" />-->
-                <Button Padding="0"  Margin="0,5,5,5" Height="77" Width="85"    BorderThickness="0" x:Name="btn_cardImage" 
-                        FlowDirection="LeftToRight"  Grid.Column="1" >
-                    <Button.Background>
-                        <ImageBrush  Stretch="Fill"   ImageSource="/pic/no-image-icon-125x125.png"   />
-                    </Button.Background>
-                </Button>
+                <Grid Margin="0,5,5,5" Height="77" Width="85"  Grid.Column="1">
+                    <Button Padding="0"   Height="79" Width="87"    BorderThickness="0" x:Name="btn_cardImage" 
+                        FlowDirection="LeftToRight"  Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">  
+                        <Button.Background>
+                            <ImageBrush  Stretch="Fill"   ImageSource="/pic/no-image-icon-125x125.png"   />
+                        </Button.Background>
+                    </Button>
+                </Grid>
+               
 
                 <Path Fill="#FFA926" Stretch="Fill" x:Name="path_new" Grid.ColumnSpan="2"
                       Visibility="{Binding rectangleCardPriceNew}"

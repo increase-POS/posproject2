@@ -730,7 +730,7 @@
                     <Grid>
                         <!--////////////////////////////////  Item Data ////////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                      x:Name="grid_itemData" Visibility="Collapsed" >
+                      x:Name="grid_itemData" Visibility="Visible" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="40"/>
@@ -768,21 +768,21 @@
                                         <Separator Background="#999999"   Width="274"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                                         <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
-                          Background="{x:Null}" BorderBrush="{x:Null}" Click="btn_clear_Click"
-                    Margin="5,1"   ToolTip="clear">
+                                                Background="{x:Null}" BorderBrush="{x:Null}" Click="btn_clear_Click"
+                                                Margin="5,1"   ToolTip="clear">
 
                                             <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="20" Height="20"/>
+                                                HorizontalAlignment="Center" Grid.Column="0"  
+                                                VerticalAlignment="Center" Width="20" Height="20"/>
                                         </Button>
 
                                     </Grid>
                                     <Button  Grid.Row="1" 
-                               Grid.RowSpan="3"
-                             HorizontalAlignment="Center" VerticalAlignment="Center"   
-                            BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="5"  Height="125" Width="125" Grid.Column="1">
+                                       Grid.RowSpan="3" Name="img_item" Click="Img_item_Click" FlowDirection="LeftToRight"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center"   
+                                        BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="5"  Height="125" Width="125" Grid.Column="1">
                                         <Button.Background>
-                                            <ImageBrush Stretch="Fill"  x:Name="IMG_Item" ImageSource="/pic/EPSON-thermal-printer3.png"   />
+                                            <ImageBrush Stretch="Fill"  x:Name="IMG_Item" ImageSource="/pic/no-image-icon-125x125.png"   />
                                         </Button.Background>
                                     </Button>
 
@@ -794,7 +794,7 @@
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Code..."   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue"  MaxLength="100" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" LostFocus="Tb_code_LostFocus" TextChanged="Tb_code_TextChanged"
+                     HorizontalAlignment="Left" VerticalAlignment="Center" LostFocus="input_LostFocus" TextChanged="Tb_code_TextChanged"
                   Height="35" Width="195"  Margin="10,5"  />
                                         <Path Fill="#E81123" Stretch="Fill" x:Name="p_errorCode" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -814,7 +814,7 @@
                                         <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5"
                                  Grid.Row="2" BorderThickness="1"  materialDesign:HintAssist.Hint="Name..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="#f8f8f8" MaxLength="100" LostFocus="tb_name_LostFocus"
+                                 BorderBrush="#f8f8f8" MaxLength="100" LostFocus="input_LostFocus"
                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
 
                          HorizontalAlignment="Left" VerticalAlignment="Center" 
@@ -919,7 +919,7 @@
                              materialDesign:HintAssist.Hint="Select Categorie "  
                            TextBlock.FontSize="12"   Background="#f8f8f8" 
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="1" Height="35" Width="340"  Margin="10,5" LostFocus="Cb_categorie_LostFocus"
+                Grid.Column="1" Height="35" Width="340"  Margin="10,5" LostFocus="input_LostFocus"
                            BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_categorie_SelectionChanged">
 
                                         </ComboBox>
@@ -936,16 +936,16 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <ComboBox x:Name="cb_itemType"  SelectionChanged="CB_type_SelectionChanged"  Grid.Row="1"
-                                  Text="{Binding type, Mode=OneWay}" 
-                                  Padding="10,5,5,5" 
-                                   TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Select Item Type"  
-                           TextBlock.FontSize="12"  
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="1" Height="35" Width="340"  Margin="10,5"
-                                  Background="#f8f8f8" 
-                           BorderBrush="#737373" BorderThickness="0">
+                                        <ComboBox x:Name="cb_itemType"  SelectionChanged="CB_type_SelectionChanged"  
+                                                  Grid.Row="1" LostFocus="input_LostFocus"
+                                                  Text="{Binding type, Mode=OneWay}" 
+                                                  Padding="10,5,5,5" 
+                                                   TextBlock.Foreground="#4E4E4E"
+                                             materialDesign:HintAssist.Hint="Select Item Type"  
+                                               TextBlock.FontSize="12"  
+                                                HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                                Grid.Column="1" Height="35" Width="340"  Margin="10,5"
+                                                Background="#f8f8f8" BorderBrush="#737373" BorderThickness="0">
                                             <ListBoxItem>
                                                 Normal Item
                                             </ListBoxItem>
@@ -1027,7 +1027,7 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBox x:Name="tb_min" MaxLength="20" PreviewTextInput="NumberValidationTextBox"
                                                  PreviewKeyDown="space_PreviewKeyDown"
-                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" LostFocus="Tb_min_LostFocus"
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" LostFocus="input_LostFocus"
                                                  Text="{Binding min, Mode=OneWay}" 
                                  Grid.Row="1" Padding="10,5,5,5"
                                  BorderThickness="1" 
@@ -1051,14 +1051,13 @@
                                         </Grid.ColumnDefinitions>
 
                                         <ComboBox x:Name="cb_minUnit"  Grid.Row="1" 
-                                  Padding="10,5,5,5" 
-                                   TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Select Unit"  
-                           TextBlock.FontSize="12"  
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="1" Height="35" Width="160"  Margin="10,5"
-                                  Background="#f8f8f8" 
-                           BorderBrush="#737373"       BorderThickness="0"  />
+                                        Padding="10,5,5,5" TextBlock.Foreground="#4E4E4E"
+                                        materialDesign:HintAssist.Hint="Select Unit"  
+                                        TextBlock.FontSize="12"  LostFocus="input_LostFocus"
+                                        HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                        Grid.Column="1" Height="35" Width="160"  Margin="10,5"
+                                        Background="#f8f8f8" 
+                                        BorderBrush="#737373" BorderThickness="0"  />
                                         <Path x:Name="p_errorMinUnit" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -1074,7 +1073,7 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBox x:Name="tb_max"  MaxLength="20" PreviewTextInput="NumberValidationTextBox"
                                                 PreviewKeyDown="space_PreviewKeyDown"
-                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" LostFocus="Tb_max_LostFocus"
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" LostFocus="input_LostFocus"
                                                  Text="{Binding max, Mode=OneWay}" 
                                  Grid.Row="2" Padding="10,5,5,5"
                                  BorderThickness="1" 
@@ -1097,14 +1096,14 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <ComboBox x:Name="cb_maxUnit"  Grid.Row="2" 
-                                  Padding="10,5,5,5" 
-                                   TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Select Unit"  
-                           TextBlock.FontSize="12"  
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="1" Height="35" Width="160"  Margin="10,5"
-                                  Background="#f8f8f8" 
-                           BorderBrush="#737373"       BorderThickness="0"   />
+                                            Padding="10,5,5,5" LostFocus="input_LostFocus"
+                                            TextBlock.Foreground="#4E4E4E"
+                                            materialDesign:HintAssist.Hint="Select Unit"  
+                                            TextBlock.FontSize="12"  
+                                            HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                            Grid.Column="1" Height="35" Width="160"  Margin="10,5"
+                                            Background="#f8f8f8" 
+                                            BorderBrush="#737373"  BorderThickness="0"   />
 
                                         <Path x:Name="p_errorMaxUnit" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -1499,7 +1498,7 @@
                         </Grid>
                         <!--////////////////////////////////////    Barcode    ////////////////////////////////////////////////////-->
                         <Grid  Grid.Row="1"
-                      x:Name="dg_barcode"  Visibility="Visible" >
+                      x:Name="dg_barcode"  Visibility="Collapsed" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="7.5"/>
                                 <RowDefinition Height="auto"/>
@@ -1772,7 +1771,7 @@
 
                                 <Button x:Name="btn_addBarcode" Grid.Row="0" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="0,1,1,0"    Content="Add" Click="Btn_addBarcode_Click" VerticalAlignment="Top" HorizontalAlignment="Right" Width="115"/>
+                    Margin="0,1,1,1"    Content="Add" Click="Btn_addBarcode_Click" HorizontalAlignment="Right" Width="115" Height="Auto"/>
                                 <Button x:Name="btn_updateBarcode" Grid.Row="0" Grid.Column="1"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="4,2,115,0"   Content="Update" Click="Btn_updateBarcode_Click" Grid.ColumnSpan="2" />

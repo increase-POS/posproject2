@@ -455,14 +455,14 @@
 
                             </Grid.ColumnDefinitions>
                             <Button x:Name="btn_addValue"  Grid.Column="0"
-                          Background="#4E4E4E" BorderBrush="{x:Null}"  Height="Auto"
-                    Margin="5,1"    Content="Add" Click="Btn_addValue_Click" />
+                          Background="#4E4E4E" BorderBrush="{x:Null}"  Height="32"
+                    Margin="5,0,5,1"    Content="Add" Click="Btn_addValue_Click" VerticalAlignment="Bottom" />
                             <Button x:Name="btn_updateValue"  Grid.Column="1"
                           Background="#4E4E4E" BorderBrush="{x:Null}"  Height="33"
                     Margin="5,1,5,0"    Content="Update" Click="Btn_updateValue_Click" VerticalAlignment="Top" />
                             <Button x:Name="btn_deleteValue"  Grid.Column="2"
                           Background="#4E4E4E" BorderBrush="{x:Null}"  Height="33"
-                    Margin="5,1"    Content="Delete" Click="Btn_deleteValue_Click" />
+                    Margin="5,0"    Content="Delete" Click="Btn_deleteValue_Click" VerticalAlignment="Bottom" />
 
                         </Grid>
 

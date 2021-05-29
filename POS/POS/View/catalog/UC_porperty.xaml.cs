@@ -26,7 +26,6 @@ namespace POS.View
     {
         public int PropertyId;
         public int propertyItemId;
-        bool CanDelete;
         Property property = new Property();
         PropertiesItems propertyItem = new PropertiesItems();
 
@@ -140,12 +139,12 @@ namespace POS.View
                 {
                     propertyItemId = propertyItem.propertyItemId;
 
-                    if (propertyItem.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+                    if (propertyItem.canDelete) btn_deleteValue.Content = MainWindow.resourcemanager.GetString("trDelete");
 
                     else
                     {
-                        if (propertyItem.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
-                        else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                        if (propertyItem.isActive == 0) btn_deleteValue.Content = MainWindow.resourcemanager.GetString("trActive");
+                        else btn_deleteValue.Content = MainWindow.resourcemanager.GetString("trInActive");
                     }
                 }
             }
@@ -162,10 +161,10 @@ namespace POS.View
 
             Boolean res = await propertyModel.saveProperty(property);
 
-            if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+            if (res) 
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            else 
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             var poss = await propertyModel.getProperty();
             dg_property.ItemsSource = poss;
@@ -184,7 +183,7 @@ namespace POS.View
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {
             if ((!property.canDelete) && (property.isActive == 0))
-                activateProperty();
+               await activateProperty();
             else
             {
                 string popupContent = "";
@@ -193,40 +192,41 @@ namespace POS.View
                 int userId = (int)MainWindow.userID;
                 Boolean res = await propertyModel.deleteProperty(property.propertyId, userId, property.canDelete);
 
-                if (res) //SectionData.popUpResponse("", popupContent);
-                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                if (res) 
+                Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                else 
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
 
             var prop = await propertyModel.getProperty();
             dg_property.ItemsSource = prop;
             Btn_clear_Click(sender, e);
         }
-        private async void activateProperty()
+        private async Task activateProperty()
         {//activate
 
             property.isActive = 1;
 
             Boolean s = await propertyModel.saveProperty(property);
 
-            if (s) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+            if (s) 
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            else 
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
         }
-        private async void activatePropertyItem()
+        private async Task activatePropertyItem()
         {//activate
 
             propertyItem.isActive = 1;
+            propertyItem.name = propertyItem.propertyItemName;
 
             Boolean s = await PropertiesItemsModel.SavePropertiesItems(propertyItem);
 
-            if (s) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+            if (s) 
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            else 
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
         }
         async void Dg_property_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
@@ -244,8 +244,7 @@ namespace POS.View
             {
                 if (property.propertyId != 0)
                 {
-                       
-                   // CanDelete = property.canDelete;
+                                        
                     var propItems = await PropertiesItemsModel.GetPropertyItems(property.propertyId);
                     dg_subProperty.ItemsSource = propItems;
                 }
@@ -280,7 +279,7 @@ namespace POS.View
             if (!tb_valueName.Text.Equals(""))
             {
                 //add
-                propertyItem = new PropertiesItems();
+                propertyItem.propertyItemId = 0;
                 propertyItem.name = tb_valueName.Text;
                 propertyItem.propertyId = property.propertyId;
                 propertyItem.createUserId = MainWindow.userID;
@@ -288,10 +287,10 @@ namespace POS.View
 
                 Boolean res = await PropertiesItemsModel.SavePropertiesItems(propertyItem);
 
-                if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                if (res) 
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                else 
+                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 tb_valueName.Text = null;
                 var properties = await propertyModel.getProperty();
@@ -303,33 +302,10 @@ namespace POS.View
             
         }
 
-       // private async void getPropertyID(string name)
-           //     {
-             //       List<string> names = new List<string>();
-             //       List<int> ids = new List<int>();
-
-             //       var props = await propertyModel.getProperty();
-             //       Property prop = new Property();
-                    // MessageBox.Show(props.Count.ToString());
-            //        for (int i = 0; i < props.Count; i++)
-            //        {
-            //            prop = props[i];
-            //            if (prop.name.Trim().Equals(name.Trim()))
-            //            {
-            //                id = prop.propertyId;
-            //                break;
-            //            }
-
-        //
-          //          }
-
-           //         MessageBox.Show(prop.propertyId.ToString());
-            //    }
-
         private async void Btn_deleteValue_Click(object sender, RoutedEventArgs e)
         {
             if ((!propertyItem.canDelete) && (propertyItem.isActive == 0))
-                activateProperty();
+               await activatePropertyItem();
             else
             {
                 string popupContent = "";
@@ -338,10 +314,10 @@ namespace POS.View
                 int userId = (int)MainWindow.userID;
                 Boolean res = await PropertiesItemsModel.DeletePropertiesItems(propertyItem.propertyItemId, userId, propertyItem.canDelete);
 
-                if (res) //SectionData.popUpResponse("", popupContent);
-                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                if (res) 
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                else 
+                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
 
             var propertiesitems = await PropertiesItemsModel.GetPropertyItems(property.propertyId);
@@ -361,10 +337,10 @@ namespace POS.View
 
             Boolean res = await propertyModel.saveProperty(property);
 
-            if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+            if (res) 
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            else 
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             tb_name.Text = null;
             var properties = await propertyModel.getProperty();
@@ -393,10 +369,10 @@ namespace POS.View
 
                 Boolean res = await PropertiesItemsModel.SavePropertiesItems(propertyItem);
 
-                if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                if (res) 
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                else 
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 var propertiesItemss = await PropertiesItemsModel.GetPropertyItems(property.propertyId);
                 dg_subProperty.ItemsSource = propertiesItemss;

@@ -17,6 +17,7 @@ namespace POS.Classes
         public string   name { get; set; }
         public int?      isSmallest { get; set; }
         public int?      smallestId { get; set; }
+        public string notes { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }

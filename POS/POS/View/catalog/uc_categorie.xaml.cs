@@ -541,7 +541,8 @@ namespace POS.View
 
             
             RefrishCategoriesDatagrid(categoriesQuery);
-
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery , pageIndex, btns));
         }
         #endregion

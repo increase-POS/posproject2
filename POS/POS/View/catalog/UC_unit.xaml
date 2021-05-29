@@ -335,9 +335,10 @@ xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                         </Grid>
                         <Grid   Grid.Row="2"  Margin="5,0,0,0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="62*"/>
+                                <ColumnDefinition Width="293*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_notes"  Text="{Binding note, Mode=OneWay}" 
+                            <TextBox x:Name="tb_notes"  Text="{Binding notes, Mode=OneWay}" 
                                      Padding="10,5,5,5"   TabIndex="3"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
@@ -354,8 +355,8 @@ xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                                 </TextBox.ToolTip>
                             </TextBox>
 
-                            <Path Fill="#E81123" Stretch="Fill" Margin="15,12,15,5"
-                              HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
+                            <Path Fill="#E81123" Stretch="Fill" Margin="0,12,15,0"
+                              HorizontalAlignment="Right"  Grid.Column="1"  Visibility="Collapsed"  
                          VerticalAlignment="Top" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                 <Path.ToolTip>
@@ -364,7 +365,7 @@ xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                             </Path>
                         </Grid>
 
-                       
+
                         <WrapPanel Grid.Row="2"  Height="35" Width="340" 
                                    Background="#f8f8f8" HorizontalAlignment="Left"  VerticalAlignment="Center"
                                    Margin="10,5" Visibility="Collapsed" >

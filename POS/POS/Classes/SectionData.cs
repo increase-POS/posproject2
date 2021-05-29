@@ -45,6 +45,39 @@ namespace POS.Classes
             popup.Popup();// show  
         }
         */
+        //public static async Task<bool> chkIfCouponBarCodeIsExist(string randomNum)
+        //{
+        //    //try
+        //    //{
+        //    Coupon coupon = new Coupon();
+        //    coupon = await couponModel.getCouponByBarCode(randomNum);
+        //    if (coupon != null)
+        //    {
+        //        return true;
+        //    }
+        //    else return false;
+
+        //    //}
+        //    //catch { return false; }
+
+        //}
+        public static void validateEmptyDatePicker(DatePicker dp, Path p_error, ToolTip tt_error, string tr)
+        {
+            TextBox tb = (TextBox)dp.Template.FindName("PART_TextBox", dp);
+            if (dp.Text.Equals(""))
+            {
+                p_error.Visibility = Visibility.Visible;
+                tt_error.Content = MainWindow.resourcemanager.GetString(tr);
+                tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+
+            }
+            else
+            {
+                tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_error.Visibility = Visibility.Collapsed;
+
+            }
+        }
         public static long genRandomCode(string type)
         {
             Random rnd = new Random();

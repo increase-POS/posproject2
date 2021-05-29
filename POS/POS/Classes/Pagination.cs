@@ -181,7 +181,9 @@ namespace POS.Classes
         }
         public IEnumerable<Item> refrishPagination(IEnumerable<Item> _items, int pageIndex, Button[] btns)
         {
-            if (_items is null)
+            try
+            {
+                if (_items is null)
             {
                 return new List<Item>();
             }
@@ -199,7 +201,7 @@ namespace POS.Classes
                         btns[2].IsEnabled = false;
                         btns[3].IsEnabled = false;
                     }
-                    if (((_items.Count() - 1) / 9) <= 1)
+                    else if (((_items.Count() - 1) / 9) <= 1)
                     {
                         btns[2].IsEnabled = true;
                         btns[3].IsEnabled = false;
@@ -322,8 +324,14 @@ namespace POS.Classes
             _items = _items.Skip((pageIndex - 1) * 9).Take(9);
             return _items;
 
-
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return _items;
+            }
 
         }
-    }
+             
+}
 }

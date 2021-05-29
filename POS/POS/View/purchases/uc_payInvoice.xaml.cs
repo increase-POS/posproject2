@@ -85,12 +85,11 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trBranchHint"));
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
-            dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trAmount");
-            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trPrice");
-            dg_billDetails.Columns[5].Header = MainWindow.resourcemanager.GetString("trTotal");
+            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
+            dg_billDetails.Columns[5].Header = MainWindow.resourcemanager.GetString("trPrice");
+            dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trTotal");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
             txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
-            txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal:");
             btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
@@ -672,6 +671,11 @@ namespace POS.View
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Btn_pay_Click(object sender, RoutedEventArgs e)
+        {
+            btn_vendor_Click(null, null);
         }
     }
 }

@@ -66,12 +66,15 @@
                     </Grid>-->
                 </Grid>
                 <!--<Image FlowDirection="LeftToRight"   Grid.Column="0"  Source="{Binding rectangleCardWithoutPriceImageSource_ar}" Margin="5,5,0,5" />-->
-                <Button FlowDirection="LeftToRight"   Grid.Column="0" Margin="5,5,0,5"
+                <Grid Margin="5,5,0,5" Height="79" Width="87" >
+                    <Button FlowDirection="LeftToRight"   Grid.Column="0"  VerticalAlignment="Center" HorizontalAlignment="Center"
                         Padding="0"  Height="77" Width="85"    BorderThickness="0" x:Name="btn_cardImage" >
-                    <Button.Background>
-                        <ImageBrush  Stretch="Fill"   ImageSource="/pic/no-image-icon-125x125.png"   />
-                    </Button.Background>
-                </Button>
+                        <Button.Background>
+                            <ImageBrush  Stretch="Fill"   ImageSource="/pic/no-image-icon-125x125.png"   />
+                        </Button.Background>
+                    </Button>
+                </Grid>
+                
                 <!--<Image Grid.Column="0"  Source="/pic/EPSON-thermal-printer4.png" Margin="5,5,0,5" />-->
                 <Path Fill="#FFA926" Stretch="Fill" x:Name="path_new" Visibility="{Binding rectangleCardWithoutPriceNew_ar}"
                           Width="18" Height="18" VerticalAlignment="Bottom" HorizontalAlignment="Left"
