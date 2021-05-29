@@ -232,8 +232,6 @@ namespace POS.View
                     fillCategories();
                 }
             }
-
-          
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
