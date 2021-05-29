@@ -350,14 +350,64 @@ namespace POS.Classes
             }
         }
 
+        #region Image refresh 
+
+        public static async void getImg(string type , string imageUri , Button button)
+        {
+            try
+            {
+
+                //if (string.IsNullOrEmpty(category.image))
+                //{
+                //    SectionData.clearImg(button);
+                //}
+                //else
+                //{
+
+                if (type.Equals("Category"))
+                {
+                    Category category = new Category();
+                    byte[] imageBuffer = await category.downloadImage(imageUri); // read this as BLOB from your DB
+                    var bitmapImage = new BitmapImage();
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+                    button.Background = new ImageBrush(bitmapImage);
+                }
+                else if (type.Equals("Item"))
+                {
+                    Item item = new Item();
+                    byte[] imageBuffer = await item.downloadImage(imageUri); // read this as BLOB from your DB
+                    var bitmapImage = new BitmapImage();
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+                    button.Background = new ImageBrush(bitmapImage);
+                }
+                
+                //}
+            }
+            catch
+            {
+                clearImg(button);
+            }
+        }
         public static void clearImg(Button img)
         {
             Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
             StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
-
             BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
             brush.ImageSource = temp;
             img.Background = brush;
         }
+        #endregion
     }
 }

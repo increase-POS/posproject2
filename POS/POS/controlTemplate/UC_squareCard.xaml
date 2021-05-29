@@ -33,8 +33,14 @@
                 <Border FlowDirection="LeftToRight" 
                     CornerRadius="10" BorderBrush="{Binding squareCardBorderBrush }" BorderThickness="1.3"
                     Background="White">
-                    <Image Source="{Binding squareCardImageSource}" Margin="5" x:Name="BImage"/>
-                </Border>
+                <!--<Image x:Name="img_card" Margin="5"/>-->
+                <Button Padding="0" Margin="5" Height="77" Width="85"    BorderThickness="0" x:Name="btn_cardImage" >
+                    <Button.Background>
+                        <ImageBrush  Stretch="Fill"   ImageSource="/pic/no-image-icon-125x125.png"   />
+                    </Button.Background>
+                </Button>
+
+            </Border>
                 <Rectangle x:Name="rectangle" Grid.RowSpan="2" 
                        Fill="#99F0F8FF" Opacity="0" 
                        RadiusX="10" RadiusY="10" />
@@ -45,5 +51,7 @@
                     Text="{Binding squareCardText}" Foreground="#6e6e6e"
               HorizontalAlignment="Center" VerticalAlignment="Center"
               FontWeight="Bold"  FontSize="12"/>
-        </Grid>
+       
+
+    </Grid>
 </UserControl>

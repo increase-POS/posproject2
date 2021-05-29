@@ -234,21 +234,7 @@ namespace POS.Classes
             int column = 0;
             foreach (var item in categories)
             {
-                FN_createCatalogCard(item.categoryId, item.name, item.image,  row , column , columnCount);
-
-                //row++;
-                //if (row == rowCount)
-                //{
-                //    row = 0;
-                //    column++;
-                //}
-
-                //column++;
-                //if (column == 3)
-                //{
-                //    column = 0;
-                //    row++;
-                //}
+                FN_createCatalogCard( item,  row , column , columnCount);
                 if(column != -1)
                 {
                     column++;
@@ -266,16 +252,16 @@ namespace POS.Classes
             }
         }
 
-        public UC_squareCard FN_createCatalogCard(int id, string name, string image,  int row, int column, int columnCount,   string BorderBrush = "#6e6e6e")
+        public UC_squareCard FN_createCatalogCard( Category category,  int row, int column, int columnCount,   string BorderBrush = "#6e6e6e")
         {
-            UC_squareCard uc = new UC_squareCard();
-            uc.ContentId = id;
-            uc.squareCardText = name;
+            UC_squareCard uc = new UC_squareCard(category);
+            uc.ContentId = category.categoryId;
+            uc.squareCardText = category.name;
             uc.squareCardBorderBrush = BorderBrush;
-            uc.squareCardImageSource = image;
+            //uc.squareCardImageSource = image;
             uc.Margin = new Thickness(5, 0, 5, 0);
-            uc.Tag = "categorie" + id;
-            uc.Name = "categorie" + id;
+            uc.Tag = "categorie" + category.categoryId;
+            uc.Name = "categorie" + category.categoryId;
             uc.Row = row;
             uc.Column = column;
             //uc.rowCount = rowCount;
@@ -291,13 +277,12 @@ namespace POS.Classes
 
         void catalogCard_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //FN_refrishCatalogCard();
             UC_squareCard uc = (UC_squareCard)sender;
             uc = gridCatigories.Children.OfType<UC_squareCard>().Where(x => x.Name.ToString() == "categorie" + uc.ContentId).FirstOrDefault();
 
             gridCatigories.Children.Remove(uc);
             
-            FN_createCatalogCard(uc.ContentId, uc.squareCardText, uc.squareCardImageSource, uc.Row, uc.Column, uc.columnCount,   "#178DD2");
+            FN_createCatalogCard( uc.category, uc.Row, uc.Column, uc.columnCount,   "#178DD2");
 
 
             if (pastCatalogCard != -1 && pastCatalogCard != uc.ContentId)
@@ -307,8 +292,8 @@ namespace POS.Classes
                 if (pastUc != null)
                 {
                     gridCatigories.Children.Remove(pastUc);
-                    FN_createCatalogCard(pastUc.ContentId, pastUc.squareCardText, pastUc.squareCardImageSource, pastUc.Row, pastUc.Column,
-                     pastUc.columnCount, "#6e6e6e");
+                    FN_createCatalogCard( pastUc.category, pastUc.Row, pastUc.Column, pastUc.columnCount,
+                     "#6e6e6e");
                 }
             }
             
@@ -342,29 +327,18 @@ namespace POS.Classes
                 if (cardType == "sale")
                 {
                     if (language == "ar")
-                        FN_createCatalogItem_ar(item.itemId, item.name, item.details
-                           , "0$", item.image, row, column, isNewString, "Collapsed");
-                    else FN_createCatalogItem(item.itemId, item.name, item.details
-                           , "0$", item.image, row, column, isNewString, "Collapsed");
+                        FN_createCatalogItem_ar(item, "0$",  row, column, isNewString, "Collapsed");
+                    else FN_createCatalogItem(item  , "0$", row, column, isNewString, "Collapsed");
                 }
                 else
                 {
                     if (language == "ar")
-                        FN_createCatalogItemtWithoutPrice_ar(item.itemId, item.name, item.details
-                           , "0$", item.image, row, column, isNewString, "Collapsed");
+                        FN_createCatalogItemtWithoutPrice_ar(item, "0$", row, column, isNewString, "Collapsed", "CatalogItemtWithoutPrice_ar");
                     else
-                        FN_createCatalogItemtWithoutPrice(item.itemId, item.name, item.details
-                           , "0$", item.image, row, column, isNewString, "Collapsed");
+                        FN_createCatalogItemtWithoutPrice(item, "0$",  row, column, isNewString, "Collapsed", "CatalogItemtWithoutPrice");
                 }
 
-                /*
-                row++;
-                if (row == 3)
-                {
-                    row = 0;
-                    column++;
-                }
-                */
+                
                 column++;
                 if (column == 3)
                 {
@@ -377,13 +351,33 @@ namespace POS.Classes
 
 
         }
-        #region  sale
-        #region En
-        UC_rectangleCardPrice FN_createCatalogItem(int id, string title, string subtitle, string price, string image, int row, int column,
-           string newItem, string offer, string BorderBrush = "#6e6e6e")
-        {
+        #region 
+        /*
+        //UC_rectangleCardPrice
+        //UC_rectangleCardPrice_ar
+        //UC_rectangleCardWithoutPrice
+        //UC_rectangleCardWithoutPrice_ar
 
-            UC_rectangleCardPrice uc = new UC_rectangleCardPrice();
+        UC_rectangleCardPrice FN_createCatalogItem( int id, string title, string subtitle, string price, string image, int row, int column,
+           string newItem, string offer, string cardType, string BorderBrush = "#6e6e6e")
+        {
+            UC_rectangleCardPrice uc;
+            if (cardType == "CatalogItem_ar")
+            {
+                uc = new UC_rectangleCardPrice();
+            }
+            else if (cardType == "CatalogItem")
+            {
+                uc = new UC_rectangleCardPrice();
+            }
+            else if (cardType == "CatalogItemtWithoutPrice_ar")
+            {
+                uc = new UC_rectangleCardPrice();
+            }
+            else
+            {
+                uc = new UC_rectangleCardPrice();
+            }
             uc.ContentId = id;
             uc.rectangleCardPriceTitleText = title;
             uc.rectangleCardPriceSubtitleText = subtitle;
@@ -392,8 +386,67 @@ namespace POS.Classes
             uc.rectangleCardPriceImageSource = image;
             uc.rectangleCardPriceNew = newItem;
             uc.rectangleCardPriceOffer = offer;
-            uc.Tag = "CategorieItems" + id; 
+            uc.Tag = "CategorieItems" + id;
             uc.Name = "CategorieItems" + id;
+            uc.Row = row;
+            uc.Column = column;
+            Grid.SetColumn(uc, column);
+            Grid.SetRow(uc, row);
+            gridCatigorieItems.Children.Add(uc);
+            uc.MouseDoubleClick += new MouseButtonEventHandler(catalogItem_MouseDoubleClick);
+            return uc;
+        }
+
+        void catalogItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            UC_rectangleCardPrice uc;
+            if (sender.GetType().ToString() == "UC_rectangleCardPrice")
+            {
+                 uc = (UC_rectangleCardPrice)sender;
+            }
+            uc = gridCatigorieItems.Children.OfType<UC_rectangleCardPrice>().Where(x => x.Name.ToString() == "CategorieItems" + uc.ContentId).FirstOrDefault();
+
+            gridCatigorieItems.Children.Remove(uc);
+            FN_createCatalogItem(uc.ContentId, uc.rectangleCardPriceTitleText, uc.rectangleCardPriceSubtitleText, uc.rectangleCardPricePriceTitle, uc.rectangleCardPriceImageSource, uc.Row, uc.Column,
+               uc.rectangleCardPriceNew, uc.rectangleCardPriceOffer, "#178DD2");
+            if (pastCatalogItem != -1 && pastCatalogItem != uc.ContentId)
+            {
+                UC_rectangleCardPrice pastUc;
+                if (true)
+                {
+                     pastUc = new UC_rectangleCardPrice() { ContentId = pastCatalogItem };
+                }
+               
+                pastUc = gridCatigorieItems.Children.OfType<UC_rectangleCardPrice>().Where(x => x.Name.ToString() == "CategorieItems" + pastUc.ContentId).FirstOrDefault();
+                if (pastUc != null)
+                {
+                    gridCatigorieItems.Children.Remove(pastUc);
+                    FN_createCatalogItem(pastUc.ContentId, pastUc.rectangleCardPriceTitleText, pastUc.rectangleCardPriceSubtitleText, pastUc.rectangleCardPricePriceTitle
+                        , pastUc.rectangleCardPriceImageSource, pastUc.Row, pastUc.Column, pastUc.rectangleCardPriceNew, pastUc.rectangleCardPriceOffer, "#6e6e6e");
+                }
+            }
+            pastCatalogItem = uc.ContentId;
+            idItem = uc.ContentId;
+        }
+        */
+        #endregion
+     
+        #region  sale
+        #region En
+        UC_rectangleCardPrice FN_createCatalogItem(Item item, string price,  int row, int column,
+           string newItem, string offer, string BorderBrush = "#6e6e6e")
+        {
+
+            UC_rectangleCardPrice uc = new UC_rectangleCardPrice(item);
+            uc.ContentId = item.itemId;
+            uc.rectangleCardPriceTitleText = item.name;
+            uc.rectangleCardPriceSubtitleText = item.details;
+            uc.rectangleCardPriceBorderBrush = BorderBrush;
+            uc.rectangleCardPricePriceTitle = price;
+            uc.rectangleCardPriceNew = newItem;
+            uc.rectangleCardPriceOffer = offer;
+            uc.Tag = "CategorieItems" + item.itemId; 
+            uc.Name = "CategorieItems" + item.itemId;
             uc.Row = row;
             uc.Column = column;
             Grid.SetColumn(uc, column);
@@ -409,8 +462,8 @@ namespace POS.Classes
             uc = gridCatigorieItems.Children.OfType<UC_rectangleCardPrice>().Where(x => x.Name.ToString() == "CategorieItems" + uc.ContentId).FirstOrDefault();
 
             gridCatigorieItems.Children.Remove(uc);
-            FN_createCatalogItem(uc.ContentId, uc.rectangleCardPriceTitleText, uc.rectangleCardPriceSubtitleText, uc.rectangleCardPricePriceTitle, uc.rectangleCardPriceImageSource, uc.Row, uc.Column,
-               uc.rectangleCardPriceNew, uc.rectangleCardPriceOffer, "#178DD2");
+            FN_createCatalogItem(uc.item, uc.rectangleCardPricePriceTitle, uc.Row, uc.Column,
+               uc.rectangleCardPriceNew, uc.rectangleCardPriceOffer,  "#178DD2");
             if (pastCatalogItem != -1 && pastCatalogItem != uc.ContentId )
             {
                 var pastUc = new UC_rectangleCardPrice() { ContentId = pastCatalogItem };
@@ -418,8 +471,8 @@ namespace POS.Classes
                 if (pastUc != null )
                 {
                     gridCatigorieItems.Children.Remove(pastUc);
-                    FN_createCatalogItem(pastUc.ContentId, pastUc.rectangleCardPriceTitleText, pastUc.rectangleCardPriceSubtitleText, pastUc.rectangleCardPricePriceTitle
-                        , pastUc.rectangleCardPriceImageSource, pastUc.Row, pastUc.Column, pastUc.rectangleCardPriceNew, pastUc.rectangleCardPriceOffer, "#6e6e6e");
+                    FN_createCatalogItem(pastUc.item, pastUc.rectangleCardPricePriceTitle
+                        ,  pastUc.Row, pastUc.Column, pastUc.rectangleCardPriceNew, pastUc.rectangleCardPriceOffer,  "#6e6e6e");
                 }
             }
             pastCatalogItem = uc.ContentId;
@@ -427,21 +480,20 @@ namespace POS.Classes
         }
         #endregion
         #region Ar
-        UC_rectangleCardPrice_ar FN_createCatalogItem_ar(int id, string title, string subtitle, string price, string image, int row, int column,
+        UC_rectangleCardPrice_ar FN_createCatalogItem_ar(Item item, string price, int row, int column,
            string newItem, string offer, string BorderBrush = "#6e6e6e")
         {
-
+        
             UC_rectangleCardPrice_ar uc = new UC_rectangleCardPrice_ar();
-            uc.ContentId = id;
-            uc.rectangleCardPriceTitleText_ar = title;
-            uc.rectangleCardPriceSubtitleText_ar = subtitle;
+            uc.ContentId = item.itemId;
+            uc.rectangleCardPriceTitleText_ar = item.name;
+            uc.rectangleCardPriceSubtitleText_ar = item.details;
             uc.rectangleCardPriceBorderBrush_ar = BorderBrush;
             uc.rectangleCardPricePriceTitle_ar = price;
-            uc.rectangleCardPriceImageSource_ar = image;
             uc.rectangleCardPriceNew_ar = newItem;
             uc.rectangleCardPriceOffer_ar = offer;
-            uc.Tag = "CategorieItems" + id;
-            uc.Name = "CategorieItems" + id;
+            uc.Tag = "CategorieItems" + item.itemId;
+            uc.Name = "CategorieItems" + item.itemId;
             uc.Row = row;
             uc.Column = column;
             Grid.SetColumn(uc, column);
@@ -457,8 +509,8 @@ namespace POS.Classes
             uc = gridCatigorieItems.Children.OfType<UC_rectangleCardPrice_ar>().Where(x => x.Name.ToString() == "CategorieItems" + uc.ContentId).FirstOrDefault();
 
             gridCatigorieItems.Children.Remove(uc);
-            FN_createCatalogItem_ar(uc.ContentId, uc.rectangleCardPriceTitleText_ar, uc.rectangleCardPriceSubtitleText_ar, uc.rectangleCardPricePriceTitle_ar,
-                uc.rectangleCardPriceImageSource_ar, uc.Row, uc.Column,
+            FN_createCatalogItem_ar(uc.item, uc.rectangleCardPricePriceTitle_ar,
+                 uc.Row, uc.Column,
                uc.rectangleCardPriceNew_ar, uc.rectangleCardPriceOffer_ar, "#178DD2");
             if (pastCatalogItem != -1 && pastCatalogItem != uc.ContentId)
             {
@@ -467,8 +519,8 @@ namespace POS.Classes
                 if (pastUc != null)
                 {
                     gridCatigorieItems.Children.Remove(pastUc);
-                    FN_createCatalogItem_ar(pastUc.ContentId, pastUc.rectangleCardPriceTitleText_ar, pastUc.rectangleCardPriceSubtitleText_ar, pastUc.rectangleCardPricePriceTitle_ar
-                        , pastUc.rectangleCardPriceImageSource_ar, pastUc.Row, pastUc.Column, pastUc.rectangleCardPriceNew_ar, pastUc.rectangleCardPriceOffer_ar, "#6e6e6e");
+                    FN_createCatalogItem_ar(pastUc.item, pastUc.rectangleCardPricePriceTitle_ar
+                        , pastUc.Row, pastUc.Column, pastUc.rectangleCardPriceNew_ar, pastUc.rectangleCardPriceOffer_ar, "#6e6e6e");
                 }
             }
             pastCatalogItem = uc.ContentId;
@@ -477,25 +529,24 @@ namespace POS.Classes
 
         #endregion
         #endregion
-
         #region purchase
 
         #region  En
-        UC_rectangleCardWithoutPrice FN_createCatalogItemtWithoutPrice(int id, string title, string subtitle, string price, string image, int row, int column,
-        string newItem, string offer, string BorderBrush = "#6e6e6e")
+        UC_rectangleCardWithoutPrice FN_createCatalogItemtWithoutPrice(Item item, string price, int row, int column,
+           string newItem, string offer, string BorderBrush = "#6e6e6e")
         {
 
+        
             UC_rectangleCardWithoutPrice uc = new UC_rectangleCardWithoutPrice();
-            uc.ContentId = id;
-            uc.rectangleCardWithoutPriceTitleText = title;
-            uc.rectangleCardWithoutPriceSubtitleText = subtitle;
+            uc.ContentId = item.itemId;
+            uc.rectangleCardWithoutPriceTitleText = item.name;
+            uc.rectangleCardWithoutPriceSubtitleText = item.details;
             uc.rectangleCardWithoutPriceBorderBrush = BorderBrush;
             uc.rectangleCardWithoutPriceWithoutPriceTitle = price;
-            uc.rectangleCardWithoutPriceImageSource = image;
             uc.rectangleCardWithoutPriceNew = newItem;
             uc.rectangleCardWithoutPriceOffer = offer;
-            uc.Tag = "CategorieItems" + id;
-            uc.Name = "CategorieItems" + id;
+            uc.Tag = "CategorieItems" + item.itemId;
+            uc.Name = "CategorieItems" + item.itemId;
             uc.Row = row;
             uc.Column = column;
             Grid.SetColumn(uc, column);
@@ -511,7 +562,7 @@ namespace POS.Classes
             uc = gridCatigorieItems.Children.OfType<UC_rectangleCardWithoutPrice>().Where(x => x.Name.ToString() == "CategorieItems" + uc.ContentId).FirstOrDefault();
 
             gridCatigorieItems.Children.Remove(uc);
-            FN_createCatalogItemtWithoutPrice(uc.ContentId, uc.rectangleCardWithoutPriceTitleText, uc.rectangleCardWithoutPriceSubtitleText, uc.rectangleCardWithoutPriceWithoutPriceTitle, uc.rectangleCardWithoutPriceImageSource, uc.Row, uc.Column,
+            FN_createCatalogItemtWithoutPrice(uc.item, uc.rectangleCardWithoutPriceWithoutPriceTitle,   uc.Row, uc.Column,
                uc.rectangleCardWithoutPriceNew, uc.rectangleCardWithoutPriceOffer, "#178DD2");
             if (pastCatalogItem != -1 && pastCatalogItem != uc.ContentId)
             {
@@ -520,8 +571,8 @@ namespace POS.Classes
                 if (pastUc != null)
                 {
                     gridCatigorieItems.Children.Remove(pastUc);
-                    FN_createCatalogItemtWithoutPrice(pastUc.ContentId, pastUc.rectangleCardWithoutPriceTitleText, pastUc.rectangleCardWithoutPriceSubtitleText, pastUc.rectangleCardWithoutPriceWithoutPriceTitle
-                        , pastUc.rectangleCardWithoutPriceImageSource, pastUc.Row, pastUc.Column, pastUc.rectangleCardWithoutPriceNew, pastUc.rectangleCardWithoutPriceOffer, "#6e6e6e");
+                    FN_createCatalogItemtWithoutPrice(pastUc.item, pastUc.rectangleCardWithoutPriceWithoutPriceTitle
+                        , pastUc.Row, pastUc.Column, pastUc.rectangleCardWithoutPriceNew, pastUc.rectangleCardWithoutPriceOffer, "#6e6e6e");
                 }
             }
             pastCatalogItem = uc.ContentId;
@@ -529,21 +580,20 @@ namespace POS.Classes
         }
         #endregion
         #region  Ar
-        UC_rectangleCardWithoutPrice_ar FN_createCatalogItemtWithoutPrice_ar(int id, string title, string subtitle, string price, string image, int row, int column,
-        string newItem, string offer, string BorderBrush = "#6e6e6e")
+        UC_rectangleCardWithoutPrice_ar FN_createCatalogItemtWithoutPrice_ar(Item item, string price, int row, int column,
+           string newItem, string offer, string BorderBrush = "#6e6e6e")
         {
-
+        
             UC_rectangleCardWithoutPrice_ar uc = new UC_rectangleCardWithoutPrice_ar();
-            uc.ContentId = id;
-            uc.rectangleCardWithoutPriceTitleText_ar = title;
-            uc.rectangleCardWithoutPriceSubtitleText_ar = subtitle;
+            uc.ContentId = item.itemId;
+            uc.rectangleCardWithoutPriceTitleText_ar = item.name;
+            uc.rectangleCardWithoutPriceSubtitleText_ar = item.details;
             uc.rectangleCardWithoutPriceBorderBrush_ar = BorderBrush;
             uc.rectangleCardWithoutPriceWithoutPriceTitle_ar = price;
-            uc.rectangleCardWithoutPriceImageSource_ar = image;
             uc.rectangleCardWithoutPriceNew_ar = newItem;
             uc.rectangleCardWithoutPriceOffer_ar = offer;
-            uc.Tag = "CategorieItems" + id;
-            uc.Name = "CategorieItems" + id;
+            uc.Tag = "CategorieItems" + item.itemId;
+            uc.Name = "CategorieItems" + item.itemId;
             uc.Row = row;
             uc.Column = column;
             Grid.SetColumn(uc, column);
@@ -559,8 +609,8 @@ namespace POS.Classes
             uc = gridCatigorieItems.Children.OfType<UC_rectangleCardWithoutPrice_ar>().Where(x => x.Name.ToString() == "CategorieItems" + uc.ContentId).FirstOrDefault();
 
             gridCatigorieItems.Children.Remove(uc);
-            FN_createCatalogItemtWithoutPrice_ar(uc.ContentId, uc.rectangleCardWithoutPriceTitleText_ar, uc.rectangleCardWithoutPriceSubtitleText_ar, uc.rectangleCardWithoutPriceWithoutPriceTitle_ar, 
-                uc.rectangleCardWithoutPriceImageSource_ar, uc.Row, uc.Column,
+            FN_createCatalogItemtWithoutPrice_ar(uc.item, uc.rectangleCardWithoutPriceWithoutPriceTitle_ar, 
+                uc.Row, uc.Column,
                uc.rectangleCardWithoutPriceNew_ar, uc.rectangleCardWithoutPriceOffer_ar, "#178DD2");
             if (pastCatalogItem != -1 && pastCatalogItem != uc.ContentId)
             {
@@ -569,9 +619,8 @@ namespace POS.Classes
                 if (pastUc != null)
                 {
                     gridCatigorieItems.Children.Remove(pastUc);
-                    FN_createCatalogItemtWithoutPrice_ar(pastUc.ContentId, pastUc.rectangleCardWithoutPriceTitleText_ar, pastUc.rectangleCardWithoutPriceSubtitleText_ar,
-                        pastUc.rectangleCardWithoutPriceWithoutPriceTitle_ar
-                        , pastUc.rectangleCardWithoutPriceImageSource_ar, pastUc.Row, pastUc.Column, pastUc.rectangleCardWithoutPriceNew_ar, pastUc.rectangleCardWithoutPriceOffer_ar, "#6e6e6e");
+                    FN_createCatalogItemtWithoutPrice_ar(pastUc.item,pastUc.rectangleCardWithoutPriceWithoutPriceTitle_ar
+                       , pastUc.Row, pastUc.Column, pastUc.rectangleCardWithoutPriceNew_ar, pastUc.rectangleCardWithoutPriceOffer_ar, "#6e6e6e");
                 }
             }
             pastCatalogItem = uc.ContentId;
@@ -581,7 +630,7 @@ namespace POS.Classes
 
 
         #endregion
-
+        
         #endregion
 
 

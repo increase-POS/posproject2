@@ -102,6 +102,7 @@ namespace POS.View
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             catigoriesAndItemsView.ucCategorie = this;
             if (MainWindow.lang.Equals("en"))
             {
@@ -119,7 +120,6 @@ namespace POS.View
 
             fillCategories();
 
-            btns = new Button[]  { btn_firstPage,btn_prevPage ,btn_activePage,btn_nextPage,btn_lastPage };
 
             //this.Dispatcher.Invoke(() =>
             //{

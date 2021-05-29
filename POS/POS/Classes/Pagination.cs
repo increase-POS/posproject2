@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -25,149 +26,158 @@ namespace POS.Classes
         }
         public IEnumerable<Category> refrishPagination(IEnumerable<Category> _categories ,int pageIndex, Button[] btns )
         {
-            if (_categories is null)
+            try
             {
-                return  new List<Category>() ;
-            }
-           
-            #region < 3 Page
-            if (2 >= ((_categories.Count() - 1) / 20))
-            {
-                if (pageIndex == 1)
+                if (_categories is null)
                 {
-                    pageNumberActive(btns[1], 1);
-                    pageNumberDisActive(btns[2], 2);
-                    pageNumberDisActive(btns[3], 3);
-                    if (((_categories.Count() - 1) / 20) == 0)
+                    return new List<Category>();
+                }
+
+                #region < 3 Page
+                if (2 >= ((_categories.Count() - 1) / 20))
+                {
+                    if (pageIndex == 1)
                     {
-                        btns[2].IsEnabled = false;
-                        btns[3].IsEnabled = false;
+                        pageNumberActive(btns[1], 1);
+                        pageNumberDisActive(btns[2], 2);
+                        pageNumberDisActive(btns[3], 3);
+                        if (((_categories.Count() - 1) / 20) == 0)
+                        {
+                            btns[2].IsEnabled = false;
+                            btns[3].IsEnabled = false;
+                        }
+                        else if (((_categories.Count() - 1) / 20) <= 1)
+                        {
+                            btns[2].IsEnabled = true;
+                            btns[3].IsEnabled = false;
+                        }
                     }
-                    if (((_categories.Count() - 1) / 20) <= 1)
+                    else if (pageIndex == 2)
                     {
+                        pageNumberDisActive(btns[1], 1);
+                        pageNumberActive(btns[2], 2);
+                        pageNumberDisActive(btns[3], 3);
+                        if (((_categories.Count() - 1) / 20) <= 1)
+                        {
+                            btns[2].IsEnabled = true;
+                            btns[3].IsEnabled = false;
+                        }
+                    }
+                    else
+                    {
+
+                        pageNumberDisActive(btns[1], 1);
+                        pageNumberDisActive(btns[2], 2);
+                        pageNumberActive(btns[3], 3);
                         btns[2].IsEnabled = true;
-                        btns[3].IsEnabled = false;
+                        btns[3].IsEnabled = true;
                     }
+
+                }
+
+                #endregion
+
+                #region > 3 Page
+                if (2 < ((_categories.Count() - 1) / 20))
+                {
+                    if (pageIndex == 1)
+                    {
+                        pageNumberActive(btns[1], pageIndex);
+                        pageNumberDisActive(btns[2], pageIndex + 1);
+                        pageNumberDisActive(btns[3], pageIndex + 2);
+                        if (((_categories.Count() - 1) / 20) == 0)
+                        {
+                            btns[2].IsEnabled = false;
+                            btns[3].IsEnabled = false;
+                        }
+                    }
+                    else if (pageIndex == 2)
+                    {
+                        pageNumberDisActive(btns[1], 1);
+                        pageNumberActive(btns[2], 2);
+                        pageNumberDisActive(btns[3], 3);
+                        if (((_categories.Count() - 1) / 20) <= 1)
+                        {
+                            btns[2].IsEnabled = true;
+                            btns[3].IsEnabled = false;
+                        }
+                    }
+                    ///// last
+                    else if ((pageIndex - 1) >= ((_categories.Count() - 1) / 20))
+                    {
+
+                        pageNumberDisActive(btns[1], pageIndex - 2);
+                        pageNumberDisActive(btns[2], pageIndex - 1);
+                        pageNumberActive(btns[3], pageIndex);
+                        btns[2].IsEnabled = true;
+                        btns[3].IsEnabled = true;
+                    }
+                    else
+                    {
+                        pageNumberDisActive(btns[1], pageIndex - 1);
+                        pageNumberActive(btns[2], pageIndex);
+                        pageNumberDisActive(btns[3], pageIndex + 1);
+
+                        btns[2].IsEnabled = true;
+                        btns[3].IsEnabled = true;
+
+                    }
+                }
+
+                #endregion
+                #region 
+                if (2 >= ((_categories.Count() - 1) / 20))
+                {
+                    if (1 == (pageIndex))
+                    {
+                    }
+                    else if (1 >= ((_categories.Count() - 1) / 20))
+                    {
+                    }
+                    btns[0].IsEnabled = false;
+                    btns[4].IsEnabled = false;
+                }
+                else if (pageIndex == 1)
+                {
+                    btns[0].IsEnabled = false;
+                    btns[4].IsEnabled = true;
                 }
                 else if (pageIndex == 2)
                 {
-                    pageNumberDisActive(btns[1], 1);
-                    pageNumberActive(btns[2], 2);
-                    pageNumberDisActive(btns[3], 3);
-                    if (((_categories.Count() - 1) / 20) <= 1)
-                    {
-                        btns[2].IsEnabled = true;
-                        btns[3].IsEnabled = false;
-                    }
-                }
-                else
-                {
-
-                    pageNumberDisActive(btns[1], 1);
-                    pageNumberDisActive(btns[2], 2);
-                    pageNumberActive(btns[3], 3);
-                    btns[2].IsEnabled = true;
-                    btns[3].IsEnabled = true;
-                }
-
-            }
-
-            #endregion
-
-            #region > 3 Page
-            if (2 < ((_categories.Count() - 1) / 20))
-            {
-                if (pageIndex == 1)
-                {
-                    pageNumberActive(btns[1], pageIndex);
-                    pageNumberDisActive(btns[2], pageIndex + 1);
-                    pageNumberDisActive(btns[3], pageIndex + 2);
-                    if (((_categories.Count() - 1) / 20) == 0)
-                    {
-                        btns[2].IsEnabled = false;
-                        btns[3].IsEnabled = false;
-                    }
-                }
-                else if (pageIndex == 2)
-                {
-                    pageNumberDisActive(btns[1], 1);
-                    pageNumberActive(btns[2], 2);
-                    pageNumberDisActive(btns[3], 3);
-                    if (((_categories.Count() - 1) / 20) <= 1)
-                    {
-                        btns[2].IsEnabled = true;
-                        btns[3].IsEnabled = false;
-                    }
+                    btns[4].IsEnabled = true;
+                    btns[0].IsEnabled = true;
                 }
                 ///// last
                 else if ((pageIndex - 1) >= ((_categories.Count() - 1) / 20))
                 {
+                    btns[4].IsEnabled = false;
+                    btns[0].IsEnabled = true;
 
-                    pageNumberDisActive(btns[1], pageIndex - 2);
-                    pageNumberDisActive(btns[2], pageIndex - 1);
-                    pageNumberActive(btns[3], pageIndex);
-                    btns[2].IsEnabled = true;
-                    btns[3].IsEnabled = true;
+
                 }
                 else
                 {
-                    pageNumberDisActive(btns[1], pageIndex - 1);
-                    pageNumberActive(btns[2], pageIndex);
-                    pageNumberDisActive(btns[3], pageIndex + 1);
-
-                    btns[2].IsEnabled = true;
-                    btns[3].IsEnabled = true;
+                    btns[4].IsEnabled = true;
+                    btns[0].IsEnabled = true;
 
                 }
-            }
 
-            #endregion
-            #region 
-            if (2 >= ((_categories.Count() - 1) / 20))
+
+                #endregion
+
+
+                _categories = _categories.Skip((pageIndex - 1) * 20).Take(20);
+                return _categories;
+
+
+
+
+            }
+            catch (Exception ex)
             {
-                if (1 == (pageIndex))
-                {
-                }
-                else if (1 >= ((_categories.Count() - 1) / 20))
-                {
-                }
-                btns[0].IsEnabled = false;
-                btns[4].IsEnabled = false;
+                MessageBox.Show(ex.Message);
+                return _categories;
             }
-            else if (pageIndex == 1)
-            {
-                btns[0].IsEnabled = false;
-                btns[4].IsEnabled = true;
-            }
-            else if (pageIndex == 2)
-            {
-                btns[4].IsEnabled = true;
-                btns[0].IsEnabled = true;
-            }
-            ///// last
-            else if ((pageIndex - 1) >= ((_categories.Count() - 1) / 20))
-            {
-                btns[4].IsEnabled = false;
-                btns[0].IsEnabled = true;
-
-
-            }
-            else
-            {
-                btns[4].IsEnabled = true;
-                btns[0].IsEnabled = true;
-
-            }
-
-
-            #endregion
-
-           
-            _categories = _categories.Skip((pageIndex - 1) * 20).Take(20);
-            return _categories;
-            
-
-
         }
         public IEnumerable<Item> refrishPagination(IEnumerable<Item> _items, int pageIndex, Button[] btns)
         {

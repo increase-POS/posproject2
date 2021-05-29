@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POS.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,13 @@ namespace POS.controlTemplate
         public UC_rectangleCardPrice_ar()
         {
             InitializeComponent();
+        }
+        public Item item { get; set; }
+        public UC_rectangleCardPrice_ar(Item _item)
+        {
+            InitializeComponent();
+            SectionData.getImg("Item", _item.image, btn_cardImage);
+            item = _item;
         }
         public int ContentId { get; set; }
         public int Row { get; set; }

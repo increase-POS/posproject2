@@ -1,5 +1,7 @@
-﻿using System;
+﻿using POS.Classes;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Resources;
 using System.Windows.Shapes;
 
 namespace POS.controlTemplate
@@ -24,11 +27,21 @@ namespace POS.controlTemplate
         {
             InitializeComponent();
         }
+        public UC_squareCard(Category _category)
+        {
+            InitializeComponent();
+            category = _category;
+            SectionData.getImg("Category", _category.image, btn_cardImage);
+
+        }
         public int ContentId { get; set; }
         public int Column { get; set; }
         public int Row { get; set; }
         public int rowCount { get; set; }
         public int columnCount { get; set; }
+        public Category category { get; set; }
+        ImageBrush brush = new ImageBrush();
+         
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             this.DataContext = this;
@@ -76,6 +89,9 @@ namespace POS.controlTemplate
         }
         #endregion
 
-       
+
+
+
+
     }
 }

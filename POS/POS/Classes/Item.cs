@@ -4,6 +4,8 @@ using POS;
 using POS.Classes;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -56,6 +58,7 @@ namespace POS.Classes
 
         public async Task<string> saveItem(Item item)
         {
+            string message = "";
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             // 
@@ -80,9 +83,10 @@ namespace POS.Classes
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return "true";
+                    message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
                 }
-                return "false";
+                return message;
             }
         }
 
@@ -568,5 +572,145 @@ namespace POS.Classes
             }
         }
 
+        #region image
+        // upload item image to server
+        public async Task<Boolean> uploadImage(string imagePath, string imageName, int itemId)
+        {
+            if (imagePath != "")
+            {
+                //string imageName = agentId.ToString();
+                MultipartFormDataContent form = new MultipartFormDataContent();
+                // get file extension
+                var ext = imagePath.Substring(imagePath.LastIndexOf('.'));
+                var extension = ext.ToLower();
+                try
+                {
+                    // configure trmporery path
+                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string tmpPath = Path.Combine(dir, Global.TMPFolder);
+                    tmpPath = Path.Combine(tmpPath, imageName + extension);
+                    if (System.IO.File.Exists(tmpPath))
+                    {
+                        System.IO.File.Delete(tmpPath);
+                    }
+                    // resize image
+                    ImageProcess imageP = new ImageProcess(150, imagePath);
+                    imageP.ScaleImage(tmpPath);
+
+                    // read image file
+                    var stream = new FileStream(tmpPath, FileMode.Open, FileAccess.Read);
+
+                    // create http client request
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(Global.APIUri);
+                        client.Timeout = System.TimeSpan.FromSeconds(3600);
+                        string boundary = string.Format("----WebKitFormBoundary{0}", DateTime.Now.Ticks.ToString("x"));
+                        HttpContent content = new StreamContent(stream);
+                        content.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+                        content.Headers.Add("client", "true");
+
+                        string fileName = imageName + extension;
+                        content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                        {
+                            Name = imageName,
+                            FileName = fileName
+                        };
+                        form.Add(content, "fileToUpload");
+
+                        var response = await client.PostAsync(@"items/PostItemImage", form);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            // save image name in DB
+                            Item item = new Item();
+                            item.itemId = itemId;
+                            item.image = fileName;
+                            await updateImage(item);
+                            //await saveAgent();
+                            return true;
+                        }
+                    }
+                    stream.Dispose();
+                    //delete tmp image
+                    if (System.IO.File.Exists(tmpPath))
+                    {
+                        System.IO.File.Delete(tmpPath);
+                    }
+                }
+                catch (Exception ex) { return false; }
+            }
+            return false;
+        }
+
+        // update image field in DB
+        public async Task<string> updateImage(Item item)
+        {
+            string message = "";
+
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            string myContent = JsonConvert.SerializeObject(item);
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+
+                HttpRequestMessage request = new HttpRequestMessage();
+
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+
+                request.RequestUri = new Uri(Global.APIUri + "items/UpdateImage?itemObject=" + myContent);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
+                }
+                return message;
+            }
+        }
+        public async Task<byte[]> downloadImage(string imageName)
+
+        {
+            Stream jsonString = null;
+            byte[] byteImg = null;
+            Image img = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Items/GetImage?imageName=" + imageName);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    jsonString = await response.Content.ReadAsStreamAsync();
+                    img = Bitmap.FromStream(jsonString);
+                    byteImg = await response.Content.ReadAsByteArrayAsync();
+                }
+                return byteImg;
+            }
+        }
+        #endregion
     }
 }

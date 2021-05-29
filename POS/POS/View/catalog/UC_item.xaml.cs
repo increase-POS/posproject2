@@ -810,7 +810,7 @@ namespace POS.View
 
                     string res = await itemUnit.saveItemUnit(itemUnit);
                     if (res.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 

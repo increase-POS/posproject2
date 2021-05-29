@@ -203,8 +203,8 @@
                                          Width="40" Height="40"/>
                 </Grid>
                 <StackPanel  Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical"  Margin="15,5,5,5">
-                    <TextBlock  Text="Items" FontSize="16" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
-                    <TextBlock  Text="964" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="Sales" FontSize="16" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="86424.96$" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
                 </StackPanel>
             </Grid>
             <Grid Margin="10" Grid.Column="1" Background="White" >
@@ -221,8 +221,8 @@
                                          Width="40" Height="40"/>
                 </Grid>
                 <StackPanel  Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical"  Margin="15,5,5,5">
-                    <TextBlock  Text="Count" FontSize="16" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
-                    <TextBlock  Text="982" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="Purchases" FontSize="16" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="48624.50$" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
                 </StackPanel>
             </Grid>
 
@@ -240,8 +240,8 @@
                                          Width="40" Height="40"/>
                 </Grid>
                 <StackPanel  Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical"  Margin="15,5,5,5">
-                    <TextBlock  Text="Count" FontSize="16" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
-                    <TextBlock  Text="653" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="Items" FontSize="16" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock  Text="768" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
                 </StackPanel>
             </Grid>
 
