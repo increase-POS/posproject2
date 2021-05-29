@@ -60,10 +60,11 @@ namespace POS.View
         OpenFileDialog openFileDialog = new OpenFileDialog();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
         ImageBrush brush = new ImageBrush();
 
         BrushConverter bc = new BrushConverter();
-
+       
         int index = 0;
 
         string imgFileName = "pic/no-image-icon-125x125.png";
@@ -843,13 +844,22 @@ namespace POS.View
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            LocalReport rep = new LocalReport();
             string addpath = @"\Reports\VendorReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             rep.ReportPath = reppath;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("AgentDataSet", agentsQuery));
+
+            ReportParameter[] paramarr = new ReportParameter[6];
+            paramarr[0] = new ReportParameter("agentTitle", MainWindow.resourcemanager.GetString("trCustomers"));
+            paramarr[1] = new ReportParameter("trCode", MainWindow.resourcemanager.GetString("trCode"));
+            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
+            paramarr[3] = new ReportParameter("trCompany", MainWindow.resourcemanager.GetString("trCompany"));
+            paramarr[4] = new ReportParameter("trMobile", MainWindow.resourcemanager.GetString("trMobile"));
+            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+            rep.SetParameters(paramarr);
+
             rep.Refresh();
 
             saveFileDialog.Filter = "PDF|*.pdf;";
@@ -859,21 +869,37 @@ namespace POS.View
 
                 string filepath = saveFileDialog.FileName;
                 LocalReportExtensions.ExportToPDF(rep, filepath);
+
             }
+
+
+
+
+
+
         }
+
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-            LocalReport rep = new LocalReport();
             string addpath = @"\Reports\VendorReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
+
             rep.ReportPath = reppath;
             rep.DataSources.Clear();
-
             rep.DataSources.Add(new ReportDataSource("AgentDataSet", agentsQuery));
+            ReportParameter[] paramarr = new ReportParameter[6];
+            paramarr[0] = new ReportParameter("agentTitle", MainWindow.resourcemanager.GetString("trCustomers"));
+            paramarr[1] = new ReportParameter("trCode", MainWindow.resourcemanager.GetString("trCode"));
+            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
+            paramarr[3] = new ReportParameter("trCompany", MainWindow.resourcemanager.GetString("trCompany"));
+            paramarr[4] = new ReportParameter("trMobile", MainWindow.resourcemanager.GetString("trMobile"));
+            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+            rep.SetParameters(paramarr);
             rep.Refresh();
             LocalReportExtensions.PrintToPrinter(rep);
+
         }
     }
 }

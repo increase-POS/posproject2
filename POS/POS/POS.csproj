@@ -515,6 +515,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\BankReport.rdlc" />
+    <EmbeddedResource Include="Reports\BranchReport.rdlc" />
+    <EmbeddedResource Include="Reports\InvReport.rdlc" />
+    <EmbeddedResource Include="Reports\PosReport.rdlc" />
+    <EmbeddedResource Include="Reports\UserReport.rdlc" />
     <EmbeddedResource Include="Reports\VendorReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

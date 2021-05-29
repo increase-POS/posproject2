@@ -54,7 +54,7 @@ namespace POS.View
         OpenFileDialog openFileDialog = new OpenFileDialog();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         ReportCls reportclass = new ReportCls();
-
+        LocalReport rep = new LocalReport();
         ImageBrush brush = new ImageBrush();
 
         int index = 0;
@@ -768,9 +768,21 @@ namespace POS.View
 
         }
 
+
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-            string path = Directory.GetCurrentDirectory();
+            string addpath = @"\Reports\VendorReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            // MessageBox.Show(path+"=="+pos1.ToString()+"after="+ repPath);
+
+
+            //  List<Agent> agentlist = new List<Agent>();
+
+            //  rep.SetParameters(new ReportParameter("agentTitle", "Vendors"));
+            // D:\gitpos\POS\POS\bin\debug"
+            // rep.ReportPath = @"D:\gitpos\POS\POS\Reports\VendorReport.rdlc";
+            /*
+             string path = Directory.GetCurrentDirectory();
 
             int pos1 = path.LastIndexOf("\\");
             string path2 = path.Substring(0, pos1);
@@ -780,15 +792,18 @@ namespace POS.View
             string repPath = path2 + @"\Reports\VendorReport.rdlc";
             // MessageBox.Show(path+"=="+pos1.ToString()+"after="+ repPath);
 
-            LocalReport rep = new LocalReport();
-            //  List<Agent> agentlist = new List<Agent>();
-
-
-            // D:\gitpos\POS\POS\bin\debug"
-            // rep.ReportPath = @"D:\gitpos\POS\POS\Reports\VendorReport.rdlc";
-            rep.ReportPath = repPath;
+             * */
+            rep.ReportPath = reppath;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("AgentDataSet", agentsQuery));
+            ReportParameter[] paramarr = new ReportParameter[6];
+            paramarr[0] = new ReportParameter("agentTitle", MainWindow.resourcemanager.GetString("trSuppliers"));
+            paramarr[1] = new ReportParameter("trCode", MainWindow.resourcemanager.GetString("trCode"));
+            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
+            paramarr[3] = new ReportParameter("trCompany", MainWindow.resourcemanager.GetString("trCompany"));
+            paramarr[4] = new ReportParameter("trMobile", MainWindow.resourcemanager.GetString("trMobile"));
+            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+            rep.SetParameters(paramarr);
             rep.Refresh();
             LocalReportExtensions.PrintToPrinter(rep);
 
@@ -797,13 +812,23 @@ namespace POS.View
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
 
-            LocalReport rep = new LocalReport();
+
             string addpath = @"\Reports\VendorReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
             //MessageBox.Show(reppath);
             rep.ReportPath = reppath;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("AgentDataSet", agentsQuery));
+
+            ReportParameter[] paramarr = new ReportParameter[6];
+            paramarr[0] = new ReportParameter("agentTitle", MainWindow.resourcemanager.GetString("trSuppliers"));
+            paramarr[1] = new ReportParameter("trCode", MainWindow.resourcemanager.GetString("trCode"));
+            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
+            paramarr[3] = new ReportParameter("trCompany", MainWindow.resourcemanager.GetString("trCompany"));
+            paramarr[4] = new ReportParameter("trMobile", MainWindow.resourcemanager.GetString("trMobile"));
+            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+            rep.SetParameters(paramarr);
+
             rep.Refresh();
 
             saveFileDialog.Filter = "PDF|*.pdf;";
@@ -819,14 +844,29 @@ namespace POS.View
                 LocalReportExtensions.ExportToPDF(rep, filepath);
                 // LocalReportExtensions.ExportToWORD(rep, filepath);
                 // MessageBox.Show("File saved");
+
+                /*
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+                //saveFileDialog.Filter = "WORD|*.doc;";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    // string filname= saveFileDialog.SafeFileName;
+
+                    string filepath = saveFileDialog.FileName;
+
+
+
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                    // LocalReportExtensions.ExportToWORD(rep, filepath);
+                    // MessageBox.Show("File saved");
+                 * */
             }
 
 
-
-
-
-
         }
+
+
+
 
       
     }

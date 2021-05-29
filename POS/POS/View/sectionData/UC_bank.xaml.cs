@@ -18,6 +18,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+
 
 namespace POS.View
 {
@@ -44,6 +48,9 @@ namespace POS.View
         CountryCode countrycodes = new CountryCode();
         City cityCodes = new City();
         BrushConverter bc = new BrushConverter();
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
 
         private static UC_bank _instance;
         public static UC_bank Instance
@@ -584,6 +591,59 @@ namespace POS.View
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            string addpath = @"\Reports\BankReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
+
+            ReportParameter[] paramarr = new ReportParameter[6];
+            paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trBanks"));
+            paramarr[1] = new ReportParameter("trMobile", MainWindow.resourcemanager.GetString("trMobile"));
+            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
+            paramarr[3] = new ReportParameter("trAddress", MainWindow.resourcemanager.GetString("trAddress"));
+            paramarr[4] = new ReportParameter("trAccNumber", MainWindow.resourcemanager.GetString("trAccNumber"));
+            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+            saveFileDialog.Filter = "PDF|*.pdf;";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+
+                string filepath = saveFileDialog.FileName;
+                LocalReportExtensions.ExportToPDF(rep, filepath);
+
+            }
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+
+            string addpath = @"\Reports\BankReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
+            ReportParameter[] paramarr = new ReportParameter[6];
+            paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trBanks"));
+           
+            paramarr[1] = new ReportParameter("trMobile", MainWindow.resourcemanager.GetString("trMobile"));
+            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
+            paramarr[3] = new ReportParameter("trAddress", MainWindow.resourcemanager.GetString("trAddress"));
+            paramarr[4] = new ReportParameter("trAccNumber", MainWindow.resourcemanager.GetString("trAccNumber"));
+            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+            rep.SetParameters(paramarr);
+            rep.Refresh();
+            LocalReportExtensions.PrintToPrinter(rep);
         }
     }
 }

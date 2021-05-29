@@ -22,6 +22,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Resources;
 using System.Windows.Shapes;
+using Microsoft.Reporting.WinForms;
+
 
 namespace POS.View
 {
@@ -61,7 +63,9 @@ namespace POS.View
         string imgFileName = "pic/no-image-icon-125x125.png";
 
         bool isImgPressed = false;
-
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
         private static UC_users _instance;
         public static UC_users Instance
         {
@@ -884,6 +888,68 @@ namespace POS.View
         {
             /////?????????????????
         }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            string addpath = @"\Reports\UserReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+           
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetUser", usersQuery));
+            ReportParameter[] paramarr = new ReportParameter[6];
+            paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trUsers"));
+            paramarr[1] = new ReportParameter("trLastName", MainWindow.resourcemanager.GetString("trLastName"));
+            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
+            paramarr[3] = new ReportParameter("trJob", MainWindow.resourcemanager.GetString("trJob"));
+            paramarr[4] = new ReportParameter("trWorkHours", MainWindow.resourcemanager.GetString("trWorkHours"));
+            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+            rep.SetParameters(paramarr);
+            rep.Refresh();
+            LocalReportExtensions.PrintToPrinter(rep);
+
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+
+
+            string addpath = @"\Reports\UserReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            //MessageBox.Show(reppath);
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetUser", usersQuery));
+
+            ReportParameter[] paramarr = new ReportParameter[6];
+            paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trUsers"));
+            paramarr[1] = new ReportParameter("trLastName", MainWindow.resourcemanager.GetString("trLastName"));
+            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
+            paramarr[3] = new ReportParameter("trJob", MainWindow.resourcemanager.GetString("trJob"));
+            paramarr[4] = new ReportParameter("trWorkHours", MainWindow.resourcemanager.GetString("trWorkHours"));
+            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+            saveFileDialog.Filter = "PDF|*.pdf;";
+           
+            if (saveFileDialog.ShowDialog() == true)
+            {
+               
+
+                string filepath = saveFileDialog.FileName;
+
+
+
+                LocalReportExtensions.ExportToPDF(rep, filepath);
+             
+            }
+
+
+        }
+
+
     }
 }
 

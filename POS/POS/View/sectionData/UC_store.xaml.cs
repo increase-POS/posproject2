@@ -19,6 +19,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
 
 namespace POS.View
 {
@@ -53,6 +56,10 @@ namespace POS.View
 
         CountryCode countrycodes = new CountryCode();
         City cityCodes = new City();
+
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
 
         private static UC_store _instance;
         public static UC_store Instance
@@ -629,6 +636,59 @@ namespace POS.View
             Tb_search_TextChanged(null, null);
 
 
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            string addpath = @"\Reports\BranchReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetBranches",storesQuery));
+
+            ReportParameter[] paramarr = new ReportParameter[6];
+            paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trStores"));
+            paramarr[1] = new ReportParameter("trCode", MainWindow.resourcemanager.GetString("trCode"));
+            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
+            paramarr[3] = new ReportParameter("trAddress", MainWindow.resourcemanager.GetString("trAddress"));
+            paramarr[4] = new ReportParameter("trNote", MainWindow.resourcemanager.GetString("trNote"));
+            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+            saveFileDialog.Filter = "PDF|*.pdf;";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+
+                string filepath = saveFileDialog.FileName;
+                LocalReportExtensions.ExportToPDF(rep, filepath);
+
+            }
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+
+            string addpath = @"\Reports\BranchReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetBranches",storesQuery));
+            ReportParameter[] paramarr = new ReportParameter[6];
+            paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trStores"));
+            paramarr[1] = new ReportParameter("trCode", MainWindow.resourcemanager.GetString("trCode"));
+            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
+            paramarr[3] = new ReportParameter("trAddress", MainWindow.resourcemanager.GetString("trAddress"));
+            paramarr[4] = new ReportParameter("trNote", MainWindow.resourcemanager.GetString("trNote"));
+            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+            rep.SetParameters(paramarr);
+            rep.Refresh();
+            LocalReportExtensions.PrintToPrinter(rep);
         }
     }
 }
