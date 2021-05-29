@@ -208,8 +208,7 @@ namespace POS.View
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    await RefrishCategories();
-                    Txb_searchcategories_TextChanged(null, null);
+                    
 
                     if (isImgPressed)
                     {
@@ -227,7 +226,8 @@ namespace POS.View
                         }
                     }
                     ////////categoryParentId = parentCategorieSelctedValue;???????????????????
-                   
+                    await RefrishCategories();
+                    Txb_searchcategories_TextChanged(null, null);
 
                     fillCategories();
                 }
@@ -271,8 +271,7 @@ namespace POS.View
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    await RefrishCategories();
-                    Txb_searchcategories_TextChanged(null, null);
+                    
 
                     if (isImgPressed)
                     {
@@ -290,7 +289,9 @@ namespace POS.View
                             MessageBox.Show("حدث خطأ في تحميل الصورة");
                         }
                     }
-                   
+                    await RefrishCategories();
+                    Txb_searchcategories_TextChanged(null, null);
+
                 }
             }
 

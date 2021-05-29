@@ -484,7 +484,7 @@ namespace POS.Classes
            string newItem, string offer, string BorderBrush = "#6e6e6e")
         {
         
-            UC_rectangleCardPrice_ar uc = new UC_rectangleCardPrice_ar();
+            UC_rectangleCardPrice_ar uc = new UC_rectangleCardPrice_ar(item);
             uc.ContentId = item.itemId;
             uc.rectangleCardPriceTitleText_ar = item.name;
             uc.rectangleCardPriceSubtitleText_ar = item.details;
@@ -537,7 +537,7 @@ namespace POS.Classes
         {
 
         
-            UC_rectangleCardWithoutPrice uc = new UC_rectangleCardWithoutPrice();
+            UC_rectangleCardWithoutPrice uc = new UC_rectangleCardWithoutPrice(item);
             uc.ContentId = item.itemId;
             uc.rectangleCardWithoutPriceTitleText = item.name;
             uc.rectangleCardWithoutPriceSubtitleText = item.details;
@@ -584,7 +584,7 @@ namespace POS.Classes
            string newItem, string offer, string BorderBrush = "#6e6e6e")
         {
         
-            UC_rectangleCardWithoutPrice_ar uc = new UC_rectangleCardWithoutPrice_ar();
+            UC_rectangleCardWithoutPrice_ar uc = new UC_rectangleCardWithoutPrice_ar(item);
             uc.ContentId = item.itemId;
             uc.rectangleCardWithoutPriceTitleText_ar = item.name;
             uc.rectangleCardWithoutPriceSubtitleText_ar = item.details;
