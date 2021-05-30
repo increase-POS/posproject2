@@ -333,9 +333,9 @@ namespace POS.Classes
                 else
                 {
                     if (language == "ar")
-                        FN_createCatalogItemtWithoutPrice_ar(item, "0$", row, column, isNewString, "Collapsed", "CatalogItemtWithoutPrice_ar");
+                        FN_createCatalogItemtWithoutPrice_ar(item, "0$", row, column, isNewString, "Collapsed");
                     else
-                        FN_createCatalogItemtWithoutPrice(item, "0$",  row, column, isNewString, "Collapsed", "CatalogItemtWithoutPrice");
+                        FN_createCatalogItemtWithoutPrice(item, "0$",  row, column, isNewString, "Collapsed");
                 }
 
                 

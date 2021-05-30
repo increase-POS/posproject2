@@ -29,6 +29,8 @@ namespace POS.Classes
                 fs.Write(data, 0, data.Length);
             }
         }
+        
+
         public Bitmap ScaleImage(Bitmap image)
         {
             int newWidth = (int)(allowedFileSizeInByte);
@@ -39,15 +41,26 @@ namespace POS.Classes
 
             using (Graphics g = Graphics.FromImage(result))
             {
+                using (SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255)))
+                {
+                    g.FillRectangle(brush, 0, 0, newWidth, newHeight);
+                }
+
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 g.CompositingQuality = CompositingQuality.HighQuality;
                 g.SmoothingMode = SmoothingMode.HighQuality;
                 g.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
                 g.DrawImage(image, 0, 0, result.Width, result.Height);
+
+               
+
             }
+            
             return result;
         }
+
+        
         public void ScaleImage(string filePath)
         {
             using (MemoryStream ms = new MemoryStream())
@@ -56,15 +69,14 @@ namespace POS.Classes
                 {
                     Bitmap bmp = (Bitmap)Image.FromStream(fs);
                     SaveTemporary(bmp, ms, 100);
-
-                   // while (ms.Length > allowedFileSizeInByte)
-                   // {
-                       // double scale = Math.Sqrt
-                       // ((double)allowedFileSizeInByte / (double)ms.Length);
-                        ms.SetLength(0);
-                        bmp = ScaleImage(bmp);
-                        SaveTemporary(bmp, ms, 100);
-                   // }
+                    // while (ms.Length > allowedFileSizeInByte)
+                    // {
+                    // double scale = Math.Sqrt
+                    // ((double)allowedFileSizeInByte / (double)ms.Length);
+                    ms.SetLength(0);
+                    bmp = ScaleImage(bmp);
+                    SaveTemporary(bmp, ms, 100);
+                    // }
 
                     if (bmp != null)
                         bmp.Dispose();

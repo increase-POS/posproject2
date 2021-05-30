@@ -133,6 +133,7 @@
     <Compile Include="Classes\Coupon.cs" />
     <Compile Include="Classes\ExportToExcel.cs" />
     <Compile Include="Classes\ImageProcess.cs" />
+    <Compile Include="Classes\InputStream.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\ItemsProp.cs" />
     <Compile Include="Classes\ItemUnit.cs" />

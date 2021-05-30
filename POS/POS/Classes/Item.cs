@@ -13,6 +13,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Windows.Media.Imaging;
+using System.Windows.Resources;
 
 namespace POS.Classes
 {
@@ -571,7 +573,7 @@ namespace POS.Classes
                 return items;
             }
         }
-
+        
         #region image
         // upload item image to server
         public async Task<Boolean> uploadImage(string imagePath, string imageName, int itemId)
