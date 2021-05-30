@@ -233,14 +233,14 @@
                                         <VisualState x:Name="MouseOver">
                                             <Storyboard>
                                                 <DoubleAnimation Duration="0" To="0.95" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="X"/>
-                                                <!--<ColorAnimation Duration="0:0:0.5" To="#FF6E60C7" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle"/>-->
+                                                <ColorAnimation Duration="0:0:0.6" To="#178DD2"
+                                                Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="X"/>
                                             </Storyboard>
                                         </VisualState>
                                         <VisualState x:Name="Pressed">
                                             <Storyboard>
-                                                <DoubleAnimation Duration="0:0:1" To="26" Storyboard.TargetProperty="Height" Storyboard.TargetName="X" />
-                                                <DoubleAnimation Duration="0:0:1" To="26" Storyboard.TargetProperty="Width" Storyboard.TargetName="X" />
-                                                <!--<ColorAnimation Duration="0:0:0.5" To="#614FD1" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle"/>-->
+                                                <ColorAnimation Duration="0:0:0.3" To="#9CD0EF"
+                                                Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="X"/>
                                             </Storyboard>
                                         </VisualState>
                                     </VisualStateGroup>
@@ -249,7 +249,6 @@
                                 <Path x:Name="X" Margin="0"  Data="{Binding}"
                               Fill="#178DD2" HorizontalAlignment="Center" 
                                       Stretch="Fill" VerticalAlignment="Center" Height="27.5" Width="27.5"/>
-
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">

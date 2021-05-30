@@ -101,12 +101,14 @@ namespace POS.Classes
             {
                 case ".bmp": return ImageCodecInfo.GetImageEncoders()[0];
                 case ".jpg":
-                case ".jpeg": return ImageCodecInfo.GetImageEncoders()[1];
+                case ".jpeg":
+                case ".jfif": return ImageCodecInfo.GetImageEncoders()[1];
                 case ".gif": return ImageCodecInfo.GetImageEncoders()[2];
                 case ".tiff": return ImageCodecInfo.GetImageEncoders()[3];
                 case ".png": return ImageCodecInfo.GetImageEncoders()[4];
                 default: return null;
             }
         }
+        
     }
 }

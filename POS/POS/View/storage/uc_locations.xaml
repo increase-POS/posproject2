@@ -6,12 +6,12 @@
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d" 
             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="700" d:DesignWidth="985" Loaded="UserControl_Loaded" >
+             d:DesignHeight="600" d:DesignWidth="800" Loaded="UserControl_Loaded" >
 
     <Grid x:Name="grid_ucLocation" >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="380"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid Margin="10,15,10,15" Grid.Column="0">
             <Grid.RowDefinitions >
@@ -78,7 +78,7 @@
                     </Grid>
 
                     <Button FlowDirection="LeftToRight"  Width="40" Height="40" x:Name="btn_refresh" Grid.Row="0" Grid.Column="4" Padding="0" 
-                            materialDesign:ButtonAssist.CornerRadius="15"
+                            materialDesign:ButtonAssist.CornerRadius="15" Cursor="Hand"
                           Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_refresh_Click"  Style="{StaticResource SmallButtonCircleRotate}"
                              Margin="5,1"  Content="إضافة"   ToolTip="Refresh"  RenderTransformOrigin="0.5,0.5"
                             DataContext="M896,0L896,0C401.2,0,0,401.2,0,896v0c0,494.8,401.2,896,896,896h0c494.8,0,896-401.2,896-896v0C1792,401.2,1390.8,0,896,0z
@@ -266,33 +266,31 @@
                 </TextBlock>
             </Grid>
         </Grid>
-        <Border Grid.Column="1" Background="White" Margin="10,15,10,15"
+        <Border  MaxWidth="360" MinHeight="360" Grid.Column="1" Background="White" Margin="10,15,10,15"
                 CornerRadius="7" >
-            <Grid x:Name="grid_pos" >
-                <Grid.RowDefinitions >
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="7.5"/>
-                </Grid.RowDefinitions>
-                <Grid>
-                    <Grid.RowDefinitions >
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
 
-                    <Button   Width="360" Height="52" Grid.Column="0" BorderBrush="{x:Null}"
+            <Grid x:Name="grid_form" MaxWidth="360"  >
+                    <Grid.RowDefinitions >
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="7.5"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.RowDefinitions >
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                    <Button  MaxWidth="360" x:Name="btn_headerForm" Width="{Binding gridControlWidth}"   Height="52" Grid.Column="0" BorderBrush="{x:Null}"
                       HorizontalAlignment="Center" VerticalAlignment="Center" 
                      Background="{x:Null}"
                     Padding="0"  >
-                        <Border CornerRadius="7,7,0,0" Background="#4E4E4E">
-                            <Grid Width="360" Height="52" HorizontalAlignment="Center"  >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="1.2*"/>
-                                </Grid.ColumnDefinitions>
-                                <Path Fill="#E8E8E8" Stretch="Fill"
+                        <Border MaxWidth="360" x:Name="brd_headerForm"  Width="{Binding gridControlWidth}" CornerRadius="7,7,0,0" Background="#4E4E4E">
+                            <Grid x:Name="grid_headerForm"  Height="52" HorizontalAlignment="Center"  >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="1.2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Path Fill="#E8E8E8" Stretch="Fill"
                               HorizontalAlignment="Right" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"
                               Data="M259.8,181h145.9v-70.6c0-9.2-3-12.2-12.3-12.2c-40.6,0-81.2-0.1-121.8,0c-8.9,0-11.8,3-11.8,11.9c-0.1,22.4,0,44.7,0,67.1
@@ -307,163 +305,169 @@
 	v332c0,9.5,3,12.3,13,12.3h336.3c2.1,0,4.2-0.3,6.3-0.4v-17.4h-19.4h-3.3H259.5h-11.3H99.3v-0.3H91V314h337.4v-17.5h-22.7v-0.1h-146
 	h-11.6H99.3v-0.3h-8.4v-93h337.8L428.7,185.6L428.7,185.6z M393,209.2H272.6c-10.2,0-12.9,2.7-12.9,13v69.7h146v-69.6
 	C405.7,211.9,403.2,209.2,393,209.2z M394.1,285.1L394.1,285.1l-10.4-11.3l-10.1,11.3l0,0v-61.2h20.5V285.1z"/>
-                                <TextBlock Text="Locations" x:Name="txt_preparationOfStores" Foreground="#E8E8E8" 
+                                    <TextBlock Text="Locations" x:Name="txt_preparationOfStores" Foreground="#E8E8E8" 
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="5"/>
-                            </Grid>
-                        </Border>
+                                </Grid>
+                            </Border>
 
-                    </Button>
+                        </Button>
+                    <Grid Grid.Row="1"  x:Name="grid_control" Height="{Binding gridControlHeight}" Width="{Binding gridControlWidth}"   Margin="5" MaxWidth="350">
+                        <ScrollViewer  Grid.Row="1"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0"
+                                 ScrollViewer.CanContentScroll="True">
+                            <Grid  VerticalAlignment="Top" >
+                                <Grid.RowDefinitions >
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="40"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.ColumnSpan="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
 
-                    <Grid Grid.Row="1" >
-                        <Grid.RowDefinitions >
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.ColumnSpan="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Base Infomation" Foreground="#737373"
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Base Infomation" Foreground="#737373"
                                  FontSize="10"  VerticalAlignment="Center" x:Name="txt_baseInformation"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
-                            <Separator Background="#999999"   Width="274"  Margin="5,0,5,0"
+                                    <Separator Background="#999999"   MaxWidth="{Binding ActualWidth, ElementName= grid_control}"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
-                            <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
+                                    <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
                           Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click"
                     Margin="5,1"   ToolTip="clear">
 
-                                <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
+                                        <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"/>
-                            </Button>
-                        </Grid>
-                        <Grid   Grid.Row="1"  Margin="5,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_x"  Text="{Binding x, Mode=OneWay}" Padding="10,5,5,5"   
+                                    </Button>
+                                </Grid>
+                                <Grid   Grid.Row="1"  Margin="0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="tb_x"  Text="{Binding x, Mode=OneWay}" Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="X..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue"  MaxLength="20" LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                      HorizontalAlignment="Left" VerticalAlignment="Center"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                  Height="35" Width="{Binding ActualWidth, ElementName= grid_control}"   Grid.ColumnSpan="2" />
 
-                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorX"
+                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorX"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                <Path.ToolTip>
-                                    <ToolTip  x:Name="tt_errorX"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                </Path.ToolTip>
-                            </Path>
-                        </Grid>
-                        <Grid   Grid.Row="2"  Margin="5,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_y"  Text="{Binding y, Mode=OneWay}" Padding="10,5,5,5"   
+                                        <Path.ToolTip>
+                                            <ToolTip  x:Name="tt_errorX"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        </Path.ToolTip>
+                                    </Path>
+                                </Grid>
+                                <Grid   Grid.Row="2"  Margin="0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="tb_y"  Text="{Binding y, Mode=OneWay}" Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Y..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                      HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                  Height="35" Width="{Binding ActualWidth, ElementName= grid_control}"   Grid.ColumnSpan="2" />
 
-                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorY"
+                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorY"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                <Path.ToolTip>
-                                    <ToolTip  x:Name="tt_errorY"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                </Path.ToolTip>
-                            </Path>
-                        </Grid>
-                        <Grid   Grid.Row="3"  Margin="5,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_z"  Text="{Binding z, Mode=OneWay}" Padding="10,5,5,5"   
+                                        <Path.ToolTip>
+                                            <ToolTip  x:Name="tt_errorY"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        </Path.ToolTip>
+                                    </Path>
+                                </Grid>
+                                <Grid   Grid.Row="3"  Margin="0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="tb_z"  Text="{Binding z, Mode=OneWay}" Padding="10,5,5,5"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Z..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                      HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                  Height="35" Width="{Binding ActualWidth, ElementName= grid_control}"    Grid.ColumnSpan="2" />
 
-                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorZ"
+                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorZ"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                <Path.ToolTip>
-                                    <ToolTip  x:Name="tt_errorZ"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                </Path.ToolTip>
-                            </Path>
-                        </Grid>
-                        <Grid   Grid.Row="5"  Margin="5,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_notes"  Text="{Binding note, Mode=OneWay}" 
+                                        <Path.ToolTip>
+                                            <ToolTip  x:Name="tt_errorZ"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        </Path.ToolTip>
+                                    </Path>
+                                </Grid>
+                                <Grid   Grid.Row="4"  Margin="0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="tb_notes"  Text="{Binding note, Mode=OneWay}" 
                                  Padding="10,5,5,5"   
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Notes..."    
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"  TextWrapping="Wrap" AcceptsReturn="True"
                                  HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="100" 
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                 Height="70" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
-                                <TextBox.ToolTip>
-                                    <ToolTip x:Name="tt_notes" Content="Notes"
+                                 Height="70" Width="{Binding ActualWidth, ElementName= grid_control}"    Grid.ColumnSpan="2" >
+                                        <TextBox.ToolTip>
+                                            <ToolTip x:Name="tt_notes" Content="Notes"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                </TextBox.ToolTip>
-                            </TextBox>
+                                        </TextBox.ToolTip>
+                                    </TextBox>
 
-                            <Path Fill="#E81123" Stretch="Fill" Margin="15,12,15,5"
+                                    <Path Fill="#E81123" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
                          VerticalAlignment="Top" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                <Path.ToolTip>
-                                    <ToolTip x:Name="tt_error_note" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                </Path.ToolTip>
-                            </Path>
-                        </Grid>
-                        <Separator Grid.Row="6"
-                                    Background="#999999"   Width="350"  Margin="10,5,10,0"
+                                        <Path.ToolTip>
+                                            <ToolTip x:Name="tt_error_note" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        </Path.ToolTip>
+                                    </Path>
+                                </Grid>
+                                <Separator Grid.Row="5"
+                                    Background="#999999"   Width="{Binding ActualWidth, ElementName= grid_control}"  Margin="0,10,0,0"
                                  VerticalAlignment="Center" />
-                    </Grid>
-                </Grid>
-                <Grid Grid.Row="1" Margin="5,1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-
-                    <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0"
+                                <Grid Grid.Row="7" Margin="5,1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Button x:Name="btn_add" Grid.Row="0" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1"    Content="Add" Click="Btn_add_Click"/>
-                    <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"
+                                    <Button x:Name="btn_update" Grid.Row="0" Grid.Column="1"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="1,1"    Content="Update" Click="Btn_update_Click"/>
-                    <Button x:Name="btn_delete" Grid.Row="0" Grid.Column="2"
+                                    <Button x:Name="btn_delete" Grid.Row="0" Grid.Column="2"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1"    Content="Delete" Click="Btn_delete_Click" />
 
+                                </Grid>
+                            </Grid>
+                        </ScrollViewer>
+                    </Grid>
+                 
                 </Grid>
-            </Grid>
+                    
+                </Grid>
+             
         </Border>
     </Grid>
 </UserControl>

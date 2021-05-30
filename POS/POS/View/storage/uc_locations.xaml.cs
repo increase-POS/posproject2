@@ -39,6 +39,45 @@ namespace POS.View
         public uc_locations()
         {
             InitializeComponent();
+            responsiveView();
+        }
+
+        public double gridControlHeight;
+
+
+
+        #region gridControlWidth
+        public static readonly DependencyProperty gridControlWidthDependencyProperty = DependencyProperty.Register("gridControlWidth",
+            typeof(string),
+            typeof(uc_locations),
+            new PropertyMetadata("DEFAULT"));
+        public string gridControlWidth
+        {
+            set
+            { SetValue(gridControlWidthDependencyProperty, value); }
+            get
+            { return (string)GetValue(gridControlWidthDependencyProperty); }
+        }
+        #endregion
+
+
+        public void responsiveView()
+        {
+
+            //grid_form.Height = MainWindow.ucControlFormSectionHeight;
+            // brd_headerForm.Width = btn_headerForm.Width = grid_form.Width   = MainWindow.ucControlFormSectionWidth ;
+            //grid_headerForm.Height = MainWindow.ucControlFormSectionHeight + 2 ;
+            //grid_headerForm.Width = MainWindow.ucControlFormSectionWidth + 2;
+            //gridControlHeight= grid_control.Height = MainWindow.ucControlFormSectionHeight - 60;
+            // grid_control.Width = MainWindow.ucControlFormSectionWidth - 10;
+            //grid_control.Height = MainWindow.ucControlFormSectionHeight - 60;
+            //grid_control.Width = MainWindow.ucControlFormSectionWidth - 10;
+
+
+
+            gridControlWidth = (MainWindow.ucControlFormSectionWidth - 10).ToString();
+
+
         }
 
         Location locationModel = new Location();

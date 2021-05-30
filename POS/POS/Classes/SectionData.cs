@@ -45,39 +45,6 @@ namespace POS.Classes
             popup.Popup();// show  
         }
         */
-        //public static async Task<bool> chkIfCouponBarCodeIsExist(string randomNum)
-        //{
-        //    //try
-        //    //{
-        //    Coupon coupon = new Coupon();
-        //    coupon = await couponModel.getCouponByBarCode(randomNum);
-        //    if (coupon != null)
-        //    {
-        //        return true;
-        //    }
-        //    else return false;
-
-        //    //}
-        //    //catch { return false; }
-
-        //}
-        public static void validateEmptyDatePicker(DatePicker dp, Path p_error, ToolTip tt_error, string tr)
-        {
-            TextBox tb = (TextBox)dp.Template.FindName("PART_TextBox", dp);
-            if (dp.Text.Equals(""))
-            {
-                p_error.Visibility = Visibility.Visible;
-                tt_error.Content = MainWindow.resourcemanager.GetString(tr);
-                tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
-
-            }
-            else
-            {
-                tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                p_error.Visibility = Visibility.Collapsed;
-
-            }
-        }
         public static long genRandomCode(string type)
         {
             Random rnd = new Random();
@@ -224,14 +191,13 @@ namespace POS.Classes
             catch { }
             return iscodeExist;
         }
-        public static async Task<bool> CouponCodeNotExist(string randomNum)
+        public static async Task<bool> CouponCodeNotExist(string randomNum , int id)
         {
-            iscodeExist = false;
             try
             {
                 Coupon coupon = new Coupon();
                 coupon = await couponModel.Existcode(randomNum);
-                if (coupon.code == randomNum)
+                if ((coupon.code.Trim() == randomNum.Trim()) && (coupon.cId != id))
                 {
                     return false;
                 }
@@ -239,8 +205,23 @@ namespace POS.Classes
 
             }
             catch { return true; }
-            //return "no";
         }
+
+        public static async Task<bool> chkIfCouponBarCodeIsExist(string randomNum , int id)
+        {
+            Coupon coupon = new Coupon();
+            coupon = await couponModel.getCouponByBarCode(randomNum);
+            try
+            {
+                if ((coupon.barcode.Trim() == randomNum.Trim()) && (coupon.cId != id))
+                {
+                    return true;
+                }
+                else return false;
+            }
+            catch { return false; }
+        }
+
 
         public static bool IsValid(string txt)
         {
@@ -271,10 +252,48 @@ namespace POS.Classes
             }
         }
 
+        public static void validateEmptyDatePicker(DatePicker dp, Path p_error, ToolTip tt_error, string tr)
+        {
+            TextBox tb = (TextBox)dp.Template.FindName("PART_TextBox", dp);
+            if (tb.Text.Trim().Equals(""))
+            {
+                p_error.Visibility = Visibility.Visible;
+                tt_error.Content = MainWindow.resourcemanager.GetString(tr);
+                tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_error.Visibility = Visibility.Collapsed;
+            }
+        }
+
         public static void clearValidate(TextBox tb , Path p_error)
         {
             tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             p_error.Visibility = Visibility.Collapsed;
+        }
+
+        public static void clearComboBoxValidate(ComboBox cb, Path p_error)
+        {
+            cb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            p_error.Visibility = Visibility.Collapsed;
+        }
+
+        public static void showTextBoxValidate(TextBox tb, Path p_error, ToolTip tt_error, string tr)
+        {
+            p_error.Visibility = Visibility.Visible;
+            tt_error.Content = MainWindow.resourcemanager.GetString(tr);
+            tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+        }
+
+        public static void showDatePickerValidate(DatePicker dp, Path p_error, ToolTip tt_error, string tr)
+        {
+            TextBox tb = (TextBox)dp.Template.FindName("PART_TextBox", dp);
+
+            p_error.Visibility = Visibility.Visible;
+            tt_error.Content = MainWindow.resourcemanager.GetString(tr);
+            tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
         }
 
         public static void validateEmptyComboBox(ComboBox cb, Path p_error, ToolTip tt_error, string tr)
@@ -383,9 +402,7 @@ namespace POS.Classes
             }
         }
 
-        #region Image refresh 
-
-        public static async void getImg(string type , string imageUri , Button button)
+        public static async void getImg(string type, string imageUri, Button button)
         {
             try
             {
@@ -425,7 +442,7 @@ namespace POS.Classes
                     }
                     button.Background = new ImageBrush(bitmapImage);
                 }
-                
+
                 //}
             }
             catch
@@ -433,14 +450,22 @@ namespace POS.Classes
                 clearImg(button);
             }
         }
+
+
         public static void clearImg(Button img)
         {
             Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
             StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+
             BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
             brush.ImageSource = temp;
             img.Background = brush;
         }
-        #endregion
+        public static decimal calcPercentage(decimal value, decimal percentage)
+        {
+            decimal percentageVal = (value * percentage) / 100;
+
+            return percentageVal;
+        }
     }
 }

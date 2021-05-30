@@ -822,4 +822,64 @@
   <data name="trPopBankExist" xml:space="preserve">
     <value>البنك موجود مسبقاً</value>
   </data>
+  <data name="trErrorDuplicateUnitNameToolTip" xml:space="preserve">
+    <value>اسم الوحدة محجوز مسبقاً</value>
+  </data>
+  <data name="trPercentageDiscount" xml:space="preserve">
+    <value>نسبة مئوية</value>
+  </data>
+  <data name="trValueDiscount" xml:space="preserve">
+    <value>قيمة</value>
+  </data>
+  <data name="trDiscountType" xml:space="preserve">
+    <value>نوع الحسم</value>
+  </data>
+  <data name="trDiscountValue" xml:space="preserve">
+    <value>قيمة الحسم</value>
+  </data>
+  <data name="trDuplicateBarcodeToolTip" xml:space="preserve">
+    <value>البار كود محجوز مسبقاً</value>
+  </data>
+  <data name="trEmptyDiscountTypeToolTip" xml:space="preserve">
+    <value>نوع الحسم لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyDiscountValueToolTip" xml:space="preserve">
+    <value>قيمة الحسم لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trEmptyEndDateToolTip" xml:space="preserve">
+    <value>تاريخ الانتهاء لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyMaxInvoiceValueToolTip" xml:space="preserve">
+    <value>القيمة العليا للفاتورة لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trEmptyMinInvoiceValueToolTip" xml:space="preserve">
+    <value>القيمة الدنيا للفاتورة لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trEmptyQuantityToolTip" xml:space="preserve">
+    <value>الكمية لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trEmptyStartDateToolTip" xml:space="preserve">
+    <value>تاريخ البدء لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trErrorEndDateSmallerToolTip" xml:space="preserve">
+    <value>لا يمكن أن يكون تاريخ الانتهاء أقدم من تاريخ البدء</value>
+  </data>
+  <data name="trErrorItemNotFoundToolTip" xml:space="preserve">
+    <value>العنصر غير موجود</value>
+  </data>
+  <data name="trErrorMaxInvoiceSmallerToolTip" xml:space="preserve">
+    <value>لا يمكن أن يكون الحد الأعظمي للفاتورة أقل من الحد الأدنى</value>
+  </data>
+  <data name="trMaxInvoiceValue" xml:space="preserve">
+    <value>القيمة العظمى للفاتورة</value>
+  </data>
+  <data name="trMinInvoiceValue" xml:space="preserve">
+    <value>القيمة الدنيا للفاتورة</value>
+  </data>
+  <data name="trPieChart" xml:space="preserve">
+    <value>مخطط دائري</value>
+  </data>
+  <data name="trRefresh" xml:space="preserve">
+    <value>تحديث</value>
+  </data>
 </root>

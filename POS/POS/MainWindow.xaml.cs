@@ -29,10 +29,62 @@ namespace POS
         public static ResourceManager resourcemanager;
         bool menuState = false;
 
+
+
+
+
+        /// <summary>
+        /// //////// relative screen test
+        /// </summary>
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            generateResponsiveVariables();
+        }
+
+        public static double mainUcWidth, mainUcHeight, gridFormWidth, gridFormHeight,
+            windowHeight, windowWidth, ucControlFormSectionWidth, ucControlFormSectionHeight,
+            ucControlViewSectionWidth, ucControlViewSectionHeight;
+        private void generateResponsiveVariables()
+        {
+            // MainWindow Size
+            windowHeight = this.Height;
+            windowWidth = this.Width;
+            // uc_****  Size in the window
+            mainUcHeight = windowHeight - 63;
+            mainUcWidth = windowWidth - 75;
+            // Form section Size
+            ucControlFormSectionWidth = (mainUcWidth / 3) - 20;
+            ucControlFormSectionHeight= mainUcHeight - 30;
+            // View section Size { dataGrid + Cards + Searsh}
+            ucControlViewSectionWidth = ((mainUcWidth / 3)*2) - 20;
+            ucControlViewSectionHeight = mainUcHeight - 30;
+
+
+            uc_locations.Instance.responsiveView();
+
+        }
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// ////////
+        /// </summary>
+       
+
         public MainWindow()
         {
             InitializeComponent();
-            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 15;
+            MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
+            generateResponsiveVariables();
+            //this.Height = SystemParameters.MaximizedPrimaryScreenHeight;
+            //this.Width = SystemParameters.MaximizedPrimaryScreenHeight;
 
         }
         void FN_tooltipVisibility(Button btn)
@@ -214,6 +266,8 @@ namespace POS
             //UC_catalog uc = new UC_catalog();
             //grid_main.Children.Add(uc);
         }
+
+      
 
         public static string lang = "ar";
         internal static int? userID = 2;

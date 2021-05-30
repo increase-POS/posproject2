@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,6 +28,11 @@ namespace POS.View
         Coupon coupon = new Coupon();
         Coupon couponModel = new Coupon();
         private static uc_coupon _instance;
+        BrushConverter bc = new BrushConverter();
+        IEnumerable<Coupon>couponsQuery;
+        IEnumerable<Coupon> coupons;
+        byte tgl_couponState;
+        string searchText = "";
         public static uc_coupon Instance
         {
             get
@@ -83,14 +89,20 @@ namespace POS.View
 
         }
         #endregion
-        private void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
+        private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {
-
+            if (coupons is null)
+                await RefreshCouponsList();
+            tgl_couponState = 1;
+            Tb_search_TextChanged(null, null);
         }
 
-        private void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
+        private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            if (coupons is null)
+                await RefreshCouponsList();
+            tgl_couponState = 0;
+            Tb_search_TextChanged(null, null);
         }
         private void translate()
         {
@@ -111,12 +123,13 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_MinInvoiceValue, MainWindow.resourcemanager.GetString("trMinimumInvoiceValueHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_MaxInvoiceValue, MainWindow.resourcemanager.GetString("trMaximumInvoiceValueHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_remainQuantity, MainWindow.resourcemanager.GetString("trRemainQuantityHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_remainQuantity, MainWindow.resourcemanager.GetString("trRemainQuantityHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_quantity, MainWindow.resourcemanager.GetString("trQuantityHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
 
             btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
             btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
 
             dg_coupon.Columns[0].Header = MainWindow.resourcemanager.GetString("trCode");
             dg_coupon.Columns[1].Header = MainWindow.resourcemanager.GetString("trName");
@@ -124,18 +137,35 @@ namespace POS.View
             dg_coupon.Columns[3].Header = MainWindow.resourcemanager.GetString("trQuantity");
             dg_coupon.Columns[4].Header = MainWindow.resourcemanager.GetString("trRemainQuantity");
 
-        }
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-           
-         
+            tt_name.Content = MainWindow.resourcemanager.GetString("trName");
+            tt_code.Content = MainWindow.resourcemanager.GetString("trCode");
+            tt_barcode.Content = MainWindow.resourcemanager.GetString("trBarcode");
+            tt_discountType.Content = MainWindow.resourcemanager.GetString("trDiscountType");
+            tt_discountValue.Content = MainWindow.resourcemanager.GetString("trDiscountValue");
+            tt_startDate.Content = MainWindow.resourcemanager.GetString("trStartDate");
+            tt_endDate.Content = MainWindow.resourcemanager.GetString("trEndDate");
+            tt_minInvoiceValue.Content = MainWindow.resourcemanager.GetString("trMinInvoiceValue");
+            tt_maxInvoiceValue.Content = MainWindow.resourcemanager.GetString("trMaxInvoiceValue");
+            tt_quantity.Content = MainWindow.resourcemanager.GetString("trQuantity");
+            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
 
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+        }
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
             var dislist = new[] {
-    new { Text = "Value", Value = "1" },
-    new { Text = "Rate", Value = "2" },
-  
-};
-             cb_typeDiscount.DisplayMemberPath = "Text";
+            new { Text = MainWindow.resourcemanager.GetString("trValueDiscount"), Value = "1" },
+            new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = "2" },
+             };
+
+            cb_typeDiscount.DisplayMemberPath = "Text";
             cb_typeDiscount.SelectedValuePath = "Value";
             cb_typeDiscount.ItemsSource= dislist;
            
@@ -151,7 +181,7 @@ namespace POS.View
             }
 
             translate();
-            tb_discountValue.Text = _numValue.ToString();
+            //tb_discountValue.Text = _numValue.ToString();
 
             #region Style Date
             /////////////////////////////////////////////////////////////
@@ -178,6 +208,10 @@ namespace POS.View
             };
             /////////////////////////////////////////////////////////////
             #endregion
+
+            await RefreshCouponsList();
+            Tb_search_TextChanged(null, null);
+            //dg_coupon.ItemsSource = await couponModel.GetCouponsAsync();
         }
 
         #region Tab
@@ -203,97 +237,383 @@ namespace POS.View
         #endregion
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
-        {
-            bool codeNotExist = await SectionData.CouponCodeNotExist( tb_code.Text);
+        {//add
 
-            //  MessageBox.Show(codeExist.ToString());
+            bool codeNotExist = await SectionData.CouponCodeNotExist(tb_code.Text , 0);
 
+            bool isBarcodeExist = await SectionData.chkIfCouponBarCodeIsExist(tb_barcode.Text , 0);
 
-           
             //chk empty code
             SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
             //chk empty name
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-            //chk empty name
+            //chk empty barcode
             SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trEmptyBarcodeToolTip");
+            //chk empty discount type
+            SectionData.validateEmptyComboBox(cb_typeDiscount, p_errorTypeDiscount, tt_errorTypeDiscount, "trEmptyDiscountTypeToolTip");
+            //chk empty discount value
+            SectionData.validateEmptyTextBox(tb_discountValue, p_errorValueDiscount, tt_errorValueDiscount, "trEmptyDiscountValueToolTip");
+            //chk empty start date
+            SectionData.validateEmptyDatePicker(dp_startDate, p_errorStartDate, tt_errorStartDate, "trEmptyStartDateToolTip");
+            //chk empty end date
+            SectionData.validateEmptyDatePicker(dp_endDate, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
+            //chk empty min invoice value
+            SectionData.validateEmptyTextBox(tb_MinInvoiceValue, p_errorMinInvoiceValue, tt_errorMinInvoiceValue, "trEmptyMinInvoiceValueToolTip");
+            //chk empty max invoice value
+            SectionData.validateEmptyTextBox(tb_MaxInvoiceValue, p_errorMaxInvoiceValue, tt_errorMaxInvoiceValue, "trEmptyMaxInvoiceValueToolTip");
+            //chk empty quantity
+            SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
 
-            //validate email
+            bool isEndDateSmaller = false;
+            if (dp_endDate.SelectedDate < dp_startDate.SelectedDate) isEndDateSmaller = true;
 
-
-            /*
-                        string phoneStr = "";
-                        if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
-
-                        bool emailError = false;
-
-                        if (!tb_email.Text.Equals(""))
-                            if (!SectionData.IsValid(tb_email.Text))
-                                emailError = true;
-
-                        if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
-                        {
-                            if (emailError)
-                                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-                            //duplicate
-                            else if (iscodeExist)
-                                SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode);
-                            else
-                            {*/
-
-            if (tb_code.Text != "") {
+            bool isMaxInvoiceValueSmaller = false;
+            try
+            {
+                if (decimal.Parse(tb_MaxInvoiceValue.Text) < decimal.Parse(tb_MinInvoiceValue.Text)) isMaxInvoiceValueSmaller = true;
             }
-            #region
-            coupon.cId = 0;
+            catch { }
+            if ((!tb_name.Text.Equals("")) && (!tb_barcode.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
+                (!cb_typeDiscount.Text.Equals("")) && (!tb_discountValue.Text.Equals("")) &&
+                (dp_startDate.Text != null) && (dp_endDate.Text != null) &&
+                (!tb_MinInvoiceValue.Text.Equals("")) && (!tb_MaxInvoiceValue.Text.Equals("")) &&
+                (!tb_quantity.Text.Equals("")))
+            {
+                if ((!codeNotExist) || (isBarcodeExist) || (isEndDateSmaller) || (isMaxInvoiceValueSmaller))
+                {
+                    if (!codeNotExist)
+                        SectionData.showTextBoxValidate(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                    if (isBarcodeExist)
+                        SectionData.showTextBoxValidate(tb_barcode, p_errorBarcode, tt_errorBarcode, "trDuplicateBarcodeToolTip");
+                    if (isEndDateSmaller)
+                    {
+                        SectionData.showDatePickerValidate(dp_startDate, p_errorStartDate, tt_errorStartDate, "trErrorEndDateSmallerToolTip");
+                        SectionData.showDatePickerValidate(dp_endDate, p_errorEndDate, tt_errorEndDate, "trErrorEndDateSmallerToolTip");
+                    }
+                    if (isMaxInvoiceValueSmaller)
+                    {
+                        SectionData.showTextBoxValidate(tb_MinInvoiceValue, p_errorMinInvoiceValue, tt_errorMinInvoiceValue, "trErrorMaxInvoiceSmallerToolTip");
+                        SectionData.showTextBoxValidate(tb_MaxInvoiceValue, p_errorMaxInvoiceValue, tt_errorMaxInvoiceValue, "trErrorMaxInvoiceSmallerToolTip");
+                    }
+                }
+                else
+                {
+                    Coupon coupon = new Coupon();
 
-            coupon.code = tb_code.Text;
-            coupon.name = tb_name.Text;
-            coupon.notes = tb_note.Text;
-            coupon.barcode = tb_barcode.Text;
-            coupon.isActive = Convert.ToByte(tgl_ActiveCoupon.IsChecked);
-            coupon.discountType = cb_typeDiscount.SelectedValue.ToString();
-            coupon.startDate = DateTime.Parse(dp_startDate.Text);
-            coupon.endDate = DateTime.Parse(dp_endDate.Text);
-            coupon.discountValue = decimal.Parse(tb_discountValue.Text);
-            coupon.invMin = decimal.Parse(tb_MinInvoiceValue.Text);
-            coupon.invMax = decimal.Parse(tb_MaxInvoiceValue.Text);
-            coupon.quantity = Int32.Parse(tb_quantity.Text);
-            coupon.notes = tb_note.Text;
-            coupon.createUserId = MainWindow.userID; ;
+                    coupon.code = tb_code.Text;
+                    coupon.name = tb_name.Text;
+                    coupon.notes = tb_note.Text;
+                    coupon.barcode = tb_barcode.Text;
+                    coupon.isActive = Convert.ToByte(tgl_ActiveCoupon.IsChecked);
+                    coupon.discountType = cb_typeDiscount.SelectedValue.ToString();
+                    coupon.startDate = DateTime.Parse(dp_startDate.Text);
+                    coupon.endDate = DateTime.Parse(dp_endDate.Text);
+                    coupon.discountValue = decimal.Parse(tb_discountValue.Text);
+                    coupon.invMin = decimal.Parse(tb_MinInvoiceValue.Text);
+                    coupon.invMax = decimal.Parse(tb_MaxInvoiceValue.Text);
+                    coupon.quantity = Int32.Parse(tb_quantity.Text);
+                    //coupon.remainQ = int.Parse(tb_remainQuantity.Text);
+                    coupon.createUserId = MainWindow.userID; ;
 
+                    string s = await couponModel.Save(coupon);
 
-            string s = await couponModel.Save(coupon);
-            if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); 
-            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-            #endregion
+                    if (s.Equals("true"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
 
+                        await RefreshCouponsList();
+                        Tb_search_TextChanged(null, null);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+            }
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
-        {
+        {//clear
+            tb_code.Clear();
+            tb_name.Clear();
+            tb_barcode.Clear();
+            tgl_ActiveCoupon.IsChecked = false;
+            cb_typeDiscount.SelectedIndex = -1;
+            tb_discountValue.Clear();
+            dp_startDate.SelectedDate = null;
+            dp_endDate.SelectedDate = null;
+            tb_MinInvoiceValue.Clear();
+            tb_MaxInvoiceValue.Clear();
+            tb_quantity.Clear();
+            //tb_remainQuantity.Clear();
+            tb_note.Clear();
 
-        }
-
-        private void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        
-           
-        }
-
-        private void Btn_update_Click(object sender, RoutedEventArgs e)
-        {
-
+            SectionData.clearValidate(tb_name, p_errorName);
+            SectionData.clearValidate(tb_code, p_errorCode);
+            SectionData.clearValidate(tb_barcode, p_errorBarcode);
+            SectionData.clearValidate(tb_MinInvoiceValue, p_errorMinInvoiceValue);
+            SectionData.clearValidate(tb_MaxInvoiceValue, p_errorMaxInvoiceValue);
+            SectionData.clearValidate(tb_quantity, p_errorQuantity);
+            SectionData.clearValidate(tb_quantity, p_errorQuantity);
+            SectionData.clearComboBoxValidate(cb_typeDiscount, p_errorTypeDiscount);
+            TextBox tbStart = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
+            SectionData.clearValidate(tbStart, p_errorStartDate);
+            TextBox tbEnd = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
+            SectionData.clearValidate(tbEnd, p_errorEndDate);
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-
+            RefreshCouponsList();
+            Tb_search_TextChanged(null, null);
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
+            this.Dispatcher.Invoke(() =>
+            {
+                Thread t1 = new Thread(FN_ExportToExcel);
+                t1.SetApartmentState(ApartmentState.STA);
+                t1.Start();
+            });
+        }
+
+        void FN_ExportToExcel()
+        {
+            var QueryExcel = couponsQuery.AsEnumerable().Select(x => new
+            {
+                Name = x.name,
+                Code = x.code,
+                BarCode = x.barcode,
+                IsActive = x.isActive,
+                DisCountType = x.discountType,
+                DisCountValue = x.discountValue,
+                StartDate = x.startDate,
+                EndDate = x.endDate,
+                MinInvoiceValue = x.invMin,
+                MaxInvoiceValue = x.invMax,
+                Quantity = x.quantity,
+                Notes = x.notes
+            }) ;
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trCode");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trBarCode");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trIsActive");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trDiscountType");
+            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trDiscountValue");
+            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trSartDate");
+            DTForExcel.Columns[7].Caption = MainWindow.resourcemanager.GetString("trEndDate");
+            DTForExcel.Columns[8].Caption = MainWindow.resourcemanager.GetString("trMinInvoice");
+            DTForExcel.Columns[9].Caption = MainWindow.resourcemanager.GetString("trMaxInvoice");
+            DTForExcel.Columns[10].Caption = MainWindow.resourcemanager.GetString("trQuantity");
+            DTForExcel.Columns[11].Caption = MainWindow.resourcemanager.GetString("trNote");
+
+            ExportToExcel.Export(DTForExcel);
+        }
+
+
+        private void Dg_coupon_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {//selection
+         
+            SectionData.clearValidate(tb_name , p_errorName);
+            SectionData.clearValidate(tb_code, p_errorCode);
+            SectionData.clearValidate(tb_barcode, p_errorBarcode);
+            SectionData.clearValidate(tb_MinInvoiceValue, p_errorMinInvoiceValue);
+            SectionData.clearValidate(tb_MaxInvoiceValue, p_errorMaxInvoiceValue);
+            SectionData.clearValidate(tb_quantity, p_errorQuantity);
+            SectionData.clearValidate(tb_quantity, p_errorQuantity);
+            SectionData.clearComboBoxValidate(cb_typeDiscount , p_errorTypeDiscount);
+            TextBox tbStart = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
+            SectionData.clearValidate(tbStart, p_errorStartDate);
+            TextBox tbEnd = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
+            SectionData.clearValidate(tbEnd, p_errorEndDate);
+
+            if (dg_coupon.SelectedIndex != -1)
+            {
+                coupon = dg_coupon.SelectedItem as Coupon;
+                this.DataContext = coupon;
+
+                if (coupon != null)
+                {
+                    tgl_ActiveCoupon.IsChecked = Convert.ToBoolean(coupon.isActive);
+                    cb_typeDiscount.SelectedValue = coupon.discountType ;
+                    tb_discountValue.Text = (Convert.ToInt32(coupon.discountValue)).ToString();
+
+                    #region delete
+                    if (coupon.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                    else
+                    {
+                        if (coupon.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
+                        else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                    }
+                    #endregion
+                }
+            }
+        }
+
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {//delete
+            if (coupon.cId != 0)
+            {
+                if ((!coupon.canDelete) && (coupon.isActive == 0))
+                    activate();
+                else
+                {
+                    string popupContent = "";
+                    if (coupon.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                    if ((!coupon.canDelete) && (coupon.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                    bool b = await couponModel.deleteCoupon(coupon.cId, MainWindow.userID.Value, coupon.canDelete);
+
+                    if (b) 
+                       Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+
+                await RefreshCouponsList();
+                Tb_search_TextChanged(null, null);
+            }
+            //clear textBoxs
+            Btn_clear_Click(sender, e);
+        }
+
+        private async void activate()
+        {//activate
+            coupon.isActive = 1;
+
+            string s = await couponModel.Save(coupon);
+
+            if (!s.Equals("0")) 
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else 
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+            await RefreshCouponsList();
+            Tb_search_TextChanged(null, null);
 
         }
+
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {//update
+            bool codeNotExist = await SectionData.CouponCodeNotExist(tb_code.Text , coupon.cId);
+
+            bool isBarcodeExist = await SectionData.chkIfCouponBarCodeIsExist(tb_barcode.Text , coupon.cId);
+
+            //chk empty code
+            SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk empty barcode
+            SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trEmptyBarcodeToolTip");
+            //chk empty discount type
+            SectionData.validateEmptyComboBox(cb_typeDiscount, p_errorTypeDiscount, tt_errorTypeDiscount, "trEmptyDiscountTypeToolTip");
+            //chk empty discount value
+            SectionData.validateEmptyTextBox(tb_discountValue, p_errorValueDiscount, tt_errorValueDiscount, "trEmptyDiscountValueToolTip");
+            //chk empty start date
+            SectionData.validateEmptyDatePicker(dp_startDate, p_errorStartDate, tt_errorStartDate, "trEmptyStartDateToolTip");
+            //chk empty end date
+            SectionData.validateEmptyDatePicker(dp_endDate, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
+            //chk empty min invoice value
+            SectionData.validateEmptyTextBox(tb_MinInvoiceValue, p_errorMinInvoiceValue, tt_errorMinInvoiceValue, "trEmptyMinInvoiceValueToolTip");
+            //chk empty max invoice value
+            SectionData.validateEmptyTextBox(tb_MaxInvoiceValue, p_errorMaxInvoiceValue, tt_errorMaxInvoiceValue, "trEmptyMaxInvoiceValueToolTip");
+            //chk empty quantity
+            SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
+
+            bool isEndDateSmaller = false;
+            if (dp_endDate.SelectedDate < dp_startDate.SelectedDate) isEndDateSmaller = true;
+
+            bool isMaxInvoiceValueSmaller = false;
+            try
+            {
+                if (decimal.Parse(tb_MaxInvoiceValue.Text) < decimal.Parse(tb_MinInvoiceValue.Text)) isMaxInvoiceValueSmaller = true;
+            }
+            catch { }
+
+            if ((!tb_name.Text.Equals("")) && (!tb_barcode.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
+                (!cb_typeDiscount.Text.Equals("")) && (!tb_discountValue.Text.Equals("")) &&
+                (dp_startDate.Text != null) && (dp_endDate.Text != null) &&
+                (!tb_MinInvoiceValue.Text.Equals("")) && (!tb_MaxInvoiceValue.Text.Equals("")) &&
+                (!tb_quantity.Text.Equals("")))
+            {
+                if ((!codeNotExist) || (isBarcodeExist) || (isEndDateSmaller) || (isMaxInvoiceValueSmaller))
+                {
+                    if (!codeNotExist)
+                        SectionData.showTextBoxValidate(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                    if (isBarcodeExist)
+                        SectionData.showTextBoxValidate(tb_barcode, p_errorBarcode, tt_errorBarcode, "trDuplicateBarcodeToolTip");
+                    if (isEndDateSmaller)
+                    {
+                        SectionData.showDatePickerValidate(dp_startDate, p_errorStartDate, tt_errorStartDate, "trErrorEndDateSmallerToolTip");
+                        SectionData.showDatePickerValidate(dp_endDate, p_errorEndDate, tt_errorEndDate, "trErrorEndDateSmallerToolTip");
+                    }
+                    if (isMaxInvoiceValueSmaller)
+                    {
+                        SectionData.showTextBoxValidate(tb_MinInvoiceValue, p_errorMinInvoiceValue, tt_errorMinInvoiceValue, "trErrorMaxInvoiceSmallerToolTip");
+                        SectionData.showTextBoxValidate(tb_MaxInvoiceValue, p_errorMaxInvoiceValue, tt_errorMaxInvoiceValue, "trErrorMaxInvoiceSmallerToolTip");
+                    }
+                }
+                else
+                {
+                    coupon.code = tb_code.Text;
+                    coupon.name = tb_name.Text;
+                    coupon.notes = tb_note.Text;
+                    coupon.barcode = tb_barcode.Text;
+                    coupon.isActive = Convert.ToByte(tgl_ActiveCoupon.IsChecked);
+                    coupon.discountType = cb_typeDiscount.SelectedValue.ToString();
+                    coupon.startDate = DateTime.Parse(dp_startDate.Text);
+                    coupon.endDate = DateTime.Parse(dp_endDate.Text);
+                    coupon.discountValue = decimal.Parse(tb_discountValue.Text);
+                    coupon.invMin = decimal.Parse(tb_MinInvoiceValue.Text);
+                    coupon.invMax = decimal.Parse(tb_MaxInvoiceValue.Text);
+                    coupon.quantity = Int32.Parse(tb_quantity.Text);
+                    //coupon.remainQ = int.Parse(tb_remainQuantity.Text);
+                    coupon.createUserId = MainWindow.userID; ;
+
+                    string s = await couponModel.Save(coupon);
+
+                    if (s.Equals("true"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+
+                        await RefreshCouponsList();
+                        Tb_search_TextChanged(null, null);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+            }
+        }
+
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {//search
+            if (coupons is null)
+                await RefreshCouponsList();
+            searchText = tb_search.Text;
+            couponsQuery = coupons.Where(s => (s.code.Contains(searchText) ||
+            s.name.Contains(searchText) ||
+            s.barcode.Contains(searchText) 
+            ) && s.isActive == tgl_couponState);
+            RefreshCouponView();
+        }
+
+        async Task<IEnumerable<Coupon>> RefreshCouponsList()
+        {
+            coupons = await couponModel.GetCouponsAsync();
+            return coupons;
+        }
+        void RefreshCouponView()
+        {
+            dg_coupon.ItemsSource = couponsQuery;
+            txt_count.Text = couponsQuery.Count().ToString();
+            //cb_areaMobile.SelectedIndex = 0;
+            //cb_areaPhone.SelectedIndex = 0;
+            //cb_areaPhoneLocal.SelectedIndex = 0;
+        }
+
+       
     }
 }

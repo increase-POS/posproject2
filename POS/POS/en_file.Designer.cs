@@ -592,6 +592,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discount type.
+        /// </summary>
+        internal static string trDiscountType {
+            get {
+                return ResourceManager.GetString("trDiscountType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discount value.
+        /// </summary>
+        internal static string trDiscountValue {
+            get {
+                return ResourceManager.GetString("trDiscountValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Discount Value....
         /// </summary>
         internal static string trDiscountValueHint {
@@ -606,6 +624,15 @@ namespace POS {
         internal static string trDraft {
             get {
                 return ResourceManager.GetString("trDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bar Code is already exist.
+        /// </summary>
+        internal static string trDuplicateBarcodeToolTip {
+            get {
+                return ResourceManager.GetString("trDuplicateBarcodeToolTip", resourceCulture);
             }
         }
         
@@ -633,6 +660,15 @@ namespace POS {
         internal static string trEmailHint {
             get {
                 return ResourceManager.GetString("trEmailHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Number can not be empty.
+        /// </summary>
+        internal static string trEmptyAccNumberToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyAccNumberToolTip", resourceCulture);
             }
         }
         
@@ -691,6 +727,33 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discount type can not be empty.
+        /// </summary>
+        internal static string trEmptyDiscountTypeToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyDiscountTypeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discount value can not be empty.
+        /// </summary>
+        internal static string trEmptyDiscountValueToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyDiscountValueToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End date can not be empty.
+        /// </summary>
+        internal static string trEmptyEndDateToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyEndDateToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job can npt be empty.
         /// </summary>
         internal static string trEmptyJobToolTip {
@@ -714,6 +777,24 @@ namespace POS {
         internal static string trEmptyMainPropNameToolTip {
             get {
                 return ResourceManager.GetString("trEmptyMainPropNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum invoice value can not be empty.
+        /// </summary>
+        internal static string trEmptyMaxInvoiceValueToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyMaxInvoiceValueToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum invoice value can not be empty .
+        /// </summary>
+        internal static string trEmptyMinInvoiceValueToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyMinInvoiceValueToolTip", resourceCulture);
             }
         }
         
@@ -754,11 +835,47 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Property can not be empty.
+        /// </summary>
+        internal static string trEmptyPropertyToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyPropertyToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity can not be empty.
+        /// </summary>
+        internal static string trEmptyQuantityToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyQuantityToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start date can not be empty.
+        /// </summary>
+        internal static string trEmptyStartDateToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyStartDateToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username can&apos;t be empty!.
         /// </summary>
         internal static string trEmptyUserNameToolTip {
             get {
                 return ResourceManager.GetString("trEmptyUserNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value can not be empty.
+        /// </summary>
+        internal static string trEmptyValueToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyValueToolTip", resourceCulture);
             }
         }
         
@@ -781,6 +898,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Barcode is already exist.
+        /// </summary>
+        internal static string trErrorDuplicateBarcodeToolTip {
+            get {
+                return ResourceManager.GetString("trErrorDuplicateBarcodeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit name is already exist.
+        /// </summary>
+        internal static string trErrorDuplicateUnitNameToolTip {
+            get {
+                return ResourceManager.GetString("trErrorDuplicateUnitNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username is already exist.
         /// </summary>
         internal static string trErrorDuplicateUserNameToolTip {
@@ -795,6 +930,114 @@ namespace POS {
         internal static string trErrorEmailToolTip {
             get {
                 return ResourceManager.GetString("trErrorEmailToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barcode can not be empty.
+        /// </summary>
+        internal static string trErrorEmptyBarcodeToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyBarcodeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category can not be empty.
+        /// </summary>
+        internal static string trErrorEmptyCategoryToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyCategoryToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Count can not be empty.
+        /// </summary>
+        internal static string trErrorEmptyCountToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyCountToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max can not be empty.
+        /// </summary>
+        internal static string trErrorEmptyMaxToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyMaxToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Min can not be empty.
+        /// </summary>
+        internal static string trErrorEmptyMinToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyMinToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Price can not be empty!.
+        /// </summary>
+        internal static string trErrorEmptyPriceToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyPriceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type can not be empty.
+        /// </summary>
+        internal static string trErrorEmptyTypeToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyTypeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit can not be empty.
+        /// </summary>
+        internal static string trErrorEmptyUnitToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyUnitToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The end date cannot be earlier than the start date.
+        /// </summary>
+        internal static string trErrorEndDateSmallerToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEndDateSmallerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barcode can not be written in arabic.
+        /// </summary>
+        internal static string trErrorEnglishBarcodeToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEnglishBarcodeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item not found.
+        /// </summary>
+        internal static string trErrorItemNotFoundToolTip {
+            get {
+                return ResourceManager.GetString("trErrorItemNotFoundToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The max invoice value can not be smaller than min value.
+        /// </summary>
+        internal static string trErrorMaxInvoiceSmallerToolTip {
+            get {
+                return ResourceManager.GetString("trErrorMaxInvoiceSmallerToolTip", resourceCulture);
             }
         }
         
@@ -1051,6 +1294,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum Invoice Value.
+        /// </summary>
+        internal static string trMaxInvoiceValue {
+            get {
+                return ResourceManager.GetString("trMaxInvoiceValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Menu.
         /// </summary>
         internal static string trMenu {
@@ -1083,6 +1335,15 @@ namespace POS {
         internal static string trMinimumInvoiceValueHint {
             get {
                 return ResourceManager.GetString("trMinimumInvoiceValueHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum Invoice Value.
+        /// </summary>
+        internal static string trMinInvoiceValue {
+            get {
+                return ResourceManager.GetString("trMinInvoiceValue", resourceCulture);
             }
         }
         
@@ -1276,6 +1537,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Percentage.
+        /// </summary>
+        internal static string trPercentageDiscount {
+            get {
+                return ResourceManager.GetString("trPercentageDiscount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Phone.
         /// </summary>
         internal static string trPhone {
@@ -1290,6 +1560,15 @@ namespace POS {
         internal static string trPhoneHint {
             get {
                 return ResourceManager.GetString("trPhoneHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pie Chart.
+        /// </summary>
+        internal static string trPieChart {
+            get {
+                return ResourceManager.GetString("trPieChart", resourceCulture);
             }
         }
         
@@ -1317,6 +1596,15 @@ namespace POS {
         internal static string trPopAddValidate {
             get {
                 return ResourceManager.GetString("trPopAddValidate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The bank already exists.
+        /// </summary>
+        internal static string trPopBankExist {
+            get {
+                return ResourceManager.GetString("trPopBankExist", resourceCulture);
             }
         }
         
@@ -1479,6 +1767,15 @@ namespace POS {
         internal static string trQuantityHint {
             get {
                 return ResourceManager.GetString("trQuantityHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        internal static string trRefresh {
+            get {
+                return ResourceManager.GetString("trRefresh", resourceCulture);
             }
         }
         
@@ -2019,6 +2316,15 @@ namespace POS {
         internal static string trValue {
             get {
                 return ResourceManager.GetString("trValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value.
+        /// </summary>
+        internal static string trValueDiscount {
+            get {
+                return ResourceManager.GetString("trValueDiscount", resourceCulture);
             }
         }
         

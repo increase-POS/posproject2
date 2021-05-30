@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using netoaster;
+using POS.Classes;
 using POS.View.windows;
 using System;
 using System.Collections.Generic;
@@ -49,8 +50,7 @@ namespace POS.View
             items.Add(new Bill() { Id = 336551515, Total = 150 });
             items.Add(new Bill() { Id = 336555162, Total = 840 });
             items.Add(new Bill() { Id = 336558897, Total = 325 });
-            billDetails = LoadCollectionData();
-            dg_billDetails.ItemsSource = billDetails;
+
             #endregion
             
 
@@ -61,16 +61,35 @@ namespace POS.View
         IEnumerable<Category> categories;
         IEnumerable<Category> categoriesQuery;
         int? categoryParentId = 0;
+
         Item itemModel = new Item();
         Item item = new Item();
         IEnumerable<Item> items;
         IEnumerable<Item> itemsQuery;
+        IEnumerable<Item> invoiceItems;
+
+        Branch branchModel = new Branch();
+        IEnumerable<Branch> branches;
+
+        ItemUnit itemUnitModel = new ItemUnit();
+        List<ItemUnit> barcodesList;
+
+        Bill bill;
+
+        static int _SelectedBranch = -1;
+
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
         int? parentCategorieSelctedValue;
         public byte tglCategoryState = 1;
         public byte tglItemState = 1;
         public string txtItemSearch;
-        //tglItemState
+
+        // for barcode
+        DateTime _lastKeystroke = new DateTime(0);
+        List<char> _barcode = new List<char>(10);
+        static private string _BarcodeStr = "";
+        static private int _SequenceNum = 0;
+        static private decimal _Sum = 0;
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
@@ -118,6 +137,9 @@ namespace POS.View
             // for pagination
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
 
+            var window = Window.GetWindow(this);
+            window.KeyDown += HandleKeyPress;
+
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -135,6 +157,9 @@ namespace POS.View
             await RefrishCategories();
             RefrishCategoriesCard();
             Txb_searchitems_TextChanged(null, null);
+            configureDiscountType();
+            await RefrishBranches();
+            await fillBarcodeList();
 
             #region Style Date
             dp_desrvedDate.Loaded += delegate
@@ -150,8 +175,22 @@ namespace POS.View
 
             #endregion
             grid_vendor.Visibility = Visibility.Collapsed;
-             
+            tb_sum.Text = _Sum.ToString();
+            tb_barcode.Focus();
         }
+
+        private void configureDiscountType()
+        {
+            var dislist = new[] {
+            new { Text = MainWindow.resourcemanager.GetString("trValueDiscount"), Value = "1" },
+            new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = "2" },
+             };
+
+            cb_typeDiscount.DisplayMemberPath = "Text";
+            cb_typeDiscount.SelectedValuePath = "Value";
+            cb_typeDiscount.ItemsSource = dislist;
+        }
+
         #region bill
 
 
@@ -165,66 +204,13 @@ namespace POS.View
         public class BillDetails
         {
             public int ID { get; set; }
+            public int ItemId { get; set; }
             public string Product { get; set; }
             public int Count { get; set; }
-            public int Price { get; set; }
-            public int Total { get; set; }
+            public decimal Price { get; set; }
+            public decimal Total { get; set; }
         }
-        private ObservableCollection<BillDetails> LoadCollectionData()
-        {
-            ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
-            billDetails.Add(new BillDetails()
-            {
-                ID = 101,
-                Product = "Watch",
-                Count = 2,
-                Price = 1200,
-                Total = 2400
-            });
-            billDetails.Add(new BillDetails()
-            {
-                ID = 201,
-                Product = "Cocacola",
-                Count = 5,
-                Price = 200,
-                Total = 1000
-            });
-            billDetails.Add(new BillDetails()
-            {
-                ID = 244,
-                Product = "CarToy",
-                Count = 1,
-                Price = 300,
-                Total = 300
-            });
-            billDetails.Add(new BillDetails()
-            {
-                ID = 244,
-                Product = "CarToy",
-                Count = 1,
-                Price = 300,
-                Total = 300
-            });
-            billDetails.Add(new BillDetails()
-            {
-                ID = 244,
-                Product = "CarToy",
-                Count = 1,
-                Price = 300,
-                Total = 300
-            });
-            billDetails.Add(new BillDetails()
-            {
-                ID = 244,
-                Product = "CarToy",
-                Count = 1,
-                Price = 300,
-                Total = 300
-            });
 
-
-            return billDetails;
-        }
         #endregion
         #region Tab
         private void btn_payInvoice_Click(object sender, RoutedEventArgs e)
@@ -252,8 +238,20 @@ namespace POS.View
                 if (vis is DataGridRow)
                 {
                     BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
+
+                    // calculate new sum
+                    _Sum -= row.Total;
+                    //get index of item
+                    int index = billDetails.IndexOf(billDetails.Where(p => p.ItemId == row.ItemId).FirstOrDefault());
+                    // remove item from bill
+                    billDetails.RemoveAt(index);
+
                     ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)dg_billDetails.ItemsSource;
                     data.Remove(row);
+                    tb_sum.Text = _Sum.ToString();
+
+                    // calculate new total
+                    refrishTotalValue();
                 }
 
         }
@@ -286,6 +284,13 @@ namespace POS.View
             categories = await categoryModel.GetAllCategories();
             return categories;
         }
+        async Task RefrishBranches()
+        {
+            branches = await branchModel.GetBranchesActive("all");
+            cb_branch.ItemsSource = branches;
+            cb_branch.DisplayMemberPath = "name";
+            cb_branch.SelectedValuePath = "branchId";
+        }
         async void RefrishCategoriesCard()
         {
             if (categories is null)
@@ -317,6 +322,103 @@ namespace POS.View
 
             catigoriesAndItemsView.gridCatigorieItems = grid_itemContainerCard;
             catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
+        }
+        void refrishBillDetails()
+        {
+            dg_billDetails.ItemsSource = null;
+            dg_billDetails.ItemsSource = billDetails;
+
+            tb_sum.Text = _Sum.ToString();
+        }
+        async Task fillBarcodeList()
+        {
+            barcodesList = await itemUnitModel.getAllBarcodes();
+        }
+        private async void HandleKeyPress(object sender, KeyEventArgs e)
+        {
+          
+            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+            if (elapsed.TotalMilliseconds > 1000)
+            {
+                _barcode.Clear();
+                _BarcodeStr = "";
+            }
+
+            string digit = "";
+            // record keystroke & timestamp 
+            if (e.Key >= Key.D0 && e.Key <= Key.D9)
+            {
+                //digit pressed!
+                digit = e.Key.ToString().Substring(1);
+                // = "1" when D1 is pressed
+            }
+            else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
+            {
+                digit = e.Key.ToString().Substring(6); // = "1" when NumPad1 is pressed
+            }
+
+            _barcode.Add((char)e.Key);
+            _BarcodeStr += digit;
+            _lastKeystroke = DateTime.Now;
+
+            // process barcode
+            if (e.Key.ToString() == "Return" && _barcode.Count > 0)
+            {        
+                tb_barcode.Text = _BarcodeStr;
+                _barcode.Clear();
+                _BarcodeStr = "";
+
+                // get item matches barcode
+                if (barcodesList != null)
+                {
+                    ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text);
+
+                    // get item matches the barcode
+                    if (unit1 != null)
+                    {
+                        int itemId = (int)unit1.itemId;
+                        if (unit1.itemId != 0)
+                        {                                                      
+                            int index = billDetails.IndexOf(billDetails.Where(p => p.ItemId == itemId).FirstOrDefault());
+                            //item doesn't exist in bill
+                            if (index == -1)
+                            {
+                                _SequenceNum++;
+                                item = items.ToList().Find(i => i.itemId == itemId);
+                                int count = 1;
+                                decimal price = 1000; //?????
+                                decimal total = count * price;
+                                billDetails.Add(new BillDetails()
+                                {
+                                    ID = _SequenceNum,
+                                    Product = item.name,
+                                    ItemId = item.itemId,
+                                    Count = 1,
+                                    Price = price,
+                                    Total = total,
+                                }) ;
+                                _Sum += total;
+                                refrishTotalValue();
+                            }
+                            else // item exist prevoiusly in list
+                            {                               
+                                billDetails[index].Count++;
+                                billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
+
+                                _Sum += billDetails[index].Price;
+                                refrishTotalValue();
+                            }
+                            refrishBillDetails();
+                        }
+                    }
+                    else
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemNotFoundToolTip"), animation: ToasterAnimation.FadeIn);
+                    }
+                }  
+                e.Handled = true;
+                cb_branch.SelectedValue = _SelectedBranch;
+            }
         }
         #endregion
         #region Get Id By Click  Y
@@ -677,5 +779,55 @@ namespace POS.View
         {
             btn_vendor_Click(null, null);
         }
+
+        private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+            if (elapsed.TotalMilliseconds > 1000)
+            {
+                _SelectedBranch = (int)cb_branch.SelectedValue;
+            }
+            else
+            {
+                cb_branch.SelectedValue = _SelectedBranch;
+            }
+            
+        }
+
+        private void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            calculateDiscountVal();
+        }
+       private void calculateDiscountVal()
+        {
+            if (!tb_discount.Text.Equals("") && cb_typeDiscount.SelectedIndex != -1)
+            {
+                if (int.Parse(cb_typeDiscount.SelectedValue.ToString()) == 1)
+                {
+                    tb_discountVal.Text = tb_discount.Text;
+                }
+                else
+                {
+                    decimal percentage = decimal.Parse(tb_discount.Text);
+                    decimal percentageVal = SectionData.calcPercentage(_Sum, percentage);
+                    tb_discountVal.Text = percentageVal.ToString();
+                }
+                refrishTotalValue();
+            }
+        }
+       private void refrishTotalValue()
+        {
+            decimal discountVal = 0;
+            if (!tb_discountVal.Text.Equals(""))
+                 discountVal = decimal.Parse( tb_discountVal.Text);
+            decimal total = _Sum - discountVal;
+            tb_total.Text = total.ToString();
+        }
+
+        private void tb_discount_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            calculateDiscountVal();
+        }
+        
     }
 }
