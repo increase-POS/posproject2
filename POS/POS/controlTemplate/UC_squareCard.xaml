@@ -35,7 +35,7 @@
                     Background="White">
                 <!--<Image x:Name="img_card" Margin="5"/>-->
                 <Grid  Margin="0" Height="77" Width="85"  >
-                    <Button FlowDirection="LeftToRight"  Padding="0" Margin="0" Height="79" Width="87" HorizontalAlignment="Center"  VerticalAlignment="Center"   BorderThickness="0" x:Name="btn_cardImage"  >
+                    <Button FlowDirection="LeftToRight"  Padding="0" Margin="0" Height="78" Width="86" HorizontalAlignment="Center"  VerticalAlignment="Center"   BorderThickness="0" x:Name="btn_cardImage"  >
                         <Button.Background>
                             <ImageBrush  Stretch="Fill"   ImageSource="/pic/no-image-icon-125x125.png"   />
                         </Button.Background>

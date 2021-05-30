@@ -68,7 +68,7 @@
                 <!--<Image FlowDirection="LeftToRight"  Grid.Column="0"  Source="{Binding rectangleCardPriceImageSource_ar}" Margin="5,5,0,5" />-->
                 <Grid Margin="5,5,0,5" Height="108" Width="108"  >
                     <Button FlowDirection="LeftToRight"   Grid.Column="0"  VerticalAlignment="Center" HorizontalAlignment="Center"
-                        Padding="0"   Height="110" Width="110"      BorderThickness="0" x:Name="btn_cardImage" >
+                        Padding="0"   Height="109" Width="109"      BorderThickness="0" x:Name="btn_cardImage" >
                         <Button.Background>
                             <ImageBrush  Stretch="Fill"   ImageSource="/pic/no-image-icon-125x125.png"   />
                         </Button.Background>
