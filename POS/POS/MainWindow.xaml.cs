@@ -37,10 +37,7 @@ namespace POS
         /// //////// relative screen test
         /// </summary>
 
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            generateResponsiveVariables();
-        }
+       
 
         public static double mainUcWidth, mainUcHeight, gridFormWidth, gridFormHeight,
             windowHeight, windowWidth, ucControlFormSectionWidth, ucControlFormSectionHeight,
@@ -55,22 +52,12 @@ namespace POS
             mainUcWidth = windowWidth - 75;
             // Form section Size
             ucControlFormSectionWidth = (mainUcWidth / 3) - 20;
-            ucControlFormSectionHeight= mainUcHeight - 30;
+            ucControlFormSectionHeight= mainUcHeight - 20;
             // View section Size { dataGrid + Cards + Searsh}
             ucControlViewSectionWidth = ((mainUcWidth / 3)*2) - 20;
-            ucControlViewSectionHeight = mainUcHeight - 30;
-
-
-            uc_locations.Instance.responsiveView();
+            ucControlViewSectionHeight = mainUcHeight - 20;
 
         }
-
-
-
-
-
-
-
 
         /// <summary>
         /// ////////

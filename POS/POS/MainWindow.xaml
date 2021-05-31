@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POS"
         mc:Ignorable="d" Icon="/pic/increaseLogo.ico"
-        Title="MainWindow"      SizeChanged="Window_SizeChanged"
+        Title="MainWindow"     
           xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
           WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen"  
-    WindowState="Maximized"  ResizeMode="CanResize" Margin="0" Loaded="Window_Loaded">
+    WindowState="Normal"  ResizeMode="CanResize" Margin="0" Loaded="Window_Loaded"
+        Width="800" Height="600" >
     <!--  Height="700" Width="1250" WindowStyle="None" WindowStartupLocation="CenterScreen"-->
     <!--WindowState="Maximized"  ResizeMode="NoResize" Margin="0" Loaded="Window_Loaded">-->
     <Window.Resources>
