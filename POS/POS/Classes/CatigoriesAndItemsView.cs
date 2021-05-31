@@ -227,27 +227,79 @@ namespace POS.Classes
         }
         */
 
+       static   public  int[] categoriesRowColumnCount(int rowCount , int columnCount )
+        {
+            //MainWindow.ucControlViewSectionWidth
+            //MainWindow.ucControlViewSectionHeight
+
+            // row
+            if (MainWindow.windowHeight <= 600)
+                rowCount = 2;
+            else if (MainWindow.windowHeight <= 700)
+                rowCount = 3;
+            else if (MainWindow.windowHeight >= 800)
+                rowCount = 4;
+            // column
+            if ( MainWindow.windowWidth <= 800)
+                columnCount = 3;
+            else if (MainWindow.windowWidth <= 920)
+                columnCount = 4;
+            else if (MainWindow.windowWidth <= 1050)
+                columnCount = 5;
+            else if (MainWindow.windowWidth >= 1250)
+                columnCount = 6;
+
+            
+
+            int[] count = { rowCount, columnCount , rowCount * columnCount };
+            return count;
+        }
         public void FN_refrishCatalogCard(List<Category> categories ,int columnCount)
         {
             gridCatigories.Children.Clear();
             int row = 0;
             int column = 0;
+            int[] count = categoriesRowColumnCount(1, columnCount);
+
             foreach (var item in categories)
             {
-                FN_createCatalogCard( item,  row , column , columnCount);
-                if(column != -1)
-                {
-                    column++;
-                    if (column == columnCount)
+                #region
+                /* Orginal Cod
+               FN_createCatalogCard(item, row, column, columnCount);
+               if (column != -1)
+               {
+                   column++;
+                   if (column == columnCount)
+                   {
+                       column = 0;
+                       row++;
+                   }
+               }
+               else
+               {
+                   column++;
+               }
+               */
+                #endregion
+
+
+                FN_createCatalogCard(item, row, column, count[1]);
+                
+                    if (column != -1)
                     {
-                        column = 0;
-                        row++;
+                        column++;
+                        if (column == count[1])
+                        {
+                            column = 0;
+                            row++;
+                        }
                     }
-                }
-                else
-                {
-                    column++;
-                }
+                    else
+                    {
+                        column++;
+                    }
+               
+
               
             }
         }
