@@ -140,6 +140,7 @@
     <Compile Include="Classes\LocalReportExtensions.cs" />
     <Compile Include="Classes\Location.cs" />
     <Compile Include="Classes\Md5Encription.cs" />
+    <Compile Include="Classes\Offer.cs" />
     <Compile Include="Classes\Pagination.cs" />
     <Compile Include="Classes\Pos.cs" />
     <Compile Include="Classes\PropertiesItems.cs" />

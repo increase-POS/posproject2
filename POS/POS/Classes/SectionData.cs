@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,8 @@ namespace POS.Classes
         public static Branch branchModel = new Branch();
         public static Category categoryModel = new Category();
         public static Pos posModel = new Pos();
+        public static Offer offerModel = new Offer();
+
 
         public static Coupon couponModel = new Coupon();
 
@@ -181,6 +184,17 @@ namespace POS.Classes
                             codes.Add(branch.code.Trim());
                     }
                 }
+                else if (_class.Equals("Offer"))
+                {
+                    List<Offer> offers = await offerModel.GetOffersAsync();
+
+                    Offer offer = new Offer();
+                    for (int i = 0; i < offers.Count; i++)
+                    {
+                        offer = offers[i];
+                        codes.Add(offer.code.Trim());
+                    }
+                }
 
                 if (codes.Contains(randomNum.Trim()))
                     iscodeExist = true;
@@ -290,6 +304,15 @@ namespace POS.Classes
         public static void showDatePickerValidate(DatePicker dp, Path p_error, ToolTip tt_error, string tr)
         {
             TextBox tb = (TextBox)dp.Template.FindName("PART_TextBox", dp);
+
+            p_error.Visibility = Visibility.Visible;
+            tt_error.Content = MainWindow.resourcemanager.GetString(tr);
+            tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+        }
+
+        public static void showTimePickerValidate(TimePicker tp, Path p_error, ToolTip tt_error, string tr)
+        {
+            TextBox tb = (TextBox)tp.Template.FindName("PART_TextBox", tp);
 
             p_error.Visibility = Visibility.Visible;
             tt_error.Content = MainWindow.resourcemanager.GetString(tr);

@@ -232,26 +232,39 @@ namespace POS.Classes
             //MainWindow.ucControlViewSectionWidth
             //MainWindow.ucControlViewSectionHeight
 
+            //600
+            //    700
+            //    700
+
+
+
             // row
-            if (MainWindow.windowHeight <= 600)
+            if (MainWindow.windowHeight < 650)
                 rowCount = 2;
-            else if (MainWindow.windowHeight <= 700)
+            else if (MainWindow.windowHeight < 750)
                 rowCount = 3;
-            else if (MainWindow.windowHeight >= 800)
+            else if(MainWindow.windowHeight >= 750)
                 rowCount = 4;
+            else
+                rowCount = 2;
+
+
             // column
-            if ( MainWindow.windowWidth <= 800)
-                columnCount = 3;
-            else if (MainWindow.windowWidth <= 920)
-                columnCount = 4;
-            else if (MainWindow.windowWidth <= 1050)
-                columnCount = 5;
-            else if (MainWindow.windowWidth >= 1250)
-                columnCount = 6;
-
             
+            if ( MainWindow.windowWidth < 920)
+                columnCount = 3;
+            else if (MainWindow.windowWidth < 1050)
+                columnCount = 4;
+            else if (MainWindow.windowWidth < 1250)
+                columnCount = 5;
+            else if(MainWindow.windowWidth >= 1250)
+                columnCount = 6;
+            else
+                columnCount = 3;
 
-            int[] count = { rowCount, columnCount , rowCount * columnCount };
+
+
+        int[] count = { rowCount, columnCount , rowCount * columnCount };
             return count;
         }
         public void FN_refrishCatalogCard(List<Category> categories ,int columnCount)
@@ -260,8 +273,9 @@ namespace POS.Classes
             int row = 0;
             int column = 0;
             int[] count = categoriesRowColumnCount(1, columnCount);
-
-            foreach (var item in categories)
+            if (columnCount == -1)
+                count[1] = -1;
+                foreach (var item in categories)
             {
                 #region
                 /* Orginal Cod
@@ -360,14 +374,45 @@ namespace POS.Classes
 
         private int pastCatalogItem = -1;
         internal uc_receiptInvoice ucReceiptInvoice;
-    
 
+        static public int[] itemsRowColumnCount(int rowCount, int columnCount)
+        {
+            //MainWindow.ucControlViewSectionWidth
+            //MainWindow.ucControlViewSectionHeight
+
+            //row
+            if (MainWindow.windowHeight < 630)
+                rowCount = 1;
+            else if(MainWindow.windowHeight < 760)
+                rowCount = 2;
+            else if (MainWindow.windowHeight >= 760)
+                rowCount = 3;
+            else
+                rowCount = 1;
+
+
+            // column
+            if (MainWindow.windowWidth < 970)
+                columnCount = 1;
+            else if (MainWindow.windowWidth < 1340)
+                columnCount = 2;
+            else if (MainWindow.windowWidth >= 1340)
+                columnCount = 3;
+            else
+                columnCount = 1;
+
+
+
+            int[] count = { rowCount, columnCount, rowCount * columnCount };
+            return count;
+        }
         public void FN_refrishCatalogItem(List<Item> items, string language, string cardType)
         {
             gridCatigorieItems.Children.Clear();
             int row = 0;
             int column = 0;
             string isNewString = "";
+            int[] count = itemsRowColumnCount(1,1);
             foreach (var item in items)
             {
                 //Visible
@@ -392,7 +437,7 @@ namespace POS.Classes
 
                 
                 column++;
-                if (column == 3)
+                if (column == count[1])
                 {
                     column = 0;
                     row++;

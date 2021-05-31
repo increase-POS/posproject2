@@ -410,7 +410,8 @@
                                                  BorderBrush="AliceBlue"  
                                                  HorizontalAlignment="Left" VerticalAlignment="Bottom" MaxLength="20" 
                                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                                 Height="35" Width="340"  Margin="5,0,0,5" >
+                                                 Height="35" Width="340"  Margin="5,0,0,5" 
+                                                 PreviewKeyDown="Tb_preventSpaces" PreviewTextInput="Tb_OnlyLatinAndDigits" >
                                             <TextBox.ToolTip>
                                                 <ToolTip x:Name="tt_code" Content="Code"
                                                           Placement="left" 
@@ -468,7 +469,8 @@
                                                  BorderBrush="AliceBlue" 
                                                  HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" 
                                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                                 Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
+                                                 Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2"
+                                                 PreviewKeyDown="Tb_preventSpaces" PreviewTextInput="Tb_OnlyLatinAndDigits">
                                             <TextBox.ToolTip>
                                                 <ToolTip x:Name="tt_barcode" Content="Barcode"
                                                          Placement="left" 
@@ -575,10 +577,12 @@
                                                            BorderThickness="0,0,0,2"
                                                            materialDesign:HintAssist.Hint="Discount Value..."    
                                                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                                           BorderBrush="AliceBlue" PreviewTextInput="tb_discountValue_PreviewTextInput"
+                                                           BorderBrush="AliceBlue" 
+                                                           PreviewTextInput="tb_discountValue_PreviewTextInput"
                                                            HorizontalAlignment="Left" VerticalAlignment="Center" 
                                                            materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                                           Height="35" Width="160"   >
+                                                           Height="35" Width="160" 
+                                                           PreviewKeyDown="Tb_preventSpaces"   >
                                                     <TextBox.ToolTip>
                                                         <ToolTip x:Name="tt_discountValue" Content="Discount Value"
                                                          Placement="left" 

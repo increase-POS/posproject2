@@ -91,6 +91,8 @@ namespace POS.View
         OpenFileDialog openFileDialog = new OpenFileDialog();
         ImageBrush brush = new ImageBrush();
 
+      
+
         public static UC_item Instance
         {
             get
@@ -100,9 +102,11 @@ namespace POS.View
                 return _instance;
             }
         }
+
         public UC_item()
         {
             InitializeComponent();
+          
         }
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
 
@@ -230,8 +234,9 @@ namespace POS.View
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            // for pagination onTop only
+            // for pagination onTop Always
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            CreateGridCardContainer();
             catigoriesAndItemsView.ucItem = this;
 
             var window = Window.GetWindow(this);
@@ -1464,7 +1469,7 @@ namespace POS.View
         void RefrishItemsCard(IEnumerable<Item> _items)
         {
 
-            catigoriesAndItemsView.gridCatigorieItems = grid_itemContainerCard;
+            catigoriesAndItemsView.gridCatigorieItems = gridItemContainerCard;
             catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
         }
         #endregion
@@ -1675,6 +1680,39 @@ namespace POS.View
         }
 
         #endregion
+        #region Grid Definition
+
+        ColumnDefinition[] c;
+        RowDefinition[] r;
+        Grid gridItemContainerCard = new Grid();
+        int[] count;
+        void CreateGridCardContainer()
+        {
+            gridItemContainerCard.Name = "grid_itemContainerCard";
+            gridItemContainerCard.Background = null;
+            Grid.SetColumnSpan(gridItemContainerCard, 2);
+            count = CatigoriesAndItemsView.itemsRowColumnCount(1, 3);
+            c = new ColumnDefinition[count[1]];
+            for (int i = 0; i < count[1]; i++)
+            {
+                //ColumnDefinition c1 = new ColumnDefinition();
+                c[i] = new ColumnDefinition();
+                c[i].Width = new GridLength(1, GridUnitType.Star);
+                gridItemContainerCard.ColumnDefinitions.Add(c[i]);
+            }
+            r = new RowDefinition[count[0]];
+            for (int i = 0; i < count[0]; i++)
+            {
+                r[i] = new RowDefinition();
+                r[i].Height = new GridLength(1, GridUnitType.Star);
+                gridItemContainerCard.RowDefinitions.Add(r[i]);
+            }
+
+
+            grid_itemContainerCard.Children.Clear();
+            grid_itemContainerCard.Children.Add(gridItemContainerCard);
+        }
+        #endregion
         #region Toggle Button Y
         /// <summary>
         /// Category
@@ -1789,15 +1827,15 @@ namespace POS.View
         private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
 
-            categoriesQuery = categories.Where(x => x.isActive == tglCategoryState);
+            itemsQuery = items.Where(x => x.isActive == tglItemState);
 
             if (tb_pageNumberSearch.Text.Equals(""))
             {
                 pageIndex = 1;
             }
-            else if (((categoriesQuery.Count() - 1) / 20) + 1 < int.Parse(tb_pageNumberSearch.Text))
+            else if (((itemsQuery.Count() - 1) / count[2]) + 1 < int.Parse(tb_pageNumberSearch.Text))
             {
-                pageIndex = ((categoriesQuery.Count() - 1) / 20) + 1;
+                pageIndex = ((itemsQuery.Count() - 1) / count[2]) + 1;
             }
             else
             {

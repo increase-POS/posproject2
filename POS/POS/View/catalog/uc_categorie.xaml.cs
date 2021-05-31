@@ -54,40 +54,12 @@ namespace POS.View
         string imgFileName = "pic/no-image-icon-125x125.png";
 
         bool isImgPressed = false;
-        ColumnDefinition[] c;
-        RowDefinition[] r;
-        Grid gridCategorieContainerCard = new Grid();
-        int[] count;
+        
+
         public uc_categorie()
         {
             InitializeComponent();
 
-
-
-            gridCategorieContainerCard.Name = "grid_categorieContainerCard";
-            gridCategorieContainerCard.Background = null;
-            gridCategorieContainerCard.Margin = new Thickness(0,10,0,0);
-            Grid.SetColumnSpan(gridCategorieContainerCard, 2);
-             count = CatigoriesAndItemsView.categoriesRowColumnCount(1, 5);
-            c = new ColumnDefinition[count[1]] ;
-            for (int i = 0; i < count[1]; i++)
-            {
-                //ColumnDefinition c1 = new ColumnDefinition();
-                c[i] = new ColumnDefinition();
-                c[i].Width = new GridLength(1, GridUnitType.Star);
-                gridCategorieContainerCard.ColumnDefinitions.Add(c[i]);
-            }
-            r = new RowDefinition[count[0]];
-            for (int i = 0; i < count[0]; i++)
-            {
-                r[i] = new RowDefinition();
-                r[i].Height = new GridLength(1, GridUnitType.Star);
-                gridCategorieContainerCard.RowDefinitions.Add(r[i]);
-            }
-
-
-            grid_containerGridContainer.Children.Clear();
-            grid_containerGridContainer.Children.Add(gridCategorieContainerCard);
         }
         private async void fillCategories()
         {
@@ -132,8 +104,11 @@ namespace POS.View
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            ///////// on Top Always
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            CreateGridCardContainer();
             catigoriesAndItemsView.ucCategorie = this;
+            ////////////////
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -199,6 +174,7 @@ namespace POS.View
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             category.categoryId = 0;
+            //category = new Category();
             //duplicate
             bool iscodeExist = await SectionData.isCodeExist(tb_categoryCode.Text, "", "Category", 0);
             //chk empty name
@@ -505,9 +481,42 @@ namespace POS.View
         }
 
         #endregion
+        #region Grid Definition
+        ColumnDefinition[] c;
+        RowDefinition[] r;
+        Grid gridCategorieContainerCard = new Grid();
+        int[] count;
+        void CreateGridCardContainer()
+        {
+            gridCategorieContainerCard.Name = "grid_categorieContainerCard";
+            gridCategorieContainerCard.Background = null;
+            gridCategorieContainerCard.Margin = new Thickness(0, 10, 0, 0);
+            Grid.SetColumnSpan(gridCategorieContainerCard, 2);
+            count = CatigoriesAndItemsView.categoriesRowColumnCount(1, 5);
+            c = new ColumnDefinition[count[1]];
+            for (int i = 0; i < count[1]; i++)
+            {
+                //ColumnDefinition c1 = new ColumnDefinition();
+                c[i] = new ColumnDefinition();
+                c[i].Width = new GridLength(1, GridUnitType.Star);
+                gridCategorieContainerCard.ColumnDefinitions.Add(c[i]);
+            }
+            r = new RowDefinition[count[0]];
+            for (int i = 0; i < count[0]; i++)
+            {
+                r[i] = new RowDefinition();
+                r[i].Height = new GridLength(1, GridUnitType.Star);
+                gridCategorieContainerCard.RowDefinitions.Add(r[i]);
+            }
+
+
+            grid_containerGridContainer.Children.Clear();
+            grid_containerGridContainer.Children.Add(gridCategorieContainerCard);
+        }
+        #endregion
         #region Toggle Button Y
 
-        private  void Tgl_categoryIsActive_Checked(object sender, RoutedEventArgs e)
+        private void Tgl_categoryIsActive_Checked(object sender, RoutedEventArgs e)
         {
             //if (categories is null)
             //    await RefrishCategories();

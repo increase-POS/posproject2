@@ -53,7 +53,7 @@
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35"   Width="250" Margin="10,5"/>
+                  Height="35"   Width="250" Margin="10,5" TextChanged="Tb_search_TextChanged"/>
                     <Grid Grid.Column="1" HorizontalAlignment="Right"   Margin="5,0,5,0"  >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="45"/>
@@ -101,7 +101,7 @@
                       materialDesign:DataGridAssist.CornerRadius="5" 
                        x:Name="dg_offer"
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"    >
+                        ColumnWidth="SizeToHeader" SelectionChanged="Dg_offer_SelectionChanged"    >
                     <DataGrid.Columns>
                         <DataGridTextColumn MinWidth="125"  Header="Code" Binding="{Binding Path=code}">
                             <DataGridTextColumn.ElementStyle>
@@ -496,7 +496,7 @@
                                           VerticalAlignment="Center" Grid.Column="1" />
                                     <Button x:Name="btn_clear" Grid.Column="3" Padding="0" 
                               Background="{x:Null}" BorderBrush="{x:Null}" 
-                        Margin="5,0"   ToolTip="clear">
+                        Margin="5,0"   ToolTip="clear" Click="Btn_clear_Click">
 
                                         <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
                                   HorizontalAlignment="Center" Grid.Column="0"  
@@ -509,11 +509,16 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBox x:Name="tb_code"  Text="{Binding code, Mode=OneWay}" Padding="10,5,5,5"   
-                                         BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="offer Code..."    
-                               Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                     BorderBrush="AliceBlue"  
-                         HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                      Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                                             BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="offer Code..."    
+                                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
+                                             BorderBrush="AliceBlue"  
+                                             HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" 
+                                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                             Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
+                                             PreviewTextInput="Tb_code_PreviewTextInput"
+                                             TextChanged="Tb_validateEmptyTextChange" 
+                                             LostFocus="Tb_validateEmptyLostFocus"
+                                             PreviewKeyDown="Tb_PreventSpaces"/>
 
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorCode"
                                   HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
@@ -529,11 +534,13 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5"   
-                                         BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="offer Name..."    
-                               Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                     BorderBrush="AliceBlue" 
-                         HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                      Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" />
+                                             BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="offer Name..."    
+                                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                             BorderBrush="AliceBlue" 
+                                             HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                             Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
+                                             TextChanged="Tb_validateEmptyTextChange" 
+                                             LostFocus="Tb_validateEmptyLostFocus"/>
 
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
                                   HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
@@ -555,7 +562,7 @@
                                 Margin="5,0,5,0" Text="is Active" Foreground="#6e6e6e"
                             HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontSize="12"/>
-                                    <ToggleButton Grid.Column="1"    
+                                        <ToggleButton Grid.Column="1"  x:Name="tgl_ActiveOffer"  
                                  VerticalAlignment="Center" Padding="10,15,5,5"
                                               Margin="0" Height="13" Width="28" />
                                 </Grid>
@@ -590,31 +597,30 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <ComboBox x:Name="cb_typeDiscount" Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                                           Text="{Binding test, Mode=OneWay}" 
-                                 materialDesign:HintAssist.Hint="type discount..." 
-                               TextBlock.FontSize="12" Margin="3,5,2,5"
-                         HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                  Height="35" Width="160"  
-                                      Background="#f8f8f8" 
-                               BorderBrush="#737373"       BorderThickness="0" 
-                                FontFamily="Segoe UI"   
-                                 Grid.Row="0"  >
-                                        <ListBoxItem>
-                                            Value
-                                        </ListBoxItem>
-                                        <ListBoxItem>
-                                            Rate
-                                        </ListBoxItem>
+                                    <ComboBox x:Name="cb_discountType" Padding="10,5,5,5"  
+                                              TextBlock.Foreground="#4E4E4E"
+                                              Text="{Binding test, Mode=OneWay}" 
+                                              materialDesign:HintAssist.Hint="type discount..." 
+                                              TextBlock.FontSize="12" Margin="3,5,2,5"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                              Height="35" Width="160"  
+                                              Background="#f8f8f8" 
+                                              BorderBrush="#737373"       BorderThickness="0" 
+                                              FontFamily="Segoe UI"   
+                                              Grid.Row="0"  
+                                              
+                                              LostFocus="Tb_validateEmptyLostFocus">
+                                      
                                     </ComboBox>
 
-
-                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                                  HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
+                                        <Path x:Name="p_errorDiscountType"  
+                                        Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                  HorizontalAlignment="Right" 
+                                                Grid.Column="0"  Visibility="Collapsed" 
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                         <Path.ToolTip>
-                                            <ToolTip    Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                                <ToolTip x:Name="tt_errorDiscountType"     Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                         </Path.ToolTip>
                                     </Path>
 
@@ -627,17 +633,21 @@
                                         Text="{Binding test, Mode=OneWay}" Grid.Row="2"  Padding="10,5,5,5"   
                                          BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Discount Value..."    
                                Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                     BorderBrush="AliceBlue" PreviewTextInput="tb_discountValue_PreviewTextInput"
+                                     BorderBrush="AliceBlue" 
                          HorizontalAlignment="Left" VerticalAlignment="Center" 
                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                      Height="35" Width="162"  Margin="0,5,0,5"  />
+                      Height="35" Width="162"  Margin="0,5,0,5" 
+                                                      PreviewKeyDown="Tb_PreventSpaces" 
+                                                      PreviewTextInput="Tb_discountValue_PreviewTextInput" 
+                                                       LostFocus="Tb_validateEmptyLostFocus"/>
 
-                                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                                <Path x:Name="p_errorDiscountValue"
+                                                Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                                   HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                                 <Path.ToolTip>
-                                                    <ToolTip     Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                                        <ToolTip   x:Name="tt_errorDiscountValue"   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                                 </Path.ToolTip>
                                             </Path>
                                         </Grid>
@@ -661,22 +671,31 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <DatePicker  x:Name="dp_startDate" 
-                               BorderBrush="#737373"  BorderThickness="0" 
-                                    TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
-                                                 Grid.Row="2" Padding="10,5,5,5"  
-                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                 materialDesign:HintAssist.Hint="Start date..."  
-                               Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
-                                 HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            Grid.Column="1"  Height="35" Width="160"  Margin="5,5" />
-                                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                            <DatePicker  x:Name="dp_startDate" 
+                                                     BorderBrush="#737373"  BorderThickness="0" 
+                                                     TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
+                                                     Grid.Row="2" Padding="10,5,5,5"  
+                                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                     materialDesign:HintAssist.Hint="Start date..."  
+                                                     Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
+                                                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                                     Grid.Column="1"  Height="35" Width="160"  Margin="5,5"
+                                                     
+                                                     LostFocus="Tb_validateEmptyLostFocus"    >
+                                                <DatePicker.Resources>
+                                                    <Style TargetType="DatePickerTextBox">
+                                                        <Setter Property="IsReadOnly" Value="True"/>
+                                                    </Style>
+                                                </DatePicker.Resources>
+                                            </DatePicker>
+                                            <Path x:Name="p_errorStartDate"
+                                            Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                                   HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 
                                       L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                             <Path.ToolTip>
-                                                <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                                    <ToolTip x:Name="tt_errorStartDate" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                             </Path.ToolTip>
                                         </Path>
                                     </Grid>
@@ -684,22 +703,31 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <DatePicker  x:Name="dp_endDate" 
-                               BorderBrush="#737373"  BorderThickness="0" 
-                                    TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
-                                                 Grid.Row="2" Padding="10,5,5,5"  
-                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                 materialDesign:HintAssist.Hint="End date..."  
-                               Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
-                                 HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            Grid.Column="1"  Height="35" Width="160"  Margin="5,5" />
-                                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                                  HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                            <DatePicker  x:Name="dp_endDate" 
+                                                     BorderBrush="#737373"  BorderThickness="0" 
+                                                     TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
+                                                     Grid.Row="2" Padding="10,5,5,5"  
+                                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                     materialDesign:HintAssist.Hint="End date..."  
+                                                     Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
+                                                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                                     Grid.Column="1"  Height="35" Width="160"  Margin="5,5"
+                                                         
+                                                     LostFocus="Tb_validateEmptyLostFocus">
+                                                <DatePicker.Resources>
+                                                    <Style TargetType="DatePickerTextBox">
+                                                        <Setter Property="IsReadOnly" Value="false"/>
+                                                    </Style>
+                                                </DatePicker.Resources>
+                                            </DatePicker>
+                                            <Path x:Name="p_errorEndDate" 
+                                                  Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                                  HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 
                                       L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                             <Path.ToolTip>
-                                                <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                                    <ToolTip  x:Name="tt_errorEndDate"   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                             </Path.ToolTip>
                                         </Path>
                                     </Grid>
@@ -714,15 +742,26 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBox x:Name="tb_startTime"  Text="{Binding test, Mode=OneWay}"
+                                            <!--<TextBox x:Name="tb_startTime"  Text="{Binding test, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5" MaxLength="20" 
                                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"   
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Start time..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                              BorderBrush="#f8f8f8"
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="35" Width="160"  Margin="10,5" />
-                                            <Path x:Name="p_errorStartTime" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                        Grid.Column="1"  Height="35" Width="160"  Margin="10,5" />-->
+                                            <materialDesign:TimePicker  x:Name="tp_startTime" 
+                                                                        BorderBrush="#737373"  BorderThickness="0" 
+                                                                        TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
+                                                                        Grid.Row="2" Padding="10,5,5,5"  
+                                                                        materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                                        materialDesign:HintAssist.Hint="Start time..."  
+                                                                        Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
+                                                                        HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                                                        Grid.Column="1"  Height="35" Width="160"  Margin="5,5"
+                                                                        
+                                                                        LostFocus="Tb_validateEmptyLostFocus"/>
+                                                <Path x:Name="p_errorStartTime" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -735,14 +774,23 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBox x:Name="tb_endTime"  Text="{Binding test, Mode=OneWay}"
+                                            <!--<TextBox x:Name="tb_endTime"  Text="{Binding test, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5" MaxLength="20" 
                                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"   
                             BorderThickness="1"  materialDesign:HintAssist.Hint="End time..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                              BorderBrush="#f8f8f8"
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="35" Width="160"  Margin="10,5" />
+                        Grid.Column="1"  Height="35" Width="160"  Margin="10,5" />-->
+                                            <materialDesign:TimePicker  x:Name="tp_endTime" 
+                                                                        BorderBrush="#737373"  BorderThickness="0" 
+                                                                        TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
+                                                                        Grid.Row="2" Padding="10,5,5,5"  
+                                                                        materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                                        materialDesign:HintAssist.Hint="End time..."  
+                                                                        Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
+                                                                        HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                                                        Grid.Column="1"  Height="35" Width="160"  Margin="5,5" />
                                             <Path x:Name="p_errorEndTime" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -797,13 +845,13 @@
                         Margin="1,1"    Content="Items"/>
                                 <Button x:Name="btn_add" Grid.Row="1" Grid.Column="0"
                               Background="#4E4E4E" BorderBrush="{x:Null}"
-                        Margin="1,1"    Content="Add"/>
+                        Margin="1,1"    Content="Add" Click="Btn_add_Click"/>
                             <Button x:Name="btn_update" Grid.Row="1" Grid.Column="1"
                             Background="#4E4E4E" BorderBrush="{x:Null}"
                        Margin="1,1"    Content="Update"/>
                                 <Button x:Name="btn_delete" Grid.Row="1" Grid.Column="2"
                                     Background="#4E4E4E" BorderBrush="{x:Null}"
-                                    Margin="1,1"  Content="Delete"  />
+                                    Margin="1,1"  Content="Delete" Click="Btn_delete_Click"  />
 
                             </Grid>
                     </Grid>

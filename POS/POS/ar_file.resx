@@ -700,7 +700,7 @@
     <value>تاريخ النهاية...</value>
   </data>
   <data name="trExcel" xml:space="preserve">
-    <value>التصدير لملف إكسل</value>
+    <value>التصدير إلى ملف إكسل</value>
   </data>
   <data name="trMaximumInvoiceValueHint" xml:space="preserve">
     <value>أكبر قيمة للفاتورة...</value>

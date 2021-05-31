@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -86,7 +87,8 @@ namespace POS.View
 
         private void tb_discountValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
         #endregion
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
@@ -154,12 +156,12 @@ namespace POS.View
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
             tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
-            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
             tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             var dislist = new[] {
             new { Text = MainWindow.resourcemanager.GetString("trValueDiscount"), Value = "1" },
             new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = "2" },
@@ -182,7 +184,8 @@ namespace POS.View
 
             translate();
             //tb_discountValue.Text = _numValue.ToString();
-
+            Keyboard.Focus(tb_code);
+            SectionData.clearValidate(tb_code, p_errorCode);
             #region Style Date
             /////////////////////////////////////////////////////////////
             dp_startDate.Loaded += delegate
@@ -211,7 +214,6 @@ namespace POS.View
 
             await RefreshCouponsList();
             Tb_search_TextChanged(null, null);
-            //dg_coupon.ItemsSource = await couponModel.GetCouponsAsync();
         }
 
         #region Tab
@@ -353,7 +355,7 @@ namespace POS.View
             SectionData.clearValidate(tb_MinInvoiceValue, p_errorMinInvoiceValue);
             SectionData.clearValidate(tb_MaxInvoiceValue, p_errorMaxInvoiceValue);
             SectionData.clearValidate(tb_quantity, p_errorQuantity);
-            SectionData.clearValidate(tb_quantity, p_errorQuantity);
+            SectionData.clearValidate(tb_discountValue, p_errorValueDiscount);
             SectionData.clearComboBoxValidate(cb_typeDiscount, p_errorTypeDiscount);
             TextBox tbStart = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
             SectionData.clearValidate(tbStart, p_errorStartDate);
@@ -362,7 +364,7 @@ namespace POS.View
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {
+        {//refresh
             RefreshCouponsList();
             Tb_search_TextChanged(null, null);
         }
@@ -420,7 +422,7 @@ namespace POS.View
             SectionData.clearValidate(tb_barcode, p_errorBarcode);
             SectionData.clearValidate(tb_MinInvoiceValue, p_errorMinInvoiceValue);
             SectionData.clearValidate(tb_MaxInvoiceValue, p_errorMaxInvoiceValue);
-            SectionData.clearValidate(tb_quantity, p_errorQuantity);
+            SectionData.clearValidate(tb_discountValue, p_errorValueDiscount);
             SectionData.clearValidate(tb_quantity, p_errorQuantity);
             SectionData.clearComboBoxValidate(cb_typeDiscount , p_errorTypeDiscount);
             TextBox tbStart = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
@@ -614,6 +616,16 @@ namespace POS.View
             //cb_areaPhoneLocal.SelectedIndex = 0;
         }
 
-       
+        private void Tb_preventSpaces(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void Tb_OnlyLatinAndDigits(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+            if (!regex.IsMatch(e.Text))
+                e.Handled = true;
+        }
     }
 }

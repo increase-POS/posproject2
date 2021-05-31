@@ -1,10 +1,14 @@
-﻿using POS.View.windows;
+﻿using MaterialDesignThemes.Wpf;
+using netoaster;
+using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +27,15 @@ namespace POS.View
     /// </summary>
     public partial class uc_offer : UserControl
     {
+        Offer offer = new Offer();
+        Offer offerModel = new Offer();
+        
+        BrushConverter bc = new BrushConverter();
+        IEnumerable<Offer> offersQuery;
+        IEnumerable<Offer> offers;
+        byte tgl_offerState;
+        string searchText = "";
+
         private static uc_offer _instance;
         public static uc_offer Instance
         {
@@ -36,11 +49,9 @@ namespace POS.View
         public uc_offer()
         {
             InitializeComponent();
-          
         }
 
         #region Numeric
-
 
         private int _numValue = 0;
 
@@ -79,17 +90,24 @@ namespace POS.View
 
         private void tb_discountValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
         #endregion
-        private void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
+        private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {
-
+            if (offers is null)
+                await RefreshOffersList();
+            tgl_offerState = 1;
+            Tb_search_TextChanged(null, null);
         }
 
-        private void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
+        private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            if (offers is null)
+                await RefreshOffersList();
+            tgl_offerState = 0;
+            Tb_search_TextChanged(null, null);
         }
 
         private void translate()
@@ -104,7 +122,7 @@ namespace POS.View
             txt_isActive.Text = MainWindow.resourcemanager.GetString("trActive");
             txt_details.Text = MainWindow.resourcemanager.GetString("trDetails");
 
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trTypeDiscountHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_discountType, MainWindow.resourcemanager.GetString("trTypeDiscountHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discountValue, MainWindow.resourcemanager.GetString("trDiscountValueHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
@@ -138,8 +156,19 @@ namespace POS.View
             */
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {//load
+
+            var dislist = new[] {
+            new { Text = MainWindow.resourcemanager.GetString("trValueDiscount"), Value = "1" },
+            new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = "2" },
+             };
+
+            cb_discountType.DisplayMemberPath = "Text";
+            cb_discountType.SelectedValuePath = "Value";
+            cb_discountType.ItemsSource = dislist;
+
+
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -152,7 +181,12 @@ namespace POS.View
             }
 
             translate();
-            tb_discountValue.Text = _numValue.ToString();
+
+            //tb_discountValue.Text = _numValue.ToString();
+
+            Keyboard.Focus(tb_code);
+
+            SectionData.clearValidate(tb_code, p_errorCode);
 
             #region Style Date
             /////////////////////////////////////////////////////////////
@@ -179,8 +213,36 @@ namespace POS.View
             };
             /////////////////////////////////////////////////////////////
             #endregion
-        }
 
+            #region Style Time
+            /////////////////////////////////////////////////////////////
+            tp_startTime.Loaded += delegate
+            {
+
+                var textBox1 = (TextBox)tp_startTime.Template.FindName("PART_TextBox", tp_startTime);
+                if (textBox1 != null)
+                {
+                    textBox1.Background = dp_startDate.Background;
+                    textBox1.BorderThickness = dp_startDate.BorderThickness;
+                }
+            };
+            /////////////////////////////////////////////////////////////
+            tp_endTime.Loaded += delegate
+            {
+
+                var textBox1 = (TextBox)tp_endTime.Template.FindName("PART_TextBox", tp_endTime);
+                if (textBox1 != null)
+                {
+                    textBox1.Background = tp_endTime.Background;
+                    textBox1.BorderThickness = tp_endTime.BorderThickness;
+                }
+            };
+            /////////////////////////////////////////////////////////////
+            #endregion
+
+            await RefreshOffersList();
+            Tb_search_TextChanged(null, null);
+        }
 
         #region Tab
         /*
@@ -227,13 +289,298 @@ namespace POS.View
             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
         }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {
-
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {//refresh
+            await RefreshOffersList();
+            Tb_search_TextChanged(null, null);
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
+
+        }
+
+       
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {//search
+            if (offers is null)
+                await RefreshOffersList();
+            searchText = tb_search.Text;
+            offersQuery = offers.Where(s => (s.code.Contains(searchText) ||
+            s.name.Contains(searchText)
+            ) && s.isActive == tgl_offerState);
+            RefreshOfferView();
+        }
+
+        async Task<IEnumerable<Offer>> RefreshOffersList()
+        {
+            offers = await offerModel.GetOffersAsync();
+            return offers;
+        }
+        void RefreshOfferView()
+        {
+            dg_offer.ItemsSource = offersQuery;
+            txt_count.Text = offersQuery.Count().ToString();
+        }
+
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {//clear
+            tb_code.Clear();
+            tb_name.Clear();
+            tgl_ActiveOffer.IsChecked = false;
+            cb_discountType.SelectedIndex = -1;
+            tb_discountValue.Clear();
+            dp_startDate.SelectedDate = null;
+            dp_endDate.SelectedDate = null;
+            tp_startTime.SelectedTime = null;
+            tp_endTime.SelectedTime = null;
+            tb_note.Clear();
+
+            SectionData.clearValidate(tb_name, p_errorName);
+            SectionData.clearValidate(tb_code, p_errorCode);
+            SectionData.clearValidate(tb_discountValue, p_errorDiscountValue);
+            SectionData.clearComboBoxValidate(cb_discountType, p_errorDiscountType);
+            TextBox tbStartDate = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
+            SectionData.clearValidate(tbStartDate, p_errorStartDate);
+            TextBox tbEndDate = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
+            SectionData.clearValidate(tbEndDate, p_errorEndDate);
+            //TextBox tbStartTime = (TextBox)dp_startDate.Template.FindName("PART_TextBox", tp_startTime);
+            //SectionData.clearValidate(tbStartTime, p_errorStartTime);
+            //TextBox tbEndTime = (TextBox)dp_endDate.Template.FindName("PART_TextBox", tp_endTime);
+            //SectionData.clearValidate(tbEndTime, p_errorEndTime);
+        }
+
+      
+        private void Tb_discountValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+       
+        private void Tb_code_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {//only english and digits
+            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+            if (!regex.IsMatch(e.Text))
+                e.Handled = true;
+        }
+
+        private void Tb_PreventSpaces(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+        }
+
+        private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+        }
+
+        private void validateEmpty(string name , object sender)
+        {
+            if (name == "TextBox")
+            {
+                if ((sender as TextBox).Name == "tb_code")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+                else if ((sender as TextBox).Name == "tb_name")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                else if ((sender as TextBox).Name == "tb_discountValue")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorDiscountValue, tt_errorDiscountValue, "trEmptyDiscountValueToolTip");
+            }
+            else if (name == "ComboBox")
+            {
+                if ((sender as ComboBox).Name == "cb_discountType")
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorDiscountType, tt_errorDiscountType, "trErrorEmptyDiscountTypeToolTip");
+            }
+            else if (name == "DatePicker")
+            {
+                if ((sender as DatePicker).Name == "dp_startDate")
+                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorStartDate, tt_errorStartDate, "trErrorEmptyStartDateToolTip");
+                else if ((sender as DatePicker).Name == "dp_endDate")
+                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorEndDate, tt_errorEndDate, "trErrorEmptyEndDateToolTip");
+            }
+            else if (name == "TimePicker")
+            {
+                //if ((sender as TimePicker).Name == "tp_startTime")
+                //{
+                //    TextBox tb = (TextBox)((TimePicker)sender).Template.FindName("PART_TextBox", (TimePicker)sender);
+                //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorStartTime, tt_errorStartTime, "trEmptyStartTimeToolTip");
+                //}
+                //else if ((sender as TimePicker).Name == "tp_endTime")
+                //{
+                //    //TextBox tb = (TextBox)dp.Template.FindName("PART_TextBox", dp);
+                //    TextBox tb = (TextBox)((TimePicker)sender).Template.FindName("PART_TextBox", (TimePicker)sender);
+                //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorEndTime, tt_errorEndTime, "trEmptyEndTimeToolTip");
+                //}
+            }
+        }
+
+        private void Dg_offer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {//selection
+            SectionData.clearValidate(tb_name, p_errorName);
+            SectionData.clearValidate(tb_code, p_errorCode);
+            SectionData.clearValidate(tb_discountValue, p_errorDiscountValue);
+            SectionData.clearComboBoxValidate(cb_discountType, p_errorDiscountType);
+            TextBox tbStartDate = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
+            SectionData.clearValidate(tbStartDate, p_errorStartDate);
+            TextBox tbEndDate = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
+            SectionData.clearValidate(tbEndDate, p_errorEndDate);
+            //TextBox tbStartTime = (TextBox)dp_startDate.Template.FindName("PART_TextBox", tp_startTime);
+            //SectionData.clearValidate(tbStartTime, p_errorStartTime);
+            //TextBox tbEndTime = (TextBox)dp_endDate.Template.FindName("PART_TextBox", tp_endTime);
+            //SectionData.clearValidate(tbEndTime, p_errorEndTime);
+
+            if (dg_offer.SelectedIndex != -1)
+            {
+                offer = dg_offer.SelectedItem as Offer;
+                this.DataContext = offer;
+
+                if (offer != null)
+                {
+                    tgl_ActiveOffer.IsChecked = Convert.ToBoolean(offer.isActive);
+                    cb_discountType.SelectedValue = offer.discountType;
+                    tb_discountValue.Text = (Convert.ToInt32(offer.discountValue)).ToString();
+
+                    #region delete
+                    if (offer.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                    else
+                    {
+                        if (offer.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
+                        else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                    }
+                    #endregion
+                }
+            }
+        }
+
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {//delete
+            if (offer.offerId != 0)
+            {
+                if ((!offer.canDelete) && (offer.isActive == 0))
+                    activate();
+                else
+                {
+                    string popupContent = "";
+                    if (offer.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                    if ((!offer.canDelete) && (offer.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                    bool b = await offerModel.deleteOffer(offer.offerId, MainWindow.userID.Value, offer.canDelete);
+
+                    if (b)
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+
+                await RefreshOffersList();
+                Tb_search_TextChanged(null, null);
+            }
+            //clear textBoxs
+            Btn_clear_Click(sender, e);
+        }
+
+        private async void activate()
+        {//activate
+            offer.isActive = 1;
+
+            string s = await offerModel.Save(offer);
+
+            if (!s.Equals("0"))
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+            await RefreshOffersList();
+            Tb_search_TextChanged(null, null);
+
+        }
+
+        private async void Btn_add_Click(object sender, RoutedEventArgs e)
+        {//add
+            bool isCodeExist = await SectionData.isCodeExist(tb_code.Text, "" , "Offer");
+            //chk empty code
+            SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk empty discount type
+            SectionData.validateEmptyComboBox(cb_discountType, p_errorDiscountType, tt_errorDiscountType, "trEmptyDiscountTypeToolTip");
+            //chk empty discount value
+            SectionData.validateEmptyTextBox(tb_discountValue, p_errorDiscountValue, tt_errorDiscountValue, "trEmptyDiscountValueToolTip");
+            //chk empty start date
+            SectionData.validateEmptyDatePicker(dp_startDate, p_errorStartDate, tt_errorStartDate, "trEmptyStartDateToolTip");
+            //chk empty end date
+            SectionData.validateEmptyDatePicker(dp_endDate, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
+            //chk empty start time
+            //SectionData.validateEmptyDatePicker(dp_startDate, p_errorStartDate, tt_errorStartDate, "trEmptyStartDateToolTip");
+            //chk empty end time
+            //SectionData.validateEmptyDatePicker(dp_endDate, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
+
+            bool isEndDateSmaller = false;
+            if (dp_endDate.SelectedDate < dp_startDate.SelectedDate) isEndDateSmaller = true;
+
+            bool isEndTimeSmaller = false;
+            if (tp_endTime.SelectedTime < tp_startTime.SelectedTime) isEndTimeSmaller = true;
+            MessageBox.Show(isEndTimeSmaller.ToString());
+
+            if ((!tb_name.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
+                (!cb_discountType.Text.Equals("")) && (!tb_discountValue.Text.Equals("")) &&
+                (dp_startDate.Text != null) && (dp_endDate.Text != null) &&
+                (tp_startTime.Text != null) && (tp_endTime.Text != null))
+            {
+                if ((isCodeExist) || (isEndDateSmaller) || (isEndTimeSmaller))
+                {
+                    if (isCodeExist)
+                        SectionData.showTextBoxValidate(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                   
+                    if (isEndDateSmaller)
+                    {
+                        SectionData.showDatePickerValidate(dp_startDate, p_errorStartDate, tt_errorStartDate, "trErrorEndDateSmallerToolTip");
+                        SectionData.showDatePickerValidate(dp_endDate, p_errorEndDate, tt_errorEndDate, "trErrorEndDateSmallerToolTip");
+                    }
+                    if (isEndTimeSmaller)
+                    {
+                        SectionData.showTimePickerValidate(tp_startTime, p_errorStartTime, tt_errorStartTime, "trErrorEndTimeSmallerToolTip");
+                        SectionData.showTimePickerValidate(tp_endTime, p_errorEndTime, tt_errorEndTime, "trErrorEndTimeSmallerToolTip");
+                    }
+                }
+                else
+                {
+                    //DateTime date = Convert.ToDateTime(dp_endDate.SelectedDate.ToString() + tp_startTime.SelectedTime.ToString());
+                    //MessageBox.Show(date.ToString());
+                    Offer offer = new Offer();
+
+                    offer.code = tb_code.Text;
+                    offer.name = tb_name.Text;
+                    offer.notes = tb_note.Text;
+                    offer.isActive = Convert.ToByte(tgl_ActiveOffer.IsChecked);
+                    offer.discountType = cb_discountType.SelectedValue.ToString();
+                    offer.startDate = DateTime.Parse(dp_startDate.Text);
+                    offer.endDate = DateTime.Parse(dp_endDate.Text);
+                    offer.discountValue = decimal.Parse(tb_discountValue.Text);
+                    offer.createUserId = MainWindow.userID; ;
+
+                    string s = await offerModel.Save(offer);
+
+                    if (s.Equals("Offer Is Added Successfully"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
+
+                        await RefreshOffersList();
+                        Tb_search_TextChanged(null, null);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+            }
 
         }
     }

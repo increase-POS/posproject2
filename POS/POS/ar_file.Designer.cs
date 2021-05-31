@@ -1024,7 +1024,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to التصدير لملف إكسل.
+        ///   Looks up a localized string similar to التصدير إلى ملف إكسل.
         /// </summary>
         internal static string trExcel {
             get {
