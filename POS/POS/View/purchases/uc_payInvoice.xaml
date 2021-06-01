@@ -885,11 +885,11 @@
                                 </Grid>
                                 <DataGrid x:Name="dg_billDetails"  Margin="5,5" Grid.Row="4"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
-                         IsReadOnly="True" CanUserAddRows="False" 
-                        AutoGenerateColumns="False" 
+                         IsReadOnly="False" CanUserAddRows="False" 
+                        AutoGenerateColumns="False"
                         ColumnWidth="SizeToHeader"  >
                                     <DataGrid.Columns >
-                                        <DataGridTemplateColumn Width="20" Header="" >
+                                        <DataGridTemplateColumn Width="20" Header="" IsReadOnly="True" >
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <Button Margin="-10"   Click="deleteRowFromInvoiceItems"
@@ -902,12 +902,18 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTextColumn   MinWidth="10"   Header="Num"  Binding="{Binding Path=ID}"/>
-                                        <DataGridTextColumn  Header="Item" Binding="{Binding Path=Product}"/>
-                                        <DataGridTextColumn  Header="Unit" Binding="{Binding Path=test}"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="10"   Header="Num"  Binding="{Binding Path=ID}"/>
+                                        <DataGridTextColumn IsReadOnly="True"  Header="Item" Binding="{Binding Path=Product}"/>
+                                        <DataGridComboBoxColumn Header="Unit"  
+                                              ItemsSource="{Binding CompanyItems, 
+                                               RelativeSource={RelativeSource Mode=FindAncestor,
+                                               AncestorType={x:Type Window}}}"
+                                    DisplayMemberPath="itemName" 
+                                    SelectedValuePath="unitId"
+                                    SelectedValueBinding="{Binding unitId}" />
                                         <DataGridTextColumn  Header="Amount" Binding="{Binding Path=Count}"/>
                                         <DataGridTextColumn  Header="Price" Binding="{Binding Path=Price}"/>
-                                        <DataGridTextColumn  Header="Total" Binding="{Binding Path=Total}"/>
+                                        <DataGridTextColumn IsReadOnly="True" Header="Total" Binding="{Binding Path=Total}"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
@@ -1303,13 +1309,13 @@
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="1,1"    Content="Print" />
 
-                                <Button x:Name="btn_cash" Grid.Row="2" Grid.Column="0"  
+                                <!--<Button x:Name="btn_cash" Grid.Row="2" Grid.Column="0"  
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="1,1"   Content="Cash" />
                                 <Button x:Name="btn_creditcard" Grid.Row="2" Grid.Column="1" 
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,1"     Content="Credit card" />
-                                <Button x:Name="btn_save" Grid.Row="2" Grid.Column="2" 
+                    Margin="1,1"     Content="Credit card" />-->
+                                <Button x:Name="btn_save" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="3"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1"     Content="Save" />
 

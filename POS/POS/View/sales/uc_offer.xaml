@@ -608,9 +608,7 @@
                                               BorderBrush="#737373"       BorderThickness="0" 
                                               FontFamily="Segoe UI"   
                                               Grid.Row="0"  
-                                              
                                               LostFocus="Tb_validateEmptyLostFocus">
-                                      
                                     </ComboBox>
 
                                         <Path x:Name="p_errorDiscountType"  
