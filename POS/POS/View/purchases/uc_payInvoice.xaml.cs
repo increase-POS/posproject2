@@ -114,8 +114,8 @@ namespace POS.View
             btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
             btn_print.Content = MainWindow.resourcemanager.GetString("trPrint");
-            btn_cash.Content = MainWindow.resourcemanager.GetString("trCash");
-            btn_creditcard.Content = MainWindow.resourcemanager.GetString("trCreditCard");
+            //btn_cash.Content = MainWindow.resourcemanager.GetString("trCash");
+            //btn_creditcard.Content = MainWindow.resourcemanager.GetString("trCreditCard");
 
             ////////////////////////////////----vendor----/////////////////////////////////
 
