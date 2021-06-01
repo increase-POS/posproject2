@@ -490,5 +490,18 @@ namespace POS.Classes
 
             return percentageVal;
         }
+        public static void defaultDatePickerStyle(DatePicker dp)
+        {
+            dp.Loaded += delegate
+            {
+
+                var textBox1 = (TextBox)dp.Template.FindName("PART_TextBox", dp);
+                if (textBox1 != null)
+                {
+                    textBox1.Background = dp.Background;
+                    textBox1.BorderThickness = dp.BorderThickness;
+                }
+            };
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace POS
         public const string APIKey = "1234";
         //public const string APIUri = "http://localhost:44370/api/";
         public const string APIUri = "http://192.168.1.37:44370/api/";
-        //public const string APIUri = "http://192.168.1.4:44370/api/";
+        ////public const string APIUri = "http://192.168.1.4:44370/api/";
 
         public const string TMPFolder = "Thumb";
     }

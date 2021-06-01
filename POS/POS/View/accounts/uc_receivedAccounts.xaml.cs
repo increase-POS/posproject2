@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POS.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -59,27 +60,8 @@ namespace POS.View.accounts
 
             #region Style Date
             /////////////////////////////////////////////////////////////
-            dp_startSearchDate.Loaded += delegate
-            {
-
-                var textBox1 = (TextBox)dp_startSearchDate.Template.FindName("PART_TextBox", dp_startSearchDate);
-                if (textBox1 != null)
-                {
-                    textBox1.Background = dp_startSearchDate.Background;
-                    textBox1.BorderThickness = dp_startSearchDate.BorderThickness;
-                }
-            };
-            /////////////////////////////////////////////////////////////
-            dp_endSearchDate.Loaded += delegate
-            {
-
-                var textBox1 = (TextBox)dp_endSearchDate.Template.FindName("PART_TextBox", dp_endSearchDate);
-                if (textBox1 != null)
-                {
-                    textBox1.Background = dp_endSearchDate.Background;
-                    textBox1.BorderThickness = dp_endSearchDate.BorderThickness;
-                }
-            };
+            SectionData.defaultDatePickerStyle(dp_startSearchDate);
+            SectionData.defaultDatePickerStyle(dp_endSearchDate);
             /////////////////////////////////////////////////////////////
             #endregion
         }

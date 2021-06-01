@@ -69,7 +69,7 @@
                                  Height="450" Width="400" Click="Img_upload_Click" >
                     <Button.Background>
                         <ImageBrush Stretch="Uniform"  x:Name="IMG_customer" 
-                                            ImageSource="/pic/EPSON-thermal-printer4.png"   />
+                                            ImageSource="/pic/no-image-icon-512x512.png"   />
                     </Button.Background>
                 </Button>
                 <Line Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="3" Stretch="Fill" Stroke="#DFDFDF"  X2="1"  Margin="1,1,1,1"
