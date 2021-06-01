@@ -844,26 +844,30 @@ namespace POS.View
 
         private async void getImg()
         {
-            if (string.IsNullOrEmpty(user.image))
+            try
             {
-                SectionData.clearImg(img_user);
-            }
-            else
-            {
-                byte[] imageBuffer = await userModel.downloadImage(user.image); // read this as BLOB from your DB
-
-                var bitmapImage = new BitmapImage();
-
-                using (var memoryStream = new MemoryStream(imageBuffer))
+                if (string.IsNullOrEmpty(user.image))
                 {
-                    bitmapImage.BeginInit();
-                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmapImage.StreamSource = memoryStream;
-                    bitmapImage.EndInit();
+                    SectionData.clearImg(img_user);
                 }
+                else
+                {
+                    byte[] imageBuffer = await userModel.downloadImage(user.image); // read this as BLOB from your DB
 
-                img_user.Background = new ImageBrush(bitmapImage);
+                    var bitmapImage = new BitmapImage();
+
+                    using (var memoryStream = new MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+
+                    img_user.Background = new ImageBrush(bitmapImage);
+                }
             }
+            catch { }
         }
 
         private void ComboBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -949,7 +953,17 @@ namespace POS.View
 
         }
 
+        private void Tb_preventSpaces_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
 
+        private void Tb_email_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+            if (!regex.IsMatch(e.Text))
+                e.Handled = true;
+        }
     }
 }
 

@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Resources;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -136,6 +137,25 @@ namespace POS.View
             dg_offer.Columns[2].Header = MainWindow.resourcemanager.GetString("trValue");
             dg_offer.Columns[3].Header = MainWindow.resourcemanager.GetString("trStartDate");
             dg_offer.Columns[4].Header = MainWindow.resourcemanager.GetString("trEndDate");
+
+            tt_name.Content = MainWindow.resourcemanager.GetString("trName");
+            tt_code.Content = MainWindow.resourcemanager.GetString("trCode");
+            tt_discountType.Content = MainWindow.resourcemanager.GetString("trDiscountType");
+            tt_discountValue.Content = MainWindow.resourcemanager.GetString("trDiscountValue");
+            tt_startDate.Content = MainWindow.resourcemanager.GetString("trStartDate");
+            tt_endDate.Content = MainWindow.resourcemanager.GetString("trEndDate");
+            tt_startTime.Content = MainWindow.resourcemanager.GetString("trStartTime");
+            tt_endTime.Content = MainWindow.resourcemanager.GetString("trEndTime");
+            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
             ///////////////////////////////////////------on Item------///////////////////////////////
             ///
 
@@ -240,6 +260,18 @@ namespace POS.View
             /////////////////////////////////////////////////////////////
             #endregion
 
+            #region prevent editting on date and time
+            TextBox tbStartDate = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
+            tbStartDate.IsReadOnly = true;
+            TextBox tbEndDate = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
+            tbEndDate.IsReadOnly = true;
+
+            TextBox tbStartTime = (TextBox)tp_startTime.Template.FindName("PART_TextBox", tp_startTime);
+            tbStartTime.IsReadOnly = true;
+            TextBox tbEndTime = (TextBox)tp_endTime.Template.FindName("PART_TextBox", tp_endTime);
+            tbEndTime.IsReadOnly = true;
+            #endregion
+
             await RefreshOffersList();
             Tb_search_TextChanged(null, null);
         }
@@ -270,7 +302,9 @@ namespace POS.View
         #endregion
 
         private void Btn_items_Click(object sender, RoutedEventArgs e)
-        {
+        {//items
+            SectionData.clearValidate(tb_code, p_errorCode);
+
             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
             //if ((((this.Parent as Grid).Parent as Grid).Parent as UserControl) != null)
             //((((this.Parent as Grid).Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 0.2;
@@ -282,7 +316,6 @@ namespace POS.View
                 foreach (var item in w.selectedItems)
                 {
                     MessageBox.Show(item.name + "\t");
-
                 }
             }
 
@@ -296,11 +329,39 @@ namespace POS.View
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
-
+        {//export to excel
+            this.Dispatcher.Invoke(() =>
+            {
+                Thread t1 = new Thread(FN_ExportToExcel);
+                t1.SetApartmentState(ApartmentState.STA);
+                t1.Start();
+            });
         }
 
-       
+        void FN_ExportToExcel()
+        {
+            var QueryExcel = offersQuery.AsEnumerable().Select(x => new
+            {
+                Name = x.name,
+                Code = x.code,
+                DisCountType = x.discountType,
+                DisCountValue = x.discountValue,
+                StartDate = x.startDate,
+                EndDate = x.endDate,
+                Notes = x.notes
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trCode");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trDiscountType");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trDiscountValue");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trSartDate");
+            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trEndDate");
+            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trNote");
+
+            ExportToExcel.Export(DTForExcel);
+        }
+
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
             if (offers is null)
@@ -344,10 +405,10 @@ namespace POS.View
             SectionData.clearValidate(tbStartDate, p_errorStartDate);
             TextBox tbEndDate = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
             SectionData.clearValidate(tbEndDate, p_errorEndDate);
-            //TextBox tbStartTime = (TextBox)dp_startDate.Template.FindName("PART_TextBox", tp_startTime);
-            //SectionData.clearValidate(tbStartTime, p_errorStartTime);
-            //TextBox tbEndTime = (TextBox)dp_endDate.Template.FindName("PART_TextBox", tp_endTime);
-            //SectionData.clearValidate(tbEndTime, p_errorEndTime);
+            TextBox tbStartTime = (TextBox)tp_startTime.Template.FindName("PART_TextBox", tp_startTime);
+            SectionData.clearValidate(tbStartTime, p_errorStartTime);
+            TextBox tbEndTime = (TextBox)tp_endTime.Template.FindName("PART_TextBox", tp_endTime);
+            SectionData.clearValidate(tbEndTime, p_errorEndTime);
         }
 
       
@@ -406,17 +467,16 @@ namespace POS.View
             }
             else if (name == "TimePicker")
             {
-                //if ((sender as TimePicker).Name == "tp_startTime")
-                //{
-                //    TextBox tb = (TextBox)((TimePicker)sender).Template.FindName("PART_TextBox", (TimePicker)sender);
-                //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorStartTime, tt_errorStartTime, "trEmptyStartTimeToolTip");
-                //}
-                //else if ((sender as TimePicker).Name == "tp_endTime")
-                //{
-                //    //TextBox tb = (TextBox)dp.Template.FindName("PART_TextBox", dp);
-                //    TextBox tb = (TextBox)((TimePicker)sender).Template.FindName("PART_TextBox", (TimePicker)sender);
-                //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorEndTime, tt_errorEndTime, "trEmptyEndTimeToolTip");
-                //}
+                if ((sender as TimePicker).Name == "tp_startTime")
+                {
+                    TextBox tb = (TextBox)tp_startTime.Template.FindName("PART_TextBox", tp_startTime);
+                    SectionData.validateEmptyTextBox(tb, p_errorStartTime, tt_errorStartTime, "trEmptyStartTimeToolTip");
+                }
+                else if ((sender as TimePicker).Name == "tp_endTime")
+                {
+                    TextBox tb = (TextBox)tp_endTime.Template.FindName("PART_TextBox", tp_endTime);
+                    SectionData.validateEmptyTextBox(tb, p_errorEndTime, tt_errorEndTime, "trEmptyEndTimeToolTip");
+                }
             }
         }
 
@@ -430,10 +490,10 @@ namespace POS.View
             SectionData.clearValidate(tbStartDate, p_errorStartDate);
             TextBox tbEndDate = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
             SectionData.clearValidate(tbEndDate, p_errorEndDate);
-            //TextBox tbStartTime = (TextBox)dp_startDate.Template.FindName("PART_TextBox", tp_startTime);
-            //SectionData.clearValidate(tbStartTime, p_errorStartTime);
-            //TextBox tbEndTime = (TextBox)dp_endDate.Template.FindName("PART_TextBox", tp_endTime);
-            //SectionData.clearValidate(tbEndTime, p_errorEndTime);
+            TextBox tbStartTime = (TextBox)tp_startTime.Template.FindName("PART_TextBox", tp_startTime);
+            SectionData.clearValidate(tbStartTime, p_errorStartTime);
+            TextBox tbEndTime = (TextBox)tp_endTime.Template.FindName("PART_TextBox", tp_endTime);
+            SectionData.clearValidate(tbEndTime, p_errorEndTime);
 
             if (dg_offer.SelectedIndex != -1)
             {
@@ -445,6 +505,10 @@ namespace POS.View
                     tgl_ActiveOffer.IsChecked = Convert.ToBoolean(offer.isActive);
                     cb_discountType.SelectedValue = offer.discountType;
                     tb_discountValue.Text = (Convert.ToInt32(offer.discountValue)).ToString();
+                    dp_startDate.Text = offer.startDate.Value.ToShortDateString();
+                    dp_endDate.Text = offer.endDate.Value.ToShortDateString();
+                    tp_startTime.Text = offer.startDate.Value.ToShortTimeString();
+                    tp_endTime.Text = offer.endDate.Value.ToShortTimeString();
 
                     #region delete
                     if (offer.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
@@ -519,16 +583,17 @@ namespace POS.View
             //chk empty end date
             SectionData.validateEmptyDatePicker(dp_endDate, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
             //chk empty start time
-            //SectionData.validateEmptyDatePicker(dp_startDate, p_errorStartDate, tt_errorStartDate, "trEmptyStartDateToolTip");
+            TextBox tbStart = (TextBox)tp_startTime.Template.FindName("PART_TextBox", tp_startTime);
+            SectionData.validateEmptyTextBox(tbStart, p_errorStartTime, tt_errorStartTime, "trEmptyStartTimeToolTip");
             //chk empty end time
-            //SectionData.validateEmptyDatePicker(dp_endDate, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
+            TextBox tbEnd = (TextBox)tp_endTime.Template.FindName("PART_TextBox", tp_endTime);
+            SectionData.validateEmptyTextBox(tbEnd, p_errorEndTime, tt_errorEndTime, "trEmptyEndTimeToolTip");
 
             bool isEndDateSmaller = false;
             if (dp_endDate.SelectedDate < dp_startDate.SelectedDate) isEndDateSmaller = true;
 
             bool isEndTimeSmaller = false;
             if (tp_endTime.SelectedTime < tp_startTime.SelectedTime) isEndTimeSmaller = true;
-            MessageBox.Show(isEndTimeSmaller.ToString());
 
             if ((!tb_name.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
                 (!cb_discountType.Text.Equals("")) && (!tb_discountValue.Text.Equals("")) &&
@@ -553,8 +618,14 @@ namespace POS.View
                 }
                 else
                 {
-                    //DateTime date = Convert.ToDateTime(dp_endDate.SelectedDate.ToString() + tp_startTime.SelectedTime.ToString());
-                    //MessageBox.Show(date.ToString());
+                    string startDateStr = dp_startDate.SelectedDate.Value.ToShortDateString();
+                    string startTimeStr = tp_startTime.SelectedTime.Value.ToShortTimeString();
+                    DateTime startDateTime = DateTime.Parse(startDateStr + " " + startTimeStr);
+
+                    string endDateStr = dp_endDate.SelectedDate.Value.ToShortDateString();
+                    string endTimeStr = tp_endTime.SelectedTime.Value.ToShortTimeString();
+                    DateTime endDateTime = DateTime.Parse(endDateStr + " " + endTimeStr);
+
                     Offer offer = new Offer();
 
                     offer.code = tb_code.Text;
@@ -562,8 +633,8 @@ namespace POS.View
                     offer.notes = tb_note.Text;
                     offer.isActive = Convert.ToByte(tgl_ActiveOffer.IsChecked);
                     offer.discountType = cb_discountType.SelectedValue.ToString();
-                    offer.startDate = DateTime.Parse(dp_startDate.Text);
-                    offer.endDate = DateTime.Parse(dp_endDate.Text);
+                    offer.startDate = startDateTime;
+                    offer.endDate = endDateTime;
                     offer.discountValue = decimal.Parse(tb_discountValue.Text);
                     offer.createUserId = MainWindow.userID; ;
 
@@ -573,6 +644,91 @@ namespace POS.View
                     {
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         Btn_clear_Click(null, null);
+
+                        await RefreshOffersList();
+                        Tb_search_TextChanged(null, null);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+            }
+
+        }
+
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {//update
+            bool isCodeExist = await SectionData.isCodeExist(tb_code.Text, "", "Offer" , offer.offerId);
+            //chk empty code
+            SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk empty discount type
+            SectionData.validateEmptyComboBox(cb_discountType, p_errorDiscountType, tt_errorDiscountType, "trEmptyDiscountTypeToolTip");
+            //chk empty discount value
+            SectionData.validateEmptyTextBox(tb_discountValue, p_errorDiscountValue, tt_errorDiscountValue, "trEmptyDiscountValueToolTip");
+            //chk empty start date
+            SectionData.validateEmptyDatePicker(dp_startDate, p_errorStartDate, tt_errorStartDate, "trEmptyStartDateToolTip");
+            //chk empty end date
+            SectionData.validateEmptyDatePicker(dp_endDate, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
+            //chk empty start time
+            TextBox tbStart = (TextBox)tp_startTime.Template.FindName("PART_TextBox", tp_startTime);
+            SectionData.validateEmptyTextBox(tbStart, p_errorStartTime, tt_errorStartTime, "trEmptyStartTimeToolTip");
+            //chk empty end time
+            TextBox tbEnd = (TextBox)tp_endTime.Template.FindName("PART_TextBox", tp_endTime);
+            SectionData.validateEmptyTextBox(tbEnd, p_errorEndTime, tt_errorEndTime, "trEmptyEndTimeToolTip");
+
+            bool isEndDateSmaller = false;
+            if (dp_endDate.SelectedDate < dp_startDate.SelectedDate) isEndDateSmaller = true;
+
+            bool isEndTimeSmaller = false;
+            if (tp_endTime.SelectedTime < tp_startTime.SelectedTime) isEndTimeSmaller = true;
+
+            if ((!tb_name.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
+                (!cb_discountType.Text.Equals("")) && (!tb_discountValue.Text.Equals("")) &&
+                (dp_startDate.Text != null) && (dp_endDate.Text != null) &&
+                (tp_startTime.Text != null) && (tp_endTime.Text != null))
+            {
+                if ((isCodeExist) || (isEndDateSmaller) || (isEndTimeSmaller))
+                {
+                    if (isCodeExist)
+                        SectionData.showTextBoxValidate(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+
+                    if (isEndDateSmaller)
+                    {
+                        SectionData.showDatePickerValidate(dp_startDate, p_errorStartDate, tt_errorStartDate, "trErrorEndDateSmallerToolTip");
+                        SectionData.showDatePickerValidate(dp_endDate, p_errorEndDate, tt_errorEndDate, "trErrorEndDateSmallerToolTip");
+                    }
+                    if (isEndTimeSmaller)
+                    {
+                        SectionData.showTimePickerValidate(tp_startTime, p_errorStartTime, tt_errorStartTime, "trErrorEndTimeSmallerToolTip");
+                        SectionData.showTimePickerValidate(tp_endTime, p_errorEndTime, tt_errorEndTime, "trErrorEndTimeSmallerToolTip");
+                    }
+                }
+                else
+                {
+                    string startDateStr = dp_startDate.SelectedDate.Value.ToShortDateString();
+                    string startTimeStr = tp_startTime.SelectedTime.Value.ToShortTimeString();
+                    DateTime startDateTime = DateTime.Parse(startDateStr + " "+ startTimeStr);
+                    
+                    string endDateStr = dp_endDate.SelectedDate.Value.ToShortDateString();
+                    string endTimeStr = tp_endTime.SelectedTime.Value.ToShortTimeString();
+                    DateTime endDateTime = DateTime.Parse(endDateStr + " " + endTimeStr);
+
+                    offer.code = tb_code.Text;
+                    offer.name = tb_name.Text;
+                    offer.notes = tb_note.Text;
+                    offer.isActive = Convert.ToByte(tgl_ActiveOffer.IsChecked);
+                    offer.discountType = cb_discountType.SelectedValue.ToString();
+                    offer.startDate = startDateTime;
+                    offer.endDate = endDateTime;
+                    offer.discountValue = decimal.Parse(tb_discountValue.Text);
+                    offer.createUserId = MainWindow.userID; ;
+
+                    string s = await offerModel.Save(offer);
+
+                    if (s.Equals("Offer Is Updated Successfully"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
 
                         await RefreshOffersList();
                         Tb_search_TextChanged(null, null);

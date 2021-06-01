@@ -549,7 +549,8 @@
                              BorderBrush="AliceBlue" MaxLength="9"
                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2" >
+                            Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
+                                         PreviewKeyDown="Tb_preventSpaces_PreviewKeyDown" >
                                     <TextBox.ToolTip>
                                         <ToolTip x:Name="tt_mobile" Content="Mobile"
                                               Placement="left" 
@@ -606,7 +607,8 @@
                                      BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="15"
-                                     Height="35" Width="195"  Margin="5,5,0,5" >
+                                     Height="35" Width="195"  Margin="5,5,0,5" 
+                                     PreviewKeyDown="Tb_preventSpaces_PreviewKeyDown" >
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_phone" Content="Phone"
                                               Placement="left" 
@@ -645,7 +647,8 @@
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                                      Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
-                                     LostFocus="Tb_email_LostFocus" >
+                                     LostFocus="Tb_email_LostFocus" 
+                                     PreviewKeyDown="Tb_preventSpaces_PreviewKeyDown" PreviewTextInput="Tb_email_PreviewTextInput" >
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_email" Content="Email"
                                               Placement="left" 
@@ -752,7 +755,8 @@
                                              BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
                                              HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="2"
                                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                             Height="35" Width="162"  Margin="0,5,0,5"  >
+                                             Height="35" Width="162"  Margin="0,5,0,5" 
+                                             PreviewKeyDown="Tb_preventSpaces_PreviewKeyDown"  >
                                         <TextBox.ToolTip>
                                             <ToolTip x:Name="tt_workHours" Content="Work Hours"
                                               Placement="left" 

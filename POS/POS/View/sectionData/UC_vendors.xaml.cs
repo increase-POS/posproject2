@@ -122,7 +122,7 @@ namespace POS.View
         }
 
         private async void DG_supplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        {//selection
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
             p_errorMobile.Visibility = Visibility.Collapsed;
@@ -139,6 +139,7 @@ namespace POS.View
             }
             if (agent != null)
             {
+                tb_code.Text = agent.code;
 
                 SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
 
@@ -741,26 +742,30 @@ namespace POS.View
 
         private async void getImg()
         {
-            if (agent.image.Equals(""))
+            try
             {
-                SectionData.clearImg(img_vendor);
-            }
-            else
-            {
-                byte[] imageBuffer = await agentModel.downloadImage(agent.image); // read this as BLOB from your DB
-
-                var bitmapImage = new BitmapImage();
-
-                using (var memoryStream = new MemoryStream(imageBuffer))
+                if (agent.image.Equals(""))
                 {
-                    bitmapImage.BeginInit();
-                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmapImage.StreamSource = memoryStream;
-                    bitmapImage.EndInit();
+                    SectionData.clearImg(img_vendor);
                 }
+                else
+                {
+                    byte[] imageBuffer = await agentModel.downloadImage(agent.image); // read this as BLOB from your DB
 
-                img_vendor.Background = new ImageBrush(bitmapImage);
+                    var bitmapImage = new BitmapImage();
+
+                    using (var memoryStream = new MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+
+                    img_vendor.Background = new ImageBrush(bitmapImage);
+                }
             }
+            catch { }
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -865,10 +870,12 @@ namespace POS.View
 
         }
 
-
-
-
-      
+        private void Tb_email_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+            if (!regex.IsMatch(e.Text))
+                e.Handled = true;
+        }
     }
 
 

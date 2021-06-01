@@ -166,8 +166,13 @@ namespace POS.View
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            //decimal
+            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                e.Handled = false;
+
+            else
+                e.Handled = true;
         }
         #endregion
         #region Add - Update - Delete _ Clear
@@ -882,33 +887,17 @@ namespace POS.View
             e.Handled = e.Key == Key.Space;
         }
 
-        private void Tb_categoryCode_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            if (e.Key >= Key.A && e.Key <= Key.Z)
-            {
-            }
-            else if (e.Key >= Key.D0 && e.Key <= Key.D9)
-            {
-            }
-            else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
-            {
-            }
-            else if (e.Key == Key.Tab)
-            {
-
-            }
-            else
-            {
+        private void Tb_categoryCode_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {//only english and digits
+            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+            if (!regex.IsMatch(e.Text))
                 e.Handled = true;
-            }
-            ////?????????????????????????arabic
-            //   Regex regex = new Regex("[^0-9]+");
-            //e.Handled = false;
-            //Regex regex1 = new Regex("[^a-z]+");
-
 
         }
 
+        private void Tb_taxes_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
     }
 }

@@ -900,4 +900,31 @@
   <data name="trRefresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="trEmptyEndTimeToolTip" xml:space="preserve">
+    <value>End time can not be empty</value>
+  </data>
+  <data name="trEmptyStartTimeToolTip" xml:space="preserve">
+    <value>Start time can not be empty</value>
+  </data>
+  <data name="trErrorEndTimeSmallerToolTip" xml:space="preserve">
+    <value>End time can not be before start time</value>
+  </data>
+  <data name="trMaxInvoice" xml:space="preserve">
+    <value>Maximum invoice value</value>
+  </data>
+  <data name="trMinInvoice" xml:space="preserve">
+    <value>Minimum invoice value</value>
+  </data>
+  <data name="trSartDate" xml:space="preserve">
+    <value>Start date</value>
+  </data>
+  <data name="trEndTime" xml:space="preserve">
+    <value>End date</value>
+  </data>
+  <data name="trStartTime" xml:space="preserve">
+    <value>Start time</value>
+  </data>
+  <data name="trErrorEmptyVendorToolTip" xml:space="preserve">
+    <value>Vendor can not be empty</value>
+  </data>
 </root>

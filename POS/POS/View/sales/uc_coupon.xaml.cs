@@ -185,7 +185,11 @@ namespace POS.View
             translate();
             //tb_discountValue.Text = _numValue.ToString();
             Keyboard.Focus(tb_code);
+
             SectionData.clearValidate(tb_code, p_errorCode);
+
+            img_barcode.Source = null;
+
             #region Style Date
             /////////////////////////////////////////////////////////////
             dp_startDate.Loaded += delegate
@@ -210,6 +214,13 @@ namespace POS.View
                 }
             };
             /////////////////////////////////////////////////////////////
+            #endregion
+
+            #region prevent editting on date and time
+            TextBox tbStartDate = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
+            tbStartDate.IsReadOnly = true;
+            TextBox tbEndDate = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
+            tbEndDate.IsReadOnly = true;
             #endregion
 
             await RefreshCouponsList();
@@ -348,6 +359,7 @@ namespace POS.View
             tb_quantity.Clear();
             //tb_remainQuantity.Clear();
             tb_note.Clear();
+            img_barcode.Source = null;
 
             SectionData.clearValidate(tb_name, p_errorName);
             SectionData.clearValidate(tb_code, p_errorCode);
@@ -385,8 +397,6 @@ namespace POS.View
             {
                 Name = x.name,
                 Code = x.code,
-                BarCode = x.barcode,
-                IsActive = x.isActive,
                 DisCountType = x.discountType,
                 DisCountValue = x.discountValue,
                 StartDate = x.startDate,
@@ -399,16 +409,14 @@ namespace POS.View
             var DTForExcel = QueryExcel.ToDataTable();
             DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
             DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trCode");
-            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trBarCode");
-            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trIsActive");
-            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trDiscountType");
-            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trDiscountValue");
-            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trSartDate");
-            DTForExcel.Columns[7].Caption = MainWindow.resourcemanager.GetString("trEndDate");
-            DTForExcel.Columns[8].Caption = MainWindow.resourcemanager.GetString("trMinInvoice");
-            DTForExcel.Columns[9].Caption = MainWindow.resourcemanager.GetString("trMaxInvoice");
-            DTForExcel.Columns[10].Caption = MainWindow.resourcemanager.GetString("trQuantity");
-            DTForExcel.Columns[11].Caption = MainWindow.resourcemanager.GetString("trNote");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trDiscountType");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trDiscountValue");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trSartDate");
+            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trEndDate");
+            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trMinInvoice");
+            DTForExcel.Columns[7].Caption = MainWindow.resourcemanager.GetString("trMaxInvoice");
+            DTForExcel.Columns[8].Caption = MainWindow.resourcemanager.GetString("trQuantity");
+            DTForExcel.Columns[9].Caption = MainWindow.resourcemanager.GetString("trNote");
 
             ExportToExcel.Export(DTForExcel);
         }
@@ -440,7 +448,7 @@ namespace POS.View
                     tgl_ActiveCoupon.IsChecked = Convert.ToBoolean(coupon.isActive);
                     cb_typeDiscount.SelectedValue = coupon.discountType ;
                     tb_discountValue.Text = (Convert.ToInt32(coupon.discountValue)).ToString();
-
+                    drawBarcode(coupon.barcode);
                     #region delete
                     if (coupon.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
 
@@ -625,6 +633,43 @@ namespace POS.View
         {
             Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
             if (!regex.IsMatch(e.Text))
+                e.Handled = true;
+        }
+
+        private void drawBarcode(string barcodeStr)
+        {//barcode image
+            // create encoding object
+            Zen.Barcode.Code128BarcodeDraw barcode = Zen.Barcode.BarcodeDrawFactory.Code128WithChecksum;
+
+            if (barcodeStr != "")
+            {
+                System.Drawing.Bitmap serial_bitmap = (System.Drawing.Bitmap)barcode.Draw(barcodeStr, 60);
+                System.Drawing.ImageConverter ic = new System.Drawing.ImageConverter();
+                //generate bitmap
+                img_barcode.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(serial_bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            }
+            else
+                img_barcode.Source = null;
+        }
+
+        private void Tb_quantity_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            //only int
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+
+          
+        }
+
+     
+        private void Tb_Decimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            //decimal
+            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                e.Handled = false;
+
+            else
                 e.Handled = true;
         }
     }

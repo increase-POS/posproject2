@@ -425,7 +425,7 @@
                                        HorizontalAlignment="Left" VerticalAlignment="Center" 
                                        materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                        KeyboardNavigation.IsTabStop="False"
-                                       Height="35" Width="340"  Margin="5,2,0,8" LostFocus="tb_code_LostFocus" TextChanged="tb_code_TextChanged" >
+                                       Height="35" Width="340"  Margin="5,2,0,8" LostFocus="tb_code_LostFocus" TextChanged="tb_code_TextChanged" PreviewTextInput="Tb_code_PreviewTextInput" PreviewKeyDown="Tb_code_PreviewKeyDown" >
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_code" Content="Code"
                                               Placement="left" 
@@ -670,7 +670,7 @@
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" LostFocus="Tb_email_LostFocus"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                     Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" PreviewKeyDown="tb_email_PreviewKeyDown" >
+                                     Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" PreviewKeyDown="tb_email_PreviewKeyDown" PreviewTextInput="Tb_email_PreviewTextInput" >
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_email" Content="Email"
                                              Placement="left" 

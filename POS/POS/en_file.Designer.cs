@@ -754,6 +754,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End time can not be empty.
+        /// </summary>
+        internal static string trEmptyEndTimeToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyEndTimeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job can npt be empty.
         /// </summary>
         internal static string trEmptyJobToolTip {
@@ -862,6 +871,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start time can not be empty.
+        /// </summary>
+        internal static string trEmptyStartTimeToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyStartTimeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username can&apos;t be empty!.
         /// </summary>
         internal static string trEmptyUserNameToolTip {
@@ -894,6 +912,15 @@ namespace POS {
         internal static string trEndDateHint {
             get {
                 return ResourceManager.GetString("trEndDateHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End date.
+        /// </summary>
+        internal static string trEndTime {
+            get {
+                return ResourceManager.GetString("trEndTime", resourceCulture);
             }
         }
         
@@ -1006,11 +1033,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vendor can not be empty.
+        /// </summary>
+        internal static string trErrorEmptyVendorToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyVendorToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The end date cannot be earlier than the start date.
         /// </summary>
         internal static string trErrorEndDateSmallerToolTip {
             get {
                 return ResourceManager.GetString("trErrorEndDateSmallerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End time can not be before start time.
+        /// </summary>
+        internal static string trErrorEndTimeSmallerToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEndTimeSmallerToolTip", resourceCulture);
             }
         }
         
@@ -1294,6 +1339,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum invoice value.
+        /// </summary>
+        internal static string trMaxInvoice {
+            get {
+                return ResourceManager.GetString("trMaxInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum Invoice Value.
         /// </summary>
         internal static string trMaxInvoiceValue {
@@ -1335,6 +1389,15 @@ namespace POS {
         internal static string trMinimumInvoiceValueHint {
             get {
                 return ResourceManager.GetString("trMinimumInvoiceValueHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum invoice value.
+        /// </summary>
+        internal static string trMinInvoice {
+            get {
+                return ResourceManager.GetString("trMinInvoice", resourceCulture);
             }
         }
         
@@ -1825,6 +1888,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start date.
+        /// </summary>
+        internal static string trSartDate {
+            get {
+                return ResourceManager.GetString("trSartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         internal static string trSave {
@@ -2037,6 +2109,15 @@ namespace POS {
         internal static string trStartDateHint {
             get {
                 return ResourceManager.GetString("trStartDateHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start time.
+        /// </summary>
+        internal static string trStartTime {
+            get {
+                return ResourceManager.GetString("trStartTime", resourceCulture);
             }
         }
         

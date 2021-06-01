@@ -495,5 +495,17 @@ namespace POS.View
             rep.Refresh();
             LocalReportExtensions.PrintToPrinter(rep);
         }
+
+        private void Tb_code_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void Tb_code_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+            if (!regex.IsMatch(e.Text))
+                e.Handled = true;
+        }
     }
 }

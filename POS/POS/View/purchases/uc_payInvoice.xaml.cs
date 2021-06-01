@@ -71,8 +71,15 @@ namespace POS.View
         Branch branchModel = new Branch();
         IEnumerable<Branch> branches;
 
+        Agent agentModel = new Agent();
+        IEnumerable<Agent> vendors;
+
         ItemUnit itemUnitModel = new ItemUnit();
         List<ItemUnit> barcodesList;
+        List<ItemUnit> itemUnits;
+
+        Invoice invoiceModel = new Invoice();
+        Invoice invoice = new Invoice();
 
         Bill bill;
 
@@ -104,6 +111,7 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trBranchHint"));
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
+            dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
             dg_billDetails.Columns[5].Header = MainWindow.resourcemanager.GetString("trPrice");
             dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trTotal");
@@ -114,16 +122,14 @@ namespace POS.View
             btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
             btn_print.Content = MainWindow.resourcemanager.GetString("trPrint");
-            //btn_cash.Content = MainWindow.resourcemanager.GetString("trCash");
-            //btn_creditcard.Content = MainWindow.resourcemanager.GetString("trCreditCard");
 
             ////////////////////////////////----vendor----/////////////////////////////////
 
             txt_vendorHeader.Text = MainWindow.resourcemanager.GetString("trVendor");
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendor, MainWindow.resourcemanager.GetString("trVendorHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_paid, MainWindow.resourcemanager.GetString("trPaidHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_deserved, MainWindow.resourcemanager.GetString("trDeservedHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_paid, MainWindow.resourcemanager.GetString("trPaidHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_deserved, MainWindow.resourcemanager.GetString("trDeservedHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_desrvedDate, MainWindow.resourcemanager.GetString("trDeservedDateHint"));
             txt_vendorIvoiceDetails.Text = MainWindow.resourcemanager.GetString("trVendorInvoiceDetails");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_invoiceNumber, MainWindow.resourcemanager.GetString("trInvoiceNumberHint"));
@@ -159,6 +165,7 @@ namespace POS.View
             Txb_searchitems_TextChanged(null, null);
             configureDiscountType();
             await RefrishBranches();
+            await RefrishVendors();
             await fillBarcodeList();
 
             #region Style Date
@@ -204,8 +211,9 @@ namespace POS.View
         public class BillDetails
         {
             public int ID { get; set; }
-            public int ItemId { get; set; }
+            public int itemId { get; set; }
             public string Product { get; set; }
+            public string Unit { get; set; }
             public int Count { get; set; }
             public decimal Price { get; set; }
             public decimal Total { get; set; }
@@ -242,7 +250,7 @@ namespace POS.View
                     // calculate new sum
                     _Sum -= row.Total;
                     //get index of item
-                    int index = billDetails.IndexOf(billDetails.Where(p => p.ItemId == row.ItemId).FirstOrDefault());
+                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemId == row.itemId).FirstOrDefault());
                     // remove item from bill
                     billDetails.RemoveAt(index);
 
@@ -284,6 +292,13 @@ namespace POS.View
             categories = await categoryModel.GetAllCategories();
             return categories;
         }
+        async Task RefrishVendors()
+        {
+            vendors = await agentModel.GetAgentsActive("v");
+            cb_vendor.ItemsSource = vendors;
+            cb_vendor.DisplayMemberPath = "name";
+            cb_vendor.SelectedValuePath = "agentId";
+        }
         async Task RefrishBranches()
         {
             branches = await branchModel.GetBranchesActive("all");
@@ -323,125 +338,15 @@ namespace POS.View
             catigoriesAndItemsView.gridCatigorieItems = grid_itemContainerCard;
             catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
         }
-        void refrishBillDetails()
-        {
-            dg_billDetails.ItemsSource = null;
-            dg_billDetails.ItemsSource = billDetails;
 
-            tb_sum.Text = _Sum.ToString();
-        }
         async Task fillBarcodeList()
         {
             barcodesList = await itemUnitModel.getAllBarcodes();
         }
-        private async void HandleKeyPress(object sender, KeyEventArgs e)
-        {
-          
-            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-            if (elapsed.TotalMilliseconds > 1000)
-            {
-                _barcode.Clear();
-                _BarcodeStr = "";
-            }
-
-            string digit = "";
-            // record keystroke & timestamp 
-            if (e.Key >= Key.D0 && e.Key <= Key.D9)
-            {
-                //digit pressed!
-                digit = e.Key.ToString().Substring(1);
-                // = "1" when D1 is pressed
-            }
-            else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
-            {
-                digit = e.Key.ToString().Substring(6); // = "1" when NumPad1 is pressed
-            }
-
-            _barcode.Add((char)e.Key);
-            _BarcodeStr += digit;
-            _lastKeystroke = DateTime.Now;
-
-            // process barcode
-            if (e.Key.ToString() == "Return" && _barcode.Count > 0)
-            {        
-                tb_barcode.Text = _BarcodeStr;
-                _barcode.Clear();
-                _BarcodeStr = "";
-
-                // get item matches barcode
-                if (barcodesList != null)
-                {
-                    ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text);
-
-                    // get item matches the barcode
-                    if (unit1 != null)
-                    {
-                        int itemId = (int)unit1.itemId;
-                        if (unit1.itemId != 0)
-                        {                                                      
-                            int index = billDetails.IndexOf(billDetails.Where(p => p.ItemId == itemId).FirstOrDefault());
-                            //item doesn't exist in bill
-                            if (index == -1)
-                            {
-                                _SequenceNum++;
-                                item = items.ToList().Find(i => i.itemId == itemId);
-                                int count = 1;
-                                decimal price = 1000; //?????
-                                decimal total = count * price;
-                                billDetails.Add(new BillDetails()
-                                {
-                                    ID = _SequenceNum,
-                                    Product = item.name,
-                                    ItemId = item.itemId,
-                                    Count = 1,
-                                    Price = price,
-                                    Total = total,
-                                }) ;
-                                _Sum += total;
-                                refrishTotalValue();
-                            }
-                            else // item exist prevoiusly in list
-                            {                               
-                                billDetails[index].Count++;
-                                billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
-
-                                _Sum += billDetails[index].Price;
-                                refrishTotalValue();
-                            }
-                            refrishBillDetails();
-                        }
-                    }
-                    else
-                    {
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemNotFoundToolTip"), animation: ToasterAnimation.FadeIn);
-                    }
-                }  
-                e.Handled = true;
-                cb_branch.SelectedValue = _SelectedBranch;
-            }
-        }
+       
         #endregion
         #region Get Id By Click  Y
-        private void dg_items_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
-           
 
-            if (dg_items.SelectedIndex != -1)
-            {
-                item = dg_items.SelectedItem as Item;
-                this.DataContext = item;
-
-               
-
-            }
-            if (item != null)
-            {
-              
-            }
-
-            
-        }
         public async void ChangeCategoryIdEvent(int categoryId)
         {
             category = categories.ToList().Find(c => c.categoryId == categoryId);
@@ -458,19 +363,52 @@ namespace POS.View
             Txb_searchitems_TextChanged(null, null);
         }
 
-        public void ChangeItemIdEvent(int itemId)
+        
+        public async void ChangeItemIdEvent(int itemId)
         {
-
-
             item = items.ToList().Find(c => c.itemId == itemId);
             if (item != null)
             {
                 this.DataContext = item;
 
+                // create new row in bill details data grid
+                // increase sequence for each read
+                _SequenceNum++;
+                // get item units
+                itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
+                // search for default unit for purchase
+                var defaultPurUnit = itemUnits.ToList().Find(c => c.defaultPurchase == 1);
+                if (defaultPurUnit == null)
+                {
+                    defaultPurUnit = new ItemUnit();
+                    defaultPurUnit.mainUnit = "";
+                }
+
+
+
+                int count = 1;
+                decimal price = 1000; //?????
+                decimal total = count * price;
+                billDetails.Add(new BillDetails()
+                {
+                    ID = _SequenceNum,
+                    Product = item.name,
+                    itemId = item.itemId,
+                    Unit = defaultPurUnit.mainUnit,
+                    Count = 1,
+                    Price = price,
+                    Total = total,
+                });
+
+                _Sum += total;
+                refrishTotalValue();
+
+                refrishBillDetails();
+
 
             }
         }
-       
+ 
         #endregion
         #region Toggle Button Y
         /// <summary>
@@ -741,11 +679,94 @@ namespace POS.View
         }
         #endregion
 
-        private void Btn_newDraft_Click(object sender, RoutedEventArgs e)
+        #region validation
+        private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
         {
+            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                e.Handled = false;
 
+            else
+                e.Handled = true;
+        }
+        private void space_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+        private void validateInvoiceValues()
+        {
+            SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+            SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
+            SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip");
         }
 
+        private void input_LostFocus(object sender, RoutedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            if (name == "TextBox")
+            {
+                if ((sender as TextBox).Name == "tb_invoiceNumber")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip");
+            }
+            else if (name == "ComboBox")
+            {
+                if ((sender as ComboBox).Name == "cb_branch")
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+                if ((sender as ComboBox).Name == "cb_vendor")
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
+            }
+        }
+        #endregion
+        #region save invoice
+
+        private async void addInvoice(string invType)
+        {
+            invoice.invType = invType;
+            invoice.total = _Sum;
+            invoice.totalNet = decimal.Parse(tb_total.Text);
+            invoice.agentId = (int)cb_vendor.SelectedValue;
+            invoice.branchId = (int)cb_vendor.SelectedValue;
+            invoice.paid = decimal.Parse(tb_paid.Text);
+            invoice.deserved = decimal.Parse(tb_deserved.Text);
+            invoice.deservedDate = dp_desrvedDate.SelectedDate;
+            invoice.vendorInvNum = tb_invoiceNumber.Text;
+            invoice.vendorInvDate = dp_invoiceDate.SelectedDate;
+            invoice.notes = tb_note.Text;
+            invoice.createUserId = MainWindow.userID;
+            invoice.updateUserId = MainWindow.userID;
+
+            int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
+
+            if (invoiceId != 0)
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+            // add invoice details
+        }
+        private void Btn_newDraft_Click(object sender, RoutedEventArgs e)
+        {
+            //check mandatory inputs
+            validateInvoiceValues();
+            if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
+            {
+                //pd draft purchase
+                addInvoice("pd");
+               
+                clearInvoice();
+            }
+        }
+        private void clearInvoice()
+        {
+            _Sum = 0;
+            _SequenceNum = 0;
+            invoice = new Invoice();
+            cb_branch.SelectedIndex = -1;
+            itemUnits.Clear();
+            billDetails.Clear();
+            refrishBillDetails();
+        }
+        #endregion
         private void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
@@ -828,6 +849,148 @@ namespace POS.View
         {
             calculateDiscountVal();
         }
-        
+
+        #region billdetails
+        List<ItemUnit> GetItemUnits(int itemId)
+        {
+            List<ItemUnit> itemUnits = new List<ItemUnit>();
+            var ItemUnit1 = new ItemUnit { itemUnitId = 35 };
+            var ItemUnit2 = new ItemUnit { itemUnitId = 63 };
+            var ItemUnit3 = new ItemUnit { itemUnitId = 364 };
+            itemUnits.Add(ItemUnit1);
+            itemUnits.Add(ItemUnit2);
+            itemUnits.Add(ItemUnit3);
+
+
+            return itemUnits;
+
+        }
+        void GenerateComboBox(DataGrid dg)
+        {
+            var vm = GetItemUnits(1);
+            var dataGridTemplateColumn = new DataGridTemplateColumn();
+            var dataTemplate = new DataTemplate();
+            var comboBox = new FrameworkElementFactory(typeof(ComboBox));
+            //comboBox.SetValue(NameProperty, new Binding("cc" + dataGridTemplateColumn.Header));
+            comboBox.SetValue(ComboBox.ItemsSourceProperty, vm);//Bind the ObservableCollection list
+            comboBox.SetValue(ComboBox.SelectedIndexProperty, 1);
+            comboBox.SetValue(ComboBox.DisplayMemberPathProperty, "itemUnitId");
+            comboBox.AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(ComboBox_SelectionChanged));
+
+            dataTemplate.VisualTree = comboBox;
+            dataGridTemplateColumn.CellTemplate = dataTemplate;
+            dataGridTemplateColumn.Header = "Unit";
+            dg.Columns.Add(dataGridTemplateColumn);
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+        void refrishBillDetails()
+        {
+            dg_billDetails.ItemsSource = null;
+            dg_billDetails.ItemsSource = billDetails;
+            GenerateComboBox(dg_billDetails);
+
+            tb_sum.Text = _Sum.ToString();
+        }
+
+
+        // read item from barcode
+        private async void HandleKeyPress(object sender, KeyEventArgs e)
+        {
+
+            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+            if (elapsed.TotalMilliseconds > 1000)
+            {
+                _barcode.Clear();
+                _BarcodeStr = "";
+            }
+
+            string digit = "";
+            // record keystroke & timestamp 
+            if (e.Key >= Key.D0 && e.Key <= Key.D9)
+            {
+                //digit pressed!
+                digit = e.Key.ToString().Substring(1);
+                // = "1" when D1 is pressed
+            }
+            else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
+            {
+                digit = e.Key.ToString().Substring(6); // = "1" when NumPad1 is pressed
+            }
+
+            _barcode.Add((char)e.Key);
+            _BarcodeStr += digit;
+            _lastKeystroke = DateTime.Now;
+
+            // process barcode
+            if (e.Key.ToString() == "Return" && _barcode.Count > 0)
+            {
+                tb_barcode.Text = _BarcodeStr;
+                _barcode.Clear();
+                _BarcodeStr = "";
+
+                // get item matches barcode
+                if (barcodesList != null)
+                {
+                    ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text);
+
+                    // get item matches the barcode
+                    if (unit1 != null)
+                    {
+                        int itemId = (int)unit1.itemId;
+                        if (unit1.itemId != 0)
+                        {
+                            int index = billDetails.IndexOf(billDetails.Where(p => p.itemId == itemId).FirstOrDefault());
+                            //item doesn't exist in bill
+                            if (index == -1)
+                            {
+                                // get item units
+                                itemUnits = await itemUnitModel.GetItemUnits(itemId);
+
+                                // increase sequence for each read
+                                _SequenceNum++;
+                                //get item from list
+                                item = items.ToList().Find(i => i.itemId == itemId);
+                                int count = 1;
+                                decimal price = 1000; //?????
+                                decimal total = count * price;
+                                billDetails.Add(new BillDetails()
+                                {
+                                    ID = _SequenceNum,
+                                    Product = item.name,
+                                    itemId = item.itemId,
+                                    Unit = unit1.mainUnit,
+                                    Count = 1,
+                                    Price = price,
+                                    Total = total,
+                                });
+                                _Sum += total;
+                                refrishTotalValue();
+
+                            }
+                            else // item exist prevoiusly in list
+                            {
+                                billDetails[index].Count++;
+                                billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
+
+                                _Sum += billDetails[index].Price;
+                                refrishTotalValue();
+                            }
+                            refrishBillDetails();
+                        }
+                    }
+                    else
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemNotFoundToolTip"), animation: ToasterAnimation.FadeIn);
+                    }
+                }
+                e.Handled = true;
+                cb_branch.SelectedValue = _SelectedBranch;
+            }
+        }       
+        #endregion billdetails
     }
 }

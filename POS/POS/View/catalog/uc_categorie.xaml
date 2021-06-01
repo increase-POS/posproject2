@@ -621,7 +621,8 @@
                                              BorderBrush="AliceBlue"   TabIndex="0"
                                              HorizontalAlignment="Left" VerticalAlignment="Center" 
                                              Height="35"       Margin="0,5"
-                                             KeyDown="Tb_categoryCode_KeyDown" >
+                                             PreviewTextInput="Tb_categoryCode_PreviewTextInput" 
+                                                 PreviewKeyDown="Tb_categoryCode_PreviewKeyDown" >
                                             <TextBox.ToolTip>
                                                 <ToolTip x:Name="tt_code" Content="Code"
                                               Placement="left" 
@@ -778,7 +779,7 @@
                                              Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                              BorderBrush="#f8f8f8"  TabIndex="4"
                                              HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                             Grid.Column="1"  Height="35"   Margin="0,5" >
+                                             Grid.Column="1"  Height="35"   Margin="0,5" PreviewKeyDown="Tb_taxes_PreviewKeyDown" >
                                             <TextBox.ToolTip>
                                                 <ToolTip x:Name="tt_taxes" Content="Taxes"
                                               Placement="left" 

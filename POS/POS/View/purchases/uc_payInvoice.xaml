@@ -379,7 +379,7 @@
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"  SelectionChanged="dg_items_SelectionChanged"  >
+                        ColumnWidth="SizeToHeader"   >
                                     <DataGrid.Columns >
                                         <DataGridTextColumn   MinWidth="150"   Header="Code"  Binding="{Binding Path=code}">
                                             <DataGridTextColumn.ElementStyle>
@@ -715,12 +715,12 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Button   Width="120" Height="35" Grid.Column="0" 
-                      HorizontalAlignment="Center" VerticalAlignment="Center" 
-                     Background="{x:Null}"  BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="0"
-                    Padding="0"  x:Name="btn_newDraft" Click="Btn_newDraft_Click" >
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                    Background="{x:Null}"  BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="0"
+                                    Padding="0"  x:Name="btn_newDraft" Click="Btn_newDraft_Click" >
                                     <Border x:Name="brd_newDraftTab" CornerRadius="0,0,0,0" Background="#4E4E4E"
-                               BorderThickness="0,1,1,0" BorderBrush="#E8E8E8">
-                                        <Grid Width="120" Height="35"  >
+                                            BorderThickness="0,1,1,0" BorderBrush="#E8E8E8">
+                                            <Grid Width="120" Height="35"  >
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="35"/>
                                                 <ColumnDefinition Width="*"/>
@@ -835,17 +835,19 @@
                                 <Grid Grid.Row="1"  >
                                     <ComboBox   Grid.Row="1" x:Name="cb_branch"
                                              Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Store... "  
-                           TextBlock.FontSize="12"   Background="#f8f8f8" 
-                         HorizontalAlignment="Left" VerticalAlignment="Center" 
-                          Height="35" Width="350"  Margin="5,5"
-                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_branch_SelectionChanged" />
-                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                            materialDesign:HintAssist.Hint="Store... "  
+                                            TextBlock.FontSize="12"   Background="#f8f8f8" 
+                                            HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                            Height="35" Width="350"  Margin="5,5"
+                                                LostFocus="input_LostFocus"
+                                            BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_branch_SelectionChanged" />
+                                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                              Name="p_errorBranch"
+                                                HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                                VerticalAlignment="Center" Width="15"  Height="15"
+                                                Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                         <Path.ToolTip>
-                                            <ToolTip   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                            <ToolTip  x:Name="tt_errorBranch"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                         </Path.ToolTip>
                                     </Path>
                                 </Grid>
@@ -905,12 +907,12 @@
                                         <DataGridTextColumn IsReadOnly="True"  MinWidth="10"   Header="Num"  Binding="{Binding Path=ID}"/>
                                         <DataGridTextColumn IsReadOnly="True"  Header="Item" Binding="{Binding Path=Product}"/>
                                         <DataGridComboBoxColumn Header="Unit"  
-                                              ItemsSource="{Binding CompanyItems, 
+                                              ItemsSource="{Binding itemUnits, 
                                                RelativeSource={RelativeSource Mode=FindAncestor,
                                                AncestorType={x:Type Window}}}"
-                                    DisplayMemberPath="itemName" 
-                                    SelectedValuePath="unitId"
-                                    SelectedValueBinding="{Binding unitId}" />
+                                                DisplayMemberPath="name" 
+                                                SelectedValuePath="unitId"
+                                                SelectedValueBinding="{Binding unitId}" />
                                         <DataGridTextColumn  Header="Amount" Binding="{Binding Path=Count}"/>
                                         <DataGridTextColumn  Header="Price" Binding="{Binding Path=Price}"/>
                                         <DataGridTextColumn IsReadOnly="True" Header="Total" Binding="{Binding Path=Total}"/>
@@ -940,6 +942,7 @@
                                             BorderThickness="1"  materialDesign:HintAssist.Hint="Discount..."  
                                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                             BorderBrush="#f8f8f8"
+                                            PreviewTextInput="DecimalValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
                                             HorizontalAlignment="Left" VerticalAlignment="Bottom"  Height="30" Width="170"  Margin="1,0,0,7"
                                              TextChanged="tb_discount_TextChanged"/>
 
@@ -1095,12 +1098,14 @@
                             <Grid  Grid.Row="1" >
                                 <ComboBox x:Name="cb_vendor"  Grid.Row="1"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Vendor..."  
-                           TextBlock.FontSize="12"   Background="#f8f8f8" 
-                         HorizontalAlignment="Left" VerticalAlignment="Center" 
-                         Grid.Column="1" Height="35" Width="315"  Margin="5,5"
-                           BorderBrush="#737373" BorderThickness="0"/>
-                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                    materialDesign:HintAssist.Hint="Vendor..."  
+                                    TextBlock.FontSize="12"   Background="#f8f8f8" 
+                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                    Grid.Column="1" Height="35" Width="315"  Margin="5,5"
+                                    BorderBrush="#737373" BorderThickness="0"
+                                          LostFocus="input_LostFocus"/>
+                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                          Name="p_errorVendor"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52
@@ -1110,7 +1115,7 @@
                                           C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 
                                           L13,15 L13,17 Z">
                                     <Path.ToolTip>
-                                        <ToolTip  
+                                        <ToolTip   x:Name="tt_errorVendor"
                                                      Content="Name Not Validate"  
                                                      Style="{StaticResource ToolTipError}"/>
                                     </Path.ToolTip>
@@ -1129,14 +1134,15 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox x:Name="txt_paid"  Text="{Binding test, Mode=OneWay}"
-                                             Grid.Row="2" Padding="10,5,5,5" 
-                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Paid..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="#f8f8f8"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="35" Width="340"  Margin="5,5" />
+                                <TextBox x:Name="tb_paid"  Text="{Binding test, Mode=OneWay}"
+                                        Grid.Row="2" Padding="10,5,5,5" 
+                                         materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                        BorderThickness="1"  materialDesign:HintAssist.Hint="Paid..."  
+                                        Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                         BorderBrush="#f8f8f8"
+                                         HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                        Grid.Column="1"  Height="35" Width="340"  Margin="5,5"
+                                        PreviewTextInput="DecimalValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"/>
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -1151,14 +1157,15 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox x:Name="txt_deserved"  Text="{Binding test, Mode=OneWay}"
-                                             Grid.Row="2" Padding="10,5,5,5"  
-                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Deserved..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="#f8f8f8"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="35" Width="340"  Margin="5,5" />
+                                <TextBox x:Name="tb_deserved"  Text="{Binding test, Mode=OneWay}"
+                                         Grid.Row="2" Padding="10,5,5,5"  
+                                        materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                        BorderThickness="1"  materialDesign:HintAssist.Hint="Deserved..."  
+                                        Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                        BorderBrush="#f8f8f8"
+                                        HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                        Grid.Column="1"  Height="35" Width="340"  Margin="5,5"
+                                          PreviewTextInput="DecimalValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"/>
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -1218,19 +1225,21 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBox x:Name="tb_invoiceNumber"   Text="{Binding test, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5" 
-                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="invoice number..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="#f8f8f8"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="35" Width="160"  Margin="5,5" />
-                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                            materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                            BorderThickness="1"  materialDesign:HintAssist.Hint="invoice number..."  
+                                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                            BorderBrush="#f8f8f8"
+                                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                            Grid.Column="1"  Height="35" Width="160"  Margin="5,5"
+                                             LostFocus="input_LostFocus"/>
+                                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                               Name="p_errorInvoiceNumber"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 
                                   L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                         <Path.ToolTip>
-                                            <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                            <ToolTip  x:Name="tt_errorInvoiceNumber" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                         </Path.ToolTip>
                                     </Path>
                                 </Grid>

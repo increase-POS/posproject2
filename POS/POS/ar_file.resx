@@ -882,4 +882,25 @@
   <data name="trRefresh" xml:space="preserve">
     <value>تحديث</value>
   </data>
+  <data name="trEmptyEndTimeToolTip" xml:space="preserve">
+    <value>تاريخ الانتهاء لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyStartTimeToolTip" xml:space="preserve">
+    <value>تاريخ البدء لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trErrorEndTimeSmallerToolTip" xml:space="preserve">
+    <value>وقت الانتهاء لا يمكن أن يكون قبل وقت الابتداء</value>
+  </data>
+  <data name="trMaxInvoice" xml:space="preserve">
+    <value>القيمة العظمى للفاتورة</value>
+  </data>
+  <data name="trMinInvoice" xml:space="preserve">
+    <value>القيمة الدنيا للفاتورة</value>
+  </data>
+  <data name="trEndTime" xml:space="preserve">
+    <value>تاريخ الانتهاء</value>
+  </data>
+  <data name="trStartTime" xml:space="preserve">
+    <value>تاريخ البدء</value>
+  </data>
 </root>

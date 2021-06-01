@@ -666,7 +666,7 @@
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
-                                     LostFocus="Tb_email_LostFocus" PreviewKeyDown="tb_email_PreviewKeyDown" >
+                                     LostFocus="Tb_email_LostFocus" PreviewKeyDown="tb_email_PreviewKeyDown" PreviewTextInput="Tb_email_PreviewTextInput" >
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_email" Content="Email"
                                               Placement="left" 

@@ -736,6 +736,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تاريخ الانتهاء لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyEndTimeToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyEndTimeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العمل لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyJobToolTip {
@@ -835,6 +844,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تاريخ البدء لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyStartTimeToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyStartTimeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اسم المستخدم لا بمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyUserNameToolTip {
@@ -867,6 +885,15 @@ namespace POS {
         internal static string trEndDateHint {
             get {
                 return ResourceManager.GetString("trEndDateHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ الانتهاء.
+        /// </summary>
+        internal static string trEndTime {
+            get {
+                return ResourceManager.GetString("trEndTime", resourceCulture);
             }
         }
         
@@ -979,11 +1006,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المورد لا يمكن أن يكون فارغاً.
+        /// </summary>
+        internal static string trErrorEmptyVendorToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyVendorToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا يمكن أن يكون تاريخ الانتهاء أقدم من تاريخ البدء.
         /// </summary>
         internal static string trErrorEndDateSmallerToolTip {
             get {
                 return ResourceManager.GetString("trErrorEndDateSmallerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to وقت الانتهاء لا يمكن أن يكون قبل وقت الابتداء.
+        /// </summary>
+        internal static string trErrorEndTimeSmallerToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEndTimeSmallerToolTip", resourceCulture);
             }
         }
         
@@ -1269,6 +1314,15 @@ namespace POS {
         /// <summary>
         ///   Looks up a localized string similar to القيمة العظمى للفاتورة.
         /// </summary>
+        internal static string trMaxInvoice {
+            get {
+                return ResourceManager.GetString("trMaxInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to القيمة العظمى للفاتورة.
+        /// </summary>
         internal static string trMaxInvoiceValue {
             get {
                 return ResourceManager.GetString("trMaxInvoiceValue", resourceCulture);
@@ -1308,6 +1362,15 @@ namespace POS {
         internal static string trMinimumInvoiceValueHint {
             get {
                 return ResourceManager.GetString("trMinimumInvoiceValueHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to القيمة الدنيا للفاتورة.
+        /// </summary>
+        internal static string trMinInvoice {
+            get {
+                return ResourceManager.GetString("trMinInvoice", resourceCulture);
             }
         }
         
@@ -1992,6 +2055,15 @@ namespace POS {
         internal static string trStartDateHint {
             get {
                 return ResourceManager.GetString("trStartDateHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ البدء.
+        /// </summary>
+        internal static string trStartTime {
+            get {
+                return ResourceManager.GetString("trStartTime", resourceCulture);
             }
         }
         

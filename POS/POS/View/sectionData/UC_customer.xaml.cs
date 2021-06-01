@@ -209,20 +209,20 @@ namespace POS.View
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             //only int
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            //Regex regex = new Regex("[^0-9]+");
+            //e.Handled = regex.IsMatch(e.Text);
 
             //decimal
-            //var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-            //if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
-            //    e.Handled = false;
+            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                e.Handled = false;
 
-            //else
-            //    e.Handled = true;
+            else
+                e.Handled = true;
         }
 
         private async void DG_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        {//selection
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
             p_errorMobile.Visibility = Visibility.Collapsed;
@@ -255,7 +255,8 @@ namespace POS.View
 
                 SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
 
-               
+                tb_code.Text = agent.code;
+
                 #region delete
                 if (agent.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
 
@@ -507,27 +508,30 @@ namespace POS.View
 
         private async void getImg()
         {
-            if (string.IsNullOrEmpty(agent.image))
+            try
             {
-                SectionData.clearImg(img_customer);
-            }
-            else
-            {
-                byte[] imageBuffer = await agentModel.downloadImage(agent.image); // read this as BLOB from your DB
-
-                var bitmapImage = new BitmapImage();
-
-                using (var memoryStream = new MemoryStream(imageBuffer))
+                if (string.IsNullOrEmpty(agent.image))
                 {
-                    bitmapImage.BeginInit();
-                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmapImage.StreamSource = memoryStream;
-                    bitmapImage.EndInit();
+                    SectionData.clearImg(img_customer);
                 }
+                else
+                {
+                    byte[] imageBuffer = await agentModel.downloadImage(agent.image); // read this as BLOB from your DB
 
-                img_customer.Background = new ImageBrush(bitmapImage);
+                    var bitmapImage = new BitmapImage();
+
+                    using (var memoryStream = new MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+
+                    img_customer.Background = new ImageBrush(bitmapImage);
+                }
             }
-
+            catch { }
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
@@ -900,6 +904,13 @@ namespace POS.View
             rep.Refresh();
             LocalReportExtensions.PrintToPrinter(rep);
 
+        }
+
+        private void Tb_email_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+            if (!regex.IsMatch(e.Text))
+                e.Handled = true;
         }
     }
 }
