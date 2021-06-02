@@ -88,13 +88,11 @@ namespace POS.Classes
             }
 
         }
-        // adding or editing  agent by calling API metod "saveAgent"
-        // if agentId = 0 will call save else call edit
 
-        /// ///////////////////////////////////////
-        public async Task<List<Agent>> GetAgentsActive(string type)
+        public async Task<CashTransfer> GetByID(int cashTransferId)
         {
-            List<Agent> agents = null;
+            CashTransfer casht = new CashTransfer();
+
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -105,45 +103,34 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Agent/GetActive?type=" + type);
+                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetByID");
                 request.Headers.Add("APIKey", Global.APIKey);
+                request.Headers.Add("cashTransId", cashTransferId.ToString());
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+                var response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    agents = JsonConvert.DeserializeObject<List<Agent>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return agents;
+
+                    casht = JsonConvert.DeserializeObject<CashTransfer>(jsonString);
+
+                    return casht;
                 }
-                else //web api sent error response 
-                {
-                    agents = new List<Agent>();
-                }
-                return agents;
+
+                return casht;
             }
         }
-
-        /// //////////////////////////////////////
-        /// </summary>
-        /// <param name="agent"></param>
-        /// <returns></returns>
-        public async Task<string> saveAgent(Agent agent)
+        /// ///////////////////////////////////////
+      
+        public async Task<string> Save(CashTransfer cashTr)
         {
             string message = "";
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-            string myContent = JsonConvert.SerializeObject(agent);
+            string myContent = JsonConvert.SerializeObject(cashTr);
 
             using (var client = new HttpClient())
             {
@@ -158,7 +145,7 @@ namespace POS.Classes
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
 
-                request.RequestUri = new Uri(Global.APIUri + "Agent/Save?agentObject=" + myContent);
+                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/Save?Object=" + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -173,34 +160,7 @@ namespace POS.Classes
                 return message;
             }
         }
-        public string EncodeNonAsciiCharacters(string value)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (char c in value)
-            {
-                if (c > 127)
-                {
-                    // This character is too big for ASCII
-                    string encodedValue = "\\u" + ((int)c).ToString("x4");
-                    sb.Append(encodedValue);
-                }
-                else
-                {
-                    sb.Append(c);
-                }
-            }
-            return sb.ToString();
-        }
-        public string DecodeEncodedNonAsciiCharacters(string value)
-        {
-            return Regex.Replace(
-                value,
-                @"\\u(?<Value>[a-zA-Z0-9]{4})",
-                m => {
-                    return ((char)int.Parse(m.Groups["Value"].Value, NumberStyles.HexNumber)).ToString();
-                });
-        }
-        // delete agent
+
 
         public async Task<Boolean> deleteAgent(int agentId , bool final)
         {
@@ -233,9 +193,9 @@ namespace POS.Classes
             }
         }
 
-        public async Task<List<Agent>> SearchAgents(string type , string searchWord)
+        public async Task<List<CashTransfer>> Search(string type , string side, string searchwords)
         {
-            List<Agent> agents = null;
+            List<CashTransfer> CashTlist = null;
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -246,7 +206,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Agent/Search?type=" + type + "&Searchwords=" + searchWord);
+                request.RequestUri = new Uri(Global.APIUri + "Agent/Search?type=" + type + "&side = " + side + "&searchwords=" + searchwords);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Headers.Add("type", type);
                 request.Method = HttpMethod.Get;
@@ -264,14 +224,14 @@ namespace POS.Classes
                         Converters = new List<JsonConverter> { new BadDateFixingConverter() },
                         DateParseHandling = DateParseHandling.None
                     };
-                    agents = JsonConvert.DeserializeObject<List<Agent>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return agents;
+                    CashTlist = JsonConvert.DeserializeObject<List<CashTransfer>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return CashTlist;
                 }
                 else //web api sent error response 
                 {
-                    agents = new List<Agent>();
+                    CashTlist = new List<CashTransfer>();
                 }
-                return agents;
+                return CashTlist;
             }
 
         }
