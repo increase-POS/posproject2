@@ -92,7 +92,7 @@ namespace POS.converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return "unitItemsComboTag" + value;
+            return value.ToString();
             
 
         }

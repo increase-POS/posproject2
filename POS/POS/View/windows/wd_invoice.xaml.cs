@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POS.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -28,13 +29,18 @@ namespace POS.View.windows
         /// <summary>
         /// for filtering store
         /// </summary>
+       public Invoice invoice = new Invoice();
+        IEnumerable<Invoice> invoices;
         public int posId { get; set; }
         /// <summary>
         /// for filtering invoice type
         /// </summary>
         public string invoiceType { get; set; }
+        public string title { get; set; }
         private void Btn_select_Click(object sender, RoutedEventArgs e)
         {
+            invoice = dg_Invoice.SelectedItem as Invoice;
+            DialogResult = true;
             this.Close();
 
         }
@@ -44,15 +50,9 @@ namespace POS.View.windows
 
         }
 
-        private void Btn_colse_Click(object sender, RoutedEventArgs e)
+      
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Close();
-        }
-
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -63,11 +63,31 @@ namespace POS.View.windows
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucInvoice.FlowDirection = FlowDirection.RightToLeft;
             }
-        }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+            await refreshInvoices();
+        }
+        private async Task refreshInvoices()
+        {
+            invoices = await invoice.GetInvoicesByType(invoiceType);
+
+            dg_Invoice.ItemsSource = invoices.ToList();
+        }
+        private void Dg_Invoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+            invoice = dg_Invoice.SelectedItem as Invoice;
+        }
+
+        private void Dg_Invoice_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Btn_select_Click(null,null);
+        }
+
+        private void Btn_colse_Click(object sender, RoutedEventArgs e)
+        {
+           
+           // DialogResult = true;
+            this.Close();
         }
     }
 }

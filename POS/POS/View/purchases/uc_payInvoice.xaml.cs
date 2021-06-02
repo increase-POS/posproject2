@@ -66,7 +66,6 @@ namespace POS.View
         Item item = new Item();
         IEnumerable<Item> items;
         IEnumerable<Item> itemsQuery;
-        IEnumerable<Item> invoiceItems;
 
         Branch branchModel = new Branch();
         IEnumerable<Branch> branches;
@@ -76,11 +75,12 @@ namespace POS.View
 
         ItemUnit itemUnitModel = new ItemUnit();
         List<ItemUnit> barcodesList;
-        List<ItemUnit> itemUnits ;
+        List<ItemUnit> itemUnits;
 
         Invoice invoiceModel = new Invoice();
         Invoice invoice = new Invoice();
 
+        List<ItemTransfer> invoiceItems;
         Bill bill;
 
         static int _SelectedBranch = -1;
@@ -210,23 +210,14 @@ namespace POS.View
         }
         public class BillDetails
         {
-            public BillDetails()
-            {
-                //itemUnit = new ObservableCollection<ItemUnit>();
-                itemUnit = new List<ItemUnit>();
-            }
             public int ID { get; set; }
             public int itemId { get; set; }
+            public int itemUnitId { get; set; }
             public string Product { get; set; }
             public string Unit { get; set; }
-            public string unitName { get; set; }
-            public int unitId { get; set; }
             public int Count { get; set; }
             public decimal Price { get; set; }
             public decimal Total { get; set; }
-
-            //public ObservableCollection<ItemUnit> itemUnit { get; set; }
-            public List<ItemUnit> itemUnit { get; set; }
         }
 
         #endregion
@@ -373,6 +364,7 @@ namespace POS.View
             Txb_searchitems_TextChanged(null, null);
         }
 
+        
         public async void ChangeItemIdEvent(int itemId)
         {
             item = items.ToList().Find(c => c.itemId == itemId);
@@ -383,16 +375,17 @@ namespace POS.View
                 // create new row in bill details data grid
                 // increase sequence for each read
                 _SequenceNum++;
-
                 // get item units
                 itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
                 // search for default unit for purchase
-                var  defaultPurUnit = itemUnits.ToList().Find(c => c.defaultPurchase == 1);
-                if(defaultPurUnit == null)
+                var defaultPurUnit = itemUnits.ToList().Find(c => c.defaultPurchase == 1);
+                if (defaultPurUnit == null)
                 {
                     defaultPurUnit = new ItemUnit();
                     defaultPurUnit.mainUnit = "";
                 }
+
+
 
                 int count = 1;
                 decimal price = 1000; //?????
@@ -727,15 +720,28 @@ namespace POS.View
         #endregion
         #region save invoice
 
-        private async void addInvoice(string invType)
+        private async Task addInvoice(string invType)
         {
             invoice.invType = invType;
             invoice.total = _Sum;
+
             invoice.totalNet = decimal.Parse(tb_total.Text);
-            invoice.agentId = (int)cb_vendor.SelectedValue;
-            invoice.branchId = (int)cb_vendor.SelectedValue;
-            invoice.paid = decimal.Parse(tb_paid.Text);
-            invoice.deserved = decimal.Parse(tb_deserved.Text);
+
+            if(cb_vendor.SelectedIndex != -1)
+                invoice.agentId = (int)cb_vendor.SelectedValue;
+
+            Branch store = new Branch();
+            if (cb_vendor.SelectedIndex != -1)
+            {
+                invoice.branchId = (int)cb_vendor.SelectedValue;
+                store  = branches.ToList().Find(b => b.branchId == invoice.branchId);
+            }
+
+            if(!tb_paid.Text.Equals(""))
+                invoice.paid = decimal.Parse(tb_paid.Text);
+            if(!tb_deserved.Text.Equals(""))
+                invoice.deserved = decimal.Parse(tb_deserved.Text);
+
             invoice.deservedDate = dp_desrvedDate.SelectedDate;
             invoice.vendorInvNum = tb_invoiceNumber.Text;
             invoice.vendorInvDate = dp_invoiceDate.SelectedDate;
@@ -743,6 +749,16 @@ namespace POS.View
             invoice.createUserId = MainWindow.userID;
             invoice.updateUserId = MainWindow.userID;
 
+            // build invoice NUM like 1021_PI_sequence
+            string storeCode = store.code;
+            string invoiceCode = "PI";
+            int sequence = await invoiceModel.GetLastNumOfInv("PI") ;
+            sequence++;
+
+            string invoiceNum = storeCode + "_" + invoiceCode + "_" + sequence.ToString();
+            invoice.invNumber = invoiceNum;
+
+            // save invoice in DB
             int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
 
             if (invoiceId != 0)
@@ -751,25 +767,51 @@ namespace POS.View
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             // add invoice details
+            invoiceItems = new List<ItemTransfer>();
+            ItemTransfer itemT;
+            for (int i =0; i < billDetails.Count; i++)
+            {
+                itemT = new ItemTransfer();
+
+                itemT.invoiceId = invoiceId;
+                itemT.quantity = billDetails[i].Count;
+                itemT.price = billDetails[i].Price;
+                itemT.itemUnitId = billDetails[i].itemUnitId;
+                itemT.createUserId = MainWindow.userID;
+
+                invoiceItems.Add(itemT);
+            }
+            await invoiceModel.saveInvoiceItems(invoiceItems);
+           
         }
-        private void Btn_newDraft_Click(object sender, RoutedEventArgs e)
+        private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
             //check mandatory inputs
             validateInvoiceValues();
-            if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
-            {
-                //pd draft purchase
-                addInvoice("pd");
+
+           if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
+           {
+                //pd draft purchase 
+               await addInvoice("pd");
                
                 clearInvoice();
-            }
+           }
         }
         private void clearInvoice()
         {
             _Sum = 0;
             _SequenceNum = 0;
+            _SelectedBranch = -1;
             invoice = new Invoice();
             cb_branch.SelectedIndex = -1;
+            cb_vendor.SelectedIndex = -1;
+            tb_paid.Clear();
+            tb_deserved.Clear();
+            dp_desrvedDate.Text="";
+            txt_vendorIvoiceDetails.Text ="";
+            tb_invoiceNumber.Clear();
+            dp_invoiceDate.Text = "";
+            tb_note.Clear();
             itemUnits.Clear();
             billDetails.Clear();
             refrishBillDetails();
@@ -779,7 +821,24 @@ namespace POS.View
         {
             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
-            w.ShowDialog();
+            // purchase drafts
+            w.invoiceType = "pd";
+            w.title = "";
+
+            if (w.ShowDialog() == true)
+            {
+                invoice = w.invoice;
+
+                this.DataContext = invoice;
+                cb_branch.SelectedValue = invoice.branchId;
+                cb_vendor.SelectedValue = invoice.agentId;
+                tb_paid.Text = invoice.paid.ToString();
+                tb_deserved.Text = invoice.deserved.ToString();
+                dp_desrvedDate.Text = invoice.deservedDate.ToString();
+                tb_invoiceNumber.Text = invoice.vendorInvNum;
+                dp_invoiceDate.Text = invoice.vendorInvDate.ToString();
+                tb_note.Text = invoice.notes;
+            }
             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
         }
 
@@ -812,15 +871,14 @@ namespace POS.View
         private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-            if (elapsed.TotalMilliseconds > 1000)
+            if (elapsed.TotalMilliseconds > 1000 && cb_branch.SelectedIndex != -1 )
             {
                 _SelectedBranch = (int)cb_branch.SelectedValue;
             }
-            else
+            else 
             {
                 cb_branch.SelectedValue = _SelectedBranch;
-            }
-            
+            }           
         }
 
         private void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -859,13 +917,52 @@ namespace POS.View
         }
 
         #region billdetails
+        List<ItemUnit> GetItemUnits(int itemId)
+        {
+            List<ItemUnit> itemUnits = new List<ItemUnit>();
+            var ItemUnit1 = new ItemUnit { itemUnitId = 35 };
+            var ItemUnit2 = new ItemUnit { itemUnitId = 63 };
+            var ItemUnit3 = new ItemUnit { itemUnitId = 364 };
+            itemUnits.Add(ItemUnit1);
+            itemUnits.Add(ItemUnit2);
+            itemUnits.Add(ItemUnit3);
+
+
+            return itemUnits;
+
+        }
+        void GenerateComboBox(DataGrid dg)
+        {
+            var vm = GetItemUnits(1);
+            var dataGridTemplateColumn = new DataGridTemplateColumn();
+            var dataTemplate = new DataTemplate();
+            var comboBox = new FrameworkElementFactory(typeof(ComboBox));
+            //comboBox.SetValue(NameProperty, new Binding("cc" + dataGridTemplateColumn.Header));
+            comboBox.SetValue(ComboBox.ItemsSourceProperty, vm);//Bind the ObservableCollection list
+            comboBox.SetValue(ComboBox.SelectedIndexProperty, 1);
+            comboBox.SetValue(ComboBox.DisplayMemberPathProperty, "itemUnitId");
+            comboBox.AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(ComboBox_SelectionChanged));
+
+            dataTemplate.VisualTree = comboBox;
+            dataGridTemplateColumn.CellTemplate = dataTemplate;
+            dataGridTemplateColumn.Header = "Unit";
+            dg.Columns.Add(dataGridTemplateColumn);
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
         void refrishBillDetails()
         {
             dg_billDetails.ItemsSource = null;
             dg_billDetails.ItemsSource = billDetails;
+            GenerateComboBox(dg_billDetails);
 
             tb_sum.Text = _Sum.ToString();
         }
+
+
         // read item from barcode
         private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
@@ -959,39 +1056,7 @@ namespace POS.View
                 e.Handled = true;
                 cb_branch.SelectedValue = _SelectedBranch;
             }
-        }
+        }       
         #endregion billdetails
-
-        private void Dg_billDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //if (dg_bank.SelectedIndex != -1)
-            //{
-            //    bank = dg_bank.SelectedItem as Bank;
-            //    this.DataContext = bank;
-            //}
-            BillDetails billDetails = dg_billDetails.SelectedItem as BillDetails;
-            foreach (var item in dg_billDetails.Items)
-            {
-                
-            }
-
-            
-            //var foundButton = grid_payinvoice.Children.OfType<ComboBox>().Where(x => x.Tag.ToString() ==
-            //"unitItemsComboTag" + 97 ).FirstOrDefault();
-
-
-
-            //var dataGridCellInfo = new DataGridCellInfo(
-            //  dg_billDetails.Items[0], dg_billDetails.Columns[3]);
-
-            //dg_billDetails.SelectedCells.Clear();
-            //dg_billDetails.SelectedCells.Add(dataGridCellInfo);
-            //dg_billDetails.CurrentCell = dataGridCellInfo;
-
-
-            var cell = dataGrid.GetCell(5, 0);
-            var cp = (ContentPresenter)cell.Content;
-            var bogus = (ComboBox)cp.ContentTemplate.FindName("root", cp);
-        }
     }
 }
