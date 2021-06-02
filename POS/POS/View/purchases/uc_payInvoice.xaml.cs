@@ -76,7 +76,7 @@ namespace POS.View
 
         ItemUnit itemUnitModel = new ItemUnit();
         List<ItemUnit> barcodesList;
-        List<ItemUnit> itemUnits;
+        List<ItemUnit> itemUnits ;
 
         Invoice invoiceModel = new Invoice();
         Invoice invoice = new Invoice();
@@ -210,13 +210,23 @@ namespace POS.View
         }
         public class BillDetails
         {
+            public BillDetails()
+            {
+                //itemUnit = new ObservableCollection<ItemUnit>();
+                itemUnit = new List<ItemUnit>();
+            }
             public int ID { get; set; }
             public int itemId { get; set; }
             public string Product { get; set; }
             public string Unit { get; set; }
+            public string unitName { get; set; }
+            public int unitId { get; set; }
             public int Count { get; set; }
             public decimal Price { get; set; }
             public decimal Total { get; set; }
+
+            //public ObservableCollection<ItemUnit> itemUnit { get; set; }
+            public List<ItemUnit> itemUnit { get; set; }
         }
 
         #endregion
@@ -363,7 +373,6 @@ namespace POS.View
             Txb_searchitems_TextChanged(null, null);
         }
 
-        
         public async void ChangeItemIdEvent(int itemId)
         {
             item = items.ToList().Find(c => c.itemId == itemId);
@@ -374,17 +383,16 @@ namespace POS.View
                 // create new row in bill details data grid
                 // increase sequence for each read
                 _SequenceNum++;
+
                 // get item units
                 itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
                 // search for default unit for purchase
-                var defaultPurUnit = itemUnits.ToList().Find(c => c.defaultPurchase == 1);
-                if (defaultPurUnit == null)
+                var  defaultPurUnit = itemUnits.ToList().Find(c => c.defaultPurchase == 1);
+                if(defaultPurUnit == null)
                 {
                     defaultPurUnit = new ItemUnit();
                     defaultPurUnit.mainUnit = "";
                 }
-
-
 
                 int count = 1;
                 decimal price = 1000; //?????
@@ -851,52 +859,13 @@ namespace POS.View
         }
 
         #region billdetails
-        List<ItemUnit> GetItemUnits(int itemId)
-        {
-            List<ItemUnit> itemUnits = new List<ItemUnit>();
-            var ItemUnit1 = new ItemUnit { itemUnitId = 35 };
-            var ItemUnit2 = new ItemUnit { itemUnitId = 63 };
-            var ItemUnit3 = new ItemUnit { itemUnitId = 364 };
-            itemUnits.Add(ItemUnit1);
-            itemUnits.Add(ItemUnit2);
-            itemUnits.Add(ItemUnit3);
-
-
-            return itemUnits;
-
-        }
-        void GenerateComboBox(DataGrid dg)
-        {
-            var vm = GetItemUnits(1);
-            var dataGridTemplateColumn = new DataGridTemplateColumn();
-            var dataTemplate = new DataTemplate();
-            var comboBox = new FrameworkElementFactory(typeof(ComboBox));
-            //comboBox.SetValue(NameProperty, new Binding("cc" + dataGridTemplateColumn.Header));
-            comboBox.SetValue(ComboBox.ItemsSourceProperty, vm);//Bind the ObservableCollection list
-            comboBox.SetValue(ComboBox.SelectedIndexProperty, 1);
-            comboBox.SetValue(ComboBox.DisplayMemberPathProperty, "itemUnitId");
-            comboBox.AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(ComboBox_SelectionChanged));
-
-            dataTemplate.VisualTree = comboBox;
-            dataGridTemplateColumn.CellTemplate = dataTemplate;
-            dataGridTemplateColumn.Header = "Unit";
-            dg.Columns.Add(dataGridTemplateColumn);
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
         void refrishBillDetails()
         {
             dg_billDetails.ItemsSource = null;
             dg_billDetails.ItemsSource = billDetails;
-            GenerateComboBox(dg_billDetails);
 
             tb_sum.Text = _Sum.ToString();
         }
-
-
         // read item from barcode
         private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
@@ -990,7 +959,39 @@ namespace POS.View
                 e.Handled = true;
                 cb_branch.SelectedValue = _SelectedBranch;
             }
-        }       
+        }
         #endregion billdetails
+
+        private void Dg_billDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //if (dg_bank.SelectedIndex != -1)
+            //{
+            //    bank = dg_bank.SelectedItem as Bank;
+            //    this.DataContext = bank;
+            //}
+            BillDetails billDetails = dg_billDetails.SelectedItem as BillDetails;
+            foreach (var item in dg_billDetails.Items)
+            {
+                
+            }
+
+            
+            //var foundButton = grid_payinvoice.Children.OfType<ComboBox>().Where(x => x.Tag.ToString() ==
+            //"unitItemsComboTag" + 97 ).FirstOrDefault();
+
+
+
+            //var dataGridCellInfo = new DataGridCellInfo(
+            //  dg_billDetails.Items[0], dg_billDetails.Columns[3]);
+
+            //dg_billDetails.SelectedCells.Clear();
+            //dg_billDetails.SelectedCells.Add(dataGridCellInfo);
+            //dg_billDetails.CurrentCell = dataGridCellInfo;
+
+
+            var cell = dataGrid.GetCell(5, 0);
+            var cp = (ContentPresenter)cell.Content;
+            var bogus = (ComboBox)cp.ContentTemplate.FindName("root", cp);
+        }
     }
 }

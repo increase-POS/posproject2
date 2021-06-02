@@ -903,4 +903,43 @@
   <data name="trStartTime" xml:space="preserve">
     <value>تاريخ البدء</value>
   </data>
+  <data name="trBankHint" xml:space="preserve">
+    <value>البنك...</value>
+  </data>
+  <data name="trCashHint" xml:space="preserve">
+    <value>المبلغ..</value>
+  </data>
+  <data name="trCashTooltip" xml:space="preserve">
+    <value>المبلغ</value>
+  </data>
+  <data name="trDeposit" xml:space="preserve">
+    <value>إيداع</value>
+  </data>
+  <data name="trDepositeNumHint" xml:space="preserve">
+    <value>رقم السحب/الإيداع...</value>
+  </data>
+  <data name="trDepositeNumTooltip" xml:space="preserve">
+    <value>رقم السحب/الإيداع</value>
+  </data>
+  <data name="trDepositOperation" xml:space="preserve">
+    <value>إيداع</value>
+  </data>
+  <data name="trOpperationTypeHint" xml:space="preserve">
+    <value>نوع العملية...</value>
+  </data>
+  <data name="trOpperationTypeToolTip" xml:space="preserve">
+    <value>نوع العملية</value>
+  </data>
+  <data name="trPull" xml:space="preserve">
+    <value>سحب</value>
+  </data>
+  <data name="trReceiptOperation" xml:space="preserve">
+    <value>استلام</value>
+  </data>
+  <data name="trTransferNumberTooltip" xml:space="preserve">
+    <value>رقم التحويل</value>
+  </data>
+  <data name="trUserHint" xml:space="preserve">
+    <value>المستخدم...</value>
+  </data>
 </root>

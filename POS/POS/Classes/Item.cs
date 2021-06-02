@@ -40,8 +40,7 @@ namespace POS.Classes
         public Nullable<int> minUnitId { get; set; }
         public Nullable<int> maxUnitId { get; set; }
         public Boolean canDelete { get; set; }
-
-         // new units and offers an is new
+        // new units and offers an is new
         //units
         public Nullable<int> unitId { get; set; }
         public string unitName { get; set; }

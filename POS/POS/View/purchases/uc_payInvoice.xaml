@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:POS.View"
+             xmlns:converters="clr-namespace:POS.converters"
              mc:Ignorable="d" 
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              Loaded="UserControl_Loaded"
@@ -888,8 +889,12 @@
                                 <DataGrid x:Name="dg_billDetails"  Margin="5,5" Grid.Row="4"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="False" CanUserAddRows="False" 
-                        AutoGenerateColumns="False"
+                        AutoGenerateColumns="False" SelectionChanged="Dg_billDetails_SelectionChanged"
                         ColumnWidth="SizeToHeader"  >
+                                    <DataGrid.Resources>
+                                        <converters:unitItemsListConverter x:Key="unitItemsListConverter"/>
+                                        <converters:unitItemsComboTagConverter x:Key="unitItemsComboTagConverter"/>
+                                    </DataGrid.Resources>
                                     <DataGrid.Columns >
                                         <DataGridTemplateColumn Width="20" Header="" IsReadOnly="True" >
                                             <DataGridTemplateColumn.CellTemplate>
@@ -906,13 +911,26 @@
                                         </DataGridTemplateColumn>
                                         <DataGridTextColumn IsReadOnly="True"  MinWidth="10"   Header="Num"  Binding="{Binding Path=ID}"/>
                                         <DataGridTextColumn IsReadOnly="True"  Header="Item" Binding="{Binding Path=Product}"/>
-                                        <DataGridComboBoxColumn Header="Unit"  
+                                        <!--<DataGridComboBoxColumn Header="Unit"  
                                               ItemsSource="{Binding itemUnits, 
                                                RelativeSource={RelativeSource Mode=FindAncestor,
                                                AncestorType={x:Type Window}}}"
                                                 DisplayMemberPath="name" 
                                                 SelectedValuePath="unitId"
-                                                SelectedValueBinding="{Binding unitId}" />
+                                                SelectedValueBinding="{Binding unitId}" />-->
+                                        <DataGridTemplateColumn Header="Unit" MinWidth="100">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox Tag="{Binding itemId,Converter={StaticResource unitItemsComboTagConverter}}" 
+                                                              x:Name="{Binding itemId,Converter={StaticResource unitItemsComboTagConverter}}"
+                                                              ItemsSource="{Binding itemId,Converter={StaticResource unitItemsListConverter}}"
+                                                             DisplayMemberPath="mainUnit" 
+                                                               SelectedValuePath="unitId"
+                                                              SelectedItem="{Binding Unit}"
+                                                />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
                                         <DataGridTextColumn  Header="Amount" Binding="{Binding Path=Count}"/>
                                         <DataGridTextColumn  Header="Price" Binding="{Binding Path=Price}"/>
                                         <DataGridTextColumn IsReadOnly="True" Header="Total" Binding="{Binding Path=Total}"/>

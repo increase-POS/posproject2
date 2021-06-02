@@ -29,6 +29,10 @@ namespace POS
         public static ResourceManager resourcemanager;
         bool menuState = false;
 
+        public static string lang     = "ar";
+        internal static int? userID   = 2;
+        internal static int? posID    = 53;
+        internal static int? branchID = 18;
 
 
 
@@ -37,7 +41,7 @@ namespace POS
         /// //////// relative screen test
         /// </summary>
 
-       
+
 
         public static double mainUcWidth, mainUcHeight, gridFormWidth, gridFormHeight,
             windowHeight, windowWidth, ucControlFormSectionWidth, ucControlFormSectionHeight,
@@ -256,8 +260,7 @@ namespace POS
 
       
 
-        public static string lang = "ar";
-        internal static int? userID = 2;
+      
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

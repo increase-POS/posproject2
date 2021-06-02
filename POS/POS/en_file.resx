@@ -927,4 +927,43 @@
   <data name="trErrorEmptyVendorToolTip" xml:space="preserve">
     <value>Vendor can not be empty</value>
   </data>
+  <data name="trBankHint" xml:space="preserve">
+    <value>Bank...</value>
+  </data>
+  <data name="trCashHint" xml:space="preserve">
+    <value>Ammount...</value>
+  </data>
+  <data name="trCashTooltip" xml:space="preserve">
+    <value>Ammount</value>
+  </data>
+  <data name="trDeposit" xml:space="preserve">
+    <value>Deposite</value>
+  </data>
+  <data name="trDepositeNumHint" xml:space="preserve">
+    <value>Deposite/Pull Number...</value>
+  </data>
+  <data name="trDepositeNumTooltip" xml:space="preserve">
+    <value>Deposite/Pull Number</value>
+  </data>
+  <data name="trDepositOperation" xml:space="preserve">
+    <value>Deposit</value>
+  </data>
+  <data name="trOpperationTypeHint" xml:space="preserve">
+    <value>Opperation Type...</value>
+  </data>
+  <data name="trOpperationTypeToolTip" xml:space="preserve">
+    <value>Opperation Type</value>
+  </data>
+  <data name="trPull" xml:space="preserve">
+    <value>Pull</value>
+  </data>
+  <data name="trReceiptOperation" xml:space="preserve">
+    <value>Receipt</value>
+  </data>
+  <data name="trTransferNumberTooltip" xml:space="preserve">
+    <value>Transfer Number</value>
+  </data>
+  <data name="trUserHint" xml:space="preserve">
+    <value>User...</value>
+  </data>
 </root>

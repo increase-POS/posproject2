@@ -12,7 +12,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class ItemUnit
+    public class ItemUnit
     {
         public int itemUnitId { get; set; }
         public Nullable<int> itemId { get; set; }
