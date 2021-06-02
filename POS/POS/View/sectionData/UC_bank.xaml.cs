@@ -551,7 +551,7 @@ namespace POS.View
                     }
                     else
                     {
-                        cb_areaPhoneLocal.Visibility = Visibility.Hidden;
+                        cb_areaPhoneLocal.Visibility = Visibility.Collapsed ;
                     }
 
                 }
