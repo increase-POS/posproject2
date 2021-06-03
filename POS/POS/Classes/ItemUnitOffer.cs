@@ -27,16 +27,17 @@ namespace POS.Classes
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
+        public Nullable<int> quantity { get; set; }
+      
 
-
-
-        public async Task<string> updategroup(List<ItemUnitOffer>  itemofferlist)
+        public async Task<string> updategroup(int offerId, List<ItemUnitOffer> newitoflist)
         {
+            
             string message = "";
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             // 
-            var myContent = JsonConvert.SerializeObject(itemofferlist);
+            var myContent = JsonConvert.SerializeObject(newitoflist);
 
             using (var client = new HttpClient())
             {
@@ -48,8 +49,9 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "ItemsOffers/Save?itemofferlist=" + myContent);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsOffers/UpdateItemsByOfferId?newitoflist=" + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
+                request.Headers.Add("offerId", offerId.ToString());
                 request.Method = HttpMethod.Post;
                 //set content type
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -63,16 +65,12 @@ namespace POS.Classes
                 return message;
             }
         }
-
-       
     
 
+       
+       
 
-        // get codes of all items
-   
-        // get items of type
-     
-   
+
 
         public async Task<List<ItemUnitOffer>> Getall()
         {
@@ -107,7 +105,9 @@ namespace POS.Classes
             }
         }
         
-       
+     
+
+        // get items in category and sub
 
     }
 }
