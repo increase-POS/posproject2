@@ -130,7 +130,7 @@
                         ColumnWidth="SizeToHeader" SelectionChanged="Dg_bankAccounts_SelectionChanged"    >
                     <DataGrid.Columns>
                         <DataGridTextColumn MinWidth="160"  Header="Transfer number" Binding="{Binding Path=transNum}"/>
-                        <DataGridTextColumn MinWidth="160"  Header="Bank"   Binding="{Binding Path=test}"/>
+                        <DataGridTextColumn MinWidth="160"  Header="Bank"   Binding="{Binding Path=bankName}"/>
                         <DataGridTextColumn MinWidth="160"  Header="Deposite/Receipt Number" Binding="{Binding Path=docNum}"/>
                         <DataGridTextColumn MinWidth="150"  Header="Cash" Binding="{Binding Path=cash}"/>
                     </DataGrid.Columns>

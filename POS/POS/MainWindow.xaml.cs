@@ -88,7 +88,7 @@ namespace POS
 
         private void BTN_Close_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            System.Windows.Application.Current.Shutdown();
         }
 
         private void BTN_Minimize_Click(object sender, RoutedEventArgs e)

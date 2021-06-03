@@ -4,6 +4,7 @@ using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -184,8 +185,12 @@ namespace POS.View
             grid_vendor.Visibility = Visibility.Collapsed;
             tb_sum.Text = _Sum.ToString();
             tb_barcode.Focus();
+            #region datagridChange
+            CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
+            ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+            #endregion
         }
-
+        
         private void configureDiscountType()
         {
             var dislist = new[] {
@@ -196,6 +201,7 @@ namespace POS.View
             cb_typeDiscount.DisplayMemberPath = "Text";
             cb_typeDiscount.SelectedValuePath = "Value";
             cb_typeDiscount.ItemsSource = dislist;
+            cb_typeDiscount.SelectedIndex = 0;
         }
 
         #region bill
@@ -396,6 +402,7 @@ namespace POS.View
                     Product = item.name,
                     itemId = item.itemId,
                     Unit = defaultPurUnit.mainUnit,
+                    itemUnitId = defaultPurUnit.itemUnitId,
                     Count = 1,
                     Price = price,
                     Total = total,
@@ -406,10 +413,11 @@ namespace POS.View
 
                 refrishBillDetails();
 
+                //refrisUnitValue(defaultPurUnit);
 
             }
         }
- 
+        
         #endregion
         #region Toggle Button Y
         /// <summary>
@@ -1056,7 +1064,133 @@ namespace POS.View
                 e.Handled = true;
                 cb_branch.SelectedValue = _SelectedBranch;
             }
-        }       
+        }
         #endregion billdetails
+       
+
+        private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //var cell = DataGridHelper.GetCell(dg_billDetails, 0, 3);
+            //var cp = (ContentPresenter)cell.Content;
+            //var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
+            //MessageBox.Show(combo.SelectedValue.ToString());
+
+            var cmb = sender as ComboBox;
+            MessageBox.Show(cmb.SelectedValue.ToString());
+
+        }
+
+        private void Dg_billDetails_AddingNewItem(object sender, AddingNewItemEventArgs e)
+        {
+            MessageBox.Show("I'm Here in AddingNewItem");
+        }
+
+        private void Dg_billDetails_InitializingNewItem(object sender, InitializingNewItemEventArgs e)
+        {
+            MessageBox.Show("I'm Here in InitializingNewItem");
+        }
+
+        private void Dg_billDetails_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+
+            MessageBox.Show("I'm Here in RowEditEnding");
+        }
+
+        private void Dg_billDetails_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+
+            MessageBox.Show("I'm Here in SourceUpdated");
+        }
+        private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            //MessageBox.Show("I'm Here in _CollectionChanged");
+
+            //billDetails
+            int count = 0;
+            foreach (var item in billDetails)
+            {
+                if (dg_billDetails.Items.Count != 0)
+                {
+                    if (dg_billDetails.Items.Count == 1)
+                    {
+
+                        var comboBoxlist = FindControls.FindVisualChildren<ComboBox>(dg_billDetails).ToArray();
+                        //comboBoxlist[0].SelectedValue = (int)item.itemUnitId;
+                        for (int i = 0; i < comboBoxlist.Count(); i++)
+                        {
+                            if (comboBoxlist[i].Name.ToString() == "cbm_unitItemDetails")
+                            {
+                                MessageBox.Show("I'm Here");
+                            }
+
+                        }
+
+                        //List<ComboBox> comboBoxlist = new List<ComboBox>();
+                        //// Find all elements
+                        //StaticClass.FindChildGroup<ComboBox>(dg_billDetails, "cbm_unitItemDetails", ref comboBoxlist);
+
+
+                        //foreach (CheckBox c in checkBoxlist)
+                        //{
+                        //    if (c.IsChecked)
+                        //    {
+                        //        //do whatever you want
+                        //    }
+                        //}
+                        //comboBoxlist[0].SelectedValue = (int)item.itemUnitId;
+
+                        /*
+                            (dg_billDetails.Items[0] as BillDetails).itemUnitId = (int)item.itemUnitId;
+                     var allCells =    dg_billDetails.SelectedCells;
+                        
+                        foreach (var c in allCells)
+                        {
+                            MessageBox.Show("HelloWorld!");
+
+                           //MessageBox.Show(c.Column)
+                        }
+                        //var cp = (ContentPresenter)cell.Content;
+                        //var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
+                        //combo.SelectedValue = (int)item.itemUnitId;
+
+                        //cbm_unitItemDetails.allcell
+                        //cbm_unitItemDetails.se
+                        */
+                    }
+                    else if (dg_billDetails.Items.Count != 1)
+                    {
+                        var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                        if (cell != null)
+                        {
+                            var cp = (ContentPresenter)cell.Content;
+                            var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
+                            //var combo = (combo)cell.Content;
+                            combo.SelectedValue = (int)item.itemUnitId;
+                            count++;
+                        }
+                    }
+
+                }
+            }
+
+        }
+        //void refrisUnitValue(ItemUnit itemUnit)
+        //{
+        //    //var cell = DataGridHelper.GetCell(dg_billDetails, 0, 3);
+        //    //var cp = (ContentPresenter)cell.Content;
+        //    //var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
+        //    //////var cmb = sender as ComboBox;
+        //    //////cmb.SelectedValue = cmb.Tag;
+        //    ////combo.SelectedItem = new ItemUnit();
+        //    ////combo.SelectedItem = itemUnit;
+        //    ////combo.SelectedIndex = 0;
+        //    //combo.SelectedValue = (int)itemUnit.itemUnitId;
+        //}
     }
+
+
+
+ 
+
+
 }

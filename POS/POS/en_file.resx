@@ -966,4 +966,73 @@
   <data name="trUserHint" xml:space="preserve">
     <value>User...</value>
   </data>
+  <data name="trConfirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="trDepositTo" xml:space="preserve">
+    <value>Deposit To</value>
+  </data>
+  <data name="trDepositToHint" xml:space="preserve">
+    <value>DepositTo...</value>
+  </data>
+  <data name="trDocumentNumber" xml:space="preserve">
+    <value>Document Number</value>
+  </data>
+  <data name="trDocumentNumberHint" xml:space="preserve">
+    <value>Document Number...</value>
+  </data>
+  <data name="trDocumenType" xml:space="preserve">
+    <value>Document Type</value>
+  </data>
+  <data name="trDocumenTypeHint" xml:space="preserve">
+    <value>Document Type...</value>
+  </data>
+  <data name="trEmptyCashToolTip" xml:space="preserve">
+    <value>Ammount can not be empty</value>
+  </data>
+  <data name="trEmptyDepositNumberToolTip" xml:space="preserve">
+    <value>Deposit/pull number can not be empty</value>
+  </data>
+  <data name="trErrorEmptyBankToolTip" xml:space="preserve">
+    <value>Bank can not be empty</value>
+  </data>
+  <data name="trErrorEmptyFromPosToolTip" xml:space="preserve">
+    <value>Pull Pos can not be empty</value>
+  </data>
+  <data name="trErrorEmptyOpperationTypeToolTip" xml:space="preserve">
+    <value>Opperation type can not be empty</value>
+  </data>
+  <data name="trErrorEmptyToPosToolTip" xml:space="preserve">
+    <value>Deposit Pos can not be empty</value>
+  </data>
+  <data name="trErrorEmptyUserToolTip" xml:space="preserve">
+    <value>User can not be empty</value>
+  </data>
+  <data name="trFromPos" xml:space="preserve">
+    <value>Pull Pos</value>
+  </data>
+  <data name="trFromPosHint" xml:space="preserve">
+    <value>From Pos...</value>
+  </data>
+  <data name="trImage" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="trPaymentProcessType" xml:space="preserve">
+    <value>Payment Process Type</value>
+  </data>
+  <data name="trPaymentProcessTypeHint" xml:space="preserve">
+    <value>Payment Process Type...</value>
+  </data>
+  <data name="trRecepient" xml:space="preserve">
+    <value>Recepient</value>
+  </data>
+  <data name="trToPos" xml:space="preserve">
+    <value>Deposit Pos</value>
+  </data>
+  <data name="trToPosHint" xml:space="preserve">
+    <value>To Pos...</value>
+  </data>
+  <data name="trTransaferDetails" xml:space="preserve">
+    <value>Transafer Details</value>
+  </data>
 </root>

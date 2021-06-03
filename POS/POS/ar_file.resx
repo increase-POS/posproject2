@@ -942,4 +942,76 @@
   <data name="trUserHint" xml:space="preserve">
     <value>المستخدم...</value>
   </data>
+  <data name="trConfirm" xml:space="preserve">
+    <value>تأكيد</value>
+  </data>
+  <data name="trDepositTo" xml:space="preserve">
+    <value>إيداع إلى</value>
+  </data>
+  <data name="trDepositToHint" xml:space="preserve">
+    <value>إيداع إلى...</value>
+  </data>
+  <data name="trDocumentNumber" xml:space="preserve">
+    <value>رقم الوثيقة</value>
+  </data>
+  <data name="trDocumentNumberHint" xml:space="preserve">
+    <value>رقم الوثيقة...</value>
+  </data>
+  <data name="trDocumenType" xml:space="preserve">
+    <value>نوع الوثيقة</value>
+  </data>
+  <data name="trDocumenTypeHint" xml:space="preserve">
+    <value>نوع الوثيقة...</value>
+  </data>
+  <data name="trEmptyCashToolTip" xml:space="preserve">
+    <value>المبلغ لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyDepositNumberToolTip" xml:space="preserve">
+    <value>رقم السحب/الإيداع لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trErrorEmptyBankToolTip" xml:space="preserve">
+    <value>البنك لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trErrorEmptyFromPosToolTip" xml:space="preserve">
+    <value>نقطة البيع الساحبة لا يمكن أن تكون فارغ</value>
+  </data>
+  <data name="trErrorEmptyOpperationTypeToolTip" xml:space="preserve">
+    <value>نوع العملية لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trErrorEmptyToPosToolTip" xml:space="preserve">
+    <value>نقطة البيع المودعة لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trErrorEmptyUserToolTip" xml:space="preserve">
+    <value>المستخدم لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trFromPos" xml:space="preserve">
+    <value>نقطة البيع الساحبة</value>
+  </data>
+  <data name="trFromPosHint" xml:space="preserve">
+    <value>من نقطة بيع...</value>
+  </data>
+  <data name="trImage" xml:space="preserve">
+    <value>صورة</value>
+  </data>
+  <data name="trPaymentProcessType" xml:space="preserve">
+    <value>نوع عملية الدفع</value>
+  </data>
+  <data name="trPaymentProcessTypeHint" xml:space="preserve">
+    <value>نوع عملية الدفع...</value>
+  </data>
+  <data name="trRecepient" xml:space="preserve">
+    <value>المستلم</value>
+  </data>
+  <data name="trRecepientHint" xml:space="preserve">
+    <value>المستلم...</value>
+  </data>
+  <data name="trToPos" xml:space="preserve">
+    <value>نقطة البيع المودعة</value>
+  </data>
+  <data name="trToPosHint" xml:space="preserve">
+    <value>إلى نقطة بيع...</value>
+  </data>
+  <data name="trTransaferDetails" xml:space="preserve">
+    <value>تفاصيل التحويل</value>
+  </data>
 </root>

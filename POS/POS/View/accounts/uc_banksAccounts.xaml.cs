@@ -62,6 +62,8 @@ namespace POS.View.accounts
 
         private void translate()
         {
+            txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trTransaferDetails");
+
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_depositNumber, MainWindow.resourcemanager.GetString("trDepositeNumHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_opperationType, MainWindow.resourcemanager.GetString("trOpperationTypeHint"));
@@ -95,6 +97,11 @@ namespace POS.View.accounts
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
             tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
+            btn_image.Content = MainWindow.resourcemanager.GetString("trImage");
+            btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
+            btn_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
+            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdf");
         }
 
         private void Btn_confirm_Click(object sender, RoutedEventArgs e)
@@ -137,6 +144,8 @@ namespace POS.View.accounts
             cb_bank.SelectedIndex = -1;
             #endregion
 
+            #region translate
+
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -151,6 +160,7 @@ namespace POS.View.accounts
             }
 
             translate();
+            #endregion
 
             #region Style Date
             /////////////////////////////////////////////////////////////
@@ -210,28 +220,29 @@ namespace POS.View.accounts
             //chk empty cash
             SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
             //chk empty deposite number
-            SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositeNumberToolTip");
+            SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositNumberToolTip");
             //chk empty dicount type
             SectionData.validateEmptyComboBox(cb_opperationType, p_errorOpperationType, tt_errorOpperationType, "trErrorEmptyOpperationTypeToolTip");
             //chk empty user
             SectionData.validateEmptyComboBox(cb_user, p_errorUser, tt_errorUser, "trErrorEmptyUserToolTip");
             //chk empty bank
             SectionData.validateEmptyComboBox(cb_bank, p_errorBank, tt_errorBank, "trErrorEmptyBankToolTip");
-            //generateNumber();
+
             if ((!tb_cash.Text.Equals("")) && (!tb_depositNumber.Text.Equals("")) &&
                 (!cb_opperationType.Text.Equals("")) && (!cb_user.Text.Equals("")) &&
                 (!cb_bank.Text.Equals("")))
-                {
+             {
 
                 CashTransfer cash = new CashTransfer();
                 cash.transType = cb_opperationType.SelectedValue.ToString();
                 cash.posIdCreator = MainWindow.posID.Value;
                 cash.userId = Convert.ToInt32(cb_user.SelectedValue);
-                cash.transNum = await generateNumber();
+                //cash.transNum = await generateNumber();
+                cash.transNum = await SectionData.generateNumber(Convert.ToChar(cb_opperationType.SelectedValue), "bn");
                 cash.cash = decimal.Parse(tb_cash.Text);
                 cash.createUserId = MainWindow.userID.Value;
                 cash.notes = tb_note.Text;
-                cash.posId = MainWindow.posID.Value;
+                cash.posId = MainWindow.posID.Value;///////////?????????????
                 cash.side = "bn";
                 cash.bankId = Convert.ToInt32(cb_bank.SelectedValue);
                 cash.docNum = tb_depositNumber.Text;
@@ -342,25 +353,23 @@ namespace POS.View.accounts
 
         }
 
-        private async Task<string> generateNumber()
-        {
-            Branch b = new Branch();
-            b = await branchModel.getBranchById(MainWindow.branchID.Value);
-            string str1 = b.code;
+        //private async Task<string> generateNumber()
+        //{
+        //    Branch b = new Branch();
+        //    b = await branchModel.getBranchById(MainWindow.branchID.Value);
+        //    string str1 = b.code;
 
-            string str2 = "";
-            if (Convert.ToChar(cb_opperationType.SelectedValue) == 'd') str2 = "pb";
-            else str2 = "rb";
+        //    string str2 = "";
+        //    if (Convert.ToChar(cb_opperationType.SelectedValue) == 'd') str2 = "db";
+        //    else str2 = "pb";
 
-            string str3 = "";
-            CashTransfer c = new CashTransfer();
-            cashes = await cashModel.GetCashTransferAsync(Convert.ToString(cb_opperationType.SelectedValue), "bn");
-            str3 = cashes.Count().ToString();
+        //    string str3 = "";
+        //    CashTransfer c = new CashTransfer();
+        //    cashes = await cashModel.GetCashTransferAsync(Convert.ToString(cb_opperationType.SelectedValue), "bn");
+        //    str3 = cashes.Count().ToString();
 
-            //MessageBox.Show(str1 +" "+str2+" "+str3);
-
-            return str1 + str2 + str3;
-        }
+        //    return str1 + str2 + str3;
+        //}
 
         private void validateEmpty(string name, object sender)
         {
@@ -397,6 +406,7 @@ namespace POS.View.accounts
         async Task<IEnumerable<CashTransfer>> RefreshCashesList()
         {
             cashes = await cashModel.GetCashTransferAsync("all","bn");
+            //MessageBox.Show(cashes.Count().ToString());
             return cashes;
         }
         void RefreshCashView()

@@ -65,7 +65,39 @@ namespace POS.View
         public UC_bank()
         {
             InitializeComponent();
+
+            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1400)
+            {
+                txt_deleteButton.Visibility = Visibility.Visible;
+                txt_addButton.Visibility = Visibility.Visible;
+                txt_updateButton.Visibility = Visibility.Visible;
+                txt_add_Icon.Visibility = Visibility.Visible;
+                txt_update_Icon.Visibility = Visibility.Visible;
+                txt_delete_Icon.Visibility = Visibility.Visible;
+            }
+            else if(System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+            {
+                txt_add_Icon.Visibility = Visibility.Collapsed;
+                txt_update_Icon.Visibility = Visibility.Collapsed;
+                txt_delete_Icon.Visibility = Visibility.Collapsed;
+                txt_deleteButton.Visibility = Visibility.Visible;
+                txt_addButton.Visibility = Visibility.Visible;
+                txt_updateButton.Visibility = Visibility.Visible;
+
+            }
+            else  
+            {
+                txt_deleteButton.Visibility = Visibility.Collapsed;
+                txt_addButton.Visibility = Visibility.Collapsed;
+                txt_updateButton.Visibility = Visibility.Collapsed;
+                txt_add_Icon.Visibility = Visibility.Visible;
+                txt_update_Icon.Visibility = Visibility.Visible;
+                txt_delete_Icon.Visibility = Visibility.Visible;
+
+            }
+
         }
+
         //area code methods
         async Task<IEnumerable<CountryCode>> RefreshCountry()
         {
@@ -116,9 +148,9 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_address, MainWindow.resourcemanager.GetString("trAdressHint"));
             txt_moreInformation.Text = MainWindow.resourcemanager.GetString("trAnotherInfomation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
-            btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
-            btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
-            btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+            txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
+            txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
+            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
             dg_bank.Columns[0].Header = MainWindow.resourcemanager.GetString("trBankName");
             dg_bank.Columns[1].Header = MainWindow.resourcemanager.GetString("trAccNumber");
             dg_bank.Columns[2].Header = MainWindow.resourcemanager.GetString("trAddress");
@@ -133,6 +165,9 @@ namespace POS.View
             tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
             tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+            tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
+            tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
@@ -140,7 +175,7 @@ namespace POS.View
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
         }
 
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
             {
@@ -170,6 +205,8 @@ namespace POS.View
             //banks = await bankModel.GetBanksAsync();
             //banksQuery = banks.Where(s => s.isActive == Convert.ToInt32(tgl_bankIsActive.IsChecked));
             //dg_bank.ItemsSource = banks;
+            MainWindow mw = new MainWindow();
+
 
         }
 
@@ -354,9 +391,9 @@ namespace POS.View
                     bool b = await bankModel.deleteBank(bank.bankId, MainWindow.userID.Value, bank.canDelete);
 
                     if (b) //SectionData.popUpResponse("", popupContent);
-                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 }
                 await RefreshBanksList();
@@ -375,7 +412,7 @@ namespace POS.View
             if (s.Equals("Bank Is Updated Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             await RefreshBanksList();
             Tb_search_TextChanged(null, null);
@@ -386,6 +423,7 @@ namespace POS.View
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorMobile.Visibility = Visibility.Collapsed;
             p_errorPhone.Visibility = Visibility.Collapsed;
+     
 
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
@@ -399,17 +437,36 @@ namespace POS.View
 
             if (bank != null)
             {
-                SectionData.getMobile(bank.mobile , cb_area ,tb_mobile);
+                SectionData.getMobile(bank.mobile, cb_area, tb_mobile);
 
-                SectionData.getPhone(bank.phone , cb_areaPhone , cb_areaPhoneLocal ,tb_phone);
+                SectionData.getPhone(bank.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
 
-               #region delete
-                if (bank.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
-
+                #region delete
+                if (bank.canDelete)
+                {
+                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                    txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                }
                 else
                 {
-                    if (bank.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
-                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                    if (bank.isActive == 0)
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                        txt_delete_Icon.Kind =
+                         MaterialDesignThemes.Wpf.PackIconKind.Check;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                    }
+                    else
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                        txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                    }
+
                 }
                 #endregion 
             }
@@ -551,7 +608,7 @@ namespace POS.View
                     }
                     else
                     {
-                        cb_areaPhoneLocal.Visibility = Visibility.Collapsed ;
+                        cb_areaPhoneLocal.Visibility = Visibility.Collapsed;
                     }
 
                 }
@@ -579,7 +636,7 @@ namespace POS.View
             for (int i = 0; i < banks.Count(); i++)
             {
                 bank1 = banks[i];
-                if ((bank1.name.Equals(tb_name.Text.Trim())) && 
+                if ((bank1.name.Equals(tb_name.Text.Trim())) &&
                     (bank1.accNumber.Equals(tb_accNumber.Text.Trim())) &&
                     (bank1.bankId != bank.bankId))
                 { b = true; break; }
@@ -635,7 +692,7 @@ namespace POS.View
             rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
             ReportParameter[] paramarr = new ReportParameter[6];
             paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trBanks"));
-           
+
             paramarr[1] = new ReportParameter("trMobile", MainWindow.resourcemanager.GetString("trMobile"));
             paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
             paramarr[3] = new ReportParameter("trAddress", MainWindow.resourcemanager.GetString("trAddress"));
@@ -645,5 +702,8 @@ namespace POS.View
             rep.Refresh();
             LocalReportExtensions.PrintToPrinter(rep);
         }
+
+
+
     }
 }

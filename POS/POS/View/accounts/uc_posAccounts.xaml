@@ -54,7 +54,15 @@
                               Foreground="#4e4e4e" TextBlock.FontSize="14"
                               HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Height="35"   Width="150" Margin="10,5" 
-                              TextChanged="Tb_search_TextChanged"/>
+                              TextChanged="Tb_search_TextChanged">
+                        <TextBox.ToolTip>
+                            <ToolTip x:Name="tt_search" Content="Search"
+                                                          Placement="left" 
+                                                          HorizontalOffset="25"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="25"/>
+                        </TextBox.ToolTip>
+                    </TextBox>
                     <DatePicker  x:Name="dp_startSearchDate"  
                                BorderBrush="#737373"  BorderThickness="0" 
                                     TextBlock.Foreground="#4E4E4E" 
@@ -94,7 +102,7 @@
                     <Button FlowDirection="LeftToRight"  Width="40" Height="40" x:Name="btn_refresh" Grid.Row="0" Grid.Column="5" Padding="0" 
                             materialDesign:ButtonAssist.CornerRadius="15" Cursor="Hand"
                           Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_refresh_Click"  Style="{StaticResource SmallButtonCircleRotate}"
-                             Margin="5,1"  Content="إضافة"   ToolTip="Refresh"  RenderTransformOrigin="0.5,0.5"
+                             Margin="5,1"  Content="إضافة"   RenderTransformOrigin="0.5,0.5"
                             DataContext="M896,0L896,0C401.2,0,0,401.2,0,896v0c0,494.8,401.2,896,896,896h0c494.8,0,896-401.2,896-896v0C1792,401.2,1390.8,0,896,0z
 	 M1451.3,1021c-31.9,133.7-98.8,242.1-200.6,325.2c-101.8,83.1-221,124.6-357.7,124.6c-72.8,0-143.3-13.7-211.4-41.2
 	s-128.8-66.6-182.2-117.5l-96.5,96.5c-9.5,9.5-20.7,14.2-33.7,14.2s-24.2-4.7-33.7-14.2c-9.5-9.5-14.2-20.7-14.2-33.7v-335.3
@@ -115,6 +123,13 @@
                                 <TranslateTransform/>
                             </TransformGroup>
                         </Button.RenderTransform>
+                        <Button.ToolTip>
+                            <ToolTip x:Name="tt_refresh" Content="Refresh"
+                                              Placement="left" 
+                                              HorizontalOffset="15"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="25"/>
+                        </Button.ToolTip>
                     </Button>
                 </Grid>
                 
@@ -157,7 +172,7 @@
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                         </materialDesign:PackIcon.ToolTip>
                     </materialDesign:PackIcon>
                 </Button>
@@ -172,7 +187,7 @@
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                         </materialDesign:PackIcon.ToolTip>
                     </materialDesign:PackIcon>
                 </Button>
@@ -216,7 +231,7 @@
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                             </Path.ToolTip>
                         </Path>
                     </Grid>
@@ -235,7 +250,7 @@
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                         </Path.ToolTip>
                     </Path>
                 </Button>
@@ -246,7 +261,7 @@
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,25,0,0"
-                                              VerticalOffset="-20"/>
+                                              VerticalOffset="-45"/>
                     </TextBlock.ToolTip>
 
                 </TextBlock>
@@ -344,7 +359,7 @@
                                              Placement="left" 
                                              HorizontalOffset="5"
                                              PlacementRectangle="50,0,0,0"
-                                             VerticalOffset="20"/>
+                                             VerticalOffset="10"/>
                                     </materialDesign:PackIcon.ToolTip>
                                 </materialDesign:PackIcon>
                             </Button>
@@ -401,12 +416,19 @@
                         </Grid.ColumnDefinitions>
                         <ComboBox x:Name="cb_pos1"  Grid.Row="2"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="From pos..."  
-                           TextBlock.FontSize="12"   Background="#f8f8f8"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
-                           BorderBrush="#737373" BorderThickness="0" >
-
+                                  materialDesign:HintAssist.Hint="From pos..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                  Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
+                                  BorderBrush="#737373" BorderThickness="0" 
+                                  LostFocus="Tb_validateEmptyLostFocus">
+                            <ComboBox.ToolTip>
+                                <ToolTip x:Name="tt_Pos1" Content="Pos1"
+                                                          Placement="left" 
+                                                          HorizontalOffset="35"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="20"/>
+                            </ComboBox.ToolTip>
                         </ComboBox>
                         <Path Fill="#E81123" x:Name="p_errorPos1" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -423,12 +445,19 @@
                         </Grid.ColumnDefinitions>
                         <ComboBox x:Name="cb_pos2"  Grid.Row="2"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="To pos..."  
-                           TextBlock.FontSize="12"   Background="#f8f8f8"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
-                           BorderBrush="#737373" BorderThickness="0" >
-
+                                  materialDesign:HintAssist.Hint="To pos..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                  Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
+                                  BorderBrush="#737373" BorderThickness="0" 
+                                  LostFocus="Tb_validateEmptyLostFocus" >
+                            <ComboBox.ToolTip>
+                                <ToolTip x:Name="tt_Pos2" Content="Pos2"
+                                                          Placement="left" 
+                                                          HorizontalOffset="35"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="20"/>
+                            </ComboBox.ToolTip>
                         </ComboBox>
                         <Path Fill="#E81123" x:Name="p_errorPos2" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -445,14 +474,26 @@
                         </Grid.ColumnDefinitions>
                         <TextBox x:Name="tb_cash" MaxLength="20" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                                 Text="{Binding cash, Mode=OneWay}" 
-                                 Grid.Row="1" Padding="10,5,5,5"
-                                 BorderThickness="1" 
-                                 materialDesign:HintAssist.Hint="Cash..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12"
-                                 Background="#f8f8f8" BorderBrush="#f8f8f8"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="0"   Height="35" Width="340"  Margin="10,5"/>
+                                     Text="{Binding cash, Mode=OneWay}" 
+                                     Grid.Row="1" Padding="10,5,5,5"
+                                     BorderThickness="1" 
+                                     materialDesign:HintAssist.Hint="Cash..."  
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12"
+                                     Background="#f8f8f8" BorderBrush="#f8f8f8"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                     Grid.Column="0"   Height="35" Width="340"  Margin="10,5"
+                                     TextChanged="Tb_validateEmptyTextChange" 
+                                     LostFocus="Tb_validateEmptyLostFocus"
+                                     PreviewKeyDown="PreventSpaces" 
+                                     PreviewTextInput="Tb_cash_PreviewTextInput">
+                            <TextBox.ToolTip>
+                                <ToolTip x:Name="tt_cash" Content="Cash"
+                                                         Placement="left" 
+                                                         HorizontalOffset="35"
+                                                         PlacementRectangle="50,0,0,0"
+                                                         VerticalOffset="20"/>
+                            </TextBox.ToolTip>
+                        </TextBox>
                         <Path x:Name="p_errorCash" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -464,13 +505,22 @@
                     </Grid>
                     <Grid Grid.Row="6"  Margin="5,0,0,0" >
                         <TextBox  x:Name="tb_note" Text="{Binding test, Mode=OneWay}"
-                                                 Grid.Row="2" Padding="10,5,5,5"  
-                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  
-                               Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="#f8f8f8"
-                                 HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            Grid.Column="1"  Height="70"  Width="340"  Margin="5,5"  TextWrapping="Wrap"/>
+                                  Grid.Row="2" Padding="10,5,5,5"  
+                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                  BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  
+                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                  BorderBrush="#f8f8f8"
+                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                  Grid.Column="1"  Height="70"  Width="340"  Margin="5,5" 
+                                  TextWrapping="Wrap">
+                            <TextBox.ToolTip>
+                                <ToolTip x:Name="tt_notes" Content="Notes"
+                                                         Placement="left" 
+                                                         HorizontalOffset="35"
+                                                         PlacementRectangle="50,0,0,0"
+                                                         VerticalOffset="20"/>
+                            </TextBox.ToolTip>
+                        </TextBox>
                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                                   HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                              VerticalAlignment="Center" Width="15"  Height="15"

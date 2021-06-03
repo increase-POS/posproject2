@@ -25,7 +25,7 @@ namespace POS.Classes
         public static Category categoryModel = new Category();
         public static Pos posModel = new Pos();
         public static Offer offerModel = new Offer();
-
+        public static CashTransfer cashModel = new CashTransfer();
 
         public static Coupon couponModel = new Coupon();
 
@@ -238,7 +238,7 @@ namespace POS.Classes
 
 
         public static bool IsValid(string txt)
-        {
+        {//for email
             Regex regex = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$",
                    RegexOptions.CultureInvariant | RegexOptions.Singleline);
             bool isValidEmail = regex.IsMatch(txt);
@@ -502,6 +502,33 @@ namespace POS.Classes
                     textBox1.BorderThickness = dp.BorderThickness;
                 }
             };
+        }
+
+        //IEnumerable<CashTransfer> cashes;
+        public static async Task<string> generateNumber(char opperationType , string side)
+        {
+            List<CashTransfer> cashes = new List<CashTransfer>();
+            Branch b = new Branch();
+            b = await branchModel.getBranchById(MainWindow.branchID.Value);
+
+            string str1 = b.code;
+
+            string str2 = "";
+            switch(side)
+            {
+                case "bn": if (opperationType.Equals('d')) str2 = "db"; else str2 = "pb"; break;
+                case "p" : //break;
+                case "u":  //break;
+                case "v":  //break;
+                case "c":  //break;
+                case "b": str2 = opperationType + side; break;//????????????????
+            }
+
+            string str3 = "";
+            cashes = await cashModel.GetCashTransferAsync(Convert.ToString(opperationType), side);
+            str3 = cashes.Count().ToString();
+
+            return str1 + str2 + str3;
         }
     }
 }
