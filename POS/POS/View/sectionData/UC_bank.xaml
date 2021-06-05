@@ -85,7 +85,7 @@
                             </TransformGroup>
                         </Button.RenderTransform>
                     </Button>
-                    <ToggleButton DockPanel.Dock="Right" Grid.Column="1"  x:Name="tgl_bankIsActive"  
+                    <ToggleButton DockPanel.Dock="Right"   x:Name="tgl_bankIsActive"  
                                       VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                       Margin="0" Height="13" Width="28"  TabIndex="15" Checked="Tgl_bankIsActive_Checked" Unchecked="Tgl_bankIsActive_Unchecked" />
                     <TextBlock  DockPanel.Dock="Right"
@@ -298,7 +298,7 @@
                         Background="#4E4E4E">
                     <Button Height="52" Background="{x:Null}" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Height="52" HorizontalAlignment="Center" >
-                            <Path Fill="#E8E8E8"  HorizontalAlignment="Center"  VerticalAlignment="Center" Width="22" Height="22" Data="M4,10h3v7H4V10zM10.5,10h3v7h-3V10z M2,19h20v3H2V19z M17,10h3v7h-3V10z M12,1L2,6v2h20V6L12,1z"/>
+                            <Path Fill="#E8E8E8"  HorizontalAlignment="Center"   Width="22" Height="22" Data="M4,10h3v7H4V10zM10.5,10h3v7h-3V10z M2,19h20v3H2V19z M17,10h3v7h-3V10z M12,1L2,6v2h20V6L12,1z"/>
                             <TextBlock Text="Bank" x:Name="txt_bank" Foreground="#E8E8E8" VerticalAlignment="Center" Grid.Column="1"  Margin="5"/>
                         </StackPanel>
                     </Button>
@@ -307,7 +307,6 @@
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                     <Grid x:Name="grid_bank" >
                         <Grid.RowDefinitions >
-                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
@@ -438,7 +437,7 @@
                             <ComboBox x:Name="cb_areaPhoneLocal" Padding="10,5,5,5" 
                                       TextBlock.Foreground="#4E4E4E" Visibility="Collapsed"
                                       SelectedIndex="0" TabIndex="6"
-                                      TextBlock.FontSize="12" Margin="10,5,5,5"
+                                      TextBlock.FontSize="12" Margin="5,5,5,5"
                                       VerticalAlignment="Center" 
                                       Height="40" Width="50"  Grid.Column="1"
                                       Background="#f8f8f8" 
@@ -534,7 +533,7 @@
 
                         <!--Seprator-->
                         <!--#region -->
-                        <Separator Grid.Row="9"  Background="#999999"  Margin="10"  VerticalAlignment="Bottom" />
+               
                         <!--#endregion-->
 
                         <!--Buttons-->

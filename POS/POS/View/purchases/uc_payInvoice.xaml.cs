@@ -185,7 +185,7 @@ namespace POS.View
             };
 
             #endregion
-            grid_vendor.Visibility = Visibility.Collapsed;
+            //grid_vendor.Visibility = Visibility.Collapsed;
             tb_sum.Text = _Sum.ToString();
             tb_barcode.Focus();
             #region datagridChange
@@ -1219,7 +1219,7 @@ namespace POS.View
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cmb = sender as ComboBox;
-
+         
             if(dg_billDetails.SelectedIndex != -1)
                 billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
         }

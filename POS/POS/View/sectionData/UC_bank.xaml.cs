@@ -66,7 +66,7 @@ namespace POS.View
         {
             InitializeComponent();
 
-            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1400)
+            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
             {
                 txt_deleteButton.Visibility = Visibility.Visible;
                 txt_addButton.Visibility = Visibility.Visible;
@@ -433,6 +433,7 @@ namespace POS.View
             {
                 bank = dg_bank.SelectedItem as Bank;
                 this.DataContext = bank;
+                
             }
 
             if (bank != null)
@@ -447,6 +448,8 @@ namespace POS.View
                     txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
                     txt_delete_Icon.Kind =
                              MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+
                 }
                 else
                 {

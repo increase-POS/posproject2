@@ -23,10 +23,7 @@
 
         <Border BorderThickness="0"   Grid.Column="0" Grid.ColumnSpan="2"  Margin="10"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
-            <Grid   Margin="0" >
-                <Grid.RowDefinitions >
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <Grid   Margin="0,10" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="auto"/>
@@ -38,7 +35,7 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="1" BorderBrush="{x:Null}" 
+                <Button Grid.Column="1" BorderBrush="{x:Null}"  Height="auto"
                     Background="{x:Null}" x:Name="btn_newDraft" Padding="0" Margin="5,0"  >
                     <Path Fill="#4E4E4E" Stretch="Fill"  x:Name="path_newDraft"
                           Width="{Binding Path=ActualHeight, ElementName=path_newDraft}"  
@@ -56,7 +53,7 @@
                         </Path.ToolTip>
                     </Path>
                 </Button>
-                <Button Grid.Column="2" BorderBrush="{x:Null}" Padding="0" Margin="5,0" 
+                <Button Grid.Column="2" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_drafts"   >
                     <Path Fill="#4E4E4E" Stretch="Fill"  
                           Width="{Binding Path=ActualHeight, ElementName=path_newDraft}"  
@@ -71,7 +68,7 @@
                         </Path.ToolTip>
                     </Path>
                 </Button>
-                <Button Grid.Column="3" BorderBrush="{x:Null}" Padding="0" Margin="5,0" 
+                <Button Grid.Column="3" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_returnInvoice"   >
                     <Path Fill="#4E4E4E" Stretch="Fill"  
                           Width="{Binding Path=ActualHeight, ElementName=path_newDraft}"  
@@ -86,7 +83,7 @@
                         </Path.ToolTip>
                     </Path>
                 </Button>
-                <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0" Margin="5,0" 
+                <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_invoiceImages"   >
                     <Path Fill="#4E4E4E" Stretch="Fill"  
                           Width="{Binding Path=ActualHeight, ElementName=path_newDraft}"  
@@ -104,7 +101,7 @@
                         </Path.ToolTip>
                     </Path>
                 </Button>
-                <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0" Margin="5,0" 
+                <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_preview"   >
                     <Path Fill="#4E4E4E" Stretch="Fill"  
                           Width="{Binding Path=ActualHeight, ElementName=path_newDraft}"  
@@ -143,7 +140,7 @@
                         </Path.ToolTip>
                     </Path>
                 </Button>
-                <Button Grid.Column="6" BorderBrush="{x:Null}" Padding="0" Margin="5,0" 
+                <Button Grid.Column="6" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_pdf"   >
                     <Path Fill="#4E4E4E" Stretch="Fill"  
                           Width="{Binding Path=ActualHeight, ElementName=path_newDraft}"  
@@ -172,7 +169,7 @@
                         </Path.ToolTip>
                     </Path>
                 </Button>
-                <Button Grid.Column="8" BorderBrush="{x:Null}" Padding="0" Margin="5,0" 
+                <Button Grid.Column="8" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_printInvoice"   >
                     <Path Fill="#4E4E4E" Stretch="Fill"  
                           Width="{Binding Path=ActualHeight, ElementName=path_newDraft}"  
@@ -195,7 +192,7 @@
         </Border>
         <Border BorderThickness="0"   Grid.Column="2"    Margin="10"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
-            <Grid   Margin="0" >
+            <Grid   Margin="0,10" >
                 <Grid.RowDefinitions >
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
@@ -206,8 +203,8 @@
                     <ColumnDefinition Width="10"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="2" BorderBrush="{x:Null}" 
-                    Background="{x:Null}" x:Name="btn_items" Padding="0" Margin="5,0"  >
+                <Button Grid.Column="2" BorderBrush="{x:Null}" Height="auto"
+                    Background="{x:Null}" x:Name="btn_items" Padding="0" Margin="5,0"   >
                     <Path Fill="#4E4E4E" Stretch="Fill"  x:Name="path_itemsIcon"
                           Width="{Binding Path=ActualHeight, ElementName=path_itemsIcon}"  
                            FlowDirection="LeftToRight" Data="M473.2,341.6c-10.5-18.1-21-36.2-31.5-54.2c-1.9-3.3-3.8-6.6-5.8-9.9c2.1-3.7,3.3-8,3.3-12.8c0-7.7,0-15.4,0-23
@@ -249,7 +246,7 @@
                         </Path.ToolTip>
                     </Path>
                 </Button>
-                <Button Grid.Column="1" BorderBrush="{x:Null}" Padding="0" Margin="5,0" 
+                <Button Grid.Column="1" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_statistic"   >
                     <Path Fill="#4E4E4E" Stretch="Fill"  
                           Width="{Binding Path=ActualHeight, ElementName=path_itemsIcon}"  
@@ -309,7 +306,7 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Vendor" x:Name="txt_vendor" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Left" Margin="5,5,0,5"/>
+                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
 
                             <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
                           Background="{x:Null}" BorderBrush="{x:Null}" 
@@ -330,7 +327,7 @@
                                     Grid.Column="1" Height="40"   Margin="5,5"
                                     BorderBrush="#737373" BorderThickness="0"
                                           LostFocus="input_LostFocus"/>
-                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,45,5"
                                           Name="p_errorVendor"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -509,15 +506,12 @@
                                 </Path.ToolTip>
                             </Path>
                         </Grid>
-                        <Separator Background="#999999"   Width="340"  Margin="5,0,5,0"
-                                      Grid.Row="7" VerticalAlignment="Center" />
-
                     </Grid>
                 </Grid>
             </Border>
 
         </Grid>
-        <Border BorderThickness="0"  Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"     Margin="10"
+        <Border BorderThickness="0"  Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="2"     Margin="10"
                     CornerRadius="7" BorderBrush="Black" Background="#FFA926" Padding="0">
             <Grid  Margin="5,0" >
                 <Grid.ColumnDefinitions>
@@ -534,11 +528,11 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="1" >
+        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" >
             <Grid.RowDefinitions >
                 <RowDefinition Height="2*"/>
                 <RowDefinition Height="2*"/>
-                <RowDefinition Height="7*"/>
+                <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
             <Border BorderThickness="0"   Grid.Column="0" Grid.Row="0"    Margin="10"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
@@ -549,7 +543,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Barcode" x:Name="txt_barcode" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                      VerticalAlignment="Center" 
-                                       HorizontalAlignment="Left" Margin="5"/>
+                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
                     <Grid  Margin="5" Grid.Row="3"   >
                         <TextBox x:Name="tb_barcode"  Text="{Binding discount, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5"
@@ -579,7 +573,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Store/Branch" x:Name="txt_store" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
-                                       HorizontalAlignment="Left" Margin="5"/>
+                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
                     <Grid Grid.Row="1" Margin="5"  >
                         <ComboBox   Grid.Row="1" x:Name="cb_branch"
                                              Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
@@ -614,7 +608,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Text="Discount" x:Name="txt_discount" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
-                                       HorizontalAlignment="Left" Margin="5"/>
+                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
                     <Grid Grid.Row="1"  Margin="5" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -664,10 +658,10 @@
                     </Grid>
                     <TextBlock Grid.Row="3"  Text="SUM" x:Name="txt_sum" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
-                                       HorizontalAlignment="Left" Margin="5"/>
+                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
 
-                    <TextBlock Grid.Row="4"   x:Name="tb_sum" Grid.Column="1" Margin="5" 
-                       Foreground="Black" Text="{Binding total, Mode=OneWay}"
+                    <TextBlock Grid.Row="4"   x:Name="tb_sum" Grid.Column="1" Margin="10,5,5,5" 
+                       Foreground="#4E4E4E" Text="{Binding total, Mode=OneWay}"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
 
@@ -688,7 +682,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Purchases Bill" x:Name="txt_payInvoice" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                      VerticalAlignment="Center" 
-                                       HorizontalAlignment="Left" Margin="5"/>
+                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
 
                     <DataGrid x:Name="dg_billDetails"  Margin="5,5" Grid.Row="4"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
