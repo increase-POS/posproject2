@@ -308,14 +308,14 @@ namespace POS.View
             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
             //if ((((this.Parent as Grid).Parent as Grid).Parent as UserControl) != null)
             //((((this.Parent as Grid).Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 0.2;
-            wd_itemsList w = new wd_itemsList();
+            wd_itemsOfferList w = new wd_itemsOfferList();
             //w.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#00178DD2"));
             w.ShowDialog();
             if (w.isActive)
             {
                 foreach (var item in w.selectedItems)
                 {
-                    MessageBox.Show(item.name + "\t");
+                    //MessageBox.Show(item.name + "\t");
                 }
             }
 

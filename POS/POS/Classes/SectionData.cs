@@ -504,7 +504,6 @@ namespace POS.Classes
             };
         }
 
-        //IEnumerable<CashTransfer> cashes;
         public static async Task<string> generateNumber(char opperationType , string side)
         {
             List<CashTransfer> cashes = new List<CashTransfer>();
@@ -513,20 +512,11 @@ namespace POS.Classes
 
             string str1 = b.code;
 
-            string str2 = "";
-            switch(side)
-            {
-                case "bn": if (opperationType.Equals('d')) str2 = "db"; else str2 = "pb"; break;
-                case "p" : //break;
-                case "u":  //break;
-                case "v":  //break;
-                case "c":  //break;
-                case "b": str2 = opperationType + side; break;//????????????????
-            }
+            string str2 = opperationType + side; ;
 
             string str3 = "";
             cashes = await cashModel.GetCashTransferAsync(Convert.ToString(opperationType), side);
-            str3 = cashes.Count().ToString();
+            str3 = (cashes.Count()+1).ToString();
 
             return str1 + str2 + str3;
         }

@@ -63,6 +63,7 @@ namespace POS.View.accounts
         private void translate()
         {
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trTransaferDetails");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_depositNumber, MainWindow.resourcemanager.GetString("trDepositeNumHint"));
@@ -79,7 +80,7 @@ namespace POS.View.accounts
             dg_bankAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dg_bankAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trBank");
             dg_bankAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trDepositeNumTooltip");
-            dg_bankAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCash");
+            dg_bankAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
             tt_opperationType.Content = MainWindow.resourcemanager.GetString("trOpperationTypeToolTip");
             tt_user.Content = MainWindow.resourcemanager.GetString("trUser");
@@ -235,14 +236,13 @@ namespace POS.View.accounts
 
                 CashTransfer cash = new CashTransfer();
                 cash.transType = cb_opperationType.SelectedValue.ToString();
-                cash.posIdCreator = MainWindow.posID.Value;
                 cash.userId = Convert.ToInt32(cb_user.SelectedValue);
                 //cash.transNum = await generateNumber();
                 cash.transNum = await SectionData.generateNumber(Convert.ToChar(cb_opperationType.SelectedValue), "bn");
                 cash.cash = decimal.Parse(tb_cash.Text);
                 cash.createUserId = MainWindow.userID.Value;
                 cash.notes = tb_note.Text;
-                cash.posId = MainWindow.posID.Value;///////////?????????????
+                cash.posId = MainWindow.posID.Value;
                 cash.side = "bn";
                 cash.bankId = Convert.ToInt32(cb_bank.SelectedValue);
                 cash.docNum = tb_depositNumber.Text;

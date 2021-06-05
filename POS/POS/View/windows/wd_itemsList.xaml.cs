@@ -30,7 +30,6 @@ namespace POS.View.windows
         public List<Item> selectedItems = new List<Item>();
         Item itemModel = new Item();
         public string txtItemSearch;
-
         /// <summary>
         /// Selcted Items if selectedItems Have Items At the beginning
         /// </summary>
@@ -58,33 +57,27 @@ namespace POS.View.windows
             lst_allItems.DisplayMemberPath = "name";
             lst_selectedItems.DisplayMemberPath = "name";
         }
-
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
             isActive = true;
             this.Close();
         }
-
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
             isActive = false;
             this.Close();
         }
-
         private void Lst_allItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
             Btn_selectedItem_Click(null, null);
 
         }
-
         private void Lst_selectedItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Btn_unSelectedItem_Click(null, null);
 
         }
-
-       
         private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
         {
             selectedItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList() ;
@@ -108,8 +101,6 @@ namespace POS.View.windows
             }
            
         }
-
-
         private void Btn_unSelectedItem_Click(object sender, RoutedEventArgs e)
         {
 
@@ -125,7 +116,6 @@ namespace POS.View.windows
                 lst_selectedItems.Items.Refresh();
             }
         }
-
         private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
         {
             allItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList();
@@ -136,7 +126,6 @@ namespace POS.View.windows
             lst_selectedItems.Items.Refresh();
 
         }
-
         private void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
         {
 

@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -57,11 +58,11 @@ namespace POS.View
 
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
-        Category categoryModel = new Category();
-        Category category = new Category();
-        IEnumerable<Category> categories;
-        IEnumerable<Category> categoriesQuery;
-        int? categoryParentId = 0;
+        //Category categoryModel = new Category();
+        //Category category = new Category();
+        //IEnumerable<Category> categories;
+        //IEnumerable<Category> categoriesQuery;
+        //int? categoryParentId = 0;
 
         Item itemModel = new Item();
         Item item = new Item();
@@ -98,6 +99,8 @@ namespace POS.View
         static private string _BarcodeStr = "";
         static private int _SequenceNum = 0;
         static private decimal _Sum = 0;
+        static private int _OrginalCount;
+        static private string _InvoiceType = "pd";
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
@@ -107,8 +110,8 @@ namespace POS.View
         private void translate()
         {
             ////////////////////////////////----invoice----/////////////////////////////////
-            txt_invoiceHeader.Text = MainWindow.resourcemanager.GetString("trInvoice");
-            txt_invoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
+            //txt_invoiceHeader.Text = MainWindow.resourcemanager.GetString("trInvoice");
+            //txt_invoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trBranchHint"));
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
@@ -122,11 +125,10 @@ namespace POS.View
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal:");
             btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
-            btn_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            btn_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
 
             ////////////////////////////////----vendor----/////////////////////////////////
 
-            txt_vendorHeader.Text = MainWindow.resourcemanager.GetString("trVendor");
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendor, MainWindow.resourcemanager.GetString("trVendorHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_paid, MainWindow.resourcemanager.GetString("trPaidHint"));
@@ -142,9 +144,10 @@ namespace POS.View
         {
 
             // for pagination
-            btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            //btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
 
             var window = Window.GetWindow(this);
+            window.KeyDown -= HandleKeyPress;
             window.KeyDown += HandleKeyPress;
 
             if (MainWindow.lang.Equals("en"))
@@ -160,10 +163,10 @@ namespace POS.View
 
             translate();
             catigoriesAndItemsView.ucPayInvoice = this;
-            await RefrishItems();
-            await RefrishCategories();
-            RefrishCategoriesCard();
-            Txb_searchitems_TextChanged(null, null);
+            //await RefrishItems();
+            //await RefrishCategories();
+            //RefrishCategoriesCard();
+            //Txb_searchitems_TextChanged(null, null);
             configureDiscountType();
             await RefrishBranches();
             await RefrishVendors();
@@ -228,6 +231,7 @@ namespace POS.View
 
         #endregion
         #region Tab
+       /*
         private void btn_payInvoice_Click(object sender, RoutedEventArgs e)
         {
             grid_vendor.Visibility   = Visibility.Collapsed;
@@ -244,7 +248,7 @@ namespace POS.View
             brd_vendorTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
 
-
+        */
         #endregion
         #region Button In DataGrid
         void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
@@ -294,11 +298,11 @@ namespace POS.View
         /// Category
         /// </summary>
         /// <returns></returns>
-        async Task<IEnumerable<Category>> RefrishCategories()
-        {
-            categories = await categoryModel.GetAllCategories();
-            return categories;
-        }
+        //async Task<IEnumerable<Category>> RefrishCategories()
+        //{
+        //    categories = await categoryModel.GetAllCategories();
+        //    return categories;
+        //}
         async Task RefrishVendors()
         {
             vendors = await agentModel.GetAgentsActive("v");
@@ -313,68 +317,72 @@ namespace POS.View
             cb_branch.DisplayMemberPath = "name";
             cb_branch.SelectedValuePath = "branchId";
         }
-        async void RefrishCategoriesCard()
-        {
-            if (categories is null)
-                await RefrishCategories();
-            categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            catigoriesAndItemsView.gridCatigories = grid_categoryCards;
-            catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
-        }
+        //async void RefrishCategoriesCard()
+        //{
+        //    if (categories is null)
+        //        await RefrishCategories();
+        //    categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == categoryParentId);
+        //    catigoriesAndItemsView.gridCatigories = grid_categoryCards;
+        //    catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
+        //}
         /// <summary>
         /// Item
         /// </summary>
         /// <returns></returns>
 
-        async Task<IEnumerable<Item>> RefrishItems()
-        {
-            if(category.categoryId == 0)
-                items = await itemModel.GetAllItems();
-            else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
-            return items;
-        }
+        //async Task<IEnumerable<Item>> RefrishItems()
+        //{
+        //    if(category.categoryId == 0)
+        //        items = await itemModel.GetAllItems();
+        //    else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
+        //    return items;
+        //}
 
-        void RefrishItemsDatagrid(IEnumerable<Item> _items)
-        {
-            dg_items.ItemsSource = _items;
-        }
+        //void RefrishItemsDatagrid(IEnumerable<Item> _items)
+        //{
+        //    dg_items.ItemsSource = _items;
+        //}
 
-        void RefrishItemsCard(IEnumerable<Item> _items)
-        {
+        //void RefrishItemsCard(IEnumerable<Item> _items)
+        //{
 
-            catigoriesAndItemsView.gridCatigorieItems = grid_itemContainerCard;
-            catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
-        }
+        //    catigoriesAndItemsView.gridCatigorieItems = grid_itemContainerCard;
+        //    catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
+        //}
 
         async Task fillBarcodeList()
         {
             barcodesList = await itemUnitModel.getAllBarcodes();
         }
-       
+
         #endregion
         #region Get Id By Click  Y
 
         public async void ChangeCategoryIdEvent(int categoryId)
         {
-            category = categories.ToList().Find(c => c.categoryId == categoryId);
+            //    category = categories.ToList().Find(c => c.categoryId == categoryId);
 
-            if (categories.Where(x =>
-            x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
-            {
-                categoryParentId = category.categoryId;
-                RefrishCategoriesCard();
-            }
-           
-            generateTrack(categoryId);
-            await RefrishItems();
-            Txb_searchitems_TextChanged(null, null);
+            //    if (categories.Where(x =>
+            //    x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
+            //    {
+            //        categoryParentId = category.categoryId;
+            //        RefrishCategoriesCard();
+            //    }
+
+            //    generateTrack(categoryId);
+            //    await RefrishItems();
+            //    Txb_searchitems_TextChanged(null, null);
         }
 
-        
+
         public async void ChangeItemIdEvent(int itemId)
         {
             item = items.ToList().Find(c => c.itemId == itemId);
-            if (item != null)
+
+            //check if item exist in bill details
+            int index = billDetails.IndexOf(billDetails.Where(p => p.itemId == itemId).FirstOrDefault());
+
+            if (item != null && index == -1)
             {
                 this.DataContext = item;
 
@@ -385,300 +393,305 @@ namespace POS.View
                 itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
                 // search for default unit for purchase
                 var defaultPurUnit = itemUnits.ToList().Find(c => c.defaultPurchase == 1);
-                if (defaultPurUnit == null)
+                if (defaultPurUnit != null)
                 {
-                    defaultPurUnit = new ItemUnit();
-                    defaultPurUnit.mainUnit = "";
+
+
+                    int count = 1;
+                    decimal price = 0; //?????
+                    decimal total = count * price;
+                    billDetails.Add(new BillDetails()
+                    {
+                        ID = _SequenceNum,
+                        Product = item.name,
+                        itemId = item.itemId,
+                        Unit = defaultPurUnit.mainUnit,
+                        itemUnitId = defaultPurUnit.itemUnitId,
+                        Count = 1,
+                        Price = price,
+                        Total = total,
+                    });
+
+                    _Sum += total;
+                    refrishTotalValue();
+
+                    refrishBillDetails();
+
+                    int rowIndex = billDetails.Count - 1;
+                    // dg_billDetails.[0].Cells[0].value = "Select";
+
+                    //  billDetails[billDetails.Count - 1].itemUnitId = defaultPurUnit.itemUnitId;
+                    // dg_billDetails.SelectedIndex = billDetails.Count - 1;
+
+                    //DataGridRow r = dg_billDetails.RowDetailsTemplate.(0) as DataGridRow;
                 }
 
 
-
-                int count = 1;
-                decimal price = 1000; //?????
-                decimal total = count * price;
-                billDetails.Add(new BillDetails()
-                {
-                    ID = _SequenceNum,
-                    Product = item.name,
-                    itemId = item.itemId,
-                    Unit = defaultPurUnit.mainUnit,
-                    itemUnitId = defaultPurUnit.itemUnitId,
-                    Count = 1,
-                    Price = price,
-                    Total = total,
-                });
-
-                _Sum += total;
-                refrishTotalValue();
-
-                refrishBillDetails();
-
-                //refrisUnitValue(defaultPurUnit);
 
             }
         }
         
         #endregion
-        #region Toggle Button Y
-        /// <summary>
-        /// Category
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// 
-        /*
-        private void Tgl_categoryIsActive_Checked(object sender, RoutedEventArgs e)
-        {
-            tglCategoryState = 1;
-            RefrishCategoriesCard();
+        //#region Toggle Button Y
+        ///// <summary>
+        ///// Category
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        ///// 
+        ///*
+        //private void Tgl_categoryIsActive_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    tglCategoryState = 1;
+        //    RefrishCategoriesCard();
 
 
 
-        }
-        private void Tgl_categorIsActive_Unchecked(object sender, RoutedEventArgs e)
-        {
-            tglCategoryState = 0;
-            RefrishCategoriesCard();
-        }
-        */
-        /// <summary>
-        /// Item
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Tgl_itemIsActive_Checked(object sender, RoutedEventArgs e)
-        {
-            //if (categories is null)
-            //    await RefrishCategories();
-            tglItemState = 1;
-            //tgl_categoryCardIsActive.IsChecked =
-            //    tgl_categoryDatagridIsActive.IsChecked = true;
-            Txb_searchitems_TextChanged(null, null);
+        //}
+        //private void Tgl_categorIsActive_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    tglCategoryState = 0;
+        //    RefrishCategoriesCard();
+        //}
+        //*/
+        ///// <summary>
+        ///// Item
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void Tgl_itemIsActive_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    //if (categories is null)
+        //    //    await RefrishCategories();
+        //    tglItemState = 1;
+        //    //tgl_categoryCardIsActive.IsChecked =
+        //    //    tgl_categoryDatagridIsActive.IsChecked = true;
+        //    Txb_searchitems_TextChanged(null, null);
 
 
-        }
-        private void Tgl_itemIsActive_Unchecked(object sender, RoutedEventArgs e)
-        {
-            //if (categories is null)
-            //    await RefrishCategories();
-            //categoriesQuery = categories.Where(x => x.isActive == 0);
-            tglItemState = 0;
-            //tgl_categoryCardIsActive.IsChecked =
-            //    tgl_categoryDatagridIsActive.IsChecked = false;
-            Txb_searchitems_TextChanged(null, null);
-        }
-        #endregion
-        #region Switch Card/DataGrid Y
+        //}
+        //private void Tgl_itemIsActive_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    //if (categories is null)
+        //    //    await RefrishCategories();
+        //    //categoriesQuery = categories.Where(x => x.isActive == 0);
+        //    tglItemState = 0;
+        //    //tgl_categoryCardIsActive.IsChecked =
+        //    //    tgl_categoryDatagridIsActive.IsChecked = false;
+        //    Txb_searchitems_TextChanged(null, null);
+        //}
+        //#endregion
+        //#region Switch Card/DataGrid Y
 
-        private void Btn_itemsInCards_Click(object sender, RoutedEventArgs e)
-        {
-            grid_itemsDatagrid.Visibility = Visibility.Collapsed;
-            grid_itemCards.Visibility = Visibility.Visible;
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+        //private void Btn_itemsInCards_Click(object sender, RoutedEventArgs e)
+        //{
+        //    grid_itemsDatagrid.Visibility = Visibility.Collapsed;
+        //    grid_itemCards.Visibility = Visibility.Visible;
+        //    path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+        //    path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
 
-            Txb_searchitems_TextChanged(null, null);
+        //    Txb_searchitems_TextChanged(null, null);
 
-        }
+        //}
 
-        private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
-        {
-            grid_itemCards.Visibility = Visibility.Collapsed;
-            grid_itemsDatagrid.Visibility = Visibility.Visible;
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+        //private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
+        //{
+        //    grid_itemCards.Visibility = Visibility.Collapsed;
+        //    grid_itemsDatagrid.Visibility = Visibility.Visible;
+        //    path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+        //    path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
 
-            Txb_searchitems_TextChanged(null, null);
-        }
-        #endregion
-        #region Search Y
-
-
-
-        /// <summary>
-        /// Item
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (items is null)
-                await RefrishItems();
-            txtItemSearch = txb_searchitems.Text.ToLower();
-            pageIndex = 1;
-
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-            RefrishItemsDatagrid(itemsQuery);
-
-        }
-
-        #endregion
-        #region Pagination Y
-        Pagination pagination = new Pagination();
-        Button[] btns;
-        public int pageIndex = 1;
-
-        private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-            itemsQuery = items.Where(x => x.isActive == tglItemState);
-
-            if (tb_pageNumberSearch.Text.Equals(""))
-            {
-                pageIndex = 1;
-            }
-            else if (((itemsQuery.Count() - 1) / 9) + 1 < int.Parse(tb_pageNumberSearch.Text))
-            {
-                pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
-            }
-            else
-            {
-                pageIndex = int.Parse(tb_pageNumberSearch.Text);
-            }
-
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-        }
+        //    Txb_searchitems_TextChanged(null, null);
+        //}
+        //#endregion
+        //#region Search Y
 
 
-        private void Btn_firstPage_Click(object sender, RoutedEventArgs e)
-        {
-            pageIndex = 1;
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-        }
-        private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
-        {
-            pageIndex = int.Parse(btn_prevPage.Content.ToString());
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-        }
-        private void Btn_activePage_Click(object sender, RoutedEventArgs e)
-        {
-            pageIndex = int.Parse(btn_activePage.Content.ToString());
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-        }
-        private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
-        {
-            pageIndex = int.Parse(btn_nextPage.Content.ToString());
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-        }
-        private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
-        {
-            itemsQuery = items.Where(x => x.isActive == tglCategoryState);
-            pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-        }
-        #endregion
-        #region categoryPathControl Y
 
-        async void generateTrack(int categorypaPathId)
-        {
-            grid_categoryControlPath.Children.Clear();
-            IEnumerable<Category> categoriesPath = await
-            categoryModel.GetCategoryTreeByID(categorypaPathId);
+        ///// <summary>
+        ///// Item
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private async void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (items is null)
+        //        await RefrishItems();
+        //    txtItemSearch = txb_searchitems.Text.ToLower();
+        //    pageIndex = 1;
 
-            int count = 0;
-            foreach (var item in categoriesPath.Reverse())
-            {
-                if (categories.Where(x => x.parentId == item.categoryId).Count() != 0)
-                {
-                    Button b = new Button();
-                    b.Content = " > " + item.name + " ";
-                    b.Padding = new Thickness(0);
-                    b.Margin = new Thickness(0);
-                    b.Background = null;
-                    b.BorderThickness = new Thickness(0);
-                    b.FontFamily = Application.Current.Resources["Font-cairo-light"] as FontFamily;
-                    b.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
-                    b.FontSize = 14;
-                    Grid.SetColumn(b, count);
-                    b.DataContext = item;
-                    b.Name = "category" + item.categoryId;
-                    b.Tag = item.categoryId;
-                    b.Click += new RoutedEventHandler(getCategoryIdFromPath);
-                    count++;
-                    grid_categoryControlPath.Children.Add(b);
-                }
-            }
+        //    #region
+        //    itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+        //    x.name.ToLower().Contains(txtItemSearch) ||
+        //    x.details.ToLower().Contains(txtItemSearch)
+        //    ) && x.isActive == tglItemState);
+        //    txt_count.Text = itemsQuery.Count().ToString();
+        //    RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+        //    #endregion
+        //    RefrishItemsDatagrid(itemsQuery);
+
+        //}
+
+        //#endregion
+        //#region Pagination Y
+        //Pagination pagination = new Pagination();
+        //Button[] btns;
+        //public int pageIndex = 1;
+
+        //private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+
+        //    itemsQuery = items.Where(x => x.isActive == tglItemState);
+
+        //    if (tb_pageNumberSearch.Text.Equals(""))
+        //    {
+        //        pageIndex = 1;
+        //    }
+        //    else if (((itemsQuery.Count() - 1) / 9) + 1 < int.Parse(tb_pageNumberSearch.Text))
+        //    {
+        //        pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
+        //    }
+        //    else
+        //    {
+        //        pageIndex = int.Parse(tb_pageNumberSearch.Text);
+        //    }
+
+        //    #region
+        //    itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+        //    x.name.ToLower().Contains(txtItemSearch) ||
+        //    x.details.ToLower().Contains(txtItemSearch)
+        //    ) && x.isActive == tglItemState);
+        //    txt_count.Text = itemsQuery.Count().ToString();
+        //    RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+        //    #endregion
+        //}
 
 
-        }
-        private async void getCategoryIdFromPath(object sender, RoutedEventArgs e)
-        {
-            Button b = (Button)sender;
+        //private void Btn_firstPage_Click(object sender, RoutedEventArgs e)
+        //{
+        //    pageIndex = 1;
+        //    #region
+        //    itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+        //    x.name.ToLower().Contains(txtItemSearch) ||
+        //    x.details.ToLower().Contains(txtItemSearch)
+        //    ) && x.isActive == tglItemState);
+        //    txt_count.Text = itemsQuery.Count().ToString();
+        //    RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+        //    #endregion
+        //}
+        //private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
+        //{
+        //    pageIndex = int.Parse(btn_prevPage.Content.ToString());
+        //    #region
+        //    itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+        //    x.name.ToLower().Contains(txtItemSearch) ||
+        //    x.details.ToLower().Contains(txtItemSearch)
+        //    ) && x.isActive == tglItemState);
+        //    txt_count.Text = itemsQuery.Count().ToString();
+        //    RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+        //    #endregion
+        //}
+        //private void Btn_activePage_Click(object sender, RoutedEventArgs e)
+        //{
+        //    pageIndex = int.Parse(btn_activePage.Content.ToString());
+        //    #region
+        //    itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+        //    x.name.ToLower().Contains(txtItemSearch) ||
+        //    x.details.ToLower().Contains(txtItemSearch)
+        //    ) && x.isActive == tglItemState);
+        //    txt_count.Text = itemsQuery.Count().ToString();
+        //    RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+        //    #endregion
+        //}
+        //private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
+        //{
+        //    pageIndex = int.Parse(btn_nextPage.Content.ToString());
+        //    #region
+        //    itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+        //    x.name.ToLower().Contains(txtItemSearch) ||
+        //    x.details.ToLower().Contains(txtItemSearch)
+        //    ) && x.isActive == tglItemState);
+        //    txt_count.Text = itemsQuery.Count().ToString();
+        //    RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+        //    #endregion
+        //}
+        //private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
+        //{
+        //    itemsQuery = items.Where(x => x.isActive == tglCategoryState);
+        //    pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
+        //    #region
+        //    itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+        //    x.name.ToLower().Contains(txtItemSearch) ||
+        //    x.details.ToLower().Contains(txtItemSearch)
+        //    ) && x.isActive == tglItemState);
+        //    txt_count.Text = itemsQuery.Count().ToString();
+        //    RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+        //    #endregion
+        //}
+        //#endregion
+        //#region categoryPathControl Y
 
-            if (!string.IsNullOrEmpty(b.Tag.ToString()))
-            {
-                generateTrack(int.Parse(b.Tag.ToString()));
-                categoryParentId = int.Parse(b.Tag.ToString());
-                RefrishCategoriesCard();
+        //async void generateTrack(int categorypaPathId)
+        //{
+        //    grid_categoryControlPath.Children.Clear();
+        //    IEnumerable<Category> categoriesPath = await
+        //    categoryModel.GetCategoryTreeByID(categorypaPathId);
+
+        //    int count = 0;
+        //    foreach (var item in categoriesPath.Reverse())
+        //    {
+        //        if (categories.Where(x => x.parentId == item.categoryId).Count() != 0)
+        //        {
+        //            Button b = new Button();
+        //            b.Content = " > " + item.name + " ";
+        //            b.Padding = new Thickness(0);
+        //            b.Margin = new Thickness(0);
+        //            b.Background = null;
+        //            b.BorderThickness = new Thickness(0);
+        //            b.FontFamily = Application.Current.Resources["Font-cairo-light"] as FontFamily;
+        //            b.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
+        //            b.FontSize = 14;
+        //            Grid.SetColumn(b, count);
+        //            b.DataContext = item;
+        //            b.Name = "category" + item.categoryId;
+        //            b.Tag = item.categoryId;
+        //            b.Click += new RoutedEventHandler(getCategoryIdFromPath);
+        //            count++;
+        //            grid_categoryControlPath.Children.Add(b);
+        //        }
+        //    }
 
 
-                category.categoryId = int.Parse(b.Tag.ToString());
+        //}
+        //private async void getCategoryIdFromPath(object sender, RoutedEventArgs e)
+        //{
+        //    Button b = (Button)sender;
 
-            }
-            await RefrishItems();
-            Txb_searchitems_TextChanged(null, null);
+        //    if (!string.IsNullOrEmpty(b.Tag.ToString()))
+        //    {
+        //        generateTrack(int.Parse(b.Tag.ToString()));
+        //        categoryParentId = int.Parse(b.Tag.ToString());
+        //        RefrishCategoriesCard();
 
-        }
-        private async void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
-        {
-            categoryParentId = 0;
-            RefrishCategoriesCard();
-            grid_categoryControlPath.Children.Clear();
-            category.categoryId = 0;
-            await RefrishItems();
-            Txb_searchitems_TextChanged(null, null);
-        }
 
-        #endregion
+        //        category.categoryId = int.Parse(b.Tag.ToString());
+
+        //    }
+        //    await RefrishItems();
+        //    Txb_searchitems_TextChanged(null, null);
+
+        //}
+        //private async void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
+        //{
+        //    categoryParentId = 0;
+        //    RefrishCategoriesCard();
+        //    grid_categoryControlPath.Children.Clear();
+        //    category.categoryId = 0;
+        //    await RefrishItems();
+        //    Txb_searchitems_TextChanged(null, null);
+        //}
+
+        //#endregion
 
         #endregion
         #region Excel
@@ -730,6 +743,9 @@ namespace POS.View
 
         private async Task addInvoice(string invType)
         {
+            if (invoice.invType == "p" && invType == "pb") // invoice is purchase and will be purchase bounce , save another invoice in db
+                invoice.invoiceId = 0;
+
             invoice.invType = invType;
             invoice.total = _Sum;
 
@@ -740,10 +756,7 @@ namespace POS.View
 
             Branch store = new Branch();
             if (cb_vendor.SelectedIndex != -1)
-            {
                 invoice.branchId = (int)cb_vendor.SelectedValue;
-                store  = branches.ToList().Find(b => b.branchId == invoice.branchId);
-            }
 
             if(!tb_paid.Text.Equals(""))
                 invoice.paid = decimal.Parse(tb_paid.Text);
@@ -758,13 +771,17 @@ namespace POS.View
             invoice.updateUserId = MainWindow.userID;
 
             // build invoice NUM like 1021_PI_sequence
-            string storeCode = store.code;
-            string invoiceCode = "PI";
-            int sequence = await invoiceModel.GetLastNumOfInv("PI") ;
-            sequence++;
+            if (invoice.invNumber == null)
+            {
+                store = branches.ToList().Find(b => b.branchId == invoice.branchId);
+                string storeCode = store.code;
+                string invoiceCode = "PI";
+                int sequence = await invoiceModel.GetLastNumOfInv("PI");
+                sequence++;
 
-            string invoiceNum = storeCode + "_" + invoiceCode + "_" + sequence.ToString();
-            invoice.invNumber = invoiceNum;
+                string invoiceNum = storeCode + "_" + invoiceCode + "_" + sequence.ToString();
+                invoice.invNumber = invoiceNum;
+            }
 
             // save invoice in DB
             int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
@@ -789,27 +806,45 @@ namespace POS.View
 
                 invoiceItems.Add(itemT);
             }
-            await invoiceModel.saveInvoiceItems(invoiceItems);
+            await invoiceModel.saveInvoiceItems(invoiceItems,invoiceId);
            
+        }
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
+        {
+            //check mandatory inputs
+            validateInvoiceValues();
+
+            if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
+            {
+                if(_InvoiceType == "pb")
+                    await addInvoice("pb"); // bp means purchase bounce
+                else
+                //p  purchase invoice
+                await addInvoice("p");
+                clearInvoice();
+            }
         }
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
             //check mandatory inputs
             validateInvoiceValues();
 
-           if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
+            _InvoiceType = "pd";
+
+            if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
            {
                 //pd draft purchase 
                await addInvoice("pd");
-               
-                clearInvoice();
+                            
            }
+            clearInvoice();
         }
         private void clearInvoice()
         {
             _Sum = 0;
             _SequenceNum = 0;
             _SelectedBranch = -1;
+            _InvoiceType = "pd";
             invoice = new Invoice();
             cb_branch.SelectedIndex = -1;
             cb_vendor.SelectedIndex = -1;
@@ -820,44 +855,131 @@ namespace POS.View
             tb_invoiceNumber.Clear();
             dp_invoiceDate.Text = "";
             tb_note.Clear();
-            itemUnits.Clear();
             billDetails.Clear();
             refrishBillDetails();
         }
         #endregion
-        private void Btn_draft_Click(object sender, RoutedEventArgs e)
+        private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
             // purchase drafts
             w.invoiceType = "pd";
-            w.title = "";
+            w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
             if (w.ShowDialog() == true)
             {
                 invoice = w.invoice;
+                if (w.invoice != null)
+                {
+                    this.DataContext = invoice;
+                    cb_branch.SelectedValue = invoice.branchId;
+                    cb_vendor.SelectedValue = invoice.agentId;
+                    tb_paid.Text = invoice.paid.ToString();
+                    tb_deserved.Text = invoice.deserved.ToString();
+                    dp_desrvedDate.Text = invoice.deservedDate.ToString();
+                    tb_invoiceNumber.Text = invoice.vendorInvNum;
+                    dp_invoiceDate.Text = invoice.vendorInvDate.ToString();
+                    tb_note.Text = invoice.notes;
 
-                this.DataContext = invoice;
-                cb_branch.SelectedValue = invoice.branchId;
-                cb_vendor.SelectedValue = invoice.agentId;
-                tb_paid.Text = invoice.paid.ToString();
-                tb_deserved.Text = invoice.deserved.ToString();
-                dp_desrvedDate.Text = invoice.deservedDate.ToString();
-                tb_invoiceNumber.Text = invoice.vendorInvNum;
-                dp_invoiceDate.Text = invoice.vendorInvDate.ToString();
-                tb_note.Text = invoice.notes;
+                    _Sum = (decimal)invoice.total;
+
+                    //get invoice items
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+
+                    // build invoice details grid
+                    buildInvoiceDetails(invoiceItems);
+                }
             }
             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
         }
 
-        private void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
+        private async void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
         {
             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
-            w.ShowDialog();
-            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
-        }
 
+            // purchase invoices
+            w.invoiceType = "p";
+            w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
+            
+            if (w.ShowDialog() == true)
+            {
+                if (w.invoice != null)
+                {
+                    _InvoiceType = "pb";
+                    invoice = w.invoice;
+
+                    this.DataContext = invoice;
+                    cb_branch.SelectedValue = invoice.branchId;
+                    cb_vendor.SelectedValue = invoice.agentId;
+                    tb_paid.Text = invoice.paid.ToString();
+                    tb_deserved.Text = invoice.deserved.ToString();
+                    dp_desrvedDate.Text = invoice.deservedDate.ToString();
+                    tb_invoiceNumber.Text = invoice.vendorInvNum;
+                    dp_invoiceDate.Text = invoice.vendorInvDate.ToString();
+                    tb_note.Text = invoice.notes;
+
+                    _Sum = (decimal)invoice.total;
+
+                    //get invoice items
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+
+                    // build invoice details grid
+                    buildInvoiceDetails(invoiceItems);
+
+                    inputEditable(_InvoiceType);
+                }              
+            }
+             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
+        }
+        private void buildInvoiceDetails(List<ItemTransfer> invoiceItems)
+        {
+            // build invoice details grid
+            _SequenceNum = 0;
+            billDetails.Clear();
+            foreach (ItemTransfer itemT in invoiceItems)
+            {
+                _SequenceNum++;
+                decimal total = (decimal)(itemT.price * itemT.quantity);
+                billDetails.Add(new BillDetails()
+                {
+                    ID = _SequenceNum,
+                    Product = itemT.itemName,
+                    itemId = (int)itemT.itemId,
+                    Unit = itemT.itemUnitId.ToString(),
+                    itemUnitId = (int) itemT.itemUnitId,
+                    Count = (int)itemT.quantity,
+                    Price = (decimal)itemT.price,
+                    Total = total,
+                });
+            }
+
+            tb_barcode.Focus();
+
+            refrishBillDetails();
+        }
+        private void inputEditable(string invoiceType)
+        {
+
+            if (_InvoiceType == "pb") // return invoice
+            {
+                dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
+                dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                cb_vendor.IsReadOnly = true;
+                dp_desrvedDate.IsEnabled = false;
+                dp_invoiceDate.IsEnabled = false;
+
+            }
+            else
+            {
+                dg_billDetails.Columns[5].IsReadOnly = false;
+                dg_billDetails.Columns[3].IsReadOnly = false;
+                cb_vendor.IsReadOnly = false;
+                dp_desrvedDate.IsEnabled = true;
+                dp_invoiceDate.IsEnabled = true;
+            }
+        }
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
              (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
@@ -868,12 +990,31 @@ namespace POS.View
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
+            _SequenceNum = 0;
+            billDetails.Clear();
+            foreach (ItemTransfer itemT in invoiceItems)
+            {
+                _SequenceNum++;
+                decimal total = (decimal)(itemT.price * itemT.quantity);
+                billDetails.Add(new BillDetails()
+                {
+                    ID = _SequenceNum,
+                    Product = itemT.itemName,
+                    itemId = (int)itemT.itemId,
+                    Unit = itemT.itemUnitId.ToString(),
+                    Count = (int)itemT.quantity,
+                    Price = (decimal)itemT.price,
+                    Total = total,
+                });
+            }
+            tb_barcode.Focus();
 
+            refrishBillDetails();
         }
 
         private void Btn_pay_Click(object sender, RoutedEventArgs e)
         {
-            btn_vendor_Click(null, null);
+          //  btn_vendor_Click(null, null);
         }
 
         private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -899,13 +1040,16 @@ namespace POS.View
             {
                 if (int.Parse(cb_typeDiscount.SelectedValue.ToString()) == 1)
                 {
-                    tb_discountVal.Text = tb_discount.Text;
+                    //tb_discountVal.Text = tb_discount.Text;
                 }
                 else
                 {
-                    decimal percentage = decimal.Parse(tb_discount.Text);
+                    decimal percentage = 0;
+                    if (tb_discount.Text != ".")
+                        percentage = decimal.Parse(tb_discount.Text);
+
                     decimal percentageVal = SectionData.calcPercentage(_Sum, percentage);
-                    tb_discountVal.Text = percentageVal.ToString();
+                    //tb_discountVal.Text = percentageVal.ToString();
                 }
                 refrishTotalValue();
             }
@@ -913,9 +1057,10 @@ namespace POS.View
        private void refrishTotalValue()
         {
             decimal discountVal = 0;
-            if (!tb_discountVal.Text.Equals(""))
-                 discountVal = decimal.Parse( tb_discountVal.Text);
+            //if (!tb_discountVal.Text.Equals(""))
+            //     discountVal = decimal.Parse( tb_discountVal.Text);
             decimal total = _Sum - discountVal;
+            tb_sum.Text = _Sum.ToString();
             tb_total.Text = total.ToString();
         }
 
@@ -925,6 +1070,7 @@ namespace POS.View
         }
 
         #region billdetails
+        /*
         List<ItemUnit> GetItemUnits(int itemId)
         {
             List<ItemUnit> itemUnits = new List<ItemUnit>();
@@ -961,11 +1107,12 @@ namespace POS.View
         {
 
         }
+        */
         void refrishBillDetails()
         {
+          
             dg_billDetails.ItemsSource = null;
             dg_billDetails.ItemsSource = billDetails;
-            GenerateComboBox(dg_billDetails);
 
             tb_sum.Text = _Sum.ToString();
         }
@@ -1017,7 +1164,7 @@ namespace POS.View
                         int itemId = (int)unit1.itemId;
                         if (unit1.itemId != 0)
                         {
-                            int index = billDetails.IndexOf(billDetails.Where(p => p.itemId == itemId).FirstOrDefault());
+                            int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
                             //item doesn't exist in bill
                             if (index == -1)
                             {
@@ -1037,13 +1184,13 @@ namespace POS.View
                                     Product = item.name,
                                     itemId = item.itemId,
                                     Unit = unit1.mainUnit,
+                                    itemUnitId = unit1.itemUnitId,
                                     Count = 1,
                                     Price = price,
                                     Total = total,
                                 });
                                 _Sum += total;
-                                refrishTotalValue();
-
+                               
                             }
                             else // item exist prevoiusly in list
                             {
@@ -1051,8 +1198,9 @@ namespace POS.View
                                 billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
 
                                 _Sum += billDetails[index].Price;
-                                refrishTotalValue();
+
                             }
+                            refrishTotalValue();
                             refrishBillDetails();
                         }
                     }
@@ -1070,37 +1218,13 @@ namespace POS.View
 
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //var cell = DataGridHelper.GetCell(dg_billDetails, 0, 3);
-            //var cp = (ContentPresenter)cell.Content;
-            //var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
-            //MessageBox.Show(combo.SelectedValue.ToString());
-
             var cmb = sender as ComboBox;
-            MessageBox.Show(cmb.SelectedValue.ToString());
 
+            if(dg_billDetails.SelectedIndex != -1)
+                billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
         }
 
-        private void Dg_billDetails_AddingNewItem(object sender, AddingNewItemEventArgs e)
-        {
-            MessageBox.Show("I'm Here in AddingNewItem");
-        }
 
-        private void Dg_billDetails_InitializingNewItem(object sender, InitializingNewItemEventArgs e)
-        {
-            MessageBox.Show("I'm Here in InitializingNewItem");
-        }
-
-        private void Dg_billDetails_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
-        {
-
-            MessageBox.Show("I'm Here in RowEditEnding");
-        }
-
-        private void Dg_billDetails_SourceUpdated(object sender, DataTransferEventArgs e)
-        {
-
-            MessageBox.Show("I'm Here in SourceUpdated");
-        }
         private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             //MessageBox.Show("I'm Here in _CollectionChanged");
@@ -1174,18 +1298,71 @@ namespace POS.View
             }
 
         }
-        //void refrisUnitValue(ItemUnit itemUnit)
-        //{
-        //    //var cell = DataGridHelper.GetCell(dg_billDetails, 0, 3);
-        //    //var cp = (ContentPresenter)cell.Content;
-        //    //var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
-        //    //////var cmb = sender as ComboBox;
-        //    //////cmb.SelectedValue = cmb.Tag;
-        //    ////combo.SelectedItem = new ItemUnit();
-        //    ////combo.SelectedItem = itemUnit;
-        //    ////combo.SelectedIndex = 0;
-        //    //combo.SelectedValue = (int)itemUnit.itemUnitId;
-        //}
+
+        private void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            TextBox t = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
+            var columnName = e.Column.Header.ToString();
+        
+            int oldCount = 0;
+            long newCount = 0;
+            decimal oldPrice = 0;
+            decimal newPrice = 0;
+
+
+            BillDetails row = e.Row.Item as BillDetails;
+            int index = billDetails.IndexOf(billDetails.Where(p => p.itemId == row.itemId).FirstOrDefault());
+
+            //"tb_amont"
+            if (columnName == MainWindow.resourcemanager.GetString("trAmount"))
+                newCount = int.Parse(t.Text);
+            else
+                newCount = row.Count;
+
+            oldCount = row.Count;
+
+            if (_InvoiceType == "pb")
+            {
+                ItemTransfer item = invoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
+                if (newCount > item.quantity)
+                {
+                    // return old value 
+                    t.Text = item.quantity.ToString();
+
+                    newCount = (long)item.quantity;
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+
+                }
+            }
+
+            if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
+                newPrice = decimal.Parse(t.Text);
+            else
+                newPrice = row.Price;
+
+            oldPrice = row.Price;
+
+            // old total for changed item
+            decimal total = oldPrice * oldCount;
+            _Sum -= total;
+
+            // new total for changed item
+            total = newCount * newPrice;
+            _Sum += total;
+            
+            //refresh total cell
+            TextBlock tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
+            tb.Text = total.ToString();
+
+            //  refresh sum and total text box
+            refrishTotalValue();
+
+            // update item in billdetails           
+            billDetails[index].Count = (int) newCount;
+            billDetails[index].Price = newPrice;
+            billDetails[index].Total = total;
+        }
+
     }
 
 

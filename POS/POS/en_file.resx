@@ -1035,4 +1035,22 @@
   <data name="trTransaferDetails" xml:space="preserve">
     <value>Transafer Details</value>
   </data>
+  <data name="trConfirmed" xml:space="preserve">
+    <value>Confirmed</value>
+  </data>
+  <data name="trPosTooltip" xml:space="preserve">
+    <value>Pos</value>
+  </data>
+  <data name="trStateHint" xml:space="preserve">
+    <value>State...</value>
+  </data>
+  <data name="trUnConfirmed" xml:space="preserve">
+    <value>Unconfirmed</value>
+  </data>
+  <data name="trWaiting" xml:space="preserve">
+    <value>Waiting</value>
+  </data>
+  <data name="trPurchaseInvoices" xml:space="preserve">
+    <value>Purchase Invoices</value>
+  </data>
 </root>

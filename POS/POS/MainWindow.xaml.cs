@@ -71,8 +71,8 @@ namespace POS
         public MainWindow()
         {
             InitializeComponent();
-            MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-            MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
+            //MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            //MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
             generateResponsiveVariables();
             //this.Height = SystemParameters.MaximizedPrimaryScreenHeight;
             //this.Width = SystemParameters.MaximizedPrimaryScreenHeight;
@@ -279,7 +279,8 @@ namespace POS
             FN_pathVisible(path_openPurchases);
             fn_ColorIconRefreash(path_iconPurchases);
             grid_main.Children.Clear();
-            grid_main.Children.Add(uc_purchases.Instance);
+            //grid_main.Children.Add(uc_purchases.Instance);
+            grid_main.Children.Add(uc_payInvoice.Instance);
 
             //uc_purchases uc = new uc_purchases();
             //grid_main.Children.Add(uc);

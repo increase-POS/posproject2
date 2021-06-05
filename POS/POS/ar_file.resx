@@ -1014,4 +1014,22 @@
   <data name="trTransaferDetails" xml:space="preserve">
     <value>تفاصيل التحويل</value>
   </data>
+  <data name="trConfirmed" xml:space="preserve">
+    <value>مؤكدة</value>
+  </data>
+  <data name="trPosTooltip" xml:space="preserve">
+    <value>نقطة البيع</value>
+  </data>
+  <data name="trPurchaseInvoices" xml:space="preserve">
+    <value>فواتير الشراء</value>
+  </data>
+  <data name="trStateHint" xml:space="preserve">
+    <value>الحالة...</value>
+  </data>
+  <data name="trUnConfirmed" xml:space="preserve">
+    <value>غير مؤكدة</value>
+  </data>
+  <data name="trWaiting" xml:space="preserve">
+    <value>بانتظار التأكيد</value>
+  </data>
 </root>

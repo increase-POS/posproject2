@@ -283,6 +283,9 @@
     <Compile Include="View\windows\wd_itemsList.xaml.cs">
       <DependentUpon>wd_itemsList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_itemsOfferList.xaml.cs">
+      <DependentUpon>wd_itemsOfferList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_locationsList.xaml.cs">
       <DependentUpon>wd_locationsList.xaml</DependentUpon>
     </Compile>
@@ -481,6 +484,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_itemsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_itemsOfferList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

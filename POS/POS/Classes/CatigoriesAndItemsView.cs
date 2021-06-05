@@ -243,7 +243,7 @@ namespace POS.Classes
                 rowCount = 2;
             else if (MainWindow.windowHeight < 750)
                 rowCount = 3;
-            else if(MainWindow.windowHeight >= 750 || MainWindow.windowHeight.ToString() == "NaN")
+            else if(MainWindow.windowHeight >= 750 || MainWindow.windowHeight.ToString() == "NaN" || MainWindow.windowWidth.ToString() == "ليس رقمًا")
                 rowCount = 4;
             else
                 rowCount = 2;
@@ -257,7 +257,7 @@ namespace POS.Classes
                 columnCount = 4;
             else if (MainWindow.windowWidth < 1250)
                 columnCount = 5;
-            else if(MainWindow.windowWidth >= 1250 || MainWindow.windowWidth.ToString() == "NaN")
+            else if(MainWindow.windowWidth >= 1250 || MainWindow.windowWidth.ToString() ==  "NaN" || MainWindow.windowWidth.ToString() == "ليس رقمًا" )
                 columnCount = 6;
             else
                 columnCount = 3;
@@ -386,7 +386,7 @@ namespace POS.Classes
                 rowCount = 1;
             else if(MainWindow.windowHeight < 760)
                 rowCount = 2;
-            else if (MainWindow.windowHeight >= 760 || MainWindow.windowHeight.ToString() == "NaN")
+            else if (MainWindow.windowHeight >= 760 || MainWindow.windowHeight.ToString() == "NaN" || MainWindow.windowWidth.ToString() == "ليس رقمًا")
                 rowCount = 3;
             else
                 rowCount = 1;
@@ -397,7 +397,7 @@ namespace POS.Classes
                 columnCount = 1;
             else if (MainWindow.windowWidth < 1340)
                 columnCount = 2;
-            else if (MainWindow.windowWidth >= 1340 || MainWindow.windowWidth.ToString() == "NaN")
+            else if (MainWindow.windowWidth >= 1340 || MainWindow.windowWidth.ToString() == "NaN" || MainWindow.windowWidth.ToString() == "ليس رقمًا")
                 columnCount = 3;
             else
                 columnCount = 1;

@@ -65,13 +65,13 @@
                     </TextBox>
                     <DatePicker  x:Name="dp_startSearchDate"  
                                BorderBrush="#737373"  BorderThickness="0" 
-                                    TextBlock.Foreground="#4E4E4E" 
-                                                 Grid.Row="2" Padding="10,5,5,5"  
+                                TextBlock.Foreground="#4E4E4E" 
+                                 Grid.Row="2" Padding="10,5,5,5"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                  materialDesign:HintAssist.Hint="Start date..."  
                                Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            Grid.Column="1"  Height="35" Width="150"  Margin="5,5" />
+                            Grid.Column="1"  Height="35" Width="100"  Margin="5,5" />
                     <DatePicker  x:Name="dp_endSearchDate"  
                                BorderBrush="#737373"  BorderThickness="0" 
                                     TextBlock.Foreground="#4E4E4E"
@@ -80,7 +80,7 @@
                                  materialDesign:HintAssist.Hint="End date..."  
                                Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            Grid.Column="2"  Height="35" Width="150"  Margin="5,5" />
+                            Grid.Column="2"  Height="35" Width="100"  Margin="5,5" />
 
                     <Grid VerticalAlignment="Center"    Grid.Column="4" HorizontalAlignment="Right"   
                           Margin="5,5,5,0"  >
@@ -88,15 +88,24 @@
                             <ColumnDefinition Width="60"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" 
-                                   Margin="5,0,5,0" Text="Received" Foreground="#6e6e6e" ToolTip="الاسم بحاجة لتغيير"
+                        <!--<TextBlock Grid.Column="0" x:Name="txt_state"
+                                   Margin="5,0,5,0" Text="State" Foreground="#6e6e6e" ToolTip="الاسم بحاجة لتغيير"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
-                                   FontSize="12"/>
-                        <ToggleButton Grid.Column="1"  x:Name="tgl_IsReceived"  
+                                   FontSize="12"/>-->
+                        <!--<ToggleButton Grid.Column="1"  x:Name="tgl_IsReceived"  
                                       VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                       Margin="0" Height="13" Width="28"  TabIndex="14" 
                                       Checked="Tgl_IsReceived_Checked" 
-                                      Unchecked="Tgl_IsReceived_Unchecked"/>
+                                      Unchecked="Tgl_IsReceived_Unchecked"/>-->
+                        <ComboBox  x:Name="cb_state"  
+                                     BorderBrush="#737373"  BorderThickness="0" 
+                                     TextBlock.Foreground="#4E4E4E"
+                                     Grid.Row="2" Padding="10,5,5,5"  
+                                     materialDesign:HintAssist.Hint="State..."  
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                     Grid.Column="2"  Height="35" Width="125"  Margin="5,5" />
+
                     </Grid>
                             
                     <Button FlowDirection="LeftToRight"  Width="40" Height="40" x:Name="btn_refresh" Grid.Row="0" Grid.Column="5" Padding="0" 
@@ -145,8 +154,8 @@
                         ColumnWidth="SizeToHeader" SelectionChanged="Dg_posAccounts_SelectionChanged"    >
                     <DataGrid.Columns>
                         <DataGridTextColumn MinWidth="160"  Header="Transfer number" Binding="{Binding Path=transNum}"/>
-                        <DataGridTextColumn MinWidth="160"  Header="From pos"   Binding="{Binding Path=test}"/>
-                        <DataGridTextColumn MinWidth="160"  Header="To pos"     Binding="{Binding Path=test}"/>
+                        <DataGridTextColumn MinWidth="160"  Header="pos"   Binding="{Binding Path=posName}"/>
+                        <DataGridTextColumn MinWidth="160"  Header="type"     Binding="{Binding Path=transType}"/>
                         <DataGridTextColumn MinWidth="150"  Header="Cash" Binding="{Binding Path=cash}"/>
                     </DataGrid.Columns>
                 </DataGrid>
@@ -421,7 +430,7 @@
                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
                                   Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
                                   BorderBrush="#737373" BorderThickness="0" 
-                                  LostFocus="Tb_validateEmptyLostFocus">
+                                  LostFocus="Tb_validateEmptyLostFocus" SelectionChanged="Cb_pos1_SelectionChanged">
                             <ComboBox.ToolTip>
                                 <ToolTip x:Name="tt_Pos1" Content="Pos1"
                                                           Placement="left" 
@@ -445,7 +454,7 @@
                         </Grid.ColumnDefinitions>
                         <ComboBox x:Name="cb_pos2"  Grid.Row="2"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                                  materialDesign:HintAssist.Hint="To pos..."  
+                                  materialDesign:HintAssist.Hint="To pos..."  IsEnabled="False"
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
                                   Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
@@ -504,7 +513,7 @@
                         </Path>
                     </Grid>
                     <Grid Grid.Row="6"  Margin="5,0,0,0" >
-                        <TextBox  x:Name="tb_note" Text="{Binding test, Mode=OneWay}"
+                        <TextBox  x:Name="tb_note" Text="{Binding notes, Mode=OneWay}"
                                   Grid.Row="2" Padding="10,5,5,5"  
                                   materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                   BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  

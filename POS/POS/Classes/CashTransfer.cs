@@ -46,7 +46,7 @@ namespace POS.Classes
         public string agentName { get; set; }
         public string usersName { get; set; }
         public string posName { get; set; }
-        public async Task<List<CashTransfer>> GetCashTransferAsync(string type,string side)
+        public async Task<List<CashTransfer>> GetCashTransferAsync(string type, string side)
         {
             List<CashTransfer> cashtransfer = null;
             // ... Use HttpClient.
@@ -59,7 +59,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetBytypeandSide?type=" + type+ "&side="+ side);
+                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetBytypeandSide?type=" + type + "&side=" + side);
                 request.Headers.Add("APIKey", Global.APIKey);
                 /*
                 request.Headers.Add("type", type);
@@ -126,7 +126,7 @@ namespace POS.Classes
             }
         }
         /// ///////////////////////////////////////
-      
+
         public async Task<string> Save(CashTransfer cashTr)
         {
             string message = "";
@@ -165,40 +165,10 @@ namespace POS.Classes
         }
 
 
-        public async Task<Boolean> deleteAgent(int agentId , bool final)
+
+        public async Task<List<CashTransfer>> GetbySourcId(string side, int sourceId)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Agent/Delete?final=" + final);
-
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("agentId", agentId.ToString());
-                request.Headers.Add("userId", "2");
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
-
-        public async Task<List<CashTransfer>> Search(string type , string side, string searchwords)
-        {
-            List<CashTransfer> CashTlist = null;
+            List<CashTransfer> cashtransfer = null;
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -209,9 +179,12 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Agent/Search?type=" + type + "&side = " + side + "&searchwords=" + searchwords);
+                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetbySourcId?sourceId=" + sourceId + "&side=" + side);
                 request.Headers.Add("APIKey", Global.APIKey);
+                /*
                 request.Headers.Add("type", type);
+                request.Headers.Add("side", side);
+                */
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = await client.SendAsync(request);
@@ -227,21 +200,18 @@ namespace POS.Classes
                         Converters = new List<JsonConverter> { new BadDateFixingConverter() },
                         DateParseHandling = DateParseHandling.None
                     };
-                    CashTlist = JsonConvert.DeserializeObject<List<CashTransfer>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return CashTlist;
+                    cashtransfer = JsonConvert.DeserializeObject<List<CashTransfer>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return cashtransfer;
                 }
                 else //web api sent error response 
                 {
-                    CashTlist = new List<CashTransfer>();
+                    cashtransfer = new List<CashTransfer>();
                 }
-                return CashTlist;
+                return cashtransfer;
             }
 
         }
 
-    
-
-      
     }
 
 }

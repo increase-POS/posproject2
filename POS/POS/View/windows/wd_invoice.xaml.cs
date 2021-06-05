@@ -63,6 +63,7 @@ namespace POS.View.windows
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucInvoice.FlowDirection = FlowDirection.RightToLeft;
             }
+            txt_Invoices.Text = title;
 
             await refreshInvoices();
         }

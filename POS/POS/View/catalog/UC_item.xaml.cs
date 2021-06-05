@@ -822,6 +822,7 @@ namespace POS.View
 
                     string barcode = tb_barcode.Text;
 
+                    itemUnit.itemUnitId = 0;
                     itemUnit.itemId = item.itemId;
                     itemUnit.unitId = unitId;
                     itemUnit.unitValue = unitValue;
