@@ -143,6 +143,11 @@ namespace POS.controlTemplate
                 grid_container.Children.Add(buttonImage);
                 grid_container.Children.Add(path);
 
+
+                Application.Current.Dispatcher.Invoke(new System.Action(() =>
+            grid_offer.Visibility = Visibility.Visible
+          ));
+
                 //grid_Offer.Visibility = Visibility.Visible;
 
             }
