@@ -1,28 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Management;
 using System.Reflection;
 using System.Resources;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Threading;
 using POS.View;
 using POS.View.accounts;
-using WPFTabTip;
 
 namespace POS
 {
@@ -35,10 +29,13 @@ namespace POS
         public static ResourceManager resourcemanager;
         bool menuState = false;
 
-        public static string lang = "ar";
-        internal static int? userID = 2;
-        internal static int? posID = 53;
+        public static string lang     = "ar";
+        internal static int? userID   = 2;
+        internal static int? posID    = 53;
         internal static int? branchID = 18;
+
+
+
 
         /// <summary>
         /// //////// relative screen test
@@ -59,9 +56,9 @@ namespace POS
             mainUcWidth = windowWidth - 75;
             // Form section Size
             ucControlFormSectionWidth = (mainUcWidth / 3) - 20;
-            ucControlFormSectionHeight = mainUcHeight - 20;
+            ucControlFormSectionHeight= mainUcHeight - 20;
             // View section Size { dataGrid + Cards + Searsh}
-            ucControlViewSectionWidth = ((mainUcWidth / 3) * 2) - 20;
+            ucControlViewSectionWidth = ((mainUcWidth / 3)*2) - 20;
             ucControlViewSectionHeight = mainUcHeight - 20;
 
         }
@@ -69,56 +66,17 @@ namespace POS
         /// <summary>
         /// ////////
         /// </summary>
+       
 
-        DispatcherTimer timer;
         public MainWindow()
         {
             InitializeComponent();
             //MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             //MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
             generateResponsiveVariables();
-#pragma warning disable CS0436 // Type conflicts with imported type
-            TabTipAutomation.IgnoreHardwareKeyboard = HardwareKeyboardIgnoreOptions.IgnoreAll;
-#pragma warning restore CS0436 // Type conflicts with imported type
-#pragma warning disable CS0436 // Type conflicts with imported type
-
-#pragma warning restore CS0436 // Type conflicts with imported type
-
-#pragma warning disable CS0436 // Type conflicts with imported type
-            TabTipAutomation.ExceptionCatched += TabTipAutomationOnTest;
-#pragma warning restore CS0436 // Type conflicts with imported type
-            this.Height = SystemParameters.MaximizedPrimaryScreenHeight;
+            //this.Height = SystemParameters.MaximizedPrimaryScreenHeight;
             //this.Width = SystemParameters.MaximizedPrimaryScreenHeight;
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += timer_Tick;
-            timer.Start();
 
-
-        }
-        void timer_Tick(object sender, EventArgs e)
-        {
-            txtTime.Text = DateTime.Now.ToShortTimeString();
-            txtDate.Text = DateTime.Now.ToShortDateString();
-        }
-        private void TabTipAutomationOnTest(Exception exception)
-        {
-            MessageBox.Show(exception.Message);
-        }
-        private static List<string> QueryWmiKeyboards()
-        {
-            using (var searcher = new ManagementObjectSearcher(new SelectQuery("Win32_Keyboard")))
-            using (var result = searcher.Get())
-            {
-                return result
-                    .Cast<ManagementBaseObject>()
-                    .SelectMany(keyboard =>
-                        keyboard.Properties
-                            .Cast<PropertyData>()
-                            .Where(k => k.Name == "Description")
-                            .Select(k => k.Value as string))
-                    .ToList();
-            }
         }
         void FN_tooltipVisibility(Button btn)
         {
@@ -130,7 +88,6 @@ namespace POS
 
         private void BTN_Close_Click(object sender, RoutedEventArgs e)
         {
-            timer.Stop();
             System.Windows.Application.Current.Shutdown();
         }
 
@@ -141,36 +98,36 @@ namespace POS
         void colorTextRefreash(TextBlock txt)
         {
 
-            txt_home.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            txt_catalog.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            txt_storage.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            txt_purchases.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            txt_sales.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            txt_sales.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            txt_accounting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            txt_reports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            txt_sectiondata.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            txt_settings.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
+            txt_home.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_catalog.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_storage.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_purchases.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_sales.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_sales.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_accounting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_reports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_sectiondata.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt_settings.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
 
 
-            txt.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            txt.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
         }
         void fn_ColorIconRefreash(Path p)
         {
-            path_iconSettings.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            path_iconSectionData.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            path_iconReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            path_iconAccounts.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            path_iconSales.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            path_iconPurchases.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            path_iconStorage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            path_iconCatalog.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
-            path_iconHome.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
+            path_iconSettings.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconSectionData.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconAccounts.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconSales.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconPurchases.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconStorage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconCatalog.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            path_iconHome.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
 
-            p.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            p.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
-        private void translate()
+            private void translate()
         {
             tt_menu.Content = resourcemanager.GetString("trMenu");
             tt_home.Content = resourcemanager.GetString("trHome");
@@ -193,22 +150,33 @@ namespace POS
             txt_settings.Text = resourcemanager.GetString("trSettings");
         }
 
-        //فتح
-        private async void BTN_Menu_Click(object sender, RoutedEventArgs e)
+        private void BTN_Menu_Click(object sender, RoutedEventArgs e)
         {
             if (!menuState)
             {
                 Storyboard sb = this.FindResource("Storyboard1") as Storyboard;
                 sb.Begin();
                 menuState = true;
+                fn_pathOpenCollapsed();
+                //tt_menu.Visibility = Visibility.Collapsed;
+                //tt_home.Visibility = Visibility.Collapsed;
+                //tt_catalog.Visibility = Visibility.Collapsed;
+                //tt_storage.Visibility = Visibility.Collapsed;
+                //tt_purchases.Visibility = Visibility.Collapsed;
+                //tt_sales.Visibility = Visibility.Collapsed;
+                //tt_accounting.Visibility = Visibility.Collapsed;
+                //tt_reports.Visibility = Visibility.Collapsed;
+                //tt_sectiondata.Visibility = Visibility.Collapsed;
+                //tt_settings.Visibility = Visibility.Collapsed;
             }
             else
             {
                 Storyboard sb = this.FindResource("Storyboard2") as Storyboard;
                 sb.Begin();
                 menuState = false;
+                
             }
-
+            
 
             #region tooltipVisibility
             FN_tooltipVisibility(BTN_menu);
@@ -226,19 +194,7 @@ namespace POS
 
         }
 
-        //async Task<double> DoCount()
-        //{
-        //    return await Task<double>.Run(() =>
-        //    {
-        //        double d = 0;
-
-        //        for (d = 0; d < 150000000; d++)
-        //        {
-
-        //        }
-        //        return d;
-        //    });
-        //}
+       
 
         void fn_pathOpenCollapsed()
         {
@@ -251,14 +207,17 @@ namespace POS
             path_openSettings.Visibility = Visibility.Collapsed;
             path_openHome.Visibility = Visibility.Collapsed;
             path_openAccount.Visibility = Visibility.Collapsed;
-
-
         }
 
         void FN_pathVisible(Path p)
         {
-            fn_pathOpenCollapsed();
-            p.Visibility = Visibility.Visible;
+            if (!menuState)
+            {
+
+                fn_pathOpenCollapsed();
+
+                p.Visibility = Visibility.Visible;
+            }
         }
 
 
@@ -267,33 +226,11 @@ namespace POS
             colorTextRefreash(txt_home);
             FN_pathVisible(path_openHome);
             fn_ColorIconRefreash(path_iconHome);
+
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_home.Instance);
             //uc_home uc = new uc_home();
             //grid_main.Children.Add(uc);
-
-        }
-
-
-        private void btn_Keyboard_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btn_Keyboard_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btn_Keyboard_Click(object sender, RoutedEventArgs e)
-        {
-            if (TabTip.Close())
-            {
-#pragma warning disable CS0436 // Type conflicts with imported type
-                TabTip.OpenUndockedAndStartPoolingForClosedEvent();
-#pragma warning restore CS0436 // Type conflicts with imported type
-            }
-
 
         }
 
@@ -307,7 +244,6 @@ namespace POS
             //UC_SectionData uc = new UC_SectionData();
             //grid_main.Children.Add(uc);
 
-
         }
 
         private void BTN_catalog_Click(object sender, RoutedEventArgs e)
@@ -317,13 +253,14 @@ namespace POS
             fn_ColorIconRefreash(path_iconCatalog);
             grid_main.Children.Clear();
             grid_main.Children.Add(UC_catalog.Instance);
+
             //UC_catalog uc = new UC_catalog();
             //grid_main.Children.Add(uc);
         }
 
+      
 
-
-
+      
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -335,7 +272,7 @@ namespace POS
             BTN_Home_Click(null, null);
         }
 
-
+       
         private void BTN_purchases_Click(object sender, RoutedEventArgs e)
         {
             colorTextRefreash(txt_purchases);
@@ -344,6 +281,7 @@ namespace POS
             grid_main.Children.Clear();
             //grid_main.Children.Add(uc_purchases.Instance);
             grid_main.Children.Add(uc_payInvoice.Instance);
+
             //uc_purchases uc = new uc_purchases();
             //grid_main.Children.Add(uc);
         }
@@ -367,6 +305,7 @@ namespace POS
 
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_accounts.Instance);
+
             //uc_accounts uc = new uc_accounts();
             //grid_main.Children.Add(uc);
         }
@@ -390,6 +329,7 @@ namespace POS
             colorTextRefreash(txt_storage);
             FN_pathVisible(path_openStorage);
             fn_ColorIconRefreash(path_iconStorage);
+
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_storage.Instance);
             //uc_storage uc = new uc_storage();
