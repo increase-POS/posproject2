@@ -1468,77 +1468,12 @@ namespace POS.View
             dg_items.ItemsSource = _items;
         }
 
-        void StartWait()
+   
+    void RefrishItemsCard(IEnumerable<Item> _items)
         {
-            #region start wait
-            Application.Current.Dispatcher.Invoke(new System.Action(() =>
-            grid_ucItem.IsEnabled = false
-          ));
-            Application.Current.Dispatcher.Invoke(new System.Action(() =>
-            grid_ucItem.Opacity = 0.8
-          ));
-
-            Application.Current.Dispatcher.Invoke(new System.Action(() =>
-            fa_waiting.Visibility = Visibility.Visible
-            ));
-            Application.Current.Dispatcher.Invoke(new System.Action(() =>
-            fa_waiting.Spin = true
-            ));
-
-
-            //grid_ucItem.IsEnabled = false;
-            //grid_ucItem.Opacity = 0.8;
-            //fa_waiting.Visibility = Visibility.Visible;
-            //fa_waiting.Spin = true;
-            #endregion
-        }
-        void EndWait()
-        {
-            #region end wait
-            Application.Current.Dispatcher.Invoke(new System.Action(() =>
-           fa_waiting.Visibility = Visibility.Hidden
-           ));
-            Application.Current.Dispatcher.Invoke(new System.Action(() =>
-            fa_waiting.Spin = false
-            ));
-            Application.Current.Dispatcher.Invoke(new System.Action(() =>
-            grid_ucItem.IsEnabled = true
-         ));
-            Application.Current.Dispatcher.Invoke(new System.Action(() =>
-            grid_ucItem.Opacity = 1
-         ));
-
-
-            //fa_waiting.Visibility = Visibility.Hidden;
-            //fa_waiting.Spin = false;
-            //grid_ucItem.IsEnabled = true;
-            //grid_ucItem.Opacity = 1;
-            #endregion
-        }
-
-        public void FN_RefrishItemsCard(IEnumerable<Item> _items)
-        {
-            //Thread.Sleep(2000);
+            gridItemContainerCard.Children.Clear();
             catigoriesAndItemsView.gridCatigorieItems = gridItemContainerCard;
-            Application.Current.Dispatcher.Invoke(new System.Action(() =>
-            catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase")
-            ));
-        }
-        void RefrishItemsCard(IEnumerable<Item> _items)
-        {
-            StartWait();
-            ////Thread t1 = new Thread(new ParameterizedThreadStart(FN_RefrishItemsCard) );
-            //var t1 = new Thread(() => FN_RefrishItemsCard(_items));
-            //t1.SetApartmentState(ApartmentState.STA);
-            //t1.Start();
-
-            //Thread.Sleep(2000);
-
-            //EndWait();
-
-            //gridItemContainerCard.Children.Clear();
-            //catigoriesAndItemsView.gridCatigorieItems = gridItemContainerCard;
-            //catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
+            catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
         }
         #endregion
         #region Get Id By Click  Y
@@ -1857,9 +1792,8 @@ namespace POS.View
         }
         #endregion
         #region Search Y
-
-
-
+        
+        
         /// <summary>
         /// Item
         /// </summary>
@@ -1885,7 +1819,7 @@ namespace POS.View
             RefrishItemsDatagrid(itemsQuery);
             tb_barcode.Focus();
         }
-
+        
         #endregion
         #region Pagination Y
         Pagination pagination = new Pagination();
