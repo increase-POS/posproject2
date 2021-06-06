@@ -1426,3 +1426,5 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\GeneratedInternalTypeHelper.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.baml
+E:\GitHub\posproject2\POS\POS\bin\Debug\FontAwesome.WPF.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\FontAwesome.WPF.xml

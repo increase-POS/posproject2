@@ -346,10 +346,10 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Button  Grid.Row="0" VerticalAlignment="Bottom" FlowDirection="LeftToRight"
+                            <Button  Grid.Row="0" VerticalAlignment="Top" FlowDirection="LeftToRight"
                                Grid.RowSpan="3" x:Name="img_vendor"
-                     Margin="0,0,5,5"
-                            BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="5"  Height="100" Width="100" Grid.Column="1" Click="Img_vendor_Click">
+                     Margin="0,5,10,5"
+                            BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="5" HorizontalAlignment="Center" Height="90" Width="90" Grid.Column="1" Click="Img_vendor_Click">
                                 <Button.Background>
                                     <ImageBrush Stretch="UniformToFill"  x:Name="IMG_customer"
                                             ImageSource="/pic/no-image-icon-125x125.png"   />
@@ -383,21 +383,22 @@
                             </Path>
 
 
-                            <TextBlock x:Name="tb_code" Grid.Row="0" Grid.Column="0" Text="{Binding code, Mode=OneWay}" Padding="10,5,5,5" 
+                            <TextBox x:Name="tb_code" IsReadOnly="True" Grid.Row="0" Grid.Column="0" Text="{Binding code, Mode=OneWay}" VerticalAlignment="Center" TextAlignment="Center" Background="#FFF8F8F8" Height="40"
                                      materialDesign:HintAssist.Hint="Code..."  
                                      TextBlock.FontSize="12" Foreground="#4E4E4E"  FontWeight="SemiBold"
-                                     VerticalAlignment="Center" 
+                                     
+                                     Style="{x:Null}" BorderThickness="0"  VerticalContentAlignment="Center"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                       Margin="10,5,10,5"  
                                      KeyboardNavigation.IsTabStop="False">
-                                <TextBlock.ToolTip>
+                                <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_code" Content="Code"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                </TextBlock.ToolTip>
-                            </TextBlock>
+                                </TextBox.ToolTip>
+                            </TextBox>
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -406,7 +407,7 @@
                                     <ToolTip x:Name="tt_error_address" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
-                            <TextBox x:Name="tb_company" Grid.Row="2"  Text="{Binding company, Mode=OneWay}" Padding="10,0,5,0" 
+                            <TextBox x:Name="tb_company" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding company, Mode=OneWay}" Padding="10,0,5,0" 
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Company..."  
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"

@@ -1032,4 +1032,16 @@
   <data name="trWaiting" xml:space="preserve">
     <value>بانتظار التأكيد</value>
   </data>
+  <data name="trPopConfirm" xml:space="preserve">
+    <value>تم تأكيد العملية</value>
+  </data>
+  <data name="trStateToolTip" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="trDrafts" xml:space="preserve">
+    <value>المسودات</value>
+  </data>
+  <data name="trErrorEmptyDeservedDate" xml:space="preserve">
+    <value>تاريخ الاستحقاق لا يمكن أن يكون فارغاً</value>
+  </data>
 </root>

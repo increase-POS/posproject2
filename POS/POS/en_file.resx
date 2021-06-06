@@ -1053,4 +1053,16 @@
   <data name="trPurchaseInvoices" xml:space="preserve">
     <value>Purchase Invoices</value>
   </data>
+  <data name="trPopConfirm" xml:space="preserve">
+    <value>Operation confirmed</value>
+  </data>
+  <data name="trStateToolTip" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="trDrafts" xml:space="preserve">
+    <value>Drafts</value>
+  </data>
+  <data name="trErrorEmptyDeservedDate" xml:space="preserve">
+    <value>Deserved date can not be empty</value>
+  </data>
 </root>

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -407,7 +408,7 @@ namespace POS.Classes
             int[] count = { rowCount, columnCount, rowCount * columnCount };
             return count;
         }
-        public void FN_refrishCatalogItem(List<Item> items, string language, string cardType)
+        public void  FN_refrishCatalogItem(List<Item> items, string language, string cardType)
         {
             gridCatigorieItems.Children.Clear();
             int row = 0;
@@ -418,25 +419,24 @@ namespace POS.Classes
             {
                 //Visible
                 //    Collapsed
+
+
+             
+
+
                 if (item.isNew == 1)
                     isNewString = "Visible";
                 else isNewString = "Collapsed";
 
-                if (cardType == "sale")
-                {
-                    if (language == "ar")
-                        FN_createCatalogItem_ar(item, "0$",  row, column, isNewString, "Collapsed");
-                    else FN_createCatalogItem(item  , "0$", row, column, isNewString, "Collapsed");
-                }
-                else
-                {
-                    if (language == "ar")
-                        FN_createCatalogItemtWithoutPrice_ar(item, "0$", row, column, isNewString, "Collapsed");
-                    else
-                        FN_createCatalogItemtWithoutPrice(item, "0$",  row, column, isNewString, "Collapsed");
-                }
+                ItemCardView itemCardView = new ItemCardView();
+                itemCardView.item = item;
+                itemCardView.cardType = cardType;
+                itemCardView.language = language;
+                itemCardView.row = row;
+                itemCardView.column = column;
+                FN_createRectangelCard(itemCardView);
+               
 
-                
                 column++;
                 if (column == count[1])
                 {
@@ -444,91 +444,40 @@ namespace POS.Classes
                     row++;
                 }
             }
-
-
-
-
+            //Thread.Sleep(2000);
         }
-        #region 
-        /*
-        //UC_rectangleCardPrice
-        //UC_rectangleCardPrice_ar
-        //UC_rectangleCardWithoutPrice
-        //UC_rectangleCardWithoutPrice_ar
 
-        UC_rectangleCardPrice FN_createCatalogItem( int id, string title, string subtitle, string price, string image, int row, int column,
-           string newItem, string offer, string cardType, string BorderBrush = "#6e6e6e")
+        UC_rectangleCard FN_createRectangelCard(ItemCardView itemCardView, string BorderBrush = "#6e6e6e")
         {
-            UC_rectangleCardPrice uc;
-            if (cardType == "CatalogItem_ar")
-            {
-                uc = new UC_rectangleCardPrice();
-            }
-            else if (cardType == "CatalogItem")
-            {
-                uc = new UC_rectangleCardPrice();
-            }
-            else if (cardType == "CatalogItemtWithoutPrice_ar")
-            {
-                uc = new UC_rectangleCardPrice();
-            }
-            else
-            {
-                uc = new UC_rectangleCardPrice();
-            }
-            uc.ContentId = id;
-            uc.rectangleCardPriceTitleText = title;
-            uc.rectangleCardPriceSubtitleText = subtitle;
-            uc.rectangleCardPriceBorderBrush = BorderBrush;
-            uc.rectangleCardPricePriceTitle = price;
-            uc.rectangleCardPriceImageSource = image;
-            uc.rectangleCardPriceNew = newItem;
-            uc.rectangleCardPriceOffer = offer;
-            uc.Tag = "CategorieItems" + id;
-            uc.Name = "CategorieItems" + id;
-            uc.Row = row;
-            uc.Column = column;
-            Grid.SetColumn(uc, column);
-            Grid.SetRow(uc, row);
+            UC_rectangleCard uc = new UC_rectangleCard(itemCardView);
+            uc.rectangleCardBorderBrush = BorderBrush;
+            uc.Name = "CardName" + itemCardView.item.itemId;
+            Grid.SetRow(uc, itemCardView.row);
+            Grid.SetColumn(uc, itemCardView.column);
             gridCatigorieItems.Children.Add(uc);
-            uc.MouseDoubleClick += new MouseButtonEventHandler(catalogItem_MouseDoubleClick);
+            uc.MouseDoubleClick += new MouseButtonEventHandler(rectangleCardView_MouseDoubleClick);
             return uc;
         }
-
-        void catalogItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        void rectangleCardView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            UC_rectangleCardPrice uc;
-            if (sender.GetType().ToString() == "UC_rectangleCardPrice")
-            {
-                 uc = (UC_rectangleCardPrice)sender;
-            }
-            uc = gridCatigorieItems.Children.OfType<UC_rectangleCardPrice>().Where(x => x.Name.ToString() == "CategorieItems" + uc.ContentId).FirstOrDefault();
+            UC_rectangleCard uc = (UC_rectangleCard)sender;
+            uc = gridCatigorieItems.Children.OfType<UC_rectangleCard>().Where(x => x.Name.ToString() == "CardName" + uc.itemCardView.item.itemId).FirstOrDefault();
 
             gridCatigorieItems.Children.Remove(uc);
-            FN_createCatalogItem(uc.ContentId, uc.rectangleCardPriceTitleText, uc.rectangleCardPriceSubtitleText, uc.rectangleCardPricePriceTitle, uc.rectangleCardPriceImageSource, uc.Row, uc.Column,
-               uc.rectangleCardPriceNew, uc.rectangleCardPriceOffer, "#178DD2");
-            if (pastCatalogItem != -1 && pastCatalogItem != uc.ContentId)
+            FN_createRectangelCard(uc.itemCardView, "#178DD2");
+            if (pastCatalogItem != -1 && pastCatalogItem != uc.itemCardView.item.itemId)
             {
-                UC_rectangleCardPrice pastUc;
-                if (true)
-                {
-                     pastUc = new UC_rectangleCardPrice() { ContentId = pastCatalogItem };
-                }
-               
-                pastUc = gridCatigorieItems.Children.OfType<UC_rectangleCardPrice>().Where(x => x.Name.ToString() == "CategorieItems" + pastUc.ContentId).FirstOrDefault();
+                var pastUc = new UC_rectangleCard() { contentId = pastCatalogItem };
+                pastUc = gridCatigorieItems.Children.OfType<UC_rectangleCard>().Where(x => x.Name.ToString() == "CardName" + pastUc.contentId).FirstOrDefault();
                 if (pastUc != null)
                 {
                     gridCatigorieItems.Children.Remove(pastUc);
-                    FN_createCatalogItem(pastUc.ContentId, pastUc.rectangleCardPriceTitleText, pastUc.rectangleCardPriceSubtitleText, pastUc.rectangleCardPricePriceTitle
-                        , pastUc.rectangleCardPriceImageSource, pastUc.Row, pastUc.Column, pastUc.rectangleCardPriceNew, pastUc.rectangleCardPriceOffer, "#6e6e6e");
+                    FN_createRectangelCard(pastUc.itemCardView, "#6e6e6e");
                 }
             }
-            pastCatalogItem = uc.ContentId;
-            idItem = uc.ContentId;
+            pastCatalogItem = uc.itemCardView.item.itemId;
+            idItem = uc.itemCardView.item.itemId;
         }
-        */
-        #endregion
-     
         #region  sale
         #region En
         UC_rectangleCardPrice FN_createCatalogItem(Item item, string price,  int row, int column,

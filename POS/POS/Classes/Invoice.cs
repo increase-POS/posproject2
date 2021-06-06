@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
+
 namespace POS.Classes
 {
     public class ItemTransfer
@@ -37,6 +38,8 @@ namespace POS.Classes
         public Nullable<int> agentId { get; set; }
         public Nullable<int> createUserId { get; set; }
         public string invType { get; set; }
+        public string discountType { get; set; }
+        public Nullable<decimal> discountValue { get; set; }
         public Nullable<decimal> total { get; set; }
         public Nullable<decimal> totalNet { get; set; }
         public Nullable<decimal> paid { get; set; }
@@ -154,7 +157,7 @@ namespace POS.Classes
         }
 
 
-        public async Task<List<Invoice>> GetInvoicesByType(string invType)
+        public async Task<List<Invoice>> GetInvoicesByType( string invType)
         {
             List<Invoice> invoices = null;
             // ... Use HttpClient.

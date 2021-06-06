@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d" 
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="675" d:DesignWidth="1150" 
              Loaded="UserControl_Loaded" 
@@ -1786,5 +1787,6 @@
                 </Border>
             </Grid>
         </Border>
+        <fa:ImageAwesome FlowDirection="RightToLeft" Visibility="Hidden" x:Name="fa_waiting" Height="60" Width="60" Grid.RowSpan="10" Foreground="#cc33cc"  Icon="Spinner" Spin="False" SpinDuration="1" />
     </Grid>
 </UserControl>

@@ -53,6 +53,9 @@
     <ApplicationIcon>pic\increaseLogo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
+      <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
     </Reference>
@@ -139,6 +142,7 @@
     <Compile Include="Classes\InputStream.cs" />
     <Compile Include="Classes\Invoice.cs" />
     <Compile Include="Classes\Item.cs" />
+    <Compile Include="Classes\ItemCardView.cs" />
     <Compile Include="Classes\ItemsProp.cs" />
     <Compile Include="Classes\ItemUnit.cs" />
     <Compile Include="Classes\ItemUnitOffer.cs" />

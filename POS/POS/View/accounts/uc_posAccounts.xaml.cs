@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Resources;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,6 +37,9 @@ namespace POS.View.accounts
         IEnumerable<CashTransfer> cashes;
         string searchText = "";
 
+        CashTransfer cashtrans2 = new CashTransfer();
+        CashTransfer cashtrans3 = new CashTransfer();
+        IEnumerable<CashTransfer> cashes2;
         public static uc_posAccounts Instance
         {
             get
@@ -79,15 +83,14 @@ namespace POS.View.accounts
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
             tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+            tt_startDate.Content = MainWindow.resourcemanager.GetString("trStartDate");
+            tt_endDate.Content = MainWindow.resourcemanager.GetString("trEndDate");
+            tt_state.Content = MainWindow.resourcemanager.GetString("trStateToolTip");
 
             btn_confirm.Content = MainWindow.resourcemanager.GetString("trConfirm");
             btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
             btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
-
-        }
-        private void Btn_confirm_Click(object sender, RoutedEventArgs e)
-        {
 
         }
 
@@ -117,6 +120,12 @@ namespace POS.View.accounts
             /////////////////////////////////////////////////////////////
             #endregion
 
+            dp_startSearchDate.SelectedDate = DateTime.Now.Date;
+            dp_endSearchDate.SelectedDate = DateTime.Now.Date;
+
+            dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
+            dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
+
             #region fill pos combo1
             poss = await posModel.GetPosAsync();
             cb_pos1.ItemsSource = poss;
@@ -136,10 +145,20 @@ namespace POS.View.accounts
             cb_state.ItemsSource = dislist;
             #endregion
 
-            dg_posAccounts.ItemsSource = await cashModel.GetCashTransferAsync("all", "p");
-            //dg_posAccounts.ItemsSource = await RefreshCashesList();
-            //Tb_search_TextChanged(null, null);
+            //dg_posAccounts.ItemsSource = await cashModel.GetCashTransferAsync("all", "p");
+            await RefreshCashesList();
+            Tb_search_TextChanged(null, null);
 
+        }
+
+        private void dp_SelectedEndDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Tb_search_TextChanged(null, null);
+        }
+
+        private void dp_SelectedStartDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Tb_search_TextChanged(null, null);
         }
 
         private async void Dg_posAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -160,27 +179,40 @@ namespace POS.View.accounts
                         btn_update.IsEnabled = true;
                         btn_delete.IsEnabled = true;
                         btn_confirm.IsEnabled = false;
+                        if (cashtrans.isConfirm != 1)
+                            btn_confirm.Content = "تأكيد"; 
+                        else
+                            btn_confirm.Content = "تم التأكيد"; 
                     }
                     else
                     {
                         btn_add.IsEnabled = false;
                         btn_update.IsEnabled = false;
                         btn_delete.IsEnabled = false;
-                        btn_confirm.IsEnabled = true;
+                        if (cashtrans.isConfirm != 1)
+                        { btn_confirm.IsEnabled = true; btn_confirm.Content = "تأكيد"; }
+                        else
+                        { btn_confirm.IsEnabled = false; btn_confirm.Content = "تم التأكيد"; }
                     }
-                    CashTransfer cashtrans2 = new CashTransfer();
-                    CashTransfer cashtrans3 = new CashTransfer();
 
-                    IEnumerable<CashTransfer> cashes2;
+                    #region get two pos
+                  
                     cashes2 = await cashModel.GetbySourcId("p", cashtrans.cashTransId);
                     cashtrans2 = cashes2.ToList()[0] as CashTransfer;
                     cashtrans3 = cashes2.ToList()[1] as CashTransfer;
-
-                    MessageBox.Show(cashtrans2.transNum.ToString() + " " + cashtrans3.transNum.ToString());
-
-                    cb_pos1.SelectedValue = cashtrans2.posId;
-                    cb_pos2.SelectedValue = cashtrans3.posId;
-
+                    ///////////////////////////////??????????????????????????????????
+                    if (cashtrans2.transType == "p")
+                    {
+                        cb_pos1.SelectedValue = cashtrans2.posId;
+                        cb_pos2.SelectedValue = cashtrans3.posId;
+                    }
+                    if (cashtrans3.transType == "p")
+                    {
+                        cb_pos1.SelectedValue = cashtrans3.posId;
+                        cb_pos2.SelectedValue = cashtrans2.posId;
+                    }
+                    ////////////////////////////////////////??????????????????????????????????
+                    #endregion
                 }
             }
         }
@@ -190,10 +222,46 @@ namespace POS.View.accounts
             if (cashes is null)
                 await RefreshCashesList();
             searchText = tb_search.Text;
-            cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText))
-            //|| s.docNum.Contains(searchText)
-            );
+
+            switch (cb_state.Text)
+            {
+                case "غير مؤكدة"://inconfirmed
+                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                     || s.transType.Contains(searchText)
+                     || s.cash.ToString().Contains(searchText)
+                     || s.posName.Contains(searchText)
+                     )
+                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                    && s.posId == MainWindow.posID.Value
+                    && s.isConfirm == 0
+                    );
+                break;
+                case "بانتظار التأكيد"://waiting
+                break;
+                case "مؤكدة"://confirmed
+                  
+                break;
+                default://no select
+                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                    || s.transType.Contains(searchText)
+                    || s.cash.ToString().Contains(searchText)
+                    || s.posName.Contains(searchText)
+                    )
+                   && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                   && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                   );
+                break;
+            }
             RefreshCashView();
+            txt_count.Text = cashesQuery.Count().ToString();
+
+
+            // categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+            //x.name.ToLower().Contains(txtCategorySearch) ||
+            //x.details.ToLower().Contains(txtCategorySearch)
+            //) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+            // txt_count.Text = categoriesQuery.Count().ToString();
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
@@ -244,10 +312,8 @@ namespace POS.View.accounts
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         Btn_clear_Click(null, null);
 
-                        dg_posAccounts.ItemsSource = await cashModel.GetCashTransferAsync("all", "p");
-                        ////dg_posAccounts.ItemsSource = await RefreshCashesList();
-                        ////Tb_search_TextChanged(null, null);
-                        ///
+                        await RefreshCashesList();
+                        Tb_search_TextChanged(null, null);
                     }
                     else
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -266,43 +332,88 @@ namespace POS.View.accounts
 
             if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")))
             {
-                ////first operation
-                //cashtrans.cash = decimal.Parse(tb_cash.Text);
-                //cashtrans.notes = tb_note.Text;
-                //cashtrans.posIdCreator = MainWindow.posID.Value;
-                //cashtrans.posId = Convert.ToInt32(cb_pos1.SelectedValue);
+                //first operation
+                cashtrans.cash = decimal.Parse(tb_cash.Text);
+                cashtrans.notes = tb_note.Text;
+                cashtrans.posId = Convert.ToInt32(cb_pos1.SelectedValue);
 
-                ////second operation
-                ////cash2.posIdCreator = MainWindow.posID.Value;
-                ////cash2.posId = Convert.ToInt32(cb_pos2.SelectedValue);
-                ////cash2.cashTransIdSource = int.Parse(s1);//id from first operation
+                string s1 = await cashModel.Save(cashtrans);
 
-                //string s = await cashModel.Save(cashtrans);
+                if (!s1.Equals("0"))
+                {
+                    cashtrans3.cash = decimal.Parse(tb_cash.Text);
+                    cashtrans3.posId = Convert.ToInt32(cb_pos2.SelectedValue);
+                    cashtrans3.notes = tb_note.Text;
 
-                //if (!s.Equals("0"))
-                //{
-                //    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    string s2 = await cashModel.Save(cashtrans3);
 
-                //    dg_posAccounts.ItemsSource = await cashModel.GetCashTransferAsync("all", "p");
-                //    ////dg_posAccounts.ItemsSource = await RefreshCashesList();
-                //    ////Tb_search_TextChanged(null, null);
-                //}
-                //else
-                //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    if (!s2.Equals("0"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+
+                        await RefreshCashesList();
+                        Tb_search_TextChanged(null, null);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
             }
         }
 
-        private void Btn_delete_Click(object sender, RoutedEventArgs e)
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
+            if (cashtrans.cashTransId != 0)
+            {
+                //bool b = await cashModel.deleteCategory(category.categoryId, MainWindow.userID.Value, category.canDelete);
 
+                //if (b)
+                //{
+                //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                //    //clear textBoxs
+                //    Btn_clear_Click(sender, e);
+                //}
+                //else
+                //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                await RefreshCashesList();
+                Tb_search_TextChanged(null, null);
+            }
+        }
+
+        private async void Btn_confirm_Click(object sender, RoutedEventArgs e)
+        {//confirm
+         //Who can confirm?
+            cashtrans.isConfirm = 1;
+
+            string s = await cashModel.Save(cashtrans);
+            if (!s.Equals("0"))
+            {
+                await RefreshCashesList();
+                Tb_search_TextChanged(null, null);
+
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopConfirm"), animation: ToasterAnimation.FadeIn);
+
+                if ((cashtrans2.isConfirm == 1) && (cashtrans3.isConfirm == 1))
+                {
+                    //pull and deposit operation completed
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopConfirm"), animation: ToasterAnimation.FadeIn);
+                }
+
+            }
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
+            txt_transNum.Text = "";
             tb_cash.Clear();
             cb_pos1.SelectedIndex = -1;
             cb_pos2.SelectedIndex = -1;
             tb_note.Clear();
+            ///////////???????????????????هل يحق لأي كان الاضافة 
+            btn_add.IsEnabled = true;
+            btn_update.IsEnabled = true;
+            btn_delete.IsEnabled = true;
+            btn_confirm.IsEnabled = false;
 
             SectionData.clearValidate(tb_cash, p_errorCash);
             SectionData.clearComboBoxValidate(cb_pos1, p_errorPos1);
@@ -311,17 +422,12 @@ namespace POS.View.accounts
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
-
-        }
-
-        private void Tgl_IsReceived_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tgl_IsReceived_Unchecked(object sender, RoutedEventArgs e)
-        {
-
+            this.Dispatcher.Invoke(() =>
+            {
+                Thread t1 = new Thread(FN_ExportToExcel);
+                t1.SetApartmentState(ApartmentState.STA);
+                t1.Start();
+            });
         }
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -387,14 +493,35 @@ namespace POS.View.accounts
             cb_pos2.IsEnabled = true;
 
             #region fill pos combo2
-            var poss1 = cb_pos1.ItemsSource as List<Pos>;
-            poss1.Remove(cb_pos1.SelectedItem as Pos);
+            //var poss1 = cb_pos1.ItemsSource as List<Pos>;
+            var poss1 = await posModel.GetPosAsync();
+            //Pos pos = new Pos();
+            //pos = cb_pos1.SelectedValue as Pos;
+            poss1.RemoveAt(cb_pos1.SelectedIndex);
             cb_pos2.ItemsSource = poss1;
             cb_pos2.DisplayMemberPath = "name";
             cb_pos2.SelectedValuePath = "posId";
             cb_pos2.SelectedIndex = -1;
             #endregion
 
+        }
+
+        void FN_ExportToExcel()
+        {
+            var QueryExcel = cashesQuery.AsEnumerable().Select(x => new
+            {
+                TransNum = x.transNum,
+                PosName = x.posName,
+                OpperationType = x.transType,
+                Cash = x.cash
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trPosName");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trOpperationTypeToolTip");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trCashTooltip");
+
+            ExportToExcel.Export(DTForExcel);
         }
     }
 }

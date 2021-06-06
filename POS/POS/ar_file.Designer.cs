@@ -745,6 +745,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المسودات.
+        /// </summary>
+        internal static string trDrafts {
+            get {
+                return ResourceManager.GetString("trDrafts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to البار كود محجوز مسبقاً.
         /// </summary>
         internal static string trDuplicateBarcodeToolTip {
@@ -1119,6 +1128,15 @@ namespace POS {
         internal static string trErrorEmptyCountToolTip {
             get {
                 return ResourceManager.GetString("trErrorEmptyCountToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ الاستحقاق لا يمكن أن يكون فارغاً.
+        /// </summary>
+        internal static string trErrorEmptyDeservedDate {
+            get {
+                return ResourceManager.GetString("trErrorEmptyDeservedDate", resourceCulture);
             }
         }
         
@@ -1879,6 +1897,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تم تأكيد العملية.
+        /// </summary>
+        internal static string trPopConfirm {
+            get {
+                return ResourceManager.GetString("trPopConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تم الحذف بنجاح.
         /// </summary>
         internal static string trPopDelete {
@@ -2379,6 +2406,15 @@ namespace POS {
         internal static string trStateHint {
             get {
                 return ResourceManager.GetString("trStateHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الحالة.
+        /// </summary>
+        internal static string trStateToolTip {
+            get {
+                return ResourceManager.GetString("trStateToolTip", resourceCulture);
             }
         }
         
