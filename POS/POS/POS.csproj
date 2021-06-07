@@ -99,7 +99,12 @@
     <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Drawing.Common.5.0.2\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Reactive, Version=4.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.4.0.0\lib\net46\System.Reactive.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -116,6 +121,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFTabTip, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFTabTip.1.2.2\lib\net45\WPFTabTip.dll</HintPath>
+    </Reference>
     <Reference Include="Zen.Barcode.Core">
       <HintPath>bin\Zen.Barcode.Core.dll</HintPath>
     </Reference>
@@ -182,6 +190,14 @@
     </Compile>
     <Compile Include="Classes\ValidatorExtensions.cs" />
     <Compile Include="converters\unitItemsListConverter.cs" />
+    <Compile Include="Keyboard\AnimationHelper.cs" />
+    <Compile Include="Keyboard\EnvironmentEx.cs" />
+    <Compile Include="Keyboard\HardwareKeyboard.cs" />
+    <Compile Include="Keyboard\PoolingTimer.cs" />
+    <Compile Include="Keyboard\Screen.cs" />
+    <Compile Include="Keyboard\TabTip.cs" />
+    <Compile Include="Keyboard\TabTipAutomation.cs" />
+    <Compile Include="Keyboard\Taskbar.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="View\accounts\uc_accounts.xaml.cs">
       <DependentUpon>uc_accounts.xaml</DependentUpon>

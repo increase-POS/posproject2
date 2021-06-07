@@ -2266,7 +2266,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Section Data.
+        ///   Looks up a localized string similar to Data.
         /// </summary>
         internal static string trSectionData {
             get {

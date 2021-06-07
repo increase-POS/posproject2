@@ -2212,7 +2212,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to البيانات الأساسية.
+        ///   Looks up a localized string similar to البيانات.
         /// </summary>
         internal static string trSectionData {
             get {

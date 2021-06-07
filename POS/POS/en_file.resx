@@ -322,7 +322,7 @@
     <value>Enter Here To Start Search ....</value>
   </data>
   <data name="trSectionData" xml:space="preserve">
-    <value>Section Data</value>
+    <value>Data</value>
   </data>
   <data name="trSelectBankNameHint" xml:space="preserve">
     <value>Select Bank Name</value>

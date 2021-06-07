@@ -70,7 +70,6 @@ D:\gitpos\POS\netoaster\obj\Debug\netoaster.csproj.CoreCompileInputs.cache
 D:\gitpos\POS\netoaster\obj\Debug\netoaster.dll
 D:\gitpos\POS\netoaster\obj\Debug\netoaster.pdb
 D:\gitpos\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
-E:\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
 D:\myproj\posproject2\POS\netoaster\bin\Debug\netoaster.dll
 D:\myproj\posproject2\POS\netoaster\bin\Debug\netoaster.pdb
 D:\myproj\posproject2\POS\netoaster\obj\Debug\ToasterWindow.g.cs

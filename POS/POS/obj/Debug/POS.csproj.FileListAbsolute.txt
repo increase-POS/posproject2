@@ -1428,3 +1428,7 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.baml
 E:\GitHub\posproject2\POS\POS\bin\Debug\FontAwesome.WPF.dll
 E:\GitHub\posproject2\POS\POS\bin\Debug\FontAwesome.WPF.xml
+E:\GitHub\posproject2\POS\POS\bin\Debug\System.Reactive.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\WPFTabTip.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\System.Reactive.xml
+E:\GitHub\posproject2\POS\POS\bin\Debug\WPFTabTip.xml
