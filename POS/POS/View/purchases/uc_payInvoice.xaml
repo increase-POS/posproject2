@@ -172,7 +172,7 @@
                     </Path>
                 </Button>
                 <Button Grid.Column="7" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
-                    Background="{x:Null}" x:Name="btn_pdf"   >
+                    Background="{x:Null}" x:Name="btn_pdf" Click="Btn_pdf_Click"   >
                     <Path Fill="#4E4E4E" Stretch="Fill"  
                           Width="{Binding Path=ActualHeight, ElementName=path_newDraft}"  
                            Data="M228,174h10v-18h16v-8h-16v-11h17v-8h-27V174z M213.3,133.5c-4.4-3.3-10.4-4.8-19-4.8c-5.2,0-9.3,0.3-14.3,0.9

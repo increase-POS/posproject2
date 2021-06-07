@@ -22,6 +22,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static POS.View.uc_categorie;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using System.Globalization;
 
 namespace POS.View
 {
@@ -102,6 +106,11 @@ namespace POS.View
         static private decimal _Sum = 0;
         static private int _OrginalCount;
         static private string _InvoiceType = "pd";
+
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
@@ -1384,6 +1393,47 @@ namespace POS.View
             }
         }
 
+        private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            string addpath = @"\Reports\InvPurReport .rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", invoiceItems));
+           // rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", data));
+            ReportParameter[] paramarr = new ReportParameter[13];
+            //String.Format("h \\h m \\m", invoice.invTime)
+            paramarr[0] = new ReportParameter("Title", "Purshase Invoice");
+            paramarr[12] = new ReportParameter("lang", MainWindow.lang);
+            paramarr[1] = new ReportParameter("invNumber", invoice.invNumber);
+            paramarr[2] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
+            paramarr[3] = new ReportParameter("invDate", invoice.invDate.ToString());
+            paramarr[4] = new ReportParameter("invTime", invoice.invTime.ToString());
+            paramarr[5] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
+            paramarr[6] = new ReportParameter("total", invoice.total.ToString());
+            paramarr[7] = new ReportParameter("discountValue", invoice.discountValue.ToString());
+            paramarr[8] = new ReportParameter("totalNet", invoice.totalNet.ToString());
+            paramarr[9] = new ReportParameter("paid", invoice.paid.ToString());
+            paramarr[10] = new ReportParameter("deserved", invoice.deserved.ToString());
+            paramarr[11] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
+
+         
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+            saveFileDialog.Filter = "PDF|*.pdf;";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+
+                string filepath = saveFileDialog.FileName;
+                LocalReportExtensions.ExportToPDF(rep, filepath);
+
+            }
+        }
     }
 
 }
