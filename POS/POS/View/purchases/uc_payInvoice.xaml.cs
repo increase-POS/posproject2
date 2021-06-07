@@ -132,8 +132,8 @@ namespace POS.View
 
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendor, MainWindow.resourcemanager.GetString("trVendorHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_paid, MainWindow.resourcemanager.GetString("trPaidHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_deserved, MainWindow.resourcemanager.GetString("trDeservedHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_paid, MainWindow.resourcemanager.GetString("trPaidHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_deserved, MainWindow.resourcemanager.GetString("trDeservedHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_desrvedDate, MainWindow.resourcemanager.GetString("trDeservedDateHint"));
             txt_vendorIvoiceDetails.Text = MainWindow.resourcemanager.GetString("trVendorInvoiceDetails");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_invoiceNumber, MainWindow.resourcemanager.GetString("trInvoiceNumberHint"));
@@ -193,6 +193,10 @@ namespace POS.View
             CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
             ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
             #endregion
+
+
+            SectionData.defaultDatePickerStyle(dp_desrvedDate);
+            SectionData.defaultDatePickerStyle(dp_invoiceDate);
         }
         
         private void configureDiscountType()
@@ -287,18 +291,18 @@ namespace POS.View
         
         private void Btn_updateVendor_Click(object sender, RoutedEventArgs e)
         {
-            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+            Window.GetWindow(this).Opacity = 0.2;
 
-            //if ((((this.Parent as Grid).Parent as Grid).Parent as UserControl) != null)
-            //((((this.Parent as Grid).Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 0.2;
+             
+            Window.GetWindow(this).Opacity = 0.2;
             wd_updateVendor w = new wd_updateVendor();
             //// pass agent id to update windows
             w.agent.agentId = 22;
-            //w.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#00178DD2"));
+             
             w.ShowDialog();
 
 
-            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
+            Window.GetWindow(this).Opacity = 1;
         }
         #region Categor and Item
         #region Refrish Y
@@ -752,10 +756,10 @@ namespace POS.View
             if (cb_vendor.SelectedIndex != -1)
                 invoice.branchId = (int)cb_vendor.SelectedValue;
 
-            if(!tb_paid.Text.Equals(""))
-                invoice.paid = decimal.Parse(tb_paid.Text);
-            if(!tb_deserved.Text.Equals(""))
-                invoice.deserved = decimal.Parse(tb_deserved.Text);
+            //if(!tb_paid.Text.Equals(""))
+            //    invoice.paid = decimal.Parse(tb_paid.Text);
+            //if(!tb_deserved.Text.Equals(""))
+            //    invoice.deserved = decimal.Parse(tb_deserved.Text);
 
             invoice.deservedDate = dp_desrvedDate.SelectedDate;
             invoice.vendorInvNum = tb_invoiceNumber.Text;
@@ -843,8 +847,8 @@ namespace POS.View
             invoice = new Invoice();
             cb_branch.SelectedIndex = -1;
             cb_vendor.SelectedIndex = -1;
-            tb_paid.Clear();
-            tb_deserved.Clear();
+            //tb_paid.Clear();
+            //tb_deserved.Clear();
             dp_desrvedDate.Text="";
             txt_vendorIvoiceDetails.Text ="";
             tb_invoiceNumber.Clear();
@@ -858,8 +862,10 @@ namespace POS.View
         #endregion
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
-           // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+            // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+            Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
+
             // purchase drafts and purchase bounce drafts
            // string[] typeArr = { "pd","pdbd" };
             w.invoiceType = "pd";  
@@ -883,6 +889,7 @@ namespace POS.View
                 }
             }
           //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
+          Window.GetWindow(this).Opacity =1;
         }
         private  void  fillInvoiceInputs(Invoice invoice)
         {
@@ -903,7 +910,7 @@ namespace POS.View
         }
         private async void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
         {
-           // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+            Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
 
             
@@ -931,7 +938,7 @@ namespace POS.View
                     inputEditable(_InvoiceType);
                 }              
             }
-            // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
+            Window.GetWindow(this).Opacity = 1;
         }
         private void buildInvoiceDetails(List<ItemTransfer> invoiceItems)
         {
@@ -983,10 +990,10 @@ namespace POS.View
         }
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
-             (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+            Window.GetWindow(this).Opacity = 0.2;
             wd_uploadImage w = new wd_uploadImage();
             w.ShowDialog();
-            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
+            Window.GetWindow(this).Opacity =1;
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
