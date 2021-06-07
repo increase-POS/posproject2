@@ -44,48 +44,85 @@ namespace POS.controlTemplate
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             this.DataContext = this;
+            #region Grid Container
+            Grid gridContainer = new Grid();
+
+            ColumnDefinition[] cd = new ColumnDefinition[2];
+            for (int i = 0; i < 2; i++)
+                cd[i] = new ColumnDefinition();
+            cd[0].Width = new GridLength(1.2, GridUnitType.Star);
+            cd[1].Width = new GridLength(1, GridUnitType.Star);
+            for (int i = 0; i < 2; i++)
+                gridContainer.ColumnDefinitions.Add(cd[i]);
+
+
+            //< RowDefinition Height = "5*" />
+            //         < RowDefinition Height = "16*" />
+            //          < RowDefinition Height = "13*" />
+            //           < RowDefinition Height = "20*" />
+
+                RowDefinition[] rd = new RowDefinition[4];
+            for (int i = 0; i < 4; i++)
+            {
+                rd[i] = new RowDefinition();
+            }
+            rd[0].Height = new GridLength(5, GridUnitType.Star);
+            rd[1].Height = new GridLength(16, GridUnitType.Star);
+            rd[2].Height = new GridLength(13, GridUnitType.Star);
+            rd[3].Height = new GridLength(20, GridUnitType.Star);
+            for (int i = 0; i < 4; i++)
+            {
+                gridContainer.RowDefinitions.Add(rd[i]);
+            }
+            gridContainer.Height = this.ActualHeight-10;
+            gridContainer.Width = this.ActualWidth-10;
+            brd_main.Child = gridContainer;
+            #endregion
+
+            if (itemCardView.language == "ar")
+                grid_main.FlowDirection = FlowDirection.RightToLeft;
+            else grid_main.FlowDirection = FlowDirection.LeftToRight;
+
+
+            #region   Title
+            var titleText = new TextBlock();
+            titleText.Text = itemCardView.item.name;
+            titleText.Margin = new Thickness(5, 0, 5, 0);
+            titleText.FontWeight = FontWeights.Bold;
+            titleText.VerticalAlignment = VerticalAlignment.Top;
+            titleText.HorizontalAlignment = HorizontalAlignment.Left;
+            titleText.FontSize = 12;
+            titleText.TextWrapping = TextWrapping.Wrap;
+            titleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#000000"));
+            Grid.SetRow(titleText, 1);
+            /////////////////////////////////
+
+            #endregion
+            #region  subTitle
+            var subTitleText = new TextBlock();
+            subTitleText.Text = itemCardView.item.details;
+            subTitleText.Margin = new Thickness(5, 0, 5, 0);
+            subTitleText.FontWeight = FontWeights.Regular;
+            subTitleText.VerticalAlignment = VerticalAlignment.Top;
+            subTitleText.HorizontalAlignment = HorizontalAlignment.Left;
+            subTitleText.FontSize = 10;
+            subTitleText.TextWrapping = TextWrapping.Wrap;
+            subTitleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
+            Grid.SetRow(subTitleText, 2);
+            /////////////////////////////////
+
+            #endregion
             if (itemCardView.cardType == "purchase")
             {
-                if (itemCardView.language == "ar")
-                    grid_main.FlowDirection = FlowDirection.RightToLeft;
-                else grid_main.FlowDirection = FlowDirection.LeftToRight;
-                #region   Title
-                var titleText = new TextBlock();
-                titleText.Text = itemCardView.item.name;
-                titleText.Margin = new Thickness(5, 0, 5, 0);
-                titleText.FontWeight = FontWeights.Bold;
-                titleText.VerticalAlignment = VerticalAlignment.Top;
-                titleText.HorizontalAlignment = HorizontalAlignment.Left;
-                titleText.FontSize = 12;
-                titleText.TextWrapping = TextWrapping.Wrap;
-                titleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#000000"));
-                Grid.SetRow(titleText, 1);
-                /////////////////////////////////
-
-                #endregion
-
-                #region  subTitle
-                var subTitleText = new TextBlock();
-                subTitleText.Text = itemCardView.item.details;
-                subTitleText.Margin = new Thickness(5, 0, 5, 0);
-                subTitleText.FontWeight = FontWeights.Regular;
-                subTitleText.VerticalAlignment = VerticalAlignment.Top;
-                subTitleText.HorizontalAlignment = HorizontalAlignment.Left;
-                subTitleText.FontSize = 10;
-                subTitleText.TextWrapping = TextWrapping.Wrap;
-                subTitleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
-                Grid.SetRow(subTitleText, 2);
-                /////////////////////////////////
-
-                #endregion
-
                 #region Price
                 Grid gridPrice = new Grid();
                 Grid.SetRow(gridPrice, 3);
-                gridPrice.Width = 70;
-                gridPrice.Height = 25;
+                //70 
+                gridPrice.Width = gridContainer.Width / 3;
+                //25
+                gridPrice.Height = gridContainer.Height / 4;
                 gridPrice.HorizontalAlignment = HorizontalAlignment.Left;
-                gridPrice.Margin = new Thickness(5, 0, 5, 0);
+                gridPrice.Margin = new Thickness(5);
                 /////////////////////////////
                 Rectangle rectanglePrice = new Rectangle();
                 rectanglePrice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
@@ -105,68 +142,139 @@ namespace POS.controlTemplate
 
                 #endregion
 
-                #region Image
-                Button buttonImage = new Button();
-                buttonImage.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-                Grid.SetRowSpan(buttonImage, 4);
-                Grid.SetColumn(buttonImage, 1);
-                buttonImage.Height = 107;
-                buttonImage.Width = 100;
-                buttonImage.BorderThickness = new Thickness(0);
-                buttonImage.Padding = new Thickness(0);
-                buttonImage.FlowDirection = FlowDirection.LeftToRight;
-                MaterialDesignThemes.Wpf.ButtonAssist.SetCornerRadius(buttonImage, (new CornerRadius(0, 10, 10, 0)));
-                SectionData.getImg("Item", itemCardView.item.image, buttonImage);
-                //////////////
-                #endregion
+                gridContainer.Children.Add(gridPrice);
+            }
+            #region Image
+            Button buttonImage = new Button();
+            buttonImage.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            //Grid.SetRowSpan(buttonImage, 4);
+            //Grid.SetColumn(buttonImage, 1);
+            //buttonImage.Height = 107;
+            buttonImage.Height = (gridContainer.Height) - 7.5;
+            //buttonImage.Width = 100;
+            buttonImage.Width = (gridContainer.Width / 2.2) - 7.5;
+            buttonImage.BorderThickness = new Thickness(0);
+            buttonImage.Padding = new Thickness(0);
+            //buttonImage.Margin = new Thickness(5);
+            buttonImage.FlowDirection = FlowDirection.LeftToRight;
+            //buttonImage.HorizontalAlignment = HorizontalAlignment.Center;
+            //buttonImage.VerticalAlignment = VerticalAlignment.Center;
+            //MaterialDesignThemes.Wpf.ButtonAssist.SetCornerRadius(buttonImage, (new CornerRadius(0, 10, 10, 0)));
+            SectionData.getImg("Item", itemCardView.item.image, buttonImage);
 
-                #region Path
+
+            Grid grid_image = new Grid();
+            grid_image.Height = buttonImage.Height - 2;
+            grid_image.Width = buttonImage.Width - 1;
+            //grid_image.HorizontalAlignment = HorizontalAlignment.Center;
+            //grid_image.VerticalAlignment = VerticalAlignment.Center;
+            Grid.SetRowSpan(grid_image, 4);
+            Grid.SetColumn(grid_image, 1);
+            grid_image.Children.Add(buttonImage);
+            //////////////
+            #endregion
+            if (itemCardView.item.isNew == 1)
+            {
+                #region Path Star
                 //string dataStar = "";
-                Path path = new Path();
-                Grid.SetRowSpan(path, 4);
-                path.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-                path.Stretch = Stretch.Fill;
-                Grid.SetColumnSpan(path, 2);
-                path.Height = path.Width = 18;
-                path.VerticalAlignment = VerticalAlignment.Bottom;
-                path.HorizontalAlignment = HorizontalAlignment.Right;
-                path.Margin = new Thickness(5);
-                path.Data = App.Current.Resources["StarIconGeometry"] as Geometry;
-
-                
+                Path pathStar = new Path();
+                Grid.SetRowSpan(pathStar, 4);
+                pathStar.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                pathStar.Stretch = Stretch.Fill;
+                Grid.SetColumnSpan(pathStar, 2);
+                pathStar.Height = pathStar.Width = 18;
+                pathStar.VerticalAlignment = VerticalAlignment.Bottom;
+                pathStar.HorizontalAlignment = HorizontalAlignment.Right;
+                pathStar.Margin = new Thickness(5);
+                pathStar.Data = App.Current.Resources["StarIconGeometry"] as Geometry;
                 #endregion
-
-
-                grid_container.Children.Add(titleText);
-                grid_container.Children.Add(subTitleText);
-                grid_container.Children.Add(gridPrice);
-                grid_container.Children.Add(buttonImage);
-                grid_container.Children.Add(path);
-
-
-                Application.Current.Dispatcher.Invoke(new System.Action(() =>
-            grid_offer.Visibility = Visibility.Visible
-          ));
-
-                //grid_Offer.Visibility = Visibility.Visible;
+                gridContainer.Children.Add(pathStar);
 
             }
-
-            else if (itemCardView.cardType == "sale")
+            if (itemCardView.item.isOffer == 1)
             {
+                #region Path offerLabel
+
+
+                //string dataStar = "";
+                Path pathOfferLabel = new Path();
+                Grid.SetColumnSpan(pathOfferLabel, 2);
+                Grid.SetRowSpan(pathOfferLabel, 4);
+                pathOfferLabel.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D20707"));
+                pathOfferLabel.VerticalAlignment = VerticalAlignment.Top;
+                pathOfferLabel.Stretch = Stretch.Fill;
+                //   Height = "16" Width = "86" 
+                pathOfferLabel.Height = pathOfferLabel.Width = gridContainer.Width / 4.5;
+                pathOfferLabel.FlowDirection = FlowDirection.LeftToRight;
+                pathOfferLabel.HorizontalAlignment = HorizontalAlignment.Right;
+
                 if (itemCardView.language == "ar")
                 {
-
+                    pathOfferLabel.Data = App.Current.Resources["offerLabelArTopLeft"] as Geometry;
                 }
                 else
                 {
-
+                    pathOfferLabel.Data = App.Current.Resources["offerLabelEnTopRight"] as Geometry;
                 }
-            }
-        }
 
-    #region rectangleCardBorderBrush
-    public static readonly DependencyProperty rectangleCardBorderBrushDependencyProperty = DependencyProperty.Register("rectangleCardBorderBrush",
+                #region Text
+                Path pathOfferLabelText = new Path();
+                Grid.SetColumnSpan(pathOfferLabelText, 2);
+                Grid.SetRowSpan(pathOfferLabelText, 4);
+                pathOfferLabelText.FlowDirection = FlowDirection.LeftToRight;
+                pathOfferLabelText.VerticalAlignment = VerticalAlignment.Top;
+                pathOfferLabelText.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFD00"));
+                pathOfferLabelText.Stretch = Stretch.Fill;
+                pathOfferLabelText.HorizontalAlignment = HorizontalAlignment.Right;
+                if (itemCardView.language == "ar")
+                {
+                    pathOfferLabelText.Height = pathOfferLabelText.Width = gridContainer.Width / 7;
+                    pathOfferLabelText.Margin = new Thickness(4, 4, 0, 0);
+                    pathOfferLabelText.Data = App.Current.Resources["offerLabelArTopLeft_Text"] as Geometry;
+                }
+                else
+
+                {
+                    pathOfferLabelText.Height = pathOfferLabelText.Width = gridContainer.Width / 6.5;
+                    pathOfferLabelText.Margin = new Thickness(0, 2.5, 2.5, 0);
+                    pathOfferLabelText.Data = App.Current.Resources["offerLabelEnTopRight_Text"] as Geometry;
+                }
+
+                #endregion
+                #endregion
+                gridContainer.Children.Add(pathOfferLabel);
+                gridContainer.Children.Add(pathOfferLabelText);
+            }
+            gridContainer.Children.Add(titleText);
+            gridContainer.Children.Add(subTitleText);
+            gridContainer.Children.Add(grid_image);
+            
+        }
+        /*
+        Grid CreateGrid(Grid grid , int row , int column)
+        {
+            ColumnDefinition[] cd = new ColumnDefinition[column];
+            for (int i = 0; i < column; i++)
+            {
+                //ColumnDefinition c1 = new ColumnDefinition();
+                cd[i] = new ColumnDefinition();
+                cd[i].Width = new GridLength(1, GridUnitType.Star);
+                gridContainer.ColumnDefinitions.Add(c[i]);
+            }
+            r = new RowDefinition[count[0]];
+            for (int i = 0; i < count[0]; i++)
+            {
+                r[i] = new RowDefinition();
+                r[i].Height = new GridLength(1, GridUnitType.Star);
+                gridContainer.RowDefinitions.Add(r[i]);
+            }
+
+            return grid;
+            
+        }
+        */
+        #region rectangleCardBorderBrush
+        public static readonly DependencyProperty rectangleCardBorderBrushDependencyProperty = DependencyProperty.Register("rectangleCardBorderBrush",
             typeof(string),
             typeof(UC_rectangleCard),
             new PropertyMetadata("DEFAULT"));
@@ -259,8 +367,6 @@ public string rectangleCardPriceOffer
 }
 #endregion
 */
-
-
 
     }
 }

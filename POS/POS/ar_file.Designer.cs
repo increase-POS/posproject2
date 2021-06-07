@@ -1897,6 +1897,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لا يمكن الحذف بسبب تأكيد العملية.
+        /// </summary>
+        internal static string trPopCanNotDeleteRequest {
+            get {
+                return ResourceManager.GetString("trPopCanNotDeleteRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تم تأكيد العملية.
         /// </summary>
         internal static string trPopConfirm {
@@ -1929,6 +1938,15 @@ namespace POS {
         internal static string trPopInActive {
             get {
                 return ResourceManager.GetString("trPopInActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يوجد رصيد كافي.
+        /// </summary>
+        internal static string trPopNotEnoughBalance {
+            get {
+                return ResourceManager.GetString("trPopNotEnoughBalance", resourceCulture);
             }
         }
         

@@ -122,9 +122,9 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader" SelectionChanged="Dg_Invoice_SelectionChanged"    >
                     <DataGrid.Columns>
-                        <DataGridTextColumn  Header="Bill Number" Binding="{Binding Path=invNumber}"/>
-                        <DataGridTextColumn  Header="items count" Binding="{Binding Path=itemsCount}"/>
-                        <DataGridTextColumn  Header="Total" Binding="{Binding Path=totalNet}"/>
+                        <DataGridTextColumn Width="*" Header="Bill Number" Binding="{Binding Path=invNumber}"/>
+                        <DataGridTextColumn Width="*" Header="items count" Binding="{Binding Path=itemsCount}"/>
+                        <DataGridTextColumn Width="*" Header="Total" Binding="{Binding Path=totalNet}"/>
                     </DataGrid.Columns>
                 </DataGrid>
 

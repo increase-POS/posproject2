@@ -237,7 +237,7 @@ namespace POS.View
         {
             // for pagination onTop Always
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            CreateGridCardContainer();
+            //CreateGridCardContainer();
             catigoriesAndItemsView.ucItem = this;
 
             var window = Window.GetWindow(this);
@@ -1471,8 +1471,8 @@ namespace POS.View
    
     void RefrishItemsCard(IEnumerable<Item> _items)
         {
-            gridItemContainerCard.Children.Clear();
-            catigoriesAndItemsView.gridCatigorieItems = gridItemContainerCard;
+            grid_itemContainerCard.Children.Clear();
+            catigoriesAndItemsView.gridCatigorieItems = grid_itemContainerCard;
             catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
         }
         #endregion
@@ -1684,7 +1684,7 @@ namespace POS.View
 
         #endregion
         #region Grid Definition
-
+        /*
         ColumnDefinition[] c;
         RowDefinition[] r;
         Grid gridItemContainerCard = new Grid();
@@ -1715,6 +1715,7 @@ namespace POS.View
             grid_itemContainerCard.Children.Clear();
             grid_itemContainerCard.Children.Add(gridItemContainerCard);
         }
+        */
         #endregion
         #region Toggle Button Y
         /// <summary>
@@ -1835,9 +1836,9 @@ namespace POS.View
             {
                 pageIndex = 1;
             }
-            else if (((itemsQuery.Count() - 1) / count[2]) + 1 < int.Parse(tb_pageNumberSearch.Text))
+            else if (((itemsQuery.Count() - 1) / 9) + 1 < int.Parse(tb_pageNumberSearch.Text))
             {
-                pageIndex = ((itemsQuery.Count() - 1) / count[2]) + 1;
+                pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
             }
             else
             {

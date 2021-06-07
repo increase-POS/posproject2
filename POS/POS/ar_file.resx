@@ -1044,4 +1044,10 @@
   <data name="trErrorEmptyDeservedDate" xml:space="preserve">
     <value>تاريخ الاستحقاق لا يمكن أن يكون فارغاً</value>
   </data>
+  <data name="trPopCanNotDeleteRequest" xml:space="preserve">
+    <value>لا يمكن الحذف بسبب تأكيد العملية</value>
+  </data>
+  <data name="trPopNotEnoughBalance" xml:space="preserve">
+    <value>لا يوجد رصيد كافي</value>
+  </data>
 </root>

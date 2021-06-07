@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:POS.controlTemplate"
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-        Height="110" Width="220" Loaded="UserControl_Loaded">
+                 d:DesignHeight="110" d:DesignWidth="220" Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <Storyboard x:Key="Storyboard1">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="rectangle">
@@ -24,43 +24,23 @@
         </EventTrigger>
 
     </UserControl.Triggers>
-    <Grid x:Name="grid_main" ForceCursor="true" Cursor="Hand">
+    <Grid x:Name="grid_main" ForceCursor="true" Cursor="Hand" Margin="5">
         <Border  CornerRadius="10" BorderBrush="{Binding rectangleCardBorderBrush }" 
-             BorderThickness="1.2"
+             BorderThickness="1.2" x:Name="brd_main"
                     Background="White">
-            <Grid Height="108"  x:Name="grid_container">
+            <!--<Grid    x:Name="grid_container" Height="{Binding Path=ActualHeight, ElementName=grid_main}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1.2*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions >
-                    <RowDefinition Height="10"/>
-                    <RowDefinition Height="32"/>
-                    <RowDefinition Height="26"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="16*"/>
+                    <RowDefinition Height="13*"/>
+                    <RowDefinition Height="20*"/>
                 </Grid.RowDefinitions>
-                <!--Visibility="{Binding rectangleCardPriceOffer}"-->
-                <Grid x:Name="grid_offer" Grid.ColumnSpan="2" Grid.RowSpan="4"  Height="110" Visibility="Collapsed" FlowDirection="RightToLeft">
-                    <Grid Margin="-22,8,0,0" 
-                    Height="16" Width="86" RenderTransformOrigin="0.5,0.5" 
-                      VerticalAlignment="Top" HorizontalAlignment="Left" >
-                        <Grid.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform/>
-                                <RotateTransform Angle="-45"/>
-                                <TranslateTransform/>
-                            </TransformGroup>
-                        </Grid.RenderTransform>
-                        <Rectangle Fill="#D20707" />
-                        <TextBlock  Margin="0"
-                                    FontWeight="Bold"
-                    Text="Offer" Foreground="#FFFD00"
-              HorizontalAlignment="Center" VerticalAlignment="Center"
-              FontSize="10"/>
-                    </Grid>
-                </Grid>
-            </Grid>
+             
+            </Grid>-->
         </Border>
         <Rectangle x:Name="rectangle" Grid.RowSpan="2" 
                        Fill="#99F0F8FF" Opacity="0" 

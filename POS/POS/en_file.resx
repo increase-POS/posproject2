@@ -1065,4 +1065,10 @@
   <data name="trErrorEmptyDeservedDate" xml:space="preserve">
     <value>Deserved date can not be empty</value>
   </data>
+  <data name="trPopCanNotDeleteRequest" xml:space="preserve">
+    <value>Can not delete because the operation is confirmed</value>
+  </data>
+  <data name="trPopNotEnoughBalance" xml:space="preserve">
+    <value>There is not enough balance</value>
+  </data>
 </root>

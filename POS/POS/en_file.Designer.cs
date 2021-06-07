@@ -1951,6 +1951,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can not delete because the operation is confirmed.
+        /// </summary>
+        internal static string trPopCanNotDeleteRequest {
+            get {
+                return ResourceManager.GetString("trPopCanNotDeleteRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation confirmed.
         /// </summary>
         internal static string trPopConfirm {
@@ -1983,6 +1992,15 @@ namespace POS {
         internal static string trPopInActive {
             get {
                 return ResourceManager.GetString("trPopInActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is not enough balance.
+        /// </summary>
+        internal static string trPopNotEnoughBalance {
+            get {
+                return ResourceManager.GetString("trPopNotEnoughBalance", resourceCulture);
             }
         }
         

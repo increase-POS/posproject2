@@ -111,9 +111,9 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Users/GetUserByID");
+                request.RequestUri = new Uri(Global.APIUri + "Pos/GetPosByID?posId=" + posId);
                 request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("posId", posId.ToString());
+                //request.Headers.Add("posId", posId.ToString());
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var response = await client.SendAsync(request);

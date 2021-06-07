@@ -227,7 +227,6 @@ namespace POS.Classes
             }
         }
         */
-
        static   public  int[] categoriesRowColumnCount(int rowCount , int columnCount )
         {
             //MainWindow.ucControlViewSectionWidth
