@@ -46,6 +46,11 @@ namespace POS.Classes
         public string agentName { get; set; }
         public string usersName { get; set; }
         public string posName { get; set; }
+        public string pos2Name { get; set; }
+        public Nullable<int> pos2Id { get; set; }
+        public string posCreatorName { get; set; }
+        public int cashTrans2Id { get; set; }
+
         public async Task<List<CashTransfer>> GetCashTransferAsync(string type, string side)
         {
             List<CashTransfer> cashtransfer = null;
