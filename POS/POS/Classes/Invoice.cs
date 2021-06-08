@@ -30,7 +30,6 @@ namespace POS.Classes
         public string notes { get; set; }
         public Nullable<decimal> price { get; set; }
         public Nullable<int> itemUnitId { get; set; }
-        public string unitName { get; set; }
     }
     public class Invoice
     {
@@ -57,7 +56,7 @@ namespace POS.Classes
         public Nullable<System.DateTime> vendorInvDate { get; set; }
         public Nullable<int> branchId { get; set; }
         public Nullable<int> itemsCount { get; set; }
-        
+
         //*************************************************
         //------------------------------------------------------
 

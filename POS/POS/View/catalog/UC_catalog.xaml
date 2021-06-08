@@ -10,15 +10,17 @@
              Loaded="UserControl_Loaded">
     <Grid  x:Name="grid_ucCatalog">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="110"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid Margin="0,7,0,0" >
+        <ScrollViewer VerticalScrollBarVisibility="Auto"  Margin="0"
+                                          ScrollViewer.CanContentScroll="True">
+            <Grid Margin="7,7,0,0" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="95"/>
-                <RowDefinition Height="95"/>
-                <RowDefinition Height="95"/>
-                <RowDefinition Height="95"/>
+                <RowDefinition Height="87"/>
+                <RowDefinition Height="87"/>
+                <RowDefinition Height="87"/>
+                <RowDefinition Height="87"/>
             </Grid.RowDefinitions>
             <Button x:Name="btn_categories" Click="Btn_categorie_Click" Style="{StaticResource SmallButton}"   Grid.Row="0" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5"
@@ -174,7 +176,7 @@
 	c0,30.1,0,59.3,0,88.5c0,12.8-0.1,25.7,0,38.5c0,5.2-1.7,8.4-6.8,10.5c-13.6,5.5-27.8,8.2-42.3,10.2c-26.4,3.7-52.9,5.6-79.5,4.9
 	c-22.6-0.6-45.2-3.3-67-9.1c-10.7-2.8-21-7.9-31-12.9c-4.4-2.2-8.2-6.4-8.4-12.2C77,258.5,77.4,257.5,77.8,256z" Click="Btn_units_Click" />
         </Grid>
-
+        </ScrollViewer>
         <Grid Grid.Column="1" x:Name="grid_main"/>
     </Grid>
 </UserControl>

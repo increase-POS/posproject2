@@ -615,7 +615,7 @@
                                      TabIndex="9"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      
-                                     Height="40"   Margin="10,5,5,5" 
+                                     Height="40"   Margin="5,5,5,5" 
                                       LostFocus="Cb_job_LostFocus"
                                       TextBoxBase.TextChanged="ComboBox_TextChanged" PreviewTextInput="Cb_job_PreviewTextInput" >
                                     <ComboBox.ToolTip>
@@ -636,7 +636,7 @@
                                     </Path.ToolTip>
                                 </Path>
 
-                                <Grid Grid.Row="1" Grid.Column="1"  Margin="5,0,0,0" >
+                                <Grid Grid.Row="1" Grid.Column="1"  Margin="0,0,0,0" >
 
 
                                     <TextBox x:Name="tb_workHours"  Text="{Binding workHours, Mode=OneWay}"
@@ -648,7 +648,7 @@
                                              BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
                                           MaxLength="2"
                                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                             Height="40"   Margin="5,5,5,5"  >
+                                             Height="40"   Margin="0,5,5,5"  >
                                         <TextBox.ToolTip>
                                             <ToolTip x:Name="tt_workHours" Content="Work Hours"
                                               Placement="left" 

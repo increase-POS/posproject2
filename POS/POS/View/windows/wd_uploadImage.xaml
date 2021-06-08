@@ -57,6 +57,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -76,10 +77,13 @@
                           VerticalAlignment="Bottom"/>
 
                 <Button Content="Delete" Grid.Row="5" Grid.Column="0"
-                       Margin="10,2.5" x:Name="btn_delete" Click="Btn_delete_Click"
-                          Background="#E65B65" BorderBrush="{x:Null}"  />
-                <Button Content="Save" Grid.Row="5" Grid.Column="1"
-                       Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"
+                       Margin="5" x:Name="btn_delete" Click="Btn_delete_Click"
+                          Background="#0086D7" BorderBrush="{x:Null}"  />
+                <Button Content="Scanner" Grid.Row="5" Grid.Column="1"
+                       Margin="5" x:Name="btn_scanner" Click="Btn_scanner_Click"
+                          Background="#0086D7" BorderBrush="{x:Null}"  />
+                <Button Content="Save" Grid.Row="5" Grid.Column="2"
+                       Margin="5" x:Name="btn_save" Click="Btn_save_Click"
                           Background="#0086D7" BorderBrush="{x:Null}"  />
             </Grid>
 

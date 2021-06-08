@@ -1432,12 +1432,400 @@ E:\GitHub\posproject2\POS\POS\bin\Debug\System.Reactive.dll
 E:\GitHub\posproject2\POS\POS\bin\Debug\WPFTabTip.dll
 E:\GitHub\posproject2\POS\POS\bin\Debug\System.Reactive.xml
 E:\GitHub\posproject2\POS\POS\bin\Debug\WPFTabTip.xml
-D:\myproj\posproject2\POS\POS\bin\Debug\FontAwesome.WPF.dll
-D:\myproj\posproject2\POS\POS\bin\Debug\System.Reactive.dll
-D:\myproj\posproject2\POS\POS\bin\Debug\WPFTabTip.dll
-D:\myproj\posproject2\POS\POS\bin\Debug\FontAwesome.WPF.xml
-D:\myproj\posproject2\POS\POS\bin\Debug\System.Reactive.xml
-D:\myproj\posproject2\POS\POS\bin\Debug\WPFTabTip.xml
-D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.g.cs
-D:\myproj\posproject2\POS\POS\obj\Debug\GeneratedInternalTypeHelper.g.cs
-D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.baml
+E:\GitHub\posproject2\POS\POS\bin\Debug\Interop.WIA.dll
+F:\increase\sales\POS\POS\bin\Debug\SqlServerTypes\x64\msvcr120.dll
+F:\increase\sales\POS\POS\bin\Debug\SqlServerTypes\x64\SqlServerSpatial140.dll
+F:\increase\sales\POS\POS\bin\Debug\SqlServerTypes\x86\msvcr120.dll
+F:\increase\sales\POS\POS\bin\Debug\SqlServerTypes\x86\SqlServerSpatial140.dll
+F:\increase\sales\POS\POS\bin\Debug\Reports\VendorReport.rdlc
+F:\increase\sales\POS\POS\bin\Debug\POS.exe.config
+F:\increase\sales\POS\POS\bin\Debug\POS.exe
+F:\increase\sales\POS\POS\bin\Debug\POS.pdb
+F:\increase\sales\POS\POS\bin\Debug\FontAwesome.WPF.dll
+F:\increase\sales\POS\POS\bin\Debug\Interop.WIA.dll
+F:\increase\sales\POS\POS\bin\Debug\LiveCharts.dll
+F:\increase\sales\POS\POS\bin\Debug\LiveCharts.Wpf.dll
+F:\increase\sales\POS\POS\bin\Debug\MaterialDesignColors.dll
+F:\increase\sales\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.dll
+F:\increase\sales\POS\POS\bin\Debug\Microsoft.ReportViewer.Common.dll
+F:\increase\sales\POS\POS\bin\Debug\Microsoft.ReportViewer.DataVisualization.dll
+F:\increase\sales\POS\POS\bin\Debug\Microsoft.ReportViewer.Design.dll
+F:\increase\sales\POS\POS\bin\Debug\Microsoft.ReportViewer.ProcessingObjectModel.dll
+F:\increase\sales\POS\POS\bin\Debug\Microsoft.ReportViewer.WinForms.dll
+F:\increase\sales\POS\POS\bin\Debug\Microsoft.SqlServer.Types.dll
+F:\increase\sales\POS\POS\bin\Debug\netoaster.dll
+F:\increase\sales\POS\POS\bin\Debug\Newtonsoft.Json.dll
+F:\increase\sales\POS\POS\bin\Debug\System.Drawing.Common.dll
+F:\increase\sales\POS\POS\bin\Debug\System.Reactive.dll
+F:\increase\sales\POS\POS\bin\Debug\Tulpep.NotificationWindow.dll
+F:\increase\sales\POS\POS\bin\Debug\WPFTabTip.dll
+F:\increase\sales\POS\POS\bin\Debug\Zen.Barcode.Core.dll
+F:\increase\sales\POS\POS\bin\Debug\EnvDTE.dll
+F:\increase\sales\POS\POS\bin\Debug\Microsoft.VisualStudio.Shell.Interop.dll
+F:\increase\sales\POS\POS\bin\Debug\Microsoft.VisualStudio.Shell.Interop.8.0.dll
+F:\increase\sales\POS\POS\bin\Debug\stdole.dll
+F:\increase\sales\POS\POS\bin\Debug\Microsoft.VisualStudio.OLE.Interop.dll
+F:\increase\sales\POS\POS\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.dll
+F:\increase\sales\POS\POS\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.8.0.dll
+F:\increase\sales\POS\POS\bin\Debug\Microsoft.MSXML.dll
+F:\increase\sales\POS\POS\bin\Debug\netoaster.pdb
+F:\increase\sales\POS\POS\bin\Debug\FontAwesome.WPF.xml
+F:\increase\sales\POS\POS\bin\Debug\LiveCharts.pdb
+F:\increase\sales\POS\POS\bin\Debug\LiveCharts.xml
+F:\increase\sales\POS\POS\bin\Debug\LiveCharts.Wpf.pdb
+F:\increase\sales\POS\POS\bin\Debug\LiveCharts.Wpf.xml
+F:\increase\sales\POS\POS\bin\Debug\MaterialDesignColors.pdb
+F:\increase\sales\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.pdb
+F:\increase\sales\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.xml
+F:\increase\sales\POS\POS\bin\Debug\Newtonsoft.Json.xml
+F:\increase\sales\POS\POS\bin\Debug\System.Reactive.xml
+F:\increase\sales\POS\POS\bin\Debug\WPFTabTip.xml
+F:\increase\sales\POS\POS\bin\Debug\de\Microsoft.ReportViewer.Common.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\es\Microsoft.ReportViewer.Common.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\fr\Microsoft.ReportViewer.Common.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\it\Microsoft.ReportViewer.Common.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\ja\Microsoft.ReportViewer.Common.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\ko\Microsoft.ReportViewer.Common.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\pt\Microsoft.ReportViewer.Common.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\ru\Microsoft.ReportViewer.Common.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\zh-CHS\Microsoft.ReportViewer.Common.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\zh-CHT\Microsoft.ReportViewer.Common.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\de\Microsoft.ReportViewer.DataVisualization.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\es\Microsoft.ReportViewer.DataVisualization.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\fr\Microsoft.ReportViewer.DataVisualization.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\it\Microsoft.ReportViewer.DataVisualization.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\ja\Microsoft.ReportViewer.DataVisualization.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\ko\Microsoft.ReportViewer.DataVisualization.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\pt\Microsoft.ReportViewer.DataVisualization.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\ru\Microsoft.ReportViewer.DataVisualization.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\zh-CHS\Microsoft.ReportViewer.DataVisualization.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\zh-CHT\Microsoft.ReportViewer.DataVisualization.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\de\Microsoft.ReportViewer.Design.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\es\Microsoft.ReportViewer.Design.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\fr\Microsoft.ReportViewer.Design.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\it\Microsoft.ReportViewer.Design.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\ja\Microsoft.ReportViewer.Design.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\ko\Microsoft.ReportViewer.Design.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\pt\Microsoft.ReportViewer.Design.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\ru\Microsoft.ReportViewer.Design.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\zh-CHS\Microsoft.ReportViewer.Design.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\zh-CHT\Microsoft.ReportViewer.Design.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\de\Microsoft.ReportViewer.WinForms.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\es\Microsoft.ReportViewer.WinForms.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\fr\Microsoft.ReportViewer.WinForms.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\it\Microsoft.ReportViewer.WinForms.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\ja\Microsoft.ReportViewer.WinForms.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\ko\Microsoft.ReportViewer.WinForms.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\pt\Microsoft.ReportViewer.WinForms.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\ru\Microsoft.ReportViewer.WinForms.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\zh-CHS\Microsoft.ReportViewer.WinForms.resources.dll
+F:\increase\sales\POS\POS\bin\Debug\zh-CHT\Microsoft.ReportViewer.WinForms.resources.dll
+F:\increase\sales\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+F:\increase\sales\POS\POS\obj\Debug\controlTemplate\UC_rectangleCard.g.cs
+F:\increase\sales\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice_ar.g.cs
+F:\increase\sales\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice.g.cs
+F:\increase\sales\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.g.cs
+F:\increase\sales\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice_ar.g.cs
+F:\increase\sales\POS\POS\obj\Debug\controlTemplate\UC_squareCard.g.cs
+F:\increase\sales\POS\POS\obj\Debug\MainWindow.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\accounts\uc_accounts.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\accounts\uc_banksAccounts.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\accounts\uc_paymentsAccounts.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\accounts\uc_posAccounts.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\accounts\uc_receivedAccounts.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_itemsDestroy.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_itemsExport.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_itemsImport.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_itemsStorage.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_receiptOfPurchaseInvoice.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_bank.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_branch.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\catalog\UC_catalog.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\catalog\uc_categorie.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\sales\uc_coupon.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_customer.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\home\uc_home.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\catalog\UC_item.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_locations.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\sales\uc_offer.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\sales\uc_packageOfItems.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\purchases\uc_payInvoice.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\catalog\UC_porperty.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_pos.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\purchases\uc_purchases.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\sales\uc_receiptInvoice.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\sales\uc_sales.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_section.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_sectionData.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_storage.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_store.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\catalog\UC_unit.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_vendors.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_users.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_invoice.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_itemsList.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_locationsList.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_updateVendor.g.cs
+F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_uploadImage.g.cs
+F:\increase\sales\POS\POS\obj\Debug\App.g.cs
+F:\increase\sales\POS\POS\obj\Debug\POS_Content.g.cs
+F:\increase\sales\POS\POS\obj\Debug\GeneratedInternalTypeHelper.g.cs
+F:\increase\sales\POS\POS\obj\Debug\POS_MarkupCompile.cache
+F:\increase\sales\POS\POS\obj\Debug\POS_MarkupCompile.lref
+F:\increase\sales\POS\POS\obj\Debug\App.baml
+F:\increase\sales\POS\POS\obj\Debug\controlTemplate\UC_rectangleCard.baml
+F:\increase\sales\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice_ar.baml
+F:\increase\sales\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice.baml
+F:\increase\sales\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.baml
+F:\increase\sales\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice_ar.baml
+F:\increase\sales\POS\POS\obj\Debug\controlTemplate\UC_squareCard.baml
+F:\increase\sales\POS\POS\obj\Debug\MainWindow.baml
+F:\increase\sales\POS\POS\obj\Debug\View\accounts\uc_accounts.baml
+F:\increase\sales\POS\POS\obj\Debug\View\accounts\uc_banksAccounts.baml
+F:\increase\sales\POS\POS\obj\Debug\View\accounts\uc_paymentsAccounts.baml
+F:\increase\sales\POS\POS\obj\Debug\View\accounts\uc_posAccounts.baml
+F:\increase\sales\POS\POS\obj\Debug\View\accounts\uc_receivedAccounts.baml
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_itemsDestroy.baml
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_itemsExport.baml
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_itemsImport.baml
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_itemsStorage.baml
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_receiptOfPurchaseInvoice.baml
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_bank.baml
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_branch.baml
+F:\increase\sales\POS\POS\obj\Debug\View\catalog\UC_catalog.baml
+F:\increase\sales\POS\POS\obj\Debug\View\catalog\uc_categorie.baml
+F:\increase\sales\POS\POS\obj\Debug\View\sales\uc_coupon.baml
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_customer.baml
+F:\increase\sales\POS\POS\obj\Debug\View\home\uc_home.baml
+F:\increase\sales\POS\POS\obj\Debug\View\catalog\UC_item.baml
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_locations.baml
+F:\increase\sales\POS\POS\obj\Debug\View\sales\uc_offer.baml
+F:\increase\sales\POS\POS\obj\Debug\View\sales\uc_packageOfItems.baml
+F:\increase\sales\POS\POS\obj\Debug\View\purchases\uc_payInvoice.baml
+F:\increase\sales\POS\POS\obj\Debug\View\catalog\UC_porperty.baml
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_pos.baml
+F:\increase\sales\POS\POS\obj\Debug\View\purchases\uc_purchases.baml
+F:\increase\sales\POS\POS\obj\Debug\View\sales\uc_receiptInvoice.baml
+F:\increase\sales\POS\POS\obj\Debug\View\sales\uc_sales.baml
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_section.baml
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_sectionData.baml
+F:\increase\sales\POS\POS\obj\Debug\View\storage\uc_storage.baml
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_store.baml
+F:\increase\sales\POS\POS\obj\Debug\View\catalog\UC_unit.baml
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_vendors.baml
+F:\increase\sales\POS\POS\obj\Debug\View\sectionData\UC_users.baml
+F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_invoice.baml
+F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_itemsList.baml
+F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.baml
+F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_locationsList.baml
+F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_updateVendor.baml
+F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_uploadImage.baml
+F:\increase\sales\POS\POS\obj\Debug\POS.g.resources
+F:\increase\sales\POS\POS\obj\Debug\POS.ar_file.resources
+F:\increase\sales\POS\POS\obj\Debug\POS.en_file.resources
+F:\increase\sales\POS\POS\obj\Debug\POS.Properties.Resources.resources
+F:\increase\sales\POS\POS\obj\Debug\POS.csproj.GenerateResource.cache
+F:\increase\sales\POS\POS\obj\Debug\POS.csproj.CoreCompileInputs.cache
+F:\increase\sales\POS\POS\obj\Debug\POS.csproj.CopyComplete
+F:\increase\sales\POS\POS\obj\Debug\POS.exe
+F:\increase\sales\POS\POS\obj\Debug\POS.pdb
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\SqlServerTypes\x64\msvcr120.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\SqlServerTypes\x64\SqlServerSpatial140.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\SqlServerTypes\x86\msvcr120.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\SqlServerTypes\x86\SqlServerSpatial140.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Reports\VendorReport.rdlc
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\POS.exe.config
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\POS.exe
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\POS.pdb
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\FontAwesome.WPF.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Interop.WIA.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\LiveCharts.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\LiveCharts.Wpf.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\MaterialDesignColors.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Microsoft.ReportViewer.Common.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Microsoft.ReportViewer.DataVisualization.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Microsoft.ReportViewer.Design.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Microsoft.ReportViewer.ProcessingObjectModel.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Microsoft.ReportViewer.WinForms.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Microsoft.SqlServer.Types.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\netoaster.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Newtonsoft.Json.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\System.Drawing.Common.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\System.Reactive.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Tulpep.NotificationWindow.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\WPFTabTip.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Zen.Barcode.Core.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\EnvDTE.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Microsoft.VisualStudio.Shell.Interop.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Microsoft.VisualStudio.Shell.Interop.8.0.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\stdole.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Microsoft.VisualStudio.OLE.Interop.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.8.0.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Microsoft.MSXML.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\netoaster.pdb
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\FontAwesome.WPF.xml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\LiveCharts.pdb
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\LiveCharts.xml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\LiveCharts.Wpf.pdb
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\LiveCharts.Wpf.xml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\MaterialDesignColors.pdb
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.pdb
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\MaterialDesignThemes.Wpf.xml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\Newtonsoft.Json.xml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\System.Reactive.xml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\WPFTabTip.xml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\de\Microsoft.ReportViewer.Common.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\es\Microsoft.ReportViewer.Common.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\fr\Microsoft.ReportViewer.Common.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\it\Microsoft.ReportViewer.Common.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\ja\Microsoft.ReportViewer.Common.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\ko\Microsoft.ReportViewer.Common.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\pt\Microsoft.ReportViewer.Common.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\ru\Microsoft.ReportViewer.Common.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\zh-CHS\Microsoft.ReportViewer.Common.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\zh-CHT\Microsoft.ReportViewer.Common.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\de\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\es\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\fr\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\it\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\ja\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\ko\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\pt\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\ru\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\zh-CHS\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\zh-CHT\Microsoft.ReportViewer.DataVisualization.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\de\Microsoft.ReportViewer.Design.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\es\Microsoft.ReportViewer.Design.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\fr\Microsoft.ReportViewer.Design.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\it\Microsoft.ReportViewer.Design.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\ja\Microsoft.ReportViewer.Design.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\ko\Microsoft.ReportViewer.Design.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\pt\Microsoft.ReportViewer.Design.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\ru\Microsoft.ReportViewer.Design.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\zh-CHS\Microsoft.ReportViewer.Design.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\zh-CHT\Microsoft.ReportViewer.Design.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\de\Microsoft.ReportViewer.WinForms.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\es\Microsoft.ReportViewer.WinForms.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\fr\Microsoft.ReportViewer.WinForms.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\it\Microsoft.ReportViewer.WinForms.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\ja\Microsoft.ReportViewer.WinForms.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\ko\Microsoft.ReportViewer.WinForms.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\pt\Microsoft.ReportViewer.WinForms.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\ru\Microsoft.ReportViewer.WinForms.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\zh-CHS\Microsoft.ReportViewer.WinForms.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\bin\Debug\zh-CHT\Microsoft.ReportViewer.WinForms.resources.dll
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\controlTemplate\UC_rectangleCard.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice_ar.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice_ar.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\controlTemplate\UC_squareCard.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\MainWindow.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\accounts\uc_accounts.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\accounts\uc_banksAccounts.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\accounts\uc_paymentsAccounts.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\accounts\uc_posAccounts.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\accounts\uc_receivedAccounts.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_itemsDestroy.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_itemsExport.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_itemsImport.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_itemsStorage.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_receiptOfPurchaseInvoice.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_bank.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_branch.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\catalog\UC_catalog.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\catalog\uc_categorie.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sales\uc_coupon.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_customer.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\home\uc_home.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\catalog\UC_item.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_locations.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sales\uc_offer.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sales\uc_packageOfItems.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\purchases\uc_payInvoice.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\catalog\UC_porperty.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_pos.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\purchases\uc_purchases.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sales\uc_receiptInvoice.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sales\uc_sales.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_section.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_sectionData.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_storage.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_store.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\catalog\UC_unit.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_vendors.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_users.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\windows\wd_invoice.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\windows\wd_itemsList.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\windows\wd_locationsList.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\windows\wd_updateVendor.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\windows\wd_uploadImage.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\App.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS_Content.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS_MarkupCompile.cache
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS_MarkupCompile.lref
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\App.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\controlTemplate\UC_rectangleCard.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice_ar.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice_ar.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\controlTemplate\UC_squareCard.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\MainWindow.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\accounts\uc_accounts.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\accounts\uc_banksAccounts.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\accounts\uc_paymentsAccounts.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\accounts\uc_posAccounts.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\accounts\uc_receivedAccounts.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_itemsDestroy.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_itemsExport.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_itemsImport.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_itemsStorage.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_receiptOfPurchaseInvoice.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_bank.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_branch.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\catalog\UC_catalog.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\catalog\uc_categorie.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sales\uc_coupon.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_customer.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\home\uc_home.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\catalog\UC_item.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_locations.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sales\uc_offer.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sales\uc_packageOfItems.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\purchases\uc_payInvoice.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\catalog\UC_porperty.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_pos.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\purchases\uc_purchases.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sales\uc_receiptInvoice.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sales\uc_sales.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_section.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_sectionData.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\storage\uc_storage.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_store.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\catalog\UC_unit.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_vendors.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\sectionData\UC_users.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\windows\wd_invoice.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\windows\wd_itemsList.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\windows\wd_locationsList.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\windows\wd_updateVendor.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\View\windows\wd_uploadImage.baml
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS.g.resources
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS.ar_file.resources
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS.en_file.resources
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS.Properties.Resources.resources
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS.csproj.GenerateResource.cache
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\RdlCompile.cache
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\RdlCompile.compiled
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS.csproj.CoreCompileInputs.cache
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS.csproj.CopyComplete
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS.exe
+D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS.pdb

@@ -91,6 +91,7 @@ namespace POS.View
 
         //to handle barcode characters
         static int _SelectedBranch = -1;
+        static int _SelectedVendor = -1;
 
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
         int? parentCategorieSelctedValue;
@@ -106,11 +107,11 @@ namespace POS.View
         static private decimal _Sum = 0;
         static private int _OrginalCount;
         static private string _InvoiceType = "pd";
+        // for report
 
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
-
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
@@ -202,10 +203,6 @@ namespace POS.View
             CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
             ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
             #endregion
-
-
-            SectionData.defaultDatePickerStyle(dp_desrvedDate);
-            SectionData.defaultDatePickerStyle(dp_invoiceDate);
         }
         
         private void configureDiscountType()
@@ -300,18 +297,18 @@ namespace POS.View
         
         private void Btn_updateVendor_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
+           // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
 
-             
-            Window.GetWindow(this).Opacity = 0.2;
+            //if ((((this.Parent as Grid).Parent as Grid).Parent as UserControl) != null)
+            //((((this.Parent as Grid).Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 0.2;
             wd_updateVendor w = new wd_updateVendor();
             //// pass agent id to update windows
             w.agent.agentId = 22;
-             
+            //w.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#00178DD2"));
             w.ShowDialog();
 
 
-            Window.GetWindow(this).Opacity = 1;
+           // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
         }
         #region Categor and Item
         #region Refrish Y
@@ -763,12 +760,7 @@ namespace POS.View
 
             Branch store = new Branch();
             if (cb_vendor.SelectedIndex != -1)
-                invoice.branchId = (int)cb_vendor.SelectedValue;
-
-            //if(!tb_paid.Text.Equals(""))
-            //    invoice.paid = decimal.Parse(tb_paid.Text);
-            //if(!tb_deserved.Text.Equals(""))
-            //    invoice.deserved = decimal.Parse(tb_deserved.Text);
+                invoice.branchId = (int)cb_branch.SelectedValue;
 
             invoice.deservedDate = dp_desrvedDate.SelectedDate;
             invoice.vendorInvNum = tb_invoiceNumber.Text;
@@ -777,11 +769,14 @@ namespace POS.View
             invoice.createUserId = MainWindow.userID;
             invoice.updateUserId = MainWindow.userID;
 
-            // build invoice NUM like 1021_PI_sequence
+            // build invoice NUM like storCode_PI_sequence exp: 123_PI_2
             if (invoice.invNumber == null)
             {
                 store = branches.ToList().Find(b => b.branchId == invoice.branchId);
-                string storeCode = store.code;
+                string storeCode = "";
+                if (store != null)
+                     storeCode = store.code;
+
                 string invoiceCode = "PI";
                 int sequence = await invoiceModel.GetLastNumOfInv("PI");
                 sequence++;
@@ -823,7 +818,7 @@ namespace POS.View
 
             if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
             {
-                if (_InvoiceType == "pb")
+                if (_InvoiceType == "pbd")
                     await addInvoice("pb"); // bp means purchase bounce
                 else//p  purchase invoice
                     await addInvoice("p");
@@ -838,10 +833,10 @@ namespace POS.View
 
            if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
            {
-                if (_InvoiceType == "pb")
-                    await addInvoice("pbd"); // bpd means purchase bounce draft
-                else//pd draft purchase 
-                    await addInvoice("pd");
+               // if (_InvoiceType == "pb")
+               await addInvoice(_InvoiceType); // bpd means purchase bounce draft
+               // else//pd draft purchase 
+                   // await addInvoice("pd");
                             
            }
            
@@ -871,22 +866,28 @@ namespace POS.View
         #endregion
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
-            // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
-            Window.GetWindow(this).Opacity = 0.2;
+           // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
-
             // purchase drafts and purchase bounce drafts
            // string[] typeArr = { "pd","pdbd" };
-            w.invoiceType = "pd";  
+            w.invoiceType = "pd ,pbd";  
+  
  
             w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
             if (w.ShowDialog() == true)
-            {
-                invoice = w.invoice;
+            {               
                 if (w.invoice != null)
                 {
+                    invoice = w.invoice;
                     this.DataContext = invoice;
+
+                    _InvoiceType = invoice.invType;
+                    // set title to bill
+                    if(_InvoiceType =="pd")
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                    if (_InvoiceType =="pbd")
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
 
                     fillInvoiceInputs(invoice);
                    
@@ -895,10 +896,10 @@ namespace POS.View
 
                     // build invoice details grid
                     buildInvoiceDetails(invoiceItems);
+                    inputEditable();
                 }
             }
           //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
-          Window.GetWindow(this).Opacity =1;
         }
         private  void  fillInvoiceInputs(Invoice invoice)
         {
@@ -919,19 +920,19 @@ namespace POS.View
         }
         private async void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
+           // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
 
             
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
+
             // purchase invoices
-            //string[] typeArr = { "p" };
-            w.invoiceType = "p";
+            w.invoiceType = "p"; // invoice type to view in grid
             if (w.ShowDialog() == true)
             { 
                 if (w.invoice != null)
                 {
-                    _InvoiceType = "pb";
+                    _InvoiceType = "pbd";
                     invoice = w.invoice;
 
                     this.DataContext = invoice;
@@ -944,10 +945,10 @@ namespace POS.View
                     // build invoice details grid
                     buildInvoiceDetails(invoiceItems);
 
-                    inputEditable(_InvoiceType);
+                    inputEditable();
                 }              
             }
-            Window.GetWindow(this).Opacity = 1;
+            // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
         }
         private void buildInvoiceDetails(List<ItemTransfer> invoiceItems)
         {
@@ -975,34 +976,41 @@ namespace POS.View
 
             refrishBillDetails();
         }
-        private void inputEditable(string invoiceType)
+        private void inputEditable()
         {
-            if (_InvoiceType == "pb") // return invoice
+            if (_InvoiceType == "pbd") // return invoice
             {
                 dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
                 dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
-                cb_vendor.IsReadOnly = true;
+                cb_vendor.IsEnabled = false;
                 dp_desrvedDate.IsEnabled = false;
                 dp_invoiceDate.IsEnabled = false;
-                tb_note.IsReadOnly = true;
+                tb_note.IsEnabled = false;
+                tb_barcode.IsEnabled = false;
+                cb_branch.IsEnabled = false;
+                tb_discount.IsEnabled = false;
+                cb_typeDiscount.IsEnabled = false;
             }
             else
             {
                 dg_billDetails.Columns[5].IsReadOnly = false;
                 dg_billDetails.Columns[3].IsReadOnly = false;
-                cb_vendor.IsReadOnly = false;
+                cb_vendor.IsEnabled = true;
                 dp_desrvedDate.IsEnabled = true;
                 dp_invoiceDate.IsEnabled = true;
-                tb_note.IsReadOnly = false;
-
+                tb_note.IsEnabled = true;
+                tb_barcode.IsEnabled = true;
+                cb_branch.IsEnabled = true;
+                tb_discount.IsEnabled = true;
+                cb_typeDiscount.IsEnabled = true;
             }
         }
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
+           //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
             wd_uploadImage w = new wd_uploadImage();
             w.ShowDialog();
-            Window.GetWindow(this).Opacity =1;
+           // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -1037,7 +1045,7 @@ namespace POS.View
         private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-            if (elapsed.TotalMilliseconds > 1000 && cb_branch.SelectedIndex != -1 )
+            if (elapsed.TotalMilliseconds > 100 && cb_branch.SelectedIndex != -1 )
             {
                 _SelectedBranch = (int)cb_branch.SelectedValue;
             }
@@ -1046,7 +1054,18 @@ namespace POS.View
                 cb_branch.SelectedValue = _SelectedBranch;
             }           
         }
-
+        private void Cb_vendor_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+            if (elapsed.TotalMilliseconds > 100 && cb_vendor.SelectedIndex != -1)
+            {
+                _SelectedVendor = (int)cb_vendor.SelectedValue;
+            }
+            else
+            {
+                cb_vendor.SelectedValue = _SelectedVendor;
+            }
+        }
         private  void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             refreshTotalValue();
@@ -1393,51 +1412,61 @@ namespace POS.View
             }
         }
 
+        private void Dp_desrvedDate_KeyDown(object sender, KeyEventArgs e)
+        {
+            HandleKeyPress(sender,e);
+        }
+
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-           
-            string addpath = @"\Reports\InvPurReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-            if(invoice.invoiceId > 0)
-            {
-                invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                rep.ReportPath = reppath;
-                rep.DataSources.Clear();
-                rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", invoiceItems));
-
-                // rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", data));
-                ReportParameter[] paramarr = new ReportParameter[13];
-
-                paramarr[0] = new ReportParameter("Title", "Purshase Invoice");
-                paramarr[12] = new ReportParameter("lang", MainWindow.lang);
-                paramarr[1] = new ReportParameter("invNumber", invoice.invNumber);
-                paramarr[2] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
-                paramarr[3] = new ReportParameter("invDate", reportclass.DateToString(invoice.invDate));
-                paramarr[4] = new ReportParameter("invTime", reportclass.TimeToString(invoice.invTime));
-                paramarr[5] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
-                paramarr[6] = new ReportParameter("total", reportclass.DecTostring(invoice.total));
-                paramarr[7] = new ReportParameter("discountValue", reportclass.DecTostring(invoice.discountValue));
-                paramarr[8] = new ReportParameter("totalNet", reportclass.DecTostring(invoice.totalNet));
-                paramarr[9] = new ReportParameter("paid", reportclass.DecTostring(invoice.paid));
-                paramarr[10] = new ReportParameter("deserved", reportclass.DecTostring(invoice.deserved));
-                paramarr[11] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
-                //  MessageBox.Show(reportclass.DecTostring(invoice.paid) + "des="+ invoice.deserved.ToString());
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
-
-                saveFileDialog.Filter = "PDF|*.pdf;";
-
-                if (saveFileDialog.ShowDialog() == true)
+            try {
+                string addpath = @"\Reports\InvPurReport.rdlc";
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                if (invoice.invoiceId > 0)
                 {
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                    rep.ReportPath = reppath;
+                    rep.DataSources.Clear();
+                    rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", invoiceItems));
 
-                    string filepath = saveFileDialog.FileName;
-                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                    // rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", data));
+                    ReportParameter[] paramarr = new ReportParameter[13];
 
+                    paramarr[0] = new ReportParameter("Title", "Purshase Invoice");
+                    paramarr[12] = new ReportParameter("lang", MainWindow.lang);
+                    paramarr[1] = new ReportParameter("invNumber", invoice.invNumber);
+                    paramarr[2] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
+                    paramarr[3] = new ReportParameter("invDate", reportclass.DateToString(invoice.invDate));
+                    paramarr[4] = new ReportParameter("invTime", reportclass.TimeToString(invoice.invTime));
+                    paramarr[5] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
+                    paramarr[6] = new ReportParameter("total", reportclass.DecTostring(invoice.total));
+                    paramarr[7] = new ReportParameter("discountValue", reportclass.DecTostring(invoice.discountValue));
+                    paramarr[8] = new ReportParameter("totalNet", reportclass.DecTostring(invoice.totalNet));
+                    paramarr[9] = new ReportParameter("paid", reportclass.DecTostring(invoice.paid));
+                    paramarr[10] = new ReportParameter("deserved", reportclass.DecTostring(invoice.deserved));
+                    paramarr[11] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
+                    //  MessageBox.Show(reportclass.DecTostring(invoice.paid) + "des="+ invoice.deserved.ToString());
+
+                    rep.SetParameters(paramarr);
+
+                    rep.Refresh();
+
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToPDF(rep, filepath);
+
+                    }
                 }
+
             }
-           
+            catch { }
+
+            
+
         }
     }
 

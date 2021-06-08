@@ -9,22 +9,21 @@
              Loaded="UserControl_Loaded">
     <Grid x:Name="grid_ucStorage" >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="110"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ScrollViewer  Grid.Row="1"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0"
-                                    FlowDirection="LeftToRight"       ScrollViewer.CanContentScroll="True">
-            <Grid Margin="0,7,0,0" >
+        <ScrollViewer   VerticalScrollBarVisibility="Auto" Margin="0"
+                                       ScrollViewer.CanContentScroll="True">
+            <Grid Margin="7,7,0,0" >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="80"/>
-                    <RowDefinition Height="80"/>
-                    <RowDefinition Height="80"/>
-                    <RowDefinition Height="80"/>
-                    <RowDefinition Height="80"/>
-                    <RowDefinition Height="80"/>
-                    <RowDefinition Height="80"/>
-                    <RowDefinition Height="80"/>
-                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="87"/>
+                    <RowDefinition Height="87"/>
+                    <RowDefinition Height="87"/>
+                    <RowDefinition Height="87"/>
+                    <RowDefinition Height="87"/>
+                    <RowDefinition Height="87"/>
+                    <RowDefinition Height="87"/>
+                    <RowDefinition Height="87"/>
                 </Grid.RowDefinitions>
                 <Button x:Name="btn_locations" Click="Btn_locations_Click" Style="{StaticResource SmallButton}"   Grid.Row="0" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="2.5"

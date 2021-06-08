@@ -1050,4 +1050,10 @@
   <data name="trPopNotEnoughBalance" xml:space="preserve">
     <value>لا يوجد رصيد كافي</value>
   </data>
+  <data name="trDraftBounceBill" xml:space="preserve">
+    <value>مسودة فاتورة مرتجع</value>
+  </data>
+  <data name="trErrorAmountIncreaseToolTip" xml:space="preserve">
+    <value>لا يمكن تجاوز الكمية</value>
+  </data>
 </root>

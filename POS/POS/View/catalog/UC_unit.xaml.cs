@@ -35,6 +35,35 @@ namespace POS.View
         public UC_unit()
         {
             InitializeComponent();
+            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+            {
+                txt_deleteButton.Visibility = Visibility.Visible;
+                txt_addButton.Visibility = Visibility.Visible;
+                txt_updateButton.Visibility = Visibility.Visible;
+                txt_add_Icon.Visibility = Visibility.Visible;
+                txt_update_Icon.Visibility = Visibility.Visible;
+                txt_delete_Icon.Visibility = Visibility.Visible;
+            }
+            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+            {
+                txt_add_Icon.Visibility = Visibility.Collapsed;
+                txt_update_Icon.Visibility = Visibility.Collapsed;
+                txt_delete_Icon.Visibility = Visibility.Collapsed;
+                txt_deleteButton.Visibility = Visibility.Visible;
+                txt_addButton.Visibility = Visibility.Visible;
+                txt_updateButton.Visibility = Visibility.Visible;
+
+            }
+            else
+            {
+                txt_deleteButton.Visibility = Visibility.Collapsed;
+                txt_addButton.Visibility = Visibility.Collapsed;
+                txt_updateButton.Visibility = Visibility.Collapsed;
+                txt_add_Icon.Visibility = Visibility.Visible;
+                txt_update_Icon.Visibility = Visibility.Visible;
+                txt_delete_Icon.Visibility = Visibility.Visible;
+
+            }
         }
 
         private void DG_unit_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -50,12 +79,34 @@ namespace POS.View
             }
             if (unit != null)
             {
-                if (unit.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+                if (unit.canDelete)
+                {
+                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                    txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                }
 
                 else
                 {
-                    if (unit.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
-                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                    if (unit.isActive == 0)
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                        txt_delete_Icon.Kind =
+                         MaterialDesignThemes.Wpf.PackIconKind.Check;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                    }
+                    else
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                        txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                    }
+
                 }
             }
         }
@@ -71,7 +122,7 @@ namespace POS.View
                 ids.Add(unit.unitId);
                 names.Add(unit.name);
             }
-            cb_smallestUnitId.ItemsSource = names;
+            //cb_smallestUnitId.ItemsSource = names;
         }
 
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
@@ -114,12 +165,15 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trUnitNameHint"));
-            tb_isSmallest.Text = MainWindow.resourcemanager.GetString("trIsSmallestHint");
+            //tb_isSmallest.Text = MainWindow.resourcemanager.GetString("trIsSmallestHint");
 
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_smallestUnitId, MainWindow.resourcemanager.GetString("trSelectSmallestUnitHint"));
-            btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
-            btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
-            btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_smallestUnitId, MainWindow.resourcemanager.GetString("trSelectSmallestUnitHint"));
+            txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
+            txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
+            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+            tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
+            tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
             dg_unit.Columns[0].Header = MainWindow.resourcemanager.GetString("trUnitName");
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 

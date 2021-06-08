@@ -355,7 +355,7 @@
                                     TextBlock.FontSize="12"   Background="#f8f8f8" 
                                     Grid.Column="1" Height="40"   Margin="5,5"
                                     BorderBrush="#737373" BorderThickness="0"
-                                          LostFocus="input_LostFocus"/>
+                                          LostFocus="input_LostFocus" SelectionChanged="Cb_vendor_SelectionChanged"/>
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,45,5"
                                           Name="p_errorVendor"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -383,19 +383,17 @@
 
 
 
-                     
+
                         <Grid Grid.Row="2"  >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <DatePicker  x:Name="dp_desrvedDate" 
                            BorderBrush="#737373"  BorderThickness="0" 
-                                TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
-                                             Grid.Row="2" Padding="10,5,5,5"  
+                                TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}" Padding="10,5,5,5"  
                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                             materialDesign:HintAssist.Hint="Deserved Date..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
-                        Grid.Column="1"  Height="40"   Margin="5,5" />
+                             materialDesign:HintAssist.Hint="Deserved Date..." KeyDown="Dp_desrvedDate_KeyDown"
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"  Height="40"   Margin="10,0,0,5" />
                             <Path x:Name="p_errorDesrvedDate" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"

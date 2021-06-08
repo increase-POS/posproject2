@@ -122,10 +122,22 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader" SelectionChanged="Dg_Invoice_SelectionChanged"    >
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="*" Header="Bill Number" Binding="{Binding Path=invNumber}"/>
-                        <DataGridTextColumn Width="*" Header="items count" Binding="{Binding Path=itemsCount}"/>
-                        <DataGridTextColumn Width="*" Header="Total" Binding="{Binding Path=totalNet}"/>
+                        <DataGridTextColumn  Header="Bill Number" Binding="{Binding Path=invNumber}"/>
+                        <DataGridTextColumn  Header="items count" Binding="{Binding Path=itemsCount}"/>
+                        <DataGridTextColumn  Header="Total" Binding="{Binding Path=totalNet}"/>
                     </DataGrid.Columns>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding invType}" Value="pd">
+                                    <Setter Property="Background" Value="PaleGreen"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding invType}" Value="pbd">
+                                    <Setter Property="Background" Value="PaleVioletRed"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
                 </DataGrid>
 
                 <Line Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="3" Stretch="Fill" Stroke="#DFDFDF"  X2="1"  Margin="1,1,1,1"

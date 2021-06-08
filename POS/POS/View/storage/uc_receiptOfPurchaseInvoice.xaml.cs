@@ -68,13 +68,13 @@ namespace POS.View.storage
         private void translate()
         {
             ////////////////////////////////----invoice----/////////////////////////////////
-            txt_invoiceHeader.Text = MainWindow.resourcemanager.GetString("trInvoice");
+            //txt_invoiceHeader.Text = MainWindow.resourcemanager.GetString("trInvoice");
             
 
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
-            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+            txt_saveButton.Text = MainWindow.resourcemanager.GetString("trSave");
         }
         private  void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -247,5 +247,7 @@ namespace POS.View.storage
         {
 
         }
+
+   
     }
 }

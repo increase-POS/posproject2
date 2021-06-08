@@ -481,9 +481,9 @@
                             <ComboBox x:Name="cb_area" Padding="10,11,5,5" 
                                       SelectedIndex="0"   TextBlock.Foreground="#4E4E4E"
                                       TabIndex="4"
-                                      TextBlock.FontSize="12" Margin="10,5,5,5"
+                                      TextBlock.FontSize="12" Margin="5,5,5,5"
                                       
-                                      Height="35" Width="60" Background="#f8f8f8" 
+                                      Height="40" Width="60" Background="#f8f8f8" 
                                       BorderBrush="#737373"       BorderThickness="0" 
                                       FontFamily="{StaticResource Font-cairo-light}"   
                                       Grid.Row="0"/>
@@ -491,7 +491,7 @@
 
                             
                                 <TextBox x:Name="tb_mobile" Padding="10,0,5,0" Grid.Column="1"  Text="{Binding mobile, Mode=OneWay}"
-                                         Margin="10,5,10,5"
+                                         Margin="0,5,5,5"
                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
@@ -534,7 +534,7 @@
                             <ComboBox x:Name="cb_areaPhone" Padding="10,11,5,5" 
                                       TextBlock.Foreground="#4E4E4E"
                                       Grid.Column="0" SelectedIndex="0"
-                                      TextBlock.FontSize="12" Margin="10,5,5,5"
+                                      TextBlock.FontSize="12" Margin="5,5,5,5"
                                       
                                       Height="40" Width="60"  TabIndex="6"
                                       Background="#f8f8f8" 
@@ -544,7 +544,7 @@
                                       TextBlock.Foreground="#4E4E4E"
                                       SelectedIndex="0" TabIndex="7"
                                       Visibility="Collapsed"
-                                      TextBlock.FontSize="12" Margin="10,5,5,5"
+                                      TextBlock.FontSize="12" Margin="0,5,5,5"
                                      
                                       Height="40" Width="50"  Grid.Column="1"
                                       Background="#f8f8f8" 
@@ -559,7 +559,7 @@
                                      BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                       VerticalAlignment="Center" MaxLength="15"
-                                     Height="40"  Margin="10,5,10,5"
+                                     Height="40"  Margin="0,5,10,5"
                                      PreviewKeyDown="tb_phone_PreviewKeyDown" >
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_phone" Content="Phone"

@@ -763,6 +763,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Draft Bounce Bill.
+        /// </summary>
+        internal static string trDraftBounceBill {
+            get {
+                return ResourceManager.GetString("trDraftBounceBill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drafts.
         /// </summary>
         internal static string trDrafts {
@@ -1083,6 +1092,15 @@ namespace POS {
         internal static string trEndTime {
             get {
                 return ResourceManager.GetString("trEndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity can not be exceeded.
+        /// </summary>
+        internal static string trErrorAmountIncreaseToolTip {
+            get {
+                return ResourceManager.GetString("trErrorAmountIncreaseToolTip", resourceCulture);
             }
         }
         

@@ -1071,4 +1071,10 @@
   <data name="trPopNotEnoughBalance" xml:space="preserve">
     <value>There is not enough balance</value>
   </data>
+  <data name="trDraftBounceBill" xml:space="preserve">
+    <value>Draft Bounce Bill</value>
+  </data>
+  <data name="trErrorAmountIncreaseToolTip" xml:space="preserve">
+    <value>Quantity can not be exceeded</value>
+  </data>
 </root>

@@ -40,6 +40,35 @@ namespace POS.View
         public uc_section()
         {
             InitializeComponent();
+            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+            {
+                txt_deleteButton.Visibility = Visibility.Visible;
+                txt_addButton.Visibility = Visibility.Visible;
+                txt_updateButton.Visibility = Visibility.Visible;
+                txt_add_Icon.Visibility = Visibility.Visible;
+                txt_update_Icon.Visibility = Visibility.Visible;
+                txt_delete_Icon.Visibility = Visibility.Visible;
+            }
+            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+            {
+                txt_add_Icon.Visibility = Visibility.Collapsed;
+                txt_update_Icon.Visibility = Visibility.Collapsed;
+                txt_delete_Icon.Visibility = Visibility.Collapsed;
+                txt_deleteButton.Visibility = Visibility.Visible;
+                txt_addButton.Visibility = Visibility.Visible;
+                txt_updateButton.Visibility = Visibility.Visible;
+
+            }
+            else
+            {
+                txt_deleteButton.Visibility = Visibility.Collapsed;
+                txt_addButton.Visibility = Visibility.Collapsed;
+                txt_updateButton.Visibility = Visibility.Collapsed;
+                txt_add_Icon.Visibility = Visibility.Visible;
+                txt_update_Icon.Visibility = Visibility.Visible;
+                txt_delete_Icon.Visibility = Visibility.Visible;
+
+            }
         }
         
         
@@ -58,9 +87,12 @@ namespace POS.View
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
-            btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
-            btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
-            btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+            txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
+            txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
+            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+            tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
+            tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
@@ -240,12 +272,33 @@ namespace POS.View
                 }
 
                 #region delete
-                if (section.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+                if (section.canDelete)
+                {
+                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                    txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                }
 
                 else
                 {
-                    if (section.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
-                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                    if (section.isActive == 0)
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                        txt_delete_Icon.Kind =
+                         MaterialDesignThemes.Wpf.PackIconKind.Check;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                    }
+                    else
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                        txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                    }
                 }
                 #endregion 
             }

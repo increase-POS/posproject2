@@ -745,6 +745,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مسودة فاتورة مرتجع.
+        /// </summary>
+        internal static string trDraftBounceBill {
+            get {
+                return ResourceManager.GetString("trDraftBounceBill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to المسودات.
         /// </summary>
         internal static string trDrafts {
@@ -1056,6 +1065,15 @@ namespace POS {
         internal static string trEndTime {
             get {
                 return ResourceManager.GetString("trEndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يمكن تجاوز الكمية.
+        /// </summary>
+        internal static string trErrorAmountIncreaseToolTip {
+            get {
+                return ResourceManager.GetString("trErrorAmountIncreaseToolTip", resourceCulture);
             }
         }
         

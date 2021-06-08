@@ -37,6 +37,35 @@ namespace POS.View.storage
         public uc_itemsStorage()
         {
             InitializeComponent();
+            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+            {
+                txt_deleteButton.Visibility = Visibility.Visible;
+                txt_addButton.Visibility = Visibility.Visible;
+                txt_updateButton.Visibility = Visibility.Visible;
+                txt_add_Icon.Visibility = Visibility.Visible;
+                txt_update_Icon.Visibility = Visibility.Visible;
+                txt_delete_Icon.Visibility = Visibility.Visible;
+            }
+            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+            {
+                txt_add_Icon.Visibility = Visibility.Collapsed;
+                txt_update_Icon.Visibility = Visibility.Collapsed;
+                txt_delete_Icon.Visibility = Visibility.Collapsed;
+                txt_deleteButton.Visibility = Visibility.Visible;
+                txt_addButton.Visibility = Visibility.Visible;
+                txt_updateButton.Visibility = Visibility.Visible;
+
+            }
+            else
+            {
+                txt_deleteButton.Visibility = Visibility.Collapsed;
+                txt_addButton.Visibility = Visibility.Collapsed;
+                txt_updateButton.Visibility = Visibility.Collapsed;
+                txt_add_Icon.Visibility = Visibility.Visible;
+                txt_update_Icon.Visibility = Visibility.Visible;
+                txt_delete_Icon.Visibility = Visibility.Visible;
+
+            }
         }
 
         
@@ -96,16 +125,19 @@ namespace POS.View.storage
         private void translate()
         {
             ////////////////////////////////----invoice----/////////////////////////////////
-            txt_invoiceToggle.Text = MainWindow.resourcemanager.GetString("trInvoice");
+            //txt_invoiceToggle.Text = MainWindow.resourcemanager.GetString("trInvoice");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_InvoicenName, MainWindow.resourcemanager.GetString("trInvoiceHint"));
 
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
             dg_invoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
-            btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
-            btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
-            btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+            txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
+            txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
+            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+            tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
+            tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
         }
         #region bill
@@ -243,6 +275,22 @@ namespace POS.View.storage
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
+
+        }
+
+        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        {
+            dg_collapsed.IsEnabled = false;
+            dg_collapsed.Opacity = 0.2;
+
+
+
+        }
+
+        private void Expander_Collapsed(object sender, RoutedEventArgs e)
+        {
+            dg_collapsed.IsEnabled = true;
+            dg_collapsed.Opacity = 1;
 
         }
     }

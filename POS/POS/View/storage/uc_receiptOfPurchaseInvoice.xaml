@@ -7,27 +7,31 @@
              mc:Ignorable="d" 
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              Loaded="UserControl_Loaded"
-              d:DesignHeight="675" d:DesignWidth="1150">
+               d:DesignHeight="675" d:DesignWidth="985">
     <Grid x:Name="grid_ucPayInvoice" >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="380"/>
+            <ColumnDefinition Width="2.54*"/>
+            <ColumnDefinition x:Name="gridWidth" Width="*" MinWidth="225"/>
         </Grid.ColumnDefinitions>
-        <Grid Margin="10,15,10,15" Grid.Column="0">
+
+
+        <!--Left Section Grid-->
+        <!--#region -->
+        <Grid Margin="0,15,10,15" Grid.Column="0">
             <Grid.RowDefinitions >
                 <RowDefinition Height="45"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="45"/>
             </Grid.RowDefinitions>
-            <Grid  Margin="5,0,5,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Border CornerRadius="5,0,0,5"  
+
+            <!--Search-->
+            <!--#region -->
+            <Border Background="White" CornerRadius="7" Margin="5,0,5,0">
+                <DockPanel LastChildFill="False" >
+                    <Border Width="50" CornerRadius="5,0,0,5"  
                            Background="#178DD2" >
 
-                    <Path Fill="#E8E8E8" Stretch="Fill"
+                        <Path Fill="#E8E8E8" Stretch="Fill"
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="17.5" Height="17.5"
                               Data="M111.6,16.4c-17.9-17.9-47-17.9-65,0C31,32.1,28.7,56.7,41.3,75c1,1.4,2,2.7,3.1,4L40.3,83l-4.9-4.9L5.9,108.2
@@ -36,29 +40,26 @@
 	s32.6-12.5,45,0c6,6,9.4,14.1,9.4,22.5C110.9,57.3,107.6,65.4,101.6,71.4z M92.7,45.5c-7.5,0-13.6-6.1-13.6-13.6
 	c0-1.4,0.2-2.8,0.6-4.2C68,27.3,58.3,36.5,57.9,48.2C57.5,60,66.7,69.7,78.5,70.1c11.7,0.4,21.5-8.8,21.9-20.6c0.1-2-0.2-4-0.7-5.9
 	C97.6,44.8,95.2,45.5,92.7,45.5z"/>
-                </Border>
-                <Grid  Grid.Column="1" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.ColumnSpan="3"  CornerRadius="0,5,5,0"  
-                           Background="White"  />
-
-                    <TextBox  x:Name="tb_search"  
-                              Padding="10,5,5,5" BorderBrush="{x:Null}"
+                    </Border>
+                    <TextBox  x:Name="tb_search" TabIndex="14"
+                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                              Padding="10,0,5,0" BorderBrush="{x:Null}"
                               materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                               Foreground="#4e4e4e" TextBlock.FontSize="14"
-                              HorizontalAlignment="Left" VerticalAlignment="Center" 
-                              Height="35"   Width="250" Margin="10,5" 
-                              TextChanged="Tb_search_TextChanged" GotFocus="Tb_search_GotFocus" />
-                    <ToggleButton Grid.Column="1"  x:Name="tgl_IsActive"  
-                                      Checked="Tgl_IsActive_Checked" 
-                                      Unchecked="Tgl_IsActive_Unchecked"
-                                      VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
-                                      Margin="0" Height="13" Width="28"  />
-                    <Button FlowDirection="LeftToRight"  Width="40" Height="40" x:Name="btn_refresh" Grid.Row="0" Grid.Column="4" Padding="0" 
+                               VerticalAlignment="Center" 
+                              Height="40"   Width="auto" Margin="10,5" 
+                              TextChanged="Tb_search_TextChanged">
+                        <TextBox.ToolTip>
+                            <ToolTip x:Name="tt_search" Content="Search"
+                                    Placement="left" 
+                                    HorizontalOffset="15"
+                                    PlacementRectangle="50,0,0,0"
+                                    VerticalOffset="30"/>
+                        </TextBox.ToolTip>
+                    </TextBox>
+
+
+                    <Button  DockPanel.Dock="Right" FlowDirection="LeftToRight"  Width="40" Height="40" x:Name="btn_refresh" Grid.Row="0" Grid.Column="4" Padding="0" 
                             materialDesign:ButtonAssist.CornerRadius="15" Cursor="Hand"
                           Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_refresh_Click"  Style="{StaticResource SmallButtonCircleRotate}"
                              Margin="5,1"  Content="إضافة"   ToolTip="Refresh"  RenderTransformOrigin="0.5,0.5"
@@ -83,166 +84,171 @@
                             </TransformGroup>
                         </Button.RenderTransform>
                     </Button>
-                </Grid>
-
-            </Grid >
-            <Grid  Margin="5,5,5,0" Grid.Row="1"  >
-                <Border Background="White" CornerRadius="7,7,0,0" />
-                <DataGrid  Margin="5,5,5,17.5"  Grid.Row="1"  IsReadOnly="true" Background="White"
+                    <ToggleButton DockPanel.Dock="Right"  x:Name="tgl_IsActive"  
+                                      Checked="Tgl_IsActive_Checked" 
+                                      Unchecked="Tgl_IsActive_Unchecked"
+                                      VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
+                                      Margin="0" Height="13" Width="28"  />
+                    <TextBlock  DockPanel.Dock="Right"
+                                   Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="12"/>
+                </DockPanel>
+            </Border>
+            <Border Margin="5,5,5,0" Grid.Row="1"  Background="White" CornerRadius="7,7,0,0">
+                <DataGrid  Margin="5,5,5,17.5"  Grid.Row="1"  IsReadOnly="True"  Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
+                     
                        SelectionChanged="Dg_invoice_SelectionChanged"
                        x:Name="dg_invoice"
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"    >
+                        ColumnWidth="SizeToHeader"   AlternatingRowBackground="#f3f3f3" AlternationCount="2">
+                    <DataGrid.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
+                        <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Background" Value="#e7f3fa" />
+                            <Setter Property="BorderBrush" Value="White"/>
+                            <Setter Property="BorderThickness" Value="0 0 1 0"/>
+                        </Style>
+                    </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn MinWidth="150"  Header="Invoice Number"     Binding="{Binding Path=x}"/>
-                        <DataGridTextColumn MinWidth="150"  Header="Invoice Type"     Binding="{Binding Path=y}"/>
-                        <DataGridTextColumn MinWidth="150"  Header="Store/Branch"     Binding="{Binding Path=y}"/>
-                        <DataGridTextColumn MinWidth="150"  Header="Item Count"  Binding="{Binding Path=Z}"/>
+                        <DataGridTextColumn Width="*"  Header="Invoice Number"     Binding="{Binding Path=x}"/>
+                        <DataGridTextColumn Width="*"   Header="Invoice Type"     Binding="{Binding Path=y}"/>
+                        <DataGridTextColumn Width="*"   Header="Store/Branch"     Binding="{Binding Path=y}"/>
+                        <DataGridTextColumn Width="*"   Header="Item Count"  Binding="{Binding Path=Z}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-            </Grid>
-            <Grid Grid.Row="2" Margin="5,0,5,0" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Border Background="White" CornerRadius="0,0,7,7" Grid.ColumnSpan="10" />
-                <Button   Background="{x:Null}"    Grid.Column="0" Margin="10,0,5,0"
+            </Border>
+            <!--Export Buttons-->
+            <!--#region -->
+            <Border Grid.Row="2" Margin="5,0,5,0" Background="White" CornerRadius="0,0,7,7" >
+                <Border BorderThickness="0,0,0,1" BorderBrush="#178DD2" Margin="10,0,10,10" Width="auto" HorizontalAlignment="Left">
+                    <StackPanel  Orientation="Horizontal" >
+
+                        <Button x:Name="btn_pdf"   Background="{x:Null}"   Margin="10,0,5,0"
                           Padding="0" Height="35" 
-                          BorderBrush="{x:Null}">
-                    <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="22" Height="22">
-                        <materialDesign:PackIcon.ToolTip>
-                            <ToolTip x:Name="tt_report" Content="Report"
+                          BorderBrush="{x:Null}" >
+                            <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
+                                
+                          Width="22" Height="22">
+                                <materialDesign:PackIcon.ToolTip>
+                                    <ToolTip x:Name="tt_report" Content="Report"
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="-10"/>
-                        </materialDesign:PackIcon.ToolTip>
-                    </materialDesign:PackIcon>
-                </Button>
-                <Button   Background="{x:Null}"    Grid.Column="1" Margin="5,0,5,0"
+                                </materialDesign:PackIcon.ToolTip>
+                            </materialDesign:PackIcon>
+                        </Button>
+                        <Button   Background="{x:Null}"    Margin="5,0,5,0"
                           Padding="0" Height="35"  x:Name="btn_print"
-                          BorderBrush="{x:Null}">
-                    <materialDesign:PackIcon Foreground="#313131" Kind="Printer"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="22" Height="22">
-                        <materialDesign:PackIcon.ToolTip>
-                            <ToolTip x:Name="tt_print" Content="Print"
+                          BorderBrush="{x:Null}" >
+                            <materialDesign:PackIcon Foreground="#313131" Kind="Printer"  
+                              HorizontalAlignment="Center" 
+                      Width="22" Height="22">
+                                <materialDesign:PackIcon.ToolTip>
+                                    <ToolTip x:Name="tt_print" Content="Print"
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="-10"/>
-                        </materialDesign:PackIcon.ToolTip>
-                    </materialDesign:PackIcon>
-                </Button>
-                <Button FlowDirection="LeftToRight"   Background="{x:Null}"    Grid.Column="2" Margin="2.5,0,2.5,0" 
+                                </materialDesign:PackIcon.ToolTip>
+                            </materialDesign:PackIcon>
+                        </Button>
+                        <Button FlowDirection="LeftToRight"   Background="{x:Null}"    Grid.Column="2" Margin="2.5,0,2.5,0" 
                             Padding="0" Height="20" Width="25"   x:Name="btn_pieChart"   
                                        BorderBrush="{x:Null}">
-                    <Grid Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Path Width="8.8" Height="9.6" Stretch="Fill" Data="M27.7,8.3l-10.2,7.8l9.1,9.1c2.1-2.5,3.4-5.7,3.4-9.2C30,13.1,29.1,10.5,27.7,8.3z" Fill="#DD191B"
+                            <Grid Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Path Width="8.8" Height="9.6" Stretch="Fill" Data="M27.7,8.3l-10.2,7.8l9.1,9.1c2.1-2.5,3.4-5.7,3.4-9.2C30,13.1,29.1,10.5,27.7,8.3z" Fill="#DD191B"
                               RenderTransformOrigin="5,5" >
-                            <Path.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform />
-                                    <SkewTransform/>
-                                    <RotateTransform Angle="0"/>
-                                    <TranslateTransform  X="6.5" Y="0.2"/>
-                                </TransformGroup>
-                            </Path.RenderTransform>
-                        </Path>
-                        <Path Width="7.2" Height="7.2" Stretch="Fill" Data="M17,14l9.4-7.3c-2.4-2.6-5.7-4.4-9.4-4.7V14z" Fill="#F74110" RenderTransformOrigin="0,0">
-                            <Path.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform />
-                                    <SkewTransform/>
-                                    <RotateTransform/>
-                                    <TranslateTransform  X="6.2" Y="-6"/>
-                                </TransformGroup>
-                            </Path.RenderTransform>
-                        </Path>
-                        <Path Fill="#377EB8" Width="16" Height="17" Stretch="Fill" Data="M15.3,16.7C15.3,16.7,15.3,16.7,15.3,16.7C15.2,16.6,15.2,16.6,15.3,16.7c-0.1-0.1-0.1-0.2-0.1-0.2c0-0.1-0.1-0.1-0.1-0.2
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="0"/>
+                                            <TranslateTransform  X="6.5" Y="0.2"/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Path Width="7.2" Height="7.2" Stretch="Fill" Data="M17,14l9.4-7.3c-2.4-2.6-5.7-4.4-9.4-4.7V14z" Fill="#F74110" RenderTransformOrigin="0,0">
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform  X="6.2" Y="-6"/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Path Fill="#377EB8" Width="16" Height="17" Stretch="Fill" Data="M15.3,16.7C15.3,16.7,15.3,16.7,15.3,16.7C15.2,16.6,15.2,16.6,15.3,16.7c-0.1-0.1-0.1-0.2-0.1-0.2c0-0.1-0.1-0.1-0.1-0.2
    s0-0.1,0-0.2c0,0,0-0.1,0-0.1V2.1C7.7,2.6,2,8.6,2,16c0,7.7,6.3,14,14,14c3.5,0,6.7-1.3,9.2-3.4L15.3,16.7z" RenderTransformOrigin="0,0">
-                            <Path.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform ScaleX="1"/>
-                                    <SkewTransform/>
-                                    <RotateTransform/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </Path.RenderTransform>
-                            <Path.ToolTip>
-                                <ToolTip x:Name="tt_pieChart" Content="Pie Chart"
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                    <Path.ToolTip>
+                                        <ToolTip x:Name="tt_pieChart" Content="Pie Chart"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="-10"/>
-                            </Path.ToolTip>
-                        </Path>
-                    </Grid>
-
-                </Button>
-                <Button   Background="{x:Null}"    Grid.Column="3" Margin="5,0,5,0" 
+                                    </Path.ToolTip>
+                                </Path>
+                            </Grid>
+                        </Button>
+                        <Button   Background="{x:Null}"    Grid.Column="3" Margin="5,0,5,0" 
                             Padding="0" Height="35"   x:Name="btn_exportToExcel"   Click="Btn_exportToExcel_Click"
                                        BorderBrush="{x:Null}">
-                    <Path Fill="#378500" Stretch="Fill"
+                            <Path Fill="#378500" Stretch="Fill"
                           Width="20" Height="20" 
                            FlowDirection="LeftToRight" Data="M25.162,3H16v2.984h3.031v2.031H16V10h3v2h-3v2h3v2h-3v2h3v2h-3v3h9.162   C25.623,23,26,22.609,26,22.13V3.87C26,3.391,25.623,3,25.162,3z M24,20h-4v-2h4V20z M24,16h-4v-2h4V16z M24,12h-4v-2h4V12z M24,8   h-4V6h4V8z 
 	                     M0,2.889v20.223L15,26V0L0,2.889z M9.488,18.08l-1.745-3.299c-0.066-0.123-0.134-0.349-0.205-0.678   H7.511C7.478,14.258,7.4,14.494,7.277,14.81l-1.751,3.27H2.807l3.228-5.064L3.082,7.951h2.776l1.448,3.037   c0.113,0.24,0.214,0.525,0.304,0.854h0.028c0.057-0.198,0.163-0.492,0.318-0.883l1.61-3.009h2.542l-3.037,5.022l3.122,5.107 
                           L9.488,18.08L9.488,18.08z"  >
-                        <Path.ToolTip>
-                            <ToolTip x:Name="tt_excel" Content="Export to excel"
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_excel" Content="Export to excel"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="-10"/>
-                        </Path.ToolTip>
-                    </Path>
-                </Button>
-                <TextBlock   Background="{x:Null}" x:Name="txt_count"   Grid.Column="4" Margin="0,0,0,5" VerticalAlignment="Bottom"
+                                </Path.ToolTip>
+                            </Path>
+                        </Button>
+                        <TextBlock   Background="{x:Null}" x:Name="txt_count"   Grid.Column="4" Margin="0,0,0,5" 
                             Padding="10"   Text="0" Foreground="#378500" FontSize="12"  >
-                    <TextBlock.ToolTip>
-                        <ToolTip x:Name="tt_count" Content="Customers Count"
+                            <TextBlock.ToolTip>
+                                <ToolTip x:Name="tt_count" Content="Customers Count"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,25,0,0"
                                               VerticalOffset="-20"/>
-                    </TextBlock.ToolTip>
+                            </TextBlock.ToolTip>
+                        </TextBlock>
 
-                </TextBlock>
-            </Grid>
+                    </StackPanel >
+                </Border>
+            </Border>
+            <!--#endregion-->
         </Grid>
-        <Border Grid.Column="1"  Margin="10,15,10,15" 
-                CornerRadius="7" >
-            <Grid Grid.Column="2" >
-                <Grid.RowDefinitions >
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="*"/>
+        <Border Grid.Column="1" Background="White" Margin="0,15,10,15" CornerRadius="7"  Width="auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
                 </Grid.RowDefinitions>
-
-                <Grid  Background="#002196F3" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button   Width="360" Height="52" Grid.Column="0" 
-                      HorizontalAlignment="Center" VerticalAlignment="Center" 
-                     Background="{x:Null}"  BorderBrush="{x:Null}"
-                    Padding="0"  x:Name="btn_payInvoice"  >
-                        <Border x:Name="brd_payInvoiceTab" CornerRadius="7,0,0,0" Background="#4E4E4E"
-                                BorderThickness="0,0,0,0" BorderBrush="#178DD2" >
-                            <Grid Width="360" Height="52"  >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="1.2*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Path Fill="#E8E8E8"    Stretch="Fill"
+                <!--Bank Button-->
+                <!--#region-->
+                <Border CornerRadius="7,7,0,0"
+                        Grid.Row="0"
+                        BorderBrush="{x:Null}"
+                        Background="#4E4E4E">
+                    <Button Height="52" Background="{x:Null}" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Height="52" HorizontalAlignment="Center" >
+                            <Path Fill="#E8E8E8"    Stretch="Fill"
                               HorizontalAlignment="Right" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"
                                   Data="M21.1,11.9c-0.2,0-0.3-0.1-0.4-0.1h-1.8V1.7c0-0.1-0.1-0.3-0.1-0.4c-0.1-0.1-0.2-0.1-0.4-0.1H5.2
@@ -277,312 +283,121 @@
 	c0.2,0,0.3,0.1,0.4,0.1c0,0.1,0.1,0.3,0.1,0.4C16.4,13.5,16.4,13.6,16.3,13.7z M16.3,11.8c-0.1,0-0.3,0.1-0.4,0.1h-4.3
 	c-0.2,0-0.3,0-0.4-0.1c0-0.1-0.1-0.2-0.1-0.4s0-0.3,0.1-0.4c0.1,0,0.3-0.1,0.4-0.1h4.3c0.2,0,0.3,0.1,0.4,0.1c0,0.1,0.1,0.2,0.1,0.4
 	S16.4,11.7,16.3,11.8z"/>
-                                <TextBlock Text="Invoice" x:Name="txt_invoiceHeader" Foreground="#E8E8E8" 
-                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
-                              Grid.Column="1"      Margin="5"/>
-                            </Grid>
-                        </Border>
+                            <TextBlock Text="Invoice" x:Name="txt_bank" Foreground="#E8E8E8" VerticalAlignment="Center" Grid.Column="1"  Margin="5"/>
+                        </StackPanel>
                     </Button>
-
-                
-
-
-                </Grid>
-
-                <Border CornerRadius="0,0,7,7"
-                Grid.Row="1" Background="White">
-                    <Grid>
-                        <!--////////////////////////////// payinvoice////////////////////////////////////-->
-                        <Grid x:Name="grid_payinvoice" Visibility="Visible" >
-                            <Grid.RowDefinitions >
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="35"/>
-                                <RowDefinition Height="10"/>
-                            </Grid.RowDefinitions>
-                            <!--<Grid Grid.Row="0" Background="#002196F3">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Button   Width="120" Height="35" Grid.Column="0" 
-                      HorizontalAlignment="Center" VerticalAlignment="Center" 
-                     Background="{x:Null}"  BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="0"
-                    Padding="0"  x:Name="btn_newDraft" Click="Btn_newDraft_Click" >
-                                    <Border x:Name="brd_newDraftTab" CornerRadius="0,0,0,0" Background="#4E4E4E"
-                               BorderThickness="0,1,1,0" BorderBrush="#E8E8E8">
-                                        <Grid Width="120" Height="35"  >
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="35"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <materialDesign:PackIcon Foreground="#E8E8E8" Kind="AddCircle"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="20" Height="20"/>
-                                            <TextBlock Text="New draft" x:Name="txt_newDraft" Foreground="#E8E8E8" 
-                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
-                              Grid.Column="1"      Margin="5"/>
-                                        </Grid>
-                                    </Border>
-                                </Button>
-
-                                <Button   Width="120" Height="35" Grid.Column="1"  Background="{x:Null}"
-                      HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0"
-                    ToolTip="" materialDesign:ButtonAssist.CornerRadius="0"
-                    Padding="0" x:Name="btn_draft" Click="Btn_draft_Click" >
-                                    <Border CornerRadius="00,0,0,0" Background="#4E4E4E" x:Name="brd_draftTab"
-                                BorderThickness="0,1,0,0" BorderBrush="#E8E8E8">
-                                        <Grid Width="120" Height="35" >
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="35"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <materialDesign:PackIcon Foreground="#E8E8E8" Kind="Draft"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="20" Height="20"/>
-                                            <TextBlock Text="Drafts" x:Name="txt_draftHeader" Foreground="#E8E8E8"
-                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
-                              Grid.Column="1"      Margin="5"/>
-                                        </Grid>
-                                    </Border>
-                                </Button>
-
-                                <Button   Width="120" Height="35" Grid.Column="2"  Background="{x:Null}"
-                      HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0"
-                    ToolTip="" materialDesign:ButtonAssist.CornerRadius="0"
-                    Padding="0" x:Name="btn_returnInvoice" Click="Btn_returnInvoice_Click" >
-                                    <Border CornerRadius="00,0,0,0" Background="#4E4E4E" x:Name="brd_returnInvoiceTab"
-                                BorderThickness="1,1,0,0" BorderBrush="#E8E8E8">
-                                        <Grid Width="120" Height="35" >
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="35"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Path Fill="#E8E8E8"    Stretch="Fill"
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="20" Height="20"
-                                  Data="M21.1,11.9c-0.2,0-0.3-0.1-0.4-0.1h-1.8V1.7c0-0.1-0.1-0.3-0.1-0.4c-0.1-0.1-0.2-0.1-0.4-0.1H5.2
-	C5.1,1.2,5,1.3,4.9,1.3C4.8,1.4,4.7,1.6,4.7,1.7v18.1c0,0.6,0.2,1.2,0.7,1.7c0.4,0.4,1,0.7,1.7,0.7h12.4c0.4,0,0.9-0.2,1.2-0.5
-	s0.5-0.7,0.5-1.2v-8.3C21.2,12.1,21.2,11.9,21.1,11.9z M7.1,21.2c-0.4,0-0.7-0.2-1-0.4c-0.3-0.3-0.4-0.6-0.4-1V2.2h12.1v18.3
-	c0,0.2,0,0.5,0.1,0.7H7.1z M20,21c-0.1,0.1-0.3,0.2-0.5,0.2c-0.1,0-0.2,0-0.3-0.1C19.1,21.1,19,21,19,21s-0.1-0.1-0.1-0.2
-	c0-0.1-0.1-0.2-0.1-0.3v-7.8h1.3v7.8h0.1C20.2,20.7,20.1,20.8,20,21z M17.8,20.5V2.2H5.7v17.6c0,0.4,0.1,0.7,0.4,1
-	c0.3,0.2,0.6,0.4,1,0.4h10.8C17.8,21,17.8,20.7,17.8,20.5z M10.4,7.4c0-0.1,0-0.1,0-0.2S10.5,7,10.5,7c0.1,0,0.1-0.1,0.2-0.1
-	c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.2,0S11.3,7,11.3,7c0,0.1,0.1,0.1,0.1,0.2l0.1,0.1c0.1,0.1,0.1,0.1,0.2,0.1c0.1,0,0.1,0,0.2,0
-	c0.1,0,0.2,0,0.2-0.1c0.1-0.1,0.1-0.1,0.1-0.2c0-0.1,0-0.2-0.1-0.3c-0.1-0.1-0.2-0.1-0.3-0.1c-0.3,0-0.6-0.1-0.9-0.3
-	c-0.2-0.2-0.3-0.5-0.4-0.8c0-0.3,0-0.6,0.2-0.9c0.1-0.3,0.4-0.5,0.8-0.6V3.9c0-0.2,0-0.3,0.1-0.4c0.1,0,0.2-0.1,0.4-0.1
-	c0.2,0,0.3,0,0.4,0.1c0,0.1,0.1,0.3,0.1,0.4v0.3c0.2,0.1,0.4,0.2,0.5,0.3c0.1,0.1,0.2,0.2,0.3,0.4c0,0.1,0,0.1,0,0.2
-	c0,0.1,0,0.1,0,0.2c0,0.1-0.1,0.2-0.1,0.2c-0.1,0-0.1,0.1-0.2,0.1c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1,0-0.2,0s-0.2-0.1-0.2-0.1
-	c0-0.1-0.1-0.1-0.1-0.2l-0.1-0.1c-0.1,0-0.1-0.1-0.2-0.1c0,0-0.1,0-0.2,0c-0.1,0-0.2,0-0.2,0.1c-0.1,0-0.1,0.1-0.1,0.2v0.1l0.1,0.1
-	c0,0.1,0.1,0.1,0.1,0.1h0.1c0.3,0,0.6,0.1,0.8,0.4c0.3,0.2,0.4,0.5,0.5,0.8c0,0.3,0,0.6-0.2,0.9c-0.1,0.3-0.4,0.5-0.7,0.6v0.1
-	c0,0.2,0,0.3-0.1,0.4C12,8.9,11.9,9,11.7,9c-0.2,0-0.3,0-0.4-0.1c0-0.1-0.1-0.3-0.1-0.4V8.3C11,8.2,10.8,8.1,10.7,8
-	c-0.1-0.1-0.2-0.2-0.3-0.4C10.4,7.5,10.4,7.5,10.4,7.4z M7.3,11c0.1,0,0.3-0.1,0.4-0.1h1.9c0.2,0,0.3,0,0.4,0.1
-	c0,0.1,0.1,0.3,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4c-0.1,0-0.3,0.1-0.4,0.1H7.7c-0.2,0-0.3,0-0.4-0.1c0-0.1-0.1-0.2-0.1-0.4
-	S7.2,11.1,7.3,11z M7.3,12.9c0.1,0,0.3-0.1,0.4-0.1H12c0.2,0,0.3,0,0.4,0.1c0,0.1,0.1,0.3,0.1,0.4c0,0.2,0,0.3-0.1,0.4
-	c-0.1,0-0.3,0.1-0.4,0.1H7.7c-0.2,0-0.3-0.1-0.4-0.1c0-0.1-0.1-0.3-0.1-0.4C7.2,13.1,7.2,13,7.3,12.9z M7.3,14.8
-	c0.1,0,0.3-0.1,0.4-0.1h1.9c0.1,0,0.2,0.1,0.4,0.1c0,0.1,0.1,0.3,0.1,0.4S10,15.5,10,15.6c-0.1,0-0.3,0.1-0.4,0.1H7.7
-	c-0.2,0-0.3-0.1-0.4-0.1c0-0.1-0.1-0.2-0.1-0.4S7.2,14.9,7.3,14.8z M7.3,16.7c0.1,0,0.3-0.1,0.4-0.1H12c0.2,0,0.3,0,0.4,0.1
-	c0,0.1,0.1,0.3,0.1,0.4c0,0.2,0,0.3-0.1,0.4c-0.1,0-0.3,0.1-0.4,0.1H7.7c-0.2,0-0.3-0.1-0.4-0.1c0-0.1-0.1-0.3-0.1-0.4
-	C7.2,16.9,7.2,16.8,7.3,16.7z M10,19.4c-0.1,0-0.3,0.1-0.4,0.1H7.7c-0.2,0-0.3,0-0.4-0.1c0-0.1-0.1-0.3-0.1-0.4c0-0.2,0-0.3,0.1-0.4
-	c0.1,0,0.3-0.1,0.4-0.1h1.9c0.1,0,0.2,0,0.4,0.1c0,0.1,0.1,0.3,0.1,0.4C10.1,19.1,10,19.2,10,19.4z M16.3,19.4
-	c-0.1,0-0.3,0.1-0.4,0.1h-4.3c-0.2,0-0.3,0-0.4-0.1c0-0.1-0.1-0.3-0.1-0.4c0-0.2,0.1-0.3,0.1-0.4c0.1,0,0.3-0.1,0.4-0.1h4.3
-	c0.2,0,0.3,0,0.4,0.1c0,0.1,0.1,0.3,0.1,0.4C16.4,19.2,16.4,19.3,16.3,19.4z M16.3,17.5c-0.1,0-0.3,0.1-0.4,0.1H14
-	c-0.2,0-0.3,0-0.4-0.1c0-0.1-0.1-0.3-0.1-0.4c0-0.2,0-0.3,0.1-0.4c0.1,0,0.3-0.1,0.4-0.1h1.9c0.2,0,0.3,0,0.4,0.1
-	c0,0.1,0.1,0.3,0.1,0.4C16.4,17.3,16.4,17.4,16.3,17.5z M16.3,15.6c-0.1,0-0.3,0.1-0.4,0.1h-4.3c-0.2,0-0.3,0-0.4-0.1
-	c0-0.1-0.1-0.2-0.1-0.4s0-0.3,0.1-0.4c0.1,0,0.3-0.1,0.4-0.1h4.3c0.2,0,0.3,0.1,0.4,0.1c0,0.1,0.1,0.2,0.1,0.4S16.4,15.5,16.3,15.6z
-	 M16.3,13.7c-0.1,0-0.3,0.1-0.4,0.1H14c-0.2,0-0.3,0-0.4-0.1c0-0.1-0.1-0.3-0.1-0.4c0-0.2,0-0.3,0.1-0.4c0.1,0,0.3-0.1,0.4-0.1h1.9
-	c0.2,0,0.3,0.1,0.4,0.1c0,0.1,0.1,0.3,0.1,0.4C16.4,13.5,16.4,13.6,16.3,13.7z M16.3,11.8c-0.1,0-0.3,0.1-0.4,0.1h-4.3
-	c-0.2,0-0.3,0-0.4-0.1c0-0.1-0.1-0.2-0.1-0.4s0-0.3,0.1-0.4c0.1,0,0.3-0.1,0.4-0.1h4.3c0.2,0,0.3,0.1,0.4,0.1c0,0.1,0.1,0.2,0.1,0.4
-	S16.4,11.7,16.3,11.8z"/>
-                                            <TextBlock Text="Return" x:Name="txt_returnInvoiceHeader" Foreground="#E8E8E8"
-                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
-                              Grid.Column="1"      Margin="5"/>
-                                        </Grid>
-                                    </Border>
-                                </Button>
+                </Border>
+                <!--#endregion-->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <Grid x:Name="grid_bank" >
+                        <Grid.RowDefinitions >
+                            
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                          
+                           
 
 
-                            </Grid>-->
-                            <Grid>
+                        </Grid.RowDefinitions>
+
+
+
+                      
+                        <Expander Grid.Row="0" Height="auto" Background="White" >
+                            <Expander.Header>
+                                <TextBlock   Text="Return invoice" x:Name="txt_returnInvoiceToggle" Foreground="#6e6e6e"
+                      
+                              FontSize="12" ></TextBlock>
+                            </Expander.Header>
+                            <Grid x:Name="grid_returnInvoice"  Grid.Row="2" Visibility="Visible">
                                 <Grid.RowDefinitions >
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Grid Grid.ColumnSpan="2" >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Return Invoice" x:Name="txt_returnInvoice" Foreground="#737373"
-                                 FontSize="10"       VerticalAlignment="Center"
-                                       HorizontalAlignment="Left" Margin="5,5,0,5"/>
-                                    <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
-                                      Grid.Column="1" VerticalAlignment="Center" />
-                                </Grid>
-                                <Grid Grid.Row="1"  Grid.Column="1">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" 
-                            Margin="10,5,5,5" Text="Return invoice" x:Name="txt_returnInvoiceToggle" Foreground="#6e6e6e"
-                        HorizontalAlignment="Center" VerticalAlignment="Center" 
-                              FontSize="12"  />
-                                    <ToggleButton Grid.Column="1"  x:Name="tgl_returnInvoiceDropDown"  Checked="Tgl_returnInvoiceDropDown_Checked" Unchecked="Tgl_returnInvoiceDropDown_Unchecked"
-                             VerticalAlignment="Center" Padding="10,15,5,5"
-                                          Margin="0,0,0,0" Height="13" Width="28" />
-                                </Grid>
-                                <Grid x:Name="grid_returnInvoice"  Grid.Row="2" Visibility="Collapsed">
-                                    <Grid.RowDefinitions >
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBox x:Name="tb_returnInvoicenName"  Text="{Binding taxes, Mode=OneWay}" 
-                                             Grid.Row="0" Padding="10,5,5,5"
+                                <TextBox x:Name="tb_returnInvoicenName"  Text="{Binding taxes, Mode=OneWay}" 
+                                             Grid.Row="0" Padding="10,0,5,0"
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Invoice..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                              BorderBrush="#f8f8f8"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="30" Width="340"  Margin="5,1" />
-                                    <DataGrid  x:Name="dg_returnInvoice"  Margin="5" Grid.Row="3" Grid.ColumnSpan="2" Height="200"   Background="White"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                       Height="40"  Margin="10,5,10,5" />
+                                <DataGrid  x:Name="dg_returnInvoice" Height="100" Margin="10,5,10,5" Grid.Row="2"   Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"    >
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn MinWidth="150"  Header="Invoice Number" Binding="{Binding Path=Id}"/>
-                                        </DataGrid.Columns>
-                                    </DataGrid>
-
-                                </Grid>
-
-                            </Grid>
-                            <!--<Grid Grid.Row="1">
-                                <Grid.RowDefinitions >
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Grid Grid.ColumnSpan="2" >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Invoice" x:Name="txt_Invoice" Foreground="#737373"
-                                 FontSize="10"       VerticalAlignment="Center"
-                                       HorizontalAlignment="Left" Margin="5,5,0,5"/>
-                                    <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
-                                      Grid.Column="1" VerticalAlignment="Center" />
-                                </Grid>
-                                <Grid Grid.Row="1"  Grid.Column="1">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" 
-                            Margin="10,5,5,5" Text="Invoice" x:Name="txt_invoiceToggle" Foreground="#6e6e6e"
-                        HorizontalAlignment="Center" VerticalAlignment="Center" 
-                              FontSize="12"  />
-                                    <ToggleButton Grid.Column="1"  x:Name="tgl_invoiceDropDown"  Checked="Tgl_invoiceDropDown_Checked" Unchecked="Tgl_invoiceDropDown_Unchecked"
-                             VerticalAlignment="Center" Padding="10,15,5,5"
-                                          Margin="0,0,0,0" Height="13" Width="28" />
-                                </Grid>
-                                <Grid x:Name="grid_invoice"  Grid.Row="2" Visibility="Collapsed">
-                                    <Grid.RowDefinitions >
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBox x:Name="tb_InvoicenName"  Text="{Binding taxes, Mode=OneWay}" 
-                                             Grid.Row="0" Padding="10,5,5,5"
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Invoice..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="#f8f8f8"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="30" Width="340"  Margin="5,1" />
-                                    <DataGrid  x:Name="dg_invoice"  Margin="5" Grid.Row="3" Grid.ColumnSpan="2" Height="200"   Background="White"
-                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
-                         IsReadOnly="True" CanUserAddRows="False" 
-                        AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"    >
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn MinWidth="150"  Header="Invoice Number" Binding="{Binding Path=Id}"/>
-                                        </DataGrid.Columns>
-                                    </DataGrid>
-
-                                </Grid>
-
-                            </Grid>-->
-                            <Grid Grid.Row="2">
-                                <Grid.RowDefinitions >
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Grid >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Invoice details" x:Name="txt_invoiceDetails" Foreground="#737373"
-                                 FontSize="10"       VerticalAlignment="Center"  Grid.Column="0"
-                                       HorizontalAlignment="Left" Margin="6,5,0,5"/>
-                                    <Separator Background="#999999"   Width="320"  Margin="5,0,5,0"
-                                      Grid.Column="1" VerticalAlignment="Center" />
-                                </Grid>
-                                <DataGrid x:Name="dg_billDetails"  Margin="1,5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
-                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
-                         IsReadOnly="True" CanUserAddRows="False" 
-                        AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader"    >
-                                    <DataGrid.Columns >
-                                        <DataGridTemplateColumn Width="20" Header="" >
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Button Margin="-10"   Click="deleteRowFromInvoiceItems"
-                                                   Padding="0" ToolTip="Delete" 
-                          Background="{x:Null}" BorderBrush="{x:Null}">
-                                                        <materialDesign:PackIcon Foreground="#178DD2" Kind="MinusThick"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="17" Height="17"/>
-                                                    </Button>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTextColumn   MinWidth="10"   Header="Num"  Binding="{Binding Path=ID}"/>
-                                        <DataGridTextColumn MinWidth="90"  Header="Item" Binding="{Binding Path=Product}"/>
-                                        <DataGridTextColumn MinWidth="90"  Header="Unit" Binding="{Binding Path=test}"/>
-                                        <DataGridTextColumn MinWidth="10"  Header="Amount" Binding="{Binding Path=Count}"/>
+                        ColumnWidth="SizeToHeader"     AlternatingRowBackground="#f3f3f3" AlternationCount="2">
+                                    <DataGrid.Resources>
+                                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
+                                        <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                            <Setter Property="Background" Value="#e7f3fa" />
+                                            <Setter Property="BorderBrush" Value="White"/>
+                                            <Setter Property="BorderThickness" Value="0 0 1 0"/>
+                                        </Style>
+                                    </DataGrid.Resources>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Width="*"  Header="Invoice Number" Binding="{Binding Path=Id}"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
-                            </Grid>
-                           
-                            <Grid Grid.Row="4"  >
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Button x:Name="btn_save" Grid.Row="0" Grid.Column="0"
-                          Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,1"   Content="Save" />
 
                             </Grid>
-                        </Grid>
-                        
+                        </Expander>
+                        <DockPanel x:Name="dock_invoiceDetails" LastChildFill="True" Grid.Row="1" Margin="0,10,0,0">
+                            <TextBlock x:Name="txt_invoiceDetails" Text="Invoice details" Foreground="#737373" FontSize="10" VerticalAlignment="Center" Margin="5,0,5,0"/>
+                            
+                            <Separator Background="#999999" VerticalAlignment="Center" Width="auto" Margin="5"/>
+                        </DockPanel>
+
+                        <DataGrid x:Name="dg_billDetails"  Margin="10,5,10,5" Grid.Row="2"   Grid.ColumnSpan="2"    Background="White" Height="auto"
+                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
+                         IsReadOnly="True" CanUserAddRows="False" 
+                        AutoGenerateColumns="False" 
+                        ColumnWidth="SizeToHeader"    AlternatingRowBackground="#f3f3f3" AlternationCount="2">
+                            <DataGrid.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
+                                <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                    <Setter Property="Background" Value="#e7f3fa" />
+                                    <Setter Property="BorderBrush" Value="White"/>
+                                    <Setter Property="BorderThickness" Value="0 0 1 0"/>
+                                </Style>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns >
+                                <DataGridTemplateColumn Width="0" Header="" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Margin="-10"   Click="deleteRowFromInvoiceItems"
+                                                   Padding="0" ToolTip="Delete" 
+                          Background="{x:Null}" BorderBrush="{x:Null}">
+                                                <materialDesign:PackIcon Foreground="#178DD2" Kind="MinusThick"  
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="17" Height="17"/>
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn   Width="*"  Header="Num"  Binding="{Binding Path=ID}"/>
+                                <DataGridTextColumn Width="*"  Header="Item" Binding="{Binding Path=Product}"/>
+                                <DataGridTextColumn Width="*"  Header="Unit" Binding="{Binding Path=test}"/>
+                                <DataGridTextColumn Width="*"  Header="Amount" Binding="{Binding Path=Count}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </Grid>
-                </Border>
+                </ScrollViewer>
+                <Button x:Name="btn_save" Grid.Row="2" Grid.Column="0"
+                          Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="6,6,6,11"    >
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
+                        <materialDesign:PackIcon  Kind="ContentSave" VerticalAlignment="Center" Width="15" Height="15" Margin="0,1,2,0">
+
+                        </materialDesign:PackIcon>
+                        <TextBlock x:Name="txt_saveButton"  Width="auto" Text="Save" VerticalAlignment="Center">
+
+                        </TextBlock>
+                    </StackPanel>
+                </Button>
             </Grid>
+
         </Border>
+
     </Grid>
 </UserControl>
