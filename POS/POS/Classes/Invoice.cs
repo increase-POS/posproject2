@@ -30,6 +30,8 @@ namespace POS.Classes
         public string notes { get; set; }
         public Nullable<decimal> price { get; set; }
         public Nullable<int> itemUnitId { get; set; }
+        public string unitName { get; set; }
+        public string barcode { get; set; }
     }
     public class Invoice
     {

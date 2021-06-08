@@ -185,5 +185,10 @@ namespace POS.View.windows
         {
 
         }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
