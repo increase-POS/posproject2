@@ -118,22 +118,22 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.9312cm</Width>
+                  <Width>0.8577cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.13266cm</Width>
+                  <Width>4.05916cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.17474cm</Width>
+                  <Width>2.10124cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5cm</Width>
+                  <Width>2.4265cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.05563cm</Width>
+                  <Width>2.98213cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>6.43cm</Width>
+                  <Width>6.3565cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -153,7 +153,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox11</rd:DefaultName>
@@ -183,7 +185,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox13</rd:DefaultName>
@@ -213,7 +217,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox15</rd:DefaultName>
@@ -243,7 +249,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox17</rd:DefaultName>
@@ -273,7 +281,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox19</rd:DefaultName>
@@ -303,7 +313,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox21</rd:DefaultName>
@@ -338,7 +350,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox12</rd:DefaultName>
@@ -368,7 +382,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>itemName</rd:DefaultName>
@@ -398,7 +414,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>unitName</rd:DefaultName>
@@ -428,7 +446,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>quantity</rd:DefaultName>
@@ -454,11 +474,13 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatCurrency(Fields!price.Value,2)</Value>
+                                  <Value>=Round(Fields!price.Value,2)</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>price</rd:DefaultName>
@@ -484,11 +506,13 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!price.Value*Fields!quantity.Value</Value>
+                                  <Value>=Round(Fields!price.Value*Fields!quantity.Value,2)</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox22</rd:DefaultName>
@@ -533,7 +557,7 @@
             <Top>0cm</Top>
             <Left>0.36724cm</Left>
             <Height>1.2cm</Height>
-            <Width>19.22423cm</Width>
+            <Width>18.78326cm</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -882,34 +906,20 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>3.48299cm</Height>
+        <Height>3.34046cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Body>
-      <Width>21.54682cm</Width>
+      <Width>19.20341cm</Width>
       <Page>
         <PageHeader>
-          <Height>4.7344cm</Height>
+          <Height>3.59641cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
-            <Image Name="Logo">
-              <Source>Embedded</Source>
-              <Value>logotest</Value>
-              <Sizing>FitProportional</Sizing>
-              <Top>0.3937cm</Top>
-              <Left>0.36724cm</Left>
-              <Height>1.5cm</Height>
-              <Width>1.5cm</Width>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-              </Style>
-            </Image>
             <Textbox Name="ExecutionTime">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
@@ -939,11 +949,10 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>ExecutionTime</rd:DefaultName>
-              <Top>3.23453cm</Top>
-              <Left>15.47905cm</Left>
+              <Top>2.84647cm</Top>
+              <Left>14.77349cm</Left>
               <Height>0.6cm</Height>
-              <Width>5.43534cm</Width>
-              <ZIndex>1</ZIndex>
+              <Width>4.37701cm</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -974,11 +983,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>agentTitle</rd:DefaultName>
-              <Top>1.21402cm</Top>
-              <Left>5.4311cm</Left>
+              <Top>0.57902cm</Top>
+              <Left>5.90735cm</Left>
               <Height>1.02363cm</Height>
               <Width>6.64986cm</Width>
-              <ZIndex>2</ZIndex>
+              <ZIndex>1</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1004,11 +1013,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>2.37877cm</Top>
+              <Top>2.06127cm</Top>
               <Left>13.78162cm</Left>
               <Height>0.67938cm</Height>
               <Width>2.44708cm</Width>
-              <ZIndex>3</ZIndex>
+              <ZIndex>2</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1034,11 +1043,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>3.23453cm</Top>
-              <Left>12.55293cm</Left>
+              <Top>2.91703cm</Top>
+              <Left>12.23543cm</Left>
               <Height>0.67938cm</Height>
               <Width>2.53806cm</Width>
-              <ZIndex>4</ZIndex>
+              <ZIndex>3</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1064,11 +1073,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>2.37876cm</Top>
+              <Top>2.06126cm</Top>
               <Left>16.2287cm</Left>
               <Height>0.67938cm</Height>
               <Width>2.44708cm</Width>
-              <ZIndex>5</ZIndex>
+              <ZIndex>4</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1086,7 +1095,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Invoice To</Value>
+                      <Value>Vendor Num:</Value>
                       <Style>
                         <FontSize>14pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1099,11 +1108,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>agentTitle</rd:DefaultName>
-              <Top>2.37876cm</Top>
+              <Top>2.06126cm</Top>
               <Left>0.36724cm</Left>
               <Height>0.67938cm</Height>
-              <Width>2.89277cm</Width>
-              <ZIndex>6</ZIndex>
+              <Width>3.71298cm</Width>
+              <ZIndex>5</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1121,7 +1130,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value>=Parameters!vendorInvNum.Value</Value>
                       <Style>
                         <FontSize>14pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1134,81 +1143,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>agentTitle</rd:DefaultName>
-              <Top>3.19926cm</Top>
+              <Top>2.88176cm</Top>
               <Left>0.36724cm</Left>
               <Height>0.67938cm</Height>
-              <Width>2.89277cm</Width>
-              <ZIndex>7</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
-            <Textbox Name="agentTitle4">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>Mobile:</Value>
-                      <Style>
-                        <FontSize>11pt</FontSize>
-                        <FontWeight>Bold</FontWeight>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Center</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>agentTitle</rd:DefaultName>
-              <Top>4.05502cm</Top>
-              <Left>0.36724cm</Left>
-              <Height>0.67938cm</Height>
-              <Width>1.76458cm</Width>
-              <ZIndex>8</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
-            <Textbox Name="agentTitle5">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Parameters!invoiceId.Value</Value>
-                      <Style>
-                        <FontSize>11pt</FontSize>
-                        <FontWeight>Bold</FontWeight>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Center</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>agentTitle</rd:DefaultName>
-              <Top>4.05502cm</Top>
-              <Left>2.20238cm</Left>
-              <Height>0.67938cm</Height>
-              <Width>2.98166cm</Width>
-              <ZIndex>9</ZIndex>
+              <Width>4.8168cm</Width>
+              <ZIndex>6</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1227,7 +1166,7 @@
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>0.70583cm</Height>
+          <Height>0.7852cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -1284,15 +1223,15 @@
                     </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Right</TextAlign>
+                    <TextAlign>Left</TextAlign>
                   </Style>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox14</rd:DefaultName>
               <Top>0cm</Top>
-              <Left>14.6812cm</Left>
+              <Left>13.28084cm</Left>
               <Height>0.6cm</Height>
-              <Width>6.60104cm</Width>
+              <Width>5.80319cm</Width>
               <ZIndex>1</ZIndex>
               <Style>
                 <Border>

@@ -1432,3 +1432,12 @@ E:\GitHub\posproject2\POS\POS\bin\Debug\System.Reactive.dll
 E:\GitHub\posproject2\POS\POS\bin\Debug\WPFTabTip.dll
 E:\GitHub\posproject2\POS\POS\bin\Debug\System.Reactive.xml
 E:\GitHub\posproject2\POS\POS\bin\Debug\WPFTabTip.xml
+D:\myproj\posproject2\POS\POS\bin\Debug\FontAwesome.WPF.dll
+D:\myproj\posproject2\POS\POS\bin\Debug\System.Reactive.dll
+D:\myproj\posproject2\POS\POS\bin\Debug\WPFTabTip.dll
+D:\myproj\posproject2\POS\POS\bin\Debug\FontAwesome.WPF.xml
+D:\myproj\posproject2\POS\POS\bin\Debug\System.Reactive.xml
+D:\myproj\posproject2\POS\POS\bin\Debug\WPFTabTip.xml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.baml

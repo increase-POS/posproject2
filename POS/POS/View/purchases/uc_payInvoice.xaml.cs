@@ -1395,44 +1395,49 @@ namespace POS.View
 
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            string addpath = @"\Reports\InvPurReport .rdlc";
+           
+            string addpath = @"\Reports\InvPurReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-            invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-            rep.ReportPath = reppath;
-            rep.DataSources.Clear();
-            rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", invoiceItems));
-           // rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", data));
-            ReportParameter[] paramarr = new ReportParameter[13];
-            //String.Format("h \\h m \\m", invoice.invTime)
-            paramarr[0] = new ReportParameter("Title", "Purshase Invoice");
-            paramarr[12] = new ReportParameter("lang", MainWindow.lang);
-            paramarr[1] = new ReportParameter("invNumber", invoice.invNumber);
-            paramarr[2] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
-            paramarr[3] = new ReportParameter("invDate", invoice.invDate.ToString());
-            paramarr[4] = new ReportParameter("invTime", invoice.invTime.ToString());
-            paramarr[5] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
-            paramarr[6] = new ReportParameter("total", invoice.total.ToString());
-            paramarr[7] = new ReportParameter("discountValue", invoice.discountValue.ToString());
-            paramarr[8] = new ReportParameter("totalNet", invoice.totalNet.ToString());
-            paramarr[9] = new ReportParameter("paid", invoice.paid.ToString());
-            paramarr[10] = new ReportParameter("deserved", invoice.deserved.ToString());
-            paramarr[11] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
-
-         
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            saveFileDialog.Filter = "PDF|*.pdf;";
-
-            if (saveFileDialog.ShowDialog() == true)
+            if(invoice.invoiceId > 0)
             {
+                invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                rep.ReportPath = reppath;
+                rep.DataSources.Clear();
+                rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", invoiceItems));
 
-                string filepath = saveFileDialog.FileName;
-                LocalReportExtensions.ExportToPDF(rep, filepath);
+                // rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", data));
+                ReportParameter[] paramarr = new ReportParameter[13];
 
+                paramarr[0] = new ReportParameter("Title", "Purshase Invoice");
+                paramarr[12] = new ReportParameter("lang", MainWindow.lang);
+                paramarr[1] = new ReportParameter("invNumber", invoice.invNumber);
+                paramarr[2] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
+                paramarr[3] = new ReportParameter("invDate", reportclass.DateToString(invoice.invDate));
+                paramarr[4] = new ReportParameter("invTime", reportclass.TimeToString(invoice.invTime));
+                paramarr[5] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
+                paramarr[6] = new ReportParameter("total", reportclass.DecTostring(invoice.total));
+                paramarr[7] = new ReportParameter("discountValue", reportclass.DecTostring(invoice.discountValue));
+                paramarr[8] = new ReportParameter("totalNet", reportclass.DecTostring(invoice.totalNet));
+                paramarr[9] = new ReportParameter("paid", reportclass.DecTostring(invoice.paid));
+                paramarr[10] = new ReportParameter("deserved", reportclass.DecTostring(invoice.deserved));
+                paramarr[11] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
+                //  MessageBox.Show(reportclass.DecTostring(invoice.paid) + "des="+ invoice.deserved.ToString());
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+
+                }
             }
+           
         }
     }
 
