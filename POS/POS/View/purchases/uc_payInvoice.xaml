@@ -115,7 +115,7 @@
                     </Path>
                 </Button>
                 <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}" x:Name="btn_invoiceImages"   >
+                    Background="{x:Null}" x:Name="btn_invoiceImages" Click="Btn_invoiceImage_Click"  >
                     <Path Fill="#4E4E4E" Stretch="Fill"  
                           Width="{Binding Path=ActualHeight, ElementName=path_newDraft}"  
                            Data="M368,224c26.5,0,48-21.5,48-48s-21.5-48-48-48s-48,21.5-48,48S341.5,224,368,224z M452,64H60

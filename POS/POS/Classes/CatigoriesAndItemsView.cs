@@ -227,6 +227,7 @@ namespace POS.Classes
             }
         }
         */
+        /*
        static   public  int[] categoriesRowColumnCount(int rowCount , int columnCount )
         {
             //MainWindow.ucControlViewSectionWidth
@@ -240,45 +241,47 @@ namespace POS.Classes
 
             // row
             if (MainWindow.windowHeight < 650)
-                rowCount = 2;
-            else if (MainWindow.windowHeight < 750)
                 rowCount = 3;
-            else if(MainWindow.windowHeight >= 750 || MainWindow.windowHeight.ToString() == "NaN" || MainWindow.windowWidth.ToString() == "ليس رقمًا")
-                rowCount = 4;
             else
-                rowCount = 2;
+            if (MainWindow.windowHeight < 750)
+                rowCount = 4;
+            else if(MainWindow.windowHeight >= 750 || MainWindow.windowHeight.ToString() == "NaN" || MainWindow.windowWidth.ToString() == "ليس رقمًا")
+                rowCount = 5;
+            else
+                rowCount = 3;
 
 
             // column
-
-             if ( MainWindow.windowWidth < 920)
-                columnCount = 3;
-            else if (MainWindow.windowWidth < 1050)
+            
+            if ( MainWindow.windowWidth < 920)
                 columnCount = 4;
-            else if (MainWindow.windowWidth < 1250)
+            else if (MainWindow.windowWidth < 1140)
                 columnCount = 5;
-            else if(MainWindow.windowWidth >= 1250 || MainWindow.windowWidth.ToString() ==  "NaN" || MainWindow.windowWidth.ToString() == "ليس رقمًا" )
+            else if (MainWindow.windowWidth < 1500)
                 columnCount = 6;
+            //else if(MainWindow.windowWidth >= 1500 || MainWindow.windowWidth.ToString() ==  "NaN" || MainWindow.windowWidth.ToString() == "ليس رقمًا" )
+            else if(MainWindow.windowWidth >= 1500 || MainWindow.windowWidth.Equals(double.NaN))
+                columnCount = 7;
             else
-                columnCount = 3;
+                columnCount = 4;
 
             //MainWindow.windowWidth =  NaN double
 
 
-        int[] count = { rowCount, columnCount , rowCount * columnCount };
+        //int[] count = { rowCount, columnCount , rowCount * columnCount };
+        int[] count = { 3, 5 , 3 * 5 };
             return count;
         }
-
+        */
         public void FN_refrishCatalogCard(List<Category> categories ,int columnCount)
         {
             gridCatigories.Children.Clear();
-            //int row = 0;
-            //int column = 0;
-            CardViewItems itemCardView = new CardViewItems();
+            int row = 0;
+            int column = 0;
 
-            int[] count = categoriesRowColumnCount(1, columnCount);
-            if (columnCount == -1)
-                count[1] = -1;
+            //int[] count = categoriesRowColumnCount(1, columnCount);
+            //if (columnCount == -1)
+            //    count[1] = -1;
                 foreach (var item in categories)
             {
                 #region
@@ -300,21 +303,26 @@ namespace POS.Classes
                */
                 #endregion
 
+                CardViewItems itemCardView = new CardViewItems();
                 itemCardView.category = item;
-                FN_createCatalogCard(itemCardView, count[1]);
-                
-                    if (itemCardView.column != -1)
+                itemCardView.row = row;
+                itemCardView.column = column;
+                FN_createCatalogCard(itemCardView, columnCount);
+
+
+
+                if (column != -1)
                     {
-                    itemCardView.column++;
-                        if (itemCardView.column == count[1])
+                    column++;
+                        if (column == columnCount)
                         {
-                        itemCardView.column = 0;
-                        itemCardView.row++;
+                        column = 0;
+                        row++;
                         }
                     }
                     else
                     {
-                    itemCardView.column++;
+                     column++;
                     }
                
 
@@ -415,20 +423,9 @@ namespace POS.Classes
             gridCatigorieItems.Children.Clear();
             int row = 0;
             int column = 0;
-            string isNewString = "";
             int[] count = itemsRowColumnCount(1,1);
             foreach (var item in items)
             {
-                //Visible
-                //    Collapsed
-
-
-             
-
-
-                if (item.isNew == 1)
-                    isNewString = "Visible";
-                else isNewString = "Collapsed";
 
                 CardViewItems itemCardView = new CardViewItems();
                 itemCardView.item = item;

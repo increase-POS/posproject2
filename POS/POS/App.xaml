@@ -7,23 +7,10 @@
         <ResourceDictionary>
 
             <!--#region Fonts-->
-
-            <!--<FontFamily x:Key="Font-Cairo-Bold_0">pack://application:,,,/Fonts/#Noto Sans</FontFamily>-->
-            <!--<FontFamily x:Key="FontTest" >/Cairo-Black;Component/Fonts/#Cairo-Black</FontFamily>
-            <FontFamily x:Key="FontTest2" >/Cairo-Bold_0;Component/Fonts/#Cairo-Bold_0 </FontFamily>-->
-            <!--value="/MyAssembly;Component/Fonts/#FontAwesome" />-->
-
-            <FontFamily x:Key="Font-NotoKufiArabic-Bold" >Noto Kufi Arabic, /POS;component/fonts/NotoKufiArabic/#NotoKufiArabic-Bold</FontFamily>
-            <FontFamily x:Key="Font-NotoKufiArabic-Regular" >Noto Kufi Arabic, /POS;component/fonts/NotoKufiArabic/#NotoKufiArabic-Regular</FontFamily>
+            <FontFamily x:Key="BarcodeFont" >IDAHC39M Code 39 Barcode, /POS;component/fonts/#IDAHC39M Code 39 Barcode, Arial</FontFamily>
 
             <FontFamily x:Key="Font-cairo-light" >cairo light, /POS;component/fonts/cairo-font/#cairo light, Arial</FontFamily>
             <FontFamily x:Key="Font-cairo-bold" >cairo bold , /POS;component/fonts/cairo-font/#cairo bold, Arial</FontFamily>
-
-
-            <FontFamily x:Key="Font-SF-Pro-Display-Light" >SF Pro Display, /POS;component/fonts/en-fonts/#SF-Pro-Display-Light</FontFamily>
-            <FontFamily x:Key="Font-SF-Pro-Display-Medium" >SF-Pro-Display , /POS;component/fonts/en-fonts/#SF-Pro-Display-Medium</FontFamily>
-            <FontFamily x:Key="Font-SF-Pro-Display-Regular" >SF-Pro-Display , /POS;component/fonts/en-fonts/#SF-Pro-Display-Regular</FontFamily>
-            <FontFamily x:Key="Font-sf-ui-display-bold" >SF-UI-Display  /POS;component/fonts/en-fonts/#sf-ui-display-bold</FontFamily>
                                                                              
             <!--#endregion-->
           

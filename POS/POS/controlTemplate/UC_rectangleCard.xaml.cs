@@ -39,7 +39,6 @@ namespace POS.controlTemplate
         {
             #region Grid Container
             Grid gridContainer = new Grid();
-
             ColumnDefinition[] cd = new ColumnDefinition[2];
             for (int i = 0; i < 2; i++)
                 cd[i] = new ColumnDefinition();
@@ -47,23 +46,20 @@ namespace POS.controlTemplate
             cd[1].Width = new GridLength(1, GridUnitType.Star);
             for (int i = 0; i < 2; i++)
                 gridContainer.ColumnDefinitions.Add(cd[i]);
-
-
-            //< RowDefinition Height = "5*" />
-            //         < RowDefinition Height = "16*" />
-            //          < RowDefinition Height = "13*" />
-            //           < RowDefinition Height = "20*" />
-
-            RowDefinition[] rd = new RowDefinition[4];
-            for (int i = 0; i < 4; i++)
+            int rowCount = 4;
+            if (cardViewitem.cardType == "sales")
+                rowCount = 3;
+                RowDefinition[] rd = new RowDefinition[4];
+            for (int i = 0; i < rowCount; i++)
             {
                 rd[i] = new RowDefinition();
             }
             rd[0].Height = new GridLength(5, GridUnitType.Star);
             rd[1].Height = new GridLength(16, GridUnitType.Star);
             rd[2].Height = new GridLength(13, GridUnitType.Star);
-            rd[3].Height = new GridLength(20, GridUnitType.Star);
-            for (int i = 0; i < 4; i++)
+            if (cardViewitem.cardType == "sales")
+                rd[3].Height = new GridLength(20, GridUnitType.Star);
+            for (int i = 0; i < rowCount; i++)
             {
                 gridContainer.RowDefinitions.Add(rd[i]);
             }
@@ -77,6 +73,8 @@ namespace POS.controlTemplate
             #region   Title
             var titleText = new TextBlock();
             titleText.Text = cardViewitem.item.name;
+            //if (cardViewitem.language == "ar")
+                titleText.FontFamily = App.Current.Resources["Font-cairo-bold"] as FontFamily;
             titleText.Margin = new Thickness(5, 0, 5, 0);
             titleText.FontWeight = FontWeights.Bold;
             titleText.VerticalAlignment = VerticalAlignment.Top;
@@ -102,9 +100,9 @@ namespace POS.controlTemplate
             /////////////////////////////////
 
             #endregion
-            if (cardViewitem.cardType == "purchase")
+            #region Price
+            if (cardViewitem.cardType == "sales")
             {
-                #region Price
                 Grid gridPrice = new Grid();
                 Grid.SetRow(gridPrice, 3);
                 //70 
@@ -130,10 +128,9 @@ namespace POS.controlTemplate
                 gridPrice.Children.Add(priceText);
                 /////////////////////////////////
 
-                #endregion
-
                 gridContainer.Children.Add(gridPrice);
             }
+            #endregion
             #region Image
             Button buttonImage = new Button();
             buttonImage.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));

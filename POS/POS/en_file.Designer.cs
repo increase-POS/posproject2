@@ -205,6 +205,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bank Accounts.
+        /// </summary>
+        internal static string trBankAccounts {
+            get {
+                return ResourceManager.GetString("trBankAccounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bank....
         /// </summary>
         internal static string trBankHint {
@@ -1330,6 +1339,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It is not possible to pull from the same pos.
+        /// </summary>
+        internal static string trErrorSamePos {
+            get {
+                return ResourceManager.GetString("trErrorSamePos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export to Excel.
         /// </summary>
         internal static string trExcel {
@@ -1452,6 +1470,15 @@ namespace POS {
         internal static string trInvoiceNumberHint {
             get {
                 return ResourceManager.GetString("trInvoiceNumberHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirmed.
+        /// </summary>
+        internal static string trIsConfirmed {
+            get {
+                return ResourceManager.GetString("trIsConfirmed", resourceCulture);
             }
         }
         
@@ -2046,6 +2073,15 @@ namespace POS {
         internal static string trPOS {
             get {
                 return ResourceManager.GetString("trPOS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pos Accounts.
+        /// </summary>
+        internal static string trPosAccounts {
+            get {
+                return ResourceManager.GetString("trPosAccounts", resourceCulture);
             }
         }
         

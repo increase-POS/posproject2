@@ -59,6 +59,7 @@ namespace POS.View.accounts
         {
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trTransaferDetails");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            txt_posAccounts.Text = MainWindow.resourcemanager.GetString("trPosAccounts");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos1, MainWindow.resourcemanager.GetString("trFromPosHint"));
@@ -67,9 +68,10 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_state, MainWindow.resourcemanager.GetString("trStateHint"));
 
             dg_posAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            dg_posAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trPosTooltip");
-            dg_posAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trOpperationTypeToolTip");
-            dg_posAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            dg_posAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trFromPos");
+            dg_posAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trToPos");
+            dg_posAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trOpperationTypeToolTip");
+            dg_posAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
             tt_Pos1.Content = MainWindow.resourcemanager.GetString("trFromPos");
             tt_Pos2.Content = MainWindow.resourcemanager.GetString("trToPos");
@@ -135,6 +137,14 @@ namespace POS.View.accounts
             cb_pos1.SelectedIndex = -1;
             #endregion
 
+            #region fill pos combo2
+            poss = await posModel.GetPosAsync();
+            cb_pos2.ItemsSource = poss;
+            cb_pos2.DisplayMemberPath = "name";
+            cb_pos2.SelectedValuePath = "posId";
+            cb_pos2.SelectedIndex = -1;
+            #endregion
+
             #region fill operation state
             var dislist = new[] {
             new { Text = MainWindow.resourcemanager.GetString("trUnConfirmed"), Value = "0" },
@@ -152,13 +162,15 @@ namespace POS.View.accounts
 
         }
 
-        private void dp_SelectedEndDateChanged(object sender, SelectionChangedEventArgs e)
+        private async void dp_SelectedEndDateChanged(object sender, SelectionChangedEventArgs e)
         {
+            await RefreshCashesList();
             Tb_search_TextChanged(null, null);
         }
 
-        private void dp_SelectedStartDateChanged(object sender, SelectionChangedEventArgs e)
+        private async void dp_SelectedStartDateChanged(object sender, SelectionChangedEventArgs e)
         {
+            await RefreshCashesList();
             Tb_search_TextChanged(null, null);
         }
 
@@ -190,23 +202,24 @@ namespace POS.View.accounts
                     if (cashtrans.posId == MainWindow.posID.Value)
                     {
                         if (cashtrans.isConfirm != 1)
-                        { btn_confirm.Content = "تأكيد"; btn_confirm.IsEnabled = true; }
+                        { btn_confirm.Content = MainWindow.resourcemanager.GetString("trConfirm") ; btn_confirm.IsEnabled = true; }
                         else
-                        { btn_confirm.Content = "تم التأكيد"; btn_confirm.IsEnabled = false; }
+                        { btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirmed"); btn_confirm.IsEnabled = false; }
                     }
                     else
                     {
                       
                         btn_confirm.IsEnabled = false;
                         if (cashtrans.isConfirm != 1)
-                             btn_confirm.Content = "تأكيد"; 
+                             btn_confirm.Content = MainWindow.resourcemanager.GetString("trConfirm");
                         else
-                             btn_confirm.Content = "تم التأكيد"; 
+                             btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirmed");
                     }
 
                     #region get two pos
                   
                     cashes2 = await cashModel.GetbySourcId("p", cashtrans.cashTransId);
+                    //to insure that the pull operation is in cashtrans2 
                     if (cashtrans.transType == "p")
                     {
                         cashtrans2 = cashes2.ToList()[0] as CashTransfer;
@@ -217,10 +230,9 @@ namespace POS.View.accounts
                         cashtrans2 = cashes2.ToList()[1] as CashTransfer;
                         cashtrans3 = cashes2.ToList()[0] as CashTransfer;
                     }
-                    ///////////////////////////////??????????????????????????????????
+                   
                     cb_pos1.SelectedValue = cashtrans2.posId;
                     cb_pos2.SelectedValue = cashtrans3.posId;
-                    //////////////////////////////??????????????????????????????????
                     #endregion
                 }
             }
@@ -230,13 +242,8 @@ namespace POS.View.accounts
         {//search
             if (cashes is null)
                 await RefreshCashesList();
-            //cashtrans.posId;
-            //cashtrans.posIdCreator;
-            //cashtrans.cashTransfertwo.posId;
             searchText = tb_search.Text;
-            int isAnotherConfirm = 0;
-            //cashesSearch.Where(s => new CashTransfer { });
-            //  .Select(store => new SelectListItem { Value = store.Name, Text = store.ID });
+
             switch (cb_state.Text)
             {
                 case "غير مؤكدة"://inconfirmed
@@ -262,7 +269,7 @@ namespace POS.View.accounts
                     && s.posId == MainWindow.posID.Value
                     && s.isConfirm == 1
                     //&& another is not confirmed 
-                    && isAnotherConfirm == 0
+                    && s.isConfirm2 == 0
                     );
                     break;
                 case "مؤكدة"://confirmed
@@ -276,7 +283,7 @@ namespace POS.View.accounts
                     && s.posId == MainWindow.posID.Value
                     && s.isConfirm == 1
                     //&& another is confirmed
-                    && isAnotherConfirm == 1
+                    && s.isConfirm2 == 1
                     );
                 break;
                 default://no select
@@ -298,18 +305,27 @@ namespace POS.View.accounts
         {//add
             //chk empty cash
             SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
-            //chk empty user
+            //chk empty pos1
             SectionData.validateEmptyComboBox(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorEmptyFromPosToolTip");
-            //chk empty bank
+            //chk empty pos2
             SectionData.validateEmptyComboBox(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorEmptyToPosToolTip");
+            //chk if 2 pos is the same
+            bool isSame = false;
+            if (cb_pos1.SelectedIndex == cb_pos2.SelectedIndex)
+                isSame = true;
+            if ((cb_pos1.SelectedIndex != -1) && (cb_pos2.SelectedIndex != -1) && (cb_pos1.SelectedIndex == cb_pos2.SelectedIndex))
+            {
+                SectionData.showComboBoxValidate(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorSamePos");
+                SectionData.showComboBoxValidate(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorSamePos");
+            }
 
-            if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")))
+            if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")) && !isSame)
             {
                 //first operation
                 CashTransfer cash1 = new CashTransfer();
 
                 cash1.transType = "p";//pull
-                cash1.transNum = await SectionData.generateNumber('p',"p");//first parameter is pull , second is pos
+                cash1.transNum = await SectionData.generateNumber('p', "p");//first parameter is pull , second is pos
                 cash1.cash = decimal.Parse(tb_cash.Text);
                 cash1.createUserId = MainWindow.userID.Value;
                 cash1.notes = tb_note.Text;
@@ -328,7 +344,7 @@ namespace POS.View.accounts
                     CashTransfer cash2 = new CashTransfer();
 
                     cash2.transType = "d";//deposite
-                    cash2.transNum = await SectionData.generateNumber('d', "p");//first parameter is deposit , second is pos
+                    cash2.transNum = await SectionData.generateNumber('p', "p");//first parameter is deposit , second is pos
                     cash2.cash = decimal.Parse(tb_cash.Text);
                     cash2.createUserId = MainWindow.userID.Value;
                     cash2.posIdCreator = MainWindow.posID.Value;
@@ -353,6 +369,7 @@ namespace POS.View.accounts
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
             }
+            
        }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
@@ -363,8 +380,16 @@ namespace POS.View.accounts
             SectionData.validateEmptyComboBox(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorEmptyFromPosToolTip");
             //chk empty bank
             SectionData.validateEmptyComboBox(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorEmptyToPosToolTip");
-
-            if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")))
+            //chk if 2 pos is the same
+            bool isSame = false;
+            if (cb_pos1.SelectedIndex == cb_pos2.SelectedIndex)
+                isSame = true;
+            if ((cb_pos1.SelectedIndex != -1) && (cb_pos2.SelectedIndex != -1) && (cb_pos1.SelectedIndex == cb_pos2.SelectedIndex))
+            {
+                SectionData.showComboBoxValidate(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorSamePos");
+                SectionData.showComboBoxValidate(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorSamePos");
+            }
+            if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")) && !isSame)
             {
                 //first operation (pull)
                 cashtrans2.cash = decimal.Parse(tb_cash.Text);
@@ -461,6 +486,9 @@ namespace POS.View.accounts
                 Tb_search_TextChanged(null, null);
 
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopConfirm"), animation: ToasterAnimation.FadeIn);
+
+                btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirmed");
+                btn_confirm.IsEnabled = false;
             }
             }
 
@@ -551,29 +579,29 @@ namespace POS.View.accounts
         }
 
         private async void Cb_pos1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            cb_pos2.IsEnabled = true;
-
-            #region fill pos combo2
-            //var poss1 = cb_pos1.ItemsSource as List<Pos>;
-            var poss1 = await posModel.GetPosAsync();
-            //Pos pos = new Pos();
-            //pos = cb_pos1.SelectedValue as Pos;
-            if (cb_pos1.SelectedIndex != -1)
-            {
-                poss1.RemoveAt(cb_pos1.SelectedIndex);
-                cb_pos2.IsEnabled = true;
-                cb_pos2.ItemsSource = poss1;
-                cb_pos2.DisplayMemberPath = "name";
-                cb_pos2.SelectedValuePath = "posId";
-                cb_pos2.SelectedIndex = -1;
-            }
-            else
-            {
-                cb_pos2.ItemsSource = null;
-                cb_pos2.IsEnabled = false;
-            }
-            #endregion
+        {//pos1selection
+            //cb_pos2.IsEnabled = true;
+            //MessageBox.Show(cb_pos1.SelectedValue.ToString());
+            //fillPos2();
+            //#region fill pos combo2
+            ////var poss1 = cb_pos1.ItemsSource as List<Pos>;
+            //var poss1 = await posModel.GetPosAsync();
+            ////Pos pos = new Pos();
+            ////pos = cb_pos1.SelectedValue as Pos;
+            //if (cb_pos1.SelectedIndex != -1)
+            //{
+            //    poss1.RemoveAt(cb_pos1.SelectedIndex);
+            //    cb_pos2.IsEnabled = true;
+            //    cb_pos2.ItemsSource = poss1;
+            //    cb_pos2.DisplayMemberPath = "name";
+            //    cb_pos2.SelectedValuePath = "posId";
+            //}
+            //else
+            //{
+            //    cb_pos2.ItemsSource = null;
+            //    cb_pos2.IsEnabled = false;
+            //}
+            //#endregion
 
         }
 
@@ -582,17 +610,25 @@ namespace POS.View.accounts
             var QueryExcel = cashesQuery.AsEnumerable().Select(x => new
             {
                 TransNum = x.transNum,
-                PosName = x.posName,
+                PosFromName = x.posName,
+                PosToName   = x.pos2Name,
                 OpperationType = x.transType,
                 Cash = x.cash
             });
             var DTForExcel = QueryExcel.ToDataTable();
             DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trPosName");
-            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trOpperationTypeToolTip");
-            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trCashTooltip");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trFromPos");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trToPos");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trOpperationTypeToolTip");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trCashTooltip");
 
             ExportToExcel.Export(DTForExcel);
+        }
+
+        private async void Cb_state_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            await RefreshCashesList();
+            Tb_search_TextChanged(null, null);
         }
     }
 }

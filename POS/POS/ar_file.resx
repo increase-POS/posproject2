@@ -1056,4 +1056,16 @@
   <data name="trErrorAmountIncreaseToolTip" xml:space="preserve">
     <value>لا يمكن تجاوز الكمية</value>
   </data>
+  <data name="trErrorSamePos" xml:space="preserve">
+    <value>لا يمكن السحب من نقطة البيع نفسها</value>
+  </data>
+  <data name="trBankAccounts" xml:space="preserve">
+    <value>حسابات البنك</value>
+  </data>
+  <data name="trIsConfirmed" xml:space="preserve">
+    <value>تم التأكيد</value>
+  </data>
+  <data name="trPosAccounts" xml:space="preserve">
+    <value>حسابات نقطة البيع</value>
+  </data>
 </root>

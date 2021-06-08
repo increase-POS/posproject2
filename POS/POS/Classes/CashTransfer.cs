@@ -50,6 +50,7 @@ namespace POS.Classes
         public Nullable<int> pos2Id { get; set; }
         public string posCreatorName { get; set; }
         public int cashTrans2Id { get; set; }
+        public Nullable<byte> isConfirm2 { get; set; }
 
         public async Task<List<CashTransfer>> GetCashTransferAsync(string type, string side)
         {

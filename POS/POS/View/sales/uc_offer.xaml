@@ -10,24 +10,28 @@
 
     <Grid x:Name="grid_ucOffer" >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="380"/>
+            <ColumnDefinition Width="2.54*"/>
+            <ColumnDefinition x:Name="gridWidth" Width="*" MinWidth="225"/>
         </Grid.ColumnDefinitions>
-        <Grid Margin="10,15,10,15" Grid.Column="0">
+
+
+        <!--Left Section Grid-->
+        <!--#region -->
+        <Grid Margin="0,15,10,15" Grid.Column="0">
             <Grid.RowDefinitions >
                 <RowDefinition Height="45"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="45"/>
             </Grid.RowDefinitions>
-            <Grid  Margin="5,0,5,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Border CornerRadius="5,0,0,5"  
+
+            <!--Search-->
+            <!--#region -->
+            <Border Background="White" CornerRadius="7" Margin="5,0,5,0">
+                <DockPanel LastChildFill="False" >
+                    <Border Width="50" CornerRadius="5,0,0,5"  
                            Background="#178DD2" >
 
-                    <Path Fill="#E8E8E8" Stretch="Fill"
+                        <Path Fill="#E8E8E8" Stretch="Fill"
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="17.5" Height="17.5"
                               Data="M111.6,16.4c-17.9-17.9-47-17.9-65,0C31,32.1,28.7,56.7,41.3,75c1,1.4,2,2.7,3.1,4L40.3,83l-4.9-4.9L5.9,108.2
@@ -36,49 +40,29 @@
 	s32.6-12.5,45,0c6,6,9.4,14.1,9.4,22.5C110.9,57.3,107.6,65.4,101.6,71.4z M92.7,45.5c-7.5,0-13.6-6.1-13.6-13.6
 	c0-1.4,0.2-2.8,0.6-4.2C68,27.3,58.3,36.5,57.9,48.2C57.5,60,66.7,69.7,78.5,70.1c11.7,0.4,21.5-8.8,21.9-20.6c0.1-2-0.2-4-0.7-5.9
 	C97.6,44.8,95.2,45.5,92.7,45.5z"/>
-                </Border>
-                <Grid  Grid.Column="1" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.ColumnSpan="3" 
-					 CornerRadius="0,5,5,0"  
-                           Background="White"  />
-
-                    <TextBox  x:Name="tb_search"
-                        Padding="10,5,5,5" BorderBrush="{x:Null}"
-                          materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
-                 Foreground="#4e4e4e" TextBlock.FontSize="14"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35"   Width="250" Margin="10,5" TextChanged="Tb_search_TextChanged">
+                    </Border>
+                    <TextBox  x:Name="tb_search" TabIndex="14"
+                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                              Padding="10,0,5,0" BorderBrush="{x:Null}"
+                              materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
+                              Foreground="#4e4e4e" TextBlock.FontSize="14"
+                               VerticalAlignment="Center" 
+                              Height="40"   Width="auto" Margin="10,5" 
+                              TextChanged="Tb_search_TextChanged">
                         <TextBox.ToolTip>
                             <ToolTip x:Name="tt_search" Content="Search"
-                                                          Placement="left" 
-                                                          HorizontalOffset="25"
-                                                          PlacementRectangle="50,0,0,0"
-                                                          VerticalOffset="35"/>
+                                    Placement="left" 
+                                    HorizontalOffset="15"
+                                    PlacementRectangle="50,0,0,0"
+                                    VerticalOffset="30"/>
                         </TextBox.ToolTip>
                     </TextBox>
-                    <Grid Grid.Column="1" HorizontalAlignment="Right"   Margin="5,0,5,0"  >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="45"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="txt_active" Grid.Column="0" 
-                            Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                              FontSize="12"/>
-                        <ToggleButton Grid.Column="1"  x:Name="tgl_isActive"  Checked="Tgl_isActive_Checked" Unchecked="Tgl_isActive_Unchecked"
-                             VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
-                                          Margin="0" Height="13" Width="28" />
-                    </Grid>
-                    <Button FlowDirection="LeftToRight"  Width="40" Height="40" x:Name="btn_refresh" Grid.Row="0" Grid.Column="4" Padding="0" 
-                            materialDesign:ButtonAssist.CornerRadius="15"
+
+
+                    <Button  DockPanel.Dock="Right" FlowDirection="LeftToRight"  Width="40" Height="40" x:Name="btn_refresh" Grid.Row="0" Grid.Column="4" Padding="0" 
+                            materialDesign:ButtonAssist.CornerRadius="15" Cursor="Hand"
                           Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_refresh_Click"  Style="{StaticResource SmallButtonCircleRotate}"
-                             Margin="5,1"  Content="إضافة"    RenderTransformOrigin="0.5,0.5"
+                             Margin="5,1"  Content="إضافة"   RenderTransformOrigin="0.5,0.5"
                             DataContext="M896,0L896,0C401.2,0,0,401.2,0,896v0c0,494.8,401.2,896,896,896h0c494.8,0,896-401.2,896-896v0C1792,401.2,1390.8,0,896,0z
 	 M1451.3,1021c-31.9,133.7-98.8,242.1-200.6,325.2c-101.8,83.1-221,124.6-357.7,124.6c-72.8,0-143.3-13.7-211.4-41.2
 	s-128.8-66.6-182.2-117.5l-96.5,96.5c-9.5,9.5-20.7,14.2-33.7,14.2s-24.2-4.7-33.7-14.2c-9.5-9.5-14.2-20.7-14.2-33.7v-335.3
@@ -107,18 +91,33 @@
                                               VerticalOffset="25"/>
                         </Button.ToolTip>
                     </Button>
-                </Grid>
-
-            </Grid >
-            <Grid  Margin="5,5,5,0" Grid.Row="1"  >
-                <Border Background="White" CornerRadius="7,7,0,0" />
-                <DataGrid  Margin="5,5,5,5"  Grid.Row="1"  IsReadOnly="True"  Background="White"
+                    <ToggleButton DockPanel.Dock="Right" x:Name="tgl_isActive"  Checked="Tgl_isActive_Checked" Unchecked="Tgl_isActive_Unchecked"
+                             VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
+                                          Margin="0" Height="13" Width="28" />
+                    <TextBlock  DockPanel.Dock="Right" x:Name="txt_active"
+                                   Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="12"/>
+                </DockPanel>
+            </Border>
+            <!--#region -->
+            <Border Margin="5,5,5,0" Grid.Row="1"  Background="White" CornerRadius="7,7,0,0">
+                <DataGrid  Margin="5,5,5,17.5"  Grid.Row="1"  IsReadOnly="True"  Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
+                     
                        x:Name="dg_offer"
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader" SelectionChanged="Dg_offer_SelectionChanged"    >
+                        ColumnWidth="SizeToHeader" SelectionChanged="Dg_offer_SelectionChanged"    AlternatingRowBackground="#f3f3f3" AlternationCount="2">
+                    <DataGrid.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
+                        <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Background" Value="#e7f3fa" />
+                            <Setter Property="BorderBrush" Value="White"/>
+                            <Setter Property="BorderThickness" Value="0 0 1 0"/>
+                        </Style>
+                    </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn MinWidth="125"  Header="Code" Binding="{Binding Path=code}">
+                        <DataGridTextColumn Width="*"  Header="Code" Binding="{Binding Path=code}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -129,7 +128,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn MinWidth="125"  Header="Name" Binding="{Binding Path=name}">
+                        <DataGridTextColumn Width="*"  Header="Name" Binding="{Binding Path=name}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -140,7 +139,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn MinWidth="125"  Header="Value" Binding="{Binding Path=name}">
+                        <DataGridTextColumn Width="*"  Header="Value" Binding="{Binding Path=name}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -151,7 +150,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn MinWidth="125"  Header="Start date" Binding="{Binding Path=name}">
+                        <DataGridTextColumn Width="*"  Header="Start date" Binding="{Binding Path=name}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -162,7 +161,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn MinWidth="125"  Header="End date" Binding="{Binding Path=name}">
+                        <DataGridTextColumn Width="*"  Header="End date" Binding="{Binding Path=name}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -175,137 +174,140 @@
                         </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-            </Grid>
-            <Grid Grid.Row="2" Margin="5,0,5,0" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Border Background="White" CornerRadius="0,0,7,7" Grid.ColumnSpan="10" />
-                <Button   Background="{x:Null}"    Grid.Column="0" Margin="10,0,5,0"
+            </Border>
+            <!--Export Buttons-->
+            <!--#region -->
+            <Border Grid.Row="2" Margin="5,0,5,0" Background="White" CornerRadius="0,0,7,7" >
+                <Border BorderThickness="0,0,0,1" BorderBrush="#178DD2" Margin="10,0,10,10" Width="auto" HorizontalAlignment="Left">
+                    <StackPanel  Orientation="Horizontal" >
+
+                        <Button x:Name="btn_pdf"   Background="{x:Null}"   Margin="10,0,5,0"
                           Padding="0" Height="35" 
-                          BorderBrush="{x:Null}">
-                    <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="22" Height="22">
-                        <materialDesign:PackIcon.ToolTip>
-                            <ToolTip x:Name="tt_report" Content="Report"
+                          BorderBrush="{x:Null}" >
+                            <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
+                                
+                          Width="22" Height="22">
+                                <materialDesign:PackIcon.ToolTip>
+                                    <ToolTip x:Name="tt_report" Content="Report"
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-25"/>
-                        </materialDesign:PackIcon.ToolTip>
-                    </materialDesign:PackIcon>
-                </Button>
-                <Button   Background="{x:Null}"    Grid.Column="1" Margin="5,0,5,0"
+                                              VerticalOffset="-10"/>
+                                </materialDesign:PackIcon.ToolTip>
+                            </materialDesign:PackIcon>
+                        </Button>
+                        <Button   Background="{x:Null}"    Margin="5,0,5,0"
                           Padding="0" Height="35"  x:Name="btn_print"
-                          BorderBrush="{x:Null}">
-                    <materialDesign:PackIcon Foreground="#313131" Kind="Printer"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="22" Height="22">
-                        <materialDesign:PackIcon.ToolTip>
-                            <ToolTip x:Name="tt_print" Content="Print"
+                          BorderBrush="{x:Null}" >
+                            <materialDesign:PackIcon Foreground="#313131" Kind="Printer"  
+                              HorizontalAlignment="Center" 
+                      Width="22" Height="22">
+                                <materialDesign:PackIcon.ToolTip>
+                                    <ToolTip x:Name="tt_print" Content="Print"
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-25"/>
-                        </materialDesign:PackIcon.ToolTip>
-                    </materialDesign:PackIcon>
-                </Button>
-                <Button FlowDirection="LeftToRight"   Background="{x:Null}"    Grid.Column="2" Margin="2.5,0,2.5,0" 
+                                              VerticalOffset="-10"/>
+                                </materialDesign:PackIcon.ToolTip>
+                            </materialDesign:PackIcon>
+                        </Button>
+                        <Button FlowDirection="LeftToRight"   Background="{x:Null}"    Grid.Column="2" Margin="2.5,0,2.5,0" 
                             Padding="0" Height="20" Width="25"   x:Name="btn_pieChart"   
                                        BorderBrush="{x:Null}">
-                    <Grid Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Path Width="8.8" Height="9.6" Stretch="Fill" Data="M27.7,8.3l-10.2,7.8l9.1,9.1c2.1-2.5,3.4-5.7,3.4-9.2C30,13.1,29.1,10.5,27.7,8.3z" Fill="#DD191B"
+                            <Grid Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Path Width="8.8" Height="9.6" Stretch="Fill" Data="M27.7,8.3l-10.2,7.8l9.1,9.1c2.1-2.5,3.4-5.7,3.4-9.2C30,13.1,29.1,10.5,27.7,8.3z" Fill="#DD191B"
                               RenderTransformOrigin="5,5" >
-                            <Path.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform />
-                                    <SkewTransform/>
-                                    <RotateTransform Angle="0"/>
-                                    <TranslateTransform  X="6.5" Y="0.2"/>
-                                </TransformGroup>
-                            </Path.RenderTransform>
-                        </Path>
-                        <Path Width="7.2" Height="7.2" Stretch="Fill" Data="M17,14l9.4-7.3c-2.4-2.6-5.7-4.4-9.4-4.7V14z" Fill="#F74110" RenderTransformOrigin="0,0">
-                            <Path.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform />
-                                    <SkewTransform/>
-                                    <RotateTransform/>
-                                    <TranslateTransform  X="6.2" Y="-6"/>
-                                </TransformGroup>
-                            </Path.RenderTransform>
-                        </Path>
-                        <Path Fill="#377EB8" Width="16" Height="17" Stretch="Fill" Data="M15.3,16.7C15.3,16.7,15.3,16.7,15.3,16.7C15.2,16.6,15.2,16.6,15.3,16.7c-0.1-0.1-0.1-0.2-0.1-0.2c0-0.1-0.1-0.1-0.1-0.2
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="0"/>
+                                            <TranslateTransform  X="6.5" Y="0.2"/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Path Width="7.2" Height="7.2" Stretch="Fill" Data="M17,14l9.4-7.3c-2.4-2.6-5.7-4.4-9.4-4.7V14z" Fill="#F74110" RenderTransformOrigin="0,0">
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform  X="6.2" Y="-6"/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Path Fill="#377EB8" Width="16" Height="17" Stretch="Fill" Data="M15.3,16.7C15.3,16.7,15.3,16.7,15.3,16.7C15.2,16.6,15.2,16.6,15.3,16.7c-0.1-0.1-0.1-0.2-0.1-0.2c0-0.1-0.1-0.1-0.1-0.2
    s0-0.1,0-0.2c0,0,0-0.1,0-0.1V2.1C7.7,2.6,2,8.6,2,16c0,7.7,6.3,14,14,14c3.5,0,6.7-1.3,9.2-3.4L15.3,16.7z" RenderTransformOrigin="0,0">
-                            <Path.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform ScaleX="1"/>
-                                    <SkewTransform/>
-                                    <RotateTransform/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </Path.RenderTransform>
-                            <Path.ToolTip>
-                                <ToolTip x:Name="tt_pieChart" Content="Pie Chart"
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                    <Path.ToolTip>
+                                        <ToolTip x:Name="tt_pieChart" Content="Pie Chart"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-25"/>
-                            </Path.ToolTip>
-                        </Path>
-                    </Grid>
-
-                </Button>
-                <Button   Background="{x:Null}"    Grid.Column="3" Margin="5,0,5,0" 
+                                              VerticalOffset="-10"/>
+                                    </Path.ToolTip>
+                                </Path>
+                            </Grid>
+                        </Button>
+                        <Button   Background="{x:Null}"    Grid.Column="3" Margin="5,0,5,0" 
                             Padding="0" Height="35"   x:Name="btn_exportToExcel"   Click="Btn_exportToExcel_Click"
                                        BorderBrush="{x:Null}">
-                    <Path Fill="#378500" Stretch="Fill"
+                            <Path Fill="#378500" Stretch="Fill"
                           Width="20" Height="20" 
                            FlowDirection="LeftToRight" Data="M25.162,3H16v2.984h3.031v2.031H16V10h3v2h-3v2h3v2h-3v2h3v2h-3v3h9.162   C25.623,23,26,22.609,26,22.13V3.87C26,3.391,25.623,3,25.162,3z M24,20h-4v-2h4V20z M24,16h-4v-2h4V16z M24,12h-4v-2h4V12z M24,8   h-4V6h4V8z 
 	                     M0,2.889v20.223L15,26V0L0,2.889z M9.488,18.08l-1.745-3.299c-0.066-0.123-0.134-0.349-0.205-0.678   H7.511C7.478,14.258,7.4,14.494,7.277,14.81l-1.751,3.27H2.807l3.228-5.064L3.082,7.951h2.776l1.448,3.037   c0.113,0.24,0.214,0.525,0.304,0.854h0.028c0.057-0.198,0.163-0.492,0.318-0.883l1.61-3.009h2.542l-3.037,5.022l3.122,5.107 
                           L9.488,18.08L9.488,18.08z"  >
-                        <Path.ToolTip>
-                            <ToolTip x:Name="tt_excel" Content="Export to excel"
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_excel" Content="Export to excel"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-25"/>
-                        </Path.ToolTip>
-                    </Path>
-                </Button>
-                <TextBlock   Background="{x:Null}" x:Name="txt_count"   Grid.Column="4" Margin="0,0,0,5" VerticalAlignment="Bottom"
+                                              VerticalOffset="-10"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Button>
+                        <TextBlock   Background="{x:Null}" x:Name="txt_count"   Grid.Column="4" Margin="0,0,0,5" 
                             Padding="10"   Text="0" Foreground="#378500" FontSize="12"  >
-                    <TextBlock.ToolTip>
-                        <ToolTip x:Name="tt_count" Content="Customers Count"
+                            <TextBlock.ToolTip>
+                                <ToolTip x:Name="tt_count" Content="Customers Count"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,25,0,0"
-                                              VerticalOffset="-45"/>
-                    </TextBlock.ToolTip>
+                                              VerticalOffset="-20"/>
+                            </TextBlock.ToolTip>
+                        </TextBlock>
 
-                </TextBlock>
-            </Grid>
+                    </StackPanel >
+                </Border>
+            </Border>
+            <!--#endregion-->
         </Grid>
-        <Border Grid.Column="1"  Margin="10,15,10,15" 
-                CornerRadius="7" >
-            <Grid Grid.Column="2">
-            <Grid.RowDefinitions >
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Border CornerRadius="7,7,0,0" Background="#4E4E4E">
-                <Grid Width="360" Height="52" HorizontalAlignment="Center"  >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="1.2*"/>
-                    </Grid.ColumnDefinitions>
-                    <Path Fill="#E8E8E8" Stretch="Fill" FlowDirection="LeftToRight"
+
+
+
+        <Border Grid.Column="1" Background="White" Margin="0,15,10,15" CornerRadius="7"  Width="auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <!--Bank Button-->
+                <!--#region-->
+                <Border CornerRadius="7,7,0,0"
+                        Grid.Row="0"
+                        BorderBrush="{x:Null}"
+                        Background="#4E4E4E">
+                    <Button Height="52" Background="{x:Null}" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Height="52" HorizontalAlignment="Center" >
+                            <Path Fill="#E8E8E8" Stretch="Fill" FlowDirection="LeftToRight"
                               HorizontalAlignment="Right" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"
                               Data="M321.2,295.7c-0.7,0-1.5,0.2-2,0.7c-0.5,0.4-0.8,1.1-0.8,1.7c0,0.7,0.3,1.4,0.8,1.8l0,0c1.2,0.9,2.8,0.9,4,0
@@ -360,595 +362,468 @@
 	c0,7.9,0.5,13.3,1.4,16.2c1,2.9,2.7,4.3,5.1,4.3c2.7,0,4.5-1.7,5.4-5.2c1-4.6,1.5-9.4,1.4-14.1c0-8.2-0.6-13.6-1.8-16.1
 	C278.2,282.3,276.5,281.1,274.4,281.1z M357.9,318.8c-0.6-0.5-1.3-0.7-2-0.7s-1.4,0.2-2,0.7c-0.5,0.4-0.8,1.1-0.8,1.8
 	c0,0.7,0.3,1.4,0.8,1.8c0.6,0.5,1.3,0.7,2,0.7s1.5-0.2,2-0.7l0,0c0.5-0.5,0.8-1.1,0.8-1.8C358.7,319.9,358.4,319.2,357.9,318.8z"/>
-                    <TextBlock Text="Offer" x:Name="txt_offerHeader" Foreground="#E8E8E8" 
-                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
-                              Grid.Column="1"      Margin="5"/>
-                </Grid>
-            </Border>
-
-            <!--<Grid  Background="#002196F3" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Button   Width="175" Height="52" Grid.Column="0" 
-                      HorizontalAlignment="Center" VerticalAlignment="Center" 
-                     Background="{x:Null}"  BorderBrush="{x:Null}"
-                    Padding="0"  x:Name="btn_offerTab" Click="Btn_offerTab_Click" >
-                    <Border x:Name="brd_offerTab" CornerRadius="7,0,0,0" Background="#4E4E4E"
-                                BorderThickness="0,0,0,5" BorderBrush="#178DD2" >
-                        <Grid Width="175" Height="52"  >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="35"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Path Fill="#E8E8E8"    Stretch="Fill"
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="20" Height="20" FlowDirection="LeftToRight"
-                                  Data="M321.2,295.7c-0.7,0-1.5,0.2-2,0.7c-0.5,0.4-0.8,1.1-0.8,1.7c0,0.7,0.3,1.4,0.8,1.8l0,0c1.2,0.9,2.8,0.9,4,0
-	c0.5-0.5,0.8-1.1,0.8-1.8c0-0.7-0.3-1.3-0.8-1.8C322.6,296,321.9,295.7,321.2,295.7z M265.7,207.2L265.7,207.2
-	c1.8,0.1,3.5-1,4.3-2.6c0.9-1.7,1.3-4.9,1.3-9.5c0-6.7-1.8-10-5.4-10c-3.8,0-5.8,3.8-5.8,11.4C260.1,203.7,262,207.2,265.7,207.2z
-	 M438.6,255.2c0-15.4,36.2-34.7,32.9-49.2c-3.4-14.9-44.5-16.6-51-30c-6.6-13.7,17.6-46.8,8.3-58.6s-47.2,4.5-59-4.9
-	s-4.3-49.9-17.9-56.5c-13.5-6.5-40.3,24.5-55.3,21.1c-14.2-3.2-24.8-41.5-39.8-43l0,0c-0.3,0-0.6,0-0.8,0l0,0l0,0
-	c-15.4,0-26.2,39.7-40.6,43c-0.5,0.1-0.9,0.2-1.4,0.2c-15.3,1.3-40.9-27.6-54-21.3c-0.1,0-0.2,0.1-0.2,0.1c-0.3,0.2-0.7,0.4-1,0.6
-	c-12,8.4-5.3,46.6-16.7,55.7c-11.7,9.4-49.5-6.9-59,4.9s14.9,44.9,8.3,58.6c-6.5,13.4-47.6,15.1-51,30c-0.2,0.9-0.3,1.8-0.2,2.8
-	c1.2,14.1,33.1,32,33.1,46.5c0,1.4-0.3,2.9-0.9,4.4C67.8,271.9,46,286,41.2,298c-0.9,2.2-1.2,4.3-0.8,6.4c3.4,14.9,44.5,16.5,51,30
-	c6.6,13.7-17.8,46.8-8.3,58.6c0.6,0.7,1.3,1.4,2.1,1.9c0.9,0.6,2,1.1,3.2,1.5c10.1,3.3,28.4-1.6,41.6-1.5c4.9,0.1,9.1,0.8,11.9,2.9
-	c0.1,0,0.1,0.1,0.2,0.1c11.4,9.1,4.7,47.3,16.7,55.7c0.4,0.3,0.8,0.5,1.2,0.7c13.5,6.5,40.3-24.5,55.3-21.1c1.3,0.3,2.7,0.9,4,1.8
-	c10.8,7.4,19.8,32.6,31.1,39.5c1.8,1.1,3.7,1.7,5.6,1.7c15.4,0,26.2-39.7,40.7-43c14.9-3.4,41.8,27.6,55.3,21.1
-	c13.7-6.6,6.2-47,17.9-56.4s49.5,6.8,59-5s-14.8-44.9-8.3-58.6c6.5-13.5,47.6-15.1,51-30C474.8,289.9,438.6,270.6,438.6,255.2z
-	 M122.3,215.4c-0.9,0-1.7-0.8-1.7-1.7v-35c0-0.9,0.8-1.7,1.7-1.7h13.1c6.4,0,11.3,1.9,14.5,5.7c3.2,3.7,4.9,8.4,4.8,13.3
-	c0,5.7-1.7,10.4-5.1,14c-3.5,3.6-8.4,5.6-13.4,5.4H122.3z M171.4,213.7c0,0.9-0.8,1.7-1.7,1.7h-8.4c-0.9,0-1.7-0.8-1.7-1.7v-34.9
-	c0-0.9,0.8-1.7,1.7-1.7h8.4c0.9,0,1.7,0.8,1.7,1.7V213.7z M174.8,206.2c-0.3-0.9,0.1-1.9,1-2.2c0.1,0,0.2,0,0.3-0.1l7.6-1.4
-	c0.8-0.1,1.5,0.3,1.8,1c1.1,2.3,3.3,3.4,6.6,3.4c3,0,4.4-0.8,4.4-2.4c0-0.8-0.4-1.5-1-1.9c-1.1-0.6-2.4-1-3.7-1.2
-	c-6.7-1.3-11-3-12.9-5s-2.9-4.6-2.9-7.3c-0.1-3.5,1.5-6.8,4.1-9c2.7-2.4,6.7-3.6,11.8-3.6c7,0,11.9,2.5,14.6,7.6
-	c0.4,0.8,0.1,1.9-0.7,2.3c-0.1,0-0.2,0.1-0.3,0.1l-6.5,2c-0.7,0.2-1.5-0.1-1.9-0.8c-1.1-1.8-3-2.7-5.6-2.7s-3.9,0.8-3.8,2.4
-	c0,0.7,0.3,1.3,0.9,1.7c1,0.6,2.2,0.9,3.4,1.1c3.3,0.6,6.6,1.5,9.8,2.6c2,0.8,3.6,2.1,4.8,3.8c1.3,1.9,2,4.1,1.9,6.4
-	c0.1,3.7-1.7,7.2-4.7,9.4c-3.2,2.3-7.3,3.5-12.4,3.5C182.9,215.9,177.3,212.7,174.8,206.2z M236.4,327.5c-4.9,4.2-11.1,6.4-18.7,6.4
-	c-6.1,0.2-12.1-1.7-17.1-5.2c-3.7-2.6-6.4-6.3-7.9-10.6c-0.6-1.8,0.3-3.7,2.1-4.3c0.2-0.1,0.5-0.1,0.7-0.2l10.1-1.2
-	c1.5-0.2,2.9,0.6,3.5,2c1.5,3.1,4.2,4.7,8.2,4.7c2.2,0.1,4.3-0.7,5.8-2.3c1.4-1.5,2.2-3.5,2.1-5.5c0.1-2.2-0.8-4.3-2.4-5.8
-	c-3.7-3-9-2.7-12.3,0.7c-0.7,0.8-1.8,1.2-2.9,1l-9.7-1.4c-1.8-0.3-3-1.8-2.9-3.6l2.4-30.7c0.1-1.8,1.6-3.1,3.4-3.1h36
-	c1.9,0,3.4,1.5,3.4,3.4c0,0.1,0,0.2,0,0.4l-1,9.1c-0.2,1.7-1.6,3-3.3,3H215c-1.8,0-3.2,1.3-3.4,3.1c-0.2,1.9,1.2,3.5,3.1,3.6
-	c0.5,0,0.9,0,1.4-0.2c2.1-0.7,4.4-1.1,6.7-1.1c5.4-0.1,10.7,2,14.7,5.8c4.2,3.8,6.3,9,6.3,15.4C243.9,317.3,241.2,323.4,236.4,327.5
-	z M224.8,204.8c0.9,1.4,2.4,2.3,4.1,2.3c2.7,0,4.4-1.6,5-4.8c0.2-0.9,0.9-1.5,1.8-1.4l7.4,0.4c0.9,0,1.6,0.8,1.6,1.8
-	c0,0.1,0,0.1,0,0.2c-0.5,3.5-2.3,6.6-4.9,8.9c-7.1,5.5-17.1,4.9-23.5-1.4c-3.2-3.5-4.8-8.2-4.8-14.3s1.5-10.9,4.5-14.5
-	c3-3.7,7.3-5.5,12.7-5.5c5.1,0,9,1.4,11.7,4.2c2.4,2.6,4,5.8,4.4,9.3c0.1,0.9-0.5,1.8-1.4,1.9c-0.1,0-0.1,0-0.2,0l-7.5,0.4
-	c-0.9,0-1.7-0.6-1.8-1.5c-0.1-1.4-0.5-2.8-1.4-4c-0.8-1.1-2.1-1.7-3.5-1.7c-3.7,0-5.6,3.7-5.6,11.2
-	C223.3,200.5,223.8,203.3,224.8,204.8z M326.3,178.7c0-0.9,0.8-1.7,1.7-1.7h8.5c0.6,0,1.1,0.3,1.4,0.8l8.4,13.3v0.1
-	c0.5,0.8,1.5,1,2.3,0.5c0.5-0.3,0.8-0.9,0.8-1.5v-11.5c0-0.9,0.8-1.7,1.7-1.7h6.2c0.9,0,1.7,0.8,1.7,1.7v34.9c0,0.9-0.7,1.7-1.7,1.7
-	h-7c-0.6,0-1.1-0.3-1.4-0.8l-10-16.1c-1.5-2.5-2.9-5.2-4.1-7.9c0.6,2,0.9,4.2,0.9,6.3v16.9c0,0.9-0.7,1.7-1.7,1.7l0,0h-6
-	c-0.9,0-1.7-0.8-1.7-1.7V178.7z M252.3,182c3.3-3.7,7.8-5.6,13.5-5.6c4.9-0.2,9.6,1.8,13,5.3c3.3,3.5,5,8.2,5,14.1
-	c0,6.1-1.7,10.9-5.1,14.6c-3.3,3.6-8.1,5.6-13,5.5c-5,0.2-9.8-1.8-13.2-5.4c-3.4-3.6-5.1-8.4-5.1-14.3
-	C247.5,190.5,249.1,185.7,252.3,182z M292.8,325c-4.4,5.8-11.3,9.1-18.6,8.9c-0.2,0-0.5,0-0.7,0c-7,0-13.7-3.4-17.8-9.2
-	c-4.5-6.1-6.8-14.1-6.8-24.1c0-10.2,2.3-18.3,7-24.2c4.7-5.9,10.9-8.9,18.6-8.9c8.2,0,14.4,3.2,18.7,9.5c4.3,6.3,6.5,14.4,6.5,24.2
-	C299.8,311.1,297.5,319.1,292.8,325z M292.9,212.9c-2.9-2-4.4-5.3-4.4-9.9v-24.3c0-0.9,0.8-1.7,1.7-1.7h8.6c0.9,0,1.7,0.8,1.7,1.7
-	v22.9c-0.1,1.4,0.3,2.8,1.2,4c1,0.9,2.3,1.4,3.7,1.3c1.2,0,2.4-0.3,3.5-0.9c0.8-0.5,1.4-1.2,1.6-2.1c0.2-1.5,0.3-3,0.3-4.5v-20.7
-	c0-0.9,0.8-1.7,1.7-1.7h5.9c0.9,0,1.7,0.8,1.7,1.7v23.7c0,4.8-1.4,8.3-4.3,10.4c-2.8,2.1-6.6,3.1-11.2,3.1
-	C299.7,215.9,295.8,214.9,292.9,212.9z M319.4,311.1c-3-0.3-5.9-1.5-8.2-3.5c-0.5-0.4-0.9-0.9-1.4-1.4c-4.1-4.9-3.5-12.1,1.4-16.2
-	c5.9-4.7,14.2-4.7,20.1,0c1.7,1.4,3,3.3,3.6,5.5l0,0c0.3,1.1,0.5,2.2,0.5,3.3c0,3.4-1.4,6.6-4,8.8c-2.8,2.4-6.4,3.7-10.1,3.5
-	C320.6,311.2,320,311.1,319.4,311.1z M330.9,332.2c-0.5,1-1.6,1.7-2.7,1.7c-0.4,0-0.7-0.1-1-0.2c-0.1,0-0.3-0.1-0.4-0.2
-	c-1.5-0.8-2-2.6-1.3-4l20.7-41.2c0.5-1,1.5-1.7,2.7-1.7l0,0c0.5,0,1,0.1,1.4,0.3c1.5,0.8,2,2.6,1.3,4.1l-18.3,36.6L330.9,332.2z
-	 M365.9,330c-5.9,4.7-14.2,4.7-20.1,0c-2.6-2.2-4.1-5.4-4-8.7c0-0.8,0.1-1.7,0.3-2.5c0.5-2.4,1.9-4.7,3.8-6.3c1.6-1.4,3.4-2.4,5.5-3
-	c1.5-0.4,3-0.6,4.6-0.6c3.7-0.1,7.3,1.1,10.1,3.5c2.6,2.2,4.1,5.4,4,8.8C370,324.7,368.5,327.9,365.9,330z M389.4,184.5
-	c0,0.9-0.8,1.7-1.7,1.7h-4.6c-0.9,0-1.7,0.8-1.7,1.7v25.8c0,0.9-0.8,1.7-1.7,1.7H372c-0.9,0-1.7-0.8-1.7-1.7v-25.8
-	c0-0.9-0.8-1.7-1.7-1.7H364c-0.9,0-1.7-0.8-1.7-1.7v-5.8c0-0.9,0.8-1.7,1.7-1.7h23.7c0.9,0,1.7,0.8,1.7,1.7L389.4,184.5L389.4,184.5
-	z M140.6,188.7c-1-1.9-3-3.1-5.2-3H134c-0.9,0-1.7,0.8-1.7,1.7v17.4c0,0.9,0.8,1.7,1.7,1.7h1.4c2,0,3.9-1.1,4.9-2.8
-	c1.5-2.3,2.2-5,2-7.7C142.4,193.4,141.8,191,140.6,188.7z M274.4,281.1c-2.5,0-4.3,1.7-5.2,5c-1.1,4.5-1.5,9.1-1.4,13.6
-	c0,7.9,0.5,13.3,1.4,16.2c1,2.9,2.7,4.3,5.1,4.3c2.7,0,4.5-1.7,5.4-5.2c1-4.6,1.5-9.4,1.4-14.1c0-8.2-0.6-13.6-1.8-16.1
-	C278.2,282.3,276.5,281.1,274.4,281.1z M357.9,318.8c-0.6-0.5-1.3-0.7-2-0.7s-1.4,0.2-2,0.7c-0.5,0.4-0.8,1.1-0.8,1.8
-	c0,0.7,0.3,1.4,0.8,1.8c0.6,0.5,1.3,0.7,2,0.7s1.5-0.2,2-0.7l0,0c0.5-0.5,0.8-1.1,0.8-1.8C358.7,319.9,358.4,319.2,357.9,318.8z"/>
-                            <TextBlock Text="Offer" x:Name="txt_offerHeader" Foreground="#E8E8E8" 
-                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
-                              Grid.Column="1"      Margin="5"/>
-                        </Grid>
-                    </Border>
-                </Button>
-
-                <Button   Width="175" Height="52" Grid.Column="1"  Background="{x:Null}"
-                      HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0"
-                    ToolTip=""
-                    Padding="0" x:Name="btn_offerItems" Click="btn_offerItems_Click" >
-                    <Border CornerRadius="00,7,0,0" Background="#4E4E4E" x:Name="brd_offerItemsTab"
-                                BorderThickness="0,0,0,5" BorderBrush="#4E4E4E">
-                        <Grid Width="175" Height="52" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="35"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <materialDesign:PackIcon Foreground="#E8E8E8" Kind="Discount"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="20" Height="20"/>
-                            <TextBlock x:Name="txt_onItemHeader" Text="on items"  Foreground="#E8E8E8"
-                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
-                              Grid.Column="1"      Margin="5"/>
-                        </Grid>
-                    </Border>
-                </Button>
-
-
-            </Grid>-->
-
-            <Border CornerRadius="0,0,7,7"
-                Grid.Row="1" Background="White">
-                <Grid>
-    <!--//////////////////////////   offer    ////////////////////////////////////////////////-->                
-                    <Grid x:Name="grid_offer" Visibility="Visible" >
+                            <TextBlock Text="Offer" x:Name="txt_offerHeader" Foreground="#E8E8E8" VerticalAlignment="Center" Grid.Column="1"  Margin="5"/>
+                        </StackPanel>
+                    </Button>
+                </Border>
+                <!--#endregion-->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <Grid x:Name="grid_bank" >
                         <Grid.RowDefinitions >
-                            <RowDefinition Height="*"/>
                             <RowDefinition Height="auto"/>
-                            <RowDefinition Height="7.5"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+
+
                         </Grid.RowDefinitions>
-                        <Grid>
-                            <Grid.RowDefinitions >
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
 
 
-                            <Grid Grid.Row="1" >
-                                <Grid.RowDefinitions >
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
 
+                        <!--Base Information-->
+                        <!--#region -->
 
-                                </Grid.RowDefinitions>
+                        <DockPanel LastChildFill="True" Grid.Row="0">
+                            <TextBlock x:Name="txt_baseInformation" Text="Base Infomation" Foreground="#737373" FontSize="10" VerticalAlignment="Center" Margin="5,5,5,5"/>
+                            <Button DockPanel.Dock="Right" x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click" Margin="5,1" ToolTip="clear" TabIndex="13">
+                                <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle" HorizontalAlignment="Center" Grid.Column="0" VerticalAlignment="Center" Width="20" Height="20">
+                                    <materialDesign:PackIcon.ToolTip>
+                                        <ToolTip x:Name="tt_clear" Content="clear" Placement="left" HorizontalOffset="5" PlacementRectangle="50,0,0,0" VerticalOffset="20"/>
+                                    </materialDesign:PackIcon.ToolTip>
+                                </materialDesign:PackIcon>
+                            </Button>
+                            <Separator Background="#999999" VerticalAlignment="Center" Width="auto" />
+                        </DockPanel>
+                        <!--#endregion-->
 
-                                <Grid Grid.ColumnSpan="2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Base Infomation" Foreground="#737373"
-                                     FontSize="10"  VerticalAlignment="Center" x:Name="txt_baseInformation"
-                                            Margin="5" Grid.ColumnSpan="1"/>
-                                    <Separator Background="#999999"   Width="250"  
-                                          VerticalAlignment="Center" Grid.Column="1" />
-                                    <Button x:Name="btn_clear" Grid.Column="3" Padding="0" 
-                              Background="{x:Null}" BorderBrush="{x:Null}" 
-                        Margin="5,0"   ToolTip="clear" Click="Btn_clear_Click">
-
-                                            <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
-                                  HorizontalAlignment="Center" Grid.Column="0"  
-                             VerticalAlignment="Center" Width="20" Height="20">
-                                                <materialDesign:PackIcon.ToolTip>
-                                                    <ToolTip x:Name="tt_clear" Content="Clear"
-                                              Placement="left" 
-                                              HorizontalOffset="15"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="15"/>
-                                                </materialDesign:PackIcon.ToolTip>
-                                            </materialDesign:PackIcon>
-                                        </Button>
-                                </Grid>
-
-                                <Grid   Grid.Row="1"  Margin="5,0,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                        <TextBox x:Name="tb_code"  Text="{Binding code, Mode=OneWay}" Padding="10,5,5,5"   
+                        <TextBox x:Name="tb_code" Grid.Row="1" Text="{Binding code, Mode=OneWay}" Padding="10,0,5,0" 
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="offer Code..."    
                                              Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                              BorderBrush="AliceBlue"  
-                                             HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" 
+                                              MaxLength="20" 
                                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                             Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
+                                             Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" 
                                              PreviewTextInput="Tb_code_PreviewTextInput"
                                              TextChanged="Tb_validateEmptyTextChange" 
                                              LostFocus="Tb_validateEmptyLostFocus"
                                              PreviewKeyDown="Tb_PreventSpaces">
-                                            <TextBox.ToolTip>
-                                                <ToolTip x:Name="tt_code" Content="Code"
+                            <TextBox.ToolTip>
+                                <ToolTip x:Name="tt_code" Content="Code"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                                            </TextBox.ToolTip>
-                                        </TextBox>
+                            </TextBox.ToolTip>
+                        </TextBox>
 
-                                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorCode"
+                        <Path Fill="#E81123" Grid.Row="1" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorCode"
                                   HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                        <Path.ToolTip>
-                                            <ToolTip  x:Name="tt_errorCode"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                        </Path.ToolTip>
-                                    </Path>
-                                </Grid >
-                                <Grid   Grid.Row="2"  Margin="5,0,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                        <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5"   
+                            <Path.ToolTip>
+                                <ToolTip  x:Name="tt_errorCode"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
+
+                        <TextBox x:Name="tb_name" Grid.Row="2" Text="{Binding name, Mode=OneWay}" Padding="10,0,5,0"   
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="offer Name..."    
                                              Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                              BorderBrush="AliceBlue" 
-                                             HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                             Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
+                                        MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                             Height="40"  Margin="10,5,10,5"
                                              TextChanged="Tb_validateEmptyTextChange" 
                                              LostFocus="Tb_validateEmptyLostFocus">
-                                            <TextBox.ToolTip>
-                                                <ToolTip x:Name="tt_name" Content="Name"
+                            <TextBox.ToolTip>
+                                <ToolTip x:Name="tt_name" Content="Name"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                                            </TextBox.ToolTip>
-                                        </TextBox>
+                            </TextBox.ToolTip>
+                        </TextBox>
 
-                                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
+                        <Path Fill="#E81123" Grid.Row="2" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
                                   HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                        <Path.ToolTip>
-                                            <ToolTip  x:Name="tt_errorName"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                        </Path.ToolTip>
-                                    </Path>
-                                </Grid>
+                            <Path.ToolTip>
+                                <ToolTip  x:Name="tt_errorName"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
 
 
-                                <Grid Grid.Row="3"  Margin="5,0,5,0"  >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" x:Name="txt_isActive"
-                                Margin="5,0,5,0" Text="is Active" Foreground="#6e6e6e"
+                        <StackPanel Orientation="Horizontal" Grid.Row="3">
+                            <TextBlock  x:Name="txt_isActive"
+                                Margin="10,0,5,0" Text="is Active" Foreground="#6e6e6e"
                             HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontSize="12"/>
-                                        <ToggleButton Grid.Column="1"  x:Name="tgl_ActiveOffer"  
+                            <ToggleButton Grid.Column="1"  x:Name="tgl_ActiveOffer"  
                                  VerticalAlignment="Center" Padding="10,15,5,5"
                                               Margin="0" Height="13" Width="28" />
-                                </Grid>
+                        </StackPanel>
 
-                            </Grid>
-                            <Grid  Grid.Row="2" >
-                                <Grid.RowDefinitions >
-                                    <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="45"/>
-                                        <RowDefinition Height="45"/>
-                                        <RowDefinition Height="45"/>
-                                    <RowDefinition Height="80"/>
-
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid Grid.ColumnSpan="2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock  Text="Details" Foreground="#737373"
+                        <DockPanel Grid.Row="4">
+                            <TextBlock  Text="Details" Foreground="#737373"
                                      FontSize="10"      VerticalAlignment="Center" x:Name="txt_details"
-                                           HorizontalAlignment="Left" Margin="5,5,0,5"/>
-                                    <Separator Background="#999999"   Width="315"  Margin="5,0,5,0"
-                                          Grid.Column="1" VerticalAlignment="Center" />
-                                </Grid>
-                                <Grid   Grid.Row="1"   >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <ComboBox x:Name="cb_discountType" Padding="10,5,5,5"  
+                                          Margin="5,5,0,5"/>
+                            <Separator Background="#999999"  Margin="5,0,5,0"
+                                       />
+                        </DockPanel>
+
+
+
+
+                        <Grid   Grid.Row="5"   >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox x:Name="cb_discountType" Padding="10,0,5,0"  
+                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                               TextBlock.Foreground="#4E4E4E"
                                               Text="{Binding test, Mode=OneWay}" 
                                               materialDesign:HintAssist.Hint="type discount..." 
-                                              TextBlock.FontSize="12" Margin="3,5,2,5"
-                                              HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                              Height="35" Width="160"  
+                                              TextBlock.FontSize="12" Margin="10,5,0,5"
+                                              
+                                              Height="40"  
                                               Background="#f8f8f8" 
                                               BorderBrush="#737373"       BorderThickness="0" 
                                               FontFamily="Segoe UI"   
-                                              Grid.Row="0"  
+                              
                                               LostFocus="Tb_validateEmptyLostFocus">
-                                            <ComboBox.ToolTip>
-                                                <ToolTip x:Name="tt_discountType" Content="Discount Type"
+                                <ComboBox.ToolTip>
+                                    <ToolTip x:Name="tt_discountType" Content="Discount Type"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                                            </ComboBox.ToolTip>
-                                        </ComboBox>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
 
-                                        <Path x:Name="p_errorDiscountType"  
+                            <Path x:Name="p_errorDiscountType"  
                                         Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                                   HorizontalAlignment="Right" 
                                                 Grid.Column="0"  Visibility="Collapsed" 
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                        <Path.ToolTip>
-                                                <ToolTip x:Name="tt_errorDiscountType"     Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                        </Path.ToolTip>
-                                    </Path>
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorDiscountType"     Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
 
-                                    <Grid Grid.Column="1"  Margin="5,0,0,0" >
-                                        <Grid  >
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                                <TextBox  x:Name="tb_discountValue" x:FieldModifier="private" TextChanged="tb_discountValue_TextChanged"
-                                                          Text="{Binding test, Mode=OneWay}" Grid.Row="2"  Padding="10,5,5,5"   
+                            <Grid Grid.Column="1"  >
+                                <Grid  >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox  x:Name="tb_discountValue" x:FieldModifier="private" TextChanged="tb_discountValue_TextChanged"
+                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                          Text="{Binding test, Mode=OneWay}" Grid.Row="2"  Padding="10,0,5,0"   
                                                           BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Discount Value..."    
                                                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                                           BorderBrush="AliceBlue" 
-                                                          HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                  
                                                           materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                                          Height="35" Width="162"  Margin="0,5,0,5" 
+                                                          Height="40"   Margin="5,5,10,5" 
                                                       PreviewKeyDown="Tb_PreventSpaces" 
                                                       PreviewTextInput="Tb_discountValue_PreviewTextInput" 
                                                        LostFocus="Tb_validateEmptyLostFocus">
-                                                    <TextBox.ToolTip>
-                                                        <ToolTip x:Name="tt_discountValue" Content="Discount Value"
+                                        <TextBox.ToolTip>
+                                            <ToolTip x:Name="tt_discountValue" Content="Discount Value"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                                                    </TextBox.ToolTip>
-                                                </TextBox>
+                                        </TextBox.ToolTip>
+                                    </TextBox>
 
-                                                <Path x:Name="p_errorDiscountValue"
+                                    <Path x:Name="p_errorDiscountValue"
                                                 Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                                   HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                                <Path.ToolTip>
-                                                        <ToolTip   x:Name="tt_errorDiscountValue"   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                                </Path.ToolTip>
-                                            </Path>
-                                        </Grid>
-                                        <Button x:Name="cmdUp" x:FieldModifier="private" FontSize="10" Padding="0,-4,0,0" Content="▲" Width="10" Height="10" Click="cmdUp_Click"
+                                        <Path.ToolTip>
+                                            <ToolTip   x:Name="tt_errorDiscountValue"   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        </Path.ToolTip>
+                                    </Path>
+                                </Grid>
+                                <Button x:Name="cmdUp" x:FieldModifier="private" FontSize="10" Padding="0,-4,0,0" Content="▲" Width="10" Height="10" Click="cmdUp_Click"
                                          Margin="12,13,15,5" VerticalAlignment="Top" HorizontalAlignment="Right" 
                                         Foreground="#737373"       Background="{x:Null}" BorderThickness="0" />
-                                        <Button x:Name="cmdDown" x:FieldModifier="private" FontSize="10" Padding="0,-4,0,0" Content="▼" Width="10" Height="10" Click="cmdDown_Click" 
+                                <Button x:Name="cmdDown" x:FieldModifier="private" FontSize="10" Padding="0,-4,0,0" Content="▼" Width="10" Height="10" Click="cmdDown_Click" 
                                               Margin="12,5,15,13"  VerticalAlignment="Bottom" HorizontalAlignment="Right"
                                               Foreground="#737373"       Background="{x:Null}" BorderThickness="0"/>
-                                    </Grid>
+                            </Grid>
 
-                                </Grid>
+                        </Grid>
 
-                                <Grid   Grid.Row="2"  Margin="5,0,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
+                        <Grid   Grid.Row="6" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                                    <Grid    >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                            <DatePicker  x:Name="dp_startDate" 
+
+                            <DatePicker  x:Name="dp_startDate" 
+                                         Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                                      BorderBrush="#737373"  BorderThickness="0" 
                                                      TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
-                                                     Grid.Row="2" Padding="10,5,5,5"  
+                                                     Grid.Row="2" Padding="10,0,5,0"  
                                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                      materialDesign:HintAssist.Hint="Start date..."  
                                                      Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
-                                                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                                     Grid.Column="1"  Height="35" Width="160"  Margin="5,5"                                      
+                                                     
+                                                  Height="40"   Margin="10,5,0,5"                                      
                                                      LostFocus="Tb_validateEmptyLostFocus"    >
-                                                <DatePicker.Resources>
-                                                    <Style TargetType="DatePickerTextBox">
-                                                        <Setter Property="IsReadOnly" Value="True"/>
-                                                    </Style>
-                                                </DatePicker.Resources>
-                                                <DatePicker.ToolTip>
-                                                    <ToolTip x:Name="tt_startDate" Content="Start Date"
+                                <DatePicker.Resources>
+                                    <Style TargetType="DatePickerTextBox">
+                                        <Setter Property="IsReadOnly" Value="True"/>
+                                    </Style>
+                                </DatePicker.Resources>
+                                <DatePicker.ToolTip>
+                                    <ToolTip x:Name="tt_startDate" Content="Start Date"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                                                </DatePicker.ToolTip>
-                                            </DatePicker>
-                                            <Path x:Name="p_errorStartDate"
+                                </DatePicker.ToolTip>
+                            </DatePicker>
+                            <Path x:Name="p_errorStartDate" Grid.Column="0"
                                             Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                                  HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                  HorizontalAlignment="Right"   Visibility="Collapsed"   
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 
                                       L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                            <Path.ToolTip>
-                                                    <ToolTip x:Name="tt_errorStartDate" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                            </Path.ToolTip>
-                                        </Path>
-                                    </Grid>
-                                    <Grid Grid.Column="1"  >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                            <DatePicker  x:Name="dp_endDate" 
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorStartDate" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                            <DatePicker  x:Name="dp_endDate" 
                                                      BorderBrush="#737373"  BorderThickness="0" 
+                                         Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                                      TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
-                                                     Grid.Row="2" Padding="10,5,5,5"  
+                                                     Grid.Row="2" Padding="10,0,5,0"  
                                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                      materialDesign:HintAssist.Hint="End date..."  
                                                      Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
-                                                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                                     Grid.Column="1"  Height="35" Width="160"  Margin="5,5"                                                    
+                                                     
+                                                     Grid.Column="1"  Height="40" Margin="5,5,10,5"                                                    
                                                      LostFocus="Tb_validateEmptyLostFocus">
-                                                <DatePicker.Resources>
-                                                    <Style TargetType="DatePickerTextBox">
-                                                        <Setter Property="IsReadOnly" Value="false"/>
-                                                    </Style>
-                                                </DatePicker.Resources>
-                                                <DatePicker.ToolTip>
-                                                    <ToolTip x:Name="tt_endDate" Content="End Date"
+                                <DatePicker.Resources>
+                                    <Style TargetType="DatePickerTextBox">
+                                        <Setter Property="IsReadOnly" Value="false"/>
+                                    </Style>
+                                </DatePicker.Resources>
+                                <DatePicker.ToolTip>
+                                    <ToolTip x:Name="tt_endDate" Content="End Date"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                                                </DatePicker.ToolTip>
-                                            </DatePicker>
-                                            <Path x:Name="p_errorEndDate" 
+                                </DatePicker.ToolTip>
+                            </DatePicker>
+                            <Path x:Name="p_errorEndDate" 
                                                   Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                                                   HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 
                                       L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                            <Path.ToolTip>
-                                                    <ToolTip  x:Name="tt_errorEndDate"   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                            </Path.ToolTip>
-                                        </Path>
-                                    </Grid>
-                                </Grid>
-                                    <Grid   Grid.Row="3" >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        
-                                        <Grid  Grid.Column="0" >
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <!--<TextBox x:Name="tb_startTime"  Text="{Binding test, Mode=OneWay}"
-                                             Grid.Row="2" Padding="10,5,5,5" MaxLength="20" 
-                                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"   
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Start time..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="#f8f8f8"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="35" Width="160"  Margin="10,5" />-->
-                                            <materialDesign:TimePicker  x:Name="tp_startTime" 
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorEndDate"   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+
+                        </Grid>
+
+
+
+                        <Grid   Grid.Row="7" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+
+
+                            <materialDesign:TimePicker  x:Name="tp_startTime" 
+                                                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
                                                                         BorderBrush="#737373"  BorderThickness="0" 
                                                                         TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
-                                                                        Grid.Row="2" Padding="10,5,5,5"  
+                                                                         Padding="10,0,5,0"  
                                                                         materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                                         materialDesign:HintAssist.Hint="Start time..."  
                                                                         Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
-                                                                        HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                                                        Grid.Column="1"  Height="35" Width="160"  Margin="5,5"
+                                                                        
+                                                                        Height="40"   Margin="10,5,0,5"
                                                                         
                                                                         LostFocus="Tb_validateEmptyLostFocus">
-                                                <materialDesign:TimePicker.ToolTip>
-                                                    <ToolTip x:Name="tt_startTime" Content="Start Time"
+                                <materialDesign:TimePicker.ToolTip>
+                                    <ToolTip x:Name="tt_startTime" Content="Start Time"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                                                </materialDesign:TimePicker.ToolTip>
-                                            </materialDesign:TimePicker>
-                                            <Path x:Name="p_errorStartTime" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                </materialDesign:TimePicker.ToolTip>
+                            </materialDesign:TimePicker>
+                            <Path x:Name="p_errorStartTime" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="0"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                                <Path.ToolTip>
-                                                    <ToolTip x:Name="tt_errorStartTime" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                                </Path.ToolTip>
-                                            </Path>
-                                        </Grid>
-                                        <Grid  Grid.Column="1" >
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <!--<TextBox x:Name="tb_endTime"  Text="{Binding test, Mode=OneWay}"
-                                             Grid.Row="2" Padding="10,5,5,5" MaxLength="20" 
-                                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"   
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="End time..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="#f8f8f8"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Grid.Column="1"  Height="35" Width="160"  Margin="10,5" />-->
-                                            <materialDesign:TimePicker  x:Name="tp_endTime" 
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorStartTime" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                            <materialDesign:TimePicker  x:Name="tp_endTime" 
+                                                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
                                                                         BorderBrush="#737373"  BorderThickness="0" 
                                                                         TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
-                                                                        Grid.Row="2" Padding="10,5,5,5"  
+                                                                        Grid.Row="2" Padding="10,0,5,0"  
                                                                         materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                                         materialDesign:HintAssist.Hint="End time..."  
                                                                         Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
-                                                                        HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                                                        Grid.Column="1"  Height="35" Width="160"  Margin="5,5" 
+                                                                    
+                                                                        Grid.Column="1"  Height="40"  Margin="5,5,10,5" 
                                                                         LostFocus="Tb_validateEmptyLostFocus">
-                                                <materialDesign:TimePicker.ToolTip>
-                                                    <ToolTip x:Name="tt_endTime" Content="End Time"
+                                <materialDesign:TimePicker.ToolTip>
+                                    <ToolTip x:Name="tt_endTime" Content="End Time"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                                                </materialDesign:TimePicker.ToolTip>
-                                            </materialDesign:TimePicker>
-                                            <Path x:Name="p_errorEndTime" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                </materialDesign:TimePicker.ToolTip>
+                            </materialDesign:TimePicker>
+                            <Path x:Name="p_errorEndTime" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                                <Path.ToolTip>
-                                                    <ToolTip x:Name="tt_errorEndTime" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                                </Path.ToolTip>
-                                            </Path>
-                                        </Grid>
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorEndTime" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
 
-                                    </Grid>
-                                
-                                
-                                
-                                
-                                
-                                    <Grid Grid.Row="4"  Margin="5,0,0,0" >
-                                        <TextBox  x:Name="tb_note" Text="{Binding notes, Mode=OneWay}"
-                                                 Grid.Row="2" Padding="10,5,5,5"  
+                        <TextBox  x:Name="tb_note" Text="{Binding notes, Mode=OneWay}"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                 Grid.Row="8" Padding="10,0,5,0"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  
                                Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="#f8f8f8"
-                                 HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            Grid.Column="1"  Height="70"  Width="330"  Margin="5,5"  TextWrapping="Wrap">
-                                            <TextBox.ToolTip>
-                                                <ToolTip x:Name="tt_notes" Content="Notes"
+                            
+                            Grid.Column="1"  Height="70"    Margin="10,5,10,5"  TextWrapping="Wrap">
+                            <TextBox.ToolTip>
+                                <ToolTip x:Name="tt_notes" Content="Notes"
                                                          Placement="left" 
                                                          HorizontalOffset="35"
                                                          PlacementRectangle="50,0,0,0"
                                                          VerticalOffset="20"/>
-                                            </TextBox.ToolTip>
-                                        </TextBox>
-                                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                            </TextBox.ToolTip>
+                        </TextBox>
+                        <Path Fill="#E81123" Grid.Row="8" Stretch="Fill" Margin="5,5,15,5"
                                   HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                        <Path.ToolTip>
-                                            <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                        </Path.ToolTip>
-                                    </Path>
-                                </Grid>
-                                <Separator Background="#999999"   Width="340"  Margin="5,0,5,0"
-                                          Grid.Row="7" VerticalAlignment="Center" />
-                            </Grid>
+                            <Path.ToolTip>
+                                <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
 
-                        </Grid>
-                        <Grid Grid.Row="1" Margin="5,1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                 <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
-                                <Button x:Name="btn_items" Grid.Row="0" Grid.ColumnSpan="3"
+                    </Grid>
+                   
+
+                </ScrollViewer>
+                <Grid Grid.Row="11" Margin="5,5,5,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Button x:Name="btn_items" Grid.Row="0" Grid.ColumnSpan="3"
                               Background="#4E4E4E" BorderBrush="{x:Null}" Click="Btn_items_Click"
                         Margin="1,1"    Content="Items"/>
-                                <Button x:Name="btn_add" Grid.Row="1" Grid.Column="0"
-                              Background="#4E4E4E" BorderBrush="{x:Null}"
-                        Margin="1,1"    Content="Add" Click="Btn_add_Click"/>
-                            <Button x:Name="btn_update" Grid.Row="1" Grid.Column="1"
-                            Background="#4E4E4E" BorderBrush="{x:Null}"
-                       Margin="1,1"    Content="Update" Click="Btn_update_Click"/>
-                                <Button x:Name="btn_delete" Grid.Row="1" Grid.Column="2"
-                                    Background="#4E4E4E" BorderBrush="{x:Null}"
-                                    Margin="1,1"  Content="Delete" Click="Btn_delete_Click"  />
+                    <Border Grid.Row="1">
 
-                            </Grid>
-                    </Grid>
+                        <Button x:Name="btn_add" TabIndex="10"
+                          Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,1" Click="Btn_add_Click" >
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Name="txt_add_Icon" Kind="PlusThick" VerticalAlignment="Center" Width="15"  Height="15" Margin="0,1,2,0">
 
-  
+                                </materialDesign:PackIcon>
+                                <TextBlock Visibility="Collapsed" Name="txt_addButton" Text="Add" VerticalAlignment="Center">
+
+                                </TextBlock>
+
+                            </StackPanel>
+                        </Button>
+                        <Border.ToolTip>
+                            <ToolTip x:Name="tt_add_Button" Content="Add"
+                                    Placement="left" 
+                                    HorizontalOffset="15"
+                                    PlacementRectangle="50,0,0,0"
+                                    VerticalOffset="30"/>
+                        </Border.ToolTip>
+                    </Border>
+                    <Border Grid.Column="1" Grid.Row="1">
+                        <Button x:Name="btn_update"  TabIndex="11"
+                        Background="#4E4E4E" BorderBrush="{x:Null}"
+                   Margin="1,1"  Click="Btn_update_Click" >
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Name="txt_update_Icon" Kind="Edit" VerticalAlignment="Center" Width="15" Height="15" Margin="0,1,2,0">
+
+                                </materialDesign:PackIcon>
+                                <TextBlock Visibility="Collapsed" Name="txt_updateButton" Text="Update" VerticalAlignment="Center">
+
+                                </TextBlock>
+
+                            </StackPanel>
+                        </Button>
+                        <Border.ToolTip>
+
+                            <ToolTip x:Name="tt_update_Button" Content="Update"
+                                    Placement="left" 
+                                    HorizontalOffset="15"
+                                    PlacementRectangle="50,0,0,0"
+                                    VerticalOffset="30"/>
+
+                        </Border.ToolTip>
+                    </Border>
+                    <Border Grid.Column="2" Grid.Row="1">
+                        <Button x:Name="btn_delete"  TabIndex="12"
+                        Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,1"  Click="Btn_delete_Click" >
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Name="txt_delete_Icon" Kind="Delete" VerticalAlignment="Center" Width="15" Height="15" Margin="0,1,2,0">
+
+                                </materialDesign:PackIcon>
+                                <TextBlock Visibility="Collapsed" Name="txt_deleteButton" Width="auto" Text="Delete" VerticalAlignment="Center">
+
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Border.ToolTip>
+                            <ToolTip x:Name="tt_delete_Button" Content="delete"
+                                    Placement="left" 
+                                    HorizontalOffset="15"
+                                    PlacementRectangle="50,0,0,0"
+                                    VerticalOffset="30"/>
+                        </Border.ToolTip>
+                    </Border>
                 </Grid>
-            </Border>
-        </Grid>
+            </Grid>
+
         </Border>
     </Grid>
 </UserControl>

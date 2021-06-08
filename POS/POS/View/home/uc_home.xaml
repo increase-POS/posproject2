@@ -204,7 +204,10 @@
                 </Grid>
                 <StackPanel  Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical"  Margin="15,5,5,5">
                     <TextBlock  Text="Sales" FontSize="16" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
-                    <TextBlock  Text="86424.96$" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="tb_sales" Text="86424" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                        <TextBlock  Text="$" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    </StackPanel>
                 </StackPanel>
             </Grid>
             <Grid Margin="10" Grid.Column="1" Background="White" >
@@ -222,7 +225,10 @@
                 </Grid>
                 <StackPanel  Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical"  Margin="15,5,5,5">
                     <TextBlock  Text="Purchases" FontSize="16" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
-                    <TextBlock  Text="48624.50$" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="tb_purchase" Text="48624" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                        <TextBlock  Text="$" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    </StackPanel>
                 </StackPanel>
             </Grid>
 
@@ -241,15 +247,15 @@
                 </Grid>
                 <StackPanel  Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical"  Margin="15,5,5,5">
                     <TextBlock  Text="Items" FontSize="16" FontWeight="Regular" Foreground="#9B9B9B" HorizontalAlignment="Left" />
-                    <TextBlock  Text="768" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
+                    <TextBlock x:Name="tb_items" Text="786" FontWeight="Bold" FontSize="16" Foreground="#9B9B9B" HorizontalAlignment="Left" />
                 </StackPanel>
             </Grid>
 
-         
+
 
 
         </Grid>
-        
+
         <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Right" Grid.Row="1" Margin="25,10,10,10"  Background="White" >
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Sales" LabelFormatter="{Binding YFormatter}"></lvc:Axis>

@@ -106,7 +106,7 @@ namespace POS.View
         {
             ///////// on Top Always
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            CreateGridCardContainer();
+            //CreateGridCardContainer();
             catigoriesAndItemsView.ucCategorie = this;
             ////////////////
             if (MainWindow.lang.Equals("en"))
@@ -393,7 +393,7 @@ namespace POS.View
             //catigoriesAndItemsView.gridCatigorieItems = grid_itemCard;
             //catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), MainWindow.lang, "sale");
 
-            catigoriesAndItemsView.gridCatigories = gridCategorieContainerCard;
+            catigoriesAndItemsView.gridCatigories = grid_categorieContainerCard;
             catigoriesAndItemsView.FN_refrishCatalogCard(_categories.ToList(),5);
         }
         #endregion
@@ -487,37 +487,37 @@ namespace POS.View
 
         #endregion
         #region Grid Definition
-        ColumnDefinition[] c;
-        RowDefinition[] r;
-        Grid gridCategorieContainerCard = new Grid();
-        int[] count;
-        void CreateGridCardContainer()
-        {
-            gridCategorieContainerCard.Name = "grid_categorieContainerCard";
-            gridCategorieContainerCard.Background = null;
-            gridCategorieContainerCard.Margin = new Thickness(0, 10, 0, 0);
-            Grid.SetColumnSpan(gridCategorieContainerCard, 2);
-            count = CatigoriesAndItemsView.categoriesRowColumnCount(1, 5);
-            c = new ColumnDefinition[count[1]];
-            for (int i = 0; i < count[1]; i++)
-            {
-                //ColumnDefinition c1 = new ColumnDefinition();
-                c[i] = new ColumnDefinition();
-                c[i].Width = new GridLength(1, GridUnitType.Star);
-                gridCategorieContainerCard.ColumnDefinitions.Add(c[i]);
-            }
-            r = new RowDefinition[count[0]];
-            for (int i = 0; i < count[0]; i++)
-            {
-                r[i] = new RowDefinition();
-                r[i].Height = new GridLength(1, GridUnitType.Star);
-                gridCategorieContainerCard.RowDefinitions.Add(r[i]);
-            }
+        //ColumnDefinition[] c;
+        //RowDefinition[] r;
+        //Grid gridCategorieContainerCard = new Grid();
+        //int[] count;
+        //void CreateGridCardContainer()
+        //{
+        //    gridCategorieContainerCard.Name = "grid_categorieContainerCard";
+        //    gridCategorieContainerCard.Background = null;
+        //    gridCategorieContainerCard.Margin = new Thickness(0, 10, 0, 0);
+        //    Grid.SetColumnSpan(gridCategorieContainerCard, 2);
+        //    //count = CatigoriesAndItemsView.categoriesRowColumnCount(1, 5);
+        //    c = new ColumnDefinition[count[1]];
+        //    for (int i = 0; i < count[1]; i++)
+        //    {
+        //        //ColumnDefinition c1 = new ColumnDefinition();
+        //        c[i] = new ColumnDefinition();
+        //        c[i].Width = new GridLength(1, GridUnitType.Star);
+        //        gridCategorieContainerCard.ColumnDefinitions.Add(c[i]);
+        //    }
+        //    r = new RowDefinition[count[0]];
+        //    for (int i = 0; i < count[0]; i++)
+        //    {
+        //        r[i] = new RowDefinition();
+        //        r[i].Height = new GridLength(1, GridUnitType.Star);
+        //        gridCategorieContainerCard.RowDefinitions.Add(r[i]);
+        //    }
 
 
-            grid_containerGridContainer.Children.Clear();
-            grid_containerGridContainer.Children.Add(gridCategorieContainerCard);
-        }
+        //    grid_containerGridContainer.Children.Clear();
+        //    grid_containerGridContainer.Children.Add(gridCategorieContainerCard);
+        //}
         #endregion
         #region Toggle Button Y
 
@@ -602,9 +602,9 @@ namespace POS.View
             {
                 pageIndex = 1;
             }
-            else if (((categoriesQuery.Count() - 1) / count[2]) + 1 < int.Parse(tb_pageNumberSearch.Text))
+            else if (((categoriesQuery.Count() - 1) / 15) + 1 < int.Parse(tb_pageNumberSearch.Text))
             {
-                pageIndex = ((categoriesQuery.Count() - 1) / count[2]) + 1;
+                pageIndex = ((categoriesQuery.Count() - 1) / 15) + 1;
             }
             else
             {
@@ -673,7 +673,7 @@ namespace POS.View
         private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
         {
             categoriesQuery = categories.Where(x => x.isActive ==tglCategoryState);
-            pageIndex = ((categoriesQuery.Count() - 1) / count[2]) + 1;
+            pageIndex = ((categoriesQuery.Count() - 1) / 15) + 1;
             #region
             categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
              x.name.ToLower().Contains(txtCategorySearch) ||

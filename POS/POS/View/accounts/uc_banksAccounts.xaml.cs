@@ -64,6 +64,7 @@ namespace POS.View.accounts
         {
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trTransaferDetails");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            txt_bankAccounts.Text = MainWindow.resourcemanager.GetString("trBankAccounts");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_depositNumber, MainWindow.resourcemanager.GetString("trDepositeNumHint"));
@@ -170,14 +171,29 @@ namespace POS.View.accounts
             /////////////////////////////////////////////////////////////
             #endregion
 
-            //#region prevent editting on date and time
+            #region prevent editting on date and time
             //TextBox tbStartDate = (TextBox)dp_startSearchDate.Template.FindName("PART_TextBox", dp_startSearchDate);
             //tbStartDate.IsReadOnly = true;
             //TextBox tbEndDate = (TextBox)dp_endSearchDate.Template.FindName("PART_TextBox", dp_endSearchDate);
             //tbEndDate.IsReadOnly = true;
-            //#endregion
+            #endregion
 
-            dg_bankAccounts.ItemsSource = await RefreshCashesList();
+            dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
+            dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
+
+            await RefreshCashesList();
+            Tb_search_TextChanged(null, null);
+        }
+
+        private async void dp_SelectedStartDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            await RefreshCashesList();
+            Tb_search_TextChanged(null, null);
+        }
+
+        private async void dp_SelectedEndDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            await RefreshCashesList();
             Tb_search_TextChanged(null, null);
         }
 
@@ -208,12 +224,32 @@ namespace POS.View.accounts
         {//search
             if (cashes is null)
                 await RefreshCashesList();
-            searchText = tb_search.Text;
-            cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText))
-            //|| s.docNum.Contains(searchText)
-            //&& (s.createDate >= dp_startSearchDate.SelectedDate && s.createDate <= dp_endSearchDate.SelectedDate)
+            this.Dispatcher.Invoke(() =>
+            {
+                searchText = tb_search.Text;
+                cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                || s.cash.ToString().Contains(searchText)
+                || s.bankName.Contains(searchText)
+                //|| s.docNum.Contains(searchText)////?????because of empty values
+                )
+                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
                 );
+            });
             RefreshCashView();
+            //new Thread(search).Start();
+            //if (cashes is null)
+            //    await RefreshCashesList();
+            //searchText = tb_search.Text;
+            //cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+            //|| s.cash.ToString().Contains(searchText)
+            //|| s.bankName.Contains(searchText)
+            ////|| s.docNum.Contains(searchText)////?????because of empty values
+            //)
+            //&& s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+            //&& s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+            //);
+            //RefreshCashView();
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)

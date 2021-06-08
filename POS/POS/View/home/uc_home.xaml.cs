@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace POS.View
 {
@@ -23,7 +24,14 @@ namespace POS.View
     /// </summary>
     public partial class uc_home : UserControl
     {
-
+        int x;
+        int y;
+        int z;
+        int value_items;
+        int value_purchase;
+        int value_sales;
+        DispatcherTimer timer = new DispatcherTimer();
+        DispatcherTimer timer1 = new DispatcherTimer();
         private static uc_home _instance;
         public static uc_home Instance
         {
@@ -37,7 +45,9 @@ namespace POS.View
         public uc_home()
         {
             InitializeComponent();
+            timerAnimation();
         }
+
         public SeriesCollection SeriesCollection { get; set; }
         public string[] Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }
@@ -52,7 +62,7 @@ namespace POS.View
             for (int i = 0; i < 30; i++)
             {
                 ArrayS[i] = rnd.Next(1800, 2500);
-                ArrayP[i] = rnd.Next(1500,int.Parse(ArrayS[i].ToString()) );
+                ArrayP[i] = rnd.Next(1500, int.Parse(ArrayS[i].ToString()));
                 ArrayCount[i] = i.ToString();
             }
             SeriesCollection = new SeriesCollection
@@ -76,6 +86,38 @@ namespace POS.View
 
             #endregion
 
+        }
+        public void timerAnimation()
+        {
+            x = 1000;
+            y = 2000;
+            z = 3000;
+            value_items = Convert.ToInt32(tb_items.Text);
+            value_purchase = Convert.ToInt32(tb_purchase.Text);
+            value_sales = Convert.ToInt32(tb_sales.Text);
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(10);
+            timer.Tick += timer_Tick;
+            timer.Start();
+        }
+        void timer_Tick(object sender, EventArgs e)
+        {
+
+
+            x += 86;
+            y += 74;
+            z += 65;
+
+            tb_items.Text = x.ToString();
+            tb_purchase.Text = x.ToString();
+            tb_sales.Text = x.ToString();
+            if (x >= 5000)
+            {
+                tb_items.Text = Convert.ToString(value_items);
+                tb_purchase.Text = Convert.ToString(value_purchase);
+                tb_sales.Text = Convert.ToString(value_sales);
+                timer.Stop();
+            }
         }
     }
 }

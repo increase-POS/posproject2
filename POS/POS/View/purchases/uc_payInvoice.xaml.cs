@@ -1007,10 +1007,18 @@ namespace POS.View
         }
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
-           //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
-            wd_uploadImage w = new wd_uploadImage();
-            w.ShowDialog();
-           // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
+            if (invoice != null || invoice.invoiceId != 0) 
+            {
+                //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+
+                wd_uploadImage w = new wd_uploadImage();
+
+                w.tableName = "invoice";
+                w.tableId = invoice.invoiceId;
+                w.docNum = invoice.invNumber;
+                w.ShowDialog();
+                // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
+            }
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -1179,7 +1187,6 @@ namespace POS.View
             _barcode.Add((char)e.Key);
             _BarcodeStr += digit;
             _lastKeystroke = DateTime.Now;
-
             // process barcode
             if (e.Key.ToString() == "Return" && _barcode.Count > 0)
             {
@@ -1414,7 +1421,13 @@ namespace POS.View
 
         private void Dp_desrvedDate_KeyDown(object sender, KeyEventArgs e)
         {
-            HandleKeyPress(sender,e);
+            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+            if (elapsed.TotalMilliseconds < 100 )
+            {
+                tb_barcode.Focus();
+                HandleKeyPress(sender , e);
+            }
+
         }
 
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)

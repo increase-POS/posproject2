@@ -1077,4 +1077,16 @@
   <data name="trErrorAmountIncreaseToolTip" xml:space="preserve">
     <value>Quantity can not be exceeded</value>
   </data>
+  <data name="trErrorSamePos" xml:space="preserve">
+    <value>It is not possible to pull from the same pos</value>
+  </data>
+  <data name="trBankAccounts" xml:space="preserve">
+    <value>Bank Accounts</value>
+  </data>
+  <data name="trIsConfirmed" xml:space="preserve">
+    <value>Confirmed</value>
+  </data>
+  <data name="trPosAccounts" xml:space="preserve">
+    <value>Pos Accounts</value>
+  </data>
 </root>

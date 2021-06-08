@@ -1,7 +1,9 @@
-﻿using POS.Classes;
+﻿using netoaster;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -23,10 +26,21 @@ namespace POS.View.windows
     /// </summary>
     public partial class wd_uploadImage : Window
     {
+        public string tableName { get; set; }
+        
+        public int tableId { get; set; }
+        public string docNum { get; set; }
+
         private static int _Resolution = 150;
         private static int _PixelWidth = 1250;
         private static int _PixelHeight = 1700;
         int cmbCMIndex = 0;
+
+        DocImage docImgModel = new DocImage();
+       
+        ImageBrush brush = new ImageBrush();
+
+        Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
         public wd_uploadImage()
         {
             InitializeComponent();
@@ -37,15 +51,36 @@ namespace POS.View.windows
 
         }
 
-        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
+            docImgModel.tableName = "invoices";
+            docImgModel.tableId = tableId;
+            docImgModel.docnum = docNum;
+            docImgModel.createUserId = MainWindow.userID;
 
+            string res = await docImgModel.saveDocImage(docImgModel);
+            if (!res.Equals("0"))
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+            int docImageId = int.Parse(res);
+
+            await docImgModel.uploadImage(openFileDialog.FileName,tableName ,docImageId);
             this.Close();
         }
 
         private void Img_upload_Click(object sender, RoutedEventArgs e)
         {
+           
+            //select image
+            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
 
+            if (openFileDialog.ShowDialog() == true )
+            {
+               brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                img_upload.Background = brush;
+            }
         }
 
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
@@ -87,17 +122,34 @@ namespace POS.View.windows
 
                             img_upload.Background = new ImageBrush(bitmapImage);
                         }
-                       // SaveImageToJpgFile(image, Constants.ScannedImageLocation);
+                        // configure trmporery path
+                        string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        string tmpPath = System.IO.Path.Combine(dir, Global.ScannedImageLocation);
+                        if (System.IO.File.Exists(tmpPath))
+                        {
+                            System.IO.File.Delete(tmpPath);
+                        }
+                        SaveImageToJpgFile(image, tmpPath);
+                        openFileDialog.FileName = tmpPath;
                     }
                 }
             }
             catch (System.Runtime.InteropServices.COMException)
             {
-                MessageBox.Show("Problem with scanning device. Please ensure that the scanner is properly connected and switched on", "Inweon Grain Management System");
+                System.Windows.MessageBox.Show("Problem with scanning device. Please ensure that the scanner is properly connected and switched on", "Inweon Grain Management System");
             }
             
         }
-
+        private static void SaveImageToJpgFile(ImageFile image, string fileName)
+        {
+            WIA.ImageProcess imgProcess = new WIA.ImageProcess();
+            object convertFilter = "Convert";
+            string convertFilterID = imgProcess.FilterInfos.get_Item(ref convertFilter).FilterID;
+            imgProcess.Filters.Add(convertFilterID, 0);
+            SetWIAProperty(imgProcess.Filters[imgProcess.Filters.Count].Properties, "FormatID", WIA.FormatID.wiaFormatJPEG);
+            image = imgProcess.Apply(image);
+            image.SaveFile(fileName);
+        }
         private static void AdjustScannerSettings(IItem scannnerItem, int scanResolutionDPI, int scanStartLeftPixel, int scanStartTopPixel,
              int scanWidthPixels, int scanHeightPixels, int brightnessPercents, int contrastPercents)
         {
@@ -125,6 +177,11 @@ namespace POS.View.windows
         }
 
         private void Btn_scanner_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Lst_images_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
         }

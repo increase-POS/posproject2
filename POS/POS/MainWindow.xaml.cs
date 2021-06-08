@@ -39,6 +39,7 @@ namespace POS
         internal static int? userID = 2;
         internal static int? posID = 53;
         internal static int? branchID = 18;
+        bool isHome = false;
 
         /// <summary>
         /// //////// relative screen test
@@ -264,11 +265,20 @@ namespace POS
 
         private void BTN_Home_Click(object sender, RoutedEventArgs e)
         {
+
             colorTextRefreash(txt_home);
             FN_pathVisible(path_openHome);
             fn_ColorIconRefreash(path_iconHome);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_home.Instance);
+            if (isHome)
+            {
+                uc_home.Instance.timerAnimation();
+                isHome = false;
+            }
+            //else
+            //    grid_main.Children.Add(uc_home.Instance);
+           
             //uc_home uc = new uc_home();
             //grid_main.Children.Add(uc);
 
@@ -306,6 +316,7 @@ namespace POS
             grid_main.Children.Add(UC_SectionData.Instance);
             //UC_SectionData uc = new UC_SectionData();
             //grid_main.Children.Add(uc);
+            isHome = true;
 
 
         }
@@ -319,6 +330,8 @@ namespace POS
             grid_main.Children.Add(UC_catalog.Instance);
             //UC_catalog uc = new UC_catalog();
             //grid_main.Children.Add(uc);
+            isHome = true;
+
         }
 
 
@@ -346,6 +359,8 @@ namespace POS
             grid_main.Children.Add(uc_payInvoice.Instance);
             //uc_purchases uc = new uc_purchases();
             //grid_main.Children.Add(uc);
+            isHome = true;
+
         }
 
         private void BTN_sales_Click(object sender, RoutedEventArgs e)
@@ -357,6 +372,8 @@ namespace POS
             grid_main.Children.Add(uc_sales.Instance);
             //uc_sales uc = new uc_sales();
             //grid_main.Children.Add(uc);
+            isHome = true;
+
         }
 
         private void BTN_accounts_Click(object sender, RoutedEventArgs e)
@@ -369,6 +386,8 @@ namespace POS
             grid_main.Children.Add(uc_accounts.Instance);
             //uc_accounts uc = new uc_accounts();
             //grid_main.Children.Add(uc);
+            isHome = true;
+
         }
 
         private void BTN_reports_Click(object sender, RoutedEventArgs e)
@@ -376,6 +395,8 @@ namespace POS
             colorTextRefreash(txt_reports);
             FN_pathVisible(path_openReports);
             fn_ColorIconRefreash(path_iconReports);
+            isHome = true;
+
         }
 
         private void BTN_settings_Click(object sender, RoutedEventArgs e)
@@ -383,6 +404,8 @@ namespace POS
             colorTextRefreash(txt_settings);
             FN_pathVisible(path_openSettings);
             fn_ColorIconRefreash(path_iconSettings);
+            isHome = true;
+
         }
 
         private void BTN_storage_Click(object sender, RoutedEventArgs e)
@@ -394,6 +417,8 @@ namespace POS
             grid_main.Children.Add(uc_storage.Instance);
             //uc_storage uc = new uc_storage();
             //grid_main.Children.Add(uc);
+            isHome = true;
+
         }
     }
 }

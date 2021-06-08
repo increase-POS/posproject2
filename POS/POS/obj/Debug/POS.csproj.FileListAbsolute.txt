@@ -1829,3 +1829,13 @@ D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS.csproj.CoreCo
 D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS.csproj.CopyComplete
 D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS.exe
 D:\ملفات المشروع\دينا\POS8-6\POS\POS\obj\Debug\POS.pdb
+E:\GitHub\posproject2\POS\POS\bin\Debug\ControlzEx.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\MahApps.Metro.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.Xaml.Behaviors.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\ControlzEx.pdb
+E:\GitHub\posproject2\POS\POS\bin\Debug\ControlzEx.xml
+E:\GitHub\posproject2\POS\POS\bin\Debug\MahApps.Metro.pdb
+E:\GitHub\posproject2\POS\POS\bin\Debug\MahApps.Metro.xml
+E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.Xaml.Behaviors.xml
+E:\GitHub\posproject2\POS\POS\bin\Debug\de\MahApps.Metro.resources.dll

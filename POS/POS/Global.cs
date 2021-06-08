@@ -13,6 +13,7 @@ namespace POS
         public const string APIUri = "http://192.168.1.37:44370/api/";
         //public const string APIUri = "http://192.168.1.4:44370/api/";
 
+        public static string ScannedImageLocation = "Thumb/Scan/scan.jpg";
         public const string TMPFolder = "Thumb";
     }
 }

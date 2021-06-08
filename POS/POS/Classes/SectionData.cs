@@ -301,6 +301,13 @@ namespace POS.Classes
             tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
         }
 
+        public static void showComboBoxValidate(ComboBox cb, Path p_error, ToolTip tt_error, string tr)
+        {
+            p_error.Visibility = Visibility.Visible;
+            tt_error.Content = MainWindow.resourcemanager.GetString(tr);
+            cb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+        }
+
         public static void showDatePickerValidate(DatePicker dp, Path p_error, ToolTip tt_error, string tr)
         {
             TextBox tb = (TextBox)dp.Template.FindName("PART_TextBox", dp);
