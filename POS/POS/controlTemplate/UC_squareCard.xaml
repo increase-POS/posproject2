@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:POS.controlTemplate"
              mc:Ignorable="d" 
             d:DesignHeight="120" d:DesignWidth="100" 
-             Loaded="UserControl_Loaded" >
+            >
     <UserControl.Resources>
         <Storyboard x:Key="Storyboard1">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="rectangle">
@@ -23,17 +23,16 @@
             <RemoveStoryboard BeginStoryboardName="Storyboard1_BeginStoryboard"/>
         </EventTrigger>
     </UserControl.Triggers>
-        <Grid Height="120" Width="100"  x:Name="grid"
+    <Grid x:Name="grid_main"
               ForceCursor="true" Cursor="Hand">
-            <Grid.RowDefinitions >
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="30"/>
-            </Grid.RowDefinitions>
-            <Grid  Grid.Row="0" >
-                <Border FlowDirection="LeftToRight" 
+        <Grid.RowDefinitions >
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid  Grid.Row="0" >
+            <Border FlowDirection="LeftToRight" 
                     CornerRadius="10" BorderBrush="{Binding squareCardBorderBrush }" BorderThickness="1.3"
                     Background="White">
-                <!--<Image x:Name="img_card" Margin="5"/>-->
                 <Grid  Margin="0" Height="77" Width="85"  >
                     <Button FlowDirection="LeftToRight"  Padding="0" Margin="0" Height="78" Width="86" HorizontalAlignment="Center"  VerticalAlignment="Center"   BorderThickness="0" x:Name="btn_cardImage"  >
                         <Button.Background>
@@ -43,17 +42,16 @@
                 </Grid>
 
             </Border>
-                <Rectangle x:Name="rectangle" Grid.RowSpan="2" 
+            <Rectangle x:Name="rectangle" Grid.RowSpan="2" 
                        Fill="#99F0F8FF" Opacity="0" 
                        RadiusX="10" RadiusY="10" />
-            </Grid>
-            <TextBlock Grid.Row="1" Margin="0,01,0,0"
+        </Grid>
+        <!--<TextBlock Grid.Row="1" 
                    x:Name="BTextBlock" 
-                   FontFamily="{StaticResource Font-cairo-light}" 
-                    Text="{Binding squareCardText}" Foreground="#6e6e6e"
+                    Text="Helllo Wrld hello" Foreground="#6e6e6e"
               HorizontalAlignment="Center" VerticalAlignment="Center"
-              FontWeight="Bold"  FontSize="12"/>
-       
+              FontWeight="Bold"  FontSize="12"/>-->
+
 
     </Grid>
 </UserControl>

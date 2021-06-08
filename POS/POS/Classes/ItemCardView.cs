@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace POS.Classes
 {
-    public class ItemCardView
+    public class CardViewItems
     {
         public Item item { get; set; }
+        public Category category { get; set; }
         public int row { get; set; }
         public int column { get; set; }
         public string language { get; set; }

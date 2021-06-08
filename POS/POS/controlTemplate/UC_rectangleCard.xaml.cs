@@ -28,22 +28,15 @@ namespace POS.controlTemplate
             InitializeComponent();
         }
         public int contentId { get; set; }
-        public ItemCardView itemCardView { get; set; }
-        public UC_rectangleCard(ItemCardView _itemCardView)
+        public CardViewItems cardViewitem { get; set; }
+        public UC_rectangleCard(CardViewItems _CardViewitems)
         {
             InitializeComponent();
-
-
-
-
-
-            itemCardView = _itemCardView;
+            cardViewitem = _CardViewitems;
         }
-        //ImageBrush brush = new ImageBrush();
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        void InitializeControls()
         {
-            this.DataContext = this;
             #region Grid Container
             Grid gridContainer = new Grid();
 
@@ -61,7 +54,7 @@ namespace POS.controlTemplate
             //          < RowDefinition Height = "13*" />
             //           < RowDefinition Height = "20*" />
 
-                RowDefinition[] rd = new RowDefinition[4];
+            RowDefinition[] rd = new RowDefinition[4];
             for (int i = 0; i < 4; i++)
             {
                 rd[i] = new RowDefinition();
@@ -74,19 +67,16 @@ namespace POS.controlTemplate
             {
                 gridContainer.RowDefinitions.Add(rd[i]);
             }
-            gridContainer.Height = this.ActualHeight-10;
-            gridContainer.Width = this.ActualWidth-10;
+            gridContainer.Height = this.ActualHeight - 10;
+            gridContainer.Width = this.ActualWidth - 10;
             brd_main.Child = gridContainer;
             #endregion
-
-            if (itemCardView.language == "ar")
+            if (cardViewitem.language == "ar")
                 grid_main.FlowDirection = FlowDirection.RightToLeft;
             else grid_main.FlowDirection = FlowDirection.LeftToRight;
-
-
             #region   Title
             var titleText = new TextBlock();
-            titleText.Text = itemCardView.item.name;
+            titleText.Text = cardViewitem.item.name;
             titleText.Margin = new Thickness(5, 0, 5, 0);
             titleText.FontWeight = FontWeights.Bold;
             titleText.VerticalAlignment = VerticalAlignment.Top;
@@ -100,7 +90,7 @@ namespace POS.controlTemplate
             #endregion
             #region  subTitle
             var subTitleText = new TextBlock();
-            subTitleText.Text = itemCardView.item.details;
+            subTitleText.Text = cardViewitem.item.details;
             subTitleText.Margin = new Thickness(5, 0, 5, 0);
             subTitleText.FontWeight = FontWeights.Regular;
             subTitleText.VerticalAlignment = VerticalAlignment.Top;
@@ -112,7 +102,7 @@ namespace POS.controlTemplate
             /////////////////////////////////
 
             #endregion
-            if (itemCardView.cardType == "purchase")
+            if (cardViewitem.cardType == "purchase")
             {
                 #region Price
                 Grid gridPrice = new Grid();
@@ -131,7 +121,7 @@ namespace POS.controlTemplate
                 gridPrice.Children.Add(rectanglePrice);
                 ////////////////////////////////
                 var priceText = new TextBlock();
-                priceText.Text = itemCardView.item.price.ToString();
+                priceText.Text = cardViewitem.item.price.ToString();
                 priceText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
                 priceText.FontWeight = FontWeights.Bold;
                 priceText.VerticalAlignment = VerticalAlignment.Center;
@@ -160,7 +150,7 @@ namespace POS.controlTemplate
             //buttonImage.HorizontalAlignment = HorizontalAlignment.Center;
             //buttonImage.VerticalAlignment = VerticalAlignment.Center;
             //MaterialDesignThemes.Wpf.ButtonAssist.SetCornerRadius(buttonImage, (new CornerRadius(0, 10, 10, 0)));
-            SectionData.getImg("Item", itemCardView.item.image, buttonImage);
+            SectionData.getImg("Item", cardViewitem.item.image, buttonImage);
 
 
             Grid grid_image = new Grid();
@@ -173,7 +163,7 @@ namespace POS.controlTemplate
             grid_image.Children.Add(buttonImage);
             //////////////
             #endregion
-            if (itemCardView.item.isNew == 1)
+            if (cardViewitem.item.isNew == 1)
             {
                 #region Path Star
                 //string dataStar = "";
@@ -191,7 +181,7 @@ namespace POS.controlTemplate
                 gridContainer.Children.Add(pathStar);
 
             }
-            if (itemCardView.item.isOffer == 1)
+            if (cardViewitem.item.isOffer == 1)
             {
                 #region Path offerLabel
 
@@ -208,7 +198,7 @@ namespace POS.controlTemplate
                 pathOfferLabel.FlowDirection = FlowDirection.LeftToRight;
                 pathOfferLabel.HorizontalAlignment = HorizontalAlignment.Right;
 
-                if (itemCardView.language == "ar")
+                if (cardViewitem.language == "ar")
                 {
                     pathOfferLabel.Data = App.Current.Resources["offerLabelArTopLeft"] as Geometry;
                 }
@@ -226,7 +216,7 @@ namespace POS.controlTemplate
                 pathOfferLabelText.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFD00"));
                 pathOfferLabelText.Stretch = Stretch.Fill;
                 pathOfferLabelText.HorizontalAlignment = HorizontalAlignment.Right;
-                if (itemCardView.language == "ar")
+                if (cardViewitem.language == "ar")
                 {
                     pathOfferLabelText.Height = pathOfferLabelText.Width = gridContainer.Width / 7;
                     pathOfferLabelText.Margin = new Thickness(4, 4, 0, 0);
@@ -248,31 +238,13 @@ namespace POS.controlTemplate
             gridContainer.Children.Add(titleText);
             gridContainer.Children.Add(subTitleText);
             gridContainer.Children.Add(grid_image);
-            
         }
-        /*
-        Grid CreateGrid(Grid grid , int row , int column)
-        {
-            ColumnDefinition[] cd = new ColumnDefinition[column];
-            for (int i = 0; i < column; i++)
-            {
-                //ColumnDefinition c1 = new ColumnDefinition();
-                cd[i] = new ColumnDefinition();
-                cd[i].Width = new GridLength(1, GridUnitType.Star);
-                gridContainer.ColumnDefinitions.Add(c[i]);
-            }
-            r = new RowDefinition[count[0]];
-            for (int i = 0; i < count[0]; i++)
-            {
-                r[i] = new RowDefinition();
-                r[i].Height = new GridLength(1, GridUnitType.Star);
-                gridContainer.RowDefinitions.Add(r[i]);
-            }
 
-            return grid;
-            
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.DataContext = this;
+            InitializeControls();
         }
-        */
         #region rectangleCardBorderBrush
         public static readonly DependencyProperty rectangleCardBorderBrushDependencyProperty = DependencyProperty.Register("rectangleCardBorderBrush",
             typeof(string),
@@ -287,86 +259,7 @@ namespace POS.controlTemplate
         }
         #endregion
 
-        /*
-#region rectangleCardPriceImageSource
-public static readonly DependencyProperty rectangleCardPriceImageSourceDependencyProperty = DependencyProperty.Register("rectangleCardPriceImageSource",
-    typeof(string),
-    typeof(UC_rectangleCardPrice),
-    new PropertyMetadata("DEFAULT"));
-public string rectangleCardPriceImageSource
-{
-    set
-    { SetValue(rectangleCardPriceImageSourceDependencyProperty, value); }
-    get
-    { return (string)GetValue(rectangleCardPriceImageSourceDependencyProperty); }
-}
-#endregion
-#region rectangleCardPriceTitleText
-public static readonly DependencyProperty rectangleCardPriceTitleTextDependencyProperty = DependencyProperty.Register("rectangleCardPriceTitleText",
-    typeof(string),
-    typeof(UC_rectangleCardPrice),
-    new PropertyMetadata("DEFAULT"));
-public string rectangleCardPriceTitleText
-{
-    set
-    { SetValue(rectangleCardPriceTitleTextDependencyProperty, value); }
-    get
-    { return (string)GetValue(rectangleCardPriceTitleTextDependencyProperty); }
-}
-#endregion
-#region rectangleCardPriceSubtitleText
-public static readonly DependencyProperty rectangleCardPriceSubtitleTextDependencyProperty = DependencyProperty.Register("rectangleCardPriceSubtitleText",
-    typeof(string),
-    typeof(UC_rectangleCardPrice),
-    new PropertyMetadata("DEFAULT"));
-public string rectangleCardPriceSubtitleText
-{
-    set
-    { SetValue(rectangleCardPriceSubtitleTextDependencyProperty, value); }
-    get
-    { return (string)GetValue(rectangleCardPriceSubtitleTextDependencyProperty); }
-}
-#endregion
-#region rectangleCardPricePriceTitle
-public static readonly DependencyProperty rectangleCardPricePriceTitleDependencyProperty = DependencyProperty.Register("rectangleCardPricePriceTitle",
-    typeof(string),
-    typeof(UC_rectangleCardPrice),
-    new PropertyMetadata("DEFAULT"));
-public string rectangleCardPricePriceTitle
-{
-    set
-    { SetValue(rectangleCardPricePriceTitleDependencyProperty, value); }
-    get
-    { return (string)GetValue(rectangleCardPricePriceTitleDependencyProperty); }
-}
-#endregion
-#region rectangleCardPriceNew
-public static readonly DependencyProperty rectangleCardPriceNewDependencyProperty = DependencyProperty.Register("rectangleCardPriceNew",
-    typeof(string),
-    typeof(UC_rectangleCardPrice),
-    new PropertyMetadata("DEFAULT"));
-public string rectangleCardPriceNew
-{
-    set
-    { SetValue(rectangleCardPriceNewDependencyProperty, value); }
-    get
-    { return (string)GetValue(rectangleCardPriceNewDependencyProperty); }
-}
-#endregion
-#region rectangleCardPriceOffer
-public static readonly DependencyProperty rectangleCardPriceOfferDependencyProperty = DependencyProperty.Register("rectangleCardPriceOffer",
-    typeof(string),
-    typeof(UC_rectangleCardPrice),
-    new PropertyMetadata("DEFAULT"));
-public string rectangleCardPriceOffer
-{
-    set
-    { SetValue(rectangleCardPriceOfferDependencyProperty, value); }
-    get
-    { return (string)GetValue(rectangleCardPriceOfferDependencyProperty); }
-}
-#endregion
-*/
+       
 
     }
 }
