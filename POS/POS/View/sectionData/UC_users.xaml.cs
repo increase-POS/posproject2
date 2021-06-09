@@ -180,7 +180,7 @@ namespace POS.View
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
+        
         private async void DG_users_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             p_errorFirstName.Visibility = Visibility.Collapsed;
@@ -1017,6 +1017,14 @@ namespace POS.View
             if (!regex.IsMatch(e.Text))
                 e.Handled = true;
         }
+
+
+        private void Cb_job_KeyUp(object sender, KeyEventArgs e)
+        {
+            ComboBox cbm = sender as ComboBox;
+            SectionData.searchInComboBox(cbm);
+        }
+        
     }
 }
 

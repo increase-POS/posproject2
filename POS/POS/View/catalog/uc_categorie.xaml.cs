@@ -59,12 +59,43 @@ namespace POS.View
         public uc_categorie()
         {
             InitializeComponent();
+            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+            {
+                txt_deleteButton.Visibility = Visibility.Visible;
+                txt_addButton.Visibility = Visibility.Visible;
+                txt_updateButton.Visibility = Visibility.Visible;
+                txt_add_Icon.Visibility = Visibility.Visible;
+                txt_update_Icon.Visibility = Visibility.Visible;
+                txt_delete_Icon.Visibility = Visibility.Visible;
+            }
+            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+            {
+                txt_add_Icon.Visibility = Visibility.Collapsed;
+                txt_update_Icon.Visibility = Visibility.Collapsed;
+                txt_delete_Icon.Visibility = Visibility.Collapsed;
+                txt_deleteButton.Visibility = Visibility.Visible;
+                txt_addButton.Visibility = Visibility.Visible;
+                txt_updateButton.Visibility = Visibility.Visible;
+
+            }
+            else
+            {
+                txt_deleteButton.Visibility = Visibility.Collapsed;
+                txt_addButton.Visibility = Visibility.Collapsed;
+                txt_updateButton.Visibility = Visibility.Collapsed;
+                txt_add_Icon.Visibility = Visibility.Visible;
+                txt_update_Icon.Visibility = Visibility.Visible;
+                txt_delete_Icon.Visibility = Visibility.Visible;
+
+            }
 
         }
         private async void fillCategories()
         {
             if (categories is null)
-                await RefrishCategories();
+
+            await RefrishCategories();
+
             cb_parentCategorie.ItemsSource = categories.ToList();
             cb_parentCategorie.SelectedValuePath = "categoryId";
             cb_parentCategorie.DisplayMemberPath = "name";
@@ -82,9 +113,9 @@ namespace POS.View
          // MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_categorie, MainWindow.resourcemanager.GetString("trCategorie"));
             txt_categorie.Text = MainWindow.resourcemanager.GetString("trCategorie");
 
-            btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
-            btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
-            btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+            txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
+            txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
+            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
 
             tt_name.Content = MainWindow.resourcemanager.GetString("trName");
             tt_code.Content = MainWindow.resourcemanager.GetString("trCode");
@@ -94,6 +125,10 @@ namespace POS.View
             tt_taxes.Content = MainWindow.resourcemanager.GetString("trTax");
             tt_grid.Content = MainWindow.resourcemanager.GetString("trViewGrid");
             tt_items.Content = MainWindow.resourcemanager.GetString("trViewItems");
+
+            tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
+            tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
@@ -237,7 +272,10 @@ namespace POS.View
                         }
                     }
                     ////////categoryParentId = parentCategorieSelctedValue;???????????????????
+                    ///
+
                     await RefrishCategories();
+
                     Txb_searchcategories_TextChanged(null, null);
 
                     fillCategories();
@@ -298,7 +336,9 @@ namespace POS.View
                             MessageBox.Show("حدث خطأ في تحميل الصورة");
                         }
                     }
+
                     await RefrishCategories();
+
                     Txb_searchcategories_TextChanged(null, null);
 
                 }
@@ -348,6 +388,7 @@ namespace POS.View
                 }
 
                 await RefrishCategories();
+
                 Txb_searchcategories_TextChanged(null, null);
             }
             //clear textBoxs
@@ -367,6 +408,7 @@ namespace POS.View
             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             await RefrishCategories();
+
             Txb_searchcategories_TextChanged(null, null);
 
         }
@@ -423,12 +465,34 @@ namespace POS.View
                 getImg();
 
                 #region delete
-                if (category.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+                if (category.canDelete) 
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                        txt_delete_Icon.Kind =
+                                 MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
-                else
+                    }
+
+                    else
                 {
-                    if (category.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
-                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                    if (category.isActive == 0)
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                            txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Check;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                        }
+                    else
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                        txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                    }
+
                 }
                 #endregion 
             }
@@ -475,12 +539,34 @@ namespace POS.View
             getImg();
 
             #region delete
-            if (category.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+            if (category.canDelete)
+            {
+                txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                txt_delete_Icon.Kind =
+                         MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+            }
 
             else
             {
-                if (category.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
-                else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
+                if (category.isActive == 0)
+                {
+                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                    txt_delete_Icon.Kind =
+                     MaterialDesignThemes.Wpf.PackIconKind.Check;
+                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                }
+                else
+                {
+                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                    txt_delete_Icon.Kind =
+                         MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                }
+
             }
             #endregion
         }
@@ -572,7 +658,9 @@ namespace POS.View
         private async void Txb_searchcategories_TextChanged(object sender, TextChangedEventArgs e)
         {//search
             if (categories is null)
+         
                 await RefrishCategories();
+
             txtCategorySearch = txb_searchcategories.Text.ToLower();
             
             categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
@@ -723,6 +811,7 @@ namespace POS.View
         async void generateTrack(int categorypaPathId)
         {
             grid_categoryControlPath.Children.Clear();
+
             IEnumerable<Category> categoriesPath = await
             categoryModel.GetCategoryTreeByID(categorypaPathId);
             
@@ -819,8 +908,6 @@ namespace POS.View
             categoryParentId = 0;
             Txb_searchcategories_TextChanged(null, null);
             grid_categoryControlPath.Children.Clear();
-
-          
         }
 
         #endregion

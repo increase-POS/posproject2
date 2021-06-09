@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Resources;
@@ -526,6 +527,20 @@ namespace POS.Classes
             str3 = (cashes.Count()+1).ToString();
 
             return str1 + str2 + str3;
+        }
+        static public void searchInComboBox(ComboBox cbm)
+        {
+            CollectionView itemsViewOriginal = (CollectionView)CollectionViewSource.GetDefaultView(cbm.Items);
+            itemsViewOriginal.Filter = ((o) =>
+            {
+                if (String.IsNullOrEmpty(cbm.Text)) return true;
+                else
+                {
+                    if (((string)o).Contains(cbm.Text)) return true;
+                    else return false;
+                }
+            });
+            itemsViewOriginal.Refresh();
         }
     }
 }

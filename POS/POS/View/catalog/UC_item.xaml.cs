@@ -25,6 +25,7 @@ using static POS.View.uc_categorie;
 using Microsoft.Win32;
 using System.Windows.Resources;
 using System.Threading;
+using System.Windows.Media.Animation;
 
 namespace POS.View
 {
@@ -82,7 +83,7 @@ namespace POS.View
         List<int> unitIds = new List<int>();
         List<string> unitNames = new List<string>();
 
-        static private int _InternalCounter = 0;       
+        static private int _InternalCounter = 0;
 
         DateTime _lastKeystroke = new DateTime(0);
         List<char> _barcode = new List<char>(10);
@@ -92,7 +93,7 @@ namespace POS.View
         OpenFileDialog openFileDialog = new OpenFileDialog();
         ImageBrush brush = new ImageBrush();
 
-      
+        bool StateClosed = false;
 
         public static UC_item Instance
         {
@@ -107,7 +108,7 @@ namespace POS.View
         public UC_item()
         {
             InitializeComponent();
-          
+
         }
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
 
@@ -176,7 +177,7 @@ namespace POS.View
         }
 
         private async void HandleKeyPress(object sender, KeyEventArgs e)
-        {  
+        {
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
             if (elapsed.TotalMilliseconds > 1000)
             {
@@ -184,7 +185,7 @@ namespace POS.View
                 _BarcodeStr = "";
             }
 
-            string digit="";
+            string digit = "";
             // record keystroke & timestamp 
             if (e.Key >= Key.D0 && e.Key <= Key.D9)
             {
@@ -197,13 +198,13 @@ namespace POS.View
                 digit = e.Key.ToString().Substring(6); // = "1" when NumPad1 is pressed
             }
 
-           _barcode.Add((char)e.Key);
-           _BarcodeStr += digit;        
+            _barcode.Add((char)e.Key);
+            _BarcodeStr += digit;
             _lastKeystroke = DateTime.Now;
-           
+
             // process barcode
-          if (e.Key.ToString() == "Return" && _barcode.Count > 0)
-          {
+            if (e.Key.ToString() == "Return" && _barcode.Count > 0)
+            {
                 tb_barcode.Text = _BarcodeStr;
                 _barcode.Clear();
                 _BarcodeStr = "";
@@ -211,12 +212,12 @@ namespace POS.View
                 if (barcodesList != null)
                 {
                     ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text);
-                   
+
                     if (unit1 != null)
                     {
                         if (dg_barcode.Visibility == Visibility.Visible)
                         {
-                           if( ! checkBarcodeValidity(tb_barcode.Text))
+                            if (!checkBarcodeValidity(tb_barcode.Text))
                             {
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorDuplicateBarcodeToolTip"), animation: ToasterAnimation.FadeIn);
                             }
@@ -230,7 +231,7 @@ namespace POS.View
                     }
                 }
                 drawBarcode(tb_barcode.Text);
-           }
+            }
         }
 
 
@@ -244,7 +245,7 @@ namespace POS.View
             var window = Window.GetWindow(this);
             window.KeyDown += HandleKeyPress;
 
-           
+
 
             if (MainWindow.lang.Equals("en"))
             {
@@ -258,7 +259,7 @@ namespace POS.View
             }
             await RefrishItems();
             await RefrishCategories();
-            
+
             RefrishCategoriesCard();
             Txb_searchitems_TextChanged(null, null);
 
@@ -309,7 +310,7 @@ namespace POS.View
             }
             return true;
         }
-     
+
         private void generateBarcode(string barcodeString, Boolean defaultBarcode)
         {
             if (barcodeString == "" && defaultBarcode)
@@ -317,7 +318,7 @@ namespace POS.View
                 barcodeString = generateRandomBarcode();
                 if (barcodesList != null)
                 {
-                   if(! checkBarcodeValidity(barcodeString))
+                    if (!checkBarcodeValidity(barcodeString))
                         barcodeString = generateRandomBarcode();
                 }
                 tb_barcode.Text += barcodeString;
@@ -395,13 +396,13 @@ namespace POS.View
             SectionData.validateEmptyTextBox(tb_min, p_errorMin, tt_errorMin, "trErrorEmptyMinToolTip");
             SectionData.validateEmptyTextBox(tb_max, p_errorMax, tt_errorMax, "trErrorEmptyMaxToolTip");
         }
-        private async Task<Boolean> checkCodeAvailabiltiy(string oldCode="")
+        private async Task<Boolean> checkCodeAvailabiltiy(string oldCode = "")
         {
             List<string> itemsCodes = await itemModel.GetItemsCodes();
             string code = tb_code.Text;
             var match = "";
             if (code != oldCode && itemsCodes != null)
-                 match = itemsCodes.FirstOrDefault(stringToCheck => stringToCheck.Contains(code));
+                match = itemsCodes.FirstOrDefault(stringToCheck => stringToCheck.Contains(code));
 
             if (match != "" && match != null)
             {
@@ -419,7 +420,7 @@ namespace POS.View
         {//add
             //validate values
             validateItemValues();
-            Boolean codeAvailable = await  checkCodeAvailabiltiy();
+            Boolean codeAvailable = await checkCodeAvailabiltiy();
 
             if ((!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1
                 && cb_minUnit.SelectedIndex != -1 && cb_maxUnit.SelectedIndex != -1 && !tb_min.Text.Equals("") && !tb_max.Text.Equals("")) && codeAvailable ||
@@ -542,10 +543,10 @@ namespace POS.View
                 // };
 
                 string res = await itemModel.saveItem(item);
-                if (!res.Equals("0")) 
+                if (!res.Equals("0"))
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                else 
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 int itemId = int.Parse(res);
 
@@ -562,10 +563,10 @@ namespace POS.View
             {
                 Boolean res = await serviceModel.delete(service.costId);
 
-                if (res) 
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-                else 
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                if (res)
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 refreshServicesGrid(item.itemId);
 
@@ -587,9 +588,9 @@ namespace POS.View
                 Boolean res = await itemModel.deleteItem(item.itemId, userId, item.canDelete);
 
                 if (res) //SectionData.popUpResponse("", popupContent);
-                Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
 
             //var items = await itemModel.GetAllItems();
@@ -611,9 +612,9 @@ namespace POS.View
             string s = await itemModel.saveItem(item);
 
             if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
-            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
             tb_barcode.Focus();
@@ -621,13 +622,13 @@ namespace POS.View
         private void validatePropertyValues()
         {
             SectionData.validateEmptyComboBox(cb_selectProperties, p_errorProperty, tt_errorProperty, "trEmptyPropertyToolTip");
-            SectionData.validateEmptyComboBox(cb_value, p_errorValue, tt_errorValue, "trEmptyValueToolTip");    
+            SectionData.validateEmptyComboBox(cb_value, p_errorValue, tt_errorValue, "trEmptyValueToolTip");
         }
         async void Btn_addProperties_Click(object sender, RoutedEventArgs e)
         {
             validatePropertyValues();
 
-            if (cb_selectProperties.SelectedValue != null  && cb_value.SelectedValue != null && item.itemId > 0)
+            if (cb_selectProperties.SelectedValue != null && cb_value.SelectedValue != null && item.itemId > 0)
             {
                 int propertyItemId = propItems[cb_value.SelectedIndex].propertyItemId;
                 int itemId = (int)item.itemId;
@@ -645,9 +646,9 @@ namespace POS.View
 
                     Boolean res = await itemsPropModel.Save(itemspropObj);
                     if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     refreshPropertiesGrid(itemId);
                 }
@@ -666,7 +667,7 @@ namespace POS.View
         async void Btn_addService_Click(object sender, RoutedEventArgs e)
         {
             validateServiceValues();
-            
+
             if (!tb_serviceName.Text.Equals("") && !tb_costVal.Text.Equals(""))
             {
                 service = new Service();
@@ -678,9 +679,9 @@ namespace POS.View
 
                 Boolean res = await serviceModel.saveService(service);
                 if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 refreshServicesGrid(item.itemId);
 
@@ -714,9 +715,9 @@ namespace POS.View
                     Boolean res = await serialModel.saveSerial(serial);
 
                     if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     // refresh  serials grid
                     refreshSerials(item.itemId);
@@ -735,9 +736,9 @@ namespace POS.View
                 Boolean res = await itemsPropModel.Delete(itemProp.itemPropId);
 
                 if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 refreshPropertiesGrid(item.itemId);
             }
@@ -753,9 +754,9 @@ namespace POS.View
                 Boolean res = await serialModel.delete(serial.serialId, (int)MainWindow.userID, final);
 
                 if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 refreshSerials(item.itemId);
             }
@@ -764,7 +765,7 @@ namespace POS.View
         async void Btn_updateService_Click(object sender, RoutedEventArgs e)
         {
             validateServiceValues();
-           
+
             if (!tb_serviceName.Text.Equals("") && !tb_costVal.Text.Equals("") && item != null)
             {
                 service.name = tb_serviceName.Text;
@@ -772,9 +773,9 @@ namespace POS.View
                 service.updateUserId = MainWindow.userID;
                 Boolean res = await serviceModel.saveService(service);
                 if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 refreshServicesGrid(item.itemId);
             }
@@ -800,7 +801,7 @@ namespace POS.View
         {
             //check mandatory values
             validateUnitValues();
-           
+
             if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
                 || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
             {
@@ -849,9 +850,9 @@ namespace POS.View
                     itemUnit.createUserId = MainWindow.userID;
 
                     string res = await itemUnit.saveItemUnit(itemUnit);
-                    if (res.Equals("true")) 
+                    if (res.Equals("true"))
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                    else 
+                    else
                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     refreshItemUnitsGrid(item.itemId);
@@ -933,9 +934,9 @@ namespace POS.View
                 Boolean res = await itemUnit.Delete(itemUnit.itemUnitId);
 
                 if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 refreshItemUnitsGrid(item.itemId);
             }
@@ -955,7 +956,7 @@ namespace POS.View
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
                 else if ((sender as TextBox).Name == "tb_name")
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                else if((sender as TextBox).Name == "tb_min")
+                else if ((sender as TextBox).Name == "tb_min")
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorMin, tt_errorMin, "trErrorEmptyMinToolTip");
                 else if ((sender as TextBox).Name == "tb_max")
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorMax, tt_errorMax, "trErrorEmptyMaxToolTip");
@@ -969,26 +970,26 @@ namespace POS.View
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorSerial, tt_errorSerial, "trEmptyCodeToolTip");
                 else if ((sender as TextBox).Name == "tb_serviceName")
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorServiceName, tt_errorServiceName, "trEmptyNameToolTip");
-                else if((sender as TextBox).Name == "tb_costVal")
+                else if ((sender as TextBox).Name == "tb_costVal")
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorCostVal, tt_errorCostVal, "trEmptyValueToolTip");
             }
             else if (name == "ComboBox")
             {
                 if ((sender as ComboBox).Name == "cb_categorie")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCategorie, tt_categorie, "trErrorEmptyCategoryToolTip");
-                else if((sender as ComboBox).Name == "cb_itemType")
+                else if ((sender as ComboBox).Name == "cb_itemType")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorType, tt_errorType, "trErrorEmptyCategoryToolTip");
-                else if((sender as ComboBox).Name == "cb_minUnit")
+                else if ((sender as ComboBox).Name == "cb_minUnit")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorMinUnit, tt_errorMinUnit, "trErrorEmptyUnitToolTip");
-                else if((sender as ComboBox).Name == "cb_maxUnit")
+                else if ((sender as ComboBox).Name == "cb_maxUnit")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorMaxUnit, tt_errorMaxUnit, "trErrorEmptyUnitToolTip");
-                else if((sender as ComboBox).Name == "cb_selectUnit")
+                else if ((sender as ComboBox).Name == "cb_selectUnit")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorSelectUnit, tt_errorSelectUnit, "trErrorEmptyUnitToolTip");
-                else if((sender as ComboBox).Name == "cb_unit")
+                else if ((sender as ComboBox).Name == "cb_unit")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorUnit, tt_errorUnit, "trErrorEmptyUnitToolTip");
-                else if((sender as ComboBox).Name == "cb_selectProperties")
+                else if ((sender as ComboBox).Name == "cb_selectProperties")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorProperty, tt_errorProperty, "trEmptyPropertyToolTip");
-                else if((sender as ComboBox).Name == "cb_value")
+                else if ((sender as ComboBox).Name == "cb_value")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorValue, tt_errorValue, "trEmptyValueToolTip");
 
             }
@@ -1007,7 +1008,7 @@ namespace POS.View
             SectionData.validateEmptyTextBox(tb_count, p_errorCount, tt_errorCount, "trErrorEmptyCountToolTip");
         }
         private void cb_barcode_LostFocus(object sender, RoutedEventArgs e)
-        {      
+        {
             if (!checkBarcodeValidity(tb_barcode.Text))
             {
                 SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorDuplicateBarcodeToolTip");
@@ -1016,7 +1017,7 @@ namespace POS.View
             {
                 SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorEmptyBarcodeToolTip");
             }
-            
+
         }
         private void Tb_code_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -1119,9 +1120,9 @@ namespace POS.View
         private void english_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex objAlphaPattern = new Regex(@"^[a-zA-Z0-9_@.-\\s\\r]*$", RegexOptions.CultureInvariant | RegexOptions.Singleline);
-       
+
             bool isEnglish = objAlphaPattern.IsMatch(e.TextComposition.Text);
- 
+
             if (!isEnglish && e.TextComposition.Text.Equals(""))
             {
                 SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorEnglishBarcodeToolTip");
@@ -1135,8 +1136,8 @@ namespace POS.View
             TextBox tb = (TextBox)sender;
             string barCode = "";
             if (!tb.Text.Equals(""))
-               barCode = tb_barcode.Text;
-            
+                barCode = tb_barcode.Text;
+
             drawBarcode(barCode);
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -1483,8 +1484,8 @@ namespace POS.View
             dg_items.ItemsSource = _items;
         }
 
-   
-    void RefrishItemsCard(IEnumerable<Item> _items)
+
+        void RefrishItemsCard(IEnumerable<Item> _items)
         {
             grid_itemContainerCard.Children.Clear();
             catigoriesAndItemsView.gridCatigorieItems = grid_itemContainerCard;
@@ -1767,7 +1768,7 @@ namespace POS.View
             //tgl_categoryCardIsActive.IsChecked =
             //    tgl_categoryDatagridIsActive.IsChecked = true;
             Txb_searchitems_TextChanged(null, null);
-   
+
         }
         private void Tgl_itemIsActive_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -1808,8 +1809,8 @@ namespace POS.View
         }
         #endregion
         #region Search Y
-        
-        
+
+
         /// <summary>
         /// Item
         /// </summary>
@@ -1828,14 +1829,14 @@ namespace POS.View
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
             txt_count.Text = itemsQuery.Count().ToString();
-            if(btns is null)
+            if (btns is null)
                 btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
             RefrishItemsDatagrid(itemsQuery);
             tb_barcode.Focus();
         }
-        
+
         #endregion
         #region Pagination Y
         Pagination pagination = new Pagination();
@@ -1988,6 +1989,7 @@ namespace POS.View
         }
         private async void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
         {
+
             categoryParentId = 0;
             RefrishCategoriesCard();
             grid_categoryControlPath.Children.Clear();
@@ -1995,6 +1997,7 @@ namespace POS.View
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
             tb_barcode.Focus();
+
         }
 
         #endregion

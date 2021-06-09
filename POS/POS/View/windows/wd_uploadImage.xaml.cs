@@ -18,6 +18,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WIA;
+using System.Web.UI.WebControls;
+using System.Windows.Resources;
 
 namespace POS.View.windows
 {
@@ -26,17 +28,14 @@ namespace POS.View.windows
     /// </summary>
     public partial class wd_uploadImage : Window
     {
-        public string tableName { get; set; }
-        
+        public string tableName { get; set; }      
         public int tableId { get; set; }
         public string docNum { get; set; }
 
-        private static int _Resolution = 150;
-        private static int _PixelWidth = 1250;
-        private static int _PixelHeight = 1700;
-        int cmbCMIndex = 0;
+        private int docId=0;
 
         DocImage docImgModel = new DocImage();
+       List<DocImage> imageList;
        
         ImageBrush brush = new ImageBrush();
 
@@ -46,13 +45,25 @@ namespace POS.View.windows
             InitializeComponent();
         }
 
-        private void Btn_delete_Click(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            await refreshImageList();
+        }
+        private void Img_upload_Click(object sender, RoutedEventArgs e)
         {
 
-        }
+            //select image
+            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
 
+            if (openFileDialog.ShowDialog() == true)
+            {
+                brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                img_upload.Background = brush;
+            }
+        }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
+            docId = 0;
             docImgModel.tableName = "invoices";
             docImgModel.tableId = tableId;
             docImgModel.docnum = docNum;
@@ -62,37 +73,87 @@ namespace POS.View.windows
             if (!res.Equals("0"))
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
             else
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             int docImageId = int.Parse(res);
 
             await docImgModel.uploadImage(openFileDialog.FileName,tableName ,docImageId);
-            this.Close();
+
+            //refresh image list
+             await refreshImageList();
         }
 
-        private void Img_upload_Click(object sender, RoutedEventArgs e)
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {
-           
-            //select image
-            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
-
-            if (openFileDialog.ShowDialog() == true )
+            if (docId != 0)
             {
-               brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                Boolean res = await docImgModel.delete(docId);
+
+                if (res)
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                else
+                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                docId = 0;
+                //clear img
+                Uri resourceUri = new Uri("/pic/no-image-icon-125x125.png", UriKind.Relative);
+                StreamResourceInfo streamInfo = System.Windows.Application.GetResourceStream(resourceUri);
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                brush.ImageSource = temp;
                 img_upload.Background = brush;
+
+                //refresh images
+                await refreshImageList();
             }
         }
+       
 
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async Task refreshImageList()
         {
+            int sequence = 0;
+            lst_images.Items.Clear();
 
+            imageList = await docImgModel.GetDocImages(tableName, tableId);
+
+            foreach (DocImage doc in imageList)
+            {
+                sequence++;
+                lst_images.Items.Add(sequence);
+            }
         }
+        private async void getImg(string imageName)
+        {
+            byte[] imageBuffer = await docImgModel.downloadImage(imageName); // read this as BLOB from your DB
 
+            var bitmapImage = new BitmapImage();
+            if (imageBuffer != null)
+            {
+                using (var memoryStream = new MemoryStream(imageBuffer))
+                {
+                    bitmapImage.BeginInit();
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapImage.StreamSource = memoryStream;
+                    bitmapImage.EndInit();
+                }
+
+            img_upload.Background = new ImageBrush(bitmapImage);
+            }
+        }
+        // display image in IMG_customer 
+        private void Lst_images_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lst_images.SelectedIndex != -1)
+            {
+                docId = imageList[lst_images.SelectedIndex].id;
+                string imageName = imageList[lst_images.SelectedIndex].image;
+                getImg(imageName);
+            }
+        }
         private void Btn_scan_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -190,5 +251,7 @@ namespace POS.View.windows
         {
 
         }
+
+        
     }
 }

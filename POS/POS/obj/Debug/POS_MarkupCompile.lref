@@ -1,4 +1,4 @@
-﻿
+﻿E:\GitHub\posproject2\POS\POS\obj\Debug\GeneratedInternalTypeHelper.g.cs
 FE:\GitHub\posproject2\POS\POS\App.xaml;;
 FE:\GitHub\posproject2\POS\POS\controlTemplate\UC_rectangleCard.xaml;;
 FE:\GitHub\posproject2\POS\POS\controlTemplate\UC_rectangleCardWithoutPrice_ar.xaml;;
@@ -12,7 +12,6 @@ FE:\GitHub\posproject2\POS\POS\View\accounts\uc_banksAccounts.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\accounts\uc_paymentsAccounts.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\accounts\uc_posAccounts.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\accounts\uc_receivedAccounts.xaml;;
-FE:\GitHub\posproject2\POS\POS\View\sales\uc_payInvoice - Copy.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\storage\uc_itemsDestroy.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\storage\uc_itemsExport.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\storage\uc_itemsImport.xaml;;

@@ -1137,4 +1137,7 @@
   <data name="trSalary" xml:space="preserve">
     <value>Salary</value>
   </data>
+  <data name="trPurchaseInvoice" xml:space="preserve">
+    <value>Purchase Invoice</value>
+  </data>
 </root>

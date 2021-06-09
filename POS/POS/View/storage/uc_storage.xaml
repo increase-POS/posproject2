@@ -3,11 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="1100"
              Loaded="UserControl_Loaded">
-    <Grid x:Name="grid_ucStorage" >
+    <Grid>
+    <materialDesign:TransitioningContent >
+            <materialDesign:TransitioningContent.OpeningEffects>
+                <materialDesign:TransitionEffect Kind="FadeIn"  Duration="0:0:1.5"/>
+                <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:1" />
+            </materialDesign:TransitioningContent.OpeningEffects>
+            <Grid x:Name="grid_ucStorage" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="110"/>
             <ColumnDefinition Width="*"/>
@@ -143,4 +151,8 @@
         </ScrollViewer>
         <Grid Grid.Column="1" x:Name="grid_main"/>
     </Grid>
+        </materialDesign:TransitioningContent>
+    </Grid>
+
+
 </UserControl>

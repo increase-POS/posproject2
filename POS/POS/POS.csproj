@@ -231,9 +231,6 @@
     <Compile Include="View\accounts\uc_receivedAccounts.xaml.cs">
       <DependentUpon>uc_receivedAccounts.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\sales\uc_payInvoice - Copy.xaml.cs">
-      <DependentUpon>uc_payInvoice - Copy.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\storage\uc_itemsDestroy.xaml.cs">
       <DependentUpon>uc_itemsDestroy.xaml</DependentUpon>
     </Compile>
@@ -402,10 +399,6 @@
     <Page Include="View\accounts\uc_receivedAccounts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\sales\uc_payInvoice - Copy.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\storage\uc_itemsDestroy.xaml">
       <SubType>Designer</SubType>

@@ -617,7 +617,11 @@
                                      
                                      Height="40"   Margin="5,5,5,5" 
                                       LostFocus="Cb_job_LostFocus"
-                                      TextBoxBase.TextChanged="ComboBox_TextChanged" PreviewTextInput="Cb_job_PreviewTextInput" >
+                                      TextBoxBase.TextChanged="ComboBox_TextChanged" PreviewTextInput="Cb_job_PreviewTextInput"
+                                          
+                                  IsTextSearchEnabled="False"
+                                  StaysOpenOnEdit="True"
+                                  KeyUp="Cb_job_KeyUp">
                                     <ComboBox.ToolTip>
                                         <ToolTip x:Name="tt_job" Content="Job"
                                               Placement="left" 

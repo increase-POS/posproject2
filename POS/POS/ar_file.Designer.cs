@@ -2248,6 +2248,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to فاتورة شراء.
+        /// </summary>
+        internal static string trPurchaseInvoice {
+            get {
+                return ResourceManager.GetString("trPurchaseInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to فواتير الشراء.
         /// </summary>
         internal static string trPurchaseInvoices {

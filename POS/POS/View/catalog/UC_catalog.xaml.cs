@@ -38,6 +38,7 @@ namespace POS.View
             InitializeComponent();
            
         }
+
         private void translate()
         {
             btn_categories.Content = MainWindow.resourcemanager.GetString("trCategories");
