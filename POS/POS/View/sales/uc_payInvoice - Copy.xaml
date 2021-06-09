@@ -320,7 +320,6 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Text="Payment" x:Name="txt_payment" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
@@ -364,7 +363,7 @@
                             </Path.ToolTip>
                         </Path>
                     </Grid>
-                    <Grid  Margin="5" Grid.Row="7" >
+                    <!--<Grid  Margin="5" Grid.Row="7" >
                         <TextBox x:Name="tb_amount" MaxLength="20" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                  Text="{Binding cash, Mode=OneWay}" 
@@ -382,7 +381,7 @@
                                 <ToolTip x:Name="tt_errorCash" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
-                    </Grid>
+                    </Grid>-->
                 </Grid>
             </Border>
             <Border BorderThickness="0"   Grid.Column="0" Grid.Row="1"    Margin="10"
@@ -551,8 +550,8 @@
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" >
             <Grid.RowDefinitions >
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1.*"/>
+                <RowDefinition Height="1.5*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>

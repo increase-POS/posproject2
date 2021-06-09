@@ -1089,4 +1089,52 @@
   <data name="trPosAccounts" xml:space="preserve">
     <value>Pos Accounts</value>
   </data>
+  <data name="trAdministrativePull" xml:space="preserve">
+    <value>administrative pull</value>
+  </data>
+  <data name="trCheque" xml:space="preserve">
+    <value>Cheque</value>
+  </data>
+  <data name="trDocNumHint" xml:space="preserve">
+    <value>Document Number...</value>
+  </data>
+  <data name="trDocNumTooltip" xml:space="preserve">
+    <value>Document number</value>
+  </data>
+  <data name="trDocument" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="trEmptyDocNumToolTip" xml:space="preserve">
+    <value>Document number can not be empty</value>
+  </data>
+  <data name="trErrorEmptyDepositToToolTip" xml:space="preserve">
+    <value>depositor can not be empty</value>
+  </data>
+  <data name="trErrorEmptyPaymentTypeToolTip" xml:space="preserve">
+    <value>Payment Type can not be empty</value>
+  </data>
+  <data name="trErrorEmptyRecipientToolTip" xml:space="preserve">
+    <value>Recipient can not be empty</value>
+  </data>
+  <data name="trGeneralExpenses" xml:space="preserve">
+    <value>General expenses</value>
+  </data>
+  <data name="trPayments" xml:space="preserve">
+    <value>Payments</value>
+  </data>
+  <data name="trPaymentTypeHint" xml:space="preserve">
+    <value>Payment Type...</value>
+  </data>
+  <data name="trPaymentTypeTooltip" xml:space="preserve">
+    <value>Payment type</value>
+  </data>
+  <data name="trRecipientHint" xml:space="preserve">
+    <value>Recipient...</value>
+  </data>
+  <data name="trRecipientTooltip" xml:space="preserve">
+    <value>Recipient</value>
+  </data>
+  <data name="trSalary" xml:space="preserve">
+    <value>Salary</value>
+  </data>
 </root>

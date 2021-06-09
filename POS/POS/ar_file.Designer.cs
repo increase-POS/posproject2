@@ -124,6 +124,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to سحب إداري.
+        /// </summary>
+        internal static string trAdministrativePull {
+            get {
+                return ResourceManager.GetString("trAdministrativePull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العنوان....
         /// </summary>
         internal static string trAdressHint {
@@ -313,7 +322,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to نقدي.
+        ///   Looks up a localized string similar to مبلغ.
         /// </summary>
         internal static string trCash {
             get {
@@ -363,6 +372,15 @@ namespace POS {
         internal static string trCategories {
             get {
                 return ResourceManager.GetString("trCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to شيك.
+        /// </summary>
+        internal static string trCheque {
+            get {
+                return ResourceManager.GetString("trCheque", resourceCulture);
             }
         }
         
@@ -709,6 +727,33 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to رقم الوثيقة....
+        /// </summary>
+        internal static string trDocNumHint {
+            get {
+                return ResourceManager.GetString("trDocNumHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to رقم الوثيقة.
+        /// </summary>
+        internal static string trDocNumTooltip {
+            get {
+                return ResourceManager.GetString("trDocNumTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مستند.
+        /// </summary>
+        internal static string trDocument {
+            get {
+                return ResourceManager.GetString("trDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رقم الوثيقة.
         /// </summary>
         internal static string trDocumentNumber {
@@ -903,6 +948,15 @@ namespace POS {
         internal static string trEmptyDiscountValueToolTip {
             get {
                 return ResourceManager.GetString("trEmptyDiscountValueToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to رقم الوثيقة لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyDocNumToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyDocNumToolTip", resourceCulture);
             }
         }
         
@@ -1159,6 +1213,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الجهة المودعة لا يمكن أن تكون فارغة.
+        /// </summary>
+        internal static string trErrorEmptyDepositToToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyDepositToToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تاريخ الاستحقاق لا يمكن أن يكون فارغاً.
         /// </summary>
         internal static string trErrorEmptyDeservedDate {
@@ -1204,11 +1267,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to نوع الدفع لا يمكن أن تكون فارغة.
+        /// </summary>
+        internal static string trErrorEmptyPaymentTypeToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyPaymentTypeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to السعر لا يمكن أن يكون فارغاً.
         /// </summary>
         internal static string trErrorEmptyPriceToolTip {
             get {
                 return ResourceManager.GetString("trErrorEmptyPriceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المستفيد لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trErrorEmptyRecipientToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyRecipientToolTip", resourceCulture);
             }
         }
         
@@ -1362,6 +1443,15 @@ namespace POS {
         internal static string trFromPosHint {
             get {
                 return ResourceManager.GetString("trFromPosHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مصروفات عامة.
+        /// </summary>
+        internal static string trGeneralExpenses {
+            get {
+                return ResourceManager.GetString("trGeneralExpenses", resourceCulture);
             }
         }
         
@@ -1852,6 +1942,33 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المدفوعات.
+        /// </summary>
+        internal static string trPayments {
+            get {
+                return ResourceManager.GetString("trPayments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نوع الدفع....
+        /// </summary>
+        internal static string trPaymentTypeHint {
+            get {
+                return ResourceManager.GetString("trPaymentTypeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نوع الدفع.
+        /// </summary>
+        internal static string trPaymentTypeTooltip {
+            get {
+                return ResourceManager.GetString("trPaymentTypeTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to طباعة PDF.
         /// </summary>
         internal static string trPdf {
@@ -2194,6 +2311,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المستفيد....
+        /// </summary>
+        internal static string trRecipientHint {
+            get {
+                return ResourceManager.GetString("trRecipientHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المستفيد.
+        /// </summary>
+        internal static string trRecipientTooltip {
+            get {
+                return ResourceManager.GetString("trRecipientTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تحديث.
         /// </summary>
         internal static string trRefresh {
@@ -2235,6 +2370,15 @@ namespace POS {
         internal static string trReturnInvoice {
             get {
                 return ResourceManager.GetString("trReturnInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to راتب.
+        /// </summary>
+        internal static string trSalary {
+            get {
+                return ResourceManager.GetString("trSalary", resourceCulture);
             }
         }
         

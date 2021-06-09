@@ -142,6 +142,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to administrative pull.
+        /// </summary>
+        internal static string trAdministrativePull {
+            get {
+                return ResourceManager.GetString("trAdministrativePull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address....
         /// </summary>
         internal static string trAdressHint {
@@ -381,6 +390,15 @@ namespace POS {
         internal static string trCategories {
             get {
                 return ResourceManager.GetString("trCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cheque.
+        /// </summary>
+        internal static string trCheque {
+            get {
+                return ResourceManager.GetString("trCheque", resourceCulture);
             }
         }
         
@@ -727,6 +745,33 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Document Number....
+        /// </summary>
+        internal static string trDocNumHint {
+            get {
+                return ResourceManager.GetString("trDocNumHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document number.
+        /// </summary>
+        internal static string trDocNumTooltip {
+            get {
+                return ResourceManager.GetString("trDocNumTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document.
+        /// </summary>
+        internal static string trDocument {
+            get {
+                return ResourceManager.GetString("trDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Document Number.
         /// </summary>
         internal static string trDocumentNumber {
@@ -921,6 +966,15 @@ namespace POS {
         internal static string trEmptyDiscountValueToolTip {
             get {
                 return ResourceManager.GetString("trEmptyDiscountValueToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document number can not be empty.
+        /// </summary>
+        internal static string trEmptyDocNumToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyDocNumToolTip", resourceCulture);
             }
         }
         
@@ -1186,6 +1240,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to depositor can not be empty.
+        /// </summary>
+        internal static string trErrorEmptyDepositToToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyDepositToToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deserved date can not be empty.
         /// </summary>
         internal static string trErrorEmptyDeservedDate {
@@ -1231,11 +1294,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment Type can not be empty.
+        /// </summary>
+        internal static string trErrorEmptyPaymentTypeToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyPaymentTypeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Price can not be empty!.
         /// </summary>
         internal static string trErrorEmptyPriceToolTip {
             get {
                 return ResourceManager.GetString("trErrorEmptyPriceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recipient can not be empty.
+        /// </summary>
+        internal static string trErrorEmptyRecipientToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyRecipientToolTip", resourceCulture);
             }
         }
         
@@ -1398,6 +1479,15 @@ namespace POS {
         internal static string trFromPosHint {
             get {
                 return ResourceManager.GetString("trFromPosHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General expenses.
+        /// </summary>
+        internal static string trGeneralExpenses {
+            get {
+                return ResourceManager.GetString("trGeneralExpenses", resourceCulture);
             }
         }
         
@@ -1906,6 +1996,33 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payments.
+        /// </summary>
+        internal static string trPayments {
+            get {
+                return ResourceManager.GetString("trPayments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment Type....
+        /// </summary>
+        internal static string trPaymentTypeHint {
+            get {
+                return ResourceManager.GetString("trPaymentTypeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment type.
+        /// </summary>
+        internal static string trPaymentTypeTooltip {
+            get {
+                return ResourceManager.GetString("trPaymentTypeTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Print Pdf.
         /// </summary>
         internal static string trPdf {
@@ -2239,6 +2356,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recipient....
+        /// </summary>
+        internal static string trRecipientHint {
+            get {
+                return ResourceManager.GetString("trRecipientHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recipient.
+        /// </summary>
+        internal static string trRecipientTooltip {
+            get {
+                return ResourceManager.GetString("trRecipientTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refresh.
         /// </summary>
         internal static string trRefresh {
@@ -2280,6 +2415,15 @@ namespace POS {
         internal static string trReturnInvoice {
             get {
                 return ResourceManager.GetString("trReturnInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Salary.
+        /// </summary>
+        internal static string trSalary {
+            get {
+                return ResourceManager.GetString("trSalary", resourceCulture);
             }
         }
         

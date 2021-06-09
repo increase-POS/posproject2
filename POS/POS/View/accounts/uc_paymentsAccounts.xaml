@@ -53,25 +53,49 @@
                               Foreground="#4e4e4e" TextBlock.FontSize="14"
                               HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Height="35"   Width="150" Margin="10,5" 
-                              TextChanged="Tb_search_TextChanged"/>
+                              TextChanged="Tb_search_TextChanged">
+                        <TextBox.ToolTip>
+                            <ToolTip x:Name="tt_search" Content="Search"
+                                                          Placement="left" 
+                                                          HorizontalOffset="25"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="25"/>
+                        </TextBox.ToolTip>
+                    </TextBox>
                     <DatePicker  x:Name="dp_startSearchDate"  
-                               BorderBrush="#737373"  BorderThickness="0" 
-                                    TextBlock.Foreground="#4E4E4E" 
-                                                 Grid.Row="2" Padding="10,5,5,5"  
+                                 BorderBrush="#737373"  BorderThickness="0" 
+                                 TextBlock.Foreground="#4E4E4E" 
+                                 Grid.Row="2" Padding="10,5,5,5"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                  materialDesign:HintAssist.Hint="Start date..."  
                                Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            Grid.Column="1"  Height="35" Width="150"  Margin="5,5" />
+                            Grid.Column="1"  Height="35" Width="150"  Margin="5,5" >
+                        <DatePicker.ToolTip>
+                            <ToolTip x:Name="tt_startDate" Content="Start Date"
+                                                          Placement="left" 
+                                                          HorizontalOffset="25"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="25"/>
+                        </DatePicker.ToolTip>
+                    </DatePicker>
                     <DatePicker  x:Name="dp_endSearchDate"  
                                BorderBrush="#737373"  BorderThickness="0" 
                                     TextBlock.Foreground="#4E4E4E"
-                                                 Grid.Row="2" Padding="10,5,5,5"  
+                                 Grid.Row="2" Padding="10,5,5,5"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                  materialDesign:HintAssist.Hint="End date..."  
                                Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            Grid.Column="2"  Height="35" Width="150"  Margin="5,5" />
+                            Grid.Column="2"  Height="35" Width="150"  Margin="5,5" >
+                        <DatePicker.ToolTip>
+                            <ToolTip x:Name="tt_endDate" Content="End Date"
+                                                          Placement="left" 
+                                                          HorizontalOffset="25"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="25"/>
+                        </DatePicker.ToolTip>
+                    </DatePicker>
 
                     <Button FlowDirection="LeftToRight"  Width="40" Height="40" x:Name="btn_refresh" Grid.Row="0" Grid.Column="4" Padding="0" 
                             materialDesign:ButtonAssist.CornerRadius="15" Cursor="Hand"
@@ -98,11 +122,11 @@
                             </TransformGroup>
                         </Button.RenderTransform>
                         <Button.ToolTip>
-                            <ToolTip x:Name="tt_refresh" Content="refresh"
-                                             Placement="left" 
-                                             HorizontalOffset="5"
-                                             PlacementRectangle="50,0,0,0"
-                                             VerticalOffset="20"/>
+                            <ToolTip x:Name="tt_refresh" Content="Refresh"
+                                              Placement="left" 
+                                              HorizontalOffset="15"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="25"/>
                         </Button.ToolTip>
                     </Button>
                 </Grid>
@@ -368,13 +392,22 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <ComboBox x:Name="cb_depositTo"  Grid.Row="2" ToolTip="and to salary"
+                        <ComboBox x:Name="cb_depositTo"  Grid.Row="2" 
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Deposit To..."  
-                           TextBlock.FontSize="12"   Background="#f8f8f8"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
-                           BorderBrush="#737373" BorderThickness="0" >
+                                  materialDesign:HintAssist.Hint="Deposit To..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                  Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
+                                  BorderBrush="#737373" BorderThickness="0" 
+                                  SelectionChanged="Cb_depositTo_SelectionChanged" 
+                                  LostFocus="Tb_validateEmptyLostFocus">
+                            <ComboBox.ToolTip>
+                                <ToolTip x:Name="tt_depositTo" Content="Deposit To"
+                                                          Placement="left" 
+                                                          HorizontalOffset="35"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="20"/>
+                            </ComboBox.ToolTip>
                         </ComboBox>
                         <Path Fill="#E81123" x:Name="p_errorDepositTo" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -391,12 +424,19 @@
                         </Grid.ColumnDefinitions>
                         <ComboBox x:Name="cb_recipient"  Grid.Row="2"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Recipient..."  
-                           TextBlock.FontSize="12"   Background="#f8f8f8"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
-                           BorderBrush="#737373" BorderThickness="0" >
-
+                                  materialDesign:HintAssist.Hint="Recipient..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                  Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
+                                  BorderBrush="#737373" BorderThickness="0" 
+                                  LostFocus="Tb_validateEmptyLostFocus">
+                            <ComboBox.ToolTip>
+                                <ToolTip x:Name="tt_recepient" Content="Recipient"
+                                                          Placement="left" 
+                                                          HorizontalOffset="35"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="20"/>
+                            </ComboBox.ToolTip>
                         </ComboBox>
                         <Path Fill="#E81123" x:Name="p_errorRecipient" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -413,12 +453,20 @@
                         </Grid.ColumnDefinitions>
                         <ComboBox x:Name="cb_paymentProcessType"  Grid.Row="2"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Payment Process Type..."  
-                           TextBlock.FontSize="12"   Background="#f8f8f8"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
-                           BorderBrush="#737373" BorderThickness="0" >
-
+                                  materialDesign:HintAssist.Hint="Payment Process Type..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                  Grid.Column="0" Height="35" Width="340"  Margin="10,5,5,5"
+                                  BorderBrush="#737373" BorderThickness="0" 
+                                  SelectionChanged="Cb_paymentProcessType_SelectionChanged" 
+                                  LostFocus="Tb_validateEmptyLostFocus">
+                            <ComboBox.ToolTip>
+                                <ToolTip x:Name="tt_paymentType" Content="Payment Type"
+                                                          Placement="left" 
+                                                          HorizontalOffset="35"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="20"/>
+                            </ComboBox.ToolTip>
                         </ComboBox>
                         <Path Fill="#E81123" x:Name="p_errorpaymentProcessType" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -432,21 +480,20 @@
                     <Grid Grid.Row="6">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <!--<ColumnDefinition Width="*"/>-->
                         </Grid.ColumnDefinitions>
                         <Grid  Grid.Row="5" Visibility="Visible" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <ComboBox x:Name="cb_paymentDocName"  Grid.Row="2"
+                            <!--<ComboBox x:Name="cb_paymentDocName"  Grid.Row="2"
                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Document Type..."  
-                           TextBlock.FontSize="12"   Background="#f8f8f8"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="0" Height="35" Width="160"  Margin="10,5,5,5"
-                           BorderBrush="#737373" BorderThickness="0" >
-
-                            </ComboBox>
+                                  materialDesign:HintAssist.Hint="Document Type..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                  Grid.Column="0" Height="35" Width="160"  Margin="10,5,5,5"
+                                  BorderBrush="#737373" BorderThickness="0" >
+                            </ComboBox>-->
                             <Path Fill="#E81123" x:Name="p_errorpaymentDocName" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -456,20 +503,32 @@
                                 </Path.ToolTip>
                             </Path>
                         </Grid>
-                        <Grid Grid.Row="7" Grid.Column="1">
+                        <Grid Grid.Row="7" Grid.Column="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_docNum" MaxLength="20" 
-                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                                 Text="{Binding docNum, Mode=OneWay}" 
+                            <TextBox x:Name="tb_docNum"  MaxLength="20" 
+                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                 Text="{Binding docNum, Mode=OneWay}" 
                                  Grid.Row="1" Padding="10,5,5,5"
                                  BorderThickness="1" 
                                  materialDesign:HintAssist.Hint="Document Number..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12"
+                                 Foreground="#4E4E4E"  TextBlock.FontSize="12"
                                  Background="#f8f8f8" BorderBrush="#f8f8f8"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="0"   Height="35" Width="160"  Margin="10,5"/>
+                                 HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                 Grid.Column="0"   Height="35" Width="340"  Margin="10,5"
+                                 TextChanged="Tb_validateEmptyTextChange" 
+                                 LostFocus="Tb_validateEmptyLostFocus"
+                                 PreviewKeyDown="PreventSpaces" 
+                                 PreviewTextInput="Tb_docNum_PreviewTextInput">
+                                <TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_docNum" Content="Document Number"
+                                                         Placement="left" 
+                                                         HorizontalOffset="35"
+                                                         PlacementRectangle="50,0,0,0"
+                                                         VerticalOffset="20"/>
+                                </TextBox.ToolTip>
+                            </TextBox>
                             <Path x:Name="p_errorDocNum" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -482,16 +541,31 @@
                     </Grid>
                     
                     <Grid Grid.Row="7" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
                         <TextBox x:Name="tb_cash" MaxLength="20" 
-                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                                 Text="{Binding cash, Mode=OneWay}" 
+                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                 Text="{Binding cash, Mode=OneWay}" 
                                  Grid.Row="1" Padding="10,5,5,5"
                                  BorderThickness="1" 
                                  materialDesign:HintAssist.Hint="Cash..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12"
+                                 Foreground="#4E4E4E"  TextBlock.FontSize="12"
                                  Background="#f8f8f8" BorderBrush="#f8f8f8"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" 
-                Grid.Column="0"   Height="35" Width="340"  Margin="10,5"/>
+                                 HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                 Grid.Column="0"   Height="35" Width="340"  Margin="10,5"
+                                 TextChanged="Tb_validateEmptyTextChange" 
+                                 LostFocus="Tb_validateEmptyLostFocus"
+                                 PreviewKeyDown="PreventSpaces" 
+                                 PreviewTextInput="Tb_cash_PreviewTextInput">
+                            <TextBox.ToolTip>
+                                <ToolTip x:Name="tt_cash" Content="Cash"
+                                                         Placement="left" 
+                                                         HorizontalOffset="35"
+                                                         PlacementRectangle="50,0,0,0"
+                                                         VerticalOffset="20"/>
+                            </TextBox.ToolTip>
+                        </TextBox>
                         <Path x:Name="p_errorCash" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -503,13 +577,21 @@
                     </Grid>
                     <Grid Grid.Row="8"  Margin="5,0,0,0" >
                         <TextBox  x:Name="tb_note" Text="{Binding test, Mode=OneWay}"
-                                                 Grid.Row="2" Padding="10,5,5,5"  
-                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  
-                               Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="#f8f8f8"
-                                 HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            Grid.Column="1"  Height="70"  Width="340"  Margin="5,5"  TextWrapping="Wrap"/>
+                                  Grid.Row="2" Padding="10,5,5,5"  
+                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                  BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  
+                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                  BorderBrush="#f8f8f8"
+                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                  Grid.Column="1"  Height="70"  Width="340"  Margin="5,5"  TextWrapping="Wrap">
+                            <TextBox.ToolTip>
+                                <ToolTip x:Name="tt_notes" Content="Notes"
+                                                         Placement="left" 
+                                                         HorizontalOffset="35"
+                                                         PlacementRectangle="50,0,0,0"
+                                                         VerticalOffset="20"/>
+                            </TextBox.ToolTip>
+                        </TextBox>
                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                                   HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                              VerticalAlignment="Center" Width="15"  Height="15"

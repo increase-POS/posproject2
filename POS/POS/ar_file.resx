@@ -586,7 +586,7 @@
     <value>الفرع...</value>
   </data>
   <data name="trCash" xml:space="preserve">
-    <value>نقدي</value>
+    <value>مبلغ</value>
   </data>
   <data name="trCreditCard" xml:space="preserve">
     <value>بطاقة ائتمان</value>
@@ -1067,5 +1067,53 @@
   </data>
   <data name="trPosAccounts" xml:space="preserve">
     <value>حسابات نقطة البيع</value>
+  </data>
+  <data name="trAdministrativePull" xml:space="preserve">
+    <value>سحب إداري</value>
+  </data>
+  <data name="trCheque" xml:space="preserve">
+    <value>شيك</value>
+  </data>
+  <data name="trDocNumHint" xml:space="preserve">
+    <value>رقم الوثيقة...</value>
+  </data>
+  <data name="trDocNumTooltip" xml:space="preserve">
+    <value>رقم الوثيقة</value>
+  </data>
+  <data name="trDocument" xml:space="preserve">
+    <value>مستند</value>
+  </data>
+  <data name="trEmptyDocNumToolTip" xml:space="preserve">
+    <value>رقم الوثيقة لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trErrorEmptyDepositToToolTip" xml:space="preserve">
+    <value>الجهة المودعة لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trErrorEmptyPaymentTypeToolTip" xml:space="preserve">
+    <value>نوع الدفع لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trErrorEmptyRecipientToolTip" xml:space="preserve">
+    <value>المستفيد لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trGeneralExpenses" xml:space="preserve">
+    <value>مصروفات عامة</value>
+  </data>
+  <data name="trPayments" xml:space="preserve">
+    <value>المدفوعات</value>
+  </data>
+  <data name="trPaymentTypeHint" xml:space="preserve">
+    <value>نوع الدفع...</value>
+  </data>
+  <data name="trPaymentTypeTooltip" xml:space="preserve">
+    <value>نوع الدفع</value>
+  </data>
+  <data name="trRecipientHint" xml:space="preserve">
+    <value>المستفيد...</value>
+  </data>
+  <data name="trRecipientTooltip" xml:space="preserve">
+    <value>المستفيد</value>
+  </data>
+  <data name="trSalary" xml:space="preserve">
+    <value>راتب</value>
   </data>
 </root>
