@@ -118,8 +118,9 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
             txt_values.Text = MainWindow.resourcemanager.GetString("trValues");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_valueName, MainWindow.resourcemanager.GetString("trValueHint"));
-
            
+
+                txt_header.Text = MainWindow.resourcemanager.GetString("trProperty");
             txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
             txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
             txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
