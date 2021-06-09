@@ -91,5 +91,10 @@ namespace POS.View
             refreashBachgroundClick(btn_statistic);
 
         }
+
+        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

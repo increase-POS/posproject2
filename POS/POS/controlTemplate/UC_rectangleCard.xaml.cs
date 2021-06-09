@@ -73,13 +73,14 @@ namespace POS.controlTemplate
             #region   Title
             var titleText = new TextBlock();
             titleText.Text = cardViewitem.item.name;
-            //if (cardViewitem.language == "ar")
-                titleText.FontFamily = App.Current.Resources["Font-cairo-bold"] as FontFamily;
+            //if (cardViewitem.language == "ar")titleText.FontSize = 14;
+            titleText.FontSize = 14;
+            titleText.FontFamily = App.Current.Resources["Font-cairo-bold"] as FontFamily;
             titleText.Margin = new Thickness(5, 0, 5, 0);
             titleText.FontWeight = FontWeights.Bold;
             titleText.VerticalAlignment = VerticalAlignment.Top;
             titleText.HorizontalAlignment = HorizontalAlignment.Left;
-            titleText.FontSize = 12;
+            //titleText.FontSize = 12;
             titleText.TextWrapping = TextWrapping.Wrap;
             titleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#000000"));
             Grid.SetRow(titleText, 1);
