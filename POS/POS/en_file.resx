@@ -1140,4 +1140,10 @@
   <data name="trPurchaseInvoice" xml:space="preserve">
     <value>Purchase Invoice</value>
   </data>
+  <data name="trProperty" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="trValues" xml:space="preserve">
+    <value>Values</value>
+  </data>
 </root>

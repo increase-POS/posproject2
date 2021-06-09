@@ -2293,6 +2293,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Property.
+        /// </summary>
+        internal static string trProperty {
+            get {
+                return ResourceManager.GetString("trProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pull.
         /// </summary>
         internal static string trPull {
@@ -3045,6 +3054,15 @@ namespace POS {
         internal static string trValueHint {
             get {
                 return ResourceManager.GetString("trValueHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Values.
+        /// </summary>
+        internal static string trValues {
+            get {
+                return ResourceManager.GetString("trValues", resourceCulture);
             }
         }
         

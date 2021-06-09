@@ -1119,4 +1119,10 @@
   <data name="trPurchaseInvoice" xml:space="preserve">
     <value>فاتورة شراء</value>
   </data>
+  <data name="trProperty" xml:space="preserve">
+    <value>الخاصية</value>
+  </data>
+  <data name="trValues" xml:space="preserve">
+    <value>القيم</value>
+  </data>
 </root>
