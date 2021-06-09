@@ -8,22 +8,22 @@
              mc:Ignorable="d" 
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              Loaded="UserControl_Loaded"
-             d:DesignHeight="700" d:DesignWidth="1100">
-    <Grid x:Name="grid_ucPayInvoice" Margin="15" >
+             d:DesignHeight="700" d:DesignWidth="1100" Margin="0">
+    <Grid x:Name="grid_ucPayInvoice" Margin="0,15,15,15"  >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="24*"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="60*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.8*"/>
-            <RowDefinition Height="8*"/>
+            <RowDefinition MinHeight="60"  Height="1*" />
+            <RowDefinition Height="7.8*"/>
             <RowDefinition Height="1.2*"/>
         </Grid.RowDefinitions>
 
         <Border BorderThickness="0"   Grid.Column="0" Grid.ColumnSpan="2"  Margin="10"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
-            <Grid   Margin="0,5" >
+            <Grid   Margin="0,10" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="auto"/>
@@ -115,16 +115,19 @@
                     </Path>
                 </Button>
                 <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}" x:Name="btn_invoiceImages" Click="Btn_invoiceImage_Click"  >
-                    <Path Fill="#4E4E4E" Stretch="Fill"  
+                    Background="{x:Null}" x:Name="btn_payments"    >
+                    <Path Fill="#4E4E4E" Stretch="Fill"   FlowDirection="LeftToRight"
                           Width="{Binding Path=ActualHeight, ElementName=path_newDraft}"  
-                           Data="M368,224c26.5,0,48-21.5,48-48s-21.5-48-48-48s-48,21.5-48,48S341.5,224,368,224z M452,64H60
-	c-15.6,0-28,12.7-28,28.3v327.4c0,15.6,12.4,28.3,28,28.3h392c15.6,0,28-12.7,28-28.3V92.3C480,76.7,467.6,64,452,64z M348.9,261.7
-	c-3-3.5-7.6-6.2-12.8-6.2c-5.1,0-8.7,2.4-12.8,5.7L304.6,277c-3.9,2.8-7,4.7-11.5,4.7c-4.3,0-8.2-1.6-11-4.1c-1-0.9-2.8-2.6-4.3-4.1
-	L224,215.3c-4-4.6-10-7.5-16.7-7.5s-12.9,3.3-16.8,7.8L64,368.2V107.7c1-6.8,6.3-11.7,13.1-11.7h357.7c6.9,0,12.5,5.1,12.9,12
-	l0.3,260.4L348.9,261.7z"  >
+                           Data="M43,28.6l-5.1-5.1H26.2L21,28.6c-2.6,2.6-4,6-4,9.7C17,45.8,23.2,52,30.7,52h2.5C40.8,52,47,45.8,47,38.3
+	C47,34.6,45.6,31.2,43,28.6z M23.9,31.4l1.1-1.1l1.4,1.4l-1.1,1.1c-0.2,0.2-0.5,0.5-0.7,0.8L23,32.4C23.3,32,23.5,31.7,23.9,31.4z
+	 M28.8,47.8c-4.5-0.9-7.8-4.9-7.8-9.5c0-1.3,0.2-2.5,0.7-3.6l1.9,0.8c-0.4,0.9-0.6,1.9-0.6,2.9c0,3.7,2.6,6.9,6.2,7.6L28.8,47.8z
+	 M32,36c2.2,0,4,1.8,4,4c0,1.9-1.3,3.4-3,3.9V46h-2v-2.1c-1.7-0.4-3-2-3-3.9h2c0,1.1,0.9,2,2,2c1.1,0,2-0.9,2-2s-0.9-2-2-2
+	c-2.2,0-4-1.8-4-4c0-1.9,1.3-3.4,3-3.9V28h2v2.1c1.7,0.4,3,2,3,3.9h-2c0-1.1-0.9-2-2-2c-1.1,0-2,0.9-2,2S30.9,36,32,36z M22.6,17.1
+	C22.2,16.6,22,16,22,15.4V15c0-1.7,1.3-3,3-3c1.3,0,2,0.8,2.5,1.3c0.4,0.5,0.6,0.7,1,0.7s0.6-0.2,1-0.7C30,12.8,30.7,12,32,12
+	s2,0.8,2.5,1.3c0.4,0.5,0.6,0.7,1,0.7s0.6-0.2,1-0.7C37,12.8,37.7,12,39,12c1.7,0,3,1.3,3,3v0.4c0,0.6-0.2,1.2-0.5,1.7l-3.8,5.3
+	H26.3L22.6,17.1z"  >
                         <Path.ToolTip>
-                            <ToolTip x:Name="tt_invoiceImages" Content="Images"
+                            <ToolTip x:Name="tt_payments" Content="Payments"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
@@ -136,9 +139,9 @@
 
             </Grid>
         </Border>
-        <Border BorderThickness="0"   Grid.Column="2"    Margin="10"
+        <Border BorderThickness="0"   Grid.Column="2"    Margin="10" 
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
-            <Grid   Margin="0,5" >
+            <Grid   Margin="0,10">
                 <Grid.RowDefinitions >
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
@@ -152,7 +155,7 @@
                     <ColumnDefinition Width="10"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="4" BorderBrush="{x:Null}" Height="auto"
+                <Button Grid.Column="5" BorderBrush="{x:Null}" Height="auto"
                     Background="{x:Null}" x:Name="btn_items" Padding="0" Margin="5,0"   >
                     <Path Fill="#4E4E4E" Stretch="Fill"  x:Name="path_itemsIcon"
                           Width="{Binding Path=ActualHeight, ElementName=path_itemsIcon}"  
@@ -195,27 +198,24 @@
                         </Path.ToolTip>
                     </Path>
                 </Button>
-                <!--<Button Grid.Column="1" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
-                    Background="{x:Null}" x:Name="btn_statistic"   >
+                <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
+                    Background="{x:Null}" x:Name="btn_invoiceImages" Click="Btn_invoiceImage_Click"  >
                     <Path Fill="#4E4E4E" Stretch="Fill"  
-                          Width="{Binding Path=ActualHeight, ElementName=path_itemsIcon}"  
-                           Data="M28.6,72.1c-4.4,7.8-13.7,11.2-22,8v38.5c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5V72.2
-	c0-0.1-0.1-0.1-0.1-0.1C28.7,72.1,28.6,72.1,28.6,72.1z M46.2,42.2l-8.8,8.9v67.6c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5
-	V45.9L56,42.2C52.8,43.1,49.4,43.1,46.2,42.2z M68.3,67.1v51.6c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5V68
-	C83.8,72.9,74.6,72.5,68.3,67.1L68.3,67.1z M110.1,35.7l-11,11v72c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5V35.3
-	C117.8,36.6,113.9,36.8,110.1,35.7z M115,6.8c-6.4,0-11.6,5.2-11.6,11.6c0,2.3,0.7,4.5,1.9,6.4l-19,19c-3.9-2.6-9-2.5-12.9,0.1
-	L60.8,31.2c3.5-5.4,2-12.6-3.4-16.1s-12.6-2-16.1,3.4c-2.5,3.9-2.5,8.8,0,12.7L19.3,53.6c-5.4-3.5-12.6-2-16.1,3.4s-2,12.6,3.4,16.1
-	c5.4,3.5,12.6,2,16.1-3.4c2.5-3.9,2.5-8.8,0-12.7l22.1-22.4c3.8,2.5,8.8,2.5,12.7,0l12.7,12.7c-3.4,5.4-1.7,12.6,3.7,16
-	s12.6,1.7,16-3.7c2.4-3.8,2.3-8.7-0.1-12.5l19-19c5.4,3.5,12.6,2,16.1-3.4c3.5-5.4,2-12.6-3.4-16.1C119.5,7.5,117.3,6.8,115,6.8z"  >
+                          Width="{Binding Path=ActualHeight, ElementName=path_newDraft}"  
+                           Data="M368,224c26.5,0,48-21.5,48-48s-21.5-48-48-48s-48,21.5-48,48S341.5,224,368,224z M452,64H60
+	c-15.6,0-28,12.7-28,28.3v327.4c0,15.6,12.4,28.3,28,28.3h392c15.6,0,28-12.7,28-28.3V92.3C480,76.7,467.6,64,452,64z M348.9,261.7
+	c-3-3.5-7.6-6.2-12.8-6.2c-5.1,0-8.7,2.4-12.8,5.7L304.6,277c-3.9,2.8-7,4.7-11.5,4.7c-4.3,0-8.2-1.6-11-4.1c-1-0.9-2.8-2.6-4.3-4.1
+	L224,215.3c-4-4.6-10-7.5-16.7-7.5s-12.9,3.3-16.8,7.8L64,368.2V107.7c1-6.8,6.3-11.7,13.1-11.7h357.7c6.9,0,12.5,5.1,12.9,12
+	l0.3,260.4L348.9,261.7z"  >
                         <Path.ToolTip>
-                            <ToolTip x:Name="tt_statistic" Content="Statistic"
+                            <ToolTip x:Name="tt_invoiceImages" Content="Images"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="-10"/>
                         </Path.ToolTip>
                     </Path>
-                </Button>-->
+                </Button>
                 <Button Grid.Column="3" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_preview"   >
                     <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -302,6 +302,7 @@
                         </Path.ToolTip>
                     </Path>
                 </Button>
+               
             </Grid>
         </Border>
         <Grid Grid.Column="0" Grid.Row="1" >
@@ -392,12 +393,12 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <DatePicker  x:Name="dp_desrvedDate" 
+                            <DatePicker  x:Name="dp_desrvedDate"  Margin="5,5"
                            BorderBrush="#737373"  BorderThickness="0" 
                                 TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}" Padding="10,5,5,5"  
                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                              materialDesign:HintAssist.Hint="Deserved Date..." KeyDown="Dp_desrvedDate_KeyDown"
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"  Height="40"   Margin="10,0,0,5" />
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"  Height="40"    />
                             <Path x:Name="p_errorDesrvedDate" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -463,7 +464,8 @@
                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                              materialDesign:HintAssist.Hint="Invoice Date..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
-                        Grid.Column="1"  Height="40"    Margin="5,5" />
+                        Grid.Column="1"  Height="40"    Margin="5,5" 
+                                              />
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -503,7 +505,7 @@
         </Grid>
         <Border BorderThickness="0"  Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="2"     Margin="10"
                     CornerRadius="7" BorderBrush="Black" Background="#FFA926" Padding="0">
-            <Grid  Margin="5,0" >
+            <Grid  Margin="10,0" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -520,9 +522,10 @@
 
         <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" >
             <Grid.RowDefinitions >
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="3*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Border BorderThickness="0"   Grid.Column="0" Grid.Row="0"    Margin="10"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
@@ -592,8 +595,6 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Text="Discount" x:Name="txt_discount" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
@@ -646,15 +647,24 @@
                         </Path>
 
                     </Grid>
-                    <TextBlock Grid.Row="3"  Text="SUM" x:Name="txt_sum" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
+                </Grid>
+            </Border>
+            <Border BorderThickness="0"   Grid.Column="0" Grid.Row="3"    Margin="10"
+                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
+                <Grid   Margin="0" >
+                    <Grid.RowDefinitions >
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"  Text="SUM" x:Name="txt_sum" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
 
-                    <TextBlock Grid.Row="4"   x:Name="tb_sum" Grid.Column="1" Margin="10,5,5,5" 
+                    <TextBlock Grid.Row="1"   x:Name="tb_sum" Grid.Column="1" Margin="10,5,5,5" 
                        Foreground="#4E4E4E" Text="{Binding total, Mode=OneWay}"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
-
                 </Grid>
             </Border>
         </Grid>

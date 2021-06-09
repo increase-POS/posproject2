@@ -23,7 +23,6 @@
                 <RowDefinition Height="87"/>
                 <RowDefinition Height="87"/>
                 <RowDefinition Height="87"/>
-                
             </Grid.RowDefinitions>
             <Button  Style="{StaticResource SmallButton}" x:Name="btn_suppliers" Click="Btn_suppliers_Click"   Grid.Row="0" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5"

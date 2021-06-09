@@ -92,9 +92,6 @@ namespace POS.View
 
         }
 
-        private void Expander_Expanded(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
     }
 }

@@ -184,17 +184,8 @@ namespace POS.View
             await fillBarcodeList();
 
             #region Style Date
-            dp_desrvedDate.Loaded += delegate
-            {
-
-                var textBox1 = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
-                if (textBox1 != null)
-                {
-                    textBox1.Background = dp_desrvedDate.Background;
-                    textBox1.BorderThickness = dp_desrvedDate.BorderThickness;
-                }
-            };
-
+            SectionData.defaultDatePickerStyle(dp_desrvedDate);
+            SectionData.defaultDatePickerStyle(dp_desrvedDate);
             #endregion
             //grid_vendor.Visibility = Visibility.Collapsed;
             //tb_sum.Text = _Sum.ToString();
