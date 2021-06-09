@@ -387,43 +387,43 @@ namespace POS.Classes
         private int pastCatalogItem = -1;
         internal uc_receiptInvoice ucReceiptInvoice;
 
-        static public int[] itemsRowColumnCount(int rowCount, int columnCount)
-        {
-            //MainWindow.ucControlViewSectionWidth
-            //MainWindow.ucControlViewSectionHeight
+        //static public int[] itemsRowColumnCount(int rowCount, int columnCount)
+        //{
+        //    //MainWindow.ucControlViewSectionWidth
+        //    //MainWindow.ucControlViewSectionHeight
 
-            //row
-            if (MainWindow.windowHeight < 630)
-                rowCount = 1;
-            else if(MainWindow.windowHeight < 760)
-                rowCount = 2;
-            else if (MainWindow.windowHeight >= 760 || MainWindow.windowHeight.ToString() == "NaN" || MainWindow.windowWidth.ToString() == "ليس رقمًا")
-                rowCount = 3;
-            else
-                rowCount = 1;
-
-
-            // column
-            if (MainWindow.windowWidth < 970)
-                columnCount = 1;
-            else if (MainWindow.windowWidth < 1340)
-                columnCount = 2;
-            else if (MainWindow.windowWidth >= 1340 || MainWindow.windowWidth.ToString() == "NaN" || MainWindow.windowWidth.ToString() == "ليس رقمًا")
-                columnCount = 3;
-            else
-                columnCount = 1;
+        //    //row
+        //    if (MainWindow.windowHeight < 630)
+        //        rowCount = 1;
+        //    else if(MainWindow.windowHeight < 760)
+        //        rowCount = 2;
+        //    else if (MainWindow.windowHeight >= 760 || MainWindow.windowHeight.ToString() == "NaN" || MainWindow.windowWidth.ToString() == "ليس رقمًا")
+        //        rowCount = 3;
+        //    else
+        //        rowCount = 1;
 
 
+        //    // column
+        //    if (MainWindow.windowWidth < 970)
+        //        columnCount = 1;
+        //    else if (MainWindow.windowWidth < 1340)
+        //        columnCount = 2;
+        //    else if (MainWindow.windowWidth >= 1340 || MainWindow.windowWidth.ToString() == "NaN" || MainWindow.windowWidth.ToString() == "ليس رقمًا")
+        //        columnCount = 3;
+        //    else
+        //        columnCount = 1;
 
-            int[] count = { rowCount, columnCount, rowCount * columnCount };
-            return count;
-        }
+
+
+        //    int[] count = { rowCount, columnCount, rowCount * columnCount };
+        //    return count;
+        //}
         public void  FN_refrishCatalogItem(List<Item> items, string language, string cardType)
         {
             gridCatigorieItems.Children.Clear();
             int row = 0;
             int column = 0;
-            int[] count = itemsRowColumnCount(1,1);
+            //int[] count = itemsRowColumnCount(1,1);
             foreach (var item in items)
             {
 
@@ -437,7 +437,7 @@ namespace POS.Classes
                
 
                 column++;
-                if (column == count[1])
+                if (column == 3)
                 {
                     column = 0;
                     row++;
