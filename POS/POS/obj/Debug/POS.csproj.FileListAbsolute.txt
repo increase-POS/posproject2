@@ -1859,3 +1859,5 @@ D:\myproj\posproject2\POS\POS\bin\Debug\System.Reactive.xml
 D:\myproj\posproject2\POS\POS\bin\Debug\WPFTabTip.xml
 D:\myproj\posproject2\POS\POS\bin\Debug\de\MahApps.Metro.resources.dll
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_payInvoice - Copy.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_payInvoice - Copy.baml

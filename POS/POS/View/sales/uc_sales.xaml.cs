@@ -89,9 +89,12 @@ namespace POS.View
         {
             refreashBachgroundClick(btn_receiptInvoice);
             grid_main.Children.Clear();
-            grid_main.Children.Add(uc_receiptInvoice.Instance);
+            //grid_main.Children.Add(uc_receiptInvoice.Instance);
             //uc_receiptInvoice uc = new uc_receiptInvoice();
             //grid_main.Children.Add(uc);
+            uc_payInvoice1 uc = new uc_payInvoice1();
+            grid_main.Children.Add(uc);
+
         }
         private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {

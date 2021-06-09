@@ -13,7 +13,7 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Expander Foreground="#178DD2" Background="#E8E8E8"     BorderThickness="0,0,0.25,0" BorderBrush="#A2CAE1"
+        <Expander Foreground="#178DD2" Background="#E8E8E8"     
     ExpandDirection="Right" Margin="0"
     materialDesign:ExpanderAssist.VerticalHeaderPadding="0,35,0,5">
             <Expander.Header>
@@ -25,11 +25,11 @@
                     </TextBlock.LayoutTransform>
                 </TextBlock>
             </Expander.Header>
-            <Grid Margin="0,15,0,15" Background="#E8E8E8" Width="100" >
+            <Grid Margin="0,15,0,15" Background="#00000000" Width="100" >
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="95"/>
-                        <RowDefinition Height="95"/>
-                        <RowDefinition Height="95"/>
+                    <RowDefinition Height="87"/>
+                        <RowDefinition Height="87"/>
+                        <RowDefinition Height="87"/>
                     </Grid.RowDefinitions>
                     <Button x:Name="btn_payInvoice" Click="btn_payInvoice_Click" Style="{StaticResource SmallButton}"   Grid.Row="0" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5" FlowDirection="LeftToRight"
@@ -52,7 +52,7 @@
 	v-3.9H82.6z"/>
 
                     <Button  Style="{StaticResource SmallButton}"   Grid.Row="1" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="5"
+                Height="75" Width="75" Background="White" Margin="5" FlowDirection="LeftToRight"
                   Content="Statistic"  x:Name="btn_statistic"  BorderBrush="#67686D" 
                 DataContext="M28.6,72.1c-4.4,7.8-13.7,11.2-22,8v38.5c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5V72.2
 	c0-0.1-0.1-0.1-0.1-0.1C28.7,72.1,28.6,72.1,28.6,72.1z M46.2,42.2l-8.8,8.9v67.6c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5

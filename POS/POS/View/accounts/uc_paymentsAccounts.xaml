@@ -482,9 +482,6 @@
                     </Grid>
                     
                     <Grid Grid.Row="7" Grid.Column="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
                         <TextBox x:Name="tb_cash" MaxLength="20" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                  Text="{Binding cash, Mode=OneWay}" 
