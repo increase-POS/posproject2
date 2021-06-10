@@ -53,6 +53,78 @@ namespace POS.View.windows
             //chk empty Z
             SectionData.validateEmptyTextBox(tb_toZ, p_errorToZ, tt_errorToZ, "");
 
+            /////////////////////////////////
+            if (regexAlpha.IsMatch(tb_fromX.Text) && regexAlpha.IsMatch(tb_toX.Text) ||
+                regexNumber.IsMatch(tb_fromX.Text) && regexNumber.IsMatch(tb_toX.Text))
+            {
+                if (regexAlpha.IsMatch(tb_fromX.Text))
+                {
+                    if (char.Parse(tb_fromX.Text.ToString().ToUpper()) > char.Parse(tb_toX.Text.ToString().ToUpper()))
+                    {
+                        SectionData.SetError(tb_fromX, p_errorFromX, tt_errorFromX, "trValidLocationToBigger");
+                        SectionData.SetError(tb_toX, p_errorToX, tt_errorToX, "trValidLocationToBigger");
+                isValid = false;
+                    }
+                }
+            else
+                {
+                    if (int.Parse(tb_fromX.Text.ToString().ToUpper()) > int.Parse(tb_toX.Text.ToString().ToUpper()))
+                    {
+                        SectionData.SetError(tb_fromX, p_errorFromX, tt_errorFromX, "trValidLocationToBigger");
+                        SectionData.SetError(tb_toX, p_errorToX, tt_errorToX, "trValidLocationToBigger");
+                isValid = false;
+                    }
+                }
+            }
+            ///////
+            if (regexAlpha.IsMatch(tb_fromY.Text) && regexAlpha.IsMatch(tb_toY.Text) ||
+                regexNumber.IsMatch(tb_fromY.Text) && regexNumber.IsMatch(tb_toY.Text))
+            {
+                if (regexAlpha.IsMatch(tb_fromY.Text))
+                {
+                    if (char.Parse(tb_fromY.Text.ToString().ToUpper()) > char.Parse(tb_toY.Text.ToString().ToUpper()))
+                    {
+                        SectionData.SetError(tb_fromY, p_errorFromY, tt_errorFromY, "trValidLocationToBigger");
+                        SectionData.SetError(tb_toY, p_errorToY, tt_errorToY, "trValidLocationToBigger");
+                isValid = false;
+                    }
+                }
+            else
+                {
+                    if (int.Parse(tb_fromY.Text.ToString().ToUpper()) > int.Parse(tb_toY.Text.ToString().ToUpper()))
+                    {
+                        SectionData.SetError(tb_fromY, p_errorFromY, tt_errorFromY, "trValidLocationToBigger");
+                        SectionData.SetError(tb_toY, p_errorToY, tt_errorToY, "trValidLocationToBigger");
+                isValid = false;
+                    }
+                }
+            }
+            ///////
+            if (regexAlpha.IsMatch(tb_fromZ.Text) && regexAlpha.IsMatch(tb_toZ.Text) ||
+                regexNumber.IsMatch(tb_fromZ.Text) && regexNumber.IsMatch(tb_toZ.Text))
+            {
+                if (regexAlpha.IsMatch(tb_fromZ.Text))
+                {
+                    if (char.Parse(tb_fromZ.Text.ToString().ToUpper()) > char.Parse(tb_toZ.Text.ToString().ToUpper()))
+                    {
+                        SectionData.SetError(tb_fromZ, p_errorFromZ, tt_errorFromZ, "trValidLocationToBigger");
+                        SectionData.SetError(tb_toZ, p_errorToZ, tt_errorToZ, "trValidLocationToBigger");
+                        isValid = false;
+                    }
+                }
+                else
+                {
+                    if (int.Parse(tb_fromZ.Text.ToString().ToUpper()) > int.Parse(tb_toZ.Text.ToString().ToUpper()))
+                    {
+                        SectionData.SetError(tb_fromZ, p_errorFromZ, tt_errorFromZ, "trValidLocationToBigger");
+                        SectionData.SetError(tb_toZ, p_errorToZ, tt_errorToZ, "trValidLocationToBigger");
+                        isValid = false;
+                    }
+                }
+            }
+            /////////////////////////////////
+
+            /////////////////////////////////
             if (regexAlpha.IsMatch(tb_fromX.Text) && !regexAlpha.IsMatch(tb_toX.Text) ||
                 regexNumber.IsMatch(tb_fromX.Text) && !regexNumber.IsMatch(tb_toX.Text))
             {
@@ -60,8 +132,6 @@ namespace POS.View.windows
                 SectionData.SetError(tb_toX, p_errorToX, tt_errorToX, "trValidLocationMatch");
                 isValid = false;
             }
-
-
             if (regexAlpha.IsMatch(tb_fromY.Text) && !regexAlpha.IsMatch(tb_toY.Text) ||
                 regexNumber.IsMatch(tb_fromY.Text) && !regexNumber.IsMatch(tb_toY.Text))
             {
@@ -69,7 +139,6 @@ namespace POS.View.windows
                 SectionData.SetError(tb_toY, p_errorToY, tt_errorToY, "trValidLocationMatch");
                 isValid = false;
             }
-
             if (regexAlpha.IsMatch(tb_fromZ.Text) && !regexAlpha.IsMatch(tb_toZ.Text) ||
                 regexNumber.IsMatch(tb_fromZ.Text) && !regexNumber.IsMatch(tb_toZ.Text))
             {
@@ -77,6 +146,9 @@ namespace POS.View.windows
                 SectionData.SetError(tb_toZ, p_errorToZ, tt_errorToZ, "trValidLocationMatch");
                 isValid = false;
             }
+            /////////////////////////////////
+            
+
 
 
             if ((tb_fromX.Text.Equals("")) && (tb_fromX.Text.Equals("")) && (tb_fromZ.Text.Equals("")) &&

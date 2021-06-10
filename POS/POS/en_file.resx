@@ -1164,4 +1164,7 @@
   <data name="trValidLocationMatch" xml:space="preserve">
     <value>(From &amp; To) should be same type</value>
   </data>
+  <data name="trValidLocationToBigger" xml:space="preserve">
+    <value>To Should be begger then From</value>
+  </data>
 </root>

@@ -1411,7 +1411,7 @@ namespace POS.View
             {
                 grid_service.Visibility = Visibility.Collapsed;
                 grid_serial.Visibility = Visibility.Visible;
-                line_topService.Visibility = Visibility.Collapsed;
+                //line_topService.Visibility = Visibility.Collapsed;
                 gd_minMaxUnit.Visibility = Visibility.Visible;
                 gd_countUnit.Visibility = Visibility.Visible;
 
@@ -1420,7 +1420,7 @@ namespace POS.View
             {
                 grid_serial.Visibility = Visibility.Collapsed;
                 grid_service.Visibility = Visibility.Visible;
-                line_topService.Visibility = Visibility.Collapsed;
+                //line_topService.Visibility = Visibility.Collapsed;
                 gd_minMaxUnit.Visibility = Visibility.Collapsed;
                 gd_countUnit.Visibility = Visibility.Collapsed;
             }
@@ -1428,7 +1428,7 @@ namespace POS.View
             {
                 grid_serial.Visibility = Visibility.Collapsed;
                 grid_service.Visibility = Visibility.Collapsed;
-                line_topService.Visibility = Visibility.Visible;
+                //line_topService.Visibility = Visibility.Visible;
                 gd_minMaxUnit.Visibility = Visibility.Visible;
                 gd_countUnit.Visibility = Visibility.Visible;
             }

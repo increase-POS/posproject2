@@ -1143,4 +1143,7 @@
   <data name="trValidLocationMatch" xml:space="preserve">
     <value>(من و إلى) يجب أن تكون من نفس النوع</value>
   </data>
+  <data name="trValidLocationToBigger" xml:space="preserve">
+    <value>"إلى" يجب ان تكن أكبر "من"</value>
+  </data>
 </root>

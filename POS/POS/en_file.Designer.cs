@@ -3085,6 +3085,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To Should be begger then From.
+        /// </summary>
+        internal static string trValidLocationToBigger {
+            get {
+                return ResourceManager.GetString("trValidLocationToBigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value.
         /// </summary>
         internal static string trValue {

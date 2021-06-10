@@ -3022,6 +3022,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &quot;إلى&quot; يجب ان تكن أكبر &quot;من&quot;.
+        /// </summary>
+        internal static string trValidLocationToBigger {
+            get {
+                return ResourceManager.GetString("trValidLocationToBigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to القيمة.
         /// </summary>
         internal static string trValue {
