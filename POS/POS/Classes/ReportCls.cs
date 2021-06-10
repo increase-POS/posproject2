@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.IO;
 namespace POS.Classes
 {
     class ReportCls
@@ -32,10 +32,14 @@ namespace POS.Classes
         }
         public string DateToString(DateTime? date)
         {
-           
-            DateTime ts = DateTime.Parse(date.ToString());
+            string sdate = "";
+           if (date != null)
+            {
+ DateTime ts = DateTime.Parse(date.ToString());
             // @"hh\:mm\:ss"
-            string sdate = ts.ToString(@"d/M/yyyy");
+            sdate = ts.ToString(@"d/M/yyyy");
+            }
+           
             return sdate;
         }
 
@@ -56,6 +60,42 @@ namespace POS.Classes
          
 
             return sdc;
+        }
+
+        public string BarcodeToImage(string barcodeStr, string imagename)
+        {
+            // create encoding object
+            Zen.Barcode.Code128BarcodeDraw barcode = Zen.Barcode.BarcodeDrawFactory.Code128WithChecksum;
+            string addpath = @"\Thumb\" + imagename + ".png";
+            string imgpath = this.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            if (File.Exists(imgpath))
+            {
+                File.Delete(imgpath);
+            }
+            if (barcodeStr != "")
+            {
+                System.Drawing.Bitmap serial_bitmap = (System.Drawing.Bitmap)barcode.Draw(barcodeStr, 60);
+                // System.Drawing.ImageConverter ic = new System.Drawing.ImageConverter();
+
+                serial_bitmap.Save(imgpath);
+
+                //  generate bitmap
+                //  img_barcode.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(serial_bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            }
+            else
+            {
+
+                imgpath = "";
+            }
+            if (File.Exists(imgpath))
+            {
+                return imgpath;
+            }
+            else
+            {
+                return "";
+            }
+
         }
     }
 }

@@ -1542,7 +1542,7 @@ namespace POS.View
 
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            try {
+           try {
                 string addpath = @"\Reports\InvPurReport.rdlc";
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
                 if (invoice.invoiceId > 0)
@@ -1551,9 +1551,11 @@ namespace POS.View
                     rep.ReportPath = reppath;
                     rep.DataSources.Clear();
                     rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", invoiceItems));
+                rep.EnableExternalImages = true;
+                
 
                     // rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", data));
-                    ReportParameter[] paramarr = new ReportParameter[13];
+                    ReportParameter[] paramarr = new ReportParameter[14];
 
                     paramarr[0] = new ReportParameter("Title", "Purshase Invoice");
                     paramarr[12] = new ReportParameter("lang", MainWindow.lang);
@@ -1567,7 +1569,8 @@ namespace POS.View
                     paramarr[8] = new ReportParameter("totalNet", reportclass.DecTostring(invoice.totalNet));
                     paramarr[9] = new ReportParameter("paid", reportclass.DecTostring(invoice.paid));
                     paramarr[10] = new ReportParameter("deserved", reportclass.DecTostring(invoice.deserved));
-                    paramarr[11] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
+                paramarr[11] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
+  paramarr[13] = new ReportParameter("barcodeimage", "file:\\" + reportclass.BarcodeToImage(invoice.invNumber.ToString(), "invnum"));
                     //  MessageBox.Show(reportclass.DecTostring(invoice.paid) + "des="+ invoice.deserved.ToString());
 
                     rep.SetParameters(paramarr);
@@ -1585,14 +1588,15 @@ namespace POS.View
                     }
                 }
 
-            }
+           }
             catch { }
 
             
 
         }
+       
 
-  
+
     }
 
 }
