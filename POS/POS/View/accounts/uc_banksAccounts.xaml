@@ -334,7 +334,7 @@
                                       Grid.Column="1" VerticalAlignment="Center" />
                             <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
                                     Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click"
-                                    Margin="5,1"   ToolTip="clear" TabIndex="13">
+                                    Margin="5,1" TabIndex="13">
 
                                 <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
                                                          HorizontalAlignment="Center" Grid.Column="0"  

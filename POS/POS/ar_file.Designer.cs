@@ -322,6 +322,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to بطاقة الائتمان....
+        /// </summary>
+        internal static string trCardHint {
+            get {
+                return ResourceManager.GetString("trCardHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to بطاقة الائتمان.
+        /// </summary>
+        internal static string trCardTooltip {
+            get {
+                return ResourceManager.GetString("trCardTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مبلغ.
         /// </summary>
         internal static string trCash {
@@ -619,11 +637,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to إيداع من....
+        /// </summary>
+        internal static string trDepositFromHint {
+            get {
+                return ResourceManager.GetString("trDepositFromHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to إيداع.
         /// </summary>
         internal static string trDepositOperation {
             get {
                 return ResourceManager.GetString("trDepositOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المودع....
+        /// </summary>
+        internal static string trDepositorHint {
+            get {
+                return ResourceManager.GetString("trDepositorHint", resourceCulture);
             }
         }
         
@@ -903,6 +939,15 @@ namespace POS {
         internal static string trEmptyBranchToolTip {
             get {
                 return ResourceManager.GetString("trEmptyBranchToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to بطاقة الائتمان لا يمكن أن تكون فارغة.
+        /// </summary>
+        internal static string trEmptyCardTooltip {
+            get {
+                return ResourceManager.GetString("trEmptyCardTooltip", resourceCulture);
             }
         }
         

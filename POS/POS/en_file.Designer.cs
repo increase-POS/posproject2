@@ -340,6 +340,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Credit card....
+        /// </summary>
+        internal static string trCardHint {
+            get {
+                return ResourceManager.GetString("trCardHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credit card.
+        /// </summary>
+        internal static string trCardTooltip {
+            get {
+                return ResourceManager.GetString("trCardTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cash.
         /// </summary>
         internal static string trCash {
@@ -610,7 +628,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deposite.
+        ///   Looks up a localized string similar to Deposit.
         /// </summary>
         internal static string trDeposit {
             get {
@@ -637,11 +655,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deposit from....
+        /// </summary>
+        internal static string trDepositFromHint {
+            get {
+                return ResourceManager.GetString("trDepositFromHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deposit.
         /// </summary>
         internal static string trDepositOperation {
             get {
                 return ResourceManager.GetString("trDepositOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Depositor....
+        /// </summary>
+        internal static string trDepositorHint {
+            get {
+                return ResourceManager.GetString("trDepositorHint", resourceCulture);
             }
         }
         
@@ -921,6 +957,15 @@ namespace POS {
         internal static string trEmptyBranchToolTip {
             get {
                 return ResourceManager.GetString("trEmptyBranchToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credit card can not be empty.
+        /// </summary>
+        internal static string trEmptyCardTooltip {
+            get {
+                return ResourceManager.GetString("trEmptyCardTooltip", resourceCulture);
             }
         }
         

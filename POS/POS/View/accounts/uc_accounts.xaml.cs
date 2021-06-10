@@ -59,6 +59,7 @@ namespace POS.View.accounts
 
             btn_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
             btn_banks.Content = MainWindow.resourcemanager.GetString("trBanks");
+            btn_payments.Content = MainWindow.resourcemanager.GetString("trPayments");
         }
 
         void refreashBackground()

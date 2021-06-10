@@ -937,7 +937,7 @@
     <value>Ammount</value>
   </data>
   <data name="trDeposit" xml:space="preserve">
-    <value>Deposite</value>
+    <value>Deposit</value>
   </data>
   <data name="trDepositeNumHint" xml:space="preserve">
     <value>Deposite/Pull Number...</value>
@@ -1145,6 +1145,21 @@
   </data>
   <data name="trValues" xml:space="preserve">
     <value>Values</value>
+  </data>
+  <data name="trCardHint" xml:space="preserve">
+    <value>Credit card...</value>
+  </data>
+  <data name="trCardTooltip" xml:space="preserve">
+    <value>Credit card</value>
+  </data>
+  <data name="trEmptyCardTooltip" xml:space="preserve">
+    <value>Credit card can not be empty</value>
+  </data>
+  <data name="trDepositFromHint" xml:space="preserve">
+    <value>Deposit from...</value>
+  </data>
+  <data name="trDepositorHint" xml:space="preserve">
+    <value>Depositor...</value>
   </data>
   <data name="trValidLocationMatch" xml:space="preserve">
     <value>(From &amp; To) should be same type</value>

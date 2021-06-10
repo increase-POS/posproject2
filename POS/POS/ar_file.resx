@@ -1125,6 +1125,21 @@
   <data name="trValues" xml:space="preserve">
     <value>القيم</value>
   </data>
+  <data name="trCardHint" xml:space="preserve">
+    <value>بطاقة الائتمان...</value>
+  </data>
+  <data name="trCardTooltip" xml:space="preserve">
+    <value>بطاقة الائتمان</value>
+  </data>
+  <data name="trEmptyCardTooltip" xml:space="preserve">
+    <value>بطاقة الائتمان لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trDepositFromHint" xml:space="preserve">
+    <value>إيداع من...</value>
+  </data>
+  <data name="trDepositorHint" xml:space="preserve">
+    <value>المودع...</value>
+  </data>
   <data name="trValidLocationMatch" xml:space="preserve">
     <value>(من و إلى) يجب أن تكون من نفس النوع</value>
   </data>

@@ -1,5 +1,6 @@
 ﻿using netoaster;
 using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -357,7 +358,18 @@ namespace POS.View.accounts
 
         private void Btn_image_Click(object sender, RoutedEventArgs e)
         {//image
+            if (cashtrans != null || cashtrans.cashTransId != 0)
+            {
+                //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
 
+                wd_uploadImage w = new wd_uploadImage();
+
+                w.tableName = "cashTransfer";
+                w.tableId = cashtrans.cashTransId;
+                w.docNum = cashtrans.docNum;
+                w.ShowDialog();
+                // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
+            }
         }
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -389,23 +401,7 @@ namespace POS.View.accounts
 
         }
 
-        //private async Task<string> generateNumber()
-        //{
-        //    Branch b = new Branch();
-        //    b = await branchModel.getBranchById(MainWindow.branchID.Value);
-        //    string str1 = b.code;
-
-        //    string str2 = "";
-        //    if (Convert.ToChar(cb_opperationType.SelectedValue) == 'd') str2 = "db";
-        //    else str2 = "pb";
-
-        //    string str3 = "";
-        //    CashTransfer c = new CashTransfer();
-        //    cashes = await cashModel.GetCashTransferAsync(Convert.ToString(cb_opperationType.SelectedValue), "bn");
-        //    str3 = cashes.Count().ToString();
-
-        //    return str1 + str2 + str3;
-        //}
+       
 
         private void validateEmpty(string name, object sender)
         {

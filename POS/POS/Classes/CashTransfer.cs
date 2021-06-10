@@ -37,7 +37,6 @@ namespace POS.Classes
         public Nullable<byte> isConfirm { get; set; }
         public Nullable<int> cashTransIdSource { get; set; }
         public string side { get; set; }
-        public string opSideNum { get; set; }
         public string docName { get; set; }
         public string docNum { get; set; }
         public string docImage { get; set; }

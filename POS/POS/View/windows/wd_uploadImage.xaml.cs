@@ -64,7 +64,8 @@ namespace POS.View.windows
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
             docId = 0;
-            docImgModel.tableName = "invoices";
+            //docImgModel.tableName = "invoices";
+            docImgModel.tableName = tableName;
             docImgModel.tableId = tableId;
             docImgModel.docnum = docNum;
             docImgModel.createUserId = MainWindow.userID;
