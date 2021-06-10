@@ -153,7 +153,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>N.</Value>
+                                  <Value>Num</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -285,7 +285,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Unit Price</Value>
+                                  <Value>Price</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -356,7 +356,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=rownumber(nothing)</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -567,7 +567,7 @@
             <Top>0cm</Top>
             <Left>0.36724cm</Left>
             <Height>1.2cm</Height>
-            <Width>17.45647cm</Width>
+            <Width>17.45646cm</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -653,8 +653,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>1.91466cm</Top>
-            <Left>11.56106cm</Left>
+            <Top>2.58141cm</Top>
+            <Left>11.46581cm</Left>
             <Height>0.67938cm</Height>
             <Width>1.65686cm</Width>
             <ZIndex>3</ZIndex>
@@ -683,8 +683,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>1.93931cm</Top>
-            <Left>13.25319cm</Left>
+            <Top>2.57431cm</Top>
+            <Left>13.22144cm</Left>
             <Height>0.67938cm</Height>
             <Width>4.57052cm</Width>
             <ZIndex>4</ZIndex>
@@ -718,8 +718,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>2.62932cm</Top>
-            <Left>11.56106cm</Left>
+            <Top>3.23257cm</Top>
+            <Left>11.68806cm</Left>
             <Height>0.71114cm</Height>
             <Width>1.50608cm</Width>
             <ZIndex>5</ZIndex>
@@ -748,41 +748,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>2.65396cm</Top>
+            <Top>3.28896cm</Top>
             <Left>13.21178cm</Left>
             <Height>0.67938cm</Height>
             <Width>4.61194cm</Width>
             <ZIndex>6</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox23">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=Parameters!paid.Value</Value>
-                    <Style />
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>1.46697cm</Top>
-            <Left>2.9939cm</Left>
-            <Height>0.67938cm</Height>
-            <Width>4.61194cm</Width>
-            <ZIndex>7</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -817,7 +787,7 @@
             <Left>1.24037cm</Left>
             <Height>0.71114cm</Height>
             <Width>1.50608cm</Width>
-            <ZIndex>8</ZIndex>
+            <ZIndex>7</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -874,7 +844,114 @@
             <Left>0.36724cm</Left>
             <Height>0.71114cm</Height>
             <Width>2.37921cm</Width>
+            <ZIndex>8</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Image Name="InvBarcode">
+            <Source>External</Source>
+            <Value>=Parameters!barcodeimage.Value</Value>
+            <Sizing>Fit</Sizing>
+            <Top>3.14574cm</Top>
+            <Left>0.36724cm</Left>
+            <Height>0.97083cm</Height>
+            <Width>4.70032cm</Width>
             <ZIndex>9</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
+          <Textbox Name="Textbox16">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Tax:</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Top>1.88787cm</Top>
+            <Left>11.46171cm</Left>
+            <Height>0.67938cm</Height>
+            <Width>1.65686cm</Width>
+            <ZIndex>10</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox18">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Parameters!tax.Value</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Top>1.91252cm</Top>
+            <Left>13.21734cm</Left>
+            <Height>0.67938cm</Height>
+            <Width>4.57052cm</Width>
+            <ZIndex>11</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox23">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Parameters!paid.Value</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Top>1.46697cm</Top>
+            <Left>2.8034cm</Left>
+            <Height>0.67938cm</Height>
+            <Width>4.61194cm</Width>
+            <ZIndex>12</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -901,10 +978,10 @@
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>2.32273cm</Top>
-            <Left>2.97046cm</Left>
+            <Left>2.81171cm</Left>
             <Height>0.67938cm</Height>
             <Width>4.61194cm</Width>
-            <ZIndex>10</ZIndex>
+            <ZIndex>13</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -916,7 +993,7 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>3.34046cm</Height>
+        <Height>4.11657cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
@@ -926,53 +1003,10 @@
       <Width>19.1505cm</Width>
       <Page>
         <PageHeader>
-          <Height>4.40724cm</Height>
+          <Height>3.52585cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
-            <Textbox Name="ExecutionTime">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Parameters!invDate.Value</Value>
-                      <Style>
-                        <Format>FormatDateTime(Parameters!invTime.Value)</Format>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value> - </Value>
-                      <Style>
-                        <Format>FormatDateTime(Parameters!invTime.Value)</Format>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value>=Parameters!invTime.Value</Value>
-                      <Style>
-                        <Format>FormatDateTime(Parameters!invTime.Value)</Format>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style />
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>ExecutionTime</rd:DefaultName>
-              <Top>2.84647cm</Top>
-              <Left>14.77349cm</Left>
-              <Height>0.6cm</Height>
-              <Width>4.37701cm</Width>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
             <Textbox Name="agentTitle">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
@@ -997,7 +1031,6 @@
               <Left>5.90735cm</Left>
               <Height>1.02363cm</Height>
               <Width>6.64986cm</Width>
-              <ZIndex>1</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1027,7 +1060,7 @@
               <Left>12.32641cm</Left>
               <Height>0.67938cm</Height>
               <Width>2.44708cm</Width>
-              <ZIndex>2</ZIndex>
+              <ZIndex>1</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1053,41 +1086,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>2.91703cm</Top>
-              <Left>12.23543cm</Left>
+              <Top>2.84647cm</Top>
+              <Left>12.32641cm</Left>
               <Height>0.67938cm</Height>
               <Width>2.53806cm</Width>
-              <ZIndex>3</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
-            <Textbox Name="Textbox3">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Parameters!invNumber.Value</Value>
-                      <Style />
-                    </TextRun>
-                  </TextRuns>
-                  <Style />
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>2.09653cm</Top>
-              <Left>14.94988cm</Left>
-              <Height>0.67938cm</Height>
-              <Width>2.44708cm</Width>
-              <ZIndex>4</ZIndex>
+              <ZIndex>2</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1118,11 +1121,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>agentTitle</rd:DefaultName>
-              <Top>2.06126cm</Top>
-              <Left>0.36724cm</Left>
+              <Top>2.02598cm</Top>
+              <Left>0.40252cm</Left>
               <Height>0.67938cm</Height>
-              <Width>3.71298cm</Width>
-              <ZIndex>5</ZIndex>
+              <Width>3.64242cm</Width>
+              <ZIndex>3</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1148,15 +1151,89 @@
                     </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Center</TextAlign>
+                    <TextAlign>Left</TextAlign>
                   </Style>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>agentTitle</rd:DefaultName>
-              <Top>2.88176cm</Top>
-              <Left>0.36724cm</Left>
+              <Top>2.02598cm</Top>
+              <Left>3.83328cm</Left>
               <Height>0.67938cm</Height>
               <Width>4.8168cm</Width>
+              <ZIndex>4</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox3">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Parameters!invNumber.Value</Value>
+                      <Style />
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>2.02598cm</Top>
+              <Left>14.45599cm</Left>
+              <Height>0.67938cm</Height>
+              <Width>3.29507cm</Width>
+              <ZIndex>5</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="ExecutionTime">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Parameters!invDate.Value</Value>
+                      <Style>
+                        <Format>FormatDateTime(Parameters!invTime.Value)</Format>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value> - </Value>
+                      <Style>
+                        <Format>FormatDateTime(Parameters!invTime.Value)</Format>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Parameters!invTime.Value</Value>
+                      <Style>
+                        <Format>FormatDateTime(Parameters!invTime.Value)</Format>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>ExecutionTime</rd:DefaultName>
+              <Top>2.84647cm</Top>
+              <Left>14.45599cm</Left>
+              <Height>0.6cm</Height>
+              <Width>4.37701cm</Width>
               <ZIndex>6</ZIndex>
               <Style>
                 <Border>
@@ -1168,21 +1245,6 @@
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
-            <Image Name="InvBarcode">
-              <Source>External</Source>
-              <Value>=Parameters!barcodeimage.Value</Value>
-              <Sizing>Fit</Sizing>
-              <Top>0.87876cm</Top>
-              <Left>13.54463cm</Left>
-              <Height>0.97083cm</Height>
-              <Width>4.70032cm</Width>
-              <ZIndex>7</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-              </Style>
-            </Image>
           </ReportItems>
           <Style>
             <Border>
@@ -1369,6 +1431,12 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="tax">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -1444,6 +1512,11 @@
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>3</RowIndex>
           <ParameterName>barcodeimage</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>tax</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

@@ -1555,7 +1555,7 @@ namespace POS.View
                 
 
                     // rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", data));
-                    ReportParameter[] paramarr = new ReportParameter[14];
+                    ReportParameter[] paramarr = new ReportParameter[15];
 
                     paramarr[0] = new ReportParameter("Title", "Purshase Invoice");
                     paramarr[12] = new ReportParameter("lang", MainWindow.lang);
@@ -1569,7 +1569,8 @@ namespace POS.View
                     paramarr[8] = new ReportParameter("totalNet", reportclass.DecTostring(invoice.totalNet));
                     paramarr[9] = new ReportParameter("paid", reportclass.DecTostring(invoice.paid));
                     paramarr[10] = new ReportParameter("deserved", reportclass.DecTostring(invoice.deserved));
-                paramarr[11] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
+                    paramarr[11] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
+                    paramarr[14] = new ReportParameter("tax", "0");
   paramarr[13] = new ReportParameter("barcodeimage", "file:\\" + reportclass.BarcodeToImage(invoice.invNumber.ToString(), "invnum"));
                     //  MessageBox.Show(reportclass.DecTostring(invoice.paid) + "des="+ invoice.deserved.ToString());
 
