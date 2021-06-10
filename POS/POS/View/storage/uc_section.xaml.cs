@@ -409,21 +409,17 @@ namespace POS.View
         }
         private void Btn_locations_Click(object sender, RoutedEventArgs e)
         {
-            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
-            //if ((((this.Parent as Grid).Parent as Grid).Parent as UserControl) != null)
-            //((((this.Parent as Grid).Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 0.2;
+            Window.GetWindow(this).Opacity = 0.2;
             wd_locationsList w = new wd_locationsList();
-            //w.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#00178DD2"));
             w.ShowDialog();
             if (w.isActive)
             {
                 foreach (var location in w.selectedLocations)
                 {
                     MessageBox.Show(location.name + "\t");
-
                 }
             }
-            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
+            Window.GetWindow(this).Opacity = 1;
         }
 
        

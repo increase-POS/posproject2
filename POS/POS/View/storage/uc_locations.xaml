@@ -299,24 +299,17 @@
                 </Border>
                 <!--#endregion-->
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                    <Grid x:Name="grid_bank" >
+                    <Grid x:Name="grid_location" >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
-                       
                             <RowDefinition Height="*"/>
-
-
                         </Grid.RowDefinitions>
-
-
-
                         <!--Base Information-->
                         <!--#region -->
-
                         <DockPanel LastChildFill="True" Grid.Row="0">
                             <TextBlock x:Name="txt_baseInformation" Text="Base Infomation" Foreground="#737373" FontSize="10" VerticalAlignment="Center" Margin="5,5,5,5"/>
                             <Button DockPanel.Dock="Right" x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click" Margin="5,1" ToolTip="clear" TabIndex="13">
@@ -329,7 +322,6 @@
                             <Separator Background="#999999" VerticalAlignment="Center" Width="auto" />
                         </DockPanel>
                         <!--#endregion-->
-
                         <TextBox x:Name="tb_x"  Grid.Row="1" Text="{Binding x, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="X..."  
                                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
@@ -338,8 +330,6 @@
                                  BorderBrush="AliceBlue"  MaxLength="20" LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"   Grid.ColumnSpan="2" Margin="10,5,10,5" />
-                        
-                        
                         <Path Fill="#E81123" Grid.Row="1" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorX"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -348,7 +338,6 @@
                                 <ToolTip  x:Name="tt_errorX"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
-
                         <TextBox x:Name="tb_y" Grid.Row="2" Text="{Binding y, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Y..."  
                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -356,7 +345,6 @@
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
            MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"    Margin="10,5,10,5" Grid.ColumnSpan="2" />
-
                         <Path Fill="#E81123" Grid.Row="2" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorY"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -365,8 +353,6 @@
                                 <ToolTip  x:Name="tt_errorY"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
-
-
                         <TextBox x:Name="tb_z" Grid.Row="3" Text="{Binding z, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Z..." 
                                                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -375,7 +361,6 @@
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                       MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"    Margin="10,5,10,5" />
-
                         <Path Fill="#E81123" Stretch="Fill" Grid.Row="3" Margin="5,5,15,5" x:Name="p_errorZ"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -384,8 +369,6 @@
                                 <ToolTip  x:Name="tt_errorZ"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
-
-
                         <TextBox x:Name="tb_notes"  Grid.Row="4" Text="{Binding note, Mode=OneWay}" 
                                  Padding="10,0,5,0"  
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -403,7 +386,6 @@
                                               VerticalOffset="20"/>
                             </TextBox.ToolTip>
                         </TextBox>
-
                         <Path Fill="#E81123" Grid.Row="4" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
                          VerticalAlignment="Top" Width="15"  Height="15"
@@ -412,17 +394,32 @@
                                 <ToolTip x:Name="tt_error_note" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
-
                     </Grid>
                 </ScrollViewer>
                 <Grid Grid.Row="11" Margin="5,5,5,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Border>
+                    <Button Grid.Row="0" x:Name="btn_addRange" TabIndex="10" Grid.ColumnSpan="3"
+                          Background="#4E4E4E" BorderBrush="{x:Null}"
+                    Margin="1,1" Click="Btn_addRange_Click" Content="Add Range" >
+                        <Button.ToolTip>
+                            <ToolTip x:Name="tt_addRange" Content="Add Range"
+                                    Placement="left" 
+                                    HorizontalOffset="15"
+                                    PlacementRectangle="50,0,0,0"
+                                    VerticalOffset="30"/>
+                        </Button.ToolTip>
+                    </Button>
 
+
+                    <Border Grid.Row="1">
                         <Button x:Name="btn_add" TabIndex="10"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1" Click="Btn_add_Click" >
@@ -444,7 +441,7 @@
                                     VerticalOffset="30"/>
                         </Border.ToolTip>
                     </Border>
-                    <Border Grid.Column="1">
+                    <Border Grid.Row="1" Grid.Column="1">
                         <Button x:Name="btn_update"  TabIndex="11"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="1,1"  Click="Btn_update_Click" >
@@ -468,7 +465,7 @@
 
                         </Border.ToolTip>
                     </Border>
-                    <Border Grid.Column="2">
+                    <Border Grid.Row="1" Grid.Column="2">
                         <Button x:Name="btn_delete"  TabIndex="12"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1"  Click="Btn_delete_Click" >

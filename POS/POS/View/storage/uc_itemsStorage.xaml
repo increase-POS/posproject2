@@ -595,13 +595,11 @@
                             </StackPanel>
                         </Button>
                         <Border.ToolTip>
-
                             <ToolTip x:Name="tt_update_Button" Content="Update"
                                     Placement="left" 
                                     HorizontalOffset="15"
                                     PlacementRectangle="50,0,0,0"
                                     VerticalOffset="30"/>
-
                         </Border.ToolTip>
                     </Border>
                     <Border Grid.Column="2">

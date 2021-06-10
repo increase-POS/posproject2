@@ -1125,4 +1125,7 @@
   <data name="trValues" xml:space="preserve">
     <value>القيم</value>
   </data>
+  <data name="trValidLocationMatch" xml:space="preserve">
+    <value>(من و إلى) يجب أن تكون من نفس النوع</value>
+  </data>
 </root>

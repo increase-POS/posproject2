@@ -13,6 +13,7 @@ namespace POS.Classes
 {
     public class Location
     {
+       
         public int locationId { get; set; }
         public string name
         {

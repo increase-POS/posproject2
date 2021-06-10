@@ -72,8 +72,8 @@ namespace POS.View
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal:");
-            btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
-            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
+            //btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
+            //btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
             
 
             ////////////////////////////////----Customer----/////////////////////////////////

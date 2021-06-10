@@ -2968,6 +2968,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (من و إلى) يجب أن تكون من نفس النوع.
+        /// </summary>
+        internal static string trValidLocationMatch {
+            get {
+                return ResourceManager.GetString("trValidLocationMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to القيمة.
         /// </summary>
         internal static string trValue {

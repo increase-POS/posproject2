@@ -157,7 +157,6 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="10"/>
                 </Grid.ColumnDefinitions>
-
                 <Button Grid.Column="8" BorderBrush="{x:Null}" Height="auto"
                     Background="{x:Null}" x:Name="btn_items" Padding="0" Margin="5,0"   >
                     <Path Fill="#4E4E4E" Stretch="Fill"  x:Name="path_itemsIcon"
@@ -213,7 +212,7 @@
 	h-9.7V48H47V38.3z M64.1,38.3h-9.7V48h9.7V38.3z M92,94.9c0,0-11.9,4-17.4,6.7c-1.7,0.8-2.8,2.4-3.1,4.2c-0.6,4.8-1,9.7-1.1,14.6
 	h22.8l3.1-21.2L93,94.9H92z"  >
                         <Path.ToolTip>
-                            <ToolTip x:Name="tt_delivery" Content="Items"
+                            <ToolTip x:Name="tt_delivery" Content="Delivery"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
@@ -222,7 +221,6 @@
                     </Path>
                 </Button>
                 <Border Grid.Column="6"  Background="White" Margin="5,0"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />
-
                 <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_invoiceImages" Click="Btn_invoiceImages_Click"  >
                     <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -242,7 +240,6 @@
                     </Path>
                 </Button>
                 <Border Grid.Column="4"  Background="White" Margin="5,0"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />
-
                 <Button Grid.Column="3" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_preview"   >
                     <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -329,10 +326,6 @@
                         </Path.ToolTip>
                     </Path>
                 </Button>
-
-
-
-
             </Grid>
         </Border>
         <Grid Grid.Column="0" Grid.Row="1" >

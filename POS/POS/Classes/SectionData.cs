@@ -249,6 +249,12 @@ namespace POS.Classes
             else return true;
 
         }
+        public static void SetError(Control c, Path p_error, ToolTip tt_error, string tr)
+        {
+                p_error.Visibility = Visibility.Visible;
+                tt_error.Content = MainWindow.resourcemanager.GetString(tr);
+                c.Background = (Brush)bc.ConvertFrom("#15FF0000");
+        }
 
         public static void validateEmptyTextBox(TextBox tb , Path p_error , ToolTip tt_error , string tr)
         {

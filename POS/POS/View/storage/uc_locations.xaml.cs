@@ -1,5 +1,6 @@
 ﻿using netoaster;
 using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -146,11 +147,11 @@ namespace POS.View
         {
             
             //chk empty x
-            SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyNameToolTip");
+            SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "");
             //chk empty x
-            SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "trEmptyMobileToolTip");
+            SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "");
             //chk empty x
-            SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyPhoneToolTip");
+            SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "");
 
             if ((!tb_x.Text.Equals("")) && (!tb_y.Text.Equals("")) && (!tb_z.Text.Equals("")))
                 return true;
@@ -395,5 +396,13 @@ namespace POS.View
             ExportToExcel.Export(DTForExcel);
         }
 
+        private void Btn_addRange_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_locationAddRange w = new wd_locationAddRange();
+            w.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
+            Btn_refresh_Click(null, null);
+        }
     }
 }

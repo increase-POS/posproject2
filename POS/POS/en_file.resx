@@ -1146,4 +1146,7 @@
   <data name="trValues" xml:space="preserve">
     <value>Values</value>
   </data>
+  <data name="trValidLocationMatch" xml:space="preserve">
+    <value>(From &amp; To) should be same type</value>
+  </data>
 </root>

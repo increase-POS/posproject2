@@ -3031,6 +3031,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (From &amp; To) should be same type.
+        /// </summary>
+        internal static string trValidLocationMatch {
+            get {
+                return ResourceManager.GetString("trValidLocationMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value.
         /// </summary>
         internal static string trValue {
