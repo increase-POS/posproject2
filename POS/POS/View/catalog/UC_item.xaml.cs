@@ -233,7 +233,7 @@ namespace POS.View
                 drawBarcode(tb_barcode.Text);
             }
         }
-
+        Window window;
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -241,10 +241,11 @@ namespace POS.View
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             //CreateGridCardContainer();
             catigoriesAndItemsView.ucItem = this;
-
-            var window = Window.GetWindow(this);
-            window.KeyDown += HandleKeyPress;
-
+            if (window == null)
+            {
+                window = Window.GetWindow(this);
+                window.KeyDown += HandleKeyPress;
+            }
 
 
             if (MainWindow.lang.Equals("en"))

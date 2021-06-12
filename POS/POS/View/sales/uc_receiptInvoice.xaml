@@ -557,6 +557,8 @@
                     <Grid  Margin="5" Grid.Row="3"   >
                         <TextBox x:Name="tb_barcode"  Text="{Binding discount, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5"
+                                    materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                     MaxLength="20" 
                                             BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..."  
                                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                             BorderBrush="#f8f8f8"
@@ -732,7 +734,7 @@
                             <DataGridTextColumn IsReadOnly="True"  Width="*"  Header="Total" Binding="{Binding Path=Total}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Separator Grid.Row="2"  Background="#999999" VerticalAlignment="Center" Width="auto" />
+                    <Separator Margin="5,0" Grid.Row="2"  Background="#999999" VerticalAlignment="Center" Width="auto" />
                     <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,5">
                         <TextBlock Grid.Row="0"  Text="SUM" x:Name="txt_sum" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 

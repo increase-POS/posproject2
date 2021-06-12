@@ -142,15 +142,6 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Administrative Deposit.
-        /// </summary>
-        internal static string trAdministrativeDeposit {
-            get {
-                return ResourceManager.GetString("trAdministrativeDeposit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to administrative pull.
         /// </summary>
         internal static string trAdministrativePull {
@@ -871,6 +862,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Purchase Bill Draft.
+        /// </summary>
+        internal static string trDraftPurchaseBill {
+            get {
+                return ResourceManager.GetString("trDraftPurchaseBill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drafts.
         /// </summary>
         internal static string trDrafts {
@@ -1290,24 +1290,6 @@ namespace POS {
         internal static string trErrorEmptyCountToolTip {
             get {
                 return ResourceManager.GetString("trErrorEmptyCountToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Depositor type can not be empty.
-        /// </summary>
-        internal static string trErrorEmptyDepositFromToolTip {
-            get {
-                return ResourceManager.GetString("trErrorEmptyDepositFromToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Depositor can not be empty.
-        /// </summary>
-        internal static string trErrorEmptyDepositorToolTip {
-            get {
-                return ResourceManager.GetString("trErrorEmptyDepositorToolTip", resourceCulture);
             }
         }
         
@@ -2379,6 +2361,15 @@ namespace POS {
         internal static string trPull {
             get {
                 return ResourceManager.GetString("trPull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchase Bill.
+        /// </summary>
+        internal static string trPurchaseBill {
+            get {
+                return ResourceManager.GetString("trPurchaseBill", resourceCulture);
             }
         }
         

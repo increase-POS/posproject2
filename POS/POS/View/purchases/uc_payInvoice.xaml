@@ -158,7 +158,8 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="8" BorderBrush="{x:Null}" Height="auto"
-                    Background="{x:Null}" x:Name="btn_items" Padding="0" Margin="5,0"   >
+                    Background="{x:Null}" x:Name="btn_items" Padding="0" Margin="5,0" 
+                        Click="Btn_items_Click">
                     <Path Fill="#4E4E4E" Stretch="Fill"  x:Name="path_itemsIcon"
                           Width="{Binding Path=ActualHeight, ElementName=path_itemsIcon}"  
                            FlowDirection="LeftToRight" Data="M473.2,341.6c-10.5-18.1-21-36.2-31.5-54.2c-1.9-3.3-3.8-6.6-5.8-9.9c2.1-3.7,3.3-8,3.3-12.8c0-7.7,0-15.4,0-23
@@ -549,9 +550,11 @@
                     <Grid  Margin="5" Grid.Row="3"   >
                         <TextBox x:Name="tb_barcode"  Text="{Binding discount, Mode=OneWay}"
                                  Grid.Row="2" Padding="10,5,5,5"
+                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                     MaxLength="20" 
                                  BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..."  
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="#f8f8f8" MaxLength="20"
+                                 BorderBrush="#f8f8f8" 
                                  Grid.Column="1"  Height="30"
                                  KeyDown="Tb_barcode_KeyDown"/>
 
@@ -751,18 +754,18 @@
                             <DataGridTextColumn IsReadOnly="True"  Width="*"  Header="Total" Binding="{Binding Path=Total}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Separator Grid.Row="2"  Background="#999999" VerticalAlignment="Center" Width="auto" />
+                    <Separator Margin="5,0" Grid.Row="2"  Background="#999999" VerticalAlignment="Center" Width="auto" />
                     
                     <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,5">
                         <TextBlock Grid.Row="0"  Text="SUM" x:Name="txt_sum" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
-                                  VerticalAlignment="Center" 
+                                  VerticalAlignment="Center"   
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
                         <!--Text="{Binding total, Mode=OneWay}"-->
                         <TextBlock Grid.Row="1"   x:Name="tb_sum" Grid.Column="1" Margin="10,5,0,5" 
                        Foreground="#4E4E4E" Text="{Binding total, Mode=OneWay}"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
-                        <TextBlock Grid.Row="1"   x:Name="tb_moneyIcon" Grid.Column="1" Margin="0,0,5,0" 
+                        <TextBlock Grid.Row="1"   x:Name="tb_moneyIcon" Grid.Column="1" Margin="0,0,5,0"  
                        Foreground="#4E4E4E" Text="$"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>

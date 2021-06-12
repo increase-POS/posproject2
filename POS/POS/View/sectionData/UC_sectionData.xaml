@@ -7,20 +7,27 @@
              mc:Ignorable="d" 
            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="720" d:DesignWidth="1100" Loaded="UserControl_Loaded">
-    <Grid>
-        <materialDesign:TransitioningContent >
-            <materialDesign:TransitioningContent.OpeningEffects>
-                <materialDesign:TransitionEffect Kind="FadeIn"  Duration="0:0:1.5"/>
-                <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:1" />
-            </materialDesign:TransitioningContent.OpeningEffects>
             <Grid  x:Name="grid_ucSectionData">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <ScrollViewer VerticalScrollBarVisibility="Auto"  Margin="0"
+        <Expander Foreground="#178DD2" Background="#E8E8E8"     
+    ExpandDirection="Right" Margin="0"
+    materialDesign:ExpanderAssist.VerticalHeaderPadding="0,35,0,5">
+            <Expander.Header>
+                <TextBlock   Text="Menu"    Foreground="#A2CAE1" FontWeight="Bold" FontSize="18"   
+        RenderTransformOrigin=".5,.5">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform
+            Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Expander.Header>
+            <ScrollViewer  VerticalScrollBarVisibility="Auto"  Margin="0,1.5,0,0"
                                           ScrollViewer.CanContentScroll="True">
-                    <Grid Margin="7,7,0,0" >
+               
+                    <Grid Margin="0,7,0,0" Width="90">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="87"/>
                             <RowDefinition Height="87"/>
@@ -207,10 +214,10 @@
 	C24,34.3,24,34.3,24,34.3C24,34.3,24,34.3,24,34.3z M23.5,4C23.5,4,23.5,4,23.5,4C23.5,4,23.5,4,23.5,4C23.5,4,23.5,4,23.5,4
 	C23.5,4,23.5,4,23.5,4z" Click="Btn_cards_Click"/>
 
-                    </Grid>
-                </ScrollViewer>
-                <Grid Grid.Column="1" x:Name="grid_main"/>
+                </Grid>
+            </ScrollViewer>
+        </Expander>
+        <Grid Grid.Column="1" x:Name="grid_main"/>
             </Grid>
-        </materialDesign:TransitioningContent>
-    </Grid>
+      
 </UserControl>
