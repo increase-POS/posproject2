@@ -151,6 +151,7 @@
     </ApplicationDefinition>
     <Compile Include="Classes\BadDateFixingConverter.cs" />
     <Compile Include="Classes\Bank.cs" />
+    <Compile Include="Classes\Bonds.cs" />
     <Compile Include="Classes\Branch.cs" />
     <Compile Include="Classes\Card.cs" />
     <Compile Include="Classes\CashTransfer.cs" />
