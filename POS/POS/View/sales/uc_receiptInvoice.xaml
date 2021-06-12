@@ -157,7 +157,7 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="10"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="8" BorderBrush="{x:Null}" Height="auto"
+                <Button Grid.Column="8" BorderBrush="{x:Null}" Height="auto" Click="Btn_items_Click"
                     Background="{x:Null}" x:Name="btn_items" Padding="0" Margin="5,0"   >
                     <Path Fill="#4E4E4E" Stretch="Fill"  x:Name="path_itemsIcon"
                           Width="{Binding Path=ActualHeight, ElementName=path_itemsIcon}"  
@@ -683,6 +683,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Purchases Bill" x:Name="txt_payInvoice" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                      VerticalAlignment="Center" 
@@ -731,7 +732,8 @@
                             <DataGridTextColumn IsReadOnly="True"  Width="*"  Header="Total" Binding="{Binding Path=Total}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
+                    <Separator Grid.Row="2"  Background="#999999" VerticalAlignment="Center" Width="auto" />
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,5">
                         <TextBlock Grid.Row="0"  Text="SUM" x:Name="txt_sum" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>

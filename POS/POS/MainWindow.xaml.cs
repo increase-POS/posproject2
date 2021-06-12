@@ -40,7 +40,8 @@ namespace POS
         internal static int? posID = 53;
         internal static int? branchID = 18;
         bool isHome = false;
-
+        internal static int? isInvTax = 1;
+        internal static decimal? tax = 2;
         /// <summary>
         /// //////// relative screen test
         /// </summary>

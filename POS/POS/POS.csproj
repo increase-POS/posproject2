@@ -223,6 +223,9 @@
     <Compile Include="View\accounts\uc_banksAccounts.xaml.cs">
       <DependentUpon>uc_banksAccounts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\accounts\uc_bonds.xaml.cs">
+      <DependentUpon>uc_bonds.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\accounts\uc_paymentsAccounts.xaml.cs">
       <DependentUpon>uc_paymentsAccounts.xaml</DependentUpon>
     </Compile>
@@ -231,6 +234,9 @@
     </Compile>
     <Compile Include="View\accounts\uc_receivedAccounts.xaml.cs">
       <DependentUpon>uc_receivedAccounts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\sectionData\uc_card.xaml.cs">
+      <DependentUpon>uc_card.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\storage\uc_itemsDestroy.xaml.cs">
       <DependentUpon>uc_itemsDestroy.xaml</DependentUpon>
@@ -318,6 +324,9 @@
     <Compile Include="View\windows\wd_invoice.xaml.cs">
       <DependentUpon>wd_invoice.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_items.xaml.cs">
+      <DependentUpon>wd_items.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_itemsList.xaml.cs">
       <DependentUpon>wd_itemsList.xaml</DependentUpon>
     </Compile>
@@ -392,6 +401,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\accounts\uc_bonds.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\accounts\uc_paymentsAccounts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -401,6 +414,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\accounts\uc_receivedAccounts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\sectionData\uc_card.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -521,6 +538,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\windows\wd_invoice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_items.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

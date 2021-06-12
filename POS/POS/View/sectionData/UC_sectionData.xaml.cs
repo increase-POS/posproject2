@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using POS.View.sectionData;
 
 namespace POS.View
 {
@@ -63,8 +64,8 @@ namespace POS.View
             btn_banks.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_banks.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            //btn_units.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            //btn_units.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_cards.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_cards.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
 
         void refreashBachgroundClick(Button btn)
@@ -169,8 +170,6 @@ namespace POS.View
         private void Btn_banks_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_banks);
-
-
             grid_main.Children.Clear();
             grid_main.Children.Add(UC_bank.Instance);
 
@@ -178,6 +177,12 @@ namespace POS.View
             //grid_main.Children.Add(uc);
         }
 
-      
+        private void Btn_cards_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_cards);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_card.Instance);
+
+        }
     }
 }

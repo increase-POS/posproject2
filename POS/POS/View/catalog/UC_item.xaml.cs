@@ -477,7 +477,8 @@ namespace POS.View
 
                 int itemId = int.Parse(res);
 
-                await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
+                if(openFileDialog.FileName != "")
+                    await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
 
                 await RefrishItems();
                 Txb_searchitems_TextChanged(null, null);
@@ -550,7 +551,7 @@ namespace POS.View
 
                 int itemId = int.Parse(res);
 
-                await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
+               await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
 
                 await RefrishItems();
                 Txb_searchitems_TextChanged(null, null);
@@ -1598,6 +1599,11 @@ namespace POS.View
 
                     img_item.Background = new ImageBrush(bitmapImage);
                 }
+                // configure trmporary path
+                string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                string tmpPath = System.IO.Path.Combine(dir, Global.TMPItemsFolder);
+                tmpPath = System.IO.Path.Combine(tmpPath, item.image);
+                openFileDialog.FileName = tmpPath;
             }
 
         }
@@ -2012,9 +2018,9 @@ namespace POS.View
 
         #endregion
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-
+            await RefrishItems();
         }
         private void Img_item_Click(object sender, RoutedEventArgs e)
         {

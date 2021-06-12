@@ -2,6 +2,7 @@
 using POS.controlTemplate;
 using POS.View;
 using POS.View.storage;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,6 +29,7 @@ namespace POS.Classes
         public uc_itemsDestroy ucItemsDestroy;
         public uc_receiptOfPurchaseInvoice ucreceiptOfPurchaseInvoice;
         public uc_packageOfItems ucPackageOfItems;
+        public wd_items wdItems;
 
         public Grid gridCatigories;
         public Grid gridCatigorieItems;
@@ -39,6 +41,7 @@ namespace POS.Classes
         private int _idItemsDestroy;
         private int _idReceiptOfPurchaseInvoice;
         private int _idPackageOfItems;
+        private int _idwdItems;
         public int idCatigories
         {
             get => _idCatigories; set
@@ -112,6 +115,15 @@ namespace POS.Classes
                 INotifyPropertyChangedIdCatigorieItems();
             }
         }
+        public int idwdItems
+        {
+            get => _idwdItems; set
+            {
+
+                _idwdItems = value;
+                INotifyPropertyChangedIdCatigorieItems();
+            }
+        }
         private void INotifyPropertyChangedIdCatigories()
         {
             if (ucCategorie != null)
@@ -153,11 +165,16 @@ namespace POS.Classes
                 ucPackageOfItems.ChangeCategoryIdEvent(idCatigories);
 
             }
+            else if (wdItems != null)
+            {
+                wdItems.ChangeCategoryIdEvent(idCatigories);
+
+            }
 
 
         }
 
-        
+
         private void INotifyPropertyChangedIdCatigorieItems()
         {
 
@@ -188,6 +205,11 @@ namespace POS.Classes
             else if (ucPackageOfItems != null)
             {
                 ucPackageOfItems.ChangeItemIdEvent(idItem);
+
+            }
+            else if (wdItems != null)
+            {
+                wdItems.ChangeItemIdEvent(idItem);
 
             }
         }

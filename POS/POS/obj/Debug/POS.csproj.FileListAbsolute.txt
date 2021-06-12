@@ -1861,3 +1861,9 @@ D:\myproj\posproject2\POS\POS\bin\Debug\de\MahApps.Metro.resources.dll
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_locationAddRange.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_locationAddRange.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_items.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_items.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_bonds.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_bonds.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\sectionData\uc_card.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\sectionData\uc_card.baml

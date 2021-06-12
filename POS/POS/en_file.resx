@@ -1167,4 +1167,13 @@
   <data name="trValidLocationToBigger" xml:space="preserve">
     <value>To Should be begger then From</value>
   </data>
+  <data name="trAdministrativeDeposit" xml:space="preserve">
+    <value>Administrative Deposit</value>
+  </data>
+  <data name="trErrorEmptyDepositFromToolTip" xml:space="preserve">
+    <value>Depositor type can not be empty</value>
+  </data>
+  <data name="trErrorEmptyDepositorToolTip" xml:space="preserve">
+    <value>Depositor can not be empty</value>
+  </data>
 </root>

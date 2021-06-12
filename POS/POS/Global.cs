@@ -16,5 +16,6 @@ namespace POS
 
         public static string ScannedImageLocation = "Thumb/Scan/scan.jpg";
         public const string TMPFolder = "Thumb";
+        public const string TMPItemsFolder = "Thumb/items";
     }
 }

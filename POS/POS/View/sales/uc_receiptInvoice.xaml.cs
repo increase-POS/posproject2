@@ -1,4 +1,5 @@
 ﻿using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -345,6 +346,27 @@ namespace POS.View
         }
 
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void Btn_items_Click(object sender, RoutedEventArgs e)
+        {
+            //items
+
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_items w = new wd_items();
+            w.ShowDialog();
+            if (w.isActive)
+            {
+                ////// this is ItemId
+                //w.selectedItem
+                MessageBox.Show(w.selectedItem.ToString());
+            }
+
+            Window.GetWindow(this).Opacity  = 1;
+        }
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
 
         }

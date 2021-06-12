@@ -339,11 +339,10 @@ namespace POS.View
         {//items
             SectionData.clearValidate(tb_code, p_errorCode);
 
-            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
-            //if ((((this.Parent as Grid).Parent as Grid).Parent as UserControl) != null)
-            //((((this.Parent as Grid).Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 0.2;
+            Window.GetWindow(this).Opacity = 0.2;
+            
             wd_itemsOfferList w = new wd_itemsOfferList();
-            //w.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#00178DD2"));
+            
             w.ShowDialog();
             if (w.isActive)
             {
@@ -353,7 +352,7 @@ namespace POS.View
                 }
             }
 
-            (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
+            Window.GetWindow(this).Opacity =1;
         }
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)

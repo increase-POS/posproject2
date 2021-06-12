@@ -279,7 +279,7 @@ namespace POS.View.accounts
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
-        {//add
+        {//save
             //chk empty cash
             SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
             
@@ -341,6 +341,10 @@ namespace POS.View.accounts
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     Btn_clear_Click(null, null);
 
+                    decimal ammount = cash.cash.Value;
+                    if (cash.transType.Equals("p")) ammount *= -1;
+                    calcBalance(ammount);
+                    
                     //dg_paymentsAccounts.ItemsSource = await cashModel.GetCashTransferAsync("p", "v");
                     await RefreshCashesList();
                     Tb_search_TextChanged(null, null);
@@ -350,6 +354,33 @@ namespace POS.View.accounts
             }
         }
 
+        private async void calcBalance(decimal ammount)
+        {
+            string s = "";
+            switch (cb_depositTo.SelectedValue.ToString())
+            {
+                case "v":
+                case "c":
+                    Agent agent = await agentModel.getAgentById(Convert.ToInt32(cb_recipient.SelectedValue));
+                    ammount = Convert.ToDecimal(agent.balance) + ammount;
+                    agent.balance = Convert.ToSingle(ammount);
+                    s = await agent.saveAgent(agent);
+                    break;
+                case "u":
+                case "s":
+                    User user = await userModel.getUserById(Convert.ToInt32(cb_recipient.SelectedValue));
+                    //ammount = Convert.ToDecimal(user.balance) + ammount;
+                    //user.balance = Convert.ToSingle(ammount);
+                    s = await user.saveUser(user);
+                    break;
+            }
+            if(s.Equals(""))
+                MessageBox.Show("no change");
+            else if (s.Equals("0"))
+                MessageBox.Show("error");
+            else
+                MessageBox.Show("ok");
+        }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
             //chk empty cash
@@ -546,7 +577,9 @@ namespace POS.View.accounts
                 case 3: cb_recipient.IsEnabled = true; fillUsers();
                     break;
                 case 4: 
-                case 5:cb_recipient.IsEnabled = false;  SectionData.clearComboBoxValidate(cb_recipient , p_errorRecipient);
+                case 5:cb_recipient.IsEnabled = false;
+                       cb_recipient.Text = "";
+                       SectionData.clearComboBoxValidate(cb_recipient , p_errorRecipient);
                     break;
             }
         }

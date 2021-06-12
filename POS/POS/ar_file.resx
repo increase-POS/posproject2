@@ -1090,7 +1090,7 @@
     <value>الجهة المودعة لا يمكن أن تكون فارغة</value>
   </data>
   <data name="trErrorEmptyPaymentTypeToolTip" xml:space="preserve">
-    <value>نوع الدفع لا يمكن أن تكون فارغة</value>
+    <value>نوع الدفع لا يمكن أن يكون فارغ</value>
   </data>
   <data name="trErrorEmptyRecipientToolTip" xml:space="preserve">
     <value>المستفيد لا يمكن أن يكون فارغ</value>
@@ -1145,5 +1145,14 @@
   </data>
   <data name="trValidLocationToBigger" xml:space="preserve">
     <value>"إلى" يجب ان تكن أكبر "من"</value>
+  </data>
+  <data name="trAdministrativeDeposit" xml:space="preserve">
+    <value>إيداع إداري</value>
+  </data>
+  <data name="trErrorEmptyDepositFromToolTip" xml:space="preserve">
+    <value>نوع الجهة المودعة لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trErrorEmptyDepositorToolTip" xml:space="preserve">
+    <value>المودع لا يمكن أن يكون فارغ</value>
   </data>
 </root>

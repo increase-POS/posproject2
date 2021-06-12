@@ -29,6 +29,7 @@ namespace POS.View.accounts
     {
         CashTransfer cashtrans = new CashTransfer();
         CashTransfer cashModel = new CashTransfer();
+        Pos posModel = new Pos();
         IEnumerable<CashTransfer> cashesQuery;
         IEnumerable<CashTransfer> cashes;
         string searchText = "";
@@ -238,19 +239,7 @@ namespace POS.View.accounts
                 );
             });
             RefreshCashView();
-            //new Thread(search).Start();
-            //if (cashes is null)
-            //    await RefreshCashesList();
-            //searchText = tb_search.Text;
-            //cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-            //|| s.cash.ToString().Contains(searchText)
-            //|| s.bankName.Contains(searchText)
-            ////|| s.docNum.Contains(searchText)////?????because of empty values
-            //)
-            //&& s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-            //&& s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-            //);
-            //RefreshCashView();
+           
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
@@ -291,12 +280,43 @@ namespace POS.View.accounts
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     Btn_clear_Click(null, null);
 
+                    decimal ammount = cash.cash.Value;
+                    if (cash.transType.Equals("p")) ammount *= -1 ;
+                    calcBalance(ammount);
+
                     dg_bankAccounts.ItemsSource = await RefreshCashesList();
                     Tb_search_TextChanged(null, null);
                 }
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
+        }
+
+        private async void calcBalance(decimal ammount)
+        {
+            Pos pos = await posModel.getPosById(MainWindow.posID.Value);
+            MessageBox.Show(pos.balance.ToString() +" "+ pos.name);
+            ammount += pos.balance.Value;
+            //MessageBox.Show(ammount.ToString());
+
+            pos.posId = MainWindow.posID.Value;
+            pos.code = pos.code;
+            pos.name = "poos1";
+            pos.balance = ammount;
+            pos.branchId = pos.branchId;
+            pos.createDate = pos.createDate;
+            pos.createDate = pos.createDate;
+            pos.createUserId = pos.createUserId;
+            pos.updateUserId = pos.updateUserId;
+            pos.isActive = pos.isActive;
+            pos.note = pos.note;
+
+            string s = await posModel.savePos(pos);
+
+            if (s.Equals("Pos Is Updated Successfully"))
+                MessageBox.Show(pos.balance.ToString());
+            else
+                MessageBox.Show("error");
         }
 
         private void Btn_update_Click(object sender, RoutedEventArgs e)

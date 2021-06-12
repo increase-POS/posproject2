@@ -32,6 +32,7 @@ namespace POS.Classes
         public Nullable<int> itemUnitId { get; set; }
         public string unitName { get; set; }
         public string barcode { get; set; }
+      
     }
     public class Invoice
     {
@@ -58,6 +59,7 @@ namespace POS.Classes
         public Nullable<System.DateTime> vendorInvDate { get; set; }
         public Nullable<int> branchId { get; set; }
         public Nullable<int> itemsCount { get; set; }
+        public Nullable<decimal> tax { get; set; }
 
         //*************************************************
         //------------------------------------------------------

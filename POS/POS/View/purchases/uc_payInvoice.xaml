@@ -17,7 +17,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="60"  Height="1*" />
-            <RowDefinition Height="7.8*"/>
+            <RowDefinition Height="9*"/>
         </Grid.RowDefinitions>
 
         <Border BorderThickness="0"   Grid.Column="0" Grid.ColumnSpan="2"  Margin="10"
@@ -386,28 +386,27 @@
                                                      Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
-                            <Button   Padding="0" Width="20" ToolTip="تعديل بيانات المورد"
-                          Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" x:Name="btn_updateVendor" Click="Btn_updateVendor_Click"
-                   Margin="0,0,25,0">
+                            <Button x:Name="btn_updateVendor" Padding="0" Width="20" ToolTip="تعديل بيانات المورد"
+                                    Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" 
+                                    Click="Btn_updateVendor_Click"
+                                    Margin="0,0,25,0" IsEnabled="False">
                                 <materialDesign:PackIcon Foreground="#4E4E4E" Kind="FileDocumentEdit"  
                                   HorizontalAlignment="Center" Grid.Column="0"   
                              VerticalAlignment="Center" Width="17.5" Height="17.5"/>
                             </Button>
                         </Grid>
 
-
-
-
                         <Grid Grid.Row="2"  >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <DatePicker  x:Name="dp_desrvedDate"  Margin="5,5"
-                           BorderBrush="#737373"  BorderThickness="0" 
+                                BorderBrush="#737373"  BorderThickness="0" 
                                 TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}" Padding="10,5,5,5"  
-                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                             materialDesign:HintAssist.Hint="Deserved Date..." KeyDown="Dp_desrvedDate_KeyDown"
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"  Height="40"    />
+                                materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                materialDesign:HintAssist.Hint="Deserved Date..."  
+                                         PreviewKeyUp="Dp_date_PreviewKeyUp"
+                                Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"  Height="40"    />
                             <Path x:Name="p_errorDesrvedDate" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -450,7 +449,7 @@
                                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                             BorderBrush="#f8f8f8"
                                             Grid.Column="1"  Height="40"    Margin="5,5"
-                                             LostFocus="input_LostFocus"/>
+                                             LostFocus="input_LostFocus" TextChanged="Tb_textBox_TextChanged"/>
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                                                Name="p_errorInvoiceNumber"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -467,14 +466,14 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <DatePicker   x:Name="dp_invoiceDate"
-                           BorderBrush="#737373"  BorderThickness="0" 
-                                TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
+                                            BorderBrush="#737373"  BorderThickness="0" 
+                                            TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
                                              Grid.Row="2" Padding="10,5,5,5"  
-                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                             materialDesign:HintAssist.Hint="Invoice Date..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
-                        Grid.Column="1"  Height="40"    Margin="5,5" 
-                                              />
+                                            materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                            materialDesign:HintAssist.Hint="Invoice Date..."  
+                                        Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
+                                        Grid.Column="1"  Height="40"    Margin="5,5" 
+                                        PreviewKeyUp="Dp_date_PreviewKeyUp"          />
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -492,12 +491,12 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="tb_note"  Text="{Binding notes, Mode=OneWay}"
-                                             Grid.Row="2" Padding="10,5,5,5"  
-                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                             BorderBrush="#f8f8f8"
-                        Grid.Column="1"  Height="70"   Margin="5,5" TextWrapping="Wrap"/>
+                                    Grid.Row="2" Padding="10,5,5,5"  
+                                    materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                    BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                    BorderBrush="#f8f8f8" TextChanged="Tb_textBox_TextChanged"
+                                    Grid.Column="1"  Height="70"   Margin="5,5" TextWrapping="Wrap"/>
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -549,11 +548,12 @@
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
                     <Grid  Margin="5" Grid.Row="3"   >
                         <TextBox x:Name="tb_barcode"  Text="{Binding discount, Mode=OneWay}"
-                                             Grid.Row="2" Padding="10,5,5,5"
-                                            BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..."  
-                                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                            BorderBrush="#f8f8f8"
-                                            Grid.Column="1"  Height="30"    />
+                                 Grid.Row="2" Padding="10,5,5,5"
+                                 BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..."  
+                                 Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                 BorderBrush="#f8f8f8" MaxLength="20"
+                                 Grid.Column="1"  Height="30"
+                                 KeyDown="Tb_barcode_KeyDown"/>
 
                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
                                             HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -622,8 +622,6 @@
                                             PreviewTextInput="DecimalValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
                                                Height="30"  
                                              TextChanged="tb_discount_TextChanged"/>
-
-
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -641,11 +639,8 @@
                         <ComboBox x:Name="cb_typeDiscount" Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"  
                                            Text="{Binding test, Mode=OneWay}" 
                                  materialDesign:HintAssist.Hint="type discount..." 
-                               TextBlock.FontSize="12" 
-                                  Height="40"  
-                                      Background="#f8f8f8" 
-                               BorderBrush="#737373"       BorderThickness="0" 
-                                FontFamily="Segoe UI"   
+                                TextBlock.FontSize="12" Height="40" Background="#f8f8f8" 
+                               BorderBrush="#737373" BorderThickness="0" FontFamily="Segoe UI"   
                                  Grid.Row="0" SelectionChanged="Cb_typeDiscount_SelectionChanged"  />
                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,22,5"
                                   HorizontalAlignment="Right" Grid.Column="0"  Visibility="Collapsed" 
@@ -707,6 +702,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Purchases Bill" x:Name="txt_payInvoice" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                      VerticalAlignment="Center" 
@@ -755,7 +751,9 @@
                             <DataGridTextColumn IsReadOnly="True"  Width="*"  Header="Total" Binding="{Binding Path=Total}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
+                    <Separator Grid.Row="2"  Background="#999999" VerticalAlignment="Center" Width="auto" />
+                    
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,5">
                         <TextBlock Grid.Row="0"  Text="SUM" x:Name="txt_sum" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>

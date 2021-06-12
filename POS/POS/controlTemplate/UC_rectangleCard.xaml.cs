@@ -63,8 +63,13 @@ namespace POS.controlTemplate
             {
                 gridContainer.RowDefinitions.Add(rd[i]);
             }
-            gridContainer.Height = this.ActualHeight - 10;
-            gridContainer.Width = this.ActualWidth - 10;
+            /////////////////////////////////////////////////////
+            if (this.ActualHeight != 0)
+                gridContainer.Height = this.ActualHeight - 10;
+            if (this.ActualHeight != 0)
+                gridContainer.Width = this.ActualWidth - 10;
+            /////////////////////////////////////////////////////
+
             brd_main.Child = gridContainer;
             #endregion
             if (cardViewitem.language == "ar")
@@ -159,6 +164,10 @@ namespace POS.controlTemplate
             Grid.SetRowSpan(grid_image, 4);
             Grid.SetColumn(grid_image, 1);
             grid_image.Children.Add(buttonImage);
+
+
+            gridContainer.Children.Add(grid_image);
+
             //////////////
             #endregion
             if (cardViewitem.item.isNew == 1)
@@ -235,7 +244,6 @@ namespace POS.controlTemplate
             }
             gridContainer.Children.Add(titleText);
             gridContainer.Children.Add(subTitleText);
-            gridContainer.Children.Add(grid_image);
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

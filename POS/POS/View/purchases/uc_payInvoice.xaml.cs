@@ -89,29 +89,32 @@ namespace POS.View
         List<ItemTransfer> invoiceItems;
         Bill bill;
 
-        //to handle barcode characters
-        static int _SelectedBranch = -1;
-        static int _SelectedVendor = -1;
+        #region//to handle barcode characters
+        static private int _SelectedBranch = -1;
+        static private int _SelectedVendor = -1;
+        static private int _SelectedDiscountType = -1;
+        // for barcode
+        DateTime _lastKeystroke = new DateTime(0);
+        static private string _BarcodeStr = "";
+        static private object _Sender;
+        #endregion
 
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
         int? parentCategorieSelctedValue;
         public byte tglCategoryState = 1;
         public byte tglItemState = 1;
         public string txtItemSearch;
-
-        // for barcode
-        DateTime _lastKeystroke = new DateTime(0);
-        List<char> _barcode = new List<char>(10);
-        static private string _BarcodeStr = "";
+       
+        //for bill details
         static private int _SequenceNum = 0;
         static private decimal _Sum = 0;
-        static private int _OrginalCount;
         static private string _InvoiceType = "pd";
+               
         // for report
-
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
+
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
@@ -188,8 +191,7 @@ namespace POS.View
             SectionData.defaultDatePickerStyle(dp_invoiceDate);
             #endregion
 
-            //grid_vendor.Visibility = Visibility.Collapsed;
-            //tb_sum.Text = _Sum.ToString();
+            tb_taxValue.Text = MainWindow.tax.ToString();
             tb_barcode.Focus();
             #region datagridChange
             CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
@@ -200,8 +202,9 @@ namespace POS.View
         private void configureDiscountType()
         {
             var dislist = new[] {
-            new { Text = MainWindow.resourcemanager.GetString("trValueDiscount"), Value = "1" },
-            new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = "2" },
+            new { Text = "", Value = -1 },
+            new { Text = MainWindow.resourcemanager.GetString("trValueDiscount"), Value = 1 },
+            new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = 2 },
              };
 
             cb_typeDiscount.DisplayMemberPath = "Text";
@@ -761,6 +764,12 @@ namespace POS.View
                 invoice.vendorInvNum = tb_invoiceNumber.Text;
                 invoice.vendorInvDate = dp_invoiceDate.SelectedDate;
                 invoice.notes = tb_note.Text;
+
+                if (tb_taxValue.Text != "")
+                    invoice.tax = decimal.Parse(tb_taxValue.Text);
+                else
+                    invoice.tax = 0;
+
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
 
@@ -896,6 +905,7 @@ namespace POS.View
             _SelectedBranch = -1;
             _InvoiceType = "pd";
             invoice = new Invoice();
+            tb_barcode.Clear();
             cb_branch.SelectedIndex = -1;
             cb_vendor.SelectedIndex = -1;
             cb_vendor.SelectedItem = "";
@@ -995,6 +1005,7 @@ namespace POS.View
             tb_invoiceNumber.Text = invoice.vendorInvNum;
             dp_invoiceDate.Text = invoice.vendorInvDate.ToString();
             tb_total.Text = Math.Round((double)invoice.totalNet , 2).ToString();
+            tb_taxValue.Text = invoice.tax.ToString();
 
             if (invoice.discountType == "1")
                 cb_typeDiscount.SelectedIndex = 0;
@@ -1064,6 +1075,7 @@ namespace POS.View
         {
             if (_InvoiceType == "pbd") // return invoice
             {
+                dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                 dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
                 dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
@@ -1076,9 +1088,11 @@ namespace POS.View
                 tb_discount.IsEnabled = false;
                 cb_typeDiscount.IsEnabled = false;
                 btn_save.IsEnabled = true;
+                btn_updateVendor.IsEnabled = false;
             }
             else if(_InvoiceType == "pd")
             {
+                dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                 dg_billDetails.Columns[5].IsReadOnly = false;
                 dg_billDetails.Columns[3].IsReadOnly = false;
                 dg_billDetails.Columns[4].IsReadOnly = false;
@@ -1091,9 +1105,11 @@ namespace POS.View
                 tb_discount.IsEnabled = true;
                 cb_typeDiscount.IsEnabled = true;
                 btn_save.IsEnabled = true;
+                btn_updateVendor.IsEnabled = true;
             }
             else if(_InvoiceType =="p")
             {
+                dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
                 dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
@@ -1106,11 +1122,12 @@ namespace POS.View
                 tb_discount.IsEnabled = false;
                 cb_typeDiscount.IsEnabled = false;
                 btn_save.IsEnabled = false;
+                btn_updateVendor.IsEnabled = false;
             }
         }
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
-            if (invoice != null || invoice.invoiceId != 0) 
+            if (invoice != null && invoice.invoiceId != 0) 
             {
                 //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
 
@@ -1184,13 +1201,29 @@ namespace POS.View
             if (cb_vendor.SelectedIndex != -1)
                 btn_updateVendor.IsEnabled = true;
         }
+        private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+             _Sender = sender;
+        }
         private  void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            refreshTotalValue();
+            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+            if (elapsed.TotalMilliseconds > 100 && cb_typeDiscount.SelectedIndex != -1)
+            {
+                _SelectedDiscountType = (int)cb_typeDiscount.SelectedValue;
+                refreshTotalValue();
+            }
+            else
+            {
+                cb_typeDiscount.SelectedValue = _SelectedDiscountType;
+            }
+          
         }
         private  void tb_discount_TextChanged(object sender, TextChangedEventArgs e)
         {
+            _Sender = sender;
             refreshTotalValue();
+            e.Handled = true;
         }
         private void refreshTotalValue( )
         {
@@ -1204,7 +1237,12 @@ namespace POS.View
             }
 
             decimal total = _Sum - discountValue;
+            decimal taxValue = 0;
+            if (total != 0)
+                taxValue = SectionData.calcPercentage(total ,decimal.Parse( tb_taxValue.Text));
+
             tb_sum.Text = _Sum.ToString();
+            total = total - taxValue;
             tb_total.Text = Math.Round( total,2).ToString() ;
         }
        //private void refreshTotalValue(decimal discountVal)
@@ -1273,11 +1311,9 @@ namespace POS.View
         // read item from barcode
         private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
-
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-            if (elapsed.TotalMilliseconds > 1000)
+            if (elapsed.TotalMilliseconds > 50)
             {
-                _barcode.Clear();
                 _BarcodeStr = "";
             }
 
@@ -1285,29 +1321,49 @@ namespace POS.View
             // record keystroke & timestamp 
             if (e.Key >= Key.D0 && e.Key <= Key.D9)
             {
-                //digit pressed!
-                digit = e.Key.ToString().Substring(1);
+                //digit pressed!         
+                digit = e.Key.ToString().Substring(1);               
                 // = "1" when D1 is pressed
             }
-            else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
+            else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9 )
             {
                 digit = e.Key.ToString().Substring(6); // = "1" when NumPad1 is pressed
             }
-
-            _barcode.Add((char)e.Key);
             _BarcodeStr += digit;
             _lastKeystroke = DateTime.Now;
             // process barcode
-            if (e.Key.ToString() == "Return" && _barcode.Count > 0)
+           
+            if (e.Key.ToString() == "Return" && _BarcodeStr != "")
             {
+                if (_Sender != null)
+                {
+                    DatePicker dt = _Sender as DatePicker;
+                    TextBox tb = _Sender as TextBox;
+                    if (dt != null) {
+                        if (dt.Name == "dp_desrvedDate" || dt.Name == "dp_invoiceDate")
+                            _BarcodeStr = _BarcodeStr.Substring(1);
+                    }
+                    else if (tb != null)
+                    { 
+                        if (tb.Name == "tb_invoiceNumber" || tb.Name == "tb_note" || tb.Name == "tb_discount")// remove barcode from text box
+                        {
+                            string tbString = tb.Text;
+                            string newStr = "";
+                            int startIndex = tbString.IndexOf(_BarcodeStr);
+                            if (startIndex != -1)
+                                newStr = tbString.Remove(startIndex, _BarcodeStr.Length);
+                            
+                            tb.Text = newStr;
+                        }
+                    }
+                }
                 tb_barcode.Text = _BarcodeStr;
-                _barcode.Clear();
                 _BarcodeStr = "";
 
                 // get item matches barcode
                 if (barcodesList != null)
                 {
-                    ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text);
+                    ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text.Trim());
 
                     // get item matches the barcode
                     if (unit1 != null)
@@ -1316,8 +1372,8 @@ namespace POS.View
                         if (unit1.itemId != 0)
                         {
                             int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
-                            //item doesn't exist in bill
-                            if (index == -1)
+                            
+                            if (index == -1)//item doesn't exist in bill
                             {
                                 // get item units
                                 itemUnits = await itemUnitModel.GetItemUnits(itemId);
@@ -1349,8 +1405,57 @@ namespace POS.View
                 e.Handled = true;
                 cb_branch.SelectedValue = _SelectedBranch;
             }
+            _Sender = null;
         }
+        private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {              
+                if (barcodesList != null && _BarcodeStr.Length < 13) //_BarcodeStr == "" barcode not from barcode reader
+                {
+                    MessageBox.Show(_BarcodeStr);
+                    ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text);
 
+                    // get item matches the barcode
+                    if (unit1 != null)
+                    {
+                        int itemId = (int)unit1.itemId;
+                        if (unit1.itemId != 0)
+                        {
+                            int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
+                            //item doesn't exist in bill
+                            if (index == -1)
+                            {
+                                // get item units
+                                itemUnits = await itemUnitModel.GetItemUnits(itemId);
+                                //get item from list
+                                item = items.ToList().Find(i => i.itemId == itemId);
+
+                                int count = 1;
+                                decimal price = 0; //?????
+                                decimal total = count * price;
+                                addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
+                            }
+                            else // item exist prevoiusly in list
+                            {
+                                billDetails[index].Count++;
+                                billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
+
+                                _Sum += billDetails[index].Price;
+
+                            }
+                            refreshTotalValue();
+                            refrishBillDetails();
+                        }
+                    }
+                    else
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemNotFoundToolTip"), animation: ToasterAnimation.FadeIn);
+                    }
+                }
+            }
+        }
+       
         private  void addRowToBill(string itemName,int itemId,string unitName, int itemUnitId , int count, decimal price, decimal total)
         {            
             // increase sequence for each read
@@ -1529,17 +1634,25 @@ namespace POS.View
             }
         }
 
-        private void Dp_desrvedDate_KeyDown(object sender, KeyEventArgs e)
+        //private void Dp_desrvedDate_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    moveControlToBarcode(sender , e);          
+        //}
+        private void Dp_date_PreviewKeyUp(object sender, KeyEventArgs e)
         {
+           _Sender = sender;
+            moveControlToBarcode(sender,e);
+        }
+        private void moveControlToBarcode(object sender, KeyEventArgs e)
+        {
+            DatePicker dt = sender as DatePicker;
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-            if (elapsed.TotalMilliseconds < 100 )
+            if (elapsed.TotalMilliseconds < 100)
             {
                 tb_barcode.Focus();
-                HandleKeyPress(sender , e);
+                HandleKeyPress(sender, e);
             }
-
         }
-
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
            try {
@@ -1595,9 +1708,8 @@ namespace POS.View
             
 
         }
+
        
-
-
     }
 
 }

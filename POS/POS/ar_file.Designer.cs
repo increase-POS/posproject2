@@ -124,6 +124,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to إيداع إداري.
+        /// </summary>
+        internal static string trAdministrativeDeposit {
+            get {
+                return ResourceManager.GetString("trAdministrativeDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to سحب إداري.
         /// </summary>
         internal static string trAdministrativePull {
@@ -1258,6 +1267,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to نوع الجهة المودعة لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trErrorEmptyDepositFromToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyDepositFromToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المودع لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trErrorEmptyDepositorToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyDepositorToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الجهة المودعة لا يمكن أن تكون فارغة.
         /// </summary>
         internal static string trErrorEmptyDepositToToolTip {
@@ -1312,7 +1339,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to نوع الدفع لا يمكن أن تكون فارغة.
+        ///   Looks up a localized string similar to نوع الدفع لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trErrorEmptyPaymentTypeToolTip {
             get {

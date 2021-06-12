@@ -142,6 +142,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administrative Deposit.
+        /// </summary>
+        internal static string trAdministrativeDeposit {
+            get {
+                return ResourceManager.GetString("trAdministrativeDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to administrative pull.
         /// </summary>
         internal static string trAdministrativePull {
@@ -1281,6 +1290,24 @@ namespace POS {
         internal static string trErrorEmptyCountToolTip {
             get {
                 return ResourceManager.GetString("trErrorEmptyCountToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Depositor type can not be empty.
+        /// </summary>
+        internal static string trErrorEmptyDepositFromToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyDepositFromToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Depositor can not be empty.
+        /// </summary>
+        internal static string trErrorEmptyDepositorToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyDepositorToolTip", resourceCulture);
             }
         }
         
