@@ -624,7 +624,7 @@
                                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue"  MaxLength="100" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                      LostFocus="input_LostFocus" TextChanged="Tb_code_TextChanged"
+                      LostFocus="input_LostFocus" 
                   Height="40"   Margin="10,5,10,5"  />
                                 <Path Fill="#E81123" Stretch="Fill" x:Name="p_errorCode"  Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="0"  Visibility="Collapsed"   
@@ -1599,14 +1599,14 @@
                             
                        
                                 <TextBox x:Name="tb_barcode"  Grid.Row="4" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0" 
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..." 
+                                        BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..." 
                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue"  PreviewKeyDown="space_PreviewKeyDown"
-                      MaxLength="20"
-                  Height="40"  Margin="10,5,10,5" LostFocus="cb_barcode_LostFocus"
-                  Grid.ColumnSpan="2" TextChanged="tb_barcode_TextChanged" 
-                                         PreviewTextInput="english_PreviewTextInput"/>
+                                        Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                        BorderBrush="AliceBlue"  PreviewKeyDown="space_PreviewKeyDown"
+                                        MaxLength="20" Height="40"  Margin="10,5,10,5" LostFocus="cb_barcode_LostFocus"
+                                        Grid.ColumnSpan="2" 
+                                         PreviewTextInput="english_PreviewTextInput"
+                                          KeyDown="Tb_barcode_KeyDown"/>
                                 <Path x:Name="p_errorBarcode" Grid.Row="4" Fill="#E81123" Stretch="Fill" Margin="0,15,15,15"
                               HorizontalAlignment="Right" Grid.Column="1"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"

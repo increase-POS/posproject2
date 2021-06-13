@@ -114,6 +114,7 @@ namespace POS.View
         }
         private async void fillCountries()
         {
+
             if (countrynum is null)
                 await RefreshCountry();
 
@@ -128,6 +129,10 @@ namespace POS.View
             cb_areaFax.ItemsSource = countrynum.ToList();
             cb_areaFax.SelectedValuePath = "countryId";
             cb_areaFax.DisplayMemberPath = "code";
+
+            cb_areaMobile.SelectedIndex = 8;
+            cb_areaPhone.SelectedIndex = 8;
+            cb_areaFax.SelectedIndex = 8;
 
         }
 
@@ -279,9 +284,9 @@ namespace POS.View
             tb_notes.Clear();
             tb_mobile.Clear();
             tb_phone.Clear();
-            cb_areaMobile.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
+            cb_areaMobile.SelectedIndex = 8;
+            cb_areaPhone.SelectedIndex = 8;
+            cb_areaFax.SelectedIndex = 8;
             //clear img
             Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
             StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
@@ -311,12 +316,8 @@ namespace POS.View
            
             var agents = await agentModel.GetAgentsAsync("v");
             dg_vendor.ItemsSource = agents;
-        
-            cb_areaMobile.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
-            cb_areaFax.SelectedIndex = 0;
-            cb_areaFaxLocal.SelectedIndex = 0;
+
+       
 
             this.Dispatcher.Invoke(() =>
             {
@@ -326,6 +327,7 @@ namespace POS.View
             fillCountries();
 
             fillCity();
+  
             Keyboard.Focus(tb_name);
 
             SectionData.genRandomCode("v");
@@ -337,6 +339,7 @@ namespace POS.View
             BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
             brush.ImageSource = temp;
             img_vendor.Background = brush;
+        
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
@@ -608,11 +611,7 @@ namespace POS.View
         {
             dg_vendor.ItemsSource = agentsQuery;
             txt_count.Text = agentsQuery.Count().ToString();
-            cb_areaMobile.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
-            cb_areaFax.SelectedIndex = 0;
-            cb_areaFaxLocal.SelectedIndex = 0;
+          
         }
 
         private void tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)

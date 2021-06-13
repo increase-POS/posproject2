@@ -1867,3 +1867,7 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_bonds.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_bonds.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sectionData\uc_card.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sectionData\uc_card.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_acceptCancelPopup.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_acceptUser.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_acceptCancelPopup.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_acceptUser.baml

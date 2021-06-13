@@ -679,7 +679,7 @@
     <value>Vendor Invoice Details</value>
   </data>
   <data name="trCoponHint" xml:space="preserve">
-    <value>Copon...</value>
+    <value>Coupon...</value>
   </data>
   <data name="trDeliveryHint" xml:space="preserve">
     <value>Delivery...</value>
@@ -907,7 +907,7 @@
     <value>Start time can not be empty</value>
   </data>
   <data name="trErrorEndTimeSmallerToolTip" xml:space="preserve">
-    <value>End time can not be before start time</value>
+    <value>The end time can not be before the start time</value>
   </data>
   <data name="trMaxInvoice" xml:space="preserve">
     <value>Maximum invoice value</value>
@@ -1072,7 +1072,7 @@
     <value>There is not enough balance</value>
   </data>
   <data name="trDraftBounceBill" xml:space="preserve">
-    <value>Draft Bounce Bill</value>
+    <value>Draft Bounce Invoice</value>
   </data>
   <data name="trErrorAmountIncreaseToolTip" xml:space="preserve">
     <value>Quantity can not be exceeded</value>
@@ -1108,7 +1108,7 @@
     <value>Document number can not be empty</value>
   </data>
   <data name="trErrorEmptyDepositToToolTip" xml:space="preserve">
-    <value>depositor can not be empty</value>
+    <value>Depositor can not be empty</value>
   </data>
   <data name="trErrorEmptyPaymentTypeToolTip" xml:space="preserve">
     <value>Payment Type can not be empty</value>
@@ -1172,5 +1172,14 @@
   </data>
   <data name="trPurchaseBill" xml:space="preserve">
     <value>Purchase Bill</value>
+  </data>
+  <data name="trAdministrativeDeposit" xml:space="preserve">
+    <value>Administrative deposit</value>
+  </data>
+  <data name="trChooseInvoiceToolTip" xml:space="preserve">
+    <value>Choose an invoice first</value>
+  </data>
+  <data name="trReceived" xml:space="preserve">
+    <value>Received</value>
   </data>
 </root>

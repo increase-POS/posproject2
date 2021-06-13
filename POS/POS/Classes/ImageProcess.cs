@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace POS.Classes
 {
@@ -14,7 +16,6 @@ namespace POS.Classes
     {
         private int allowedFileSizeInByte;
         private string sourcePath;
-        private string destinationPath = "Thumb";
 
         public ImageProcess(int allowedSize, string sourcePath)
         {
@@ -29,19 +30,18 @@ namespace POS.Classes
                 fs.Write(data, 0, data.Length);
             }
         }
-        
-
+      
         public Bitmap ScaleImage(Bitmap image)
         {
             int newWidth = (int)(allowedFileSizeInByte);
             int newHeight = (int)(allowedFileSizeInByte);
 
-            Bitmap result = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
+            Bitmap result = new Bitmap(newWidth, newHeight, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             result.SetResolution(image.HorizontalResolution, image.VerticalResolution);
 
             using (Graphics g = Graphics.FromImage(result))
             {
-                using (SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255)))
+                using (SolidBrush brush = new SolidBrush(System.Drawing.Color.FromArgb(255, 255, 255)))
                 {
                     g.FillRectangle(brush, 0, 0, newWidth, newHeight);
                 }
@@ -52,14 +52,9 @@ namespace POS.Classes
                 g.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
                 g.DrawImage(image, 0, 0, result.Width, result.Height);
-
-               
-
-            }
-            
+            }            
             return result;
         }
-
         
         public void ScaleImage(string filePath)
         {
@@ -69,14 +64,9 @@ namespace POS.Classes
                 {
                     Bitmap bmp = (Bitmap)Image.FromStream(fs);
                     SaveTemporary(bmp, ms, 100);
-                    // while (ms.Length > allowedFileSizeInByte)
-                    // {
-                    // double scale = Math.Sqrt
-                    // ((double)allowedFileSizeInByte / (double)ms.Length);
                     ms.SetLength(0);
                     bmp = ScaleImage(bmp);
                     SaveTemporary(bmp, ms, 100);
-                    // }
 
                     if (bmp != null)
                         bmp.Dispose();
@@ -109,6 +99,17 @@ namespace POS.Classes
                 default: return null;
             }
         }
-        
+        public static ImageSource ByteToImage(byte[] imageData)
+        {
+            BitmapImage biImg = new BitmapImage();
+            MemoryStream ms = new MemoryStream(imageData);
+            biImg.BeginInit();
+            biImg.StreamSource = ms;
+            biImg.EndInit();
+
+            ImageSource imgSrc = biImg as ImageSource;
+
+            return imgSrc;
+        }
     }
 }

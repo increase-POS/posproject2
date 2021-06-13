@@ -26,6 +26,7 @@ namespace POS.Classes
         public Boolean canDelete { get; set; }
         public string note { get; set; }
         public string branchName { get; set; }
+        public Nullable<decimal> balanceAll { get; set; }
 
         public async Task<List<Pos>> GetPosAsync()
         {

@@ -482,5 +482,14 @@ namespace POS.View.accounts
             else
                 btn_add.Content = MainWindow.resourcemanager.GetString("trPull");
         }
+
+        private void Btn_confirmUser_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_acceptUser w = new wd_acceptUser();
+            w.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
+            System.Windows.MessageBox.Show(w.isOk.ToString());
+        }
     }
 }

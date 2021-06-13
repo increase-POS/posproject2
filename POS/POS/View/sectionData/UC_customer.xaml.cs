@@ -138,6 +138,9 @@ namespace POS.View
             cb_areaFax.SelectedValuePath = "countryId";
             cb_areaFax.DisplayMemberPath = "code";
 
+            cb_areaMobile.SelectedIndex = 8;
+            cb_areaPhone.SelectedIndex = 8;
+            cb_areaFax.SelectedIndex = 8;
         }
        
         async Task<IEnumerable<City>> RefreshCity()
@@ -216,9 +219,9 @@ namespace POS.View
             tb_mobile.Clear();
             tb_upperLimit.Clear();
             tb_phone.Clear();
-            cb_areaMobile.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaFax.SelectedIndex = 0;
+            cb_areaMobile.SelectedIndex = 8;
+            cb_areaPhone.SelectedIndex = 8;
+            cb_areaFax.SelectedIndex = 8;
             cb_areaPhoneLocal.SelectedIndex = 0;
             cb_areaFaxLocal.SelectedIndex = 0;
             //clear img
@@ -450,11 +453,7 @@ namespace POS.View
                 Tb_search_TextChanged(null, null);
             });
 
-            cb_areaMobile.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
-            cb_areaFax.SelectedIndex = 0;
-            cb_areaFaxLocal.SelectedIndex = 0;
+    
             fillCountries();
         
             fillCity();
@@ -733,11 +732,7 @@ namespace POS.View
         {
             dg_customer.ItemsSource = agentsQuery;
             txt_count.Text = agentsQuery.Count().ToString();
-            cb_areaMobile.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
-            cb_areaFax.SelectedIndex = 0;
-            cb_areaFaxLocal.SelectedIndex = 0;
+       
         }
         
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)

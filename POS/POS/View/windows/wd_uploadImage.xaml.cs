@@ -35,7 +35,7 @@ namespace POS.View.windows
         private int docId=0;
 
         DocImage docImgModel = new DocImage();
-       List<DocImage> imageList;
+        List<DocImage> imageList;
        
         ImageBrush brush = new ImageBrush();
 
@@ -48,6 +48,15 @@ namespace POS.View.windows
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             await refreshImageList();
+        }
+        private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+        }
+
+        private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
         }
         private void Img_upload_Click(object sender, RoutedEventArgs e)
         {
@@ -64,7 +73,6 @@ namespace POS.View.windows
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
             docId = 0;
-            //docImgModel.tableName = "invoices";
             docImgModel.tableName = tableName;
             docImgModel.tableId = tableId;
             docImgModel.docnum = docNum;
@@ -86,6 +94,8 @@ namespace POS.View.windows
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {
+          
+
             if (docId != 0)
             {
                 Boolean res = await docImgModel.delete(docId);
@@ -107,8 +117,6 @@ namespace POS.View.windows
                 await refreshImageList();
             }
         }
-       
-
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -238,21 +246,14 @@ namespace POS.View.windows
             prop.set_Value(ref propValue);
         }
 
-        private void Btn_scanner_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Lst_images_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        
+        private void Btn_update_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

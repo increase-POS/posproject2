@@ -124,6 +124,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to إيداعات إدارية.
+        /// </summary>
+        internal static string trAdministrativeDeposit {
+            get {
+                return ResourceManager.GetString("trAdministrativeDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to سحب إداري.
         /// </summary>
         internal static string trAdministrativePull {
@@ -399,6 +408,15 @@ namespace POS {
         internal static string trCheque {
             get {
                 return ResourceManager.GetString("trCheque", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اختر فاتورة أولاً.
+        /// </summary>
+        internal static string trChooseInvoiceToolTip {
+            get {
+                return ResourceManager.GetString("trChooseInvoiceToolTip", resourceCulture);
             }
         }
         
@@ -2370,6 +2388,15 @@ namespace POS {
         internal static string trReceiptOperation {
             get {
                 return ResourceManager.GetString("trReceiptOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المستلمات.
+        /// </summary>
+        internal static string trReceived {
+            get {
+                return ResourceManager.GetString("trReceived", resourceCulture);
             }
         }
         

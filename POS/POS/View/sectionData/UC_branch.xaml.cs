@@ -118,8 +118,9 @@ namespace POS.View
             cb_area.SelectedValuePath = "countryId";
             cb_area.DisplayMemberPath = "code";
 
-          
 
+            cb_areaPhone.SelectedIndex = 8;
+            cb_area.SelectedIndex = 8;
         }
 
         async Task<IEnumerable<City>> RefreshCity()
@@ -221,9 +222,7 @@ namespace POS.View
             cb_branch.SelectedValuePath = "branchId";
             cb_branch.SelectedIndex = -1;
 
-            cb_area.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
+            
             //if (cb_branch.Items.Count > 0)
             //    cb_branch.SelectedIndex = 0;
             fillCountries();
@@ -316,10 +315,10 @@ namespace POS.View
             tb_address.Clear();
             tb_notes.Clear();
             tb_email.Clear();
-            cb_area.SelectedIndex = 0;
+           
             tb_mobile.Clear();
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
+            cb_areaPhone.SelectedIndex = 8;
+            cb_area.SelectedIndex = 8;
             tb_phone.Clear();
 
             p_errorBranch.Visibility = Visibility.Collapsed;
@@ -598,9 +597,7 @@ namespace POS.View
         {
             dg_branch.ItemsSource = branchesQuery;
             txt_count.Text = branchesQuery.Count().ToString();
-            cb_area.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
+           
             cb_branch.SelectedIndex = -1;
         }
 

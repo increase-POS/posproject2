@@ -95,7 +95,7 @@ namespace POS.View
                 txt_delete_Icon.Visibility = Visibility.Visible;
 
             }
-
+            
         }
 
         //area code methods
@@ -118,6 +118,9 @@ namespace POS.View
             cb_area.DisplayMemberPath = "code";
 
 
+            cb_area.SelectedIndex = 8;
+            cb_areaPhone.SelectedIndex = 8;
+
 
         }
 
@@ -130,8 +133,7 @@ namespace POS.View
         {
             if (citynum is null)
                 await RefreshCity();
-
-
+           
         }
         //end areacod
         private void translate()
@@ -190,11 +192,10 @@ namespace POS.View
 
             translate();
 
-            cb_area.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
+          
             fillCountries();
             fillCity();
+
             Keyboard.Focus(tb_name);
 
             this.Dispatcher.Invoke(() =>
@@ -202,10 +203,7 @@ namespace POS.View
                 Tb_search_TextChanged(null, null);
             });
 
-            //banks = await bankModel.GetBanksAsync();
-            //banksQuery = banks.Where(s => s.isActive == Convert.ToInt32(tgl_bankIsActive.IsChecked));
-            //dg_bank.ItemsSource = banks;
-            MainWindow mw = new MainWindow();
+ 
 
 
         }
@@ -245,10 +243,9 @@ namespace POS.View
             tb_accNumber.Clear();
             tb_address.Clear();
             tb_notes.Clear();
-            cb_area.SelectedIndex = 0;
+
             tb_mobile.Clear();
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
+        
             tb_phone.Clear();
 
             p_errorName.Visibility = Visibility.Collapsed;
@@ -260,6 +257,10 @@ namespace POS.View
             tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_phone.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_accNumber.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+            cb_area.SelectedIndex = 8;
+            cb_areaPhone.SelectedIndex = 8;
+            
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
@@ -569,9 +570,7 @@ namespace POS.View
         {
             dg_bank.ItemsSource = banksQuery;
             txt_count.Text = banksQuery.Count().ToString();
-            cb_area.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
+    
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -604,6 +603,8 @@ namespace POS.View
                     cb_areaPhoneLocal.ItemsSource = citynumofcountry;
                     cb_areaPhoneLocal.SelectedValuePath = "cityId";
                     cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
+                    cb_area.Text = "+963";
+                    cb_areaPhone.Text = "+963";
                     if (citynumofcountry.Count() > 0)
                     {
 

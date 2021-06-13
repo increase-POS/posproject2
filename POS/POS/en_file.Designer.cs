@@ -142,6 +142,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administrative deposit.
+        /// </summary>
+        internal static string trAdministrativeDeposit {
+            get {
+                return ResourceManager.GetString("trAdministrativeDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to administrative pull.
         /// </summary>
         internal static string trAdministrativePull {
@@ -421,6 +430,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose an invoice first.
+        /// </summary>
+        internal static string trChooseInvoiceToolTip {
+            get {
+                return ResourceManager.GetString("trChooseInvoiceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear.
         /// </summary>
         internal static string trClear {
@@ -502,7 +520,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copon....
+        ///   Looks up a localized string similar to Coupon....
         /// </summary>
         internal static string trCoponHint {
             get {
@@ -853,7 +871,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Draft Bounce Bill.
+        ///   Looks up a localized string similar to Draft Bounce Invoice.
         /// </summary>
         internal static string trDraftBounceBill {
             get {
@@ -1294,7 +1312,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to depositor can not be empty.
+        ///   Looks up a localized string similar to Depositor can not be empty.
         /// </summary>
         internal static string trErrorEmptyDepositToToolTip {
             get {
@@ -1429,7 +1447,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to End time can not be before start time.
+        ///   Looks up a localized string similar to The end time can not be before the start time.
         /// </summary>
         internal static string trErrorEndTimeSmallerToolTip {
             get {
@@ -2424,6 +2442,15 @@ namespace POS {
         internal static string trReceiptOperation {
             get {
                 return ResourceManager.GetString("trReceiptOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Received.
+        /// </summary>
+        internal static string trReceived {
+            get {
+                return ResourceManager.GetString("trReceived", resourceCulture);
             }
         }
         

@@ -8,7 +8,7 @@
            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
-        Title="wd_itemsList" Height="500" Width="600" Background="#333333" 
+        Title="wd_itemsList" Height="500" Width="500" Background="#333333" 
         Loaded="Window_Loaded">
     <Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  >
         <Grid.RowDefinitions>
@@ -52,32 +52,88 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="9*"/>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1.5*"/>
                 </Grid.RowDefinitions>
-                <Border Grid.Row="0" x:Name="brd_lstImages" Margin="10" Grid.ColumnSpan="1"   BorderBrush="#999999" BorderThickness="1">
+                <Border Grid.Row="0" x:Name="brd_lstImages" Margin="10" Grid.ColumnSpan="1"    BorderBrush="#999999" BorderThickness="1">
                     <ListView x:Name="lst_images" 
-                    MouseDoubleClick="Lst_images_MouseDoubleClick" />
+                    SelectionChanged="Lst_images_SelectionChanged" />
                 </Border>
                 <Button  Width="{Binding Path=ActualHeight, ElementName=brd_lstImages}"
                          Height="{Binding Path=ActualHeight, ElementName=brd_lstImages}"
                     Grid.Row="0" Grid.Column="1"   Grid.ColumnSpan="2" FlowDirection="LeftToRight"
                                  HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="img_upload"  
                                  BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="5"  
-                                   Click="Img_upload_Click" >
+                                  >
                     <Button.Background>
                         <ImageBrush Stretch="Uniform"  x:Name="IMG_customer" 
                                             ImageSource="/pic/no-image-icon-512x512.png"   />
                     </Button.Background>
                 </Button>
-                <Line Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="4" Stretch="Fill" Stroke="#DFDFDF"  X2="1"  Margin="1,1,1,1"
+                <!--#region name-->
+                <TextBox  Grid.Row="1" Grid.Column="0"   Grid.ColumnSpan="3" x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,0,5,0"   
+                                     BorderThickness="0,0,0,2"  materialDesign:HintAssist.Hint="Name..."
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                     BorderBrush="AliceBlue" TabIndex="0"
+                                     TextChanged="Tb_name_TextChanged" LostFocus="Tb_name_LostFocus"
+                                      MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                     Height="40"  Margin="10,5,10,5"   >
+                    <TextBox.ToolTip>
+                        <ToolTip x:Name="tt_name" Content="Name"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Path Grid.Row="1" Grid.Column="0"   Grid.ColumnSpan="3"  Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
+                                  HorizontalAlignment="Right"   Visibility="Collapsed" 
+                                  VerticalAlignment="Center" Width="15"  Height="15"
+                                  Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                    <Path.ToolTip>
+                        <ToolTip  x:Name="tt_errorName"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                    </Path.ToolTip>
+                </Path>
+                <!--#endregion-->
+                <!--#region notes-->
+                <TextBox Grid.Row="2" Grid.Column="0"   Grid.ColumnSpan="3"  x:Name="tb_notes"  Text="{Binding notes, Mode=OneWay}" 
+                                 Padding="10,0,5,5"   TabIndex="9" Margin="10,5,10,5"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
+                                 Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
+                                 BorderBrush="AliceBlue"  TextWrapping="Wrap" AcceptsReturn="True"
+                                 HorizontalAlignment="Stretch" VerticalAlignment="Center"  
+                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                 MinHeight="70"    >
+                    <TextBox.ToolTip>
+                        <ToolTip x:Name="tt_notes" Content="Notes"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Path Grid.Row="2" Grid.Column="0"   Grid.ColumnSpan="3" Fill="#E81123" Stretch="Fill" Margin="15,12,15,5"
+                              HorizontalAlignment="Right"     Visibility="Collapsed"  
+                         VerticalAlignment="Top" Width="15"   Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                    <Path.ToolTip>
+                        <ToolTip x:Name="tt_error_note" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                    </Path.ToolTip>
+                </Path>
+                <!--#endregion-->
+                <Line Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="4" Stretch="Fill" Stroke="#DFDFDF"  X2="1"  Margin="2.5"
                           VerticalAlignment="Bottom"/>
-                <Grid Grid.Row="3" Grid.ColumnSpan="3" >
+                <Grid Grid.Row="5" Grid.ColumnSpan="3" >
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
@@ -105,7 +161,7 @@
                         </Path>
                     </Button>
                     <Button Grid.Column="1" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
-                    Background="{x:Null}" x:Name="btn_scanner"   Click="Btn_scan_Click" >
+                        Background="{x:Null}" x:Name="btn_scanner" Click="Btn_scan_Click" >
                         <Path Fill="#4E4E4E" Stretch="Fill"   
                               Width="35" Height="35"
                            Data="M321.1,35.6c3.5,2,7.3,3.5,10.5,5.9c2.3,1.7,4,4.4,5.9,6.7c5.6,6.7,5.4,9.9-1.2,15.4c-76,63.7-151.9,127.5-227.9,191.2
@@ -219,7 +275,7 @@
                         </Path>
                     </Button>
                     <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
-                    Background="{x:Null}" x:Name="btn_delete"  Click="Btn_delete_Click"  >
+                        Background="{x:Null}" x:Name="btn_delete"  Click="Btn_delete_Click"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
                              Width="35" Height="35"
                            Data="M28.2,7h-5.8c-0.2-3.5-3.1-6.3-6.5-6.3c-3.4,0-6.2,2.8-6.5,6.3H2.5c-1.1,0-2,0.9-2,2s0.9,2,2,2h1.8v18
@@ -235,6 +291,31 @@
                         </Path>
                     </Button>
                     <Button Grid.Column="6" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
+                    Background="{x:Null}" x:Name="btn_update"   Click="Btn_update_Click" >
+                        <Path Fill="#4E4E4E" Stretch="Fill"  
+                             Width="35" Height="35"
+                           Data="M111,233.8c0,16,0,31.3,0,47.1c77.8,0,155.3,0,234.1,0c-1.6,2-2.4,3.1-3.3,4.1c-12.7,12.7-25.5,25.3-38.1,38.2
+	c-2.8,2.9-5.7,3.9-9.6,3.9c-58.7-0.1-117.3-0.1-176-0.1c-2.1,0-4.3,0-6.8,0c0,15.9,0,31.2,0,47.1c46.6,0,93.2,0,140.8,0
+	c-1.6,1.9-2.5,3-3.4,4c-13.5,13.6-27,27.2-40.7,40.6c-2.8,2.8-4.1,5.6-4,9.6c0.2,12.6,0.1,25.3,0.1,38.4c-2.2,0.1-4,0.3-5.8,0.3
+	c-28.5,0-57,0.1-85.5,0c-27.1-0.1-46.9-18.2-47.7-45.3c-0.8-30.8-0.3-61.7-0.3-92.5c0-92.2,0-184.3,0-276.5c0-9.1,0.5-18,5.1-26.2
+	c8.9-16,22.3-25.2,40.7-25.3c61.2-0.2,122.3-0.1,183.5,0c2.2,0,4.9,1.2,6.4,2.7c44.8,44.6,89.4,89.2,134,134
+	c1.7,1.7,2.9,4.6,2.9,6.9c0.3,13.7,0.3,27.3,0,41c0,2.2-1.4,4.8-2.9,6.4c-12.5,12.7-25.2,25.2-37.7,38c-2.7,2.7-5.4,3.7-9.2,3.7
+	c-89.8-0.1-179.7-0.1-269.5-0.1C115.8,233.8,113.7,233.8,111,233.8z M399.6,163.9C358.3,122.4,316,79.9,274.2,38
+	c0,41.2,0,83.4,0,125.9C316.9,163.9,359.3,163.9,399.6,163.9z M393.8,299.1c-3.5,3.7-6.8,7.4-10.3,10.9
+	c-43.2,43.3-86.4,86.5-129.6,129.8c-1.2,1.2-2.5,3-2.5,4.5c-0.2,15.1-0.1,30.3-0.1,45.9c2.1,0.1,3.9,0.3,5.7,0.3
+	c12.3,0,24.7-0.1,37,0.1c3.8,0.1,6.5-1.1,9.2-3.8c28.5-28.7,57.2-57.3,85.8-85.9c17.8-17.8,35.6-35.5,53-52.9
+	C425.7,331.5,410,315.6,393.8,299.1z M480.2,309.8c5-5.3,5.3-12.9,0.2-18.1c-10.1-10.4-20.4-20.6-30.7-30.7
+	c-4.2-4.1-11.5-4.9-15.6-1.1c-8.6,8-16.5,16.7-24.6,25c15.6,15.8,31.3,31.6,48.1,48.7C465.3,325.5,472.8,317.7,480.2,309.8z"  >
+                            <Path.ToolTip>
+                                <ToolTip x:Name="tt_update" Content="Update"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="-10"/>
+                            </Path.ToolTip>
+                        </Path>
+                    </Button>
+                    <Button Grid.Column="7" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_save"   Click="Btn_save_Click" >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
                              Width="35" Height="35"

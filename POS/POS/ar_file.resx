@@ -1152,4 +1152,13 @@
   <data name="trPurchaseBill" xml:space="preserve">
     <value>فاتورة شراء</value>
   </data>
+  <data name="trAdministrativeDeposit" xml:space="preserve">
+    <value>إيداعات إدارية</value>
+  </data>
+  <data name="trChooseInvoiceToolTip" xml:space="preserve">
+    <value>اختر فاتورة أولاً</value>
+  </data>
+  <data name="trReceived" xml:space="preserve">
+    <value>المستلمات</value>
+  </data>
 </root>

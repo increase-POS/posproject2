@@ -25,13 +25,13 @@ namespace POS.View.storage
     /// </summary>
     public partial class uc_itemsExport : UserControl
     {
-        private static UC_item _instance;
-        public static UC_item Instance
+        private static uc_itemsExport _instance;
+        public static uc_itemsExport Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new UC_item();
+                    _instance = new uc_itemsExport();
                 return _instance;
             }
         }

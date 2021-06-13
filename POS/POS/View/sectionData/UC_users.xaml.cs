@@ -128,6 +128,9 @@ namespace POS.View
             cb_areaMobile.SelectedValuePath = "countryId";
             cb_areaMobile.DisplayMemberPath = "code";
 
+
+            cb_areaMobile.SelectedIndex = 8;
+            cb_areaPhone.SelectedIndex = 8;
         }
 
         async Task<IEnumerable<City>> RefreshCity()
@@ -319,9 +322,8 @@ namespace POS.View
             tb_workHours.Clear();
             tb_details.Clear();
             tb_phone.Clear();
-            cb_areaMobile.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
+            cb_areaMobile.SelectedIndex = 8;
+            cb_areaPhone.SelectedIndex = 8;
             tb_mobile.Clear();
             tb_email.Clear();
             //clear img
@@ -362,9 +364,7 @@ namespace POS.View
             fillJobCombo();
            
 
-            cb_areaMobile.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
+           
             fillCountries();
 
             fillCity();
@@ -762,9 +762,7 @@ namespace POS.View
         {
             dg_users.ItemsSource = usersQuery;
             txt_count.Text = usersQuery.Count().ToString();
-            cb_areaMobile.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
+          
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)

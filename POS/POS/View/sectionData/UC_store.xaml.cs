@@ -125,7 +125,8 @@ namespace POS.View
             cb_area.DisplayMemberPath = "code";
 
 
-
+            cb_areaPhone.SelectedIndex = 8;
+            cb_area.SelectedIndex = 8;
         }
 
         async Task<IEnumerable<City>> RefreshCity()
@@ -279,11 +280,11 @@ namespace POS.View
         tb_address.Clear();
         tb_notes.Clear();
         tb_email.Clear();
-        cb_area.SelectedIndex = 0;
+       
         tb_mobile.Clear();
-        cb_areaPhone.SelectedIndex = 0;
-        cb_areaPhoneLocal.SelectedIndex = 0;
-        tb_phone.Clear();
+        cb_areaPhone.SelectedIndex = 8;
+            cb_area.SelectedIndex = 8;
+            tb_phone.Clear();
 
         p_errorBranch.Visibility = Visibility.Collapsed;
         p_errorCode.Visibility = Visibility.Collapsed;
@@ -550,10 +551,8 @@ namespace POS.View
     {
         dg_store.ItemsSource = storesQuery;
         txt_count.Text = storesQuery.Count().ToString();
-        cb_area.SelectedIndex = 0;
-        cb_areaPhone.SelectedIndex = 0;
-        cb_areaPhoneLocal.SelectedIndex = 0;
-        cb_branch.SelectedIndex = -1;
+       
+            cb_branch.SelectedIndex = -1;
     }
 
     private async void tgl_storeIsActive_Checked(object sender, RoutedEventArgs e)

@@ -743,7 +743,7 @@ namespace POS.View
             }
             if (invoice.invType != "p")
             {
-            invoice.invType = invType;
+                invoice.invType = invType;
 
                 if (!tb_discount.Text.Equals(""))
                     invoice.discountValue = decimal.Parse(tb_discount.Text);
@@ -874,8 +874,8 @@ namespace POS.View
 
             if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
             {
-                if (_InvoiceType == "pbd")
-                    await addInvoice("pb"); // bp means purchase bounce
+                if (_InvoiceType == "pbd") //pbd means purchase bounse draft
+                    await addInvoice("pb"); // pb means purchase bounce
                 else//p  purchase invoice
                     await addInvoice("p");
 
@@ -887,7 +887,8 @@ namespace POS.View
             //check mandatory inputs
             validateInvoiceValues();
 
-           if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
+          // if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
+           if ( billDetails.Count > 0)
            {
                await addInvoice(_InvoiceType); 
                             
@@ -1141,6 +1142,8 @@ namespace POS.View
                 w.ShowDialog();
                 // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
             }
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trChooseInvoiceToolTip"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)

@@ -26,6 +26,7 @@ using Microsoft.Win32;
 using System.Windows.Resources;
 using System.Threading;
 using System.Windows.Media.Animation;
+using Zen.Barcode;
 
 namespace POS.View
 {
@@ -86,7 +87,6 @@ namespace POS.View
         static private int _InternalCounter = 0;
 
         DateTime _lastKeystroke = new DateTime(0);
-        List<char> _barcode = new List<char>(10);
         static private string _BarcodeStr = "";
         private static UC_item _instance;
 
@@ -176,12 +176,11 @@ namespace POS.View
 
         }
 
-        private async void HandleKeyPress(object sender, KeyEventArgs e)
+        private void HandleKeyPress(object sender, KeyEventArgs e)
         {
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-            if (elapsed.TotalMilliseconds > 1000)
+            if (elapsed.TotalMilliseconds > 100)
             {
-                _barcode.Clear();
                 _BarcodeStr = "";
             }
 
@@ -196,17 +195,16 @@ namespace POS.View
             else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
             {
                 digit = e.Key.ToString().Substring(6); // = "1" when NumPad1 is pressed
+               
             }
-
-            _barcode.Add((char)e.Key);
             _BarcodeStr += digit;
             _lastKeystroke = DateTime.Now;
 
             // process barcode
-            if (e.Key.ToString() == "Return" && _barcode.Count > 0)
+   
+            if (e.Key.ToString() == "Return" && _BarcodeStr.Length > 0)
             {
-                tb_barcode.Text = _BarcodeStr;
-                _barcode.Clear();
+                tb_barcode.Text =  _BarcodeStr.Substring(1);//remove check sum from barcode string
                 _BarcodeStr = "";
                 // get item matches barcode
                 if (barcodesList != null)
@@ -229,7 +227,7 @@ namespace POS.View
                                 ChangeItemIdEvent(itemId);
                         }
                     }
-                }
+                }               
                 drawBarcode(tb_barcode.Text);
             }
         }
@@ -258,21 +256,19 @@ namespace POS.View
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucItem.FlowDirection = FlowDirection.RightToLeft;
             }
-            await RefrishItems();
-            await RefrishCategories();
 
             RefrishCategoriesCard();
             Txb_searchitems_TextChanged(null, null);
 
 
             translate();
-            fillCategories();
+            //fillCategories();
             fillUnits();
             fillProperties();
             fillBarcodeList();
 
             // fill parent items
-            cb_parentItem.ItemsSource = items.ToList();
+            //cb_parentItem.ItemsSource = items.ToList();
             cb_parentItem.SelectedValuePath = "itemId";
             cb_parentItem.DisplayMemberPath = "name";
 
@@ -328,19 +324,45 @@ namespace POS.View
         }
         private void drawBarcode(string barcodeStr)
         {
-            // create encoding object
-            Zen.Barcode.Code128BarcodeDraw barcode = Zen.Barcode.BarcodeDrawFactory.Code128WithChecksum;
+            // configur check sum metrics
+            BarcodeSymbology s = BarcodeSymbology.CodeEan13;
+          
+           BarcodeDraw drawObject = BarcodeDrawFactory.GetSymbology(s);
+            
+            BarcodeMetrics barcodeMetrics = drawObject.GetDefaultMetrics(60);
+            barcodeMetrics.Scale = 2;
 
             if (barcodeStr != "")
             {
-                System.Drawing.Bitmap serial_bitmap = (System.Drawing.Bitmap)barcode.Draw(barcodeStr, 60);
-                System.Drawing.ImageConverter ic = new System.Drawing.ImageConverter();
-                //generate bitmap
-                img_barcode.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(serial_bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                var barcodeImage = drawObject.Draw(barcodeStr, barcodeMetrics);
+                using (var graphics = System.Drawing.Graphics.FromImage(barcodeImage))
+                using (var font = new System.Drawing.Font("Consolas", 12)) // Any font you want
+                using (var brush = new System.Drawing.SolidBrush(System.Drawing.Color.Blue))
+                using (var format = new System.Drawing.StringFormat() { LineAlignment = System.Drawing.StringAlignment.Far }) // To align text above the specified point
+                {
+                    // Print a string at the left bottom corner of image
+                    graphics.DrawString(tb_barcode.Text, font, brush, 0, barcodeImage.Height, format);
+                }
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    barcodeImage.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    byte[] imageBytes = ms.ToArray();
+
+                    img_barcode.Source = ImageProcess.ByteToImage(imageBytes);
+                }
             }
             else
                 img_barcode.Source = null;
-        }
+            // create encoding object
+            //CodeEan13BarcodeDraw barcode = BarcodeDrawFactory.CodeEan13WithChecksum;
+            
+            
+            //    System.Drawing.Bitmap serial_bitmap = (System.Drawing.Bitmap)barcode.Draw(barcodeStr,metrics);
+            //    System.Drawing.ImageConverter ic = new System.Drawing.ImageConverter();
+            //    //generate bitmap
+            //    img_barcode.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(serial_bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            }
+           
         static public string generateRandomBarcode()
         {
             var now = DateTime.Now;
@@ -350,7 +372,7 @@ namespace POS.View
 
             var counter = _InternalCounter++ % 100;
 
-            return days.ToString("00000") + seconds.ToString("00000") + counter.ToString("000");
+            return days.ToString("00000") + seconds.ToString("00000") + counter.ToString("00");
         }
         private void Btn_itemData_Click(object sender, RoutedEventArgs e)
         {
@@ -1021,74 +1043,7 @@ namespace POS.View
             }
 
         }
-        private void Tb_code_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var bc = new BrushConverter();
-
-            if (tb_code.Text.Equals(""))
-            {
-                p_errorCode.Visibility = Visibility.Visible;
-                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_code.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorCode.Visibility = Visibility.Collapsed;
-                tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-        }
-        //private void Cb_categorie_LostFocus(object sender, RoutedEventArgs e)
-        //{
-        //    var bc = new BrushConverter();
-
-        //    if (cb_categorie.Text.Equals(""))
-        //    {
-        //        p_errorCategorie.Visibility = Visibility.Visible;
-        //        tt_categorie.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-        //        cb_categorie.Background = (Brush)bc.ConvertFrom("#15FF0000");
-        //    }
-        //    else
-        //    {
-        //        p_errorCategorie.Visibility = Visibility.Collapsed;
-        //        cb_categorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-        //    }
-        //}
-
-
-        //private void Tb_min_LostFocus(object sender, RoutedEventArgs e)
-        //{
-        //    var bc = new BrushConverter();
-
-        //    if (tb_min.Text.Equals(""))
-        //    {
-        //        p_errorMin.Visibility = Visibility.Visible;
-        //        tt_errorMin.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-        //        tb_min.Background = (Brush)bc.ConvertFrom("#15FF0000");
-        //    }
-        //    else
-        //    {
-        //        p_errorMin.Visibility = Visibility.Collapsed;
-        //        tb_min.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-        //    }
-        //}
-
-        //private void Tb_max_LostFocus(object sender, RoutedEventArgs e)
-        //{
-        //    var bc = new BrushConverter();
-
-        //    if (tb_max.Text.Equals(""))
-        //    {
-        //        p_errorMax.Visibility = Visibility.Visible;
-        //        tt_errorMax.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-        //        tb_max.Background = (Brush)bc.ConvertFrom("#15FF0000");
-        //    }
-        //    else
-        //    {
-        //        p_errorMax.Visibility = Visibility.Collapsed;
-        //        tb_max.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-        //    }
-        //}
-
+   
         private void Tb_taxes_LostFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -1133,14 +1088,30 @@ namespace POS.View
             else
                 SectionData.clearValidate(tb_barcode, p_errorBarcode);
         }
-        private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            TextBox tb = (TextBox)sender;
-            string barCode = "";
-            if (!tb.Text.Equals(""))
-                barCode = tb_barcode.Text;
+        //private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    TextBox tb = (TextBox)sender;
+        //    string barCode = "";
+        //    if (!tb.Text.Equals(""))
+        //        barCode = tb_barcode.Text;
 
-            drawBarcode(barCode);
+        //    drawBarcode(barCode);
+        //}
+        private void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (e.Key == Key.Return && tb_barcode.Text.Length == 12)
+            {
+               TextBox tb = (TextBox)sender;
+               string barCode = "";
+                if (!tb.Text.Equals(""))
+                    barCode = tb_barcode.Text;
+
+                drawBarcode(barCode);
+            }
+            //else
+            //    tb_barcode.Clear();
+           // HandleKeyPress(sender,e);
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -1303,7 +1274,7 @@ namespace POS.View
                 tb_price.Text = itemUnit.price.ToString();
                 tb_barcode.Text = itemUnit.barcode;
 
-                generateBarcode(itemUnit.barcode, false);
+               drawBarcode(itemUnit.barcode.Substring(1));
             }
             tb_barcode.Focus();
         }
@@ -2033,5 +2004,7 @@ namespace POS.View
                 img_item.Background = brush;
             }
         }
+
+ 
     }
 }

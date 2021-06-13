@@ -60,6 +60,7 @@ namespace POS.View.accounts
             btn_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
             btn_banks.Content = MainWindow.resourcemanager.GetString("trBanks");
             btn_payments.Content = MainWindow.resourcemanager.GetString("trPayments");
+            btn_received.Content = MainWindow.resourcemanager.GetString("trReceived");
         }
 
         void refreashBackground()
@@ -72,6 +73,9 @@ namespace POS.View.accounts
 
             btn_received.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_received.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_bonds.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_bonds.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
             btn_banks.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_banks.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -115,6 +119,13 @@ namespace POS.View.accounts
             //uc_receivedAccounts uc = new uc_receivedAccounts();
             //grid_main.Children.Add(uc);
         }
+        private void Btn_bonds_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_banks);
+
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_bonds.Instance);
+        }
         private void Btn_banks_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_banks);
@@ -131,8 +142,7 @@ namespace POS.View.accounts
         {
 
         }
-       
 
-       
+      
     }
 }
