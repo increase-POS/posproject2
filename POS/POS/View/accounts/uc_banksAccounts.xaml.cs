@@ -490,6 +490,14 @@ namespace POS.View.accounts
             w.ShowDialog();
             Window.GetWindow(this).Opacity = 1;
             System.Windows.MessageBox.Show(w.isOk.ToString());
+
+
+
+
+            if (w.isOk == true)
+                p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#2BB673"));
+            else p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E65B65"));
         }
+
     }
 }

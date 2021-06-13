@@ -601,9 +601,8 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <DockPanel   Margin="10,0" LastChildFill="False">
+                    <DockPanel   Margin="10,5" LastChildFill="False">
                         <Button Grid.Column="1" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_printInvoice"   >
                             <Path Fill="#4E4E4E" Stretch="Fill"  

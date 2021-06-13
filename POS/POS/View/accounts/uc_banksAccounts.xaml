@@ -385,10 +385,18 @@
                                                           VerticalOffset="20"/>
                             </ComboBox.ToolTip>
                         </ComboBox>
+                        <!--<Grid Height="20"  Grid.Row="3" Margin="5,5,30,5" >
+                            <ToggleButton       x:Name="btn_confirmUser"    
+                               HorizontalAlignment="Right"      Background="#2BB673"  Click="Btn_confirmUser_Click"
+                          Content="X"  Checked="Btn_confirmUser_Checked"
+                          Style="{StaticResource MaterialDesignActionAccentToggleButton}"
+                          IsChecked="True"
+                          ToolTip="MaterialDesignActionAccentToggleButton" />
+                        </Grid>-->
                         <Button  Grid.Row="3"  x:Name="btn_confirmUser"   Grid.Column="2" Padding="0"
                                HorizontalAlignment="Right"      Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_confirmUser_Click"
-                                    Margin="5,5,30,5"   ToolTip="clear"  >
-                            <Path Fill="#2BB673" x:Name="p_confirmUser" Stretch="Fill" FlowDirection="LeftToRight"
+                                    Margin="5,5,30,5"   >
+                            <Path Fill="#E65B65" x:Name="p_confirmUser" Stretch="Fill" FlowDirection="LeftToRight"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Visible"   
                          VerticalAlignment="Center" Width="17.5" Height="17.5"
                               Data="M490.8,277.9C490.8,277.9,490.8,277.8,490.8,277.9c0-0.3,0-0.6,0-0.8c0-1.6,0-3.2-0.1-4.7
