@@ -26,6 +26,7 @@ namespace POS.View.windows
         {
             InitializeComponent();
         }
+       public bool isOpend = false;
         List<Location> locations = new List<Location>();
         Location location = new Location();
         BrushConverter bc = new BrushConverter();
@@ -361,6 +362,29 @@ namespace POS.View.windows
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                DragMove();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            isOpend = true;
+            this.Close();
+        }
+
+        internal bool Closed()
+        {
+            throw new NotImplementedException();
         }
     }
 }

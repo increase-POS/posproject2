@@ -121,7 +121,7 @@ namespace POS.View.accounts
         }
         private void Btn_bonds_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_banks);
+            refreashBachgroundClick(btn_bonds);
 
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_bonds.Instance);

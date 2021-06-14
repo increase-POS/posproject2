@@ -111,5 +111,19 @@ namespace POS.View.windows
         {
             SectionData.clearPasswordValidate(pb_password, p_errorPassword);
         }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+
+                DragMove();
+            }
+            catch (Exception)
+            {
+
+               
+            }
+        }
     }
 }

@@ -8,17 +8,15 @@
            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0,0,0,0"
-        Title="wd_itemsList" Height="650" Width="380" Background="#000000" 
-        Loaded="Window_Loaded">
-    <Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  x:Name="grid_wdVendor" >
+        Title="wd_itemsList" Height="650" Width="380" Background="Transparent" AllowsTransparency="True" 
+        Loaded="Window_Loaded" MouseDown="Window_MouseDown">
+    <Grid Grid.Column="1" Grid.Row="1"   x:Name="grid_wdVendor" >
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.Effect>
-            <DropShadowEffect Color="#d7d7d7" BlurRadius="10" Direction="225"  RenderingBias="Quality" ShadowDepth="10" Opacity="0.35"/>
-        </Grid.Effect>
-        <Grid   Background="#000000" >
+      
+        <Grid    >
             <Border  BorderThickness="0" Grid.Row="0" 
                     CornerRadius="7,7,0,0"  Background="#178DD2">
                 <Grid>
@@ -128,13 +126,14 @@
                         </Grid.ColumnDefinitions>
 
 
-                        <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5" 
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Name..."  
+                        <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,0,5,0" 
+                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Name..." 
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="50"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                     Height="35" Width="200"  Margin="5,5,0,5" Grid.ColumnSpan="3" 
+                                     Height="40" Width="200"  Margin="5,5,0,5" Grid.ColumnSpan="3" 
                                      TabIndex="0" TextChanged="tb_name_TextChanged" LostFocus="tb_name_LostFocus" >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_name" Content="Name"
@@ -190,13 +189,14 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="tb_company"  Text="{Binding company, Mode=OneWay}" Padding="10,5,5,5" 
+                        <TextBox x:Name="tb_company"  Text="{Binding company, Mode=OneWay}" Padding="10,0,5,0" 
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Company..."  
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="50" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                     Height="35" Width="200"  Margin="5,5,0,5" Grid.ColumnSpan="2"
+                                     Height="40" Width="200"  Margin="5,5,0,5" Grid.ColumnSpan="2"
                                      TabIndex="1">
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_company" Content="Company"
@@ -278,13 +278,14 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="tb_mobile"  Text="{Binding mobile, Mode=OneWay}"  Padding="10,5,5,5" 
+                            <TextBox x:Name="tb_mobile"  Text="{Binding mobile, Mode=OneWay}"  Padding="10,0,5,0" 
+                                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="35" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2"  
+                  Height="40" Width="265"  Margin="5,5,0,5" Grid.ColumnSpan="2"  
                                          TabIndex="3" LostFocus="tb_mobile_LostFocus" TextChanged="tb_mobile_TextChanged" PreviewKeyDown="tb_mobile_PreviewKeyDown">
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_mobile" Content="Mobile"
@@ -358,13 +359,14 @@
                                 041
                             </ListBoxItem>
                         </ComboBox>
-                        <TextBox x:Name="tb_phone"  Text="{Binding phone, Mode=OneWay}" Grid.Column="2"  Padding="10,5,5,5"   
+                        <TextBox x:Name="tb_phone"  Text="{Binding phone, Mode=OneWay}" Grid.Column="2"  Padding="10,0,5,0"  
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Phone..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                            BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="15"
-                  Height="35" Width="195"  Margin="5,5,0,5"  TabIndex="6" PreviewKeyDown="tb_phone_PreviewKeyDown">
+                  Height="40" Width="195"  Margin="5,5,0,5"  TabIndex="6" PreviewKeyDown="tb_phone_PreviewKeyDown">
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_phone" Content="Phone"
                                               Placement="left" 
@@ -434,11 +436,12 @@
                                 041
                             </ListBoxItem>
                         </ComboBox>
-                        <TextBox x:Name="tb_fax"  Text="{Binding fax, Mode=OneWay}" Padding="10,5,5,5"   
+                        <TextBox x:Name="tb_fax"  Text="{Binding fax, Mode=OneWay}" Padding="10,0,5,0"   
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Fax..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
-                                     Height="35"  Margin="0,5,2,5" Grid.Column="2" Width="195"
+                                     Height="40"  Margin="0,5,2,5" Grid.Column="2" Width="195"
                                      TabIndex="9" PreviewKeyDown="tb_fax_PreviewKeyDown">
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_fax" Content="Fax"
@@ -463,13 +466,14 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="tb_email"  Text="{Binding email, Mode=OneWay}" Grid.Row="2"  Padding="10,5,5,5"   
+                        <TextBox x:Name="tb_email"  Text="{Binding email, Mode=OneWay}" Grid.Row="2"  Padding="10,0,5,0" 
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Email..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="100"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                     Height="35" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
+                                     Height="40" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
                                      LostFocus="Tb_email_LostFocus" TabIndex="10" PreviewKeyDown="tb_email_PreviewKeyDown">
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_email" Content="Email"
@@ -495,13 +499,14 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="tb_address"  Text="{Binding email, Mode=OneWay}" Grid.Column="1"  Padding="10,5,5,5"   
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Address..."    
+                        <TextBox x:Name="tb_address"  Text="{Binding email, Mode=OneWay}" Grid.Column="1"  Padding="10,0,5,0"   
+                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Address..." 
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="100"
                                      HorizontalAlignment="Left" VerticalAlignment="Bottom" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                     Height="35" Width="340"  Margin="5,0,0,5" 
+                                     Height="40" Width="340"  Margin="5,0,0,5" 
                                      LostFocus="Tb_email_LostFocus" TabIndex="11">
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_address" Content="Address"
@@ -622,13 +627,14 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="tb_notes"  Text="{Binding notes, Mode=OneWay}" Padding="10,5,5,5"   
+                        <TextBox x:Name="tb_notes"  Text="{Binding notes, Mode=OneWay}" Padding="10,0,5,0" 
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"  TextWrapping="Wrap" AcceptsReturn="True"
                      HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="100" 
                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="70" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
+                  MinHeight="70" Width="340"  Margin="5,5,0,5" Grid.ColumnSpan="2" 
                                      TabIndex="12">
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_notes" Content="Notes"

@@ -262,7 +262,7 @@ namespace POS.View
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             txt_userInfomration.Text = MainWindow.resourcemanager.GetString("trUserInformation");
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_firstName, MainWindow.resourcemanager.GetString("trUserNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_firstName, MainWindow.resourcemanager.GetString("trNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_lastName, MainWindow.resourcemanager.GetString("trLastNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_email, MainWindow.resourcemanager.GetString("trEmailHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(pb_password, MainWindow.resourcemanager.GetString("trPasswordHint"));
@@ -284,10 +284,10 @@ namespace POS.View
             tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
             dg_users.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
-            dg_users.Columns[1].Header = MainWindow.resourcemanager.GetString("trLastName");
-            dg_users.Columns[2].Header = MainWindow.resourcemanager.GetString("trJob");
-            dg_users.Columns[3].Header = MainWindow.resourcemanager.GetString("trWorkHours");
-            dg_users.Columns[4].Header = MainWindow.resourcemanager.GetString("trNote");
+            //dg_users.Columns[1].Header = MainWindow.resourcemanager.GetString("trLastName");
+            dg_users.Columns[1].Header = MainWindow.resourcemanager.GetString("trJob");
+            dg_users.Columns[2].Header = MainWindow.resourcemanager.GetString("trWorkHours");
+            dg_users.Columns[3].Header = MainWindow.resourcemanager.GetString("trNote");
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
             tt_name.Content = MainWindow.resourcemanager.GetString("trName");

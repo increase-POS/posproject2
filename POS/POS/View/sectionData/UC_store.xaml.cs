@@ -482,9 +482,11 @@ namespace POS.View
     private async void UserControl_Loaded(object sender, RoutedEventArgs e)
     {
         if (MainWindow.lang.Equals("en"))
-        { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucStore.FlowDirection = FlowDirection.LeftToRight; }
+        { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_ucStore.FlowDirection = FlowDirection.LeftToRight; }
         else
-        { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucStore.FlowDirection = FlowDirection.RightToLeft; }
+        { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_ucStore.FlowDirection = FlowDirection.RightToLeft; }
 
         translate();
 

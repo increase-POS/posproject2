@@ -373,5 +373,17 @@ namespace POS.View.windows
         {
             this.Close();
         }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                DragMove();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
     }
 }

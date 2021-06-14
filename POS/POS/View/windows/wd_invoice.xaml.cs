@@ -90,5 +90,19 @@ namespace POS.View.windows
            // DialogResult = true;
             this.Close();
         }
+
+    
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                DragMove();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
     }
 }

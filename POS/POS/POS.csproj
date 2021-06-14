@@ -236,6 +236,9 @@
     <Compile Include="View\accounts\uc_receivedAccounts.xaml.cs">
       <DependentUpon>uc_receivedAccounts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\sales\uc_medals.xaml.cs">
+      <DependentUpon>uc_medals.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\sales\uc_quotations.xaml.cs">
       <DependentUpon>uc_quotations.xaml</DependentUpon>
     </Compile>
@@ -331,6 +334,9 @@
     <Compile Include="View\windows\wd_acceptUser.xaml.cs">
       <DependentUpon>wd_acceptUser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_customersList.xaml.cs">
+      <DependentUpon>wd_customersList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_invoice.xaml.cs">
       <DependentUpon>wd_invoice.xaml</DependentUpon>
     </Compile>
@@ -424,6 +430,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\accounts\uc_receivedAccounts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\sales\uc_medals.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -556,6 +566,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_acceptUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_customersList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

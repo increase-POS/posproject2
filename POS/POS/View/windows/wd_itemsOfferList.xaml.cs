@@ -143,7 +143,16 @@ namespace POS.View.windows
             //) && x.isActive == 1);
         }
 
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                DragMove();
+            }
+            catch (Exception)
+            {
 
-        
+            }
+        }
     }
 }

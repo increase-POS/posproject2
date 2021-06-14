@@ -31,6 +31,7 @@ namespace POS.View.windows
         List<Location> allLocations = new List<Location>();
         public List<Location> selectedLocations = new List<Location>();
         Location locationModel = new Location();
+        bool isOpend=true;
 
         /// <summary>
         /// Selcted Locations if selectedLocations Have Locations At the beginning
@@ -144,6 +145,18 @@ namespace POS.View.windows
             x.y.ToLower().Contains(txb_searchY.Text.ToLower()) &&
             x.z.ToLower().Contains(txb_searchZ.Text.ToLower())
             ) && x.isActive == 1);
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                DragMove();
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 

@@ -1873,3 +1873,7 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_acceptCancelPopup.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_acceptUser.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_quotations.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_quotations.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_medals.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_medals.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_customersList.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_customersList.baml

@@ -255,5 +255,17 @@ namespace POS.View.windows
         {
             
         }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                DragMove();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
     }
 }

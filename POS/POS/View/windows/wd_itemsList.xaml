@@ -8,17 +8,15 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
-        Title="wd_itemsList" Height="400" Width="550" Background="#333333" 
-        Loaded="Window_Loaded">
-    <Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  >
+        Title="wd_itemsList" Height="400" Width="550" Background="Transparent" AllowsTransparency="True"
+        Loaded="Window_Loaded" MouseDown="Window_MouseDown">
+    <Grid Grid.Column="1" Grid.Row="1"  >
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.Effect>
-            <DropShadowEffect Color="#d7d7d7" BlurRadius="10" Direction="225"  RenderingBias="Quality" ShadowDepth="10" Opacity="0.35"/>
-        </Grid.Effect>
-        <Grid   Background="#333333" >
+
+        <Grid    >
             <Border  BorderThickness="0" Grid.Row="0" 
                     CornerRadius="7,7,0,0"  Background="#178DD2">
                 <Grid>
@@ -94,11 +92,12 @@
                 
                 <Grid   Width="225"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0">
                     <TextBox   Width="225"  x:Name="txb_searchitems"  TextChanged="Txb_searchitems_TextChanged"
-                        Padding="10,5,5,5" BorderBrush="{x:Null}"
+                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Padding="10,0,5,0" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 
-                  Height="30"   Margin="0"/>
+                  Height="40"   Margin="0"/>
                     <Grid Margin="0,0,0,3"  HorizontalAlignment="Right" VerticalAlignment="Center"   Background="White" Width="30" Height="30">
                         <Path Fill="#4e4e4e" Stretch="Fill"    Margin="5,2.5,7.5,0"
                              Grid.Column="0"   HorizontalAlignment="Left"

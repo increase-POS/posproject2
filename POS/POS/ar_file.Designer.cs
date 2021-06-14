@@ -2446,7 +2446,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to المستلمات.
+        ///   Looks up a localized string similar to المقبوضات.
         /// </summary>
         internal static string trReceived {
             get {

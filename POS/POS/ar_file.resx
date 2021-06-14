@@ -1159,7 +1159,7 @@
     <value>اختر فاتورة أولاً</value>
   </data>
   <data name="trReceived" xml:space="preserve">
-    <value>المستلمات</value>
+    <value>المقبوضات</value>
   </data>
   <data name="trCompleted" xml:space="preserve">
     <value>تمت العملية</value>
