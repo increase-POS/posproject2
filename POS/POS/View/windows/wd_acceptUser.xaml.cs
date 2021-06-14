@@ -37,12 +37,34 @@ namespace POS.View.windows
 
         }
 
-      
+        public int userID = 0;
+        User userModel = new User();
+        IEnumerable<User> users;
         private void Btn_confirmation_Click(object sender, RoutedEventArgs e)
         {
-            isOk = true;
-            this.Close();
+            chkUser();
+            if (isOk)
+                this.Close();
+            else
+            {
+                SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trErrorPasswordToolTip");
+                p_showPassword.Visibility = Visibility.Collapsed;
+            }
         }
+
+        private async void chkUser()
+        {
+            string password = Md5Encription.MD5Hash("Inc-m" + pb_password.Password);
+
+            User user = await userModel.getUserById(userID);
+
+            if ((tb_userName.Text.Equals(user.username)) && (password.Equals(user.password)))
+                isOk = true;
+            else
+                isOk = false;
+
+        }
+
         private void P_showPassword_MouseEnter(object sender, MouseEventArgs e)
         {
             tb_password.Text = pb_password.Password;
@@ -78,6 +100,16 @@ namespace POS.View.windows
                 p_errorPassword.Visibility = Visibility.Collapsed;
                 p_showPassword.Visibility = Visibility.Visible;
             }
+        }
+
+        private void Tb_password_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SectionData.clearValidate(tb_password, p_errorPassword);
+        }
+
+        private void Pb_password_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            SectionData.clearPasswordValidate(pb_password, p_errorPassword);
         }
     }
 }

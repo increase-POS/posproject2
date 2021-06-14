@@ -67,7 +67,7 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="User Name..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="20"
-                                     TabIndex="12"
+                                     TabIndex="12"  IsReadOnly="True"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="40"  Margin="10,5,10,5" 
                                      LostFocus="Tb_userName_LostFocus" TextChanged="Tb_userName_TextChanged" >
@@ -95,7 +95,7 @@
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                               
                                  Height="35" Width="340"  Margin="10,5,10,5" Grid.ColumnSpan="2" 
-                                 LostFocus="Tb_password_LostFocus" />
+                                 LostFocus="Tb_password_LostFocus" TextChanged="Tb_password_TextChanged" />
                 <PasswordBox Grid.Row="1" x:Name="pb_password" Padding="10,5,5,5"   
                                           Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Password..."    
@@ -104,7 +104,7 @@
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                        
                                  Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" 
-                                 LostFocus="Tb_password_LostFocus" >
+                                 LostFocus="Tb_password_LostFocus" PasswordChanged="Pb_password_PasswordChanged" >
                     <PasswordBox.ToolTip>
                         <ToolTip x:Name="tt_password" Content="Password"
                                               Placement="left" 
@@ -112,7 +112,9 @@
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
                     </PasswordBox.ToolTip>
+           
                 </PasswordBox>
+                
                 <Path Fill="#E81123" Grid.Row="1" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"

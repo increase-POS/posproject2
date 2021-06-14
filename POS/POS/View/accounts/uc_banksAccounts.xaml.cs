@@ -46,6 +46,8 @@ namespace POS.View.accounts
 
         BrushConverter bc = new BrushConverter();
 
+        wd_acceptUser w = new wd_acceptUser();
+
         private static uc_banksAccounts _instance;
         public static uc_banksAccounts Instance
         {
@@ -85,6 +87,7 @@ namespace POS.View.accounts
             dg_bankAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trDepositeNumTooltip");
             dg_bankAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
+            tt_code.Content = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             tt_opperationType.Content = MainWindow.resourcemanager.GetString("trOpperationTypeToolTip");
             tt_user.Content = MainWindow.resourcemanager.GetString("trUser");
             tt_bank.Content = MainWindow.resourcemanager.GetString("trBank");
@@ -93,7 +96,7 @@ namespace POS.View.accounts
             tt_DepREcNum.Content = MainWindow.resourcemanager.GetString("trDepositeNumTooltip");
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
             tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
-
+            tt_confirmUser.Content = MainWindow.resourcemanager.GetString("trConfirmUserTooltip");
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
@@ -201,7 +204,6 @@ namespace POS.View.accounts
 
         private async void Dg_bankAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
-            btn_add.IsEnabled = false;
             SectionData.clearValidate(tb_cash, p_errorCash);
             SectionData.clearValidate(tb_depositNumber, p_errorDepositNumber);
             SectionData.clearComboBoxValidate(cb_opperationType, p_errorOpperationType);
@@ -217,6 +219,29 @@ namespace POS.View.accounts
                     cb_opperationType.SelectedValue = cashtrans.transType;
                     cb_user.SelectedValue = cashtrans.userId;
                     cb_bank.SelectedValue = cashtrans.bankId;
+                    p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#2BB673"));
+                    if (string.IsNullOrEmpty(cashtrans.docNum))
+                    {
+                        cb_opperationType.IsEnabled = false;
+                        cb_user.IsEnabled = false;
+                        cb_bank.IsEnabled = false;
+                        tb_cash.IsEnabled = false;
+                        tb_depositNumber.IsEnabled = true;
+                        tb_note.IsEnabled = false;
+                        btn_add.IsEnabled = true;
+                        btn_add.Content = MainWindow.resourcemanager.GetString("trCompletion"); 
+                    }
+                    else
+                    {
+                        cb_opperationType.IsEnabled = false;
+                        cb_user.IsEnabled = false;
+                        cb_bank.IsEnabled = false;
+                        tb_cash.IsEnabled = false;
+                        tb_depositNumber.IsEnabled = false;
+                        tb_note.IsEnabled = false;
+                        btn_add.IsEnabled = false;
+                        btn_add.Content = MainWindow.resourcemanager.GetString("trCompleted");
+                    }
 
                 }
             }
@@ -244,79 +269,96 @@ namespace POS.View.accounts
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//save
-            //chk empty cash
-            SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
-            //chk empty deposite number
-            SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositNumberToolTip");
-            //chk empty dicount type
-            SectionData.validateEmptyComboBox(cb_opperationType, p_errorOpperationType, tt_errorOpperationType, "trErrorEmptyOpperationTypeToolTip");
-            //chk empty user
-            SectionData.validateEmptyComboBox(cb_user, p_errorUser, tt_errorUser, "trErrorEmptyUserToolTip");
-            //chk empty bank
-            SectionData.validateEmptyComboBox(cb_bank, p_errorBank, tt_errorBank, "trErrorEmptyBankToolTip");
+            if (cashtrans.cashTransId == 0)
+            {
+                //chk empty cash
+                SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+                //chk empty deposite number
+                //SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositNumberToolTip");
+                //chk empty dicount type
+                SectionData.validateEmptyComboBox(cb_opperationType, p_errorOpperationType, tt_errorOpperationType, "trErrorEmptyOpperationTypeToolTip");
+                //chk empty user
+                SectionData.validateEmptyComboBox(cb_user, p_errorUser, tt_errorUser, "trErrorEmptyUserToolTip");
+                //chk empty bank
+                SectionData.validateEmptyComboBox(cb_bank, p_errorBank, tt_errorBank, "trErrorEmptyBankToolTip");
+                //chk user confirmation
+                bool isuserConfirmed = w.isOk;
 
-            if ((!tb_cash.Text.Equals("")) && (!tb_depositNumber.Text.Equals("")) &&
-                (!cb_opperationType.Text.Equals("")) && (!cb_user.Text.Equals("")) &&
-                (!cb_bank.Text.Equals("")))
-             {
+                if ((!tb_cash.Text.Equals("")) &&
+                    //(!tb_depositNumber.Text.Equals("")) &&
+                    (!cb_opperationType.Text.Equals("")) && (!cb_user.Text.Equals("")) &&
+                    (!cb_bank.Text.Equals("")) &&
+                    (isuserConfirmed)
+                    )
 
-                CashTransfer cash = new CashTransfer();
-                cash.transType = cb_opperationType.SelectedValue.ToString();
-                cash.userId = Convert.ToInt32(cb_user.SelectedValue);
-                //cash.transNum = await generateNumber();
-                cash.transNum = await SectionData.generateNumber(Convert.ToChar(cb_opperationType.SelectedValue), "bn");
-                cash.cash = decimal.Parse(tb_cash.Text);
-                cash.createUserId = MainWindow.userID.Value;
-                cash.notes = tb_note.Text;
-                cash.posId = MainWindow.posID.Value;
-                cash.side = "bn";
-                cash.bankId = Convert.ToInt32(cb_bank.SelectedValue);
-                cash.docNum = tb_depositNumber.Text;
-
-                string s = await cashModel.Save(cash);
-              
-                if (!s.Equals("0"))
                 {
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                    Btn_clear_Click(null, null);
 
-                    decimal ammount = cash.cash.Value;
-                    if (cash.transType.Equals("p")) ammount *= -1 ;
-                    calcBalance(ammount);
+                    CashTransfer cash = new CashTransfer();
+                    cash.transType = cb_opperationType.SelectedValue.ToString();
+                    cash.userId = Convert.ToInt32(cb_user.SelectedValue);
+                    //cash.transNum = await generateNumber();
+                    cash.transNum = await SectionData.generateNumber(Convert.ToChar(cb_opperationType.SelectedValue), "bn");
+                    cash.cash = decimal.Parse(tb_cash.Text);
+                    cash.createUserId = MainWindow.userID.Value;
+                    cash.notes = tb_note.Text;
+                    cash.posId = MainWindow.posID.Value;
+                    cash.side = "bn";
+                    cash.bankId = Convert.ToInt32(cb_bank.SelectedValue);
+                    //cash.docNum = tb_depositNumber.Text;
 
-                    dg_bankAccounts.ItemsSource = await RefreshCashesList();
-                    Tb_search_TextChanged(null, null);
+                    string s = await cashModel.Save(cash);
+
+                    if (!s.Equals("0"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
+
+                        dg_bankAccounts.ItemsSource = await RefreshCashesList();
+                        Tb_search_TextChanged(null, null);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
-                else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            }
+            else
+            {
+                if(btn_add.IsEnabled)
+                {
+                    cashtrans.docNum = tb_depositNumber.Text;
+
+                    string s = await cashModel.Save(cashtrans);
+
+                    if (!s.Equals("0"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCompleted"), animation: ToasterAnimation.FadeIn);
+                        btn_add.IsEnabled = false;
+                        btn_add.Content = MainWindow.resourcemanager.GetString("trCompleted");
+
+                        dg_bankAccounts.ItemsSource = await RefreshCashesList();
+                        Tb_search_TextChanged(null, null);
+
+                        decimal ammount = cashtrans.cash.Value;
+                        if (cashtrans.transType.Equals("d")) ammount *= -1;
+                        calcBalance(ammount);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
             }
         }
 
         private async void calcBalance(decimal ammount)
         {
             Pos pos = await posModel.getPosById(MainWindow.posID.Value);
-            MessageBox.Show(pos.balance.ToString() +" "+ pos.name);
-            ammount += pos.balance.Value;
-            //MessageBox.Show(ammount.ToString());
 
-            pos.posId = MainWindow.posID.Value;
-            pos.code = pos.code;
-            pos.name = "poos1";
-            pos.balance = ammount;
-            pos.branchId = pos.branchId;
-            pos.createDate = pos.createDate;
-            pos.createDate = pos.createDate;
-            pos.createUserId = pos.createUserId;
-            pos.updateUserId = pos.updateUserId;
-            pos.isActive = pos.isActive;
-            pos.note = pos.note;
+            pos.balance += ammount;
 
             string s = await posModel.savePos(pos);
 
-            if (s.Equals("Pos Is Updated Successfully"))
-                MessageBox.Show(pos.balance.ToString());
-            else
-                MessageBox.Show("error");
+            //if (s.Equals("Pos Is Updated Successfully"))
+            //    MessageBox.Show(pos.balance.ToString());
+            //else
+            //    MessageBox.Show("error");
         }
 
         private void Btn_update_Click(object sender, RoutedEventArgs e)
@@ -331,7 +373,15 @@ namespace POS.View.accounts
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
+            cashtrans.cashTransId = 0;
+
             btn_add.IsEnabled = true;
+            cb_opperationType.IsEnabled = true;
+            cb_user.IsEnabled = true;
+            cb_bank.IsEnabled = true;
+            tb_cash.IsEnabled = true;
+            tb_depositNumber.IsEnabled = false;
+            tb_note.IsEnabled = true;
 
             tb_cash.Clear();
             tb_depositNumber.Clear();
@@ -345,7 +395,7 @@ namespace POS.View.accounts
             SectionData.clearComboBoxValidate(cb_opperationType, p_errorOpperationType);
             SectionData.clearComboBoxValidate(cb_user, p_errorUser);
             SectionData.clearComboBoxValidate(cb_bank, p_errorBank);
-
+            p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E65B65"));
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -486,12 +536,11 @@ namespace POS.View.accounts
         private void Btn_confirmUser_Click(object sender, RoutedEventArgs e)
         {
             Window.GetWindow(this).Opacity = 0.2;
-            wd_acceptUser w = new wd_acceptUser();
+            w.tb_userName.Text = cb_user.Text;
+            w.userID = Convert.ToInt32(cb_user.SelectedValue);
             w.ShowDialog();
             Window.GetWindow(this).Opacity = 1;
-            System.Windows.MessageBox.Show(w.isOk.ToString());
-
-
+            //System.Windows.MessageBox.Show(w.isOk.ToString());
 
 
             if (w.isOk == true)

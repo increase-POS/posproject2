@@ -1161,4 +1161,22 @@
   <data name="trReceived" xml:space="preserve">
     <value>المستلمات</value>
   </data>
+  <data name="trCompleted" xml:space="preserve">
+    <value>تمت العملية</value>
+  </data>
+  <data name="trCompletion" xml:space="preserve">
+    <value>إتمام</value>
+  </data>
+  <data name="trConfirmUserTooltip" xml:space="preserve">
+    <value>تأكيد المستخدم</value>
+  </data>
+  <data name="trDocDateHint" xml:space="preserve">
+    <value>تاريخ الوثيقة...</value>
+  </data>
+  <data name="trDocDateTooltip" xml:space="preserve">
+    <value>تاريخ الوثيقة</value>
+  </data>
+  <data name="trErrorPasswordToolTip" xml:space="preserve">
+    <value>كلمة المرور خاطئة</value>
+  </data>
 </root>

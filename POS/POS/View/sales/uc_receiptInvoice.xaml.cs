@@ -370,5 +370,10 @@ namespace POS.View
         {
 
         }
+
+        private void Btn_quotations_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

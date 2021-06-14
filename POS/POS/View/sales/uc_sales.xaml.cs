@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POS.View.sales;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -78,6 +79,9 @@ namespace POS.View
 
             btn_package.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_package.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_quotations.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_quotations.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
         void refreashBachgroundClick(Button btn)
         {
@@ -127,7 +131,9 @@ namespace POS.View
 
         private void Btn_quotations_Click(object sender, RoutedEventArgs e)
         {
-
+            refreashBachgroundClick(btn_package);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_quotations.Instance);
         }
 
         private void Btn_membershipCard_Click(object sender, RoutedEventArgs e)

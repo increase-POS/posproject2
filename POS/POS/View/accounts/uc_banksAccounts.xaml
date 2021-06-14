@@ -160,7 +160,7 @@
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                 </materialDesign:PackIcon.ToolTip>
                             </materialDesign:PackIcon>
                         </Button>
@@ -175,7 +175,7 @@
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                 </materialDesign:PackIcon.ToolTip>
                             </materialDesign:PackIcon>
                         </Button>
@@ -219,7 +219,7 @@
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                     </Path.ToolTip>
                                 </Path>
                             </Grid>
@@ -237,7 +237,7 @@
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                 </Path.ToolTip>
                             </Path>
                         </Button>
@@ -248,7 +248,7 @@
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,25,0,0"
-                                              VerticalOffset="-20"/>
+                                              VerticalOffset="-45"/>
                             </TextBlock.ToolTip>
                         </TextBlock>
 
@@ -394,8 +394,9 @@
                           ToolTip="MaterialDesignActionAccentToggleButton" />
                         </Grid>-->
                         <Button  Grid.Row="3"  x:Name="btn_confirmUser"   Grid.Column="2" Padding="0"
-                               HorizontalAlignment="Right"      Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_confirmUser_Click"
-                                    Margin="5,5,30,5"   >
+                                 HorizontalAlignment="Right"      Background="{x:Null}" 
+                                 BorderBrush="{x:Null}" Click="Btn_confirmUser_Click"
+                                 Margin="5,5,30,5"   >
                             <Path Fill="#E65B65" x:Name="p_confirmUser" Stretch="Fill" FlowDirection="LeftToRight"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Visible"   
                          VerticalAlignment="Center" Width="17.5" Height="17.5"
@@ -489,14 +490,13 @@
                         <TextBox x:Name="tb_depositNumber" MaxLength="20"  Grid.Row="6"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-
-                                     Text="{Binding docNum, Mode=OneWay}" 
+                                  Text="{Binding docNum, Mode=OneWay}" 
                                   Padding="10,0,5,0"
                                  BorderThickness="1" 
                                  materialDesign:HintAssist.Hint="Deposit/Receipt Number..."  
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12"
                                  Background="#f8f8f8" BorderBrush="#f8f8f8"
-                                 
+                                 IsEnabled="False"
                                  Grid.Column="0"   Height="40"  Margin="10,5,10,5"
                                  PreviewKeyDown="PreventSpaces"
                                  PreviewTextInput="Tb_depositNumber_PreviewTextInput"

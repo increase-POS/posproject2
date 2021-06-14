@@ -475,6 +475,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تمت العملية.
+        /// </summary>
+        internal static string trCompleted {
+            get {
+                return ResourceManager.GetString("trCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إتمام.
+        /// </summary>
+        internal static string trCompletion {
+            get {
+                return ResourceManager.GetString("trCompletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تأكيد.
         /// </summary>
         internal static string trConfirm {
@@ -489,6 +507,15 @@ namespace POS {
         internal static string trConfirmed {
             get {
                 return ResourceManager.GetString("trConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تأكيد المستخدم.
+        /// </summary>
+        internal static string trConfirmUserTooltip {
+            get {
+                return ResourceManager.GetString("trConfirmUserTooltip", resourceCulture);
             }
         }
         
@@ -777,6 +804,24 @@ namespace POS {
         internal static string trDiscountValueHint {
             get {
                 return ResourceManager.GetString("trDiscountValueHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ الوثيقة....
+        /// </summary>
+        internal static string trDocDateHint {
+            get {
+                return ResourceManager.GetString("trDocDateHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ الوثيقة.
+        /// </summary>
+        internal static string trDocDateTooltip {
+            get {
+                return ResourceManager.GetString("trDocDateTooltip", resourceCulture);
             }
         }
         
@@ -1452,6 +1497,15 @@ namespace POS {
         internal static string trErrorPasswordLengthToolTip {
             get {
                 return ResourceManager.GetString("trErrorPasswordLengthToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to كلمة المرور خاطئة.
+        /// </summary>
+        internal static string trErrorPasswordToolTip {
+            get {
+                return ResourceManager.GetString("trErrorPasswordToolTip", resourceCulture);
             }
         }
         

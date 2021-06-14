@@ -295,6 +295,12 @@ namespace POS.Classes
             p_error.Visibility = Visibility.Collapsed;
         }
 
+        public static void clearPasswordValidate(PasswordBox pb, Path p_error)
+        {
+            pb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            p_error.Visibility = Visibility.Collapsed;
+        }
+
         public static void clearComboBoxValidate(ComboBox cb, Path p_error)
         {
             cb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
@@ -308,6 +314,12 @@ namespace POS.Classes
             tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
         }
 
+        public static void showPasswordValidate(PasswordBox tb, Path p_error, ToolTip tt_error, string tr)
+        {
+            p_error.Visibility = Visibility.Visible;
+            tt_error.Content = MainWindow.resourcemanager.GetString(tr);
+            tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+        }
         public static void showComboBoxValidate(ComboBox cb, Path p_error, ToolTip tt_error, string tr)
         {
             p_error.Visibility = Visibility.Visible;

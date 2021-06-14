@@ -152,15 +152,15 @@ namespace POS.View.accounts
         private void translate()
         {
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trTransaferDetails");
+            txt_received.Text = MainWindow.resourcemanager.GetString("trReceived");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_depositFrom, MainWindow.resourcemanager.GetString("trDepositFromHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_depositorV, MainWindow.resourcemanager.GetString("trDepositorHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_depositorC, MainWindow.resourcemanager.GetString("trDepositorHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_depositorU, MainWindow.resourcemanager.GetString("trDepositorHint"));
-
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentProcessType, MainWindow.resourcemanager.GetString("trPaymentTypeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_docNum, MainWindow.resourcemanager.GetString("trDocNumHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_docDate, MainWindow.resourcemanager.GetString("trDocDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
@@ -171,6 +171,7 @@ namespace POS.View.accounts
             dg_receivedAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
             //dg_receivedAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
+            tt_code.Content = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             tt_depositFrom.Content = MainWindow.resourcemanager.GetString("trDepositTo");
             tt_depositorV.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
             tt_depositorC.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
@@ -182,6 +183,7 @@ namespace POS.View.accounts
             tt_cash.Content = MainWindow.resourcemanager.GetString("trCashTooltip");
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
             tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+            tt_docDate.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
@@ -320,7 +322,9 @@ namespace POS.View.accounts
             {
                 string depositor = cb_depositFrom.SelectedValue.ToString();
                 int agentid = 0;
+
                 CashTransfer cash = new CashTransfer();
+
                 cash.transType = "d";
                 cash.posId = MainWindow.posID.Value;
                 cash.transNum = await SectionData.generateNumber('d', cb_depositFrom.SelectedValue.ToString());
@@ -328,7 +332,7 @@ namespace POS.View.accounts
                 cash.notes = tb_note.Text;
                 cash.createUserId = MainWindow.userID;
                 cash.side = cb_depositFrom.SelectedValue.ToString();
-                cash.docNum = tb_docNum.Text;
+                //cash.docNum = tb_docNum.Text;
                 cash.processType = cb_paymentProcessType.SelectedValue.ToString();
 
                 if (cb_depositorV.IsVisible)
@@ -342,6 +346,9 @@ namespace POS.View.accounts
 
                 if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
                     cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
+
+                if ((cb_paymentProcessType.SelectedValue.ToString().Equals("doc")) || (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque")))
+                    cash.docNum = tb_docNum.Text;
 
                 string s = await cashModel.Save(cash);
 
@@ -379,30 +386,9 @@ namespace POS.View.accounts
                 //decrease depositor balance if agent
                 if ((depositor.Equals("v")) || (depositor.Equals("c")))
                 {
-                    MessageBox.Show(agentid.ToString());
-
                     Agent agent = await agentModel.getAgentById(agentid);
 
-                    agent.agentId = agentid;
-                    agent.name = agent.name;
-                    agent.code = agent.code;
-                    agent.company = agent.company;
-                    agent.address = agent.address;
-                    agent.email = agent.email;
-                    agent.phone = agent.phone;
-                    agent.mobile = agent.mobile;
-                    agent.image = agent.image;
-                    agent.type = agent.type;
-                    agent.accType = agent.accType;
                     agent.balance = agent.balance - Convert.ToSingle(ammount);
-                    agent.createDate = agent.createDate;
-                    agent.updateDate = agent.updateDate;
-                    agent.createUserId = agent.createUserId;
-                    agent.updateUserId = agent.updateUserId;
-                    agent.notes = agent.notes;
-                    agent.isActive = agent.isActive;
-                    agent.fax = agent.fax;
-                    agent.maxDeserve = agent.maxDeserve;
 
                     s = await agent.saveAgent(agent);
 
@@ -669,15 +655,21 @@ namespace POS.View.accounts
             users = await userModel.GetUsersActive();
 
             cb_depositorU.ItemsSource = users;
-            cb_depositorU.DisplayMemberPath = "name";
+            cb_depositorU.DisplayMemberPath = "username";
             cb_depositorU.SelectedValuePath = "userId";
             //cb_recipient.SelectedIndex = -1;
         }
 
         private async void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
-            Agent agent = await agentModel.getAgentById(76);
-            MessageBox.Show(agent.name);
+            Agent ag = new Agent();
+            ag = await ag.getAgentById(119);
+            MessageBox.Show(ag.balance.ToString()+" "+ag.address);
+            ag.balance = 5000;
+            ag.address = "halabb";
+            string msg = await ag.saveAgent(ag);
+            MessageBox.Show(ag.balance.ToString() + " " + ag.address);
+            MessageBox.Show(msg);
         }
     }
 }
