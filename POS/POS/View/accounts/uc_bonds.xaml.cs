@@ -146,5 +146,10 @@ namespace POS.View.accounts
         {
 
         }
+
+        private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

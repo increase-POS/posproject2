@@ -1,4 +1,5 @@
 ﻿using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -71,10 +72,10 @@ namespace POS.View.storage
             //txt_invoiceHeader.Text = MainWindow.resourcemanager.GetString("trInvoice");
             
 
-            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
-            dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
-            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
-            txt_saveButton.Text = MainWindow.resourcemanager.GetString("trSave");
+            //dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
+            //dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
+            //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
+            //txt_saveButton.Text = MainWindow.resourcemanager.GetString("trSave");
         }
         private  void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -197,11 +198,11 @@ namespace POS.View.storage
         #endregion
         private void Tgl_returnInvoiceDropDown_Checked(object sender, RoutedEventArgs e)
         {
-            grid_returnInvoice.Visibility = Visibility.Visible;
+            //grid_returnInvoice.Visibility = Visibility.Visible;
         }
         private void Tgl_returnInvoiceDropDown_Unchecked(object sender, RoutedEventArgs e)
         {
-            grid_returnInvoice.Visibility = Visibility.Collapsed;
+            //grid_returnInvoice.Visibility = Visibility.Collapsed;
         }
         private void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
@@ -247,7 +248,113 @@ namespace POS.View.storage
         {
 
         }
+        private void input_LostFocus(object sender, RoutedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            if (name == "TextBox")
+            {
+            }
+            else if (name == "ComboBox")
+            {
+            }
+            else
+            {
 
-   
+            }
+        }
+        private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //var cmb = sender as ComboBox;
+
+            //if (dg_billDetails.SelectedIndex != -1)
+            //    billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+        }
+        private void space_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+        private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                e.Handled = false;
+
+            else
+                e.Handled = true;
+        }
+        private void Btn_items_Click(object sender, RoutedEventArgs e)
+        {
+            //items
+
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_items w = new wd_items();
+            w.ShowDialog();
+            if (w.isActive)
+            {
+                ChangeItemIdEvent(w.selectedItem);
+            }
+
+            Window.GetWindow(this).Opacity = 1;
+        }
+      
+       
+
+
+
+        #region Get Id By Click  Y
+
+        public async void ChangeCategoryIdEvent(int categoryId)
+        {
+         
+        }
+
+
+        public async void ChangeItemIdEvent(int itemId)
+        {
+           
+        }
+
+
+        #endregion
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_invoices_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+
+        }
+
+        private void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Tb_discount_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -584,7 +584,7 @@
                    Margin="1,1"    Content="Print" Click="Btn_printInvoice_Click" />
                     <Button x:Name="btn_pay"  TabIndex="10" Content="Pay" Grid.Row="2"
                                 Background="#4E4E4E" BorderBrush="{x:Null}" Grid.ColumnSpan="3"
-                                Margin="1,1" Click="" >
+                                Margin="1,1"  Click="Btn_pay_Click" >
                         <Button.ToolTip>
                             <ToolTip x:Name="tt_pay" Content="Pay"
                                     Placement="left" 

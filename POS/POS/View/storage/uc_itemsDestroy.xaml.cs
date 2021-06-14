@@ -1,4 +1,5 @@
 ﻿using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -54,8 +55,10 @@ namespace POS.View.storage
         public string txtItemSearch;
 
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async  void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+           
+
             // for pagination
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             catigoriesAndItemsView.ucItemsDestroy = this;
@@ -74,7 +77,13 @@ namespace POS.View.storage
            
             translate();
 
-           
+
+         
+            await RefrishItems();
+            await RefrishCategories();
+            RefrishCategoriesCard();
+            Txb_searchitems_TextChanged(null, null);
+
         }
 
         private void translate()
@@ -110,7 +119,21 @@ namespace POS.View.storage
                 await RefrishCategories();
             categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == categoryParentId);
             catigoriesAndItemsView.gridCatigories = grid_categoryCards;
+            generateCoulmnCategoriesGrid(categoriesQuery.Count());
             catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
+        }
+        void generateCoulmnCategoriesGrid(int column)
+        {
+            #region
+            grid_categoryCards.ColumnDefinitions.Clear();
+            ColumnDefinition[] cd = new ColumnDefinition[column];
+            for (int i = 0; i < column; i++)
+            {
+                cd[i] = new ColumnDefinition();
+                cd[i].Width = new GridLength(110, GridUnitType.Pixel);
+                grid_categoryCards.ColumnDefinitions.Add(cd[i]);
+            }
+            #endregion
         }
         /// <summary>
         /// Item
@@ -130,9 +153,10 @@ namespace POS.View.storage
             dg_items.ItemsSource = _items;
         }
 
+
         void RefrishItemsCard(IEnumerable<Item> _items)
         {
-
+            grid_itemContainerCard.Children.Clear();
             catigoriesAndItemsView.gridCatigorieItems = grid_itemContainerCard;
             catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
         }
@@ -143,18 +167,13 @@ namespace POS.View.storage
 
 
 
-            if (dg_items.SelectedIndex != -1)
-            {
-                item = dg_items.SelectedItem as Item;
-                this.DataContext = item;
-
-
-
-            }
-            if (item != null)
-            {
-
-            }
+            //if (dg_items.SelectedIndex != -1)
+            //{
+            //    item = dg_items.SelectedItem as Item;
+            //    selectedItem = item.itemId;
+            //    isActive = true;
+            //    this.Close();
+            //}
 
 
         }
@@ -176,67 +195,47 @@ namespace POS.View.storage
 
         public void ChangeItemIdEvent(int itemId)
         {
-
-
-            item = items.ToList().Find(c => c.itemId == itemId);
-            if (item != null)
-            {
-                this.DataContext = item;
-
-
-            }
+            //selectedItem = itemId;
+            //isActive = true;
+            //this.Close();
         }
 
         #endregion
-        #region Toggle Button Y
-        /// <summary>
-        /// Category
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// 
+        #region Grid Definition
         /*
-        private void Tgl_categoryIsActive_Checked(object sender, RoutedEventArgs e)
+        ColumnDefinition[] c;
+        RowDefinition[] r;
+        Grid gridItemContainerCard = new Grid();
+        int[] count;
+        void CreateGridCardContainer()
         {
-            tglCategoryState = 1;
-            RefrishCategoriesCard();
+            gridItemContainerCard.Name = "grid_itemContainerCard";
+            gridItemContainerCard.Background = null;
+            Grid.SetColumnSpan(gridItemContainerCard, 2);
+            count = CatigoriesAndItemsView.itemsRowColumnCount(1, 3);
+            c = new ColumnDefinition[count[1]];
+            for (int i = 0; i < count[1]; i++)
+            {
+                //ColumnDefinition c1 = new ColumnDefinition();
+                c[i] = new ColumnDefinition();
+                c[i].Width = new GridLength(1, GridUnitType.Star);
+                gridItemContainerCard.ColumnDefinitions.Add(c[i]);
+            }
+            r = new RowDefinition[count[0]];
+            for (int i = 0; i < count[0]; i++)
+            {
+                r[i] = new RowDefinition();
+                r[i].Height = new GridLength(1, GridUnitType.Star);
+                gridItemContainerCard.RowDefinitions.Add(r[i]);
+            }
 
 
-
-        }
-        private void Tgl_categorIsActive_Unchecked(object sender, RoutedEventArgs e)
-        {
-            tglCategoryState = 0;
-            RefrishCategoriesCard();
+            grid_itemContainerCard.Children.Clear();
+            grid_itemContainerCard.Children.Add(gridItemContainerCard);
         }
         */
-        /// <summary>
-        /// Item
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Tgl_itemIsActive_Checked(object sender, RoutedEventArgs e)
-        {
-            //if (categories is null)
-            //    await RefrishCategories();
-            tglItemState = 1;
-            //tgl_categoryCardIsActive.IsChecked =
-            //    tgl_categoryDatagridIsActive.IsChecked = true;
-            Txb_searchitems_TextChanged(null, null);
-
-
-        }
-        private void Tgl_itemIsActive_Unchecked(object sender, RoutedEventArgs e)
-        {
-            //if (categories is null)
-            //    await RefrishCategories();
-            //categoriesQuery = categories.Where(x => x.isActive == 0);
-            tglItemState = 0;
-            //tgl_categoryCardIsActive.IsChecked =
-            //    tgl_categoryDatagridIsActive.IsChecked = false;
-            Txb_searchitems_TextChanged(null, null);
-        }
         #endregion
+
         #region Switch Card/DataGrid Y
 
         private void Btn_itemsInCards_Click(object sender, RoutedEventArgs e)
@@ -247,7 +246,6 @@ namespace POS.View.storage
             path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
 
             Txb_searchitems_TextChanged(null, null);
-
         }
 
         private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
@@ -261,7 +259,6 @@ namespace POS.View.storage
         }
         #endregion
         #region Search Y
-
 
 
         /// <summary>
@@ -281,11 +278,12 @@ namespace POS.View.storage
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
+            //txt_count.Text = itemsQuery.Count().ToString();
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
             RefrishItemsDatagrid(itemsQuery);
-
         }
 
         #endregion
@@ -317,10 +315,11 @@ namespace POS.View.storage
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
+            //txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
         }
+
 
         private void Btn_firstPage_Click(object sender, RoutedEventArgs e)
         {
@@ -330,7 +329,7 @@ namespace POS.View.storage
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
+            //txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
         }
@@ -342,7 +341,7 @@ namespace POS.View.storage
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
+            //txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
         }
@@ -354,7 +353,7 @@ namespace POS.View.storage
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
+            //txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
         }
@@ -366,7 +365,7 @@ namespace POS.View.storage
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
+            //txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
         }
@@ -379,7 +378,7 @@ namespace POS.View.storage
             x.name.ToLower().Contains(txtItemSearch) ||
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
+            //txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
         }
@@ -432,18 +431,22 @@ namespace POS.View.storage
                 category.categoryId = int.Parse(b.Tag.ToString());
 
             }
+
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
 
         }
         private async void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
         {
+
             categoryParentId = 0;
             RefrishCategoriesCard();
             grid_categoryControlPath.Children.Clear();
             category.categoryId = 0;
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
+
+
         }
 
         #endregion
@@ -465,5 +468,21 @@ namespace POS.View.storage
         {
 
         }
+        private void input_LostFocus(object sender, RoutedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            if (name == "TextBox")
+            {
+            }
+            else if (name == "ComboBox")
+            {
+            }
+            else
+            {
+
+            }
+        }
+
+       
     }
 }

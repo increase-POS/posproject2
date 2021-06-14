@@ -1,4 +1,5 @@
 ﻿using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -38,20 +39,6 @@ namespace POS.View.storage
         public uc_itemsExport()
         {
             InitializeComponent();
-            #region bill
-            List<Bill> items = new List<Bill>();
-            items.Add(new Bill() { Id = 336554944, Total = 255 });
-            items.Add(new Bill() { Id = 336545142, Total = 260 });
-            items.Add(new Bill() { Id = 336556165, Total = 1200 });
-            items.Add(new Bill() { Id = 336551515, Total = 150 });
-            items.Add(new Bill() { Id = 336555162, Total = 840 });
-            items.Add(new Bill() { Id = 336558897, Total = 325 });
-            dg_order.ItemsSource = items;
-            billDetails = LoadCollectionData();
-            dg_billDetails.ItemsSource = billDetails;
-            #endregion
-
-
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
         Category categoryModel = new Category();
@@ -87,8 +74,6 @@ namespace POS.View.storage
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
 
-            // for pagination
-            btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
 
             if (MainWindow.lang.Equals("en"))
             {
@@ -103,10 +88,6 @@ namespace POS.View.storage
 
             translate();
             catigoriesAndItemsView.ucItemsExport = this;
-            await RefrishItems();
-            await RefrishCategories();
-            RefrishCategoriesCard();
-            Txb_searchitems_TextChanged(null, null);
 
 
 
@@ -202,378 +183,157 @@ namespace POS.View.storage
       
         private void Tgl_orderDropDown_Checked(object sender, RoutedEventArgs e)
         {
-            grid_order.Visibility = Visibility.Visible;
+            //grid_order.Visibility = Visibility.Visible;
         }
         private void Tgl_orderDropDown_Unchecked(object sender, RoutedEventArgs e)
         {
-            grid_order.Visibility = Visibility.Collapsed;
+            //grid_order.Visibility = Visibility.Collapsed;
         }
 
-        #region Categor and Item
-        #region Refrish Y
-        /// <summary>
-        /// Category
-        /// </summary>
-        /// <returns></returns>
-        async Task<IEnumerable<Category>> RefrishCategories()
-        {
-            categories = await categoryModel.GetAllCategories();
-            return categories;
-        }
-        async void RefrishCategoriesCard()
-        {
-            if (categories is null)
-                await RefrishCategories();
-            categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            catigoriesAndItemsView.gridCatigories = grid_categoryCards;
-            catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
-        }
-        /// <summary>
-        /// Item
-        /// </summary>
-        /// <returns></returns>
 
-        async Task<IEnumerable<Item>> RefrishItems()
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            if (category.categoryId == 0)
-                items = await itemModel.GetAllItems();
-            else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
-            return items;
+
         }
 
-        void RefrishItemsDatagrid(IEnumerable<Item> _items)
+        private void Btn_orders_Click(object sender, RoutedEventArgs e)
         {
-            dg_items.ItemsSource = _items;
+
         }
 
-        void RefrishItemsCard(IEnumerable<Item> _items)
+        private void Btn_ordersWait_Click(object sender, RoutedEventArgs e)
         {
 
-            catigoriesAndItemsView.gridCatigorieItems = grid_itemContainerCard;
-            catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
         }
-        #endregion
-        #region Get Id By Click  Y
-        private void dg_items_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void input_LostFocus(object sender, RoutedEventArgs e)
         {
-
-
-
-            if (dg_items.SelectedIndex != -1)
+            string name = sender.GetType().Name;
+            if (name == "TextBox")
             {
-                item = dg_items.SelectedItem as Item;
-                this.DataContext = item;
-
-
-
             }
-            if (item != null)
+            else if (name == "ComboBox")
             {
-
-            }
-
-
-        }
-        public async void ChangeCategoryIdEvent(int categoryId)
-        {
-            category = categories.ToList().Find(c => c.categoryId == categoryId);
-
-            if (categories.Where(x =>
-            x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
-            {
-                categoryParentId = category.categoryId;
-                RefrishCategoriesCard();
-            }
-
-            generateTrack(categoryId);
-            await RefrishItems();
-            Txb_searchitems_TextChanged(null, null);
-        }
-
-        public void ChangeItemIdEvent(int itemId)
-        {
-
-
-            item = items.ToList().Find(c => c.itemId == itemId);
-            if (item != null)
-            {
-                this.DataContext = item;
-
-
-            }
-        }
-
-        #endregion
-        #region Toggle Button Y
-        /// <summary>
-        /// Category
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// 
-        /*
-        private void Tgl_categoryIsActive_Checked(object sender, RoutedEventArgs e)
-        {
-            tglCategoryState = 1;
-            RefrishCategoriesCard();
-
-
-
-        }
-        private void Tgl_categorIsActive_Unchecked(object sender, RoutedEventArgs e)
-        {
-            tglCategoryState = 0;
-            RefrishCategoriesCard();
-        }
-        */
-        /// <summary>
-        /// Item
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Tgl_itemIsActive_Checked(object sender, RoutedEventArgs e)
-        {
-            //if (categories is null)
-            //    await RefrishCategories();
-            tglItemState = 1;
-            //tgl_categoryCardIsActive.IsChecked =
-            //    tgl_categoryDatagridIsActive.IsChecked = true;
-            Txb_searchitems_TextChanged(null, null);
-
-
-        }
-        private void Tgl_itemIsActive_Unchecked(object sender, RoutedEventArgs e)
-        {
-            //if (categories is null)
-            //    await RefrishCategories();
-            //categoriesQuery = categories.Where(x => x.isActive == 0);
-            tglItemState = 0;
-            //tgl_categoryCardIsActive.IsChecked =
-            //    tgl_categoryDatagridIsActive.IsChecked = false;
-            Txb_searchitems_TextChanged(null, null);
-        }
-        #endregion
-        #region Switch Card/DataGrid Y
-
-        private void Btn_itemsInCards_Click(object sender, RoutedEventArgs e)
-        {
-            grid_itemsDatagrid.Visibility = Visibility.Collapsed;
-            grid_itemCards.Visibility = Visibility.Visible;
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
-
-            Txb_searchitems_TextChanged(null, null);
-
-        }
-
-        private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
-        {
-            grid_itemCards.Visibility = Visibility.Collapsed;
-            grid_itemsDatagrid.Visibility = Visibility.Visible;
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
-
-            Txb_searchitems_TextChanged(null, null);
-        }
-        #endregion
-        #region Search Y
-
-
-
-        /// <summary>
-        /// Item
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (items is null)
-                await RefrishItems();
-            txtItemSearch = txb_searchitems.Text.ToLower();
-            pageIndex = 1;
-
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-            RefrishItemsDatagrid(itemsQuery);
-
-        }
-
-        #endregion
-        #region Pagination Y
-        Pagination pagination = new Pagination();
-        Button[] btns;
-        public int pageIndex = 1;
-
-        private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-            itemsQuery = items.Where(x => x.isActive == tglItemState);
-
-            if (tb_pageNumberSearch.Text.Equals(""))
-            {
-                pageIndex = 1;
-            }
-            else if (((itemsQuery.Count() - 1) / 9) + 1 < int.Parse(tb_pageNumberSearch.Text))
-            {
-                pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
             }
             else
             {
-                pageIndex = int.Parse(tb_pageNumberSearch.Text);
+
             }
+        }
+        private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cmb = sender as ComboBox;
 
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
+            //if (dg_billDetails.SelectedIndex != -1)
+            //    billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
         }
 
+        private void Btn_items_Click(object sender, RoutedEventArgs e)
+        {
+            //items
 
-        private void Btn_firstPage_Click(object sender, RoutedEventArgs e)
-        {
-            pageIndex = 1;
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-        }
-        private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
-        {
-            pageIndex = int.Parse(btn_prevPage.Content.ToString());
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-        }
-        private void Btn_activePage_Click(object sender, RoutedEventArgs e)
-        {
-            pageIndex = int.Parse(btn_activePage.Content.ToString());
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-        }
-        private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
-        {
-            pageIndex = int.Parse(btn_nextPage.Content.ToString());
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-        }
-        private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
-        {
-            itemsQuery = items.Where(x => x.isActive == tglCategoryState);
-            pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-        }
-        #endregion
-        #region categoryPathControl Y
-
-        async void generateTrack(int categorypaPathId)
-        {
-            grid_categoryControlPath.Children.Clear();
-            IEnumerable<Category> categoriesPath = await
-            categoryModel.GetCategoryTreeByID(categorypaPathId);
-
-            int count = 0;
-            foreach (var item in categoriesPath.Reverse())
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_items w = new wd_items();
+            w.ShowDialog();
+            if (w.isActive)
             {
-                if (categories.Where(x => x.parentId == item.categoryId).Count() != 0)
-                {
-                    Button b = new Button();
-                    b.Content = " > " + item.name + " ";
-                    b.Padding = new Thickness(0);
-                    b.Margin = new Thickness(0);
-                    b.Background = null;
-                    b.BorderThickness = new Thickness(0);
-                    b.FontFamily = Application.Current.Resources["Font-cairo-light"] as FontFamily;
-                    b.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
-                    b.FontSize = 14;
-                    Grid.SetColumn(b, count);
-                    b.DataContext = item;
-                    b.Name = "category" + item.categoryId;
-                    b.Tag = item.categoryId;
-                    b.Click += new RoutedEventHandler(getCategoryIdFromPath);
-                    count++;
-                    grid_categoryControlPath.Children.Add(b);
-                }
+                ////// this is ItemId
+                //w.selectedItem
+                // MessageBox.Show(w.selectedItem.ToString());
+                ChangeItemIdEvent(w.selectedItem);
             }
 
-
+            Window.GetWindow(this).Opacity = 1;
         }
-        private async void getCategoryIdFromPath(object sender, RoutedEventArgs e)
-        {
-            Button b = (Button)sender;
+        #region Get Id By Click  Y
 
-            if (!string.IsNullOrEmpty(b.Tag.ToString()))
-            {
-                generateTrack(int.Parse(b.Tag.ToString()));
-                categoryParentId = int.Parse(b.Tag.ToString());
-                RefrishCategoriesCard();
-
-
-                category.categoryId = int.Parse(b.Tag.ToString());
-
-            }
-            await RefrishItems();
-            Txb_searchitems_TextChanged(null, null);
-
-        }
-        private async void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
-        {
-            categoryParentId = 0;
-            RefrishCategoriesCard();
-            grid_categoryControlPath.Children.Clear();
-            category.categoryId = 0;
-            await RefrishItems();
-            Txb_searchitems_TextChanged(null, null);
-        }
-
-        #endregion
-
-        #endregion
-        #region Excel
-        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        public async void ChangeCategoryIdEvent(int categoryId)
         {
 
         }
+
+
+        public async void ChangeItemIdEvent(int itemId)
+        {
+            
+        }
+
+        #endregion
+        private void space_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+        private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                e.Handled = false;
+
+            else
+                e.Handled = true;
+        }
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #region Button In DataGrid
+        void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
+        {
+            //for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
+            //    if (vis is DataGridRow)
+            //    {
+            //        BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
+            //        int index = dg_billDetails.SelectedIndex;
+            //        // calculate new sum
+            //        _Sum -= row.Total;
+
+            //        // remove item from bill
+            //        billDetails.RemoveAt(index);
+
+            //        ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)dg_billDetails.ItemsSource;
+            //        data.Remove(row);
+
+            //        // calculate new total
+            //        refreshTotalValue();
+            //    }
+            //_SequenceNum = 0;
+            //_Sum = 0;
+            //for (int i = 0; i < billDetails.Count; i++)
+            //{
+            //    _SequenceNum++;
+            //    _Sum += billDetails[i].Total;
+            //    billDetails[i].ID = _SequenceNum;
+            //}
+            //refrishBillDetails();
+
+        }
         #endregion
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private void Btn_newDraft_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_draft_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
 
         }
