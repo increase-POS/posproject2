@@ -1180,7 +1180,7 @@
     <value>Choose an invoice first</value>
   </data>
   <data name="trReceived" xml:space="preserve">
-    <value>Received</value>
+    <value>Receipts</value>
   </data>
   <data name="trCompleted" xml:space="preserve">
     <value>Completed</value>
@@ -1199,5 +1199,17 @@
   </data>
   <data name="trErrorPasswordToolTip" xml:space="preserve">
     <value>Wrong password</value>
+  </data>
+  <data name="trEmptyCustomerToolTip" xml:space="preserve">
+    <value>Customer can not be empty</value>
+  </data>
+  <data name="trEmptyProcessNumToolTip" xml:space="preserve">
+    <value>Process number can not be empty</value>
+  </data>
+  <data name="trErrorBarcodeToolTip" xml:space="preserve">
+    <value>Error barcode</value>
+  </data>
+  <data name="trErrorInvDateAfterDeserveToolTip" xml:space="preserve">
+    <value>Deserved date cannot be earlier than invoice date</value>
   </data>
 </root>

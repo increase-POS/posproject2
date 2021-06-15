@@ -1042,6 +1042,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to العميل لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyCustomerToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyCustomerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رقم السحب/الإيداع لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyDepositNumberToolTip {
@@ -1168,6 +1177,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to رقم العملية لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyProcessNumToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyProcessNumToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الخاصية لا يمكن أن تكون فارغة.
         /// </summary>
         internal static string trEmptyPropertyToolTip {
@@ -1254,6 +1272,15 @@ namespace POS {
         internal static string trErrorAmountIncreaseToolTip {
             get {
                 return ResourceManager.GetString("trErrorAmountIncreaseToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to باركود خاطئ.
+        /// </summary>
+        internal static string trErrorBarcodeToolTip {
+            get {
+                return ResourceManager.GetString("trErrorBarcodeToolTip", resourceCulture);
             }
         }
         
@@ -1470,6 +1497,15 @@ namespace POS {
         internal static string trErrorEnglishBarcodeToolTip {
             get {
                 return ResourceManager.GetString("trErrorEnglishBarcodeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يمكن أن يكون تاريخ الاستحقاق قبل تاريخ الفاتورة.
+        /// </summary>
+        internal static string trErrorInvDateAfterDeserveToolTip {
+            get {
+                return ResourceManager.GetString("trErrorInvDateAfterDeserveToolTip", resourceCulture);
             }
         }
         

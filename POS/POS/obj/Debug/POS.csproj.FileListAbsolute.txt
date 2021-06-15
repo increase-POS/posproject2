@@ -1877,3 +1877,5 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_medals.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_medals.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_customersList.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_customersList.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\purchases\uc_statistic.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\purchases\uc_statistic.baml

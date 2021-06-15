@@ -812,7 +812,7 @@
                                 <DataGridTextColumn IsReadOnly="True"  Width="*"  Header="Total" Binding="{Binding Path=Total}"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                        <Separator Margin="5,0" Grid.Row="2"  Background="#999999" VerticalAlignment="Center" Width="auto" />
+                        <Separator Margin="5,0" Grid.Row="2"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
 
                         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,5">
                             <TextBlock Grid.Row="0"  Text="SUM" x:Name="txt_sum" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  

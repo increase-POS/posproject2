@@ -46,20 +46,7 @@ namespace POS.View
         }
         public uc_payInvoice()
         {
-            InitializeComponent();
-
-            #region bill
-            List<Bill> items = new List<Bill>();
-            items.Add(new Bill() { Id = 336554944, Total = 255 });
-            items.Add(new Bill() { Id = 336545142, Total = 260 });
-            items.Add(new Bill() { Id = 336556165, Total = 1200 });
-            items.Add(new Bill() { Id = 336551515, Total = 150 });
-            items.Add(new Bill() { Id = 336555162, Total = 840 });
-            items.Add(new Bill() { Id = 336558897, Total = 325 });
-
-            #endregion
-            
-
+            InitializeComponent();           
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
         //Category categoryModel = new Category();
@@ -71,7 +58,7 @@ namespace POS.View
         Item itemModel = new Item();
         Item item = new Item();
         IEnumerable<Item> items;
-        IEnumerable<Item> itemsQuery;
+       // IEnumerable<Item> itemsQuery;
 
         Branch branchModel = new Branch();
         IEnumerable<Branch> branches;
@@ -87,9 +74,9 @@ namespace POS.View
         Invoice invoice = new Invoice();
 
         List<ItemTransfer> invoiceItems;
-        Bill bill;
+      //  Bill bill;
 
-        #region//to handle barcode characters
+        #region //to handle barcode characters
         static private int _SelectedBranch = -1;
         static private int _SelectedVendor = -1;
         static private int _SelectedDiscountType = -1;
@@ -100,7 +87,7 @@ namespace POS.View
         #endregion
 
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
-        int? parentCategorieSelctedValue;
+      //  int? parentCategorieSelctedValue;
         public byte tglCategoryState = 1;
         public byte tglItemState = 1;
         public string txtItemSearch;
@@ -108,7 +95,7 @@ namespace POS.View
         //for bill details
         static private int _SequenceNum = 0;
         static private decimal _Sum = 0;
-        static private string _InvoiceType = "pd";
+        static private string _InvoiceType = "pd"; // purchase draft
                
         // for report
         ReportCls reportclass = new ReportCls();
@@ -164,6 +151,9 @@ namespace POS.View
             window.KeyDown -= HandleKeyPress;
             window.KeyDown += HandleKeyPress;
 
+            dp_desrvedDate.SelectedDateChanged += this.dp_SelectedDateChanged;
+            dp_invoiceDate.SelectedDateChanged += this.dp_SelectedDateChanged;
+
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -214,9 +204,6 @@ namespace POS.View
         }
 
         #region bill
-
-
-
         public class Bill
         {
             public int Id { get; set; }
@@ -395,10 +382,7 @@ namespace POS.View
         {
             item = items.ToList().Find(c => c.itemId == itemId);
 
-            //check if item exist in bill details
-            int index = billDetails.IndexOf(billDetails.Where(p => p.itemId == itemId).FirstOrDefault());
-
-            if (item != null && index == -1)
+            if (item != null)
             {
                 this.DataContext = item;
 
@@ -413,7 +397,6 @@ namespace POS.View
 
                     refreshTotalValue();
                     refrishBillDetails();
-
                 }
             }
         }
@@ -739,12 +722,12 @@ namespace POS.View
             if (invoice.invType == "p" && (invType == "pb" || invType =="pbd")) // invoice is purchase and will bebounce purchase  or purchase bounce draft bounce , save another invoice in db
             {
                 invoice.invoiceMainId = invoice.invoiceId;
-                invoice.invoiceId = 0;
+                invoice.invoiceId = 0;             
             }
-            if (invoice.invType != "p")
+            
+            if (invoice.invType != "p" || invoice.invoiceId == 0)
             {
                 invoice.invType = invType;
-
                 if (!tb_discount.Text.Equals(""))
                     invoice.discountValue = decimal.Parse(tb_discount.Text);
 
@@ -799,18 +782,8 @@ namespace POS.View
                 {
                     decimal deserved = 0;
 
-                    if (balance >= invoice.totalNet)
-                    {
-                        paid = (decimal)invoice.totalNet;
-                        deserved = 0;
-                        balance = (decimal)(balance - invoice.totalNet);
-                    }
-                    else
-                    {
-                        paid = balance;
-                        deserved = (decimal)(invoice.totalNet - balance);
-                        balance = 0;
-                    }
+                    paid = (decimal)invoice.totalNet;
+                    balance = (decimal)(balance + invoice.totalNet);
                     invoice.paid = paid;
                     invoice.deserved = deserved;
                 }
@@ -827,7 +800,7 @@ namespace POS.View
 
                         // cach transfer model
                         CashTransfer cashTrasnfer = new CashTransfer();
-                        cashTrasnfer.transType = "d"; //deposit
+                        cashTrasnfer.transType = "p"; //deposit
                         cashTrasnfer.posId = MainWindow.posID;
                         cashTrasnfer.agentId = invoice.agentId;
                         cashTrasnfer.invId = invoiceId;
@@ -838,7 +811,6 @@ namespace POS.View
                         cashTrasnfer.createUserId = MainWindow.userID;
 
                         await cashTrasnfer.Save(cashTrasnfer); //add cash transfer
-
                     }
 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -864,8 +836,22 @@ namespace POS.View
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
             }
-           else
-                clearInvoice();
+            clearInvoice();
+        }
+        private void dp_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DateTime invoiceDate;
+            DateTime desrveDate;
+            if (dp_invoiceDate.SelectedDate != null && dp_desrvedDate.SelectedDate != null)
+            {
+                invoiceDate = (DateTime)dp_invoiceDate.SelectedDate.Value.Date;
+                desrveDate = (DateTime)dp_desrvedDate.SelectedDate.Value.Date;
+                if (desrveDate < invoiceDate)
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorInvDateAfterDeserveToolTip"), animation: ToasterAnimation.FadeIn);
+                    dp_desrvedDate.Text = "";
+                }
+            }
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
@@ -902,13 +888,14 @@ namespace POS.View
             _Sum = 0;
             _SequenceNum = 0;
             _SelectedBranch = -1;
+            _SelectedVendor = -1;
             _InvoiceType = "pd";
             invoice = new Invoice();
             tb_barcode.Clear();
             cb_branch.SelectedIndex = -1;
             cb_vendor.SelectedIndex = -1;
             cb_vendor.SelectedItem = "";
-            cb_typeDiscount.SelectedIndex = -1;
+            cb_typeDiscount.SelectedIndex = 0;
             dp_desrvedDate.Text="";
             txt_vendorIvoiceDetails.Text ="";
             tb_invoiceNumber.Clear();
@@ -918,6 +905,7 @@ namespace POS.View
             billDetails.Clear();
             tb_total.Text = "";
             tb_sum.Text = null;
+            tb_taxValue.Text = MainWindow.tax.ToString();
 
             btn_updateVendor.IsEnabled = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
@@ -1598,7 +1586,7 @@ namespace POS.View
 
                 oldCount = row.Count;
 
-                if (_InvoiceType == "pb")
+                if (_InvoiceType == "pbd")
                 {
                     ItemTransfer item = invoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
                     if (newCount > item.quantity)
@@ -1608,7 +1596,6 @@ namespace POS.View
 
                         newCount = (long)item.quantity;
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
-
                     }
                 }
 
@@ -1725,13 +1712,16 @@ namespace POS.View
             w.ShowDialog();
             if (w.isActive)
             {
-                ////// this is ItemId
-                //w.selectedItem
-               // MessageBox.Show(w.selectedItem.ToString());
+                ////// w.selectedItem this is ItemId
                 ChangeItemIdEvent(w.selectedItem);
             }
 
             Window.GetWindow(this).Opacity = 1;
+        }
+
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+            clearInvoice();
         }
     }
 

@@ -126,6 +126,7 @@
                                 <TextRun>
                                   <Value>=Parameters!trName.Value</Value>
                                   <Style>
+                                    <FontFamily>Montserrat</FontFamily>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -161,6 +162,7 @@
                                 <TextRun>
                                   <Value>=Parameters!trCode.Value</Value>
                                   <Style>
+                                    <FontFamily>Montserrat</FontFamily>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -196,6 +198,7 @@
                                 <TextRun>
                                   <Value>=Parameters!trbranch.Value</Value>
                                   <Style>
+                                    <FontFamily>Montserrat</FontFamily>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -231,6 +234,7 @@
                                 <TextRun>
                                   <Value>=Parameters!trNote.Value</Value>
                                   <Style>
+                                    <FontFamily>Montserrat</FontFamily>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -270,7 +274,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!name.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -302,7 +309,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!code.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -334,7 +344,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!branchName.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -366,7 +379,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!note.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -434,6 +450,7 @@
                   <TextRun>
                     <Value>=Parameters!Title.Value</Value>
                     <Style>
+                      <FontFamily>Montserrat</FontFamily>
                       <FontSize>20pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -447,7 +464,7 @@
             <rd:DefaultName>agentTitle</rd:DefaultName>
             <Top>0.5cm</Top>
             <Left>8cm</Left>
-            <Height>1cm</Height>
+            <Height>1.1905cm</Height>
             <Width>5cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
@@ -491,6 +508,7 @@
                                 <TextRun>
                                   <Value>=Parameters!trName.Value</Value>
                                   <Style>
+                                    <FontFamily>Montserrat</FontFamily>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -526,6 +544,7 @@
                                 <TextRun>
                                   <Value>=Parameters!trCode.Value</Value>
                                   <Style>
+                                    <FontFamily>Montserrat</FontFamily>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -561,6 +580,7 @@
                                 <TextRun>
                                   <Value>=Parameters!trbranch.Value</Value>
                                   <Style>
+                                    <FontFamily>Montserrat</FontFamily>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -596,6 +616,7 @@
                                 <TextRun>
                                   <Value>=Parameters!trNote.Value</Value>
                                   <Style>
+                                    <FontFamily>Montserrat</FontFamily>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -635,7 +656,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!name.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -667,7 +691,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!code.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -699,7 +726,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!branchName.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -731,7 +761,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!note.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -829,7 +862,10 @@
                   <TextRuns>
                     <TextRun>
                       <Value>=Globals!ExecutionTime</Value>
-                      <Style />
+                      <Style>
+                        <FontFamily>Montserrat</FontFamily>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
                     </TextRun>
                   </TextRuns>
                   <Style />
@@ -871,19 +907,31 @@
                   <TextRuns>
                     <TextRun>
                       <Value>Page </Value>
-                      <Style />
+                      <Style>
+                        <FontFamily>Montserrat</FontFamily>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
                     </TextRun>
                     <TextRun>
                       <Value>=Globals!PageNumber</Value>
-                      <Style />
+                      <Style>
+                        <FontFamily>Montserrat</FontFamily>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
                     </TextRun>
                     <TextRun>
                       <Value> of </Value>
-                      <Style />
+                      <Style>
+                        <FontFamily>Montserrat</FontFamily>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
                     </TextRun>
                     <TextRun>
                       <Value>=Globals!TotalPages</Value>
-                      <Style />
+                      <Style>
+                        <FontFamily>Montserrat</FontFamily>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
                     </TextRun>
                   </TextRuns>
                   <Style />

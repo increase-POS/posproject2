@@ -73,6 +73,7 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentProcessType, MainWindow.resourcemanager.GetString("trPaymentTypeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_docNum, MainWindow.resourcemanager.GetString("trDocNumHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_docDate, MainWindow.resourcemanager.GetString("trDocDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
 
@@ -160,6 +161,7 @@ namespace POS.View.accounts
 
             dp_endSearchDate.SelectedDate = DateTime.Now;
             dp_startSearchDate.SelectedDate = DateTime.Now;
+            dp_docDate.SelectedDate = DateTime.Now;
 
             #region fill deposit to combo
             var depositlist = new[] {
@@ -226,6 +228,8 @@ namespace POS.View.accounts
         private async void Dg_paymentsAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
             SectionData.clearValidate(tb_docNum, p_errorDocNum);
+            TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
+            SectionData.clearValidate(dpDate, p_errorDocDate);
             SectionData.clearValidate(tb_cash, p_errorCash);
             SectionData.clearComboBoxValidate(cb_depositTo, p_errorDepositTo);
             SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
@@ -242,10 +246,6 @@ namespace POS.View.accounts
                 if (cashtrans != null)
                 {
                     cb_depositTo.SelectedValue = cashtrans.side;
-
-                    //MessageBox.Show(cashtrans.agentId.ToString() + " - " + cashtrans.userId.ToString());
-                    //txt_recipient.Text = cashtrans.agentId.ToString() + " - " + cashtrans.userId.ToString();
-                    //MessageBox.Show(cashtrans.processType);
 
                     switch (cb_depositTo.SelectedValue.ToString())
                     {
@@ -307,13 +307,21 @@ namespace POS.View.accounts
         {//save
             //chk empty cash
             SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
-            
+
             //chk empty doc num
-            if(tb_docNum.IsEnabled)
-                SectionData.validateEmptyTextBox(tb_docNum, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");  
+            TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
+
+            if (grid_document.IsVisible)
+            {
+                SectionData.validateEmptyTextBox(tb_docNum, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");
+                SectionData.validateEmptyTextBox(dpDate, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
+            }
             else
-                SectionData.clearValidate(tb_docNum, p_errorDocNum);  
-            
+            {
+                SectionData.clearValidate(tb_docNum, p_errorDocNum);
+                SectionData.clearValidate(dpDate, p_errorDocNum);
+            }
+
             //chk empty deposit to
             SectionData.validateEmptyComboBox(cb_depositTo, p_errorDepositTo, tt_errorDepositTo, "trErrorEmptyDepositToToolTip");
             
@@ -375,7 +383,10 @@ namespace POS.View.accounts
                     cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
 
                 if ((cb_paymentProcessType.SelectedValue.ToString().Equals("doc")) || (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque")))
+                {
                     cash.docNum = tb_docNum.Text;
+                    //date
+                }
 
                 string s = await cashModel.Save(cash);
 
@@ -441,13 +452,14 @@ namespace POS.View.accounts
             cb_paymentProcessType.SelectedIndex = -1;
             cb_card.SelectedIndex = -1;
             tb_docNum.Clear();
+            dp_docDate.SelectedDate = null;
             tb_cash.Clear();
             tb_note.Clear();
             cb_recipientV.Visibility = Visibility.Collapsed;
             cb_recipientC.Visibility = Visibility.Collapsed;
             cb_recipientU.Visibility = Visibility.Collapsed;
 
-            tb_docNum.IsEnabled = true;
+            grid_document.Visibility = Visibility.Collapsed ;
 
             SectionData.clearValidate(tb_docNum, p_errorDocNum);
             SectionData.clearValidate(tb_cash, p_errorCash);
@@ -534,25 +546,29 @@ namespace POS.View.accounts
 
         private void Cb_paymentProcessType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//type selection
-            switch(cb_paymentProcessType.SelectedIndex)
+            TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
+
+            switch (cb_paymentProcessType.SelectedIndex)
             {
+
                 case 0://cash
-                    tb_docNum.Visibility = Visibility.Collapsed; tb_docNum.Clear();
+                    grid_document.Visibility = Visibility.Collapsed; tb_docNum.Clear();dp_docDate.SelectedDate = null;
                     cb_card.Visibility = Visibility.Collapsed;   cb_card.SelectedIndex = -1;
                     SectionData.clearValidate(tb_docNum, p_errorDocNum);
+                    SectionData.clearValidate(dpDate, p_errorDocDate);
                     SectionData.clearComboBoxValidate(cb_card , p_errorCard);
                     break;
 
                 case 1://doc
 
                 case 2://cheque
-                    tb_docNum.Visibility = Visibility.Visible;
+                    grid_document.Visibility = Visibility.Visible;
                     cb_card.Visibility = Visibility.Collapsed; cb_card.SelectedIndex = -1;
                     SectionData.clearComboBoxValidate(cb_card, p_errorCard);
                     break;
 
                 case 3://card
-                    tb_docNum.Visibility = Visibility.Collapsed; tb_docNum.Clear();
+                    grid_document.Visibility = Visibility.Collapsed; tb_docNum.Clear(); dp_docDate.SelectedDate = null;
                     cb_card.Visibility = Visibility.Visible ;
                     SectionData.clearValidate(tb_docNum, p_errorDocNum);
                     break;

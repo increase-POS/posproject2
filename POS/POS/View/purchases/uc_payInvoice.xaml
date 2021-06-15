@@ -60,7 +60,7 @@
                             </Path.ToolTip>
                         </Path>
                     </Button>
-                    <Border Grid.Column="3"  Background="White" Margin="5,5"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />
+                    <Border  DockPanel.Dock="Right"  Margin="5,10,5,10"    CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
                     <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_invoices"  Click="Btn_invoices_Click" >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -103,7 +103,7 @@
                             </Path.ToolTip>
                         </Path>
                     </Button>
-                    <Border Grid.Column="6"  Background="White" Margin="5"  CornerRadius="0,0,0,0"  BorderThickness="0,0,1,0" BorderBrush="#377EB8" />
+                    <Border  DockPanel.Dock="Right"  Margin="5,10,5,10"   CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
 
                     <Button Grid.Column="7" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_payments"    >
@@ -180,7 +180,7 @@
                         </Path>
                     </Button>
 
-                    <Border Grid.Column="6"  Background="White" Margin="5"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" DockPanel.Dock="Right"/>
+                    <Border  DockPanel.Dock="Right"  Margin="5,10,5,10"   CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
                     <Button Grid.Column="5" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_invoiceImages" Click="Btn_invoiceImage_Click"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -199,7 +199,7 @@
                             </Path.ToolTip>
                         </Path>
                     </Button>
-                    <Border Grid.Column="4" DockPanel.Dock="Right" Background="White" Margin="5"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />
+                    <Border  DockPanel.Dock="Right"  Margin="5,10,5,10"    CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
                     <Button DockPanel.Dock="Right" Grid.Column="3" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_preview"   >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -326,25 +326,25 @@
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
 
                                 <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
-                          Background="{x:Null}" BorderBrush="{x:Null}" 
-                    Margin="5,1"   ToolTip="clear">
-
+                                        Background="{x:Null}" BorderBrush="{x:Null}" 
+                                        Margin="5,1"   ToolTip="clear" Click="Btn_clear_Click">
                                     <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="20" Height="20"/>
+                                        HorizontalAlignment="Center" Grid.Column="0"  
+                                        VerticalAlignment="Center" Width="20" Height="20"/>
                                 </Button>
 
                             </Grid>
 
                             <Grid  Grid.Row="1" >
                                 <ComboBox x:Name="cb_vendor"  Grid.Row="1"
-                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                    Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                    Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                     materialDesign:HintAssist.Hint="Vendor..."  
                                     TextBlock.FontSize="12"   Background="#f8f8f8" 
                                     Grid.Column="1" Height="40"   Margin="5,5"
-                                    BorderBrush="#737373" BorderThickness="0"
-                                          LostFocus="input_LostFocus" SelectionChanged="Cb_vendor_SelectionChanged"/>
+                                    BorderBrush="#737373" BorderThickness="0" IsEditable="True"
+                                    KeyUp="Cb_vendor_KeyUp"
+                                    LostFocus="input_LostFocus" SelectionChanged="Cb_vendor_SelectionChanged"/>
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,45,5"
                                           Name="p_errorVendor"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -376,13 +376,13 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <DatePicker  x:Name="dp_desrvedDate"  Margin="5,5"
-                                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                                BorderBrush="#737373"  BorderThickness="0" 
-                                TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0"  
-                                materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Deserved Date..."  
-                                         PreviewKeyUp="Dp_date_PreviewKeyUp"
-                                Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"  Height="40"    />
+                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                        BorderBrush="#737373"  BorderThickness="0" 
+                                        TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0"  
+                                        materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                        materialDesign:HintAssist.Hint="Deserved Date..."  
+                                        PreviewKeyUp="Dp_date_PreviewKeyUp"
+                                        Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"  Height="40"    />
                                 <Path x:Name="p_errorDesrvedDate" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -524,14 +524,14 @@
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
                         <Grid  Margin="5" Grid.Row="3"   >
                             <TextBox x:Name="tb_barcode"  Text="{Binding discount, Mode=OneWay}"
-                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                             Grid.Row="2" Padding="10,0,5,0"
-                                    materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                     MaxLength="20" 
-                                            BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..."  
-                                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                            BorderBrush="#f8f8f8"
-                                            Grid.Column="1"  Height="40"    />
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Grid.Row="2" Padding="10,0,5,0" MaxLength="13"
+                                     PreviewTextInput="NumberValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"  
+                                     BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..."  
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                     BorderBrush="#f8f8f8" KeyDown="Tb_barcode_KeyDown"
+                                     Grid.Column="1"  Height="40"    />
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
                                             HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   

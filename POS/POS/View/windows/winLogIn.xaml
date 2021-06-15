@@ -1,0 +1,104 @@
+﻿<Window x:Class="POS.View.windows.winLogIn"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:POS.View.windows"
+        mc:Ignorable="d"
+        Title="winLogIn" Height="400"
+        Width="700"
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded"
+        WindowStyle="None"
+        MouseDown="Window_MouseDown"
+        BorderThickness="0"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation
+                        Storyboard.TargetName="bdrLogIn"
+                        Storyboard.TargetProperty="Opacity"
+                        From="0" To="1"
+                        Duration="0:0:1"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <Border x:Name="bdrLogIn" CornerRadius="10"  Background="White" >
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="1.5*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+
+            <!--header-->
+
+            <!--Asids-->
+
+            <Grid VerticalAlignment="Center" Margin="20,0,20,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="68.8"></RowDefinition>
+                    </Grid.RowDefinitions>
+                 
+                <Image Source="/pic/increase-logo.png" Margin="0,0,0,0" Width="75" Height="75"/>
+
+                    <DockPanel Grid.Row="1" Margin="0,10,15,0">
+                        <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Account" Height="25" Width="25" Foreground="Gray" ></materialDesign:PackIcon>
+                        </TextBlock>
+                        <TextBox x:Name="txtUserName" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="5,0,0,0"  materialDesign:HintAssist.Hint="User Name" materialDesign:HintAssist.Foreground="#FF2196F3" VerticalAlignment="Top"></TextBox>
+                    </DockPanel>
+                    <DockPanel Grid.Row="2" Margin="0,10,15,0">
+                        <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Password" Height="25" Width="25" Foreground="Gray"></materialDesign:PackIcon>
+                        </TextBlock>
+                    <PasswordBox x:Name="txtPassword" Margin="5,0,0,0" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" materialDesign:HintAssist.Hint="Password" materialDesign:HintAssist.Foreground="#FF2196F3" VerticalAlignment="Top"></PasswordBox>
+                    </DockPanel>
+                    <CheckBox Grid.Row="3" Margin="5,20,0,0" x:Name="cbxRemmemberMe" Content="Remmember Me" VerticalAlignment="Center"></CheckBox>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="4" >
+                        <Button x:Name="btnLogIn" Background="#FF2196F3" Foreground="White" Margin="0,0,10,0" Click="btnLogIn_Click" >
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0">
+                                        <materialDesign:PackIcon Kind="Login"></materialDesign:PackIcon>
+                                </TextBlock>
+                                <TextBlock Text="Log In"></TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnClose" Background="#FF2196F3" Foreground="White" Click="btnClose_Click" >
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0">
+                                        <materialDesign:PackIcon Kind="Close"></materialDesign:PackIcon>
+                                </TextBlock>
+                                <TextBlock Text="CLose"></TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+         
+            <!--Main-->
+            <Border Grid.Column="1" CornerRadius="0,10,10,0">
+                <Border.Background>
+                    <ImageBrush Stretch="Fill" ImageSource="/pic/increase-login-bg.png"/>
+                </Border.Background>
+            </Border>
+           
+
+        </Grid>
+
+    </Border>
+</Window>

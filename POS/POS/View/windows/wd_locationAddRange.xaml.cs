@@ -376,15 +376,6 @@ namespace POS.View.windows
             }
         }
 
-        private void Window_Deactivated(object sender, EventArgs e)
-        {
-            isOpend = true;
-            this.Close();
-        }
-
-        internal bool Closed()
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

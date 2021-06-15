@@ -70,33 +70,43 @@ namespace POS.View.windows
                 img_upload.Background = brush;
             }
         }
+        private void validateDocValues()
+        {
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+        }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            docId = 0;
-            docImgModel.tableName = tableName;
-            docImgModel.tableId = tableId;
-            docImgModel.docnum = docNum;
-            docImgModel.createUserId = MainWindow.userID;
+            validateDocValues();
+            if (!tb_name.Text.Equals(""))
+            {
+                docId = 0;
+                docImgModel.id = docId;
+                docImgModel.tableName = tableName;
+                docImgModel.tableId = tableId;
+                docImgModel.docnum = docNum;
+                docImgModel.docName = tb_name.Text;
+                docImgModel.note = tb_notes.Text;
+                docImgModel.createUserId = MainWindow.userID;
 
-            string res = await docImgModel.saveDocImage(docImgModel);
-            if (!res.Equals("0"))
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-            else
-                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                string res = await docImgModel.saveDocImage(docImgModel);
+                if (!res.Equals("0"))
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                else
+                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-            int docImageId = int.Parse(res);
+                int docImageId = int.Parse(res);
 
-            await docImgModel.uploadImage(openFileDialog.FileName,tableName ,docImageId);
+                await docImgModel.uploadImage(openFileDialog.FileName, tableName, docImageId);
 
-            //refresh image list
-             await refreshImageList();
+                //refresh image list
+                await refreshImageList();
+                clear();
+            }
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
-        {
-          
-
-            if (docId != 0)
+        {        
+            if (docImgModel.id != 0)
             {
                 Boolean res = await docImgModel.delete(docId);
 
@@ -115,7 +125,15 @@ namespace POS.View.windows
 
                 //refresh images
                 await refreshImageList();
+                clear();
             }
+        }
+        private void clear()
+        {
+            tb_name.Clear();
+            tb_notes.Clear();
+            openFileDialog.FileName = "";
+            docImgModel = new DocImage();
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
@@ -124,16 +142,11 @@ namespace POS.View.windows
 
         private async Task refreshImageList()
         {
-            int sequence = 0;
-            lst_images.Items.Clear();
-
             imageList = await docImgModel.GetDocImages(tableName, tableId);
 
-            foreach (DocImage doc in imageList)
-            {
-                sequence++;
-                lst_images.Items.Add(sequence);
-            }
+            lst_images.ItemsSource = imageList.ToList();
+            lst_images.DisplayMemberPath = "docName";
+            lst_images.SelectedValuePath = "id";
         }
         private async void getImg(string imageName)
         {
@@ -158,8 +171,11 @@ namespace POS.View.windows
         {
             if (lst_images.SelectedIndex != -1)
             {
-                docId = imageList[lst_images.SelectedIndex].id;
-                string imageName = imageList[lst_images.SelectedIndex].image;
+                docId = (int)lst_images.SelectedValue;
+                docImgModel = imageList.ToList().Find(c => c.id == docId);
+                tb_name.Text = docImgModel.docName;
+                tb_notes.Text = docImgModel.note;
+                string imageName = docImgModel.image;
                 getImg(imageName);
             }
         }
@@ -251,9 +267,33 @@ namespace POS.View.windows
 
         }
 
-        private void Btn_update_Click(object sender, RoutedEventArgs e)
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {
-            
+            validateDocValues();
+            if (!tb_name.Text.Equals(""))
+            {
+                docImgModel.tableName = tableName;
+                docImgModel.tableId = tableId;
+                docImgModel.docnum = docNum;
+                docImgModel.docName = tb_name.Text;
+                docImgModel.note = tb_notes.Text;
+                docImgModel.updateUserId = MainWindow.userID;
+
+                string res = await docImgModel.saveDocImage(docImgModel);
+                if (!res.Equals("0"))
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                else
+                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                int docImageId = int.Parse(res);
+
+                if(openFileDialog.FileName != "")
+                    await docImgModel.uploadImage(openFileDialog.FileName, tableName, docImageId);
+
+                //refresh image list
+                await refreshImageList();
+                clear();
+            }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

@@ -1179,4 +1179,16 @@
   <data name="trErrorPasswordToolTip" xml:space="preserve">
     <value>كلمة المرور خاطئة</value>
   </data>
+  <data name="trEmptyCustomerToolTip" xml:space="preserve">
+    <value>العميل لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyProcessNumToolTip" xml:space="preserve">
+    <value>رقم العملية لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trErrorBarcodeToolTip" xml:space="preserve">
+    <value>باركود خاطئ</value>
+  </data>
+  <data name="trErrorInvDateAfterDeserveToolTip" xml:space="preserve">
+    <value>لا يمكن أن يكون تاريخ الاستحقاق قبل تاريخ الفاتورة</value>
+  </data>
 </root>

@@ -134,7 +134,7 @@
                   <Width>2.40858cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.60579cm</Width>
+                  <Width>5.6227cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -151,7 +151,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>Num</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -184,7 +187,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>Item</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -217,7 +223,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>Unit</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -250,7 +259,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>QTY</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -283,7 +295,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>Total</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -321,7 +336,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=rownumber(nothing)</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -353,7 +371,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!itemName.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -385,7 +406,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!unitName.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -417,7 +441,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!quantity.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -449,7 +476,10 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Round(Fields!price.Value*Fields!quantity.Value,2)</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Montserrat</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -498,7 +528,7 @@
             <Top>3.99636cm</Top>
             <Left>2.65657cm</Left>
             <Height>1.2cm</Height>
-            <Width>15.45673cm</Width>
+            <Width>16.47364cm</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -513,7 +543,10 @@
                 <TextRuns>
                   <TextRun>
                     <Value>SubTotal:</Value>
-                    <Style />
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
@@ -525,7 +558,7 @@
             <Top>5.23164cm</Top>
             <Left>13.54278cm</Left>
             <Height>0.67938cm</Height>
-            <Width>1.7327cm</Width>
+            <Width>2.01492cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -545,7 +578,10 @@
                 <TextRuns>
                   <TextRun>
                     <Value>=Parameters!total.Value</Value>
-                    <Style />
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -553,9 +589,9 @@
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>5.23164cm</Top>
-            <Left>15.27548cm</Left>
+            <Left>15.5577cm</Left>
             <Height>0.67938cm</Height>
-            <Width>2.80254cm</Width>
+            <Width>3.57865cm</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -575,7 +611,10 @@
                 <TextRuns>
                   <TextRun>
                     <Value>Discount:</Value>
-                    <Style />
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
@@ -587,7 +626,7 @@
             <Top>6.5904cm</Top>
             <Left>13.54278cm</Left>
             <Height>0.67938cm</Height>
-            <Width>1.72742cm</Width>
+            <Width>2.01492cm</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -607,7 +646,10 @@
                 <TextRuns>
                   <TextRun>
                     <Value>=Parameters!discountValue.Value</Value>
-                    <Style />
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -615,9 +657,9 @@
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>6.5904cm</Top>
-            <Left>15.2702cm</Left>
+            <Left>15.5577cm</Left>
             <Height>0.67938cm</Height>
-            <Width>2.80168cm</Width>
+            <Width>3.57251cm</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -652,7 +694,7 @@
             <Top>7.26978cm</Top>
             <Left>13.54278cm</Left>
             <Height>0.67938cm</Height>
-            <Width>1.7327cm</Width>
+            <Width>2.01492cm</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
@@ -673,7 +715,10 @@
                 <TextRuns>
                   <TextRun>
                     <Value>=Parameters!totalNet.Value</Value>
-                    <Style />
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -681,9 +726,9 @@
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>7.26978cm</Top>
-            <Left>15.2702cm</Left>
+            <Left>15.5577cm</Left>
             <Height>0.67938cm</Height>
-            <Width>2.80168cm</Width>
+            <Width>3.57251cm</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
@@ -811,7 +856,10 @@
                 <TextRuns>
                   <TextRun>
                     <Value>Tax:</Value>
-                    <Style />
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
@@ -823,7 +871,7 @@
             <Top>5.91102cm</Top>
             <Left>13.54278cm</Left>
             <Height>0.67938cm</Height>
-            <Width>1.7327cm</Width>
+            <Width>2.01492cm</Width>
             <ZIndex>10</ZIndex>
             <Style>
               <Border>
@@ -843,7 +891,10 @@
                 <TextRuns>
                   <TextRun>
                     <Value>=Parameters!tax.Value</Value>
-                    <Style />
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -851,9 +902,9 @@
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>5.91102cm</Top>
-            <Left>15.27548cm</Left>
+            <Left>15.5577cm</Left>
             <Height>0.67938cm</Height>
-            <Width>2.80254cm</Width>
+            <Width>3.57865cm</Width>
             <ZIndex>11</ZIndex>
             <Style>
               <Border>
@@ -873,7 +924,10 @@
                 <TextRuns>
                   <TextRun>
                     <Value>=Parameters!paid.Value</Value>
-                    <Style />
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -903,7 +957,10 @@
                 <TextRuns>
                   <TextRun>
                     <Value>=Parameters!deserved.Value</Value>
-                    <Style />
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -1038,7 +1095,10 @@
                 <TextRuns>
                   <TextRun>
                     <Value>Invoice Code:</Value>
-                    <Style />
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -1048,7 +1108,7 @@
             <Top>1.88806cm</Top>
             <Left>11.6061cm</Left>
             <Height>0.67938cm</Height>
-            <Width>2.51689cm</Width>
+            <Width>2.86261cm</Width>
             <ZIndex>17</ZIndex>
             <Style>
               <Border>
@@ -1068,7 +1128,10 @@
                 <TextRuns>
                   <TextRun>
                     <Value>Invoice Date:</Value>
-                    <Style />
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -1078,7 +1141,7 @@
             <Top>2.74382cm</Top>
             <Left>11.6061cm</Left>
             <Height>0.6cm</Height>
-            <Width>2.51689cm</Width>
+            <Width>2.79206cm</Width>
             <ZIndex>18</ZIndex>
             <Style>
               <Border>
@@ -1098,7 +1161,10 @@
                 <TextRuns>
                   <TextRun>
                     <Value>=Parameters!invNumber.Value</Value>
-                    <Style />
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
@@ -1108,9 +1174,9 @@
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>1.88805cm</Top>
-            <Left>14.12299cm</Left>
+            <Left>14.46871cm</Left>
             <Height>0.67938cm</Height>
-            <Width>4.37701cm</Width>
+            <Width>4.03129cm</Width>
             <ZIndex>19</ZIndex>
             <Style>
               <Border>
@@ -1131,18 +1197,24 @@
                   <TextRun>
                     <Value>=Parameters!invDate.Value</Value>
                     <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
                       <Format>FormatDateTime(Parameters!invTime.Value)</Format>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value> - </Value>
                     <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
                       <Format>FormatDateTime(Parameters!invTime.Value)</Format>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value>=Parameters!invTime.Value</Value>
                     <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
                       <Format>FormatDateTime(Parameters!invTime.Value)</Format>
                     </Style>
                   </TextRun>
@@ -1154,9 +1226,9 @@
             </Paragraphs>
             <rd:DefaultName>ExecutionTime</rd:DefaultName>
             <Top>2.74382cm</Top>
-            <Left>14.12299cm</Left>
+            <Left>14.46871cm</Left>
             <Height>0.6cm</Height>
-            <Width>4.37701cm</Width>
+            <Width>4.03129cm</Width>
             <ZIndex>20</ZIndex>
             <Style>
               <Border>
@@ -1205,7 +1277,10 @@
                   <TextRuns>
                     <TextRun>
                       <Value>=Globals!ExecutionTime</Value>
-                      <Style />
+                      <Style>
+                        <FontFamily>Montserrat</FontFamily>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
                     </TextRun>
                   </TextRuns>
                   <Style>
@@ -1249,19 +1324,31 @@
                   <TextRuns>
                     <TextRun>
                       <Value>Page </Value>
-                      <Style />
+                      <Style>
+                        <FontFamily>Montserrat</FontFamily>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
                     </TextRun>
                     <TextRun>
                       <Value>=Globals!PageNumber</Value>
-                      <Style />
+                      <Style>
+                        <FontFamily>Montserrat</FontFamily>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
                     </TextRun>
                     <TextRun>
                       <Value> of </Value>
-                      <Style />
+                      <Style>
+                        <FontFamily>Montserrat</FontFamily>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
                     </TextRun>
                     <TextRun>
                       <Value>=Globals!TotalPages</Value>
-                      <Style />
+                      <Style>
+                        <FontFamily>Montserrat</FontFamily>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
                     </TextRun>
                   </TextRuns>
                   <Style />

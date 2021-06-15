@@ -86,15 +86,18 @@ namespace POS.View
 
         static private int _InternalCounter = 0;
 
-        DateTime _lastKeystroke = new DateTime(0);
-        static private string _BarcodeStr = "";
+       
         private static UC_item _instance;
 
         OpenFileDialog openFileDialog = new OpenFileDialog();
         ImageBrush brush = new ImageBrush();
 
         bool StateClosed = false;
-
+        #region //to handle barcode characters
+        DateTime _lastKeystroke = new DateTime(0);
+        static private string _BarcodeStr = "";
+        static private object _Sender;
+        #endregion
         public static UC_item Instance
         {
             get
@@ -177,8 +180,8 @@ namespace POS.View
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
-        {
-            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+        {          
+           TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
             if (elapsed.TotalMilliseconds > 100)
             {
                 _BarcodeStr = "";
@@ -200,11 +203,27 @@ namespace POS.View
             _BarcodeStr += digit;
             _lastKeystroke = DateTime.Now;
 
-            // process barcode
-   
+            // process barcode 
             if (e.Key.ToString() == "Return" && _BarcodeStr.Length > 0)
             {
-                tb_barcode.Text =  _BarcodeStr.Substring(1);//remove check sum from barcode string
+                if (_Sender != null)
+                {
+                    TextBox tb = _Sender as TextBox;
+                    if (tb != null)
+                    {
+                        if (tb.Name == "tb_code" || tb.Name == "tb_name" || tb.Name == "tb_details" || tb.Name == "tb_taxes"|| tb.Name == "tb_min"|| tb.Name == "tb_max")// remove barcode from text box
+                        {
+                            string tbString = tb.Text;
+                            string newStr = "";
+                            int startIndex = tbString.IndexOf(_BarcodeStr);
+                            if (startIndex != -1)
+                                newStr = tbString.Remove(startIndex, _BarcodeStr.Length);
+
+                            tb.Text = newStr;
+                        }
+                    }
+                }
+                tb_barcode.Text = _BarcodeStr;
                 _BarcodeStr = "";
                 // get item matches barcode
                 if (barcodesList != null)
@@ -239,11 +258,11 @@ namespace POS.View
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             //CreateGridCardContainer();
             catigoriesAndItemsView.ucItem = this;
-            if (window == null)
-            {
+           // if (window == null)
+           // {
                 window = Window.GetWindow(this);
                 window.KeyDown += HandleKeyPress;
-            }
+            //}
 
 
             if (MainWindow.lang.Equals("en"))
@@ -334,6 +353,8 @@ namespace POS.View
 
             if (barcodeStr != "")
             {
+                if(barcodeStr.Length == 13)
+                    barcodeStr = barcodeStr.Substring(1);//remove check sum from barcode string
                 var barcodeImage = drawObject.Draw(barcodeStr, barcodeMetrics);
                 using (var graphics = System.Drawing.Graphics.FromImage(barcodeImage))
                 using (var font = new System.Drawing.Font("Consolas", 12)) // Any font you want
@@ -371,8 +392,10 @@ namespace POS.View
             var seconds = (int)(now - DateTime.Today).TotalSeconds;
 
             var counter = _InternalCounter++ % 100;
-
-            return days.ToString("00000") + seconds.ToString("00000") + counter.ToString("00");
+            string randomBarcode = days.ToString("00000") + seconds.ToString("00000") + counter.ToString("00");
+            char[] barcodeData = randomBarcode.ToCharArray();
+            char checkDigit = Mod10CheckDigit(barcodeData);
+            return checkDigit + randomBarcode;
         }
         private void Btn_itemData_Click(object sender, RoutedEventArgs e)
         {
@@ -1074,20 +1097,20 @@ namespace POS.View
         {
             e.Handled = e.Key == Key.Space;
         }
-        private void english_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            Regex objAlphaPattern = new Regex(@"^[a-zA-Z0-9_@.-\\s\\r]*$", RegexOptions.CultureInvariant | RegexOptions.Singleline);
+        //private void english_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        //{
+        //    Regex objAlphaPattern = new Regex(@"^[a-zA-Z0-9_@.-\\s\\r]*$", RegexOptions.CultureInvariant | RegexOptions.Singleline);
 
-            bool isEnglish = objAlphaPattern.IsMatch(e.TextComposition.Text);
+        //    bool isEnglish = objAlphaPattern.IsMatch(e.TextComposition.Text);
 
-            if (!isEnglish && e.TextComposition.Text.Equals(""))
-            {
-                SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorEnglishBarcodeToolTip");
-                e.Handled = true;
-            }
-            else
-                SectionData.clearValidate(tb_barcode, p_errorBarcode);
-        }
+        //    if (!isEnglish && e.TextComposition.Text.Equals(""))
+        //    {
+        //        SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorEnglishBarcodeToolTip");
+        //        e.Handled = true;
+        //    }
+        //    else
+        //        SectionData.clearValidate(tb_barcode, p_errorBarcode);
+        //}
         //private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
         //{
         //    TextBox tb = (TextBox)sender;
@@ -1099,19 +1122,48 @@ namespace POS.View
         //}
         private void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
         {
-
-            if (e.Key == Key.Return && tb_barcode.Text.Length == 12)
+            if (e.Key == Key.Return && tb_barcode.Text.Length == 13)
             {
-               TextBox tb = (TextBox)sender;
-               string barCode = "";
-                if (!tb.Text.Equals(""))
-                    barCode = tb_barcode.Text;
+                char checkDigit;
+                char[] barcodeData;
+                TextBox tb = (TextBox)sender;
+               //string barCode = "";
+               // if (!tb.Text.Equals(""))
+                 string barCode = tb_barcode.Text;
 
-                drawBarcode(barCode);
+                //int inputLength = barCode.Length;
+                char cd = barCode[0];
+                barCode = barCode.Substring(1);
+                barcodeData = barCode.ToCharArray();
+                checkDigit = Mod10CheckDigit(barcodeData);
+
+                if (checkDigit != cd)
+                {
+                    tb_barcode.Text = "";
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorBarcodeToolTip"), animation: ToasterAnimation.FadeIn);
+                }
+                else
+                    drawBarcode(barCode);
             }
             //else
             //    tb_barcode.Clear();
            // HandleKeyPress(sender,e);
+        }
+
+        public static char Mod10CheckDigit(char[] data)
+        {
+            // Start the checksum calculation from the right most position.
+            int factor = 3;
+            int weight = 0;
+            int length = data.Length;
+
+            for (int i = 0; i <= length - 1; i++)
+            {
+                weight += (data[i] - '0') * factor;
+                factor = (factor == 3) ? 1 : 3;
+            }
+
+            return (char)(((10 - (weight % 10)) % 10) + '0');
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -2004,7 +2056,10 @@ namespace POS.View
                 img_item.Background = brush;
             }
         }
+        private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _Sender = sender;
+        }
 
- 
     }
 }

@@ -8,7 +8,7 @@
        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
-        Title="wd_itemsList" Height="600" Width="600" Background="Transparent" AllowsTransparency="True" MouseDown="Window_MouseDown"
+        Title="wd_itemsList" Height="600" Width="800" Background="Transparent" AllowsTransparency="True" MouseDown="Window_MouseDown"
         Loaded="Window_Loaded">
     <Grid Grid.Column="1" Grid.Row="1" x:Name="grid_ucItems" >
         <Grid.RowDefinitions>
@@ -119,17 +119,18 @@
 
                         <StackPanel Margin="15,0,0,0"  Grid.Column="1" x:Name="grid_categoryControlPath" Orientation="Horizontal">
                         </StackPanel>
-                        <ScrollViewer Grid.Row="1"  Grid.Column="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Height="auto"
+                        <Border Grid.Row="1"  BorderThickness="15,0,15,0" BorderBrush="White" Grid.Column="1">
+                            <ScrollViewer Grid.Row="1"  Grid.Column="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Height="auto"
                                           ScrollViewer.CanContentScroll="True">
-                            <Grid  x:Name="grid_categoryCards" >
+                                <Grid  x:Name="grid_categoryCards" >
 
 
-                            </Grid>
+                                </Grid>
 
 
-                        </ScrollViewer>
+                            </ScrollViewer>
 
-
+                        </Border>
 
 
 

@@ -1060,6 +1060,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer can not be empty.
+        /// </summary>
+        internal static string trEmptyCustomerToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyCustomerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deposit/pull number can not be empty.
         /// </summary>
         internal static string trEmptyDepositNumberToolTip {
@@ -1195,6 +1204,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Process number can not be empty.
+        /// </summary>
+        internal static string trEmptyProcessNumToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyProcessNumToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Property can not be empty.
         /// </summary>
         internal static string trEmptyPropertyToolTip {
@@ -1281,6 +1299,15 @@ namespace POS {
         internal static string trErrorAmountIncreaseToolTip {
             get {
                 return ResourceManager.GetString("trErrorAmountIncreaseToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error barcode.
+        /// </summary>
+        internal static string trErrorBarcodeToolTip {
+            get {
+                return ResourceManager.GetString("trErrorBarcodeToolTip", resourceCulture);
             }
         }
         
@@ -1506,6 +1533,15 @@ namespace POS {
         internal static string trErrorEnglishBarcodeToolTip {
             get {
                 return ResourceManager.GetString("trErrorEnglishBarcodeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deserved date cannot be earlier than invoice date.
+        /// </summary>
+        internal static string trErrorInvDateAfterDeserveToolTip {
+            get {
+                return ResourceManager.GetString("trErrorInvDateAfterDeserveToolTip", resourceCulture);
             }
         }
         
@@ -2500,7 +2536,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Received.
+        ///   Looks up a localized string similar to Receipts.
         /// </summary>
         internal static string trReceived {
             get {

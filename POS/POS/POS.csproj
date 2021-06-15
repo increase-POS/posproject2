@@ -236,6 +236,9 @@
     <Compile Include="View\accounts\uc_receivedAccounts.xaml.cs">
       <DependentUpon>uc_receivedAccounts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\purchases\uc_statistic.xaml.cs">
+      <DependentUpon>uc_statistic.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\sales\uc_medals.xaml.cs">
       <DependentUpon>uc_medals.xaml</DependentUpon>
     </Compile>
@@ -432,6 +435,10 @@
     <Page Include="View\accounts\uc_receivedAccounts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\purchases\uc_statistic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\sales\uc_medals.xaml">
       <SubType>Designer</SubType>

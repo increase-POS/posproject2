@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POS.View.purchases;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -20,8 +21,11 @@ namespace POS.View
     /// <summary>
     /// Interaction logic for uc_purchases.xaml
     /// </summary>
+    /// 
+    
     public partial class uc_purchases : UserControl
     {
+        
         private static uc_purchases _instance;
         public static uc_purchases Instance
         {
@@ -58,6 +62,7 @@ namespace POS.View
 
             translate();
             btn_payInvoice_Click(null, null);
+
         }
         void refreashBackground()
         {
@@ -89,9 +94,13 @@ namespace POS.View
         private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_statistic);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_statistic.Instance);
+
+
 
         }
 
-        
+
     }
 }

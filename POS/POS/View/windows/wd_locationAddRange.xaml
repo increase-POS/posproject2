@@ -9,7 +9,7 @@
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
         Title="wd_itemsList" Height="250" Width="400" Background="Transparent" AllowsTransparency="True" 
-        Loaded="Window_Loaded" MouseDown="Window_MouseDown" Deactivated="Window_Deactivated">
+        Loaded="Window_Loaded" MouseDown="Window_MouseDown" >
     <Grid Grid.Column="1" Grid.Row="1"    >
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
