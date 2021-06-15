@@ -644,6 +644,7 @@
     <EmbeddedResource Include="Reports\InvPurReport.rdlc" />
     <EmbeddedResource Include="Reports\InvReport.rdlc" />
     <EmbeddedResource Include="Reports\PosReport.rdlc" />
+    <EmbeddedResource Include="Reports\ReciptReport.rdlc" />
     <EmbeddedResource Include="Reports\UserReport.rdlc" />
     <EmbeddedResource Include="Reports\VendorReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

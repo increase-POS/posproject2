@@ -19,6 +19,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
 
 namespace POS.View.accounts
 {
@@ -43,7 +46,9 @@ namespace POS.View.accounts
         IEnumerable<CashTransfer> cashes;
 
         string searchText = "";
-
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
         private static uc_paymentsAccounts _instance;
         public static uc_paymentsAccounts Instance
         {
@@ -703,6 +708,35 @@ namespace POS.View.accounts
             e.Handled = regex.IsMatch(e.Text);
         }
 
-    
+        private void Btn_pdf1_Click(object sender, RoutedEventArgs e)
+        {
+            string addpath = @"\Reports\ReciptReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+          //  rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
+          /*
+            ReportParameter[] paramarr = new ReportParameter[6];
+            paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trBanks"));
+            paramarr[1] = new ReportParameter("trMobile", MainWindow.resourcemanager.GetString("trMobile"));
+            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
+            paramarr[3] = new ReportParameter("trAddress", MainWindow.resourcemanager.GetString("trAddress"));
+            paramarr[4] = new ReportParameter("trAccNumber", MainWindow.resourcemanager.GetString("trAccNumber"));
+            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+            rep.SetParameters(paramarr);
+            */
+            rep.Refresh();
+
+            saveFileDialog.Filter = "PDF|*.pdf;";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+
+                string filepath = saveFileDialog.FileName;
+                LocalReportExtensions.ExportToPDF(rep, filepath);
+
+            }
+        }
     }
 }
