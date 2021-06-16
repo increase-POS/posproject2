@@ -11,7 +11,7 @@
         Title="wd_itemsList" Height="175" Width="300"  
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
     <Border CornerRadius="2.5"  Background="White">
-        <Grid>
+        <Grid x:Name="grid_wdAcceptCancelPopup">
         <Grid.RowDefinitions>
                 <RowDefinition Height="2.5"/>
                 <RowDefinition Height="2.2*"/>

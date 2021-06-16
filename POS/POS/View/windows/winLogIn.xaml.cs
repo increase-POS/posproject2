@@ -35,7 +35,7 @@ namespace POS.View.windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            bdrLogIn.RenderTransform = Animations.borderAnimation(-100, bdrLogIn, true);
+            //bdrLogIn.RenderTransform = Animations.borderAnimation(-100, bdrLogIn, true);
         }
 
         private void btnLogIn_Click(object sender, RoutedEventArgs e)

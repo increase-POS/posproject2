@@ -364,6 +364,9 @@
     <Compile Include="View\windows\wd_uploadImage.xaml.cs">
       <DependentUpon>wd_uploadImage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\winLogIn.xaml.cs">
+      <DependentUpon>winLogIn.xaml</DependentUpon>
+    </Compile>
     <Page Include="controlTemplate\UC_rectangleCard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -611,6 +614,10 @@
     <Page Include="View\windows\wd_uploadImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\winLogIn.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

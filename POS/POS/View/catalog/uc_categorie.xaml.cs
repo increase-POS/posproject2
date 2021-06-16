@@ -2,6 +2,7 @@
 using netoaster;
 using POS.Classes;
 using POS.controlTemplate;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -372,21 +373,44 @@ namespace POS.View
             if (category.categoryId != 0)
             {
                 if ((!category.canDelete) && (category.isActive == 0))
-                    activate();
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                        activate();
+
+                }
                 else
                 {
-                    string popupContent = "";
-                    if (category.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                    if ((!category.canDelete) && (category.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    if (category.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                    if (!category.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                    {
+                        string popupContent = "";
+                        if (category.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                        if ((!category.canDelete) && (category.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                    bool b = await categoryModel.deleteCategory(category.categoryId, MainWindow.userID.Value, category.canDelete);
+                        bool b = await categoryModel.deleteCategory(category.categoryId, MainWindow.userID.Value, category.canDelete);
 
-                    if (b) //SectionData.popUpResponse("", popupContent);
-                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        if (b) //SectionData.popUpResponse("", popupContent);
+                            Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
                 }
-
                 await RefrishCategories();
 
                 Txb_searchcategories_TextChanged(null, null);

@@ -24,6 +24,7 @@ using System.IO;
 using Microsoft.Reporting.WinForms;
 
 using System.Data;
+using POS.View.windows;
 
 namespace POS.View
 {
@@ -308,9 +309,11 @@ namespace POS.View
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
-            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucVendor.FlowDirection = FlowDirection.LeftToRight; }
+            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_ucVendor.FlowDirection = FlowDirection.LeftToRight; }
             else
-            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucVendor.FlowDirection = FlowDirection.RightToLeft; }
+            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_ucVendor.FlowDirection = FlowDirection.RightToLeft; }
 
             translate();
            
@@ -519,19 +522,42 @@ namespace POS.View
             if (agent.agentId != 0)
             {
                 if ((!agent.canDelete) && (agent.isActive == 0))
-                    activate();
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                        activate();
+                }
                 else
                 {
-                    string popupContent = "";
-                    if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                    if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    if (agent.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                    if (!agent.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                    {
+                        string popupContent = "";
+                        if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                        if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                    bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
+                        bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
 
-                    if (b) //SectionData.popUpResponse("", popupContent);
-                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        if (b) //SectionData.popUpResponse("", popupContent);
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
                 }
 
                 await RefreshVendorsList();

@@ -1,5 +1,6 @@
 ﻿using netoaster;
 using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -424,21 +425,31 @@ namespace POS.View.accounts
         {//delete
             if (cashtrans.cashTransId != 0)
             {
-                string b = await cashModel.deletePosTrans(cashtrans.cashTransId);
-
-                if (b == "1")
+                #region
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
+                #endregion
+                if (w.isOk)
                 {
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-                    //clear textBoxs
-                    Btn_clear_Click(sender, e);
-                }
-                else if(b == "0")
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopCanNotDeleteRequest"), animation: ToasterAnimation.FadeIn);
-                else 
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    string b = await cashModel.deletePosTrans(cashtrans.cashTransId);
 
-                await RefreshCashesList();
-                Tb_search_TextChanged(null, null);
+                    if (b == "1")
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                        //clear textBoxs
+                        Btn_clear_Click(sender, e);
+                    }
+                    else if (b == "0")
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopCanNotDeleteRequest"), animation: ToasterAnimation.FadeIn);
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                    await RefreshCashesList();
+                    Tb_search_TextChanged(null, null);
+                }
             }
         }
 

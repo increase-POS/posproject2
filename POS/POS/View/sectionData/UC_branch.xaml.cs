@@ -21,6 +21,8 @@ using System.Windows.Shapes;
 using System.IO;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
+using POS.View.windows;
+
 namespace POS.View
 {
     /// <summary>
@@ -485,24 +487,44 @@ namespace POS.View
             {
                 if ((!branch.canDelete) && (branch.isActive == 0))
                 {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
                     activate();
-                   
                 }
                 else
                 {
-                    string popupContent = "";
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
                     if (branch.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                    if (!branch.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
                     {
-                        popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                        string popupContent = "";
+                        if (branch.canDelete)
+                        {
+                            popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                        }
+                        if ((!branch.canDelete) && (branch.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                        bool b = await branchModel.deleteBranch(branch.branchId, MainWindow.userID.Value, branch.canDelete);
+
+                        if (b) //SectionData.popUpResponse("", popupContent);
+                            Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
-                    if ((!branch.canDelete) && (branch.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-
-                    bool b = await branchModel.deleteBranch(branch.branchId, MainWindow.userID.Value, branch.canDelete);
-
-                    if (b) //SectionData.popUpResponse("", popupContent);
-                        Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
 
                 await RefreshBranchesList();

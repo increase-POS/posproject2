@@ -1191,4 +1191,13 @@
   <data name="trErrorInvDateAfterDeserveToolTip" xml:space="preserve">
     <value>لا يمكن أن يكون تاريخ الاستحقاق قبل تاريخ الفاتورة</value>
   </data>
+  <data name="trMessageBoxActivate" xml:space="preserve">
+    <value>هل أنت متأكد من رغبتك في تفعيل هذا؟</value>
+  </data>
+  <data name="trMessageBoxDeactivate" xml:space="preserve">
+    <value>هل أنت متأكد من رغبتك في إلغاء تفعيل هذا؟</value>
+  </data>
+  <data name="trMessageBoxDelete" xml:space="preserve">
+    <value>هل أنت متأكد من رغبتك في حذف هذا؟</value>
+  </data>
 </root>

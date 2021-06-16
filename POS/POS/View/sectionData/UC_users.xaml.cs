@@ -23,7 +23,7 @@ using System.Windows.Navigation;
 using System.Windows.Resources;
 using System.Windows.Shapes;
 using Microsoft.Reporting.WinForms;
-
+using POS.View.windows;
 
 namespace POS.View
 {
@@ -32,6 +32,7 @@ namespace POS.View
     /// </summary>
     public partial class UC_users : UserControl
     {
+        CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
 
         User userModel = new User();
 
@@ -184,78 +185,7 @@ namespace POS.View
             e.Handled = regex.IsMatch(e.Text);
         }
         
-        private async void DG_users_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            p_errorFirstName.Visibility = Visibility.Collapsed;
-            p_errorLastName.Visibility = Visibility.Collapsed;
-            p_errorUserName.Visibility = Visibility.Collapsed;
-            p_errorPassword.Visibility = Visibility.Collapsed;
-            p_errorEmail.Visibility = Visibility.Collapsed;
-            p_errorJob.Visibility = Visibility.Collapsed;
-
-            tb_firstName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_lastName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_userName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            cb_job.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-            if (dg_users.SelectedIndex != -1)
-            {
-                user = dg_users.SelectedItem as User;
-                this.DataContext = user;
-            }
-            if (user != null)
-            {
-                if (user.userId != 0)
-                {
-                    pb_password.Password = tb_password.Text.Trim();
-                }
-
-                SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
-
-                SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
-
-                getImg();
-
-                #region delete
-                if (user.canDelete)
-                {
-                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-                    txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
-                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
-
-                }
-
-                else
-                {
-                    if (user.isActive == 0)
-                    {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
-                        txt_delete_Icon.Kind =
-                         MaterialDesignThemes.Wpf.PackIconKind.Check;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
-
-                    }
-                    else
-                    {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
-                        txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
-
-                    }
-                }
-                #endregion 
-
-                index = dg_users.SelectedIndex;
-
-            }
-
-        }
-
+     
         private void translate()
         {
             txt_user.Text = MainWindow.resourcemanager.GetString("trUser");
@@ -348,6 +278,13 @@ namespace POS.View
         }
         private  void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
+
+            // for pagination onTop Always
+            btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            //CreateGridCardContainer();
+            catigoriesAndItemsView.ucUsers = this;
+
+
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucUsers.FlowDirection = FlowDirection.LeftToRight; }
             else
@@ -644,20 +581,43 @@ namespace POS.View
         {//delete
             if (user.userId != 0)
             {
+
                 if ((!user.canDelete) && (user.isActive == 0))
-                    activate();
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                        activate();
+                }
                 else
                 {
-                    string popupContent = "";
-                    if (user.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                    if ((!user.canDelete) && (user.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    if (user.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                    if (!user.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                    {
+                        string popupContent = "";
+                        if (user.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                        if ((!user.canDelete) && (user.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                        bool b = await userModel.deleteUser(user.userId, MainWindow.userID.Value, user.canDelete);
 
-                    bool b = await userModel.deleteUser(user.userId, MainWindow.userID.Value, user.canDelete);
-
-                    if (b) //SectionData.popUpResponse("", popupContent);
-                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        if (b) //SectionData.popUpResponse("", popupContent);
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
                 }
 
                 await RefreshUsersList();
@@ -762,24 +722,9 @@ namespace POS.View
         {
             dg_users.ItemsSource = usersQuery;
             txt_count.Text = usersQuery.Count().ToString();
-          
         }
 
-        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
-        {//search
-            p_errorFirstName.Visibility = Visibility.Collapsed;
-            tb_firstName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-            if (users is null)
-                await RefreshUsersList();
-            searchText = tb_search.Text;
-            usersQuery = users.Where(s => (s.lastname.Contains(searchText) ||
-            s.name.Contains(searchText) ||
-            s.username.Contains(searchText) ||
-            s.job.Contains(searchText)
-            ) && s.isActive == tgl_userState);
-            RefreshUserView();
-        }
+       
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
@@ -1022,7 +967,353 @@ namespace POS.View
             ComboBox cbm = sender as ComboBox;
             SectionData.searchInComboBox(cbm);
         }
+        #region Categor and Item
+        #region Refrish Y
+        /// <summary>
+        /// Item
+        /// </summary>
+        /// <returns></returns>
+
+
+        //void RefrishItemsDatagrid(IEnumerable<Item> _items)
+        //{
+        //    dg_users.ItemsSource = _items;
+        //}
+        //void RefreshUserView()
+        //{
+        //    dg_users.ItemsSource = usersQuery;
+        //    txt_count.Text = usersQuery.Count().ToString();
+        //}
+
+        void RefrishItemsCard(IEnumerable<User> _items)
+        {
+            grid_containerCard.Children.Clear();
+            catigoriesAndItemsView.gridCatigorieItems = grid_containerCard;
+            //catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
+        }
+        #endregion
+        #region Get Id By Click  Y
+        private async void DG_users_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            p_errorFirstName.Visibility = Visibility.Collapsed;
+            p_errorLastName.Visibility = Visibility.Collapsed;
+            p_errorUserName.Visibility = Visibility.Collapsed;
+            p_errorPassword.Visibility = Visibility.Collapsed;
+            p_errorEmail.Visibility = Visibility.Collapsed;
+            p_errorJob.Visibility = Visibility.Collapsed;
+
+            tb_firstName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_lastName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_userName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            cb_job.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+            if (dg_users.SelectedIndex != -1)
+            {
+                user = dg_users.SelectedItem as User;
+                this.DataContext = user;
+            }
+            if (user != null)
+            {
+                if (user.userId != 0)
+                {
+                    pb_password.Password = tb_password.Text.Trim();
+                }
+
+                SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
+
+                SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
+                getImg();
+
+                #region delete
+                if (user.canDelete)
+                {
+                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                    txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                }
+
+                else
+                {
+                    if (user.isActive == 0)
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                        txt_delete_Icon.Kind =
+                         MaterialDesignThemes.Wpf.PackIconKind.Check;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                    }
+                    else
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                        txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                    }
+                }
+                #endregion 
+
+                index = dg_users.SelectedIndex;
+            }
+
+        }
+
+         
+
+        public void ChangeItemIdEvent(int userId)
+        {
+            #region
+            p_errorFirstName.Visibility = Visibility.Collapsed;
+            p_errorLastName.Visibility = Visibility.Collapsed;
+            p_errorUserName.Visibility = Visibility.Collapsed;
+            p_errorPassword.Visibility = Visibility.Collapsed;
+            p_errorEmail.Visibility = Visibility.Collapsed;
+            p_errorJob.Visibility = Visibility.Collapsed;
+
+            tb_firstName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_lastName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_userName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            tb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            cb_job.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+            user = users.ToList().Find(c => c.userId == userId);
+           
+                if (user != null)
+            {
+                if (user.userId != 0)
+                {
+                    pb_password.Password = tb_password.Text.Trim();
+                }
+
+                SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
+
+                SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
+                getImg();
+
+                #region delete
+                if (user.canDelete)
+                {
+                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                    txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                }
+
+                else
+                {
+                    if (user.isActive == 0)
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                        txt_delete_Icon.Kind =
+                         MaterialDesignThemes.Wpf.PackIconKind.Check;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                    }
+                    else
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                        txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                    }
+                }
+                #endregion 
+
+            }
+
+
+            #endregion
+            
+        }
+
+        #endregion
         
+        #region Switch Card/DataGrid Y
+
+        private void Btn_itemsInCards_Click(object sender, RoutedEventArgs e)
+        {
+            grid_datagrid.Visibility = Visibility.Collapsed;
+            grid_cards.Visibility = Visibility.Visible;
+            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+
+            Tb_search_TextChanged(null, null);
+        }
+
+        private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
+        {
+            grid_cards.Visibility = Visibility.Collapsed;
+            grid_datagrid.Visibility = Visibility.Visible;
+            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+
+            Tb_search_TextChanged(null, null);
+        }
+        #endregion
+        #region Search Y
+
+
+        /// <summary>
+        /// Item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// 
+
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {//search
+            p_errorFirstName.Visibility = Visibility.Collapsed;
+            tb_firstName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+            if (users is null)
+                await RefreshUsersList();
+            searchText = tb_search.Text.ToLower();
+            pageIndex = 1;
+
+            #region
+            usersQuery = users.Where(s => (s.lastname.ToLower().Contains(searchText) ||
+            s.name.ToLower().Contains(searchText) ||
+            s.username.ToLower().Contains(searchText) ||
+            s.job.ToLower().Contains(searchText)
+            ) && s.isActive == tgl_userState);
+            //txt_count.Text = usersQuery.Count().ToString();
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            RefrishItemsCard(pagination.refrishPagination(usersQuery, pageIndex, btns));
+            #endregion
+            RefreshUserView();
+        }
+       
+
+        #endregion
+        #region Pagination Y
+        Pagination pagination = new Pagination();
+        Button[] btns;
+        public int pageIndex = 1;
+
+        private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+            usersQuery = users.Where(x => x.isActive == tgl_userState);
+
+            if (tb_pageNumberSearch.Text.Equals(""))
+            {
+                pageIndex = 1;
+            }
+            else if (((usersQuery.Count() - 1) / 9) + 1 < int.Parse(tb_pageNumberSearch.Text))
+            {
+                pageIndex = ((usersQuery.Count() - 1) / 9) + 1;
+            }
+            else
+            {
+                pageIndex = int.Parse(tb_pageNumberSearch.Text);
+            }
+
+            #region
+            usersQuery = users.Where(s => (s.lastname.ToLower().Contains(searchText) ||
+            s.name.ToLower().Contains(searchText) ||
+            s.username.ToLower().Contains(searchText) ||
+            s.job.ToLower().Contains(searchText)
+            ) && s.isActive == tgl_userState);
+            //txt_count.Text = usersQuery.Count().ToString();
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            RefrishItemsCard(pagination.refrishPagination(usersQuery, pageIndex, btns));
+            #endregion
+
+        }
+
+
+        private void Btn_firstPage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = 1;
+            #region
+            usersQuery = users.Where(s => (s.lastname.ToLower().Contains(searchText) ||
+            s.name.ToLower().Contains(searchText) ||
+            s.username.ToLower().Contains(searchText) ||
+            s.job.ToLower().Contains(searchText)
+            ) && s.isActive == tgl_userState);
+            //txt_count.Text = usersQuery.Count().ToString();
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            RefrishItemsCard(pagination.refrishPagination(usersQuery, pageIndex, btns));
+            #endregion
+        }
+        private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = int.Parse(btn_prevPage.Content.ToString());
+            #region
+            usersQuery = users.Where(s => (s.lastname.ToLower().Contains(searchText) ||
+            s.name.ToLower().Contains(searchText) ||
+            s.username.ToLower().Contains(searchText) ||
+            s.job.ToLower().Contains(searchText)
+            ) && s.isActive == tgl_userState);
+            //txt_count.Text = usersQuery.Count().ToString();
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            RefrishItemsCard(pagination.refrishPagination(usersQuery, pageIndex, btns));
+            #endregion
+        }
+        private void Btn_activePage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = int.Parse(btn_activePage.Content.ToString());
+            #region
+            usersQuery = users.Where(s => (s.lastname.ToLower().Contains(searchText) ||
+            s.name.ToLower().Contains(searchText) ||
+            s.username.ToLower().Contains(searchText) ||
+            s.job.ToLower().Contains(searchText)
+            ) && s.isActive == tgl_userState);
+            //txt_count.Text = usersQuery.Count().ToString();
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            RefrishItemsCard(pagination.refrishPagination(usersQuery, pageIndex, btns));
+            #endregion
+        }
+        private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = int.Parse(btn_nextPage.Content.ToString());
+            #region
+            usersQuery = users.Where(s => (s.lastname.ToLower().Contains(searchText) ||
+            s.name.ToLower().Contains(searchText) ||
+            s.username.ToLower().Contains(searchText) ||
+            s.job.ToLower().Contains(searchText)
+            ) && s.isActive == tgl_userState);
+            //txt_count.Text = usersQuery.Count().ToString();
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            RefrishItemsCard(pagination.refrishPagination(usersQuery, pageIndex, btns));
+            #endregion
+        }
+        private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
+        {
+            usersQuery = users.Where(x => x.isActive == tgl_userState);
+            pageIndex = ((usersQuery.Count() - 1) / 9) + 1;
+            #region
+            usersQuery = users.Where(s => (s.lastname.ToLower().Contains(searchText) ||
+            s.name.ToLower().Contains(searchText) ||
+            s.username.ToLower().Contains(searchText) ||
+            s.job.ToLower().Contains(searchText)
+            ) && s.isActive == tgl_userState);
+            //txt_count.Text = usersQuery.Count().ToString();
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            RefrishItemsCard(pagination.refrishPagination(usersQuery, pageIndex, btns));
+            #endregion
+        }
+        #endregion
+
+        #endregion
     }
 }
 

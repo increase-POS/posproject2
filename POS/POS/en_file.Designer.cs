@@ -1906,6 +1906,33 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to activate this?.
+        /// </summary>
+        internal static string trMessageBoxActivate {
+            get {
+                return ResourceManager.GetString("trMessageBoxActivate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to deactivate  this?.
+        /// </summary>
+        internal static string trMessageBoxDeactivate {
+            get {
+                return ResourceManager.GetString("trMessageBoxDeactivate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this?.
+        /// </summary>
+        internal static string trMessageBoxDelete {
+            get {
+                return ResourceManager.GetString("trMessageBoxDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum and Minimum of Items.
         /// </summary>
         internal static string trMinAndMaxOfItem {

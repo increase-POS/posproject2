@@ -18,6 +18,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using netoaster;
 using POS.Classes;
+using POS.View.windows;
+
 namespace POS.View
 {
     /// <summary>
@@ -521,20 +523,43 @@ namespace POS.View
             if (coupon.cId != 0)
             {
                 if ((!coupon.canDelete) && (coupon.isActive == 0))
-                    activate();
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                        activate();
+                }
                 else
                 {
-                    string popupContent = "";
-                    if (coupon.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                    if ((!coupon.canDelete) && (coupon.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    if (coupon.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                    if (!coupon.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                    {
+                        string popupContent = "";
+                        if (coupon.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                        if ((!coupon.canDelete) && (coupon.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                    bool b = await couponModel.deleteCoupon(coupon.cId, MainWindow.userID.Value, coupon.canDelete);
+                        bool b = await couponModel.deleteCoupon(coupon.cId, MainWindow.userID.Value, coupon.canDelete);
 
-                    if (b) 
-                       Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                        if (b)
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
-                    else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
                 }
 
                 await RefreshCouponsList();

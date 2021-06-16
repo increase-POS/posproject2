@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using POS.View.windows;
 
 namespace POS.View
 {
@@ -212,20 +213,43 @@ namespace POS.View
             if (section.sectionId != 0)
             {
                 if ((!section.canDelete) && (section.isActive == 0))
-                    activate();
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                        activate();
+                }
                 else
                 {
-                    string popupContent = "";
-                    if (section.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                    if ((!section.canDelete) && (section.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    if (section.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                    if (!section.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                    {
+                        string popupContent = "";
+                        if (section.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                        if ((!section.canDelete) && (section.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                    bool b = await sectionModel.Delete(section.sectionId, MainWindow.userID.Value, section.canDelete);
+                        bool b = await sectionModel.Delete(section.sectionId, MainWindow.userID.Value, section.canDelete);
 
-                    if (b) 
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                    else 
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        if (b)
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
+                    }
                 }
                 await RefreshSectionsList();
                 Tb_search_TextChanged(null, null);

@@ -21,6 +21,7 @@ using System.Windows.Shapes;
 using System.IO;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
+using POS.View.windows;
 
 namespace POS.View
 {
@@ -372,20 +373,43 @@ namespace POS.View
             if (pos.posId != 0)
             {
                 if ((!pos.canDelete) && (pos.isActive == 0))
-                    activate();
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                        activate();
+
+                }
                 else
                 {
-                    string popupContent = "";
-                    if (pos.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                    if ((!pos.canDelete) && (pos.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    if (pos.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                    if (!pos.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                    {
+                        string popupContent = "";
+                        if (pos.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                        if ((!pos.canDelete) && (pos.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                    bool b = await posModel.deletePos(pos.posId, MainWindow.userID.Value, pos.canDelete);
+                        bool b = await posModel.deletePos(pos.posId, MainWindow.userID.Value, pos.canDelete);
 
-                    if (b) //SectionData.popUpResponse("", popupContent);
-                Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
+                        if (b) //SectionData.popUpResponse("", popupContent);
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
                 }
 
                 await RefreshPosList();

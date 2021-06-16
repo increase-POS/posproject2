@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Threading.Tasks;
+using POS.View.windows;
 
 namespace POS.View
 {
@@ -248,19 +249,43 @@ namespace POS.View
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
             if ((!unit.canDelete) && (unit.isActive == 0))
-               await activate();
+            {
+                #region
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
+                #endregion
+                if (w.isOk)
+                    await activate();
+
+            }
             else
             {
-                string popupContent = "";
-                if (unit.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                if ((!unit.canDelete) && (unit.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-                int userId = (int)MainWindow.userID;
-                Boolean res = await unitModel.deleteUnit(unit.unitId, userId, unit.canDelete);
+                #region
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                if (unit.canDelete)
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                if (!unit.canDelete)
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
+                #endregion
+                if (w.isOk)
+                {
+                    string popupContent = "";
+                    if (unit.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                    if ((!unit.canDelete) && (unit.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                    int userId = (int)MainWindow.userID;
+                    Boolean res = await unitModel.deleteUnit(unit.unitId, userId, unit.canDelete);
 
-                if (res) 
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                else 
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    if (res)
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
             }
             refreshUnitsGrid();
 

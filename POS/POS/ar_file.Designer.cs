@@ -1870,6 +1870,33 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to هل أنت متأكد من رغبتك في تفعيل هذا؟.
+        /// </summary>
+        internal static string trMessageBoxActivate {
+            get {
+                return ResourceManager.GetString("trMessageBoxActivate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to هل أنت متأكد من رغبتك في إلغاء تفعيل هذا؟.
+        /// </summary>
+        internal static string trMessageBoxDeactivate {
+            get {
+                return ResourceManager.GetString("trMessageBoxDeactivate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to هل أنت متأكد من رغبتك في حذف هذا؟.
+        /// </summary>
+        internal static string trMessageBoxDelete {
+            get {
+                return ResourceManager.GetString("trMessageBoxDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الحدود الدنيا والعليا من العنصر.
         /// </summary>
         internal static string trMinAndMaxOfItem {

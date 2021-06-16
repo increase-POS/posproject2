@@ -1919,3 +1919,5 @@ D:\gitpos\POS\POS\obj\Debug\View\windows\wd_customersList.baml
 D:\gitpos\POS\POS\obj\Debug\View\windows\wd_items.baml
 D:\gitpos\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.baml
 D:\gitpos\POS\POS\obj\Debug\View\windows\wd_locationAddRange.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\winLogIn.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\winLogIn.baml

@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using POS.View.windows;
 
 namespace POS.View
 {
@@ -218,19 +219,43 @@ namespace POS.View
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {
             if ((!property.canDelete) && (property.isActive == 0))
-               await activateProperty();
+            {
+                #region
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
+                #endregion
+                if (w.isOk)
+                    await activateProperty();
+
+            }
             else
             {
-                string popupContent = "";
-                if (property.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                if ((!property.canDelete) && (property.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-                int userId = (int)MainWindow.userID;
-                Boolean res = await propertyModel.deleteProperty(property.propertyId, userId, property.canDelete);
+                #region
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                if (property.canDelete)
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                if (!property.canDelete)
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
+                #endregion
+                if (w.isOk)
+                {
+                    string popupContent = "";
+                    if (property.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                    if ((!property.canDelete) && (property.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                    int userId = (int)MainWindow.userID;
+                    Boolean res = await propertyModel.deleteProperty(property.propertyId, userId, property.canDelete);
 
-                if (res) 
-                Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                else 
-                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    if (res)
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
             }
 
             var prop = await propertyModel.getProperty();

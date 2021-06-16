@@ -1212,4 +1212,13 @@
   <data name="trErrorInvDateAfterDeserveToolTip" xml:space="preserve">
     <value>Deserved date cannot be earlier than invoice date</value>
   </data>
+  <data name="trMessageBoxActivate" xml:space="preserve">
+    <value>Are you sure you want to activate this?</value>
+  </data>
+  <data name="trMessageBoxDeactivate" xml:space="preserve">
+    <value>Are you sure you want to deactivate  this?</value>
+  </data>
+  <data name="trMessageBoxDelete" xml:space="preserve">
+    <value>Are you sure you want to delete this?</value>
+  </data>
 </root>
