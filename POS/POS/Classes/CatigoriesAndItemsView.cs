@@ -515,62 +515,62 @@ namespace POS.Classes
         }
 
         #region User
-        //public void FN_refrishCatalogItem(List<Item> items, string language, string cardType)
-        //{
-        //    gridCatigorieItems.Children.Clear();
-        //    int row = 0;
-        //    int column = 0;
-        //    foreach (var item in items)
-        //    {
+        public void FN_refrishUsers(List<User> users, string language, string cardType)
+        {
+            gridCatigorieItems.Children.Clear();
+            int row = 0;
+            int column = 0;
+            foreach (var item in users)
+            {
 
-        //        CardViewItems itemCardView = new CardViewItems();
-        //        itemCardView.item = item;
-        //        itemCardView.cardType = cardType;
-        //        itemCardView.language = language;
-        //        itemCardView.row = row;
-        //        itemCardView.column = column;
-        //        FN_createRectangelCard(itemCardView);
+                CardViewItems itemCardView = new CardViewItems();
+                itemCardView.user = item;
+                itemCardView.cardType = cardType;
+                itemCardView.language = language;
+                itemCardView.row = row;
+                itemCardView.column = column;
+                FN_createRectangelCardUsers(itemCardView);
 
 
-        //        column++;
-        //        if (column == 3)
-        //        {
-        //            column = 0;
-        //            row++;
-        //        }
-        //    }
-        //}
-        //UC_rectangleCard FN_createRectangelCard(CardViewItems itemCardView, string BorderBrush = "#6e6e6e")
-        //{
-        //    UC_rectangleCard uc = new UC_rectangleCard(itemCardView);
-        //    uc.rectangleCardBorderBrush = BorderBrush;
-        //    uc.Name = "CardName" + itemCardView.item.itemId;
-        //    Grid.SetRow(uc, itemCardView.row);
-        //    Grid.SetColumn(uc, itemCardView.column);
-        //    gridCatigorieItems.Children.Add(uc);
-        //    uc.MouseDoubleClick += new MouseButtonEventHandler(rectangleCardView_MouseDoubleClick);
-        //    return uc;
-        //}
-        //void rectangleCardView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        //{
-        //    UC_rectangleCard uc = (UC_rectangleCard)sender;
-        //    uc = gridCatigorieItems.Children.OfType<UC_rectangleCard>().Where(x => x.Name.ToString() == "CardName" + uc.cardViewitem.item.itemId).FirstOrDefault();
+                column++;
+                if (column == 3)
+                {
+                    column = 0;
+                    row++;
+                }
+            }
+        }
+        UC_rectangleCard FN_createRectangelCardUsers(CardViewItems itemCardView, string BorderBrush = "#6e6e6e")
+        {
+            UC_rectangleCard uc = new UC_rectangleCard(itemCardView);
+            uc.rectangleCardBorderBrush = BorderBrush;
+            uc.Name = "CardName" + itemCardView.user.userId;
+            Grid.SetRow(uc, itemCardView.row);
+            Grid.SetColumn(uc, itemCardView.column);
+            gridCatigorieItems.Children.Add(uc);
+            uc.MouseDoubleClick += new MouseButtonEventHandler(rectangleCardViewUsers_MouseDoubleClick);
+            return uc;
+        }
+        void rectangleCardViewUsers_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            UC_rectangleCard uc = (UC_rectangleCard)sender;
+            uc = gridCatigorieItems.Children.OfType<UC_rectangleCard>().Where(x => x.Name.ToString() == "CardName" + uc.cardViewitem.user.userId).FirstOrDefault();
 
-        //    gridCatigorieItems.Children.Remove(uc);
-        //    FN_createRectangelCard(uc.cardViewitem, "#178DD2");
-        //    if (pastCatalogItem != -1 && pastCatalogItem != uc.cardViewitem.item.itemId)
-        //    {
-        //        var pastUc = new UC_rectangleCard() { contentId = pastCatalogItem };
-        //        pastUc = gridCatigorieItems.Children.OfType<UC_rectangleCard>().Where(x => x.Name.ToString() == "CardName" + pastUc.contentId).FirstOrDefault();
-        //        if (pastUc != null)
-        //        {
-        //            gridCatigorieItems.Children.Remove(pastUc);
-        //            FN_createRectangelCard(pastUc.cardViewitem, "#6e6e6e");
-        //        }
-        //    }
-        //    pastCatalogItem = uc.cardViewitem.item.itemId;
-        //    idItem = uc.cardViewitem.item.itemId;
-        //}
+            gridCatigorieItems.Children.Remove(uc);
+            FN_createRectangelCard(uc.cardViewitem, "#178DD2");
+            if (pastCatalogItem != -1 && pastCatalogItem != uc.cardViewitem.user.userId)
+            {
+                var pastUc = new UC_rectangleCard() { contentId = pastCatalogItem };
+                pastUc = gridCatigorieItems.Children.OfType<UC_rectangleCard>().Where(x => x.Name.ToString() == "CardName" + pastUc.contentId).FirstOrDefault();
+                if (pastUc != null)
+                {
+                    gridCatigorieItems.Children.Remove(pastUc);
+                    FN_createRectangelCard(pastUc.cardViewitem, "#6e6e6e");
+                }
+            }
+            pastCatalogItem = uc.cardViewitem.user.userId;
+            idItem = uc.cardViewitem.user.userId;
+        }
 
         #endregion
         #region  sale

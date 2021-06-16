@@ -28,7 +28,6 @@ using System.Drawing;
 using Microsoft.Reporting.WinForms;
 
 using System.Data;
-using POS.View.windows;
 
 namespace POS.View
 {
@@ -592,43 +591,21 @@ namespace POS.View
             if (agent.agentId != 0)
             {
                 if ((!agent.canDelete) && (agent.isActive == 0))
-                {
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
                     activate();
-                }
                 else
                 {
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    if (agent.canDelete)
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                    if (!agent.canDelete)
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
-                    {
-                        string popupContent = "";
-                        if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                        if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                    string popupContent = "";
+                    if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                    if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                        bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
+                    bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
 
-                        if (b) //SectionData.popUpResponse("", popupContent);
-                            Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                    }
+                    if (b) //SectionData.popUpResponse("", popupContent);
+                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
+
                 await RefreshCustomersList();
                 Tb_search_TextChanged(null, null);
             }

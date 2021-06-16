@@ -99,6 +99,53 @@ namespace POS.Classes
 
         }
 
+
+        // 
+        public async Task<CashTransfer> GetByInvId(int invId)
+        {
+            CashTransfer cashtransfer = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetByInvId?invId=" + invId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                /*
+                request.Headers.Add("type", type);
+                request.Headers.Add("side", side);
+                */
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    cashtransfer = JsonConvert.DeserializeObject<CashTransfer>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return cashtransfer;
+                }
+                else //web api sent error response 
+                {
+                    cashtransfer = new CashTransfer();
+                }
+                return cashtransfer;
+            }
+
+        }
         public async Task<CashTransfer> GetByID(int cashTransferId)
         {
             CashTransfer casht = new CashTransfer();
@@ -232,7 +279,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/Delete?cashTransId=" + cashTransId );
+                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/Delete?cashTransId=" + cashTransId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -250,7 +297,7 @@ namespace POS.Classes
             }
         }
 
-        public async Task<string> MovePosCash(int cashTransId,int userIdD)
+        public async Task<string> MovePosCash(int cashTransId, int userIdD)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -263,7 +310,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/MovePosCash?cashTransId=" + cashTransId+"&useridD="+ userIdD);
+                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/MovePosCash?cashTransId=" + cashTransId + "&useridD=" + userIdD);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

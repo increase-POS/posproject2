@@ -34,9 +34,9 @@ namespace POS.controlTemplate
             InitializeComponent();
             cardViewitem = _CardViewitems;
         }
-
-        void InitializeControls()
+        void CreateItemCard()
         {
+
             #region Grid Container
             Grid gridContainer = new Grid();
             ColumnDefinition[] cd = new ColumnDefinition[2];
@@ -46,10 +46,10 @@ namespace POS.controlTemplate
             cd[1].Width = new GridLength(1, GridUnitType.Star);
             for (int i = 0; i < 2; i++)
                 gridContainer.ColumnDefinitions.Add(cd[i]);
-            int rowCount = 4;
+            int rowCount = 3;
             if (cardViewitem.cardType == "sales")
-                rowCount = 3;
-                RowDefinition[] rd = new RowDefinition[4];
+                rowCount = 4;
+            RowDefinition[] rd = new RowDefinition[4];
             for (int i = 0; i < rowCount; i++)
             {
                 rd[i] = new RowDefinition();
@@ -152,7 +152,7 @@ namespace POS.controlTemplate
             buttonImage.FlowDirection = FlowDirection.LeftToRight;
             //buttonImage.HorizontalAlignment = HorizontalAlignment.Center;
             //buttonImage.VerticalAlignment = VerticalAlignment.Center;
-            //MaterialDesignThemes.Wpf.ButtonAssist.SetCornerRadius(buttonImage, (new CornerRadius(0, 10, 10, 0)));
+            MaterialDesignThemes.Wpf.ButtonAssist.SetCornerRadius(buttonImage, (new CornerRadius(10)));
             SectionData.getImg("Item", cardViewitem.item.image, buttonImage);
 
 
@@ -244,6 +244,115 @@ namespace POS.controlTemplate
             }
             gridContainer.Children.Add(titleText);
             gridContainer.Children.Add(subTitleText);
+        }
+
+        void CreateUserCard(string type , string title, string subTitle, string Img)
+        {
+            #region Grid Container
+            Grid gridContainer = new Grid();
+            ColumnDefinition[] cd = new ColumnDefinition[2];
+            for (int i = 0; i < 2; i++)
+                cd[i] = new ColumnDefinition();
+            cd[0].Width = new GridLength(1.2, GridUnitType.Star);
+            cd[1].Width = new GridLength(1, GridUnitType.Star);
+            for (int i = 0; i < 2; i++)
+                gridContainer.ColumnDefinitions.Add(cd[i]);
+            int rowCount = 3;
+            //if (cardViewitem.cardType == "sales")
+            //    rowCount = 4;
+            RowDefinition[] rd = new RowDefinition[3];
+            for (int i = 0; i < rowCount; i++)
+            {
+                rd[i] = new RowDefinition();
+            }
+            rd[0].Height = new GridLength(5, GridUnitType.Star);
+            rd[1].Height = new GridLength(16, GridUnitType.Star);
+            rd[2].Height = new GridLength(13, GridUnitType.Star);
+            //if (cardViewitem.cardType == "sales")
+            //    rd[3].Height = new GridLength(20, GridUnitType.Star);
+            for (int i = 0; i < rowCount; i++)
+            {
+                gridContainer.RowDefinitions.Add(rd[i]);
+            }
+            /////////////////////////////////////////////////////
+            if (this.ActualHeight != 0)
+                gridContainer.Height = this.ActualHeight - 10;
+            if (this.ActualHeight != 0)
+                gridContainer.Width = this.ActualWidth - 10;
+            /////////////////////////////////////////////////////
+
+            brd_main.Child = gridContainer;
+            #endregion
+            if (cardViewitem.language == "ar")
+                grid_main.FlowDirection = FlowDirection.RightToLeft;
+            else grid_main.FlowDirection = FlowDirection.LeftToRight;
+            #region   Title
+            var titleText = new TextBlock();
+            titleText.Text = title;
+            titleText.FontSize = 14;
+            titleText.FontFamily = App.Current.Resources["Font-cairo-bold"] as FontFamily;
+            titleText.Margin = new Thickness(5, 0, 5, 0);
+            titleText.FontWeight = FontWeights.Bold;
+            titleText.VerticalAlignment = VerticalAlignment.Top;
+            titleText.HorizontalAlignment = HorizontalAlignment.Left;
+            titleText.TextWrapping = TextWrapping.Wrap;
+            titleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#000000"));
+            Grid.SetRow(titleText, 1);
+            /////////////////////////////////
+
+            #endregion
+            #region  subTitle
+            var subTitleText = new TextBlock();
+            subTitleText.Text = cardViewitem.user.job;
+            subTitleText.Margin = new Thickness(5, 0, 5, 0);
+            subTitleText.FontWeight = FontWeights.Regular;
+            subTitleText.VerticalAlignment = VerticalAlignment.Top;
+            subTitleText.HorizontalAlignment = HorizontalAlignment.Left;
+            subTitleText.FontSize = 10;
+            subTitleText.TextWrapping = TextWrapping.Wrap;
+            subTitleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
+            Grid.SetRow(subTitleText, 2);
+            /////////////////////////////////
+
+            #endregion
+            #region Image
+            Button buttonImage = new Button();
+            buttonImage.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            //Grid.SetRowSpan(buttonImage, 4);
+            //Grid.SetColumn(buttonImage, 1);
+            //buttonImage.Height = 107;
+            buttonImage.Height = (gridContainer.Height - 10) - 7.5;
+            //buttonImage.Width = 100;
+            buttonImage.Width = (gridContainer.Width / 2.2) - 7.5;
+            buttonImage.BorderThickness = new Thickness(0);
+            buttonImage.Padding = new Thickness(0);
+            //buttonImage.Margin = new Thickness(5);
+            buttonImage.FlowDirection = FlowDirection.LeftToRight;
+            //buttonImage.HorizontalAlignment = HorizontalAlignment.Center;
+            //buttonImage.VerticalAlignment = VerticalAlignment.Center;
+            MaterialDesignThemes.Wpf.ButtonAssist.SetCornerRadius(buttonImage, (new CornerRadius(10)));
+            SectionData.getImg(type, Img, buttonImage);
+            Grid grid_image = new Grid();
+            grid_image.Height = buttonImage.Height - 2;
+            grid_image.Width = buttonImage.Width - 1;
+            Grid.SetRowSpan(grid_image, 4);
+            Grid.SetColumn(grid_image, 1);
+            grid_image.Children.Add(buttonImage);
+            gridContainer.Children.Add(grid_image);
+
+            //////////////
+            #endregion
+
+            gridContainer.Children.Add(titleText);
+            gridContainer.Children.Add(subTitleText);
+        }
+        void InitializeControls()
+        {
+            if (cardViewitem.cardType == "User")
+                CreateUserCard(cardViewitem.cardType,cardViewitem.user.name,cardViewitem.user.job, cardViewitem.user.image);
+            else
+                CreateItemCard();
+
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

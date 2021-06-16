@@ -1329,7 +1329,7 @@ namespace POS.View
             _lastKeystroke = DateTime.Now;
             // process barcode
            
-            if (e.Key.ToString() == "Return" && _BarcodeStr != "")
+            if (e.Key.ToString() == "Return" && _BarcodeStr != "" && _InvoiceType == "pd")
             {
                 if (_Sender != null)
                 {

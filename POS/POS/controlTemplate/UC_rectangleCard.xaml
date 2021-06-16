@@ -27,26 +27,10 @@
     <Grid x:Name="grid_main" ForceCursor="true" Cursor="Hand" Margin="5">
         <Border  CornerRadius="10" BorderBrush="{Binding rectangleCardBorderBrush }" 
              BorderThickness="1.2" x:Name="brd_main"
-                    Background="White">
-            <!--<Grid    x:Name="grid_container" Height="{Binding Path=ActualHeight, ElementName=grid_main}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.2*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions >
-                    <RowDefinition Height="5*"/>
-                    <RowDefinition Height="16*"/>
-                    <RowDefinition Height="13*"/>
-                    <RowDefinition Height="20*"/>
-                </Grid.RowDefinitions>
-             
-            </Grid>-->
-        </Border>
+                    Background="White"/>
         <Rectangle x:Name="rectangle" Grid.RowSpan="2" 
                        Fill="#99F0F8FF" Opacity="0" 
                        RadiusX="10" RadiusY="10" />
     </Grid>
-
-
 </UserControl>
 

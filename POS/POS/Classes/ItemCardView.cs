@@ -10,6 +10,8 @@ namespace POS.Classes
     {
         public Item item { get; set; }
         public Category category { get; set; }
+        public User user { get; set; }
+        public Agent agent { get; set; }
         public int row { get; set; }
         public int column { get; set; }
         public string language { get; set; }

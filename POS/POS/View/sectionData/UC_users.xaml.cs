@@ -969,27 +969,11 @@ namespace POS.View
         }
         #region Categor and Item
         #region Refrish Y
-        /// <summary>
-        /// Item
-        /// </summary>
-        /// <returns></returns>
-
-
-        //void RefrishItemsDatagrid(IEnumerable<Item> _items)
-        //{
-        //    dg_users.ItemsSource = _items;
-        //}
-        //void RefreshUserView()
-        //{
-        //    dg_users.ItemsSource = usersQuery;
-        //    txt_count.Text = usersQuery.Count().ToString();
-        //}
-
-        void RefrishItemsCard(IEnumerable<User> _items)
+        void RefrishItemsCard(IEnumerable<User> _user)
         {
             grid_containerCard.Children.Clear();
             catigoriesAndItemsView.gridCatigorieItems = grid_containerCard;
-            //catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
+            catigoriesAndItemsView.FN_refrishUsers(_user.ToList(), "en","User");
         }
         #endregion
         #region Get Id By Click  Y
@@ -1063,9 +1047,6 @@ namespace POS.View
             }
 
         }
-
-         
-
         public void ChangeItemIdEvent(int userId)
         {
             #region
@@ -1085,8 +1066,9 @@ namespace POS.View
             cb_job.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
             user = users.ToList().Find(c => c.userId == userId);
-           
-                if (user != null)
+                this.DataContext = user;
+
+            if (user != null)
             {
                 if (user.userId != 0)
                 {
@@ -1129,18 +1111,11 @@ namespace POS.View
                     }
                 }
                 #endregion 
-
             }
-
-
             #endregion
-            
         }
-
         #endregion
-        
         #region Switch Card/DataGrid Y
-
         private void Btn_itemsInCards_Click(object sender, RoutedEventArgs e)
         {
             grid_datagrid.Visibility = Visibility.Collapsed;
