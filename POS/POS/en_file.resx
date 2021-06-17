@@ -1221,4 +1221,7 @@
   <data name="trMessageBoxDelete" xml:space="preserve">
     <value>Are you sure you want to delete this?</value>
   </data>
+  <data name="trEmptyDocDateToolTip" xml:space="preserve">
+    <value>The document due date cannot be empty</value>
+  </data>
 </root>

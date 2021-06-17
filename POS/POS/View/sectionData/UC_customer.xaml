@@ -101,7 +101,7 @@
             <Border Margin="5,5,5,0" Grid.Row="1"  Background="White" CornerRadius="7,7,0,0">
                 <Grid>
                     <Grid Grid.Row="1" x:Name="grid_cards" Visibility="Visible" Margin="5,5,5,17.5" >
-                        <Grid Grid.Row="0" x:Name="grid_containerCard" Visibility="Visible"  Background="{x:Null}" Grid.ColumnSpan="2">
+                        <Grid Grid.Row="0" x:Name="grid_containerCard" Visibility="Visible" SizeChanged="Grid_containerCard_SizeChanged"  Background="{x:Null}" Grid.ColumnSpan="2">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>

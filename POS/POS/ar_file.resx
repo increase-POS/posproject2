@@ -1200,4 +1200,7 @@
   <data name="trMessageBoxDelete" xml:space="preserve">
     <value>هل أنت متأكد من رغبتك في حذف هذا؟</value>
   </data>
+  <data name="trEmptyDocDateToolTip" xml:space="preserve">
+    <value>تاريخ استحقاق الوثيقة لا يمكن أن يكون فارغ</value>
+  </data>
 </root>

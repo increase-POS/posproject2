@@ -21,7 +21,7 @@ namespace POS.Classes
         public static bool iscodeExist = false;
 
         public static Agent agentModel = new Agent();
-
+        public static Bonds bondModel = new Bonds();
         public static Branch branchModel = new Branch();
         public static Category categoryModel = new Category();
         public static Pos posModel = new Pos();
@@ -291,8 +291,8 @@ namespace POS.Classes
 
         public static void clearValidate(TextBox tb , Path p_error)
         {
-            tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            p_error.Visibility = Visibility.Collapsed;
+            //tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            //p_error.Visibility = Visibility.Collapsed;
         }
 
         public static void clearPasswordValidate(PasswordBox pb, Path p_error)
@@ -505,20 +505,7 @@ namespace POS.Classes
                     }
                     button.Background = new ImageBrush(bitmapImage);
                 }
-                else if (type.Equals("Agent"))
-                {
-                    Agent agent = new Agent();
-                    byte[] imageBuffer = await agent.downloadImage(imageUri); // read this as BLOB from your DB
-                    var bitmapImage = new BitmapImage();
-                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
-                    {
-                        bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                    }
-                    button.Background = new ImageBrush(bitmapImage);
-                }
+
                 //}
             }
             catch
@@ -573,6 +560,7 @@ namespace POS.Classes
 
             return str1 + str2 + str3;
         }
+
         static public void searchInComboBox(ComboBox cbm)
         {
             CollectionView itemsViewOriginal = (CollectionView)CollectionViewSource.GetDefaultView(cbm.Items);

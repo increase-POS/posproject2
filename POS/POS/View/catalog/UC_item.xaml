@@ -182,7 +182,7 @@
                         </Border>
                         <Grid Grid.Row="1" x:Name="grid_itemCards" Visibility="Visible" >
                             <!--<Grid  x:Name="grid_itemContainerCard"  />-->
-                            <Grid Grid.Row="0" x:Name="grid_itemContainerCard"  Background="{x:Null}" Grid.ColumnSpan="2">
+                            <Grid Grid.Row="0" x:Name="grid_itemContainerCard" SizeChanged="Grid_containerCard_SizeChanged"  Background="{x:Null}" Grid.ColumnSpan="2">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>

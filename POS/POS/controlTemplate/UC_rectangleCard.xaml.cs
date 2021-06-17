@@ -46,9 +46,9 @@ namespace POS.controlTemplate
             cd[1].Width = new GridLength(1, GridUnitType.Star);
             for (int i = 0; i < 2; i++)
                 gridContainer.ColumnDefinitions.Add(cd[i]);
-            int rowCount = 3;
-            if (cardViewitem.cardType == "sales")
-                rowCount = 4;
+            //int rowCount = 3;
+            //if (cardViewitem.cardType == "sales")
+            int rowCount = 4;
             RowDefinition[] rd = new RowDefinition[4];
             for (int i = 0; i < rowCount; i++)
             {
@@ -57,8 +57,8 @@ namespace POS.controlTemplate
             rd[0].Height = new GridLength(5, GridUnitType.Star);
             rd[1].Height = new GridLength(16, GridUnitType.Star);
             rd[2].Height = new GridLength(13, GridUnitType.Star);
-            if (cardViewitem.cardType == "sales")
-                rd[3].Height = new GridLength(13, GridUnitType.Star);
+            //if (cardViewitem.cardType == "sales")
+                rd[3].Height = new GridLength(20, GridUnitType.Star);
             for (int i = 0; i < rowCount; i++)
             {
                 gridContainer.RowDefinitions.Add(rd[i]);

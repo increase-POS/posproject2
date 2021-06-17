@@ -73,22 +73,21 @@ namespace POS
         /// </summary>
 
         DispatcherTimer timer;
+        static public MainWindow mainWindow;
         public MainWindow()
         {
             InitializeComponent();
             //MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             //MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
             generateResponsiveVariables();
-#pragma warning disable CS0436 // Type conflicts with imported type
+            #pragma warning disable CS0436 // Type conflicts with imported type
             TabTipAutomation.IgnoreHardwareKeyboard = HardwareKeyboardIgnoreOptions.IgnoreAll;
-#pragma warning restore CS0436 // Type conflicts with imported type
-#pragma warning disable CS0436 // Type conflicts with imported type
-
-#pragma warning restore CS0436 // Type conflicts with imported type
-
-#pragma warning disable CS0436 // Type conflicts with imported type
+            #pragma warning restore CS0436 // Type conflicts with imported type
+            #pragma warning disable CS0436 // Type conflicts with imported type
+            #pragma warning restore CS0436 // Type conflicts with imported type
+            #pragma warning disable CS0436 // Type conflicts with imported type
             TabTipAutomation.ExceptionCatched += TabTipAutomationOnTest;
-#pragma warning restore CS0436 // Type conflicts with imported type
+            #pragma warning restore CS0436 // Type conflicts with imported type
             this.Height = SystemParameters.MaximizedPrimaryScreenHeight;
             //this.Width = SystemParameters.MaximizedPrimaryScreenHeight;
             timer = new DispatcherTimer();
@@ -97,6 +96,7 @@ namespace POS
             timer.Start();
 
 
+            mainWindow = this;
         }
         void timer_Tick(object sender, EventArgs e)
         {

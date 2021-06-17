@@ -106,6 +106,7 @@ namespace POS.View
                 if (_instance == null)
                     _instance = new UC_item();
                 return _instance;
+
             }
         }
 
@@ -251,7 +252,7 @@ namespace POS.View
                 drawBarcode(tb_barcode.Text);
             }
         }
-        Window window;
+       static Window window;
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -259,10 +260,12 @@ namespace POS.View
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             //CreateGridCardContainer();
             catigoriesAndItemsView.ucItem = this;
-           // if (window == null)
-           // {
-                window = Window.GetWindow(this);
-                window.KeyDown += HandleKeyPress;
+            // if (window == null)
+            // {
+            //window = Window.GetWindow(this);
+            //window.KeyDown += HandleKeyPress;
+            MainWindow.mainWindow.KeyDown -= HandleKeyPress;
+            MainWindow.mainWindow.KeyDown += HandleKeyPress;
             //}
 
 
@@ -2084,5 +2087,9 @@ namespace POS.View
             _Sender = sender;
         }
 
+        private void Grid_containerCard_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+        }
     }
 }

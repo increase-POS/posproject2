@@ -1,6 +1,10 @@
-﻿using System;
+﻿using netoaster;
+using POS.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,7 +25,28 @@ namespace POS.View.accounts
     /// </summary>
     public partial class uc_bonds : UserControl
     {
+        Card cardModel = new Card();
+        IEnumerable<Card> cards;
+
+        Bonds bondModel = new Bonds();
+        IEnumerable<Bonds> bonds;
+        Bonds bond = new Bonds();
+
+        Agent agentModel = new Agent();
+        User userModel = new User();
+
+        IEnumerable<Agent> agents;
+        IEnumerable<User> users;
+
+        IEnumerable<Bonds> bondsQuery;
+        IEnumerable<Bonds> bondsQueryExcel;
+        string searchText = "";
+
+        CashTransfer cashModel = new CashTransfer();
+
         private static uc_bonds _instance;
+
+        byte tgl_bondState;
         public static uc_bonds Instance
         {
             get
@@ -36,34 +61,147 @@ namespace POS.View.accounts
             InitializeComponent();
         }
 
-        private void Dg_bonds_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        private async void Dg_bonds_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {//selection
+            SectionData.clearValidate(tb_number, p_errorNumber);
+            SectionData.clearValidate(tb_amount, p_errorAmount);
+
+            SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+            SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+            SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+            SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
+            SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+            TextBox tbDocDate = (TextBox)dp_deservecDate.Template.FindName("PART_TextBox", dp_deservecDate);
+            SectionData.clearValidate(tbDocDate, p_errorDocDate);
+
+            if (dg_bonds.SelectedIndex != -1)
+            {
+                bond = dg_bonds.SelectedItem as Bonds;
+                this.DataContext = bond;
+
+                if (bond != null)
+                {
+                    CashTransfer cash = await cashModel.GetByID(bond.cashTransId.Value);
+
+                    switch (cash.side)
+                    {
+                        case "v":
+                            cb_depositorV.SelectedValue = cash.agentId.Value;
+                            cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+                            cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+                            break;
+                        case "c":
+                            cb_depositorC.SelectedValue = cash.agentId.Value;
+                            cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+                            cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+                            break;
+                        case "u":
+                            cb_depositorU.SelectedValue = cash.userId.Value;
+                            cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+                            cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+                            break;
+                    }
+
+                }
+
+            }
+        }
+
+        private async void Btn_pay_Click(object sender, RoutedEventArgs e)
+        {//pay
+            //update bond
+            bond.isRecieved = 1;
+
+            string s = await bondModel.Save(bond);
+            if (!s.Equals("0"))
+                MessageBox.Show("ok");
+
+            //save new cashtransfer
+            CashTransfer cash = new CashTransfer();
+
+            cash.transType = bond.type;
+            cash.posId = MainWindow.posID.Value;
+            cash.transNum = await SectionData.generateNumber(char.Parse(bond.type), "bnd");
+            cash.cash = decimal.Parse(tb_amount.Text);
+            cash.notes = tb_note.Text;
+            cash.createUserId = MainWindow.userID;
+            cash.side = "bo";
+
+            cash.docNum = tb_number.Text;
+            cash.processType = cb_paymentProcessType.SelectedValue.ToString();
+
+            if (cb_depositorV.IsVisible)
+                cash.agentId = Convert.ToInt32(cb_depositorV.SelectedValue);  
+
+            if (cb_depositorC.IsVisible)
+                cash.agentId = Convert.ToInt32(cb_depositorC.SelectedValue);
+
+            if (cb_depositorU.IsVisible)
+                cash.userId = Convert.ToInt32(cb_depositorU.SelectedValue);
+
+            if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
+
+            s = await cashModel.Save(cash);
+
+            if (!s.Equals("0"))
+            {
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                Btn_clear_Click(null, null);
+
+
+                //dg_paymentsAccounts.ItemsSource = await cashModel.GetCashTransferAsync("p", "v");
+                await RefreshBondsList();
+                Tb_search_TextChanged(null, null);
+            }
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+        }
+
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {//search
+            if (bonds is null)
+                await RefreshBondsList();
+            this.Dispatcher.Invoke(() =>
+            {
+                searchText = tb_search.Text;
+                bondsQuery = bonds.Where(s => (s.number.Contains(searchText)
+                || s.amount.ToString().Contains(searchText)
+                || s.type.ToString().Contains(searchText)
+                )
+                //&& s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                //&& s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                //&& s.isRecieved == tgl_bondState
+                );
+
+            });
+
+            bondsQueryExcel = bondsQuery;
+            RefreshBondView();
+
 
         }
 
-        private void Btn_pay_Click(object sender, RoutedEventArgs e)
-        {
-
+        private async void Tgl_isRecieved_Unchecked(object sender, RoutedEventArgs e)
+        {//unreceived
+            if (bonds is null)
+                await RefreshBondsList();
+            tgl_bondState = 0;
+            Tb_search_TextChanged(null, null);
         }
 
-        private void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void Tgl_isRecieved_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tgl_isRecieved_Checked(object sender, RoutedEventArgs e)
-        {
-
+        private async void Tgl_isRecieved_Checked(object sender, RoutedEventArgs e)
+        {//received
+            if (bonds is null)
+                await RefreshBondsList();
+            tgl_bondState = 1;
+            Tb_search_TextChanged(null, null);
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {
-
+        {//refresh
+            RefreshBondsList();
+            Tb_search_TextChanged(null, null);
         }
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
@@ -78,17 +216,44 @@ namespace POS.View.accounts
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
+            tb_number.Text = "";
+            tb_amount.Clear();
+            tb_note.Clear();
+
+            cb_depositorV.SelectedIndex = -1;
+            cb_depositorC.SelectedIndex = -1;
+            cb_depositorU.SelectedIndex = -1;
+            cb_paymentProcessType.SelectedIndex = -1;
+            cb_card.SelectedIndex = -1;
+            dp_deservecDate.SelectedDate = null;
           
+            cb_depositorV.Visibility = Visibility.Collapsed;
+            cb_depositorC.Visibility = Visibility.Collapsed;
+            cb_depositorU.Visibility = Visibility.Collapsed;
+
+            SectionData.clearValidate(tb_number, p_errorNumber);
+            SectionData.clearValidate(tb_amount, p_errorAmount);
+
+            SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+            SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+            SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+            SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
+            SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+            TextBox tbDocDate = (TextBox)dp_deservecDate.Template.FindName("PART_TextBox", dp_deservecDate);
+            SectionData.clearValidate(tbDocDate, p_errorDocDate);
         }
         private void validateEmpty(string name, object sender)
         {
             if (name == "TextBox")
             {
-              
+                
             }
             else if (name == "ComboBox")
             {
-               
+                if ((sender as ComboBox).Name == "cb_paymentProcessType")
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
+                else if ((sender as ComboBox).Name == "cb_card")
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
             }
         }
 
@@ -132,24 +297,132 @@ namespace POS.View.accounts
             //}
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {//load
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_ucBonds.FlowDirection = FlowDirection.LeftToRight;
+
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_ucBonds.FlowDirection = FlowDirection.RightToLeft;
+
+            }
+
+            fillVendors();
+
+            fillCustomers();
+
+            fillUsers();
+
+
+            #region fill process type
+            var typelist = new[] {
+            new { Text = MainWindow.resourcemanager.GetString("trCash")       , Value = "cash" },
+            new { Text = MainWindow.resourcemanager.GetString("trCheque")     , Value = "cheque" },
+            new { Text = MainWindow.resourcemanager.GetString("trCreditCard") , Value = "card" },
+             };
+            cb_paymentProcessType.DisplayMemberPath = "Text";
+            cb_paymentProcessType.SelectedValuePath = "Value";
+            cb_paymentProcessType.ItemsSource = typelist;
+            #endregion
+
+            #region fill card combo
+            cards = await cardModel.GetAll();
+            cb_card.ItemsSource = cards;
+            cb_card.DisplayMemberPath = "name";
+            cb_card.SelectedValuePath = "cardId";
+            cb_card.SelectedIndex = -1;
+            #endregion
+
+            translate();
+
+            dp_endSearchDate.SelectedDate = DateTime.Now;
+            dp_startSearchDate.SelectedDate = DateTime.Now;
+
+            await RefreshBondsList();
+            Tb_search_TextChanged(null, null);
 
         }
 
-        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        private void translate()
         {
+        }
+
+        void RefreshBondView()
+        {
+            dg_bonds.ItemsSource = bondsQuery;
+            txt_count.Text = bondsQuery.Count().ToString();
+        }
+        async Task<IEnumerable<Bonds>> RefreshBondsList()
+        {
+            bonds = await bondModel.GetAll();
+            return bonds;
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {//pdf
 
         }
 
         private void Cb_paymentProcessType_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        {//type selection
+            TextBox dpDate = (TextBox)dp_deservecDate.Template.FindName("PART_TextBox", dp_deservecDate);
+
+            switch (cb_paymentProcessType.SelectedIndex)
+            {
+
+                case 0://cash
+                    cb_card.Visibility = Visibility.Collapsed; cb_card.SelectedIndex = -1;
+                    SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                    break;
+
+                case 1://cheque
+                    cb_card.Visibility = Visibility.Collapsed; cb_card.SelectedIndex = -1;
+                    SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                    break;
+
+                case 2://card
+                    cb_card.Visibility = Visibility.Visible;
+                    break;
+            }
 
         }
 
         private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
 
         }
+
+        private async void fillVendors()
+        {
+            agents = await agentModel.GetAgentsActive("v");
+
+            cb_depositorV.ItemsSource = agents;
+            cb_depositorV.DisplayMemberPath = "name";
+            cb_depositorV.SelectedValuePath = "agentId";
+        }
+
+        private async void fillCustomers()
+        {
+            agents = await agentModel.GetAgentsActive("c");
+
+            cb_depositorC.ItemsSource = agents;
+            cb_depositorC.DisplayMemberPath = "name";
+            cb_depositorC.SelectedValuePath = "agentId";
+        }
+
+        private async void fillUsers()
+        {
+            users = await userModel.GetUsersActive();
+
+            cb_depositorU.ItemsSource = users;
+            cb_depositorU.DisplayMemberPath = "username";
+            cb_depositorU.SelectedValuePath = "userId";
+        }
+
     }
 }

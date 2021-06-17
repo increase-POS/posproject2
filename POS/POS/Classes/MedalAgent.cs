@@ -13,26 +13,27 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class Bonds
-
+    class MedalAgent
     {
-        public int bondId { get; set; }
-        public string number { get; set; }
-        public Nullable<decimal> amount { get; set; }
-        public Nullable<System.DateTime> deserveDate { get; set; }
-        public string type { get; set; }
-        public Nullable<byte> isRecieved { get; set; }
+        public int id { get; set; }
+        public Nullable<int> medalId { get; set; }
+        public Nullable<int> agentId { get; set; }
+        public Nullable<int> offerId { get; set; }
+        public Nullable<int> couponId { get; set; }
         public string notes { get; set; }
+        public Nullable<byte> isActive { get; set; }
+        public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
-        public Nullable<System.DateTime> updateDate { get; set; }
-        public Nullable<System.DateTime> createDate { get; set; }
-        public Boolean canDelete { get; set; }
-        public Nullable<byte> isActive { get; set; }
-        public Nullable<int> cashTransId { get; set; }
-        public async Task<List<Bonds>> GetAll()
+        public string medalName { get; set; }
+        public string agentName { get; set; }
+        public string offerName { get; set; }
+        public string couponName { get; set; }
+        public string createUserName { get; set; }
+        public async Task<List<MedalAgent>> GetAll()
         {
-            List<Bonds> bonds = null;
+            List<MedalAgent> medalAgents = null;
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -43,7 +44,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "bonds/Get");
+                request.RequestUri = new Uri(Global.APIUri + "medalAgent/Get");
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -60,63 +61,24 @@ namespace POS.Classes
                         Converters = new List<JsonConverter> { new BadDateFixingConverter() },
                         DateParseHandling = DateParseHandling.None
                     };
-                    bonds = JsonConvert.DeserializeObject<List<Bonds>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return bonds;
+                    medalAgents = JsonConvert.DeserializeObject<List<MedalAgent>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return medalAgents;
                 }
                 else //web api sent error response 
                 {
-                    bonds = new List<Bonds>();
+                    medalAgents = new List<MedalAgent>();
                 }
-                return bonds;
+                return medalAgents;
             }
         }
 
-        public async Task<List<Bonds>> GetByisActive(byte isActive)
-        {
-            List<Bonds> bonds = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "bonds/GetByisActive?isActive=" + isActive);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    bonds = JsonConvert.DeserializeObject<List<Bonds>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return bonds;
-                }
-                else //web api sent error response 
-                {
-                    bonds = new List<Bonds>();
-                }
-                return bonds;
-            }
-        }
-        public async Task<string> Save(Bonds bond)
+  
+        public async Task<string> Save(MedalAgent medalAgentObj)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             // 
-            var myContent = JsonConvert.SerializeObject(bond);
+            var myContent = JsonConvert.SerializeObject(medalAgentObj);
 
             using (var client = new HttpClient())
             {
@@ -129,7 +91,7 @@ namespace POS.Classes
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
                 request.RequestUri = new Uri(Global.APIUri
-                                             + "bonds/Save?bondObject="
+                                             + "medalAgentObj/Save?medalAgent="
                                              + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
@@ -148,9 +110,9 @@ namespace POS.Classes
         }
 
        
-        public async Task<Bonds> getBondsById(int bondId)
+        public async Task<MedalAgent> GetByID(int id)
         {
-            Bonds bond = new Bonds();
+            MedalAgent medalAgent = new MedalAgent();
 
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -162,8 +124,8 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "bonds/GetbondByID");
-                request.Headers.Add("bondId", bondId.ToString());
+                request.RequestUri = new Uri(Global.APIUri + "medalAgent/GetByID");
+                request.Headers.Add("id", id.ToString());
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -173,20 +135,18 @@ namespace POS.Classes
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
 
-                    bond = JsonConvert.DeserializeObject<Bonds>(jsonString);
+                    medalAgent = JsonConvert.DeserializeObject<MedalAgent>(jsonString);
 
-                    return bond;
+                    return medalAgent;
                 }
 
-                return bond;
+                return medalAgent;
             }
         }
 
-      
+ 
 
-
-
-        public async Task<Boolean> deleteBonds(int bondId, int userId, bool final)
+        public async Task<Boolean> deleteMedalAgent(int Id, int userId, bool final)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -199,7 +159,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "bonds/Delete?bondId=" + bondId + "&userId=" + userId + "&final=" + final);
+                request.RequestUri = new Uri(Global.APIUri + "medalAgent/Delete?Id=" + Id + "&userId=" + userId + "&final=" + final);
 
                 request.Headers.Add("APIKey", Global.APIKey);
 

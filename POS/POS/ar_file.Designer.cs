@@ -1078,6 +1078,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تاريخ استحقاق الوثيقة لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyDocDateToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyDocDateToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رقم الوثيقة لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyDocNumToolTip {

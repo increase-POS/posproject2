@@ -13,26 +13,20 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class Bonds
-
+    class Medal
     {
-        public int bondId { get; set; }
-        public string number { get; set; }
-        public Nullable<decimal> amount { get; set; }
-        public Nullable<System.DateTime> deserveDate { get; set; }
-        public string type { get; set; }
-        public Nullable<byte> isRecieved { get; set; }
+        public int medalId { get; set; }
+        public string name { get; set; }
+        public Nullable<byte> isActive { get; set; }
         public string notes { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
-        public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
         public Boolean canDelete { get; set; }
-        public Nullable<byte> isActive { get; set; }
-        public Nullable<int> cashTransId { get; set; }
-        public async Task<List<Bonds>> GetAll()
+        public async Task<List<Medal>> GetAll()
         {
-            List<Bonds> bonds = null;
+            List<Medal> medals = null;
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -43,7 +37,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "bonds/Get");
+                request.RequestUri = new Uri(Global.APIUri + "medal/Get");
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -60,20 +54,20 @@ namespace POS.Classes
                         Converters = new List<JsonConverter> { new BadDateFixingConverter() },
                         DateParseHandling = DateParseHandling.None
                     };
-                    bonds = JsonConvert.DeserializeObject<List<Bonds>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return bonds;
+                    medals = JsonConvert.DeserializeObject<List<Medal>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return medals;
                 }
                 else //web api sent error response 
                 {
-                    bonds = new List<Bonds>();
+                    medals = new List<Medal>();
                 }
-                return bonds;
+                return medals;
             }
         }
 
-        public async Task<List<Bonds>> GetByisActive(byte isActive)
+        public async Task<List<Medal>> GetByisActive(byte isActive)
         {
-            List<Bonds> bonds = null;
+            List<Medal> medals = null;
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -84,7 +78,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "bonds/GetByisActive?isActive=" + isActive);
+                request.RequestUri = new Uri(Global.APIUri + "medal/GetByisActive?isActive=" + isActive);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -101,22 +95,22 @@ namespace POS.Classes
                         Converters = new List<JsonConverter> { new BadDateFixingConverter() },
                         DateParseHandling = DateParseHandling.None
                     };
-                    bonds = JsonConvert.DeserializeObject<List<Bonds>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return bonds;
+                    medals = JsonConvert.DeserializeObject<List<Medal>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return medals;
                 }
                 else //web api sent error response 
                 {
-                    bonds = new List<Bonds>();
+                    medals = new List<Medal>();
                 }
-                return bonds;
+                return medals;
             }
         }
-        public async Task<string> Save(Bonds bond)
+        public async Task<string> Save(Medal medal)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             // 
-            var myContent = JsonConvert.SerializeObject(bond);
+            var myContent = JsonConvert.SerializeObject(medal);
 
             using (var client = new HttpClient())
             {
@@ -129,7 +123,7 @@ namespace POS.Classes
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
                 request.RequestUri = new Uri(Global.APIUri
-                                             + "bonds/Save?bondObject="
+                                             + "medal/Save?medalObject="
                                              + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
@@ -148,9 +142,9 @@ namespace POS.Classes
         }
 
        
-        public async Task<Bonds> getBondsById(int bondId)
+        public async Task<Medal> getMedalById(int medalId)
         {
-            Bonds bond = new Bonds();
+            Medal medal = new Medal();
 
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -162,8 +156,8 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "bonds/GetbondByID");
-                request.Headers.Add("bondId", bondId.ToString());
+                request.RequestUri = new Uri(Global.APIUri + "medal/GetByID");
+                request.Headers.Add("id", medalId.ToString());
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -173,12 +167,12 @@ namespace POS.Classes
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
 
-                    bond = JsonConvert.DeserializeObject<Bonds>(jsonString);
+                    medal = JsonConvert.DeserializeObject<Medal>(jsonString);
 
-                    return bond;
+                    return medal;
                 }
 
-                return bond;
+                return medal;
             }
         }
 
@@ -186,7 +180,7 @@ namespace POS.Classes
 
 
 
-        public async Task<Boolean> deleteBonds(int bondId, int userId, bool final)
+        public async Task<Boolean> deleteMedal(int medalId, int userId, bool final)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -199,7 +193,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "bonds/Delete?bondId=" + bondId + "&userId=" + userId + "&final=" + final);
+                request.RequestUri = new Uri(Global.APIUri + "medals/Delete?Id=" + medalId + "&userId=" + userId + "&final=" + final);
 
                 request.Headers.Add("APIKey", Global.APIKey);
 

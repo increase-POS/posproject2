@@ -1189,6 +1189,11 @@ namespace POS.View
         #endregion
 
         #endregion
+
+        private void Grid_containerCard_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+        }
     }
 }
     

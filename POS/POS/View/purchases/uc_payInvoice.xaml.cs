@@ -1692,10 +1692,8 @@ namespace POS.View
 
                         string filepath = saveFileDialog.FileName;
                         LocalReportExtensions.ExportToPDF(rep, filepath);
-
                     }
                 }
-
            }
             catch { }
 

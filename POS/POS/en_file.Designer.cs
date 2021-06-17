@@ -1096,6 +1096,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The document due date cannot be empty.
+        /// </summary>
+        internal static string trEmptyDocDateToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyDocDateToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Document number can not be empty.
         /// </summary>
         internal static string trEmptyDocNumToolTip {

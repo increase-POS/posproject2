@@ -962,7 +962,15 @@ namespace POS.View
         void refrishBillDetails()
         {
             dg_billDetails.ItemsSource = null;
-            dg_billDetails.ItemsSource = billDetails;
+            if (billDetails.Count == 1)
+            {
+                BillDetails bd = new BillDetails();
+                billDetails.Add(bd);
+                dg_billDetails.ItemsSource = billDetails;
+                billDetails.Remove(bd);
+            }
+            else
+                dg_billDetails.ItemsSource = billDetails;
 
             tb_sum.Text = _Sum.ToString();
             if (MainWindow.isInvTax == 0)
@@ -1150,8 +1158,6 @@ namespace POS.View
             _Tax += tax;
         }
         #endregion billdetails
-
-
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cmb = sender as ComboBox;
@@ -1159,8 +1165,65 @@ namespace POS.View
             if (dg_billDetails.SelectedIndex != -1)
                 billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
         }
+        private void Cbm_unitItemDetails_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            //billDetails
+            if (billDetails.Count == 1)
+            {
+                var cmb = sender as ComboBox;
+                cmb.SelectedValue = (int)billDetails[0].itemUnitId;
+            }
+           
+            //MessageBox.Show("Hello");
+        }
+        #region
+        public DataGridCell GetDataGridCell(DataGridCellInfo cellInfo)
+        {
+            var cellContent = cellInfo.Column.GetCellContent(cellInfo.Item);
+            if (cellContent != null)
+                return (DataGridCell)cellContent.Parent;
 
+            return null;
+        }
+        #endregion
+        #region
+        static DataGridCell TryToFindGridCell(DataGrid grid, DataGridCellInfo cellInfo)
+        {
+            DataGridCell result = null;
+            DataGridRow row = (DataGridRow)grid.ItemContainerGenerator.ContainerFromItem(cellInfo.Item);
+            if (row != null)
+            {
+                int columnIndex = grid.Columns.IndexOf(cellInfo.Column);
+                if (columnIndex > -1)
+                {
+                    DataGridCellsPresenter presenter = GetVisualChild<DataGridCellsPresenter>(row);
+                    result = presenter.ItemContainerGenerator.ContainerFromIndex(columnIndex) as DataGridCell;
+                }
+            }
+            return result;
+        }
 
+        static T GetVisualChild<T>(Visual parent) where T : Visual
+        {
+            T child = default(T);
+            int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < numVisuals; i++)
+            {
+                Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
+                child = v as T;
+                if (child == null)
+                {
+                    child = GetVisualChild<T>(v);
+                }
+                if (child != null)
+                {
+                    break;
+                }
+            }
+            return child;
+        }
+
+        #endregion
         private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             //MessageBox.Show("I'm Here in _CollectionChanged");
@@ -1173,51 +1236,78 @@ namespace POS.View
                 {
                     if (dg_billDetails.Items.Count == 1)
                     {
+                        #region
+                        //   //object item = productGrid.SelectedItem;
+                        //   //(dg_billDetails.SelectedCells[2].Column.GetCellContent(item) as ComboBox).SelectedValue = (int)item.itemUnitId;
 
-                        var comboBoxlist = FindControls.FindVisualChildren<ComboBox>(dg_billDetails).ToArray();
-                        //comboBoxlist[0].SelectedValue = (int)item.itemUnitId;
-                        for (int i = 0; i < comboBoxlist.Count(); i++)
-                        {
-                            if (comboBoxlist[i].Name.ToString() == "cbm_unitItemDetails")
-                            {
-                                MessageBox.Show("I'm Here");
-                            }
+                        //   //dg_billDetails.SelectedIndex = 0;
+                        //   //var cellInfo = dg_billDetails.SelectedCells[0];
+                        //   //var content = cellInfo.Column.GetCellContent(cellInfo.Item);
+                        //   dg_billDetails.CurrentCell = new DataGridCellInfo(dg_billDetails.Items[0], dg_billDetails.Columns[3]);
+                        //   //dg_billDetails.SelectedCells.Add(dg_billDetails.CurrentCell);
+                        //   //(dg_billDetails.CurrentCell as DataGridCell).SelectedValue = (int)item.itemUnitId;
+                        //   foreach (var c in dg_billDetails.Columns)
+                        //   {
+                        //       DataGridCell cell1 = c.GetCellContent(3) as DataGridCell;
+                        //   }
 
-                        }
+                        //   //var cell = GetDataGridCell(dg_billDetails.CurrentCell);
+                        //   DataGridCell cell = TryToFindGridCell(dg_billDetails, dg_billDetails.CurrentCell);
+                        //   if (cell != null)
+                        //   {
+                        //       var cp = (ContentPresenter)cell.Content;
+                        //       var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
+                        //       //var combo = (combo)cell.Content;
+                        //       combo.SelectedValue = (int)item.itemUnitId;
+                        //       count++;
+                        //   }
+                        //   //var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                        //   var comboBoxlist = FindControls.FindVisualChildren<ComboBox>(dg_billDetails).ToArray();
+                        //   //comboBoxlist[0].SelectedValue = (int)item.itemUnitId;
+                        //   //(comboBoxlist[0] as ComboBox).SelectedValue = (int)item.itemUnitId;
+                        //   for (int i = 0; i < comboBoxlist.Count(); i++)
+                        //   {
+                        //       if (comboBoxlist[i].Name.ToString() == "cbm_unitItemDetails")
+                        //       {
+                        //           MessageBox.Show("I'm Here");
+                        //       }
 
-                        //List<ComboBox> comboBoxlist = new List<ComboBox>();
-                        //// Find all elements
-                        //StaticClass.FindChildGroup<ComboBox>(dg_billDetails, "cbm_unitItemDetails", ref comboBoxlist);
+                        //   }
+                        //   //List<ComboBox> comboBoxlist = new List<ComboBox>();
+                        //   //// Find all elements
+                        //   //StaticClass.FindChildGroup<ComboBox>(dg_billDetails, "cbm_unitItemDetails", ref comboBoxlist);
 
 
-                        //foreach (CheckBox c in checkBoxlist)
-                        //{
-                        //    if (c.IsChecked)
-                        //    {
-                        //        //do whatever you want
-                        //    }
-                        //}
-                        //comboBoxlist[0].SelectedValue = (int)item.itemUnitId;
+                        //   //foreach (CheckBox c in checkBoxlist)
+                        //   //{
+                        //   //    if (c.IsChecked)
+                        //   //    {
+                        //   //        //do whatever you want
+                        //   //    }
+                        //   //}
+                        //   //comboBoxlist[0].SelectedValue = (int)item.itemUnitId;
 
-                        /*
-                            (dg_billDetails.Items[0] as BillDetails).itemUnitId = (int)item.itemUnitId;
-                     var allCells =    dg_billDetails.SelectedCells;
-                        
-                        foreach (var c in allCells)
-                        {
-                            MessageBox.Show("HelloWorld!");
+                        //   /*
+                        //       (dg_billDetails.Items[0] as BillDetails).itemUnitId = (int)item.itemUnitId;
+                        //var allCells =    dg_billDetails.SelectedCells;
 
-                           //MessageBox.Show(c.Column)
-                        }
-                        //var cp = (ContentPresenter)cell.Content;
-                        //var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
-                        //combo.SelectedValue = (int)item.itemUnitId;
+                        //   foreach (var c in allCells)
+                        //   {
+                        //       MessageBox.Show("HelloWorld!");
 
-                        //cbm_unitItemDetails.allcell
-                        //cbm_unitItemDetails.se
-                        */
+                        //      //MessageBox.Show(c.Column)
+                        //   }
+                        //   //var cp = (ContentPresenter)cell.Content;
+                        //   //var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
+                        //   //combo.SelectedValue = (int)item.itemUnitId;
+
+                        //   //cbm_unitItemDetails.allcell
+                        //   //cbm_unitItemDetails.se
+                        //   */
+                        #endregion
                     }
-                    else if (dg_billDetails.Items.Count != 1)
+                    //else if (dg_billDetails.Items.Count != 1)
+                    if (dg_billDetails.Items.Count > 1)
                     {
                         var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
                         if (cell != null)
@@ -1481,7 +1571,7 @@ namespace POS.View
         {
             if (e.Key == Key.Return)
             {
-                couponModel = coupons.ToList().Find(c => c.barcode == tb_coupon.Text);
+                couponModel = coupons.ToList().Find(c => c.code == tb_coupon.Text);
                 if(couponModel != null)
                 {
                     if (billDetails.Count > 0)
@@ -1509,5 +1599,7 @@ namespace POS.View
             tb_coupon.Clear();
             refreshTotalValue();
         }
+
+       
     }
 }
