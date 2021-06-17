@@ -650,6 +650,7 @@
     <EmbeddedResource Include="Reports\BranchReport.rdlc" />
     <EmbeddedResource Include="Reports\InvPurReport.rdlc" />
     <EmbeddedResource Include="Reports\InvReport.rdlc" />
+    <EmbeddedResource Include="Reports\PayReport.rdlc" />
     <EmbeddedResource Include="Reports\PosReport.rdlc" />
     <EmbeddedResource Include="Reports\ReciptReport.rdlc" />
     <EmbeddedResource Include="Reports\UserReport.rdlc" />

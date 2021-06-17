@@ -37,19 +37,24 @@ namespace Microsoft.Reporting.WinForms
                 CultureInfo.InvariantCulture,
                 "<DeviceInfo>" +
                     "<OutputFormat>EMF</OutputFormat>" +
+                    /*
                     "<PageWidth>{5}</PageWidth>" +
                     "<PageHeight>{4}</PageHeight>" +
+                    
                     "<MarginTop>{0}</MarginTop>" +
                     "<MarginLeft>{1}</MarginLeft>" +
                     "<MarginRight>{2}</MarginRight>" +
                     "<MarginBottom>{3}</MarginBottom>" +
-                "</DeviceInfo>",
+*/
+                "</DeviceInfo>"
+                /*,
                 ToInches(margins.Top),
                 ToInches(margins.Left),
                 ToInches(margins.Right),
                 ToInches(margins.Bottom),
                 ToInches(paperSize.Height),
-                ToInches(paperSize.Width));
+                ToInches(paperSize.Width)
+                */);
 
             Warning[] warnings;
             m_streams = new List<Stream>();
@@ -81,28 +86,43 @@ namespace Microsoft.Reporting.WinForms
             }
            
             */
+           
+               
+                string deviceInfo = string.Format(
+              CultureInfo.InvariantCulture,
+              "<DeviceInfo>" +
+                  "<OutputFormat>PDF</OutputFormat>" +
 
-            string deviceInfo = "<DeviceInfo>" +
-                    "  <OutputFormat>PDF</OutputFormat>" +
-                  
-                    "  <EmbedFonts>None</EmbedFonts>" +
-                    "</DeviceInfo>";
-            /*
-            string mimeType;
-            string encoding;
-            string fileNameExtension;
-            Warning[] warnings;
-            string[] streams;
-            */
-          //  byte[] renderedBytes = report.Render("PDF", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+         /*
+         "<PageWidth>{5}</PageWidth>" +
+         "<PageHeight>{4}</PageHeight>" +
 
-            byte[] Bytes = report.Render(format: "PDF", deviceInfo: deviceInfo);
-            // File.SetAttributes(savePath, FileAttributes.Normal);
+         "<MarginTop>{0}</MarginTop>" +
+         "<MarginLeft>{1}</MarginLeft>" +
+         "<MarginRight>{2}</MarginRight>" +
+         "<MarginBottom>{3}</MarginBottom>" +
 
-            using (FileStream stream = new FileStream(FullPath, FileMode.Create))
-            {
-                stream.Write(Bytes, 0, Bytes.Length);
-            }
+*/
+       "<EmbedFonts>None</EmbedFonts>" +
+              "</DeviceInfo>");
+                /*
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+                */
+                //  byte[] renderedBytes = report.Render("PDF", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+
+                byte[] Bytes = report.Render(format: "PDF", deviceInfo);
+                // File.SetAttributes(savePath, FileAttributes.Normal);
+
+                using (FileStream stream = new FileStream(FullPath, FileMode.Create))
+                {
+                    stream.Write(Bytes, 0, Bytes.Length);
+                }
+           
+          
 
         }
         public static void ExportToWORD(LocalReport report, String FullPath)

@@ -43,7 +43,7 @@ namespace POS.Classes
         public Nullable<int> bankId { get; set; }
         public string bankName { get; set; }
         public string agentName { get; set; }
-        public string usersName { get; set; }
+        public string usersName { get; set; }// side=u
         public string posName { get; set; }
         public string pos2Name { get; set; }
         public Nullable<int> pos2Id { get; set; }
@@ -52,7 +52,12 @@ namespace POS.Classes
         public Nullable<byte> isConfirm2 { get; set; }
         public string processType { get; set; }
         public Nullable<int> cardId { get; set; }
-
+        public string createUserName { get; set; }
+        public string createUserJob { get; set; }
+        public string createUserLName { get; set; }
+        public string usersLName { get; set; } // side=u
+        public string cardName { get; set; }// processType=card
+        public string reciveName { get; set; }
         public async Task<List<CashTransfer>> GetCashTransferAsync(string type, string side)
         {
             List<CashTransfer> cashtransfer = null;
@@ -101,9 +106,9 @@ namespace POS.Classes
 
 
         // 
-        public async Task<CashTransfer> GetByInvId(int invId)
+        public async Task<List<CashTransfer>> GetByInvId(int invId)
         {
-            CashTransfer cashtransfer = null;
+            List<CashTransfer> cashtransfer = null;
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -114,7 +119,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetByInvId?invId=" + invId);
+                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetByInvId?invId=" + invId );
                 request.Headers.Add("APIKey", Global.APIKey);
                 /*
                 request.Headers.Add("type", type);
@@ -135,12 +140,12 @@ namespace POS.Classes
                         Converters = new List<JsonConverter> { new BadDateFixingConverter() },
                         DateParseHandling = DateParseHandling.None
                     };
-                    cashtransfer = JsonConvert.DeserializeObject<CashTransfer>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    cashtransfer = JsonConvert.DeserializeObject<List<CashTransfer>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
                     return cashtransfer;
                 }
                 else //web api sent error response 
                 {
-                    cashtransfer = new CashTransfer();
+                    cashtransfer = new List<CashTransfer>();
                 }
                 return cashtransfer;
             }
@@ -279,7 +284,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/Delete?cashTransId=" + cashTransId);
+                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/Delete?cashTransId=" + cashTransId );
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -297,7 +302,7 @@ namespace POS.Classes
             }
         }
 
-        public async Task<string> MovePosCash(int cashTransId, int userIdD)
+        public async Task<string> MovePosCash(int cashTransId,int userIdD)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -310,7 +315,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/MovePosCash?cashTransId=" + cashTransId + "&useridD=" + userIdD);
+                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/MovePosCash?cashTransId=" + cashTransId+"&useridD="+ userIdD);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
