@@ -95,6 +95,12 @@ namespace POS_Server
             this.groups1 = new HashSet<groups>();
             this.objects = new HashSet<objects>();
             this.objects1 = new HashSet<objects>();
+            this.categoryuser = new HashSet<categoryuser>();
+            this.categoryuser1 = new HashSet<categoryuser>();
+            this.categoryuser2 = new HashSet<categoryuser>();
+            this.userSetValues = new HashSet<userSetValues>();
+            this.userSetValues1 = new HashSet<userSetValues>();
+            this.userSetValues2 = new HashSet<userSetValues>();
         }
     
         public int userId { get; set; }
@@ -276,5 +282,17 @@ namespace POS_Server
         public virtual ICollection<objects> objects { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<objects> objects1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<categoryuser> categoryuser { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<categoryuser> categoryuser1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<categoryuser> categoryuser2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<userSetValues> userSetValues { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<userSetValues> userSetValues1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<userSetValues> userSetValues2 { get; set; }
     }
 }

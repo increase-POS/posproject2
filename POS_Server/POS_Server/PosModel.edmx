@@ -170,6 +170,19 @@
           <Property Name="updateUserId" Type="int" />
           <Property Name="notes" Type="ntext" />
         </EntityType>
+        <EntityType Name="categoryuser">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="categoryId" Type="int" />
+          <Property Name="userId" Type="int" />
+          <Property Name="sequence" Type="int" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
+          <Property Name="createUserId" Type="int" />
+          <Property Name="updateUserId" Type="int" />
+        </EntityType>
         <EntityType Name="cities">
           <Key>
             <PropertyRef Name="cityId" />
@@ -652,6 +665,25 @@
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
+        <EntityType Name="setting">
+          <Key>
+            <PropertyRef Name="settingId" />
+          </Key>
+          <Property Name="settingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="200" />
+          <Property Name="notes" Type="ntext" />
+        </EntityType>
+        <EntityType Name="setValues">
+          <Key>
+            <PropertyRef Name="valId" />
+          </Key>
+          <Property Name="valId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="value" Type="ntext" />
+          <Property Name="isDefault" Type="int" />
+          <Property Name="isSystem" Type="int" />
+          <Property Name="notes" Type="ntext" />
+          <Property Name="settingId" Type="int" />
+        </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -703,6 +735,19 @@
           <Property Name="role" Type="nvarchar" MaxLength="50" />
           <Property Name="image" Type="ntext" />
           <Property Name="groupId" Type="int" />
+        </EntityType>
+        <EntityType Name="userSetValues">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userId" Type="int" />
+          <Property Name="valId" Type="int" />
+          <Property Name="note" Type="ntext" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
+          <Property Name="createUserId" Type="int" />
+          <Property Name="updateUserId" Type="int" />
         </EntityType>
         <EntityType Name="usersLogs">
           <Key>
@@ -1058,6 +1103,54 @@
               <PropertyRef Name="userId" />
             </Principal>
             <Dependent Role="categories">
+              <PropertyRef Name="updateUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_categoryuser_categories">
+          <End Role="categories" Type="Self.categories" Multiplicity="0..1" />
+          <End Role="categoryuser" Type="Self.categoryuser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categories">
+              <PropertyRef Name="categoryId" />
+            </Principal>
+            <Dependent Role="categoryuser">
+              <PropertyRef Name="categoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_categoryuser_users">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="categoryuser" Type="Self.categoryuser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="categoryuser">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_categoryuser_users1">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="categoryuser" Type="Self.categoryuser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="categoryuser">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_categoryuser_users2">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="categoryuser" Type="Self.categoryuser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="categoryuser">
               <PropertyRef Name="updateUserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2322,6 +2415,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_setValues_setting">
+          <End Role="setting" Type="Self.setting" Multiplicity="0..1" />
+          <End Role="setValues" Type="Self.setValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="setting">
+              <PropertyRef Name="settingId" />
+            </Principal>
+            <Dependent Role="setValues">
+              <PropertyRef Name="settingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_units_users">
           <End Role="users" Type="Self.users" Multiplicity="0..1" />
           <End Role="units" Type="Self.units" Multiplicity="*" />
@@ -2355,6 +2460,54 @@
             </Principal>
             <Dependent Role="users">
               <PropertyRef Name="groupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_userSetValues_setValues">
+          <End Role="setValues" Type="Self.setValues" Multiplicity="0..1" />
+          <End Role="userSetValues" Type="Self.userSetValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="setValues">
+              <PropertyRef Name="valId" />
+            </Principal>
+            <Dependent Role="userSetValues">
+              <PropertyRef Name="valId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_userSetValues_users">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="userSetValues" Type="Self.userSetValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="userSetValues">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_userSetValues_users1">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="userSetValues" Type="Self.userSetValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="userSetValues">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_userSetValues_users2">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="userSetValues" Type="Self.userSetValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="userSetValues">
+              <PropertyRef Name="updateUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2392,6 +2545,7 @@
           <EntitySet Name="cards" EntityType="Self.cards" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cashTransfer" EntityType="Self.cashTransfer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="categories" EntityType="Self.categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="categoryuser" EntityType="Self.categoryuser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cities" EntityType="Self.cities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="countriesCodes" EntityType="Self.countriesCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="coupons" EntityType="Self.coupons" Schema="dbo" store:Type="Tables" />
@@ -2424,9 +2578,12 @@
           <EntitySet Name="sections" EntityType="Self.sections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="serials" EntityType="Self.serials" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="servicesCosts" EntityType="Self.servicesCosts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="setting" EntityType="Self.setting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="setValues" EntityType="Self.setValues" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="units" EntityType="Self.units" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="userSetValues" EntityType="Self.userSetValues" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="usersLogs" EntityType="Self.usersLogs" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_agents_users" Association="Self.FK_agents_users">
             <End Role="users" EntitySet="users" />
@@ -2543,6 +2700,22 @@
           <AssociationSet Name="FK_categories_users1" Association="Self.FK_categories_users1">
             <End Role="users" EntitySet="users" />
             <End Role="categories" EntitySet="categories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_categoryuser_categories" Association="Self.FK_categoryuser_categories">
+            <End Role="categories" EntitySet="categories" />
+            <End Role="categoryuser" EntitySet="categoryuser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_categoryuser_users" Association="Self.FK_categoryuser_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="categoryuser" EntitySet="categoryuser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_categoryuser_users1" Association="Self.FK_categoryuser_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="categoryuser" EntitySet="categoryuser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_categoryuser_users2" Association="Self.FK_categoryuser_users2">
+            <End Role="users" EntitySet="users" />
+            <End Role="categoryuser" EntitySet="categoryuser" />
           </AssociationSet>
           <AssociationSet Name="FK_cities_countriesCodes" Association="Self.FK_cities_countriesCodes">
             <End Role="countriesCodes" EntitySet="countriesCodes" />
@@ -2964,6 +3137,10 @@
             <End Role="users" EntitySet="users" />
             <End Role="servicesCosts" EntitySet="servicesCosts" />
           </AssociationSet>
+          <AssociationSet Name="FK_setValues_setting" Association="Self.FK_setValues_setting">
+            <End Role="setting" EntitySet="setting" />
+            <End Role="setValues" EntitySet="setValues" />
+          </AssociationSet>
           <AssociationSet Name="FK_units_users" Association="Self.FK_units_users">
             <End Role="users" EntitySet="users" />
             <End Role="units" EntitySet="units" />
@@ -2975,6 +3152,22 @@
           <AssociationSet Name="FK_users_groups" Association="Self.FK_users_groups">
             <End Role="groups" EntitySet="groups" />
             <End Role="users" EntitySet="users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_userSetValues_setValues" Association="Self.FK_userSetValues_setValues">
+            <End Role="setValues" EntitySet="setValues" />
+            <End Role="userSetValues" EntitySet="userSetValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_userSetValues_users" Association="Self.FK_userSetValues_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="userSetValues" EntitySet="userSetValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_userSetValues_users1" Association="Self.FK_userSetValues_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="userSetValues" EntitySet="userSetValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_userSetValues_users2" Association="Self.FK_userSetValues_users2">
+            <End Role="users" EntitySet="users" />
+            <End Role="userSetValues" EntitySet="userSetValues" />
           </AssociationSet>
           <AssociationSet Name="FK_usersLogs_pos" Association="Self.FK_usersLogs_pos">
             <End Role="pos" EntitySet="pos" />
@@ -3160,6 +3353,7 @@
           <NavigationProperty Name="users" Relationship="Self.FK_categories_users" FromRole="categories" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_categories_users1" FromRole="categories" ToRole="users" />
           <NavigationProperty Name="items" Relationship="Self.FK_items_categories" FromRole="categories" ToRole="items" />
+          <NavigationProperty Name="categoryuser" Relationship="incposdbModel.FK_categoryuser_categories" FromRole="categories" ToRole="categoryuser" />
         </EntityType>
         <EntityType Name="cities">
           <Key>
@@ -3835,6 +4029,12 @@
           <NavigationProperty Name="groups2" Relationship="incposdbModel.FK_users_groups" FromRole="users" ToRole="groups" />
           <NavigationProperty Name="objects" Relationship="incposdbModel.FK_objects_users" FromRole="users" ToRole="objects" />
           <NavigationProperty Name="objects1" Relationship="incposdbModel.FK_objects_users1" FromRole="users" ToRole="objects" />
+          <NavigationProperty Name="categoryuser" Relationship="incposdbModel.FK_categoryuser_users" FromRole="users" ToRole="categoryuser" />
+          <NavigationProperty Name="categoryuser1" Relationship="incposdbModel.FK_categoryuser_users1" FromRole="users" ToRole="categoryuser" />
+          <NavigationProperty Name="categoryuser2" Relationship="incposdbModel.FK_categoryuser_users2" FromRole="users" ToRole="categoryuser" />
+          <NavigationProperty Name="userSetValues" Relationship="incposdbModel.FK_userSetValues_users" FromRole="users" ToRole="userSetValues" />
+          <NavigationProperty Name="userSetValues1" Relationship="incposdbModel.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
+          <NavigationProperty Name="userSetValues2" Relationship="incposdbModel.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
         </EntityType>
         <EntityType Name="usersLogs">
           <Key>
@@ -5830,6 +6030,46 @@
             <End Role="cashTransfer" EntitySet="cashTransfer" />
             <End Role="bondes" EntitySet="bondes" />
           </AssociationSet>
+          <EntitySet Name="categoryuser" EntityType="incposdbModel.categoryuser" />
+          <EntitySet Name="setting" EntityType="incposdbModel.setting" />
+          <EntitySet Name="setValues" EntityType="incposdbModel.setValues" />
+          <EntitySet Name="userSetValues" EntityType="incposdbModel.userSetValues" />
+          <AssociationSet Name="FK_categoryuser_categories" Association="incposdbModel.FK_categoryuser_categories">
+            <End Role="categories" EntitySet="categories" />
+            <End Role="categoryuser" EntitySet="categoryuser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_categoryuser_users" Association="incposdbModel.FK_categoryuser_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="categoryuser" EntitySet="categoryuser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_categoryuser_users1" Association="incposdbModel.FK_categoryuser_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="categoryuser" EntitySet="categoryuser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_categoryuser_users2" Association="incposdbModel.FK_categoryuser_users2">
+            <End Role="users" EntitySet="users" />
+            <End Role="categoryuser" EntitySet="categoryuser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_setValues_setting" Association="incposdbModel.FK_setValues_setting">
+            <End Role="setting" EntitySet="setting" />
+            <End Role="setValues" EntitySet="setValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_userSetValues_setValues" Association="incposdbModel.FK_userSetValues_setValues">
+            <End Role="setValues" EntitySet="setValues" />
+            <End Role="userSetValues" EntitySet="userSetValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_userSetValues_users" Association="incposdbModel.FK_userSetValues_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="userSetValues" EntitySet="userSetValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_userSetValues_users1" Association="incposdbModel.FK_userSetValues_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="userSetValues" EntitySet="userSetValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_userSetValues_users2" Association="incposdbModel.FK_userSetValues_users2">
+            <End Role="users" EntitySet="users" />
+            <End Role="userSetValues" EntitySet="userSetValues" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="cards">
           <Key>
@@ -6244,6 +6484,170 @@
             </Principal>
             <Dependent Role="bondes">
               <PropertyRef Name="cashTransId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="categoryuser">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="categoryId" Type="Int32" />
+          <Property Name="userId" Type="Int32" />
+          <Property Name="sequence" Type="Int32" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
+          <Property Name="createUserId" Type="Int32" />
+          <Property Name="updateUserId" Type="Int32" />
+          <NavigationProperty Name="categories" Relationship="incposdbModel.FK_categoryuser_categories" FromRole="categoryuser" ToRole="categories" />
+          <NavigationProperty Name="users" Relationship="incposdbModel.FK_categoryuser_users" FromRole="categoryuser" ToRole="users" />
+          <NavigationProperty Name="users1" Relationship="incposdbModel.FK_categoryuser_users1" FromRole="categoryuser" ToRole="users" />
+          <NavigationProperty Name="users2" Relationship="incposdbModel.FK_categoryuser_users2" FromRole="categoryuser" ToRole="users" />
+        </EntityType>
+        <EntityType Name="setting">
+          <Key>
+            <PropertyRef Name="settingId" />
+          </Key>
+          <Property Name="settingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="setValues" Relationship="incposdbModel.FK_setValues_setting" FromRole="setting" ToRole="setValues" />
+        </EntityType>
+        <EntityType Name="setValues">
+          <Key>
+            <PropertyRef Name="valId" />
+          </Key>
+          <Property Name="valId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="isDefault" Type="Int32" />
+          <Property Name="isSystem" Type="Int32" />
+          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="settingId" Type="Int32" />
+          <NavigationProperty Name="setting" Relationship="incposdbModel.FK_setValues_setting" FromRole="setValues" ToRole="setting" />
+          <NavigationProperty Name="userSetValues" Relationship="incposdbModel.FK_userSetValues_setValues" FromRole="setValues" ToRole="userSetValues" />
+        </EntityType>
+        <EntityType Name="userSetValues">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="Int32" />
+          <Property Name="valId" Type="Int32" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
+          <Property Name="createUserId" Type="Int32" />
+          <Property Name="updateUserId" Type="Int32" />
+          <NavigationProperty Name="setValues" Relationship="incposdbModel.FK_userSetValues_setValues" FromRole="userSetValues" ToRole="setValues" />
+          <NavigationProperty Name="users" Relationship="incposdbModel.FK_userSetValues_users" FromRole="userSetValues" ToRole="users" />
+          <NavigationProperty Name="users1" Relationship="incposdbModel.FK_userSetValues_users1" FromRole="userSetValues" ToRole="users" />
+          <NavigationProperty Name="users2" Relationship="incposdbModel.FK_userSetValues_users2" FromRole="userSetValues" ToRole="users" />
+        </EntityType>
+        <Association Name="FK_categoryuser_categories">
+          <End Type="incposdbModel.categories" Role="categories" Multiplicity="0..1" />
+          <End Type="incposdbModel.categoryuser" Role="categoryuser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categories">
+              <PropertyRef Name="categoryId" />
+            </Principal>
+            <Dependent Role="categoryuser">
+              <PropertyRef Name="categoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_categoryuser_users">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.categoryuser" Role="categoryuser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="categoryuser">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_categoryuser_users1">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.categoryuser" Role="categoryuser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="categoryuser">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_categoryuser_users2">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.categoryuser" Role="categoryuser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="categoryuser">
+              <PropertyRef Name="updateUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_setValues_setting">
+          <End Type="incposdbModel.setting" Role="setting" Multiplicity="0..1" />
+          <End Type="incposdbModel.setValues" Role="setValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="setting">
+              <PropertyRef Name="settingId" />
+            </Principal>
+            <Dependent Role="setValues">
+              <PropertyRef Name="settingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_userSetValues_setValues">
+          <End Type="incposdbModel.setValues" Role="setValues" Multiplicity="0..1" />
+          <End Type="incposdbModel.userSetValues" Role="userSetValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="setValues">
+              <PropertyRef Name="valId" />
+            </Principal>
+            <Dependent Role="userSetValues">
+              <PropertyRef Name="valId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_userSetValues_users">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.userSetValues" Role="userSetValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="userSetValues">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_userSetValues_users1">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.userSetValues" Role="userSetValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="userSetValues">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_userSetValues_users2">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.userSetValues" Role="userSetValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="userSetValues">
+              <PropertyRef Name="updateUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7004,6 +7408,55 @@
                 <ScalarProperty Name="note" ColumnName="note" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="objectId" ColumnName="objectId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="categoryuser">
+            <EntityTypeMapping TypeName="incposdbModel.categoryuser">
+              <MappingFragment StoreEntitySet="categoryuser">
+                <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+                <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="createDate" ColumnName="createDate" />
+                <ScalarProperty Name="sequence" ColumnName="sequence" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="categoryId" ColumnName="categoryId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="setting">
+            <EntityTypeMapping TypeName="incposdbModel.setting">
+              <MappingFragment StoreEntitySet="setting">
+                <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="settingId" ColumnName="settingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="setValues">
+            <EntityTypeMapping TypeName="incposdbModel.setValues">
+              <MappingFragment StoreEntitySet="setValues">
+                <ScalarProperty Name="settingId" ColumnName="settingId" />
+                <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="isSystem" ColumnName="isSystem" />
+                <ScalarProperty Name="isDefault" ColumnName="isDefault" />
+                <ScalarProperty Name="value" ColumnName="value" />
+                <ScalarProperty Name="valId" ColumnName="valId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userSetValues">
+            <EntityTypeMapping TypeName="incposdbModel.userSetValues">
+              <MappingFragment StoreEntitySet="userSetValues">
+                <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+                <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="createDate" ColumnName="createDate" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="valId" ColumnName="valId" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

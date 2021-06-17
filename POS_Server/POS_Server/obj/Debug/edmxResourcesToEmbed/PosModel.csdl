@@ -171,6 +171,7 @@
     <NavigationProperty Name="users" Relationship="Self.FK_categories_users" FromRole="categories" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_categories_users1" FromRole="categories" ToRole="users" />
     <NavigationProperty Name="items" Relationship="Self.FK_items_categories" FromRole="categories" ToRole="items" />
+    <NavigationProperty Name="categoryuser" Relationship="incposdbModel.FK_categoryuser_categories" FromRole="categories" ToRole="categoryuser" />
   </EntityType>
   <EntityType Name="cities">
     <Key>
@@ -846,6 +847,12 @@
     <NavigationProperty Name="groups2" Relationship="incposdbModel.FK_users_groups" FromRole="users" ToRole="groups" />
     <NavigationProperty Name="objects" Relationship="incposdbModel.FK_objects_users" FromRole="users" ToRole="objects" />
     <NavigationProperty Name="objects1" Relationship="incposdbModel.FK_objects_users1" FromRole="users" ToRole="objects" />
+    <NavigationProperty Name="categoryuser" Relationship="incposdbModel.FK_categoryuser_users" FromRole="users" ToRole="categoryuser" />
+    <NavigationProperty Name="categoryuser1" Relationship="incposdbModel.FK_categoryuser_users1" FromRole="users" ToRole="categoryuser" />
+    <NavigationProperty Name="categoryuser2" Relationship="incposdbModel.FK_categoryuser_users2" FromRole="users" ToRole="categoryuser" />
+    <NavigationProperty Name="userSetValues" Relationship="incposdbModel.FK_userSetValues_users" FromRole="users" ToRole="userSetValues" />
+    <NavigationProperty Name="userSetValues1" Relationship="incposdbModel.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
+    <NavigationProperty Name="userSetValues2" Relationship="incposdbModel.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
   </EntityType>
   <EntityType Name="usersLogs">
     <Key>
@@ -2841,6 +2848,46 @@
       <End Role="cashTransfer" EntitySet="cashTransfer" />
       <End Role="bondes" EntitySet="bondes" />
     </AssociationSet>
+    <EntitySet Name="categoryuser" EntityType="incposdbModel.categoryuser" />
+    <EntitySet Name="setting" EntityType="incposdbModel.setting" />
+    <EntitySet Name="setValues" EntityType="incposdbModel.setValues" />
+    <EntitySet Name="userSetValues" EntityType="incposdbModel.userSetValues" />
+    <AssociationSet Name="FK_categoryuser_categories" Association="incposdbModel.FK_categoryuser_categories">
+      <End Role="categories" EntitySet="categories" />
+      <End Role="categoryuser" EntitySet="categoryuser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_categoryuser_users" Association="incposdbModel.FK_categoryuser_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="categoryuser" EntitySet="categoryuser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_categoryuser_users1" Association="incposdbModel.FK_categoryuser_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="categoryuser" EntitySet="categoryuser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_categoryuser_users2" Association="incposdbModel.FK_categoryuser_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="categoryuser" EntitySet="categoryuser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_setValues_setting" Association="incposdbModel.FK_setValues_setting">
+      <End Role="setting" EntitySet="setting" />
+      <End Role="setValues" EntitySet="setValues" />
+    </AssociationSet>
+    <AssociationSet Name="FK_userSetValues_setValues" Association="incposdbModel.FK_userSetValues_setValues">
+      <End Role="setValues" EntitySet="setValues" />
+      <End Role="userSetValues" EntitySet="userSetValues" />
+    </AssociationSet>
+    <AssociationSet Name="FK_userSetValues_users" Association="incposdbModel.FK_userSetValues_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="userSetValues" EntitySet="userSetValues" />
+    </AssociationSet>
+    <AssociationSet Name="FK_userSetValues_users1" Association="incposdbModel.FK_userSetValues_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="userSetValues" EntitySet="userSetValues" />
+    </AssociationSet>
+    <AssociationSet Name="FK_userSetValues_users2" Association="incposdbModel.FK_userSetValues_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="userSetValues" EntitySet="userSetValues" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="cards">
     <Key>
@@ -3255,6 +3302,170 @@
       </Principal>
       <Dependent Role="bondes">
         <PropertyRef Name="cashTransId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="categoryuser">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="categoryId" Type="Int32" />
+    <Property Name="userId" Type="Int32" />
+    <Property Name="sequence" Type="Int32" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <NavigationProperty Name="categories" Relationship="incposdbModel.FK_categoryuser_categories" FromRole="categoryuser" ToRole="categories" />
+    <NavigationProperty Name="users" Relationship="incposdbModel.FK_categoryuser_users" FromRole="categoryuser" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_categoryuser_users1" FromRole="categoryuser" ToRole="users" />
+    <NavigationProperty Name="users2" Relationship="incposdbModel.FK_categoryuser_users2" FromRole="categoryuser" ToRole="users" />
+  </EntityType>
+  <EntityType Name="setting">
+    <Key>
+      <PropertyRef Name="settingId" />
+    </Key>
+    <Property Name="settingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="setValues" Relationship="incposdbModel.FK_setValues_setting" FromRole="setting" ToRole="setValues" />
+  </EntityType>
+  <EntityType Name="setValues">
+    <Key>
+      <PropertyRef Name="valId" />
+    </Key>
+    <Property Name="valId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="isDefault" Type="Int32" />
+    <Property Name="isSystem" Type="Int32" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="settingId" Type="Int32" />
+    <NavigationProperty Name="setting" Relationship="incposdbModel.FK_setValues_setting" FromRole="setValues" ToRole="setting" />
+    <NavigationProperty Name="userSetValues" Relationship="incposdbModel.FK_userSetValues_setValues" FromRole="setValues" ToRole="userSetValues" />
+  </EntityType>
+  <EntityType Name="userSetValues">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="userId" Type="Int32" />
+    <Property Name="valId" Type="Int32" />
+    <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <NavigationProperty Name="setValues" Relationship="incposdbModel.FK_userSetValues_setValues" FromRole="userSetValues" ToRole="setValues" />
+    <NavigationProperty Name="users" Relationship="incposdbModel.FK_userSetValues_users" FromRole="userSetValues" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_userSetValues_users1" FromRole="userSetValues" ToRole="users" />
+    <NavigationProperty Name="users2" Relationship="incposdbModel.FK_userSetValues_users2" FromRole="userSetValues" ToRole="users" />
+  </EntityType>
+  <Association Name="FK_categoryuser_categories">
+    <End Type="incposdbModel.categories" Role="categories" Multiplicity="0..1" />
+    <End Type="incposdbModel.categoryuser" Role="categoryuser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="categories">
+        <PropertyRef Name="categoryId" />
+      </Principal>
+      <Dependent Role="categoryuser">
+        <PropertyRef Name="categoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_categoryuser_users">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.categoryuser" Role="categoryuser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="categoryuser">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_categoryuser_users1">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.categoryuser" Role="categoryuser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="categoryuser">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_categoryuser_users2">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.categoryuser" Role="categoryuser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="categoryuser">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_setValues_setting">
+    <End Type="incposdbModel.setting" Role="setting" Multiplicity="0..1" />
+    <End Type="incposdbModel.setValues" Role="setValues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="setting">
+        <PropertyRef Name="settingId" />
+      </Principal>
+      <Dependent Role="setValues">
+        <PropertyRef Name="settingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_userSetValues_setValues">
+    <End Type="incposdbModel.setValues" Role="setValues" Multiplicity="0..1" />
+    <End Type="incposdbModel.userSetValues" Role="userSetValues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="setValues">
+        <PropertyRef Name="valId" />
+      </Principal>
+      <Dependent Role="userSetValues">
+        <PropertyRef Name="valId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_userSetValues_users">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.userSetValues" Role="userSetValues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="userSetValues">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_userSetValues_users1">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.userSetValues" Role="userSetValues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="userSetValues">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_userSetValues_users2">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.userSetValues" Role="userSetValues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="userSetValues">
+        <PropertyRef Name="updateUserId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

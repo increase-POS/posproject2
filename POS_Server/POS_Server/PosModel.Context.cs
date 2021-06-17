@@ -70,5 +70,9 @@ namespace POS_Server
         public virtual DbSet<groupObject> groupObject { get; set; }
         public virtual DbSet<groups> groups { get; set; }
         public virtual DbSet<objects> objects { get; set; }
+        public virtual DbSet<categoryuser> categoryuser { get; set; }
+        public virtual DbSet<setting> setting { get; set; }
+        public virtual DbSet<setValues> setValues { get; set; }
+        public virtual DbSet<userSetValues> userSetValues { get; set; }
     }
 }

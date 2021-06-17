@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f20665aa4b2645ab85099e0f9a0ce757" Name="Diagram1" ZoomLevel="33">
+      <Diagram DiagramId="f20665aa4b2645ab85099e0f9a0ce757" Name="Diagram1" ZoomLevel="82">
         <EntityTypeShape EntityType="incposdbModel.agents" Width="1.5" PointX="3" PointY="29.875" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.banks" Width="1.5" PointX="3" PointY="25.125" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.branches" Width="1.5" PointX="3" PointY="36.25" IsExpanded="true" />
@@ -189,6 +189,19 @@
         <AssociationConnector Association="incposdbModel.FK_objects_users" />
         <AssociationConnector Association="incposdbModel.FK_objects_users1" />
         <AssociationConnector Association="incposdbModel.FK_bondes_cashTransfer" />
+        <EntityTypeShape EntityType="incposdbModel.categoryuser" Width="1.5" PointX="16.25" PointY="36.75" />
+        <EntityTypeShape EntityType="incposdbModel.setting" Width="1.5" PointX="3.375" PointY="4.75" />
+        <EntityTypeShape EntityType="incposdbModel.setValues" Width="1.5" PointX="5.625" PointY="4.375" />
+        <EntityTypeShape EntityType="incposdbModel.userSetValues" Width="1.5" PointX="7.875" PointY="30.625" />
+        <AssociationConnector Association="incposdbModel.FK_categoryuser_categories" />
+        <AssociationConnector Association="incposdbModel.FK_categoryuser_users" />
+        <AssociationConnector Association="incposdbModel.FK_categoryuser_users1" />
+        <AssociationConnector Association="incposdbModel.FK_categoryuser_users2" />
+        <AssociationConnector Association="incposdbModel.FK_setValues_setting" />
+        <AssociationConnector Association="incposdbModel.FK_userSetValues_setValues" />
+        <AssociationConnector Association="incposdbModel.FK_userSetValues_users" />
+        <AssociationConnector Association="incposdbModel.FK_userSetValues_users1" />
+        <AssociationConnector Association="incposdbModel.FK_userSetValues_users2" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
