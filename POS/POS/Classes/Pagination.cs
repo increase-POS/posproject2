@@ -26,7 +26,6 @@ namespace POS.Classes
             btn.Content = indexContent.ToString();
 
         }
-
         public IEnumerable<Category> refrishPagination(IEnumerable<Category> _categories ,int pageIndex, Button[] btns )
         {
             try
@@ -347,19 +346,19 @@ namespace POS.Classes
                 }
 
                 #region < 3 Page
-                if (2 >= ((_items.Count() - 1) / 9))
+                if (2 >= ((_items.Count() - 1) / 12))
                 {
                     if (pageIndex == 1)
                     {
                         pageNumberActive(btns[1], 1);
                         pageNumberDisActive(btns[2], 2);
                         pageNumberDisActive(btns[3], 3);
-                        if (((_items.Count() - 1) / 9) == 0)
+                        if (((_items.Count() - 1) / 12) == 0)
                         {
                             btns[2].IsEnabled = false;
                             btns[3].IsEnabled = false;
                         }
-                        else if (((_items.Count() - 1) / 9) <= 1)
+                        else if (((_items.Count() - 1) / 12) <= 1)
                         {
                             btns[2].IsEnabled = true;
                             btns[3].IsEnabled = false;
@@ -370,7 +369,7 @@ namespace POS.Classes
                         pageNumberDisActive(btns[1], 1);
                         pageNumberActive(btns[2], 2);
                         pageNumberDisActive(btns[3], 3);
-                        if (((_items.Count() - 1) / 9) <= 1)
+                        if (((_items.Count() - 1) / 12) <= 1)
                         {
                             btns[2].IsEnabled = true;
                             btns[3].IsEnabled = false;
@@ -391,14 +390,14 @@ namespace POS.Classes
                 #endregion
 
                 #region > 3 Page
-                if (2 < ((_items.Count() - 1) / 9))
+                if (2 < ((_items.Count() - 1) / 12))
                 {
                     if (pageIndex == 1)
                     {
                         pageNumberActive(btns[1], pageIndex);
                         pageNumberDisActive(btns[2], pageIndex + 1);
                         pageNumberDisActive(btns[3], pageIndex + 2);
-                        if (((_items.Count() - 1) / 9) == 0)
+                        if (((_items.Count() - 1) / 12) == 0)
                         {
                             btns[2].IsEnabled = false;
                             btns[3].IsEnabled = false;
@@ -409,14 +408,14 @@ namespace POS.Classes
                         pageNumberDisActive(btns[1], 1);
                         pageNumberActive(btns[2], 2);
                         pageNumberDisActive(btns[3], 3);
-                        if (((_items.Count() - 1) / 9) <= 1)
+                        if (((_items.Count() - 1) / 12) <= 1)
                         {
                             btns[2].IsEnabled = true;
                             btns[3].IsEnabled = false;
                         }
                     }
                     ///// last
-                    else if ((pageIndex - 1) >= ((_items.Count() - 1) / 9))
+                    else if ((pageIndex - 1) >= ((_items.Count() - 1) / 12))
                     {
 
                         pageNumberDisActive(btns[1], pageIndex - 2);
@@ -439,12 +438,12 @@ namespace POS.Classes
 
                 #endregion
                 #region 
-                if (2 >= ((_items.Count() - 1) / 9))
+                if (2 >= ((_items.Count() - 1) / 12))
                 {
                     if (1 == (pageIndex))
                     {
                     }
-                    else if (1 >= ((_items.Count() - 1) / 9))
+                    else if (1 >= ((_items.Count() - 1) / 12))
                     {
                     }
                     btns[0].IsEnabled = false;
@@ -461,7 +460,7 @@ namespace POS.Classes
                     btns[0].IsEnabled = true;
                 }
                 ///// last
-                else if ((pageIndex - 1) >= ((_items.Count() - 1) / 9))
+                else if ((pageIndex - 1) >= ((_items.Count() - 1) / 12))
                 {
                     btns[4].IsEnabled = false;
                     btns[0].IsEnabled = true;
@@ -479,7 +478,7 @@ namespace POS.Classes
                 #endregion
 
 
-                _items = _items.Skip((pageIndex - 1) * 9).Take(9);
+                _items = _items.Skip((pageIndex - 1) * 12).Take(12);
                 return _items;
 
             }
@@ -500,19 +499,19 @@ namespace POS.Classes
                 }
 
                 #region < 3 Page
-                if (2 >= ((_items.Count() - 1) / 9))
+                if (2 >= ((_items.Count() - 1) / 12))
                 {
                     if (pageIndex == 1)
                     {
                         pageNumberActive(btns[1], 1);
                         pageNumberDisActive(btns[2], 2);
                         pageNumberDisActive(btns[3], 3);
-                        if (((_items.Count() - 1) / 9) == 0)
+                        if (((_items.Count() - 1) / 12) == 0)
                         {
                             btns[2].IsEnabled = false;
                             btns[3].IsEnabled = false;
                         }
-                        else if (((_items.Count() - 1) / 9) <= 1)
+                        else if (((_items.Count() - 1) / 12) <= 1)
                         {
                             btns[2].IsEnabled = true;
                             btns[3].IsEnabled = false;
@@ -523,7 +522,7 @@ namespace POS.Classes
                         pageNumberDisActive(btns[1], 1);
                         pageNumberActive(btns[2], 2);
                         pageNumberDisActive(btns[3], 3);
-                        if (((_items.Count() - 1) / 9) <= 1)
+                        if (((_items.Count() - 1) / 12) <= 1)
                         {
                             btns[2].IsEnabled = true;
                             btns[3].IsEnabled = false;
@@ -544,14 +543,14 @@ namespace POS.Classes
                 #endregion
 
                 #region > 3 Page
-                if (2 < ((_items.Count() - 1) / 9))
+                if (2 < ((_items.Count() - 1) / 12))
                 {
                     if (pageIndex == 1)
                     {
                         pageNumberActive(btns[1], pageIndex);
                         pageNumberDisActive(btns[2], pageIndex + 1);
                         pageNumberDisActive(btns[3], pageIndex + 2);
-                        if (((_items.Count() - 1) / 9) == 0)
+                        if (((_items.Count() - 1) / 12) == 0)
                         {
                             btns[2].IsEnabled = false;
                             btns[3].IsEnabled = false;
@@ -562,14 +561,14 @@ namespace POS.Classes
                         pageNumberDisActive(btns[1], 1);
                         pageNumberActive(btns[2], 2);
                         pageNumberDisActive(btns[3], 3);
-                        if (((_items.Count() - 1) / 9) <= 1)
+                        if (((_items.Count() - 1) / 12) <= 1)
                         {
                             btns[2].IsEnabled = true;
                             btns[3].IsEnabled = false;
                         }
                     }
                     ///// last
-                    else if ((pageIndex - 1) >= ((_items.Count() - 1) / 9))
+                    else if ((pageIndex - 1) >= ((_items.Count() - 1) / 12))
                     {
 
                         pageNumberDisActive(btns[1], pageIndex - 2);
@@ -592,12 +591,12 @@ namespace POS.Classes
 
                 #endregion
                 #region 
-                if (2 >= ((_items.Count() - 1) / 9))
+                if (2 >= ((_items.Count() - 1) / 12))
                 {
                     if (1 == (pageIndex))
                     {
                     }
-                    else if (1 >= ((_items.Count() - 1) / 9))
+                    else if (1 >= ((_items.Count() - 1) / 12))
                     {
                     }
                     btns[0].IsEnabled = false;
@@ -614,7 +613,7 @@ namespace POS.Classes
                     btns[0].IsEnabled = true;
                 }
                 ///// last
-                else if ((pageIndex - 1) >= ((_items.Count() - 1) / 9))
+                else if ((pageIndex - 1) >= ((_items.Count() - 1) / 12))
                 {
                     btns[4].IsEnabled = false;
                     btns[0].IsEnabled = true;
@@ -632,7 +631,7 @@ namespace POS.Classes
                 #endregion
 
 
-                _items = _items.Skip((pageIndex - 1) * 9).Take(9);
+                _items = _items.Skip((pageIndex - 1) * 12).Take(12);
                 return _items;
 
             }

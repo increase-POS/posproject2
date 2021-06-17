@@ -29,6 +29,8 @@ namespace POS.View.windows
         /// <summary>
         /// item is select
         /// </summary>
+        /// 
+        public string CardType { get; set; }
         public int selectedItem { get; set; }
         Item itemModel = new Item();
         Category categoryModel = new Category();
@@ -128,7 +130,7 @@ namespace POS.View.windows
             for (int i = 0; i < column; i++)
             {
                 cd[i] = new ColumnDefinition();
-                cd[i].Width = new GridLength(110, GridUnitType.Pixel);
+                cd[i].Width = new GridLength(85, GridUnitType.Pixel);
                 grid_categoryCards.ColumnDefinitions.Add(cd[i]);
             }
             #endregion
@@ -156,7 +158,7 @@ namespace POS.View.windows
         {
             grid_itemContainerCard.Children.Clear();
             catigoriesAndItemsView.gridCatigorieItems = grid_itemContainerCard;
-            catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
+            catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", CardType);
         }
         #endregion
         #region Get Id By Click  Y

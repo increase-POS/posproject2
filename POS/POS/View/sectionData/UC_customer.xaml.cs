@@ -28,6 +28,7 @@ using System.Drawing;
 using Microsoft.Reporting.WinForms;
 
 using System.Data;
+using POS.View.windows;
 
 namespace POS.View
 {
@@ -37,6 +38,7 @@ namespace POS.View
     public partial class UC_Customer : UserControl
     {
         
+        CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
         IEnumerable<Agent> agentsQuery;
         IEnumerable<Agent> agents;
         byte tgl_customerState;
@@ -256,79 +258,7 @@ namespace POS.View
                 e.Handled = true;
         }
 
-        private async void DG_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {//selection
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorEmail.Visibility = Visibility.Collapsed;
-            p_errorMobile.Visibility = Visibility.Collapsed;
-
-            tb_name.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
-            tb_fax.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
-            tb_email.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
-            tb_mobile.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
-
-            if (dg_customer.SelectedIndex != -1)
-            {
-                agent = dg_customer.SelectedItem as Agent;
-                this.DataContext = agent;
-
-            }
-            if (agent != null)
-            {
-                //if (agent.agentId != 0)
-                //{
-                //    AgentId = agent.agentId;
-                //    CanDelete = agent.canDelete;
-                //    tb_code.Text = agent.code;
-                //    // CreateDate = agent.createDate.Value;
-                //    // CreateUser = agent.createUserId.Value;
-                //}
-
-                SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
-
-                SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
-
-                SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
-
-                tb_code.Text = agent.code;
-
-                #region delete
-                if (agent.canDelete)
-                {
-                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-                    txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
-                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
-
-                }
-
-                else
-                {
-                    if (agent.isActive == 0)
-                    {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
-                        txt_delete_Icon.Kind =
-                         MaterialDesignThemes.Wpf.PackIconKind.Check;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
-
-                    }
-                    else
-                    {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
-                        txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
-
-                    }
-                }
-                #endregion 
-
-                getImg();
-
-                index = dg_customer.SelectedIndex;
-            }
-        }
-       
+      
         private async void  Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             agent.agentId = 0;
@@ -426,7 +356,12 @@ namespace POS.View
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if(MainWindow.lang.Equals("en"))
+            // for pagination onTop Always
+            btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            //CreateGridCardContainer();
+            catigoriesAndItemsView.ucCustomer = this;
+
+            if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_ucCustomer.FlowDirection = FlowDirection.LeftToRight;
@@ -438,15 +373,6 @@ namespace POS.View
             }
             
             translate();
-
-            //pass parameter type (V for vendors, C for Clients , B for Both)
-            //var agents = await agentModel.GetAgentsAsync("c");
-            //agentsQuery = agents;
-            //dg_customer.ItemsSource = agentsQuery;
-            //txt_count.Text = agentsQuery.Count().ToString();
-            //dg_customer.ItemsSource = agents;
-            //Dispatcher.BeginInvoke(new Action(() => { GetGridData(null, 0)}));
-            //Tb_search_TextChanged(null, null);
 
             this.Dispatcher.Invoke(() =>
             {
@@ -591,21 +517,43 @@ namespace POS.View
             if (agent.agentId != 0)
             {
                 if ((!agent.canDelete) && (agent.isActive == 0))
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
                     activate();
+                }
                 else
                 {
-                    string popupContent = "";
-                    if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                    if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    if (agent.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                    if (!agent.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                    {
+                        string popupContent = "";
+                        if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                        if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                    bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
+                        bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
 
-                    if (b) //SectionData.popUpResponse("", popupContent);
-                Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        if (b) //SectionData.popUpResponse("", popupContent);
+                            Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
                 }
-
                 await RefreshCustomersList();
                 Tb_search_TextChanged(null, null);
             }
@@ -735,20 +683,7 @@ namespace POS.View
        
         }
         
-        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (agents is null)
-                await RefreshCustomersList();
-            searchText = tb_search.Text;
-            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
-            s.name.Contains(searchText) ||
-            s.company.Contains(searchText) ||
-            s.mobile.Contains(searchText)
-            ) && s.isActive == tgl_customerState);
-            RefreshCustomerView();
-
-           
-        }
+        
 
         private void tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -960,6 +895,300 @@ namespace POS.View
             if (!regex.IsMatch(e.Text))
                 e.Handled = true;
         }
+        #region Categor and Item
+        #region Refrish Y
+        void RefrishItemsCard(IEnumerable<Agent> _agent)
+        {
+            grid_containerCard.Children.Clear();
+            catigoriesAndItemsView.gridCatigorieItems = grid_containerCard;
+            catigoriesAndItemsView.FN_refrishAgents(_agent.ToList(), "en", "Agent");
+        }
+        #endregion
+        #region Get Id By Click  Y
+        private  void DG_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {//selection
+            p_errorName.Visibility = Visibility.Collapsed;
+            p_errorEmail.Visibility = Visibility.Collapsed;
+            p_errorMobile.Visibility = Visibility.Collapsed;
+            tb_name.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
+            tb_fax.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
+            tb_email.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
+            tb_mobile.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
+
+            if (dg_customer.SelectedIndex != -1)
+            {
+                agent = dg_customer.SelectedItem as Agent;
+                this.DataContext = agent;
+            }
+            if (agent != null)
+            {
+                SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
+                SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+                SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
+                tb_code.Text = agent.code;
+                #region delete
+                if (agent.canDelete)
+                {
+                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                    txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                }
+
+                else
+                {
+                    if (agent.isActive == 0)
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                        txt_delete_Icon.Kind =
+                         MaterialDesignThemes.Wpf.PackIconKind.Check;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                    }
+                    else
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                        txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                    }
+                }
+                #endregion 
+                getImg();
+                index = dg_customer.SelectedIndex;
+            }
+        }
+
+        public void ChangeItemIdEvent(int userId)
+        {
+
+
+            #region
+
+            //selection
+            p_errorName.Visibility = Visibility.Collapsed;
+            p_errorEmail.Visibility = Visibility.Collapsed;
+            p_errorMobile.Visibility = Visibility.Collapsed;
+            tb_name.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
+            tb_fax.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
+            tb_email.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
+            tb_mobile.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
+
+            agent = agents.ToList().Find(c => c.agentId == userId);
+            this.DataContext = agent;
+
+            if (agent != null)
+            {
+                SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
+                SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+                SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
+                tb_code.Text = agent.code;
+                #region delete
+                if (agent.canDelete)
+                {
+                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                    txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                }
+
+                else
+                {
+                    if (agent.isActive == 0)
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                        txt_delete_Icon.Kind =
+                         MaterialDesignThemes.Wpf.PackIconKind.Check;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                    }
+                    else
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                        txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                    }
+                }
+                #endregion 
+                getImg();
+                //index = dg_customer.SelectedIndex;
+            }
+
+            #endregion
+
+
+        }
+        #endregion
+        #region Switch Card/DataGrid Y
+        private void Btn_itemsInCards_Click(object sender, RoutedEventArgs e)
+        {
+            grid_datagrid.Visibility = Visibility.Collapsed;
+            grid_cards.Visibility = Visibility.Visible;
+            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+
+            Tb_search_TextChanged(null, null);
+        }
+
+        private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
+        {
+            grid_cards.Visibility = Visibility.Collapsed;
+            grid_datagrid.Visibility = Visibility.Visible;
+            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+
+            Tb_search_TextChanged(null, null);
+        }
+        #endregion
+        #region Search Y
+
+
+        /// <summary>
+        /// Item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// 
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (agents is null)
+                await RefreshCustomersList();
+            searchText = tb_search.Text;
+            pageIndex = 1;
+            #region
+            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
+            s.name.Contains(searchText) ||
+            s.company.Contains(searchText) ||
+            s.mobile.Contains(searchText)
+            ) && s.isActive == tgl_customerState);
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+            #endregion
+            RefreshCustomerView();
+
+
+        }
+       
+
+
+        #endregion
+        #region Pagination Y
+        Pagination pagination = new Pagination();
+        Button[] btns;
+        public int pageIndex = 1;
+
+        private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+            agentsQuery = agents.Where(x => x.isActive == tgl_customerState);
+
+            if (tb_pageNumberSearch.Text.Equals(""))
+            {
+                pageIndex = 1;
+            }
+            else if (((agentsQuery.Count() - 1) / 12) + 1 < int.Parse(tb_pageNumberSearch.Text))
+            {
+                pageIndex = ((agentsQuery.Count() - 1) / 12) + 1;
+            }
+            else
+            {
+                pageIndex = int.Parse(tb_pageNumberSearch.Text);
+            }
+
+            #region
+            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
+            s.name.Contains(searchText) ||
+            s.company.Contains(searchText) ||
+            s.mobile.Contains(searchText)
+            ) && s.isActive == tgl_customerState);
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+            #endregion
+
+        }
+
+
+        private void Btn_firstPage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = 1;
+            #region
+            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
+            s.name.Contains(searchText) ||
+            s.company.Contains(searchText) ||
+            s.mobile.Contains(searchText)
+            ) && s.isActive == tgl_customerState);
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+            #endregion
+        }
+        private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = int.Parse(btn_prevPage.Content.ToString());
+            #region
+            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
+            s.name.Contains(searchText) ||
+            s.company.Contains(searchText) ||
+            s.mobile.Contains(searchText)
+            ) && s.isActive == tgl_customerState);
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+            #endregion
+        }
+        private void Btn_activePage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = int.Parse(btn_activePage.Content.ToString());
+            #region
+            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
+            s.name.Contains(searchText) ||
+            s.company.Contains(searchText) ||
+            s.mobile.Contains(searchText)
+            ) && s.isActive == tgl_customerState);
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+            #endregion
+        }
+        private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
+        {
+            pageIndex = int.Parse(btn_nextPage.Content.ToString());
+            #region
+            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
+            s.name.Contains(searchText) ||
+            s.company.Contains(searchText) ||
+            s.mobile.Contains(searchText)
+            ) && s.isActive == tgl_customerState);
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+            #endregion
+        }
+        private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
+        {
+            agentsQuery = agents.Where(x => x.isActive == tgl_customerState);
+            pageIndex = ((agentsQuery.Count() - 1) / 12) + 1;
+            #region
+            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
+            s.name.Contains(searchText) ||
+            s.company.Contains(searchText) ||
+            s.mobile.Contains(searchText)
+            ) && s.isActive == tgl_customerState);
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+            #endregion
+        }
+        #endregion
+
+        #endregion
     }
 }
     

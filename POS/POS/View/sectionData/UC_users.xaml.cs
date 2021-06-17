@@ -1186,9 +1186,9 @@ namespace POS.View
             {
                 pageIndex = 1;
             }
-            else if (((usersQuery.Count() - 1) / 9) + 1 < int.Parse(tb_pageNumberSearch.Text))
+            else if (((usersQuery.Count() - 1) / 12) + 1 < int.Parse(tb_pageNumberSearch.Text))
             {
-                pageIndex = ((usersQuery.Count() - 1) / 9) + 1;
+                pageIndex = ((usersQuery.Count() - 1) / 12) + 1;
             }
             else
             {
@@ -1273,7 +1273,7 @@ namespace POS.View
         private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
         {
             usersQuery = users.Where(x => x.isActive == tgl_userState);
-            pageIndex = ((usersQuery.Count() - 1) / 9) + 1;
+            pageIndex = ((usersQuery.Count() - 1) / 12) + 1;
             #region
             usersQuery = users.Where(s => (s.lastname.ToLower().Contains(searchText) ||
             s.name.ToLower().Contains(searchText) ||

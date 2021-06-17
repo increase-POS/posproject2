@@ -106,9 +106,9 @@ namespace POS.Classes
 
 
         // 
-        public async Task<List<CashTransfer>> GetByInvId(int invId)
+        public async Task<CashTransfer> GetByInvId(int invId)
         {
-            List<CashTransfer> cashtransfer = null;
+            CashTransfer cashtransfer = null;
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -140,12 +140,12 @@ namespace POS.Classes
                         Converters = new List<JsonConverter> { new BadDateFixingConverter() },
                         DateParseHandling = DateParseHandling.None
                     };
-                    cashtransfer = JsonConvert.DeserializeObject<List<CashTransfer>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    cashtransfer = JsonConvert.DeserializeObject<CashTransfer>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
                     return cashtransfer;
                 }
                 else //web api sent error response 
                 {
-                    cashtransfer = new List<CashTransfer>();
+                    cashtransfer = new CashTransfer();
                 }
                 return cashtransfer;
             }

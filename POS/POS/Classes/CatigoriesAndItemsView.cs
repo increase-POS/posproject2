@@ -30,6 +30,8 @@ namespace POS.Classes
         public uc_receiptOfPurchaseInvoice ucreceiptOfPurchaseInvoice;
         public uc_packageOfItems ucPackageOfItems;
         public UC_users ucUsers;
+        public UC_vendors ucVendors;
+        public UC_Customer ucCustomer;
         public wd_items wdItems;
 
         public Grid gridCatigories;
@@ -43,6 +45,8 @@ namespace POS.Classes
         private int _idReceiptOfPurchaseInvoice;
         private int _idPackageOfItems;
         private int _idUsers;
+        private int _idCustomer;
+        private int _idVendors;
         private int _idwdItems;
         public int idCatigories
         {
@@ -62,7 +66,6 @@ namespace POS.Classes
                 INotifyPropertyChangedIdCatigorieItems();
             }
         }
-        
         public int idPayInvoice
         {
             get => _idPayInvoice; set
@@ -126,7 +129,24 @@ namespace POS.Classes
                 INotifyPropertyChangedIdCatigorieItems();
             }
         }
+        public int idCustomer
+        {
+            get => _idCustomer; set
+            {
 
+                _idCustomer = value;
+                INotifyPropertyChangedIdCatigorieItems();
+            }
+        }
+        public int idVendors
+        {
+            get => _idVendors; set
+            {
+
+                _idVendors = value;
+                INotifyPropertyChangedIdCatigorieItems();
+            }
+        }
         public int idwdItems
         {
             get => _idwdItems; set
@@ -185,8 +205,6 @@ namespace POS.Classes
 
 
         }
-
-
         private void INotifyPropertyChangedIdCatigorieItems()
         {
 
@@ -224,13 +242,22 @@ namespace POS.Classes
                 ucUsers.ChangeItemIdEvent(idItem);
 
             }
+            else if (ucCustomer != null)
+            {
+                ucCustomer.ChangeItemIdEvent(idItem);
+
+            }
+            else if (ucVendors != null)
+            {
+                ucVendors.ChangeItemIdEvent(idItem);
+
+            }
             else if (wdItems != null)
             {
                 wdItems.ChangeItemIdEvent(idItem);
 
             }
         }
-
         #region Catalog
         public int pastCatalogCard = -1;
 
@@ -557,7 +584,7 @@ namespace POS.Classes
             uc = gridCatigorieItems.Children.OfType<UC_rectangleCard>().Where(x => x.Name.ToString() == "CardName" + uc.cardViewitem.user.userId).FirstOrDefault();
 
             gridCatigorieItems.Children.Remove(uc);
-            FN_createRectangelCard(uc.cardViewitem, "#178DD2");
+            FN_createRectangelCardUsers(uc.cardViewitem, "#178DD2");
             if (pastCatalogItem != -1 && pastCatalogItem != uc.cardViewitem.user.userId)
             {
                 var pastUc = new UC_rectangleCard() { contentId = pastCatalogItem };
@@ -565,11 +592,70 @@ namespace POS.Classes
                 if (pastUc != null)
                 {
                     gridCatigorieItems.Children.Remove(pastUc);
-                    FN_createRectangelCard(pastUc.cardViewitem, "#6e6e6e");
+                    FN_createRectangelCardUsers(pastUc.cardViewitem, "#6e6e6e");
                 }
             }
             pastCatalogItem = uc.cardViewitem.user.userId;
             idItem = uc.cardViewitem.user.userId;
+        }
+
+        #endregion
+        #region Agent
+        public void FN_refrishAgents(List<Agent> agents, string language, string cardType)
+        {
+            gridCatigorieItems.Children.Clear();
+            int row = 0;
+            int column = 0;
+            foreach (var item in agents)
+            {
+
+                CardViewItems itemCardView = new CardViewItems();
+                itemCardView.agent = item;
+                itemCardView.cardType = cardType;
+                itemCardView.language = language;
+                itemCardView.row = row;
+                itemCardView.column = column;
+                FN_createRectangelCardAgents(itemCardView);
+
+
+                column++;
+                if (column == 3)
+                {
+                    column = 0;
+                    row++;
+                }
+            }
+        }
+        UC_rectangleCard FN_createRectangelCardAgents(CardViewItems itemCardView, string BorderBrush = "#6e6e6e")
+        {
+            UC_rectangleCard uc = new UC_rectangleCard(itemCardView);
+            uc.rectangleCardBorderBrush = BorderBrush;
+            uc.Name = "CardName" + itemCardView.agent.agentId;
+            Grid.SetRow(uc, itemCardView.row);
+            Grid.SetColumn(uc, itemCardView.column);
+            gridCatigorieItems.Children.Add(uc);
+            uc.MouseDoubleClick += new MouseButtonEventHandler(rectangleCardViewAgents_MouseDoubleClick);
+            return uc;
+        }
+        void rectangleCardViewAgents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            UC_rectangleCard uc = (UC_rectangleCard)sender;
+            uc = gridCatigorieItems.Children.OfType<UC_rectangleCard>().Where(x => x.Name.ToString() == "CardName" + uc.cardViewitem.agent.agentId).FirstOrDefault();
+
+            gridCatigorieItems.Children.Remove(uc);
+            FN_createRectangelCardAgents(uc.cardViewitem, "#178DD2");
+            if (pastCatalogItem != -1 && pastCatalogItem != uc.cardViewitem.agent.agentId)
+            {
+                var pastUc = new UC_rectangleCard() { contentId = pastCatalogItem };
+                pastUc = gridCatigorieItems.Children.OfType<UC_rectangleCard>().Where(x => x.Name.ToString() == "CardName" + pastUc.contentId).FirstOrDefault();
+                if (pastUc != null)
+                {
+                    gridCatigorieItems.Children.Remove(pastUc);
+                    FN_createRectangelCardAgents(pastUc.cardViewitem, "#6e6e6e");
+                }
+            }
+            pastCatalogItem = uc.cardViewitem.agent.agentId;
+            idItem = uc.cardViewitem.agent.agentId;
         }
 
         #endregion

@@ -505,7 +505,20 @@ namespace POS.Classes
                     }
                     button.Background = new ImageBrush(bitmapImage);
                 }
-
+                else if (type.Equals("Agent"))
+                {
+                    Agent agent = new Agent();
+                    byte[] imageBuffer = await agent.downloadImage(imageUri); // read this as BLOB from your DB
+                    var bitmapImage = new BitmapImage();
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+                    button.Background = new ImageBrush(bitmapImage);
+                }
                 //}
             }
             catch

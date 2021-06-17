@@ -1394,6 +1394,7 @@ namespace POS.View
 
             Window.GetWindow(this).Opacity = 0.2;
             wd_items w = new wd_items();
+            w.CardType = "sales";
             w.ShowDialog();
             if (w.isActive)
             {
