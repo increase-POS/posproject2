@@ -21,6 +21,8 @@ namespace POS_Server
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
+        public Nullable<decimal> discountValue { get; set; }
+        public Nullable<byte> discountType { get; set; }
     
         public virtual coupons coupons { get; set; }
         public virtual invoices invoices { get; set; }

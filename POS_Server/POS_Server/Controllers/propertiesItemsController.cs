@@ -49,13 +49,15 @@ namespace POS_Server.Controllers
                     {
                         for (int i = 0; i < propertiesList.Count; i++)
                         {
+                            canDelete = false;
                             if (propertiesList[i].isActive == 1)
                             {
                                 int propertyItemId = (int)propertiesList[i].propertyItemId;
-                                var Itemsprop = entity.itemsProp.Where(x => x.propertyItemId == propertyItemId).Select(b => new { b.itemPropId }).FirstOrDefault();
-
-                                if (Itemsprop is null)
+                                var Itemsprop = entity.itemsProp.Where(x => x.propertyItemId == propertyItemId).Select(b => new { b.itemPropId ,b.itemId}).ToList();
+                               
+                                if ( Itemsprop.Count == 0)
                                     canDelete = true;
+
                             }
                             propertiesList[i].canDelete = canDelete;
                         }
@@ -109,6 +111,7 @@ namespace POS_Server.Controllers
                     {
                         for (int i = 0; i < propertiesList.Count; i++)
                         {
+                            canDelete = false;
                             if (propertiesList[i].isActive == 1)
                             {
                                 int propertyItemId = (int)propertiesList[i].propertyItemId;

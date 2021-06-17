@@ -33,22 +33,23 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var sectionList = entity.sections
-                    .Select(L => new SectionModel
-                    {
-                      sectionId=  L.sectionId,
-                        name=   L.name,
-                        isActive=  L.isActive,
-                        branchId=  L.branchId,
-                        note=   L.note,
-                        //  L.branchId,
-                        createDate=  L.createDate,
-                        updateDate=    L.updateDate,
-                        createUserId=  L.createUserId,
-                        updateUserId=  L.updateUserId,
+                    var sectionList =(from L in entity.sections join b in entity.branches on L.branchId equals b.branchId into lj
+                                      from v in lj.DefaultIfEmpty()
+                                      select new SectionModel()
+                                        {
+                                          sectionId=  L.sectionId,
+                                            name=   L.name,
+                                            isActive=  L.isActive,
+                                            branchId=  L.branchId,
+                                            note=   L.note,
+                                            branchName = v.name,
+                                            createDate=  L.createDate,
+                                            updateDate=    L.updateDate,
+                                            createUserId=  L.createUserId,
+                                            updateUserId=  L.updateUserId,
                        
-                    })
-                    .ToList();
+                                        })
+                                        .ToList();
 
                     if (sectionList.Count > 0)
                     {// for each 
@@ -172,7 +173,7 @@ namespace POS_Server.Controllers
                             newObject.updateUserId = newObject.createUserId;
 
                             sectionEntity.Add(newObject);
-                            message = "Location Is Added Successfully";
+                            message = "Section Is Added Successfully";
                         }
                         else
                         {
@@ -184,7 +185,7 @@ namespace POS_Server.Controllers
                             tmpSection.updateDate = DateTime.Now;
                             tmpSection.updateUserId = newObject.updateUserId;
                           
-                            message = "Location Is Updated Successfully";
+                            message = "Section Is Updated Successfully";
                         }
                         entity.SaveChanges();
                     }

@@ -12,27 +12,26 @@ namespace POS_Server
     using System;
     using System.Collections.Generic;
     
-    public partial class operations
+    public partial class cards
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public operations()
+        public cards()
         {
             this.cashTransfer = new HashSet<cashTransfer>();
         }
     
-        public int operationId { get; set; }
-        public string type { get; set; }
-        public string side { get; set; }
+        public int cardId { get; set; }
+        public string name { get; set; }
+        public string notes { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
-        public Nullable<int> bankId { get; set; }
+        public Nullable<byte> isActive { get; set; }
     
-        public virtual banks banks { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<cashTransfer> cashTransfer { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cashTransfer> cashTransfer { get; set; }
     }
 }

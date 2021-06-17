@@ -30,26 +30,29 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var itemUnitsList = (from IU in entity.itemsUnits where (IU.itemId == itemId)
-                                         join u in entity.units on IU.unitId equals u.unitId into lj from v in lj.DefaultIfEmpty()
+                    var itemUnitsList = (from IU in entity.itemsUnits
+                                         where (IU.itemId == itemId)
+                                         join u in entity.units on IU.unitId equals u.unitId into lj
+                                         from v in lj.DefaultIfEmpty()
                                          join u1 in entity.units on IU.subUnitId equals u1.unitId into tj
                                          from v1 in tj.DefaultIfEmpty()
                                          select new ItemUnitModel()
                                          {
                                              itemUnitId = IU.itemUnitId,
-                                             unitId= IU.unitId,
+                                             unitId = IU.unitId,
                                              mainUnit = v.name,
-                                             createDate =IU.createDate,
-                                             createUserId=  IU.createUserId,
-                                             defaultPurchase=IU.defaultPurchase,
-                                             defaultSale=IU.defaultSale,
-                                             price= IU.price,
-                                             subUnitId= IU.subUnitId,
+                                             createDate = IU.createDate,
+                                             createUserId = IU.createUserId,
+                                             defaultPurchase = IU.defaultPurchase,
+                                             defaultSale = IU.defaultSale,
+                                             price = IU.price,
+                                             subUnitId = IU.subUnitId,
                                              smallUnit = v1.name,
-                                             unitValue=IU.unitValue,
+                                             unitValue = IU.unitValue,
                                              barcode = IU.barcode,
-                                             updateDate=IU.updateDate,
-                                             updateUserId= IU.updateUserId,
+                                             updateDate = IU.updateDate,
+                                             updateUserId = IU.updateUserId,
+
                                          })
                                          .ToList();
 
@@ -102,15 +105,15 @@ namespace POS_Server.Controllers
                         {
                             //create
                             // set the other default sale or purchase to 0 if the new object.default is 1
-                        
+
                             if (newObject.defaultSale == 1)
                             { // get the row with same itemId of newObject
                                 itemsUnits defItemUnit = entity.itemsUnits.Where(p => p.itemId == newObject.itemId && p.defaultSale == 1).FirstOrDefault();
-                            if (defItemUnit != null)
-                            {
-                                defItemUnit.defaultSale = 0;
-                                 entity.SaveChanges();
-                            }
+                                if (defItemUnit != null)
+                                {
+                                    defItemUnit.defaultSale = 0;
+                                    entity.SaveChanges();
+                                }
                             }
                             if (newObject.defaultPurchase == 1)
                             {
@@ -162,7 +165,7 @@ namespace POS_Server.Controllers
                         entity.SaveChanges();
                     }
                 }
-               catch
+                catch
                 {
                     message = "an error ocurred";
                 }
@@ -225,12 +228,80 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var barcods = entity.itemsUnits.Select(x => x.barcode).ToList();                                         
+                    var barcods = (from i in entity.itemsUnits
+                                   join u in entity.units on i.unitId equals u.unitId
+
+                                   select new ItemUnitModel()
+                                   {
+                                       itemId = i.itemId,
+                                       barcode = i.barcode,
+                                       unitId = i.unitId,
+                                       itemUnitId = i.itemUnitId,
+                                       mainUnit = u.name,
+                                   }).ToList();
 
                     if (barcods == null)
                         return NotFound();
                     else
                         return Ok(barcods);
+                }
+            }
+            //else
+            return NotFound();
+        }
+
+        [HttpGet]
+        [Route("Getall")]
+        public IHttpActionResult Getall()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var itemUnitsList = (from IU in entity.itemsUnits
+                                         
+                                         join u in entity.units on IU.unitId equals u.unitId 
+                                      
+                                         join i in entity.items on IU.itemId equals i.itemId 
+                                       orderby i.name
+                                         select new ItemUnitModel()
+                                         {
+                                             itemUnitId = IU.itemUnitId,
+                                             unitId = IU.unitId,
+                                             itemId=IU.itemId,
+                                             mainUnit = u.name,
+                                             createDate = IU.createDate,
+                                             createUserId = IU.createUserId,
+                                             defaultPurchase = IU.defaultPurchase,
+                                             defaultSale = IU.defaultSale,
+                                             price = IU.price,
+                                             subUnitId = IU.subUnitId,
+                                             
+                                             unitValue = IU.unitValue,
+                                             barcode = IU.barcode,
+                                             updateDate = IU.updateDate,
+                                             updateUserId = IU.updateUserId,
+                                             itemName=i.name,
+                                             itemCode=i.code,
+                                             
+
+                                         })
+                                         .ToList();
+
+                    if (itemUnitsList == null)
+                        return NotFound();
+                    else
+                        return Ok(itemUnitsList);
                 }
             }
             //else

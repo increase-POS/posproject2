@@ -14,6 +14,7 @@ namespace POS_Server.Models
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> branchId { get; set; }
+        public string branchName { get; set; }
         public Nullable<byte> isActive { get; set; }
         public string note { get; set; }
         public Boolean canDelete { get; set; }

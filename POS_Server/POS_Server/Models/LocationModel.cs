@@ -19,5 +19,7 @@ namespace POS_Server.Models
         public Nullable<byte> isActive { get; set; }
         public Boolean canDelete { get; set; }
         public Nullable<int> sectionId { get; set; }
+        public string sectionName { get; set; }
+        public string note { get; set; }
     }
 }

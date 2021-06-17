@@ -49,9 +49,11 @@ namespace POS_Server.Controllers
                         for (int i = 0; i < propertiesList.Count; i++)
                         {
                             string values = "";
+                            canDelete = false;
+
                             int propertyId = (int)propertiesList[i].propertyId;
-                            var propItems = entity.propertiesItems.Where(x => x.propertyId == propertyId).Select(b => new { b.name,b.propertyItemId }).ToList();
-    
+                            var propItems = entity.propertiesItems.Where(x => x.propertyId == propertyId).Select(b => new { b.name,b.propertyId }).ToList();
+                           
                             if (propItems is null || propItems.Count == 0)
                             {
                                 canDelete = true;

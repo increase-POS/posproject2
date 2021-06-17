@@ -149,38 +149,70 @@ namespace POS_Server.Controllers
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-
             if (valid)
             {
-                using (incposdbEntities entity = new incposdbEntities())
+                if (!type.Equals("all"))
                 {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
 
-                    var branchesList = entity.branches
-                        .Where(b => b.type == type && b.isActive == 1)
-                   .Select(b => new {
-                       b.branchId,
-                       b.address,
-                       b.createDate,
-                       b.createUserId,
-                       b.email,
-                       b.mobile,
-                       b.name,
-                       b.code,
-                       b.notes,
-                       b.parentId,
-                       b.phone,
-                       b.updateDate,
-                       b.updateUserId,
-                       b.isActive,
-                       b.type
-                   })
-                   .ToList();
+                        var branchesList = entity.branches
+                            .Where(b => b.type == type && b.isActive == 1)
+                       .Select(b => new
+                       {
+                           b.branchId,
+                           b.address,
+                           b.createDate,
+                           b.createUserId,
+                           b.email,
+                           b.mobile,
+                           b.name,
+                           b.code,
+                           b.notes,
+                           b.parentId,
+                           b.phone,
+                           b.updateDate,
+                           b.updateUserId,
+                           b.isActive,
+                           b.type
+                       })
+                       .ToList();
 
-                    if (branchesList == null)
-                        return NotFound();
-                    else
-                        return Ok(branchesList);
+                        if (branchesList == null)
+                            return NotFound();
+                        else
+                            return Ok(branchesList);
 
+                    }
+                }
+                else
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var branchesList = entity.branches.Select(b => new BranchModel
+                        {
+                            branchId = b.branchId,
+                            address = b.address,
+                            createDate = b.createDate,
+                            createUserId = b.createUserId,
+                            email = b.email,
+                            mobile = b.mobile,
+                            name = b.name,
+                            code = b.code,
+                            notes = b.notes,
+                            parentId = b.parentId,
+                            phone = b.phone,
+                            updateDate = b.updateDate,
+                            updateUserId = b.updateUserId,
+                            isActive = b.isActive,
+                            type = b.type
+                        })
+                            .ToList();
+                        if (branchesList == null)
+                            return NotFound();
+                        else
+                            return Ok(branchesList);
+                    }
                 }
             }
             else

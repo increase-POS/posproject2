@@ -42,6 +42,7 @@ namespace POS_Server.Controllers
                        discountType = c.discountType,
                        discountValue = c.discountValue,
                        startDate =  c.startDate,
+                       endDate=c.endDate,
                        notes  =c.notes,
                        quantity  =  c.quantity,
                        remainQ = c.remainQ,
@@ -112,12 +113,14 @@ namespace POS_Server.Controllers
                     var coupon = entity.coupons
                    .Where(c => c.cId == cId)
                    .Select(c => new {
+                       c.cId,
                        c.name,
                        c.code,
                        c.isActive,
                        c.discountType,
                        c.discountValue,
                        c.startDate,
+                       c.endDate,
                        c.notes,
                        c.quantity,
                        c.remainQ,
@@ -144,7 +147,7 @@ namespace POS_Server.Controllers
         // GET api/<controller>  Get Coupon By Code 
         [HttpGet]
         [Route("GetCouponByCode")]
-        public IHttpActionResult GetcouponByCode()
+        public IHttpActionResult GetCouponByCode()
         {
             var re = Request;
             var headers = re.Headers;
@@ -168,12 +171,14 @@ namespace POS_Server.Controllers
                     var coupon = entity.coupons
                    .Where(c => c.code == code)
                    .Select(c => new {
+                       c.cId,
                        c.name,
                        c.code,
                        c.isActive,
                        c.discountType,
                        c.discountValue,
                        c.startDate,
+                       c.endDate,
                        c.notes,
                        c.quantity,
                        c.remainQ,
@@ -224,12 +229,14 @@ namespace POS_Server.Controllers
                     var coupon = entity.coupons
                    .Where(c => c.barcode == barcode)
                    .Select(c => new {
+                       c.cId,
                        c.name,
                        c.code,
                        c.isActive,
                        c.discountType,
                        c.discountValue,
                        c.startDate,
+                       c.endDate,
                        c.notes,
                        c.quantity,
                        c.remainQ,
@@ -277,6 +284,7 @@ namespace POS_Server.Controllers
                     var coupon = entity.coupons
                    .Where(c => c.code == code)
                    .Select(c => new {
+                       c.cId,
                        c.name,
                        c.code,
                    
@@ -320,12 +328,14 @@ namespace POS_Server.Controllers
                     var coupon = entity.coupons
                    .Where(c => c.isActive == isActive)
                    .Select(c => new {
+                       c.cId,
                        c.name,
                        c.code,
                        c.isActive,
                        c.discountType,
                        c.discountValue,
                        c.startDate,
+                       c.endDate,
                        c.notes,
                        c.quantity,
                        c.remainQ,
@@ -395,6 +405,7 @@ namespace POS_Server.Controllers
                             tmpcoupon.discountType = Object.discountType;
                             tmpcoupon.discountValue = Object.discountValue;
                             tmpcoupon.startDate = Object.startDate;
+                            tmpcoupon.endDate = Object.endDate;
                             tmpcoupon.notes = Object.notes;
                             tmpcoupon.quantity = Object.quantity;
                             tmpcoupon.remainQ = Object.remainQ;
@@ -450,7 +461,7 @@ namespace POS_Server.Controllers
                             entity.coupons.Remove(couponObj);
                             entity.SaveChanges();
 
-                            return Ok("Offer is Deleted Successfully");
+                            return Ok("Coup is Deleted Successfully");
                         }
                     }
                     catch
@@ -464,11 +475,11 @@ namespace POS_Server.Controllers
                     {
                         using (incposdbEntities entity = new incposdbEntities())
                         {
-                            offers offerObj = entity.offers.Find(couponId);
+                            coupons coupObj = entity.coupons.Find(couponId);
 
-                            offerObj.isActive = 0;
-                            offerObj.updateUserId = userId;
-                            offerObj.updateDate = DateTime.Now;
+                            coupObj.isActive = 0;
+                            coupObj.updateUserId = userId;
+                            coupObj.updateDate = DateTime.Now;
                             entity.SaveChanges();
 
                             return Ok("Offer is Deleted Successfully");

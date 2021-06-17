@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POS_Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,8 @@ namespace POS_Server.Controllers
                         b.invNumber,
                         b.agentId,
                         b.invType ,
+                        b.discountType,
+                        b.discountValue,
                         b.total ,
                         b.totalNet ,
                         b.paid ,
@@ -49,6 +52,8 @@ namespace POS_Server.Controllers
                         b.createUserId,
                         b.updateDate ,
                         b.updateUserId ,
+                        b.branchId,
+                        b.tax,
                 })
                     .ToList();
 
@@ -99,6 +104,10 @@ namespace POS_Server.Controllers
                         b.createUserId,
                         b.updateDate,
                         b.updateUserId,
+                        b.branchId,
+                        b.discountType,
+                        b.discountValue,
+                        b.tax,
                     })
                     .ToList();
 
@@ -126,35 +135,55 @@ namespace POS_Server.Controllers
 
             if (valid) // APIKey is valid
             {
+                string[] invTypeArray = invType.Split(',');
+                List<string> invTypeL = new List<string>();
+                foreach (string s in invTypeArray)
+                    invTypeL.Add(s.Trim());
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var banksList = entity.invoices.Where(b => b.invType == invType).Select(b => new {
-                        b.invoiceId,
-                        b.invNumber,
-                        b.agentId,
-                        b.invType,
-                        b.total,
-                        b.totalNet,
-                        b.paid,
-                        b.deserved,
-                        b.deservedDate,
-                        b.invDate,
-                        b.invoiceMainId,
-                        b.invCase,
-                        b.invTime,
-                        b.notes,
-                        b.vendorInvNum,
-                        b.vendorInvDate,
-                        b.createUserId,
-                        b.updateDate,
-                        b.updateUserId,
+                 
+                    var invoicesList = entity.invoices.Where(x => invTypeL.Contains(x.invType)) 
+                        .Select(b => new InvoiceModel {
+                       invoiceId= b.invoiceId,
+                            invNumber= b.invNumber,
+                            agentId= b.agentId,
+                            invType= b.invType,
+                            total=b.total,
+                            totalNet= b.totalNet,
+                            paid= b.paid,
+                            deserved= b.deserved,
+                            deservedDate= b.deservedDate,
+                            invDate= b.invDate,
+                            invoiceMainId= b.invoiceMainId,
+                            invCase= b.invCase,
+                            invTime= b.invTime,
+                            notes= b.notes,
+                            vendorInvNum= b.vendorInvNum,
+                            vendorInvDate= b.vendorInvDate,
+                            createUserId= b.createUserId,
+                            updateDate= b.updateDate,
+                            updateUserId= b.updateUserId,
+                            branchId= b.branchId,
+                            discountValue = b.discountValue,
+                            discountType = b.discountType,
+                            tax = b.tax,
                     })
                     .ToList();
 
-                    if (banksList == null)
+                    if (invoicesList != null)
+                    {
+                        for (int i = 0; i < invoicesList.Count; i++)
+                        {
+                            int invoiceId = invoicesList[i].invoiceId;
+                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                            invoicesList[i].itemsCount = itemCount;
+                        }
+                    }
+                    if (invoicesList == null)
                         return NotFound();
                     else
-                        return Ok(banksList);
+                        return Ok(invoicesList);
                 }
             }
             return NotFound();
@@ -162,12 +191,11 @@ namespace POS_Server.Controllers
         // add or update bank
         [HttpPost]
         [Route("Save")]
-        public string Save(string invoiceObject)
+        public int Save(string invoiceObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            string message = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -192,9 +220,10 @@ namespace POS_Server.Controllers
                 }
                 try
                 {
+                    invoices tmpInvoice;
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-                        var bankEntity = entity.Set<invoices>();
+                        var invoiceEntity = entity.Set<invoices>();
                         if (newObject.invoiceId == 0)
                         {
                             newObject.invDate = DateTime.Now;
@@ -202,12 +231,11 @@ namespace POS_Server.Controllers
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
 
-                            bankEntity.Add(newObject);
-                            message = "Invoice Is Added Successfully";
+                            tmpInvoice = invoiceEntity.Add(newObject);
                         }
                         else
                         {
-                            var tmpInvoice = entity.invoices.Where(p => p.invoiceId == newObject.invoiceId).FirstOrDefault();
+                            tmpInvoice = entity.invoices.Where(p => p.invoiceId == newObject.invoiceId).FirstOrDefault();
                             tmpInvoice.invNumber = newObject.invNumber;
                             tmpInvoice.agentId = newObject.agentId;
                             tmpInvoice.invType = newObject.invType;
@@ -216,28 +244,64 @@ namespace POS_Server.Controllers
                             tmpInvoice.paid = newObject.paid;
                             tmpInvoice.deserved = newObject.deserved;
                             tmpInvoice.deservedDate = newObject.deservedDate;
-                           // tmpInvoice.invDate = newObject.invDate; //create date must not change
                             tmpInvoice.invoiceMainId = newObject.invoiceMainId;
                             tmpInvoice.invCase = newObject.invCase;
-                            //tmpInvoice.invTime = newObject.invTime; //create Time must not change
                             tmpInvoice.notes = newObject.notes;
                             tmpInvoice.vendorInvNum = newObject.vendorInvNum;
                             tmpInvoice.vendorInvDate = newObject.vendorInvDate;
                             tmpInvoice.updateDate = DateTime.Now;
                             tmpInvoice.updateUserId = newObject.updateUserId;
-
-                            message = "Invoice Is Updated Successfully";
+                            tmpInvoice.branchId = newObject.branchId;
+                            tmpInvoice.discountType = newObject.discountType;
+                            tmpInvoice.discountValue = newObject.discountValue;
+                            tmpInvoice.tax = newObject.tax;
                         }
                         entity.SaveChanges();
+                        return tmpInvoice.invoiceId;
                     }
                 }
 
                 catch
                 {
-                    message = "an error ocurred";
+                   return 0;
                 }
             }
-            return message;
+            return 0;
+        }
+        [HttpGet]
+        [Route("GetLastNumOfInv")]
+        public IHttpActionResult GetLastNumOfInv(string invCode)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                List<string> numberList;
+                int lastNum = 0;
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    numberList = entity.invoices.Where(b => b.invNumber.Contains(invCode)).Select(b => b.invNumber).ToList();
+                     
+                    for(int i=0; i< numberList.Count; i++)
+                    {
+                        string code = numberList[i];
+                        string s = code.Substring(code.LastIndexOf(invCode)+3);
+                        numberList[i] = s;
+                    }
+                    numberList.Sort();
+                    lastNum = int.Parse( numberList[numberList.Count - 1]);
+                }
+                return Ok(lastNum);
+            }
+            return NotFound();
         }
     }
 }

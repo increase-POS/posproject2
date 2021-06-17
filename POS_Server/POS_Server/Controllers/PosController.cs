@@ -48,6 +48,7 @@ namespace POS_Server.Controllers
                                        createUserId = p.createUserId,
                                        updateUserId = p.updateUserId,
                                        isActive = p.isActive,
+                                      balanceAll=p.balanceAll,
                                        note = p.note,
                                    }).ToList();
 
@@ -121,6 +122,7 @@ namespace POS_Server.Controllers
                                        updateUserId = p.updateUserId,
                                        isActive = p.isActive,
                                        note = p.note,
+                                       balanceAll = p.balanceAll,
                                    })
                                    .Where(p=> (p.name.Contains(searchWords) || p.code.Contains(searchWords) || p.branchName.Contains(searchWords) || p.balance == balance ))
                                    .ToList();
@@ -168,6 +170,7 @@ namespace POS_Server.Controllers
                        p.updateUserId,
                        p.isActive,
                        p.note,
+                     p.balanceAll,
                    })
                    .FirstOrDefault();
 
@@ -236,6 +239,8 @@ namespace POS_Server.Controllers
                             tmpPos.updateDate = DateTime.Now;
                             tmpPos.updateUserId = newObject.updateUserId;
                             tmpPos.isActive = newObject.isActive;
+                            tmpPos.balance = newObject.balance;
+                            tmpPos.balanceAll = newObject.balanceAll;
                             message = "Pos Is Updated Successfully";
                         }
                         entity.SaveChanges();

@@ -4,62 +4,69 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="25c9f2f23be84f5ab918e4a06a47ed5b" Name="Diagram1" ZoomLevel="82">
-        <EntityTypeShape EntityType="incposdbModel.agents" Width="1.5" PointX="3" PointY="30" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.banks" Width="1.5" PointX="5.75" PointY="34.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.branches" Width="1.5" PointX="3" PointY="36.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.branchesUsers" Width="1.5" PointX="8.25" PointY="46.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.cashTransfer" Width="1.5" PointX="5.25" PointY="39.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.categories" Width="1.5" PointX="3" PointY="42" IsExpanded="true" />
+      <Diagram DiagramId="f20665aa4b2645ab85099e0f9a0ce757" Name="Diagram1" ZoomLevel="33">
+        <EntityTypeShape EntityType="incposdbModel.agents" Width="1.5" PointX="3" PointY="29.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.banks" Width="1.5" PointX="3" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.branches" Width="1.5" PointX="3" PointY="36.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.branchesUsers" Width="1.5" PointX="8.25" PointY="44.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.branchStore" Width="1.5" PointX="8.25" PointY="48.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.cashTransfer" Width="1.5" PointX="5.25" PointY="39.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.categories" Width="1.5" PointX="3" PointY="42.625" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.cities" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.countriesCodes" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.coupons" Width="1.5" PointX="3" PointY="46.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.couponsInvoices" Width="1.5" PointX="10.5" PointY="46.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.Expenses" Width="1.5" PointX="3" PointY="52.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.invoices" Width="1.5" PointX="8.25" PointY="38.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.invoicesOrders" Width="1.5" PointX="13.5" PointY="45.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.items" Width="1.5" PointX="5.25" PointY="55.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.itemsLocations" Width="1.5" PointX="15.75" PointY="55.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.itemsMaterials" Width="1.5" PointX="7.5" PointY="62.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.itemsOffers" Width="1.5" PointX="18.75" PointY="52.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.itemsProp" Width="1.5" PointX="13.5" PointY="55.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.itemsTransfer" Width="1.5" PointX="13.5" PointY="50.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.itemsUnits" Width="1.5" PointX="10.5" PointY="58.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.locations" Width="1.5" PointX="3" PointY="56.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.offers" Width="1.5" PointX="16.5" PointY="61.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.operations" Width="1.5" PointX="8" PointY="50.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.orders" Width="1.5" PointX="10.5" PointY="40.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.orderscontents" Width="1.5" PointX="15.75" PointY="46.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.pos" Width="1.5" PointX="5.25" PointY="49.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.posUsers" Width="1.5" PointX="10.5" PointY="50.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.properties" Width="1.5" PointX="3" PointY="64.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.propertiesItems" Width="1.5" PointX="8.25" PointY="55.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.sections" Width="1.5" PointX="5.25" PointY="46" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.serials" Width="1.5" PointX="13.5" PointY="59.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.servicesCosts" Width="1.5" PointX="16.5" PointY="51.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.coupons" Width="1.5" PointX="3" PointY="47.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.couponsInvoices" Width="1.5" PointX="13.5" PointY="44.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.docImages" Width="1.5" PointX="11.875" PointY="36.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.Expenses" Width="1.5" PointX="3" PointY="53.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.invoices" Width="1.5" PointX="8.25" PointY="36" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.invoicesOrders" Width="1.5" PointX="13.5" PointY="39.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.items" Width="1.5" PointX="8.25" PointY="53.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.itemsLocations" Width="1.5" PointX="18.75" PointY="45.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.itemsMaterials" Width="1.5" PointX="10.5" PointY="57.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.itemsOffers" Width="1.5" PointX="23.75" PointY="45.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.itemsProp" Width="1.5" PointX="13.5" PointY="54" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.itemsTransfer" Width="1.5" PointX="15.75" PointY="41.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.itemsUnits" Width="1.5" PointX="16.5" PointY="54.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.itemTransferOffer" Width="1.5" PointX="21" PointY="44.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.locations" Width="1.5" PointX="10.5" PointY="47.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.offers" Width="1.5" PointX="18.75" PointY="35.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.orders" Width="1.5" PointX="13.5" PointY="48.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.orderscontents" Width="1.5" PointX="21.75" PointY="49.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.pos" Width="1.5" PointX="11.25" PointY="41.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.posUsers" Width="1.5" PointX="16.5" PointY="46.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.properties" Width="1.5" PointX="3" PointY="56.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.propertiesItems" Width="1.5" PointX="11.25" PointY="52.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.sections" Width="1.5" PointX="5.25" PointY="50.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.serials" Width="1.5" PointX="18.5" PointY="41" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.servicesCosts" Width="1.5" PointX="19.5" PointY="51" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.units" Width="1.5" PointX="3" PointY="68.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.users" Width="1.5" PointX="0.75" PointY="41" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.usersLogs" Width="1.5" PointX="10.5" PointY="55.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.units" Width="1.5" PointX="3" PointY="60.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.users" Width="1.5" PointX="0.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.usersLogs" Width="1.5" PointX="16.5" PointY="51.125" IsExpanded="true" />
         <AssociationConnector Association="incposdbModel.FK_agents_users" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_agents_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_cashTransfer_agents" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_invoices_agents" ManuallyRouted="false" />
-        <AssociationConnector Association="incposdbModel.FK_operations_banks" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_banks" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_branches_users" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_branches_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_branchesUsers_branches" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_branchStore_branches" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_branchStore_branches1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_branchStore_branches2" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoices_branches" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_pos_branches" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_sections_branches" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_branchesUsers_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_branchStore_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_branchStore_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_cashTransfer" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_cashTransfer_invoices" ManuallyRouted="false" />
-        <AssociationConnector Association="incposdbModel.FK_cashTransfer_operations" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_cashTransfer_pos" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_pos1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_cashTransfer_users" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_cashTransfer_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_cashTransfer_users2" ManuallyRouted="false" />
-        <AssociationConnector Association="incposdbModel.FK_cashTransfer_users3" ManuallyRouted="false" />
-        <AssociationConnector Association="incposdbModel.FK_cashTransfer_users4" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_categories_users" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_categories_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_items_categories" ManuallyRouted="false" />
@@ -70,8 +77,11 @@
         <AssociationConnector Association="incposdbModel.FK_couponsInvoices_invoices" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_couponsInvoices_users" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_couponsInvoices_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_docImages_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_docImages_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_Expenses_users" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_invoices_invoices" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoices_pos" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_invoices_users" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_invoices_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_invoices_users2" ManuallyRouted="false" />
@@ -110,15 +120,19 @@
         <AssociationConnector Association="incposdbModel.FK_itemsProp_propertiesItems" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_itemsProp_users" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_itemsProp_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsTransfer_itemsUnits" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_itemsTransfer_locations" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_itemsTransfer_locations1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemTransferOffer_itemsTransfer" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_itemsUnits_units" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_itemsUnits_users" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_itemsUnits_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemTransferOffer_offers" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemTransferOffer_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemTransferOffer_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_locations_sections" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_locations_users" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_locations_users1" ManuallyRouted="false" />
-        <AssociationConnector Association="incposdbModel.FK_operations_users" ManuallyRouted="false" />
-        <AssociationConnector Association="incposdbModel.FK_operations_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_orders_users" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_orders_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_orders_users2" ManuallyRouted="false" />
@@ -144,12 +158,37 @@
         <AssociationConnector Association="incposdbModel.FK_units_users" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_units_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_usersLogs_users" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="incposdbModel.branchStore" Width="1.5" PointX="13.25" PointY="40.5" />
-        <AssociationConnector Association="incposdbModel.FK_branchStore_branches" />
-        <AssociationConnector Association="incposdbModel.FK_branchStore_branches1" />
-        <AssociationConnector Association="incposdbModel.FK_branchStore_users" />
-        <AssociationConnector Association="incposdbModel.FK_branchStore_users1" />
-        <AssociationConnector Association="incposdbModel.FK_locations_sections" />
+        <EntityTypeShape EntityType="incposdbModel.cards" Width="1.5" PointX="3" PointY="66" />
+        <AssociationConnector Association="incposdbModel.FK_cards_users" />
+        <AssociationConnector Association="incposdbModel.FK_cards_users1" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_cards" />
+        <EntityTypeShape EntityType="incposdbModel.bondes" Width="1.5" PointX="3" PointY="70.875" />
+        <AssociationConnector Association="incposdbModel.FK_bondes_users" />
+        <AssociationConnector Association="incposdbModel.FK_bondes_users1" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_bondes" />
+        <EntityTypeShape EntityType="incposdbModel.medalAgent" Width="1.5" PointX="21" PointY="36.875" />
+        <EntityTypeShape EntityType="incposdbModel.medals" Width="1.5" PointX="3" PointY="20.5" />
+        <AssociationConnector Association="incposdbModel.FK_medalAgent_agents" />
+        <AssociationConnector Association="incposdbModel.FK_medalAgent_coupons" />
+        <AssociationConnector Association="incposdbModel.FK_medalAgent_medals" />
+        <AssociationConnector Association="incposdbModel.FK_medalAgent_offers" />
+        <AssociationConnector Association="incposdbModel.FK_medalAgent_users" />
+        <AssociationConnector Association="incposdbModel.FK_medalAgent_users1" />
+        <AssociationConnector Association="incposdbModel.FK_medals_users" />
+        <AssociationConnector Association="incposdbModel.FK_medals_users1" />
+        <EntityTypeShape EntityType="incposdbModel.groupObject" Width="1.5" PointX="5.25" PointY="54.75" />
+        <EntityTypeShape EntityType="incposdbModel.groups" Width="1.5" PointX="3" PointY="76" />
+        <EntityTypeShape EntityType="incposdbModel.objects" Width="1.5" PointX="3" PointY="16.5" />
+        <AssociationConnector Association="incposdbModel.FK_groupObject_groups" />
+        <AssociationConnector Association="incposdbModel.FK_groupObject_objects" />
+        <AssociationConnector Association="incposdbModel.FK_groupObject_users" />
+        <AssociationConnector Association="incposdbModel.FK_groupObject_users1" />
+        <AssociationConnector Association="incposdbModel.FK_groups_users1" />
+        <AssociationConnector Association="incposdbModel.FK_groups_users2" />
+        <AssociationConnector Association="incposdbModel.FK_users_groups" />
+        <AssociationConnector Association="incposdbModel.FK_objects_users" />
+        <AssociationConnector Association="incposdbModel.FK_objects_users1" />
+        <AssociationConnector Association="incposdbModel.FK_bondes_cashTransfer" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

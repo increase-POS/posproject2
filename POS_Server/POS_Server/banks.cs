@@ -17,7 +17,7 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public banks()
         {
-            this.operations = new HashSet<operations>();
+            this.cashTransfer = new HashSet<cashTransfer>();
         }
     
         public int bankId { get; set; }
@@ -34,6 +34,6 @@ namespace POS_Server
         public Nullable<byte> isActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<operations> operations { get; set; }
+        public virtual ICollection<cashTransfer> cashTransfer { get; set; }
     }
 }

@@ -43,6 +43,7 @@ namespace POS_Server.Controllers
                                         smallestUnit = x.name,
                                     parentid = u.parentid,
                                     smallestId = u.smallestId,
+                                    notes = u.notes,
                                         createDate = u.createDate,
                                         createUserId = u.createUserId,
                                         updateDate = u.updateDate,
@@ -114,6 +115,7 @@ namespace POS_Server.Controllers
                                          updateDate = u.updateDate,
                                          updateUserId = u.updateUserId,
                                          isActive = u.isActive,
+                                         notes = u.notes,
                                      }).Where(f => (f.name.Contains(searchWords) || f.smallestUnit.Contains(searchWords))).ToList();
                     if (unitsList == null)
                         return NotFound();
@@ -155,6 +157,7 @@ namespace POS_Server.Controllers
                         u.unitId,
                         u.updateDate,
                         u.updateUserId,
+                        u.notes,
                     })
                     .ToList();
 
@@ -203,7 +206,8 @@ namespace POS_Server.Controllers
                        u.smallestId,
                        u.unitId,
                        u.updateDate,
-                       u.updateUserId
+                       u.updateUserId,
+                       u.notes,
                    })
                    .FirstOrDefault();
 
@@ -256,6 +260,7 @@ namespace POS_Server.Controllers
                         {
                             var tmpUnit = entity.units.Where(p => p.unitId == Object.unitId).FirstOrDefault();
                             tmpUnit.name = Object.name;
+                            tmpUnit.notes = Object.notes;
                             tmpUnit.isSmallest = Object.isSmallest;
                             tmpUnit.smallestId = Object.smallestId;
                             tmpUnit.updateDate = DateTime.Now;

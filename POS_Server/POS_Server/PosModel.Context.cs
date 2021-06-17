@@ -29,12 +29,14 @@ namespace POS_Server
         public virtual DbSet<banks> banks { get; set; }
         public virtual DbSet<branches> branches { get; set; }
         public virtual DbSet<branchesUsers> branchesUsers { get; set; }
+        public virtual DbSet<branchStore> branchStore { get; set; }
         public virtual DbSet<cashTransfer> cashTransfer { get; set; }
         public virtual DbSet<categories> categories { get; set; }
         public virtual DbSet<cities> cities { get; set; }
         public virtual DbSet<countriesCodes> countriesCodes { get; set; }
         public virtual DbSet<coupons> coupons { get; set; }
         public virtual DbSet<couponsInvoices> couponsInvoices { get; set; }
+        public virtual DbSet<docImages> docImages { get; set; }
         public virtual DbSet<Expenses> Expenses { get; set; }
         public virtual DbSet<invoices> invoices { get; set; }
         public virtual DbSet<invoicesOrders> invoicesOrders { get; set; }
@@ -45,9 +47,9 @@ namespace POS_Server
         public virtual DbSet<itemsProp> itemsProp { get; set; }
         public virtual DbSet<itemsTransfer> itemsTransfer { get; set; }
         public virtual DbSet<itemsUnits> itemsUnits { get; set; }
+        public virtual DbSet<itemTransferOffer> itemTransferOffer { get; set; }
         public virtual DbSet<locations> locations { get; set; }
         public virtual DbSet<offers> offers { get; set; }
-        public virtual DbSet<operations> operations { get; set; }
         public virtual DbSet<orders> orders { get; set; }
         public virtual DbSet<orderscontents> orderscontents { get; set; }
         public virtual DbSet<pos> pos { get; set; }
@@ -61,6 +63,12 @@ namespace POS_Server
         public virtual DbSet<units> units { get; set; }
         public virtual DbSet<users> users { get; set; }
         public virtual DbSet<usersLogs> usersLogs { get; set; }
-        public virtual DbSet<branchStore> branchStore { get; set; }
+        public virtual DbSet<cards> cards { get; set; }
+        public virtual DbSet<bondes> bondes { get; set; }
+        public virtual DbSet<medalAgent> medalAgent { get; set; }
+        public virtual DbSet<medals> medals { get; set; }
+        public virtual DbSet<groupObject> groupObject { get; set; }
+        public virtual DbSet<groups> groups { get; set; }
+        public virtual DbSet<objects> objects { get; set; }
     }
 }

@@ -22,5 +22,7 @@ namespace POS_Server.Models
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> subUnitId { get; set; }
+        public string itemName { get; set; }
+        public string itemCode { get; set; }
     }
 }

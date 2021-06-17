@@ -14,10 +14,14 @@ namespace POS_Server
     
     public partial class itemsTransfer
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public itemsTransfer()
+        {
+            this.itemTransferOffer = new HashSet<itemTransferOffer>();
+        }
+    
         public int itemsTransId { get; set; }
-        public Nullable<int> itemId { get; set; }
         public Nullable<long> quantity { get; set; }
-        public string type { get; set; }
         public Nullable<int> invoiceId { get; set; }
         public Nullable<int> locationIdNew { get; set; }
         public Nullable<int> locationIdOld { get; set; }
@@ -26,9 +30,14 @@ namespace POS_Server
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public string notes { get; set; }
+        public Nullable<decimal> price { get; set; }
+        public Nullable<int> itemUnitId { get; set; }
     
         public virtual invoices invoices { get; set; }
+        public virtual itemsUnits itemsUnits { get; set; }
         public virtual locations locations { get; set; }
         public virtual locations locations1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemTransferOffer> itemTransferOffer { get; set; }
     }
 }

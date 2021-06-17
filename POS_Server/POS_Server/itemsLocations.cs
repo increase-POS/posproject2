@@ -25,6 +25,7 @@ namespace POS_Server
         public Nullable<System.DateTime> endDate { get; set; }
         public Nullable<int> itemUnitId { get; set; }
         public string note { get; set; }
+        public Nullable<decimal> storeCost { get; set; }
     
         public virtual itemsUnits itemsUnits { get; set; }
         public virtual locations locations { get; set; }

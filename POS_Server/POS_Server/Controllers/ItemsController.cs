@@ -115,7 +115,37 @@ namespace POS_Server.Controllers
             else
                 return NotFound();
         }
+        [HttpGet]
+        [Route("GetItemsCodes")]
+        public IHttpActionResult GetItemsCodes()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
 
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var itemsList = entity.items.Select (I =>  I.code ).ToList();
+
+                    if (itemsList == null)
+                        return NotFound();
+                    else
+                        return Ok(itemsList);
+                }
+            }
+            else
+                return NotFound();
+        }
         [HttpGet]
         [Route("GetItemsInCategory")]
         public IHttpActionResult GetItemsInCategory(int categoryId)
@@ -670,12 +700,14 @@ namespace POS_Server.Controllers
 
                     var postedFile = httpRequest.Files[file];
                     string imageName = postedFile.FileName;
+                    string imageWithNoExt = Path.GetFileNameWithoutExtension(postedFile.FileName);
+
                     if (postedFile != null && postedFile.ContentLength > 0)
                     {
 
                         int MaxContentLength = 1024 * 1024 * 1; //Size = 1 MB
 
-                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png" };
+                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png", ".bmp", ".jpeg", ".tiff" };
                         var ext = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf('.'));
                         var extension = ext.ToLower();
 
@@ -692,14 +724,17 @@ namespace POS_Server.Controllers
                             return Ok(message);
                         }
                         else
-                        {
-                            var filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\item"), imageName);
+                        {                           
                             //  check if image exist
-                            if (File.Exists(filePath))
+                            var pathCheck = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\item"), imageWithNoExt);
+                            var files = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\item"), imageWithNoExt + ".*");
+                            if (files.Length > 0)
                             {
-                                File.Delete(filePath);
+                                 File.Delete(files[0]);
                             }
+
                             //Userimage myfolder name where i want to save my image
+                            var filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\item"), imageName);
                             postedFile.SaveAs(filePath);
 
                         }

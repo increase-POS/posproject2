@@ -19,6 +19,7 @@ namespace POS_Server
         {
             this.itemsLocations = new HashSet<itemsLocations>();
             this.itemsOffers = new HashSet<itemsOffers>();
+            this.itemsTransfer = new HashSet<itemsTransfer>();
         }
     
         public int itemUnitId { get; set; }
@@ -34,12 +35,15 @@ namespace POS_Server
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> subUnitId { get; set; }
+        public Nullable<decimal> purchasePrice { get; set; }
     
         public virtual items items { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsLocations> itemsLocations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsOffers> itemsOffers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemsTransfer> itemsTransfer { get; set; }
         public virtual units units { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }

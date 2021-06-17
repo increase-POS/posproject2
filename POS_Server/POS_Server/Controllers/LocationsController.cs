@@ -33,22 +33,25 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var locationsList = entity.locations
-                    .Select(L => new LocationModel
-                    {
-                      locationId=  L.locationId,
-                       x =  L.x,
-                       y = L.y,
-                        z = L.z,
-                       // branchId= L.branchId,
-                        createDate=L.createDate,
-                        updateDate=L.updateDate,
-                        createUserId= L.createUserId,
-                        updateUserId=L.updateUserId,
-                        isActive=L.isActive,
-                        sectionId=L.sectionId,
-                    })
-                    .ToList();
+                    var locationsList = (from L in  entity.locations 
+                                         join s in entity.sections on L.sectionId equals s.sectionId into lj
+                                         from v in lj.DefaultIfEmpty()
+                                         select new LocationModel()
+                                         {
+                   
+                                            locationId=  L.locationId,
+                                            x =  L.x,
+                                            y = L.y,
+                                            z = L.z,
+                                            createDate = L.createDate,
+                                            updateDate = L.updateDate,
+                                            createUserId = L.createUserId,
+                                            updateUserId=L.updateUserId,
+                                            isActive=L.isActive,
+                                            sectionId=L.sectionId,
+                                            sectionName = v.name,
+                                            note = L.note,
+                                        }).ToList();
 
                     if (locationsList.Count > 0)
                     {
@@ -104,14 +107,14 @@ namespace POS_Server.Controllers
                        L.x,
                        L.y,
                        L.z,
-                     //  L.branchId,
                        L.createDate,
                        L.updateDate,
                        L.createUserId,
                        L.updateUserId,
                        L.isActive,
                        L.sectionId,
-                       
+                       note = L.note,
+
                    })
                    .FirstOrDefault();
 
@@ -185,6 +188,7 @@ namespace POS_Server.Controllers
                             tmpLocation.updateDate = DateTime.Now;
                             tmpLocation.updateUserId = newObject.updateUserId;
                             tmpLocation.sectionId = newObject.sectionId;
+                            tmpLocation.note = newObject.note;
                             message = "Location Is Updated Successfully";
                         }
                         entity.SaveChanges();
@@ -258,5 +262,70 @@ namespace POS_Server.Controllers
             else
                 return false;
         }
+
+        #region
+        [HttpPost]
+        [Route("UpdateLocBySecId")]
+
+        public int UpdateLocationBySecId(string newloclist)
+        {
+            int sectionId = 0;
+            var re = Request;
+            var headers = re.Headers;
+            int res = 0;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            if (headers.Contains("sectionId"))
+            {
+                sectionId = Convert.ToInt32(headers.GetValues("sectionId").First());
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+            newloclist = newloclist.Replace("\\", string.Empty);
+            newloclist = newloclist.Trim('"');
+            List<locations> newlocObj = JsonConvert.DeserializeObject<List<locations>>(newloclist, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var oldloc = entity.locations.Where(p => p.sectionId == sectionId);
+                    if (oldloc.Count() > 0)
+                    {
+                        entity.locations.RemoveRange(oldloc);
+                    }
+                    if (newlocObj.Count() > 0)
+                    {
+                        foreach (locations newlocrow in newlocObj)
+                        {
+                            newlocrow.sectionId = sectionId;
+                            if (newlocrow.createDate == null)
+                            {
+                                newlocrow.createDate = DateTime.Now;
+                                newlocrow.updateDate = DateTime.Now;
+                                newlocrow.updateUserId = newlocrow.createUserId;
+                            }
+                            else
+                            {
+                                newlocrow.updateDate = DateTime.Now;
+                            }
+                        }
+                        entity.locations.AddRange(newlocObj);
+                    }
+                    res = entity.SaveChanges();
+
+                    return res;
+                }
+
+            }
+            else
+            {
+                return -1;
+            }
+
+        }
+        #endregion
     }
 }

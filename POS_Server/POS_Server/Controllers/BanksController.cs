@@ -58,7 +58,7 @@ namespace POS_Server.Controllers
                             if (banksList[i].isActive == 1)
                             {
                                 int bankId = (int)banksList[i].bankId;
-                                var operationsL = entity.operations.Where(x => x.bankId == bankId).Select(b => new { b.operationId }).FirstOrDefault();
+                                var operationsL = entity.cashTransfer.Where(x => x.bankId == bankId).Select(b => new { b.cashTransId }).FirstOrDefault();
                               
                                 if (operationsL is null)
                                     canDelete = true;

@@ -18,6 +18,7 @@ namespace POS_Server
         public coupons()
         {
             this.couponsInvoices = new HashSet<couponsInvoices>();
+            this.medalAgent = new HashSet<medalAgent>();
         }
     
         public int cId { get; set; }
@@ -43,5 +44,7 @@ namespace POS_Server
         public virtual users users1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<couponsInvoices> couponsInvoices { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<medalAgent> medalAgent { get; set; }
     }
 }

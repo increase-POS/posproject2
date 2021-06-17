@@ -32,15 +32,16 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var transferList = (from t in entity.itemsTransfer.Where(x => x.invoiceId == invoiceId)
-                                        join i in entity.items on t.itemId equals i.itemId
-                                        join inv in entity.invoices on t.invoiceId  equals inv.invoiceId
+                                        join u in entity.itemsUnits on t.itemUnitId equals u.itemUnitId
+                                        join i in entity.items on u.itemId equals i.itemId
+                                        join un in entity.units on u.unitId equals un.unitId
+                                        join inv in entity.invoices on t.invoiceId equals inv.invoiceId
                                         select new ItemTransferModel()
                                         {
                                             itemsTransId = t.itemsTransId,
-                                            itemId = t.itemId,
+                                            itemId = i.itemId,
                                             itemName = i.name,
                                             quantity = t.quantity,
-                                            type = t.type,
                                             invoiceId = t.invoiceId,
                                             invNumber = inv.invNumber,
                                             locationIdNew = t.locationIdNew,
@@ -50,6 +51,11 @@ namespace POS_Server.Controllers
                                             notes = t.notes,
                                             createDate = t.createDate,
                                             updateDate = t.updateDate,
+                                            itemUnitId = u.itemUnitId,
+                                            price = t.price,
+                                            unitName = un.name,
+                                            unitId=un.unitId,
+                                            barcode=u.barcode,
                                         })
                                         .ToList();
                     if (transferList == null)
@@ -65,7 +71,7 @@ namespace POS_Server.Controllers
         // add or update item transfer
         [HttpPost]
         [Route("Save")]
-        public bool Save(string itemTransferObject)
+        public Boolean Save(string itemTransferObject, int invoiceId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -80,57 +86,58 @@ namespace POS_Server.Controllers
             itemTransferObject = itemTransferObject.Replace("\\", string.Empty);
             itemTransferObject = itemTransferObject.Trim('"');
 
-            itemsTransfer transferObj = JsonConvert.DeserializeObject<itemsTransfer>(itemTransferObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-            if (transferObj.updateUserId == 0 || transferObj.updateUserId == null)
-            {
-                Nullable<int> id = null;
-                transferObj.updateUserId = id;
-            }
-            if (transferObj.createUserId == 0 || transferObj.createUserId == null)
-            {
-                Nullable<int> id = null;
-                transferObj.createUserId = id;
-            }
+            List< itemsTransfer> transferObj = JsonConvert.DeserializeObject<List<itemsTransfer>>(itemTransferObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+
             if (valid)
             {
-                try
+                // delete old invoice items
+                using (incposdbEntities entity = new incposdbEntities())
                 {
-                    using (incposdbEntities entity = new incposdbEntities())
+                    List<itemsTransfer> items = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).ToList();
+                    entity.itemsTransfer.RemoveRange(items);
+                    try { entity.SaveChanges(); }
+                    catch { }
+
+                }
+     
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    for (int i = 0; i < transferObj.Count; i++)
                     {
+                        if (transferObj[i].updateUserId == 0 || transferObj[i].updateUserId == null)
+                        {
+                            Nullable<int> id = null;
+                            transferObj[i].updateUserId = id;
+                        }
+                        if (transferObj[i].createUserId == 0 || transferObj[i].createUserId == null)
+                        {
+                            Nullable<int> id = null;
+                            transferObj[i].createUserId = id;
+                        }
                         var transferEntity = entity.Set<itemsTransfer>();
-                        if (transferObj.itemsTransId == 0)
-                        {
-                            transferObj.createDate = DateTime.Now;
-                            transferObj.updateDate = DateTime.Now;
-                            transferObj.updateUserId = transferObj.createUserId;
 
-                            transferEntity.Add(transferObj);
-                        }
-                        else
-                        {
-                            var tmpTransfer = entity.itemsTransfer.Where(p => p.itemsTransId == transferObj.itemsTransId).First();
-                            tmpTransfer.itemId = transferObj.itemId;
-                            tmpTransfer.quantity = transferObj.quantity;
-                            tmpTransfer.type = transferObj.type;
-                            tmpTransfer.locationIdNew = transferObj.locationIdNew;
-                            tmpTransfer.locationIdOld = transferObj.locationIdOld;
-                            tmpTransfer.notes = transferObj.notes;
-                            tmpTransfer.updateDate = DateTime.Now;
-                            tmpTransfer.updateUserId = transferObj.updateUserId;
+                        transferObj[i].createDate = DateTime.Now;
+                        transferObj[i].updateDate = DateTime.Now;
+                        transferObj[i].updateUserId = transferObj[i].createUserId;
 
-                        }
+                        entity.itemsTransfer.Add(transferObj[i]);
+                     
+                    }
+                    try
+                    {
                         entity.SaveChanges();
                     }
-                    return true;
+
+                    catch
+                    {
+                        return false;
+                    }
                 }
 
-                catch
-                {
-                    return false;
-                }
             }
-            else
-                return false;
+
+            return true;
         }
+       
     }
 }

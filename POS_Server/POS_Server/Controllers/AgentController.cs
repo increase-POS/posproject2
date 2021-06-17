@@ -175,7 +175,7 @@ namespace POS_Server.Controllers
 
                     var agent = entity.agents
                    .Where(p => p.agentId == agentID)
-                   .Select(p => new { p.agentId, p.name, p.accType, p.address, p.balance, p.cashTransfer, p.code, p.company, p.createDate, p.createUserId,  p.email, p.invoices,  p.mobile, p.notes, p.phone, p.type, p.image, p.maxDeserve, p.fax })
+                   .Select(p => new { p.agentId, p.name, p.accType, p.address, p.balance, p.code, p.company, p.createDate, p.createUserId,  p.email,  p.mobile, p.notes, p.phone, p.type, p.image, p.maxDeserve, p.fax,p.isActive,p.updateDate,p.updateUserId })
                    .FirstOrDefault();
                    
                     if (agent == null)
@@ -305,6 +305,7 @@ namespace POS_Server.Controllers
                             agent.updateDate = DateTime.Now;// server current date
                             agent.updateUserId = agentObj.updateUserId;
                             agent.isActive = agentObj.isActive;
+                            agent.balance = agentObj.balance;
                         }
                         entity.SaveChanges();
                     }
@@ -401,12 +402,14 @@ namespace POS_Server.Controllers
 
                     var postedFile = httpRequest.Files[file];
                     string imageName = postedFile.FileName;
+                    string imageWithNoExt = Path.GetFileNameWithoutExtension(postedFile.FileName);
+
                     if (postedFile != null && postedFile.ContentLength > 0)
                     {
 
                         int MaxContentLength = 1024 * 1024 * 1; //Size = 1 MB
 
-                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png" };
+                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png" ,".bmp", ".jpeg", ".tiff" };
                         var ext = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf('.'));
                         var extension = ext.ToLower();
 
@@ -425,13 +428,16 @@ namespace POS_Server.Controllers
                         }
                         else
                         {
-                            var filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\agent"), imageName );
                             //  check if image exist
-                            if (File.Exists(filePath))
+                            var pathCheck = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\agent"), imageWithNoExt);
+                            var files = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\agent"), imageWithNoExt + ".*");
+                            if (files.Length > 0)
                             {
-                                File.Delete(filePath);
+                                File.Delete(files[0]);
                             }
+
                             //Userimage myfolder name where i want to save my image
+                            var filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\agent"), imageName);
                             postedFile.SaveAs(filePath);
 
                         }
@@ -521,6 +527,42 @@ namespace POS_Server.Controllers
             else
                 return 0;
         }
+        [HttpPost]
+        [Route("UpdateBalance")]
+        public int UpdateBalance(int agentId , decimal balance)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
 
+            if (valid)
+            {
+                try
+                {
+                    agents agent;
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var agentEntity = entity.Set<agents>();
+                        agent = entity.agents.Where(p => p.agentId == agentId).First();
+                        agent.balance = balance;
+                        entity.SaveChanges();
+                    }
+                    return agent.agentId;
+                }
+
+                catch
+                {
+                    return 0;
+                }
+            }
+            else
+                return 0;
+        }
     }
 }

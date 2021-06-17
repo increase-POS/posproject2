@@ -19,6 +19,7 @@ namespace POS_Server
         {
             this.cashTransfer = new HashSet<cashTransfer>();
             this.invoices = new HashSet<invoices>();
+            this.medalAgent = new HashSet<medalAgent>();
         }
     
         public int agentId { get; set; }
@@ -48,5 +49,7 @@ namespace POS_Server
         public virtual ICollection<cashTransfer> cashTransfer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<invoices> invoices { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<medalAgent> medalAgent { get; set; }
     }
 }

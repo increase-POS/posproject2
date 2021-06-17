@@ -203,6 +203,9 @@
     <Compile Include="banks.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="bondes.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="branches.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
@@ -210,6 +213,9 @@
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="branchStore.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="cards.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="cashTransfer.cs">
@@ -224,12 +230,16 @@
     <Compile Include="Classes\Calculate.cs" />
     <Compile Include="Controllers\AgentController.cs" />
     <Compile Include="Controllers\BanksController.cs" />
+    <Compile Include="Controllers\BondsController.cs" />
     <Compile Include="Controllers\BranchesController.cs" />
+    <Compile Include="Controllers\CashTransferController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\cityController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
+    <Compile Include="Controllers\CardController.cs" />
     <Compile Include="Controllers\couponsController.cs" />
     <Compile Include="Controllers\couponsInvoices.cs" />
+    <Compile Include="Controllers\DocImageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InvoicesController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
@@ -237,6 +247,8 @@
     <Compile Include="Controllers\itemsPropController.cs" />
     <Compile Include="Controllers\ItemsTransferController.cs" />
     <Compile Include="Controllers\ItemsUnitsController.cs" />
+    <Compile Include="Controllers\MedalAgentController.cs" />
+    <Compile Include="Controllers\MedalController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\PosController.cs" />
@@ -256,7 +268,16 @@
     <Compile Include="couponsInvoices.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="docImages.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Expenses.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="groupObject.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="groups.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="invoices.cs">
@@ -286,19 +307,34 @@
     <Compile Include="itemsUnits.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="itemTransferOffer.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="locations.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="medalAgent.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="medals.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AgentModel.cs" />
     <Compile Include="Models\BankModel.cs" />
+    <Compile Include="Models\BondsModel.cs" />
     <Compile Include="Models\BranchModel.cs" />
+    <Compile Include="Models\CashTransferModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
+    <Compile Include="Models\CardModel.cs" />
     <Compile Include="Models\CouponModel.cs" />
+    <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\ItemOfferModel.cs" />
     <Compile Include="Models\ItemSalePurModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\ItemTransferModel.cs" />
     <Compile Include="Models\ItemUnitModel.cs" />
+    <Compile Include="Models\MedalAgentModel.cs" />
+    <Compile Include="Models\MedalModel.cs" />
     <Compile Include="Models\SectionModel.cs" />
     <Compile Include="Models\LocationModel.cs" />
     <Compile Include="Models\OfferModel.cs" />
@@ -312,10 +348,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\itemsPropModel.cs" />
-    <Compile Include="offers.cs">
+    <Compile Include="objects.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="operations.cs">
+    <Compile Include="offers.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="orders.cs">

@@ -40,8 +40,8 @@ namespace POS_Server
         public virtual ICollection<itemsTransfer> itemsTransfer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsTransfer> itemsTransfer1 { get; set; }
+        public virtual sections sections { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
-        public virtual sections sections { get; set; }
     }
 }

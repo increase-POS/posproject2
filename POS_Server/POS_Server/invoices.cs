@@ -45,8 +45,17 @@ namespace POS_Server
         public string notes { get; set; }
         public string vendorInvNum { get; set; }
         public Nullable<System.DateTime> vendorInvDate { get; set; }
+        public Nullable<int> branchId { get; set; }
+        public Nullable<int> posId { get; set; }
+        public string discountType { get; set; }
+        public Nullable<decimal> discountValue { get; set; }
+        public Nullable<decimal> tax { get; set; }
+        public Nullable<int> taxtype { get; set; }
+        public string name { get; set; }
+        public Nullable<byte> isApproved { get; set; }
     
         public virtual agents agents { get; set; }
+        public virtual branches branches { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cashTransfer> cashTransfer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -54,6 +63,7 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<invoices> invoices1 { get; set; }
         public virtual invoices invoices2 { get; set; }
+        public virtual pos pos { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
         public virtual users users2 { get; set; }

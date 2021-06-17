@@ -11,7 +11,6 @@ namespace POS_Server.Models
         public Nullable<int> itemId { get; set; }
         public string itemName { get; set; }
         public Nullable<long> quantity { get; set; }
-        public string type { get; set; }
         public Nullable<int> invoiceId { get; set; }
         public string invNumber { get; set; }
         public Nullable<int> locationIdNew { get; set; }
@@ -21,5 +20,11 @@ namespace POS_Server.Models
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public string notes { get; set; }
+        public Nullable<decimal> price { get; set; }
+        public Nullable<int> itemUnitId { get; set; }
+        public string unitName { get; set; }
+        public Nullable<int> unitId { get; set; }
+        public string barcode { get; set; }
+
     }
 }

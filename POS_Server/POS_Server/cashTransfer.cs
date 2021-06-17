@@ -14,8 +14,15 @@ namespace POS_Server
     
     public partial class cashTransfer
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public cashTransfer()
+        {
+            this.cashTransfer1 = new HashSet<cashTransfer>();
+            this.bondes1 = new HashSet<bondes>();
+        }
+    
         public int cashTransId { get; set; }
-        public Nullable<byte> transType { get; set; }
+        public string transType { get; set; }
         public Nullable<int> posId { get; set; }
         public Nullable<int> userId { get; set; }
         public Nullable<int> agentId { get; set; }
@@ -26,16 +33,33 @@ namespace POS_Server
         public Nullable<decimal> cash { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> createUserId { get; set; }
-        public Nullable<int> operationId { get; set; }
+        public string notes { get; set; }
+        public Nullable<int> posIdCreator { get; set; }
+        public Nullable<byte> isConfirm { get; set; }
+        public Nullable<int> cashTransIdSource { get; set; }
+        public string side { get; set; }
+        public string docName { get; set; }
+        public string docNum { get; set; }
+        public string docImage { get; set; }
+        public Nullable<int> bankId { get; set; }
+        public string processType { get; set; }
+        public Nullable<int> cardId { get; set; }
+        public Nullable<int> bondId { get; set; }
     
         public virtual agents agents { get; set; }
+        public virtual banks banks { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cashTransfer> cashTransfer1 { get; set; }
+        public virtual cashTransfer cashTransfer2 { get; set; }
         public virtual invoices invoices { get; set; }
-        public virtual operations operations { get; set; }
         public virtual pos pos { get; set; }
+        public virtual pos pos1 { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
         public virtual users users2 { get; set; }
-        public virtual users users3 { get; set; }
-        public virtual users users4 { get; set; }
+        public virtual cards cards { get; set; }
+        public virtual bondes bondes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<bondes> bondes1 { get; set; }
     }
 }
