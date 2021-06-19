@@ -47,5 +47,7 @@ namespace POS_Server.Models
         public string createUserJob { get; set; }
         public string createUserLName { get; set; }
         public string cardName { get; set; }
+        public Nullable<System.DateTime> bondDeserveDate { get; set; }
+        public Nullable<byte> bondIsRecieved { get; set; }
     }
 }

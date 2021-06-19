@@ -556,5 +556,86 @@ namespace POS_Server.Controllers
                 return NotFound();
         }
         #endregion
+
+        [HttpGet]
+        [Route("GetBalance")]
+        public IHttpActionResult GetBalance(string type)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            Boolean canDelete = false;
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                /*
+                var robotLocations = context.RobotFactories
+    .Join(
+        context.RobotDogs,
+        f => f.RobotFactoryId,
+        d => d.RobotFactoryId,
+        (f, d) => new { f.Location, d.Guns })
+    .GroupBy(f => f.Location)
+    .Select(x => new { Location = x.Key, Guns = x.Select(g => g.Guns).Sum() });
+    */
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    /*
+
+                    var branchesList = (from p in entity.pos
+
+                                        join b in entity.branches on p.branchId equals b.branchId into Jb
+
+                                        from Jbb in Jb.DefaultIfEmpty()
+                                        where Jbb.type == type
+                                       
+                                        select new
+                                        {
+                                           p.posId,
+                                            p.name,
+                                            Jbb.branchId,
+                                           branchname= Jbb.name,
+                                            p.balance,
+
+                                        }).OrderBy(b=> b.branchId).ToList();
+                                        */
+                    var branchesList = (from p in entity.pos
+
+                                        join b in entity.branches on p.branchId equals b.branchId into Jb
+
+                                        from Jbb in Jb.DefaultIfEmpty()
+                                        where Jbb.type == type
+                                        group new { p, Jbb } by (Jbb.branchId) into g
+                                        select new
+                                        {
+                                            branchId = g.Key,
+                                            branchname=g.Select(t => t.Jbb.name).FirstOrDefault(),
+                                          
+
+                                            balance = g.Sum(x => x.p.balance)
+
+                                        }).ToList();
+                 
+            //   group Pos by Pos.branchId into g
+
+
+      
+                    if (branchesList == null)
+                        return NotFound();
+                    else
+                        return Ok(branchesList);
+
+                }
+            }
+            else
+                return NotFound();
+        }
     }
 }

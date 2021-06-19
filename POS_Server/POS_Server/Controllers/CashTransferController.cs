@@ -112,6 +112,7 @@ namespace POS_Server.Controllers
                                                         join u in entity.users on C.userId equals u.userId into ju
                                                         join uc in entity.users on C.createUserId equals uc.userId into juc
                                                         join cr in entity.cards on C.cardId equals cr.cardId into jcr
+                                                        join bo in entity.bondes on C.bondId equals bo.bondId into jbo
                                                         from jbb in jb.DefaultIfEmpty()
                                                         from jaa in ja.DefaultIfEmpty()
                                                         from jpp in jp.DefaultIfEmpty()
@@ -119,6 +120,7 @@ namespace POS_Server.Controllers
                                                         from jpcc in jpcr.DefaultIfEmpty()
                                                         from jucc in juc.DefaultIfEmpty()
                                                         from jcrd in jcr.DefaultIfEmpty()
+                                                        from jbbo in jbo.DefaultIfEmpty()
                                                         select new CashTransferModel()
                                                         {
                                                             cashTransId = C.cashTransId,
@@ -157,7 +159,10 @@ namespace POS_Server.Controllers
                                                             createUserLName = jucc.lastname,
                                                             createUserJob =jucc.job,
                                                                 cardName =jcrd.name,
-    }).Where(C => ((type == "all") ? true : C.transType == type)
+                                                            bondDeserveDate=jbbo.deserveDate,
+                                                            bondIsRecieved=jbbo.isRecieved,
+                                                          
+                                                        }).Where(C => ((type == "all") ? true : C.transType == type)
             && ((side == "all") ? true : C.side == side)).ToList();
                    
                     if(cachlist.Count>0 && side == "p")
