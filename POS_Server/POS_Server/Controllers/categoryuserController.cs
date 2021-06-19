@@ -86,7 +86,7 @@ namespace POS_Server.Controllers
             {
                 token = headers.GetValues("APIKey").First();
             }
-            if (headers.Contains("offerId"))
+            if (headers.Contains("usrId"))
             {
                 userId = Convert.ToInt32(headers.GetValues("userId").First());
             }
