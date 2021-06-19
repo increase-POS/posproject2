@@ -27,8 +27,8 @@
                 <StackPanel  Orientation="Horizontal" Margin="5,0">
 
                     <Button Grid.Column="1" BorderBrush="{x:Null}"  Height="auto"
-                    Background="{x:Null}" x:Name="btn_newDraft" Padding="0" Margin="5,0" 
-                    Click="Btn_newDraft_Click">
+                        Background="{x:Null}" x:Name="btn_newDraft" Padding="0" Margin="5,0" 
+                        Click="Btn_newDraft_Click">
                         <Path Fill="#4E4E4E" Stretch="Fill" Height="36" Margin="0,5,0,0" Width="36" x:Name="path_newDraft"
                             
                           Data="M26.5,20v-2.5h-6v3h5.1c-0.8,0.5-1.5,1.2-2.1,1.9v-0.9h-3v3h-1v-7h-3v8H22c-0.1,0.3-0.2,0.7-0.2,1h-6.3v-10h12v3.1
@@ -287,12 +287,12 @@
                                             BorderBrush="#f8f8f8"
                                             Grid.Column="1"  Height="40"    />
 
-                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5" Name="p_errorName"
                                             HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                                             VerticalAlignment="Center" Width="15"  Height="15"
                                             Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                 <Path.ToolTip>
-                                    <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    <ToolTip  x:Name="tt_errorName" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
                         </Grid>
@@ -360,8 +360,8 @@
                                     </Path.ToolTip>
                                 </Path>
                                 <Button   Padding="0" Width="20" ToolTip="تعديل بيانات المورد"
-                          Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" x:Name="btn_updateCustomer" Click="Btn_updateCustomer_Click"
-                   Margin="0,0,25,0">
+                                    Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" x:Name="btn_updateCustomer" Click="Btn_updateCustomer_Click"
+                                    Margin="0,0,25,0" IsEnabled="False">
                                     <materialDesign:PackIcon Foreground="#4E4E4E" Kind="FileDocumentEdit"  
                                   HorizontalAlignment="Center" Grid.Column="0"   
                              VerticalAlignment="Center" Width="17.5" Height="17.5"/>
@@ -493,8 +493,9 @@
                                             BorderThickness="1"  materialDesign:HintAssist.Hint="Coupon..."  
                                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                             BorderBrush="#f8f8f8"
-                                               PreviewKeyDown="space_PreviewKeyDown"
-                                               Height="40"  />
+                                            PreviewKeyDown="space_PreviewKeyDown"
+                                            Height="40"
+                                            KeyDown="Tb_coupon_KeyDown"/>
 
 
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
@@ -506,8 +507,8 @@
                                     </Path.ToolTip>
                                 </Path>
                                 <Button x:Name="btn_clearCoupon"  Padding="0" HorizontalAlignment="Right"
-                          Background="{x:Null}" BorderBrush="{x:Null}" 
-                    Margin="5,1"   ToolTip="clear">
+                                    Background="{x:Null}" BorderBrush="{x:Null}" 
+                                    Margin="5,1"  ToolTip="clear" Click="Btn_clearCoupon_Click">
                                     <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"/>

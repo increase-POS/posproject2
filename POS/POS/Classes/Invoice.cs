@@ -30,9 +30,21 @@ namespace POS.Classes
         public string notes { get; set; }
         public Nullable<decimal> price { get; set; }
         public Nullable<int> itemUnitId { get; set; }
-        public string unitName { get; set; }
-        public string barcode { get; set; }
       
+        public string unitName { get; set; }
+        public string barcode { get; set; }    
+    }
+    public  class CouponInvoice
+    {
+        public int id { get; set; }
+        public Nullable<int> couponId { get; set; }
+        public Nullable<int> InvoiceId { get; set; }
+        public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<int> createUserId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
+        public Nullable<decimal> discountValue { get; set; }
+        public Nullable<byte> discountType { get; set; }
     }
     public class Invoice
     {
@@ -56,10 +68,12 @@ namespace POS.Classes
         public Nullable<System.TimeSpan> invTime { get; set; }
         public string notes { get; set; }
         public string vendorInvNum { get; set; }
+        public string name { get; set; }
         public Nullable<System.DateTime> vendorInvDate { get; set; }
         public Nullable<int> branchId { get; set; }
         public Nullable<int> itemsCount { get; set; }
         public Nullable<decimal> tax { get; set; }
+        public Nullable<int> posId { get; set; }
 
         //*************************************************
         //------------------------------------------------------
@@ -97,7 +111,7 @@ namespace POS.Classes
                 return message;
             }
         }
-        public async Task<string> saveInvoiceItems(List<ItemTransfer> invoiceItems , int invoiceId)
+        public async Task<string> saveInvoiceItems(List<ItemTransfer> invoiceItems, int invoiceId)
         {
             string message = "";
             // ... Use HttpClient.
@@ -115,7 +129,40 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "ItemsTransfer/Save?itemTransferObject=" + myContent +"&invoiceId=" + invoiceId);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsTransfer/Save?itemTransferObject=" + myContent + "&invoiceId=" + invoiceId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
+                }
+                return message;
+            }
+        }
+        public async Task<string> saveInvoiceCoupons(List<CouponInvoice> invoiceCoupons, int invoiceId)
+        {
+            string message = "";
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            // 
+            var myContent = JsonConvert.SerializeObject(invoiceCoupons);
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+                request.RequestUri = new Uri(Global.APIUri + "couponsInvoices/Save?couponsInvoicesObject=" + myContent + "&invoiceId=" + invoiceId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -143,7 +190,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Invoices/GetLastNumOfInv?invCode="+invCode);
+                request.RequestUri = new Uri(Global.APIUri + "Invoices/GetLastNumOfInv?invCode=" + invCode);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -151,7 +198,7 @@ namespace POS.Classes
 
                 if (response.IsSuccessStatusCode)
                 {
-                   string message = await response.Content.ReadAsStringAsync();
+                    string message = await response.Content.ReadAsStringAsync();
                     message = JsonConvert.DeserializeObject<string>(message);
                     return int.Parse(message);
                 }
@@ -161,7 +208,7 @@ namespace POS.Classes
         }
 
 
-        public async Task<List<Invoice>> GetInvoicesByType( string invType)
+        public async Task<List<Invoice>> GetInvoicesByType(string invType)
         {
             List<Invoice> invoices = null;
             // ... Use HttpClient.
@@ -240,6 +287,46 @@ namespace POS.Classes
                     invoiceItems = new List<ItemTransfer>();
                 }
                 return invoiceItems;
+            }
+        }
+        public async Task<List<CouponInvoice>> GetInvoiceCoupons(int invoiceId)
+        {
+            List<CouponInvoice> invoiceCoupons = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "couponsInvoices/Get?invoiceId=" + invoiceId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    invoiceCoupons = JsonConvert.DeserializeObject<List<CouponInvoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return invoiceCoupons;
+                }
+                else //web api sent error response 
+                {
+                    invoiceCoupons = new List<CouponInvoice>();
+                }
+                return invoiceCoupons;
             }
         }
     }

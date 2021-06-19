@@ -73,6 +73,7 @@ namespace POS.View
         Coupon couponModel = new Coupon();
         IEnumerable<Coupon> coupons;
         List<Coupon> selectedCoupons = new List<Coupon>();
+        List<CouponInvoice> invCouponList = new List<CouponInvoice>();
 
         Pos posModel = new Pos();
         Pos pos;
@@ -309,7 +310,7 @@ namespace POS.View
         #region Get Id By Click  Y
         public async void ChangeItemIdEvent(int itemId)
         {
-            item = items.ToList().Find(c => c.itemId == itemId);
+            if (items != null) item = items.ToList().Find(c => c.itemId == itemId);
 
             if (item != null)
             {
@@ -414,6 +415,7 @@ namespace POS.View
             if (invoice.invType != "s" || invoice.invoiceId == 0)
             {
                 invoice.invType = invType;
+                invoice.posId = MainWindow.posID;
                 if (!tb_discount.Text.Equals(""))
                     invoice.discountValue = decimal.Parse(tb_discount.Text);
 
@@ -533,6 +535,23 @@ namespace POS.View
                         await cashTrasnfer.Save(cashTrasnfer); //add cash transfer                      
                     }
 
+                    #region save coupns on invoice
+                    CouponInvoice invCoupon;
+                    invCouponList.Clear();
+                    for (int i = 0; i < selectedCoupons.Count; i++)
+                    {
+                        invCoupon = new CouponInvoice();
+
+                        invCoupon.InvoiceId = invoiceId;
+                        invCoupon.couponId = selectedCoupons[i].cId;
+                        invCoupon.discountValue = selectedCoupons[i].discountValue;
+                        invCoupon.discountType = Byte.Parse(selectedCoupons[i].discountType);
+                        invCoupon.createUserId = MainWindow.userID;
+
+                        invCouponList.Add(invCoupon);
+                    }
+                    await invoiceModel.saveInvoiceCoupons(invCouponList, invoiceId);
+                    #endregion
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                 }
                 else
@@ -618,6 +637,8 @@ namespace POS.View
             cb_card.SelectedIndex = -1;
             tb_processNum.Clear();
             cb_paymentProcessType.SelectedIndex = 0;
+            lst_coupons.Items.Clear();
+            tb_discount.Text = "0";
             btn_updateCustomer.IsEnabled = false;
             gd_card.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleInvoice");
@@ -654,15 +675,24 @@ namespace POS.View
 
                     fillInvoiceInputs(invoice);
 
-                    //get invoice items
-                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                   await getInvoiceCoupons(invoice.invoiceId);
 
                     // build invoice details grid
-                    buildInvoiceDetails(invoiceItems);
+                   await buildInvoiceDetails(invoice.invoiceId);
                     inputEditable();
                 }
             }
             //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
+        }
+        private async Task getInvoiceCoupons(int invoiceId)
+        {
+            invCouponList = await invoiceModel.GetInvoiceCoupons(invoiceId);
+            foreach (CouponInvoice invCoupon in invCouponList)
+            {
+              var c = coupons.ToList().Find(x => x.cId == invCoupon.couponId);
+                selectedCoupons.Add(c);
+                lst_coupons.Items.Add(c.code);
+            }
         }
         private async void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {
@@ -687,11 +717,9 @@ namespace POS.View
 
                     fillInvoiceInputs(invoice);
 
-                    //get invoice items
-                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-
+                    await getInvoiceCoupons(invoice.invoiceId);
                     // build invoice details grid
-                    buildInvoiceDetails(invoiceItems);
+                   await buildInvoiceDetails(invoice.invoiceId);
                     inputEditable();
                 }
             }
@@ -700,10 +728,12 @@ namespace POS.View
         private async void fillInvoiceInputs(Invoice invoice)
         {
             _Sum = (decimal)invoice.total;
-            _Tax = (decimal)invoice.tax;
+            if(invoice.tax != null)
+                _Tax = (decimal)invoice.tax;
             cb_customer.SelectedValue = invoice.agentId;
-            dp_desrvedDate.Text = invoice.deservedDate.ToString();           
-            tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
+            dp_desrvedDate.Text = invoice.deservedDate.ToString();
+            if (invoice.totalNet != null)
+                tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
             tb_taxValue.Text = invoice.tax.ToString();
             tb_note.Text = invoice.notes;
             tb_sum.Text = invoice.total.ToString();
@@ -766,19 +796,19 @@ namespace POS.View
  
                     fillInvoiceInputs(invoice);
 
-                    //get invoice items
-                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-
+                    await getInvoiceCoupons(invoice.invoiceId);
                     // build invoice details grid
-                    buildInvoiceDetails(invoiceItems);
+                   await buildInvoiceDetails(invoice.invoiceId);
 
                     inputEditable();
                 }
             }
             // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
         }
-        private void buildInvoiceDetails(List<ItemTransfer> invoiceItems)
+        private async Task buildInvoiceDetails(int invoiceId)
         {
+            //get invoice items
+            invoiceItems = await invoiceModel.GetInvoicesItems(invoiceId);
             // build invoice details grid
             _SequenceNum = 0;
             billDetails.Clear();
@@ -820,6 +850,8 @@ namespace POS.View
                     btn_updateCustomer.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
                     cb_card.IsEnabled = false;
+                    tb_coupon.IsEnabled = false;
+                    btn_clearCoupon.IsEnabled = false;
                     break;
                 case "sd": // sales draft invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
@@ -834,6 +866,8 @@ namespace POS.View
                     btn_updateCustomer.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = true;
                     cb_card.IsEnabled = true;
+                    tb_coupon.IsEnabled = true;
+                    btn_clearCoupon.IsEnabled = true;
                     break;
                 case "s": //sales invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
@@ -848,6 +882,8 @@ namespace POS.View
                     btn_updateCustomer.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
                     cb_card.IsEnabled = false;
+                    tb_coupon.IsEnabled = false;
+                    btn_clearCoupon.IsEnabled = false;
                     break;
         }
         }
@@ -931,30 +967,28 @@ namespace POS.View
         {
             #region calculate discount value
             _Discount = 0;
-           foreach (Coupon coupon in selectedCoupons)
+            foreach (Coupon coupon in selectedCoupons)
             {
                 string discountType = coupon.discountType;
                 decimal discountValue = (decimal)coupon.discountValue;
                 if (discountType == "2")
                     discountValue = SectionData.calcPercentage(_Sum, discountValue);
-                _Discount += discountValue;            
+                _Discount += discountValue;
             }
             tb_discount.Text = _Discount.ToString();
             #endregion
-
-            decimal total = _Sum + _Discount - _Tax;
-            //decimal taxValue = 0;
-            //decimal taxInputVal = 0;
-            //if (!tb_taxValue.Text.Equals(""))
-            //    taxInputVal = decimal.Parse(tb_taxValue.Text);
-            //if (total != 0)
-            //    taxValue = SectionData.calcPercentage(total, taxInputVal);
+            decimal taxValue = _Tax;
+            if (MainWindow.isInvTax == 1)
+            {
+                taxValue = SectionData.calcPercentage(_Sum, (decimal)MainWindow.tax);
+            }
+            else
+                tb_taxValue.Text = _Tax.ToString();
+            decimal total = _Sum - _Discount + taxValue;
 
             tb_sum.Text = _Sum.ToString();
-            if (MainWindow.isInvTax == 0)
-                tb_taxValue.Text = _Tax.ToString();
 
-            //total = total - taxValue;
+
             tb_total.Text = Math.Round(total, 2).ToString();
         }
         #region billdetails
@@ -1500,9 +1534,37 @@ namespace POS.View
             clearInvoice();
         }
 
-        private void Btn_quotations_Click(object sender, RoutedEventArgs e)
+        private async void Btn_quotations_Click(object sender, RoutedEventArgs e)
         {
+            // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+            wd_invoice w = new wd_invoice();
 
+            // sale invoices
+            w.invoiceType = "q";
+
+            w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
+
+            if (w.ShowDialog() == true)
+            {
+                if (w.invoice != null)
+                {
+                    invoice = w.invoice;
+                    this.DataContext = invoice;
+
+                    _InvoiceType = invoice.invType;
+                    // set title to bill
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleInvoice");
+
+                    fillInvoiceInputs(invoice);
+
+                    //get invoice coupons
+                   await getInvoiceCoupons(invoice.invoiceId);
+                    // build invoice details grid
+                    await buildInvoiceDetails(invoice.invoiceId);
+                    inputEditable();
+                }
+            }
+            //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
         }
 
         private void Cb_paymentProcessType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1574,18 +1636,20 @@ namespace POS.View
                 couponModel = coupons.ToList().Find(c => c.code == tb_coupon.Text);
                 if(couponModel != null)
                 {
-                    if (billDetails.Count > 0)
-                    {
-                        string discountType = couponModel.discountType;
-                        decimal discountValue = (decimal)couponModel.discountValue;
-                        if (discountType == "2")
-                            discountValue = SectionData.calcPercentage(_Sum, discountValue);
-                        _Discount += discountValue;
-                        tb_discount.Text = _Discount.ToString();
-                    }
+                    //if (billDetails.Count > 0)
+                    //{
+                    //    string discountType = couponModel.discountType;
+                    //    decimal discountValue = (decimal)couponModel.discountValue;
+                    //    if (discountType == "2")
+                    //        discountValue = SectionData.calcPercentage(_Sum, discountValue);
+                    //    _Discount += discountValue;
+                    //    tb_discount.Text = _Discount.ToString();
+                    //    refreshTotalValue();
+                    //}
 
-                    lst_coupons.Items.Add(couponModel.barcode);
+                    lst_coupons.Items.Add(couponModel.code);
                     selectedCoupons.Add(couponModel);
+                    refreshTotalValue();
                 }
                 tb_coupon.Clear();
             }
