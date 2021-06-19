@@ -54,6 +54,7 @@ namespace POS_Server.Controllers
                         b.updateUserId ,
                         b.branchId,
                         b.tax,
+                        b.name,
                 })
                     .ToList();
 
@@ -108,6 +109,7 @@ namespace POS_Server.Controllers
                         b.discountType,
                         b.discountValue,
                         b.tax,
+                        b.name,
                     })
                     .ToList();
 
@@ -168,7 +170,8 @@ namespace POS_Server.Controllers
                             discountValue = b.discountValue,
                             discountType = b.discountType,
                             tax = b.tax,
-                    })
+                           name = b.name,
+                        })
                     .ToList();
 
                     if (invoicesList != null)
@@ -255,6 +258,7 @@ namespace POS_Server.Controllers
                             tmpInvoice.discountType = newObject.discountType;
                             tmpInvoice.discountValue = newObject.discountValue;
                             tmpInvoice.tax = newObject.tax;
+                            tmpInvoice.name = newObject.name;
                         }
                         entity.SaveChanges();
                         return tmpInvoice.invoiceId;

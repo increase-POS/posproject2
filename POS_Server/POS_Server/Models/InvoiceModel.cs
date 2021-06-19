@@ -27,6 +27,7 @@ namespace POS_Server.Models
         public Nullable<System.TimeSpan> invTime { get; set; }
         public string notes { get; set; }
         public string vendorInvNum { get; set; }
+        public string name { get; set; }
         public Nullable<System.DateTime> vendorInvDate { get; set; }
         public Nullable<int> branchId { get; set; }
         public Nullable<int> posId { get; set; }

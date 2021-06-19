@@ -15,7 +15,7 @@ namespace POS_Server.Controllers
         // GET api/<controller> get all couponsInvoices
         [HttpGet]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(int invoiceId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -32,7 +32,7 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var couponsInvoicesList = entity.couponsInvoices
-
+                    .Where(c => c.InvoiceId == invoiceId)
                    .Select(c => new {
                      c.id 
                     ,c.couponId 
@@ -111,61 +111,61 @@ namespace POS_Server.Controllers
         // add or update couponsInvoices
         [HttpPost]
         [Route("Save")]
-        public string Save(string couponsInvoicesObject)
+        public Boolean Save(string couponsInvoicesObject, int invoiceId)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            string message = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-            
+
             if (valid)
             {
+                // delete old invoice items
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    List<couponsInvoices> coupons = entity.couponsInvoices.Where(x => x.InvoiceId == invoiceId).ToList();
+                    entity.couponsInvoices.RemoveRange(coupons);
+                    try { entity.SaveChanges(); }
+                    catch { }
+
+                }
                 couponsInvoicesObject = couponsInvoicesObject.Replace("\\", string.Empty);
                 couponsInvoicesObject = couponsInvoicesObject.Trim('"');
-                couponsInvoices Object = JsonConvert.DeserializeObject<couponsInvoices>(couponsInvoicesObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-                try
+                List<couponsInvoices> Object = JsonConvert.DeserializeObject<List<couponsInvoices>>(couponsInvoicesObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                using (incposdbEntities entity = new incposdbEntities())
                 {
-                    using (incposdbEntities entity = new incposdbEntities())
+                    for (int i = 0; i < Object.Count; i++)
                     {
                         var couponsInvoicesEntity = entity.Set<couponsInvoices>();
-                        if (Object.id == 0)
+                        if (Object[i].updateUserId == 0 || Object[i].updateUserId == null)
                         {
-                            couponsInvoicesEntity.Add(Object);
-                            message = "couponsInvoices Is Added Successfully";
+                            Nullable<int> id = null;
+                            Object[i].updateUserId = id;
                         }
-                        else
+                        if (Object[i].createUserId == 0 || Object[i].createUserId == null)
                         {
-
-                            var tmpcouponsInvoices = entity.couponsInvoices.Where(p => p.id == Object.id).FirstOrDefault();
-
-
-
-
-                            tmpcouponsInvoices.couponId = Object.couponId;
-                            tmpcouponsInvoices.InvoiceId = Object.InvoiceId;
-                  tmpcouponsInvoices.createDate= Object.createDate;
-                    tmpcouponsInvoices.updateDate= Object.updateDate;
-                    tmpcouponsInvoices.createUserId= Object.createUserId;
-                    tmpcouponsInvoices.updateUserId= Object.updateUserId;
-
-                            message = "coupon Is Updated Successfully";
+                            Nullable<int> id = null;
+                            Object[i].createUserId = id;
                         }
+                        Object[i].createDate = DateTime.Now;
+                        Object[i].updateDate = DateTime.Now;
+                        Object[i].updateUserId = Object[i].createUserId;
+
+                        couponsInvoicesEntity.Add(Object[i]);
+                    }
+                    try
+                    {
                         entity.SaveChanges();
-                    }  
-               }
-
-                catch
-                {
-                   message ="an error ocurred";
+                    }
+                    catch { return false; }
                 }
             }
-                return message;
+            return true;
         }
 
         [HttpPost]
