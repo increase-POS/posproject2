@@ -1224,4 +1224,19 @@
   <data name="trEmptyDocDateToolTip" xml:space="preserve">
     <value>The document due date cannot be empty</value>
   </data>
+  <data name="trReturnedInvoice" xml:space="preserve">
+    <value>Returned Invoice</value>
+  </data>
+  <data name="trSalesInvoice" xml:space="preserve">
+    <value>Sales Invoice</value>
+  </data>
+  <data name="trAddRange" xml:space="preserve">
+    <value>Add Range</value>
+  </data>
+  <data name="trLocation" xml:space="preserve">
+    <value>Storage Locations</value>
+  </data>
+  <data name="trSection" xml:space="preserve">
+    <value>Section</value>
+  </data>
 </root>

@@ -343,8 +343,9 @@ namespace POS.View.accounts
             dp_endSearchDate.SelectedDate = DateTime.Now;
             dp_startSearchDate.SelectedDate = DateTime.Now;
 
-            await RefreshBondsList();
-            Tb_search_TextChanged(null, null);
+            //await RefreshBondsList();
+            //Tb_search_TextChanged(null, null);
+            dg_bonds.ItemsSource =await bondModel.GetAll();
 
         }
 

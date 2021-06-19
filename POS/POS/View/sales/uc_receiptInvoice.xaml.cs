@@ -156,11 +156,18 @@ namespace POS.View
 
 
         }
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            MainWindow.mainWindow.KeyDown -= HandleKeyPress;
+        }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            var window = Window.GetWindow(this);
-            window.KeyDown -= HandleKeyPress;
-            window.KeyDown += HandleKeyPress;
+
+            MainWindow.mainWindow.KeyDown += HandleKeyPress;
+
+            //var window = Window.GetWindow(this);
+            //window.KeyDown -= HandleKeyPress;
+            //window.KeyDown += HandleKeyPress;
 
             if (MainWindow.lang.Equals("en"))
             {
@@ -293,7 +300,7 @@ namespace POS.View
         {
             if (cb_customer.SelectedIndex != -1)
             {
-                // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+                Window.GetWindow(this).Opacity = 0.2;
 
                 //if ((((this.Parent as Grid).Parent as Grid).Parent as UserControl) != null)
                 //((((this.Parent as Grid).Parent as Grid).Parent as Grid).Parent as UserControl).Opacity = 0.2;
@@ -304,7 +311,7 @@ namespace POS.View
                 w.ShowDialog();
 
 
-                // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
+                Window.GetWindow(this).Opacity = 1;
             }
         }
         #region Get Id By Click  Y
@@ -607,6 +614,8 @@ namespace POS.View
             _InvoiceType = "sd";
             inputEditable();
             clearInvoice();
+
+            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
         }
         private void clearInvoice()
         {
@@ -641,7 +650,7 @@ namespace POS.View
             tb_discount.Text = "0";
             btn_updateCustomer.IsEnabled = false;
             gd_card.Visibility = Visibility.Collapsed;
-            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleInvoice");
+            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
             SectionData.clearComboBoxValidate(cb_paymentProcessType,p_errorpaymentProcessType);
             SectionData.clearComboBoxValidate(cb_card,p_errorCard);
             SectionData.clearValidate(tb_processNum,p_errorProcessNum);
@@ -651,7 +660,7 @@ namespace POS.View
         #endregion
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
-            // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+            Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
 
             w.invoiceType = "sd ,sbd"; //sales draft invoices , sales bounce drafts
@@ -669,9 +678,17 @@ namespace POS.View
                     _InvoiceType = invoice.invType;
                     // set title to bill
                     if (_InvoiceType == "sd")
+                    {
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                    }
                     if (_InvoiceType == "sbd")
+                    {
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
+                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                    }
+                    // orange #FFA926 red #D22A17
+                    brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
 
                     fillInvoiceInputs(invoice);
 
@@ -682,7 +699,7 @@ namespace POS.View
                     inputEditable();
                 }
             }
-            //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
+            Window.GetWindow(this).Opacity = 1;
         }
         private async Task getInvoiceCoupons(int invoiceId)
         {
@@ -696,7 +713,8 @@ namespace POS.View
         }
         private async void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {
-            // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+            Window.GetWindow(this).Opacity = 0.2;
+            
             wd_invoice w = new wd_invoice();
 
             // sale invoices
@@ -713,8 +731,9 @@ namespace POS.View
 
                     _InvoiceType = invoice.invType;
                     // set title to bill
-                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleInvoice");
-
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
+                    // orange #FFA926 red #D22A17
+                    brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                     fillInvoiceInputs(invoice);
 
                     await getInvoiceCoupons(invoice.invoiceId);
@@ -723,7 +742,7 @@ namespace POS.View
                     inputEditable();
                 }
             }
-            //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
+            Window.GetWindow(this).Opacity = 1;
         }
         private async void fillInvoiceInputs(Invoice invoice)
         {
@@ -777,10 +796,8 @@ namespace POS.View
         }
         private async void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
         {
-            // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+            Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
-
-
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
 
             // sales invoices
@@ -801,9 +818,13 @@ namespace POS.View
                    await buildInvoiceDetails(invoice.invoiceId);
 
                     inputEditable();
+                    
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                    // orange #FFA926 red #D22A17
+                    brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                 }
             }
-            // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
+            Window.GetWindow(this).Opacity = 1;
         }
         private async Task buildInvoiceDetails(int invoiceId)
         {
@@ -891,7 +912,7 @@ namespace POS.View
         {
             if (invoice != null && invoice.invoiceId != 0)
             {
-                //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+                Window.GetWindow(this).Opacity = 0.2;
 
                 wd_uploadImage w = new wd_uploadImage();
 
@@ -899,7 +920,7 @@ namespace POS.View
                 w.tableId = invoice.invoiceId;
                 w.docNum = invoice.invNumber;
                 w.ShowDialog();
-                // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
+                Window.GetWindow(this).Opacity =1;
             }
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trChooseInvoiceToolTip"), animation: ToasterAnimation.FadeIn);
@@ -1015,7 +1036,7 @@ namespace POS.View
         // read item from barcode
         private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
             if (elapsed.TotalMilliseconds > 50)
             {
                 _BarcodeStr = "";
@@ -1118,7 +1139,9 @@ namespace POS.View
                 e.Handled = true;
             }
             _Sender = null;
-        }
+        
+                
+                }
         private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
@@ -1260,87 +1283,12 @@ namespace POS.View
         #endregion
         private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            //MessageBox.Show("I'm Here in _CollectionChanged");
-
             //billDetails
             int count = 0;
             foreach (var item in billDetails)
             {
                 if (dg_billDetails.Items.Count != 0)
                 {
-                    if (dg_billDetails.Items.Count == 1)
-                    {
-                        #region
-                        //   //object item = productGrid.SelectedItem;
-                        //   //(dg_billDetails.SelectedCells[2].Column.GetCellContent(item) as ComboBox).SelectedValue = (int)item.itemUnitId;
-
-                        //   //dg_billDetails.SelectedIndex = 0;
-                        //   //var cellInfo = dg_billDetails.SelectedCells[0];
-                        //   //var content = cellInfo.Column.GetCellContent(cellInfo.Item);
-                        //   dg_billDetails.CurrentCell = new DataGridCellInfo(dg_billDetails.Items[0], dg_billDetails.Columns[3]);
-                        //   //dg_billDetails.SelectedCells.Add(dg_billDetails.CurrentCell);
-                        //   //(dg_billDetails.CurrentCell as DataGridCell).SelectedValue = (int)item.itemUnitId;
-                        //   foreach (var c in dg_billDetails.Columns)
-                        //   {
-                        //       DataGridCell cell1 = c.GetCellContent(3) as DataGridCell;
-                        //   }
-
-                        //   //var cell = GetDataGridCell(dg_billDetails.CurrentCell);
-                        //   DataGridCell cell = TryToFindGridCell(dg_billDetails, dg_billDetails.CurrentCell);
-                        //   if (cell != null)
-                        //   {
-                        //       var cp = (ContentPresenter)cell.Content;
-                        //       var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
-                        //       //var combo = (combo)cell.Content;
-                        //       combo.SelectedValue = (int)item.itemUnitId;
-                        //       count++;
-                        //   }
-                        //   //var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
-                        //   var comboBoxlist = FindControls.FindVisualChildren<ComboBox>(dg_billDetails).ToArray();
-                        //   //comboBoxlist[0].SelectedValue = (int)item.itemUnitId;
-                        //   //(comboBoxlist[0] as ComboBox).SelectedValue = (int)item.itemUnitId;
-                        //   for (int i = 0; i < comboBoxlist.Count(); i++)
-                        //   {
-                        //       if (comboBoxlist[i].Name.ToString() == "cbm_unitItemDetails")
-                        //       {
-                        //           MessageBox.Show("I'm Here");
-                        //       }
-
-                        //   }
-                        //   //List<ComboBox> comboBoxlist = new List<ComboBox>();
-                        //   //// Find all elements
-                        //   //StaticClass.FindChildGroup<ComboBox>(dg_billDetails, "cbm_unitItemDetails", ref comboBoxlist);
-
-
-                        //   //foreach (CheckBox c in checkBoxlist)
-                        //   //{
-                        //   //    if (c.IsChecked)
-                        //   //    {
-                        //   //        //do whatever you want
-                        //   //    }
-                        //   //}
-                        //   //comboBoxlist[0].SelectedValue = (int)item.itemUnitId;
-
-                        //   /*
-                        //       (dg_billDetails.Items[0] as BillDetails).itemUnitId = (int)item.itemUnitId;
-                        //var allCells =    dg_billDetails.SelectedCells;
-
-                        //   foreach (var c in allCells)
-                        //   {
-                        //       MessageBox.Show("HelloWorld!");
-
-                        //      //MessageBox.Show(c.Column)
-                        //   }
-                        //   //var cp = (ContentPresenter)cell.Content;
-                        //   //var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
-                        //   //combo.SelectedValue = (int)item.itemUnitId;
-
-                        //   //cbm_unitItemDetails.allcell
-                        //   //cbm_unitItemDetails.se
-                        //   */
-                        #endregion
-                    }
-                    //else if (dg_billDetails.Items.Count != 1)
                     if (dg_billDetails.Items.Count > 1)
                     {
                         var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
@@ -1536,7 +1484,7 @@ namespace POS.View
 
         private async void Btn_quotations_Click(object sender, RoutedEventArgs e)
         {
-            // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+            Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
 
             // sale invoices
@@ -1553,8 +1501,9 @@ namespace POS.View
 
                     _InvoiceType = invoice.invType;
                     // set title to bill
-                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleInvoice");
-
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
+                    // orange #FFA926 red #D22A17
+                    brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                     fillInvoiceInputs(invoice);
 
                     //get invoice coupons
@@ -1564,7 +1513,7 @@ namespace POS.View
                     inputEditable();
                 }
             }
-            //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
+            Window.GetWindow(this).Opacity = 1;
         }
 
         private void Cb_paymentProcessType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1664,6 +1613,6 @@ namespace POS.View
             refreshTotalValue();
         }
 
-       
+        
     }
 }

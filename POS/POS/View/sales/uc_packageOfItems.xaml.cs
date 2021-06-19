@@ -1,6 +1,11 @@
 ﻿using POS.Classes;
+using netoaster;
+using POS.controlTemplate;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -16,7 +21,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using static POS.View.uc_categorie;
+using Microsoft.Win32;
+using System.Windows.Resources;
+using System.Threading;
+using System.Windows.Media.Animation;
+using Zen.Barcode;
+using POS.View.windows;
 namespace POS.View
 {
     /// <summary>
@@ -49,6 +60,7 @@ namespace POS.View
         Item item = new Item();
         // item unit object
         ItemUnit itemUnit = new ItemUnit();
+        OpenFileDialog openFileDialog = new OpenFileDialog();
 
 
 
@@ -108,6 +120,9 @@ namespace POS.View
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucPackage.FlowDirection = FlowDirection.RightToLeft;
             }
+
+            RefrishCategoriesCard();
+            Txb_searchitems_TextChanged(null, null);
 
             translate();
             fillCategories();
@@ -338,6 +353,7 @@ namespace POS.View
         }
 
 
+
         #region Categor and Item
         #region Refrish Y
         /// <summary>
@@ -355,7 +371,21 @@ namespace POS.View
                 await RefrishCategories();
             categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == categoryParentId);
             catigoriesAndItemsView.gridCatigories = grid_categoryCards;
+            generateCoulmnCategoriesGrid(categoriesQuery.Count());
             catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
+        }
+        void generateCoulmnCategoriesGrid(int column)
+        {
+            #region
+            grid_categoryCards.ColumnDefinitions.Clear();
+            ColumnDefinition[] cd = new ColumnDefinition[column];
+            for (int i = 0; i < column; i++)
+            {
+                cd[i] = new ColumnDefinition();
+                cd[i].Width = new GridLength(110, GridUnitType.Pixel);
+                grid_categoryCards.ColumnDefinitions.Add(cd[i]);
+            }
+            #endregion
         }
         /// <summary>
         /// Item
@@ -375,22 +405,23 @@ namespace POS.View
             dg_items.ItemsSource = _items;
         }
 
+
         void RefrishItemsCard(IEnumerable<Item> _items)
         {
-
+            grid_itemContainerCard.Children.Clear();
             catigoriesAndItemsView.gridCatigorieItems = grid_itemContainerCard;
             catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
+        }
+        private void Grid_containerCard_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
         }
         #endregion
         #region Get Id By Click  Y
         private void dg_items_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorCode.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+           
 
             if (dg_items.SelectedIndex != -1)
             {
@@ -398,38 +429,44 @@ namespace POS.View
                 this.DataContext = item;
 
 
-
             }
             if (item != null)
             {
-                tb_code.Text = item.code;
-                tb_name.Text = item.name;
-                tb_details.Text = item.details;
-
-
-                if (item.categoryId != null)
-                {
-                    cb_categorie.SelectedValue = (int)item.categoryId;
-                }
-                else
-                    cb_categorie.SelectedValue = -1;
-
-
-
-                tb_taxes.Text = item.taxes.ToString();
-
-
-
-                if (item.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
-
-                else
-                {
-                    if (item.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
-                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
-                }
+               
 
             }
+            tb_barcode.Focus();
 
+        }
+        private async void getImg()
+        {
+            if (string.IsNullOrEmpty(item.image))
+            {
+                SectionData.clearImg(img_item);
+            }
+            else
+            {
+                byte[] imageBuffer = await itemModel.downloadImage(item.image); // read this as BLOB from your DB
+
+                var bitmapImage = new BitmapImage();
+                if (imageBuffer != null)
+                {
+                    using (var memoryStream = new MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+
+                    img_item.Background = new ImageBrush(bitmapImage);
+                }
+                // configure trmporary path
+                string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                string tmpPath = System.IO.Path.Combine(dir, Global.TMPItemsFolder);
+                tmpPath = System.IO.Path.Combine(tmpPath, item.image);
+                openFileDialog.FileName = tmpPath;
+            }
 
         }
         public async void ChangeCategoryIdEvent(int categoryId)
@@ -442,6 +479,7 @@ namespace POS.View
                 categoryParentId = category.categoryId;
                 RefrishCategoriesCard();
             }
+            tb_barcode.Focus();
 
             generateTrack(categoryId);
             await RefrishItems();
@@ -450,72 +488,18 @@ namespace POS.View
 
         public void ChangeItemIdEvent(int itemId)
         {
-
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorCode.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
+           
             item = items.ToList().Find(c => c.itemId == itemId);
             if (item != null)
             {
                 this.DataContext = item;
-
-
-
-                tb_code.Text = item.code;
-                tb_name.Text = item.name;
-                tb_details.Text = item.details;
-
-
-                if (item.categoryId != null)
-                {
-                    cb_categorie.SelectedValue = (int)item.categoryId;
-                }
-                else
-                    cb_categorie.SelectedValue = -1;
-
-
-
-                tb_taxes.Text = item.taxes.ToString();
-
-
-
-                if (item.canDelete) btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
-
-                else
-                {
-                    if (item.isActive == 0) btn_delete.Content = MainWindow.resourcemanager.GetString("trActive");
-                    else btn_delete.Content = MainWindow.resourcemanager.GetString("trInActive");
-                }
-
             }
         }
 
         #endregion
+       
         #region Toggle Button Y
-        /// <summary>
-        /// Category
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// 
-        /*
-        private void Tgl_categoryIsActive_Checked(object sender, RoutedEventArgs e)
-        {
-            tglCategoryState = 1;
-            RefrishCategoriesCard();
-
-
-
-        }
-        private void Tgl_categorIsActive_Unchecked(object sender, RoutedEventArgs e)
-        {
-            tglCategoryState = 0;
-            RefrishCategoriesCard();
-        }
-        */
+       
         /// <summary>
         /// Item
         /// </summary>
@@ -530,7 +514,6 @@ namespace POS.View
             //    tgl_categoryDatagridIsActive.IsChecked = true;
             Txb_searchitems_TextChanged(null, null);
 
-
         }
         private void Tgl_itemIsActive_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -541,6 +524,7 @@ namespace POS.View
             //tgl_categoryCardIsActive.IsChecked =
             //    tgl_categoryDatagridIsActive.IsChecked = false;
             Txb_searchitems_TextChanged(null, null);
+            tb_barcode.Focus();
         }
         #endregion
         #region Switch Card/DataGrid Y
@@ -554,7 +538,7 @@ namespace POS.View
 
             tgl_itemIsActive.IsChecked = (tglItemState == 1) ? true : false;
             Txb_searchitems_TextChanged(null, null);
-
+            tb_barcode.Focus();
         }
 
         private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
@@ -566,10 +550,10 @@ namespace POS.View
 
             tgl_itemIsActive.IsChecked = (tglItemState == 1) ? true : false;
             Txb_searchitems_TextChanged(null, null);
+            tb_barcode.Focus();
         }
         #endregion
         #region Search Y
-
 
 
         /// <summary>
@@ -590,10 +574,12 @@ namespace POS.View
             x.details.ToLower().Contains(txtItemSearch)
             ) && x.isActive == tglItemState);
             txt_count.Text = itemsQuery.Count().ToString();
+            if (btns is null)
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
             RefrishItemsDatagrid(itemsQuery);
-
+            tb_barcode.Focus();
         }
 
         #endregion
@@ -724,7 +710,7 @@ namespace POS.View
                     grid_categoryControlPath.Children.Add(b);
                 }
             }
-
+            tb_barcode.Focus();
 
         }
         private async void getCategoryIdFromPath(object sender, RoutedEventArgs e)
@@ -741,18 +727,22 @@ namespace POS.View
                 category.categoryId = int.Parse(b.Tag.ToString());
 
             }
+            tb_barcode.Focus();
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
 
         }
         private async void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
         {
+
             categoryParentId = 0;
             RefrishCategoriesCard();
             grid_categoryControlPath.Children.Clear();
             category.categoryId = 0;
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
+            tb_barcode.Focus();
+
         }
 
         #endregion

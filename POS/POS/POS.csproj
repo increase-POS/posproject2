@@ -214,6 +214,7 @@
       <DependentUpon>UC_squareCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\ValidatorExtensions.cs" />
+    <Compile Include="converters\invoiceTypeConverter.cs" />
     <Compile Include="converters\unitItemsListConverter.cs" />
     <Compile Include="Keyboard\AnimationHelper.cs" />
     <Compile Include="Keyboard\EnvironmentEx.cs" />

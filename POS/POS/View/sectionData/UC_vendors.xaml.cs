@@ -1174,7 +1174,14 @@ namespace POS.View
 
         private void Grid_containerCard_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
-        } 
+            //if (e.PreviousSize.Height != 0)
+            //{
+            //    if (!(e.PreviousSize.Width -25 < e.NewSize.Width &&
+            //      e.NewSize.Width < e.PreviousSize.Width + 25))
+            //    {
+                    RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+            //    }
+            //}
+        }
     }
 }

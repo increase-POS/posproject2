@@ -1203,4 +1203,19 @@
   <data name="trEmptyDocDateToolTip" xml:space="preserve">
     <value>تاريخ استحقاق الوثيقة لا يمكن أن يكون فارغ</value>
   </data>
+  <data name="trReturnedInvoice" xml:space="preserve">
+    <value>فاتورة مرتجع</value>
+  </data>
+  <data name="trSalesInvoice" xml:space="preserve">
+    <value>فاتورة مبيعات</value>
+  </data>
+  <data name="trAddRange" xml:space="preserve">
+    <value>إضافة مجال</value>
+  </data>
+  <data name="trLocation" xml:space="preserve">
+    <value>أماكن التخزين</value>
+  </data>
+  <data name="trSection" xml:space="preserve">
+    <value>القسم</value>
+  </data>
 </root>

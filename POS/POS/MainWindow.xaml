@@ -9,7 +9,6 @@
           xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
      WindowStartupLocation="CenterScreen"  WindowStyle="None"
     WindowState="Maximized"  Loaded="Window_Loaded"  >
-
     <!--WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen"  
     WindowState="Normal"  ResizeMode="CanResize" Margin="0" Loaded="Window_Loaded"
          Height="600" 

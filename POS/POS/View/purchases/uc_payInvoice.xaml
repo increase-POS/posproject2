@@ -7,7 +7,7 @@
              xmlns:converters="clr-namespace:POS.converters"
              mc:Ignorable="d" 
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             Loaded="UserControl_Loaded"
+             Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded"
              d:DesignHeight="700" d:DesignWidth="1000" Margin="0">
     <ScrollViewer>
         <Grid x:Name="grid_ucPayInvoice" Margin="0,15,15,15"  >
@@ -489,7 +489,7 @@
                     </Grid>
                 </Border>
                 <Border BorderThickness="0"  Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="3"   Height="70" Margin="10,10,10,10"
-                    CornerRadius="7" BorderBrush="Black" Background="#FFA926" Padding="0">
+                    CornerRadius="7" BorderBrush="Black" Background="#FFA926" Padding="0" x:Name="brd_total">
                     <StackPanel Orientation="Horizontal" Margin="5,0" >
 
                         <TextBlock Text="TOTAL" x:Name="txt_total" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" 
@@ -728,7 +728,8 @@
                                 <DataGridTemplateColumn Header="Unit"  Width="*" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ComboBox SelectionChanged="Cbm_unitItemDetails_SelectionChanged" 
+                                            <ComboBox DataContextChanged="Cbm_unitItemDetails_DataContextChanged" 
+                                                SelectionChanged="Cbm_unitItemDetails_SelectionChanged" 
                                                               Tag="cbm_unitItemDetails" 
                                                               x:Name="cbm_unitItemDetails"
                                                               ItemsSource="{Binding itemId,Converter={StaticResource unitItemsListConverter}}"

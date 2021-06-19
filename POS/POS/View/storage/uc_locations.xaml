@@ -62,7 +62,7 @@
                     <Button  DockPanel.Dock="Right" FlowDirection="LeftToRight"  Width="40" Height="40" x:Name="btn_refresh" Grid.Row="0" Grid.Column="4" Padding="0" 
                             materialDesign:ButtonAssist.CornerRadius="15" Cursor="Hand"
                           Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_refresh_Click"  Style="{StaticResource SmallButtonCircleRotate}"
-                             Margin="5,1"  Content="إضافة"   ToolTip="Refresh"  RenderTransformOrigin="0.5,0.5"
+                             Margin="5,1"  Content="Refresh"   ToolTip="Refresh"  RenderTransformOrigin="0.5,0.5"
                             DataContext="M896,0L896,0C401.2,0,0,401.2,0,896v0c0,494.8,401.2,896,896,896h0c494.8,0,896-401.2,896-896v0C1792,401.2,1390.8,0,896,0z
 	 M1451.3,1021c-31.9,133.7-98.8,242.1-200.6,325.2c-101.8,83.1-221,124.6-357.7,124.6c-72.8,0-143.3-13.7-211.4-41.2
 	s-128.8-66.6-182.2-117.5l-96.5,96.5c-9.5,9.5-20.7,14.2-33.7,14.2s-24.2-4.7-33.7-14.2c-9.5-9.5-14.2-20.7-14.2-33.7v-335.3
@@ -293,7 +293,7 @@
 	v332c0,9.5,3,12.3,13,12.3h336.3c2.1,0,4.2-0.3,6.3-0.4v-17.4h-19.4h-3.3H259.5h-11.3H99.3v-0.3H91V314h337.4v-17.5h-22.7v-0.1h-146
 	h-11.6H99.3v-0.3h-8.4v-93h337.8L428.7,185.6L428.7,185.6z M393,209.2H272.6c-10.2,0-12.9,2.7-12.9,13v69.7h146v-69.6
 	C405.7,211.9,403.2,209.2,393,209.2z M394.1,285.1L394.1,285.1l-10.4-11.3l-10.1,11.3l0,0v-61.2h20.5V285.1z"/>
-                            <TextBlock Text="Locations" x:Name="txt_preparationOfStores" Foreground="#E8E8E8" VerticalAlignment="Center" Grid.Column="1"  Margin="5"/>
+                            <TextBlock Text="Locations" x:Name="txt_location" Foreground="#E8E8E8" VerticalAlignment="Center" Grid.Column="1"  Margin="5"/>
                         </StackPanel>
                     </Button>
                 </Border>

@@ -115,6 +115,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to إضافة مجال.
+        /// </summary>
+        internal static string trAddRange {
+            get {
+                return ResourceManager.GetString("trAddRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العنوان.
         /// </summary>
         internal static string trAddress {
@@ -1807,6 +1816,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to أماكن التخزين.
+        /// </summary>
+        internal static string trLocation {
+            get {
+                return ResourceManager.GetString("trLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to معلومات التسجيل.
         /// </summary>
         internal static string trLoginInformation {
@@ -2599,6 +2617,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to فاتورة مرتجع.
+        /// </summary>
+        internal static string trReturnedInvoice {
+            get {
+                return ResourceManager.GetString("trReturnedInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to فاتورة الإرجاع.
         /// </summary>
         internal static string trReturnInvoice {
@@ -2622,6 +2649,15 @@ namespace POS {
         internal static string trSales {
             get {
                 return ResourceManager.GetString("trSales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فاتورة مبيعات.
+        /// </summary>
+        internal static string trSalesInvoice {
+            get {
+                return ResourceManager.GetString("trSalesInvoice", resourceCulture);
             }
         }
         
@@ -2658,6 +2694,15 @@ namespace POS {
         internal static string trSecondaryInformation {
             get {
                 return ResourceManager.GetString("trSecondaryInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to القسم.
+        /// </summary>
+        internal static string trSection {
+            get {
+                return ResourceManager.GetString("trSection", resourceCulture);
             }
         }
         

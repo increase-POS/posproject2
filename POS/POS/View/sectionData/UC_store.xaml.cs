@@ -785,5 +785,10 @@ namespace POS.View
         if (!regex.IsMatch(e.Text))
             e.Handled = true;
     }
-}
+
+        private void Btn_stores_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+    }
 }

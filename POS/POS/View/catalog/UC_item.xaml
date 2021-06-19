@@ -10,7 +10,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="675" d:DesignWidth="985" 
              Loaded="UserControl_Loaded" 
-            Name="uc_userControl" >
+            Name="uc_userControl" Unloaded="UserControl_Unloaded" >
    
     <Grid x:Name="grid_ucItem" >
         <Grid.ColumnDefinitions>
@@ -614,7 +614,7 @@
                      Margin="0,5,10,5"
                             BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="5" HorizontalAlignment="Center" Height="90" Width="90" Grid.Column="1" Click="Img_item_Click">
                                     <Button.Background>
-                                        <ImageBrush Stretch="UniformToFill"  x:Name="IMG_customer"
+                                        <ImageBrush Stretch="UniformToFill"   
                                             ImageSource="/pic/no-image-icon-125x125.png"   />
                                     </Button.Background>
                                 </Button>

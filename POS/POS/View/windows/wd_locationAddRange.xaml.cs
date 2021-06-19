@@ -28,6 +28,7 @@ namespace POS.View.windows
         }
        public bool isOpend = false;
         List<Location> locations = new List<Location>();
+        List<Location> AllLocations = new List<Location>();
         Location location = new Location();
         BrushConverter bc = new BrushConverter();
         Regex regex = new Regex("^[a-zA-Z0-9_]*$");
@@ -242,21 +243,23 @@ namespace POS.View.windows
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            //add
+            //save
             if (validate(location))
             {
                 string s = "";
                 generateLocationListX(location);
                 foreach (var item in locations)
                 {
+                    if (AllLocations.Where(x => x.name == item.name).Count() == 0)
+                    {
+                        item.createUserId = MainWindow.userID;
+                        item.updateUserId = MainWindow.userID;
+                        item.note = "";
+                        item.isActive = 1;
+                        item.sectionId = null;
 
-                    item.createUserId = MainWindow.userID;
-                    item.updateUserId = MainWindow.userID;
-                    item.note = "";
-                    item.isActive = 1;
-                    item.sectionId = null;
-
-                 s = await location.saveLocation(item);
+                        s = await location.saveLocation(item);
+                    }
                 }
 
                 if (s.Equals("Location Is Added Successfully"))
@@ -359,9 +362,9 @@ namespace POS.View.windows
             else if ((sender as Control).Name == "tb_toZ")
                 SectionData.validateEmptyTextBox(tb_toZ, p_errorToZ, tt_errorToZ, "");
         }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            AllLocations = await location.Get();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

@@ -59,6 +59,8 @@ namespace POS.Classes
         public string cardName { get; set; }// processType=card
         public string reciveName { get; set; }
         public Nullable<int> bondId { get; set; }
+        public Nullable<System.DateTime> bondDeserveDate { get; set; }
+        public Nullable<byte> bondIsRecieved { get; set; }
         public async Task<List<CashTransfer>> GetCashTransferAsync(string type, string side)
         {
             List<CashTransfer> cashtransfer = null;

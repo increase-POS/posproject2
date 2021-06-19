@@ -622,7 +622,8 @@
                                 <DataGridTemplateColumn Header="Unit"  Width="*" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ComboBox SelectionChanged="Cbm_unitItemDetails_SelectionChanged" 
+                                            <ComboBox DataContextChanged="Cbm_unitItemDetails_DataContextChanged" 
+                                                SelectionChanged="Cbm_unitItemDetails_SelectionChanged" 
                                                               Tag="cbm_unitItemDetails" 
                                                               x:Name="cbm_unitItemDetails"
                                                               ItemsSource="{Binding itemId,Converter={StaticResource unitItemsListConverter}}"

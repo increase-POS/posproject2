@@ -82,10 +82,14 @@ namespace POS.View
        
         private void translate()
         {
+            
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            btn_refresh.ToolTip = MainWindow.resourcemanager.GetString("trRefresh");
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
-
+            txt_location.Text = MainWindow.resourcemanager.GetString("trLocation");
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
+            btn_addRange.Content = MainWindow.resourcemanager.GetString("trAddRange");
             txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
             txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
             txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
@@ -96,6 +100,10 @@ namespace POS.View
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+            
+            dg_location.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
+            dg_location.Columns[1].Header = MainWindow.resourcemanager.GetString("trSection");
+            dg_location.Columns[2].Header = MainWindow.resourcemanager.GetString("trNote");
         }
 
         private  void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -415,7 +423,7 @@ namespace POS.View
             });
             var DTForExcel = QueryExcel.ToDataTable();
             DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
-            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trNotes");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trNote");
 
             ExportToExcel.Export(DTForExcel);
         }

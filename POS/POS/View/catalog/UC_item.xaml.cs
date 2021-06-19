@@ -252,8 +252,10 @@ namespace POS.View
                 drawBarcode(tb_barcode.Text);
             }
         }
-       static Window window;
-
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            MainWindow.mainWindow.KeyDown -= HandleKeyPress;
+        }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             // for pagination onTop Always
@@ -264,7 +266,6 @@ namespace POS.View
             // {
             //window = Window.GetWindow(this);
             //window.KeyDown += HandleKeyPress;
-            MainWindow.mainWindow.KeyDown -= HandleKeyPress;
             MainWindow.mainWindow.KeyDown += HandleKeyPress;
             //}
 
@@ -304,19 +305,7 @@ namespace POS.View
             tb_code.Focus();
             generateBarcode("", true);
         }
-        void generateCoulmnCategoriesGrid(int column)
-        {
-            #region
-            grid_categoryCards.ColumnDefinitions.Clear();
-            ColumnDefinition[] cd = new ColumnDefinition[column];
-            for (int i = 0; i < column; i++)
-            {
-                cd[i] = new ColumnDefinition();
-                cd[i].Width = new GridLength(110, GridUnitType.Pixel);
-                grid_categoryCards.ColumnDefinitions.Add(cd[i]);
-            }
-            #endregion
-        }
+       
         private Boolean checkBarcodeValidity(string barcode)
         {
             fillBarcodeList();
@@ -1517,6 +1506,19 @@ namespace POS.View
             generateCoulmnCategoriesGrid(categoriesQuery.Count());
             catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
         }
+        void generateCoulmnCategoriesGrid(int column)
+        {
+            #region
+            grid_categoryCards.ColumnDefinitions.Clear();
+            ColumnDefinition[] cd = new ColumnDefinition[column];
+            for (int i = 0; i < column; i++)
+            {
+                cd[i] = new ColumnDefinition();
+                cd[i].Width = new GridLength(110, GridUnitType.Pixel);
+                grid_categoryCards.ColumnDefinitions.Add(cd[i]);
+            }
+            #endregion
+        }
         /// <summary>
         /// Item
         /// </summary>
@@ -1541,6 +1543,10 @@ namespace POS.View
             grid_itemContainerCard.Children.Clear();
             catigoriesAndItemsView.gridCatigorieItems = grid_itemContainerCard;
             catigoriesAndItemsView.FN_refrishCatalogItem(_items.ToList(), "en", "purchase");
+        }
+        private void Grid_containerCard_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
         }
         #endregion
         #region Get Id By Click  Y
@@ -1755,40 +1761,8 @@ namespace POS.View
         }
 
         #endregion
-        #region Grid Definition
-        /*
-        ColumnDefinition[] c;
-        RowDefinition[] r;
-        Grid gridItemContainerCard = new Grid();
-        int[] count;
-        void CreateGridCardContainer()
-        {
-            gridItemContainerCard.Name = "grid_itemContainerCard";
-            gridItemContainerCard.Background = null;
-            Grid.SetColumnSpan(gridItemContainerCard, 2);
-            count = CatigoriesAndItemsView.itemsRowColumnCount(1, 3);
-            c = new ColumnDefinition[count[1]];
-            for (int i = 0; i < count[1]; i++)
-            {
-                //ColumnDefinition c1 = new ColumnDefinition();
-                c[i] = new ColumnDefinition();
-                c[i].Width = new GridLength(1, GridUnitType.Star);
-                gridItemContainerCard.ColumnDefinitions.Add(c[i]);
-            }
-            r = new RowDefinition[count[0]];
-            for (int i = 0; i < count[0]; i++)
-            {
-                r[i] = new RowDefinition();
-                r[i].Height = new GridLength(1, GridUnitType.Star);
-                gridItemContainerCard.RowDefinitions.Add(r[i]);
-            }
-
-
-            grid_itemContainerCard.Children.Clear();
-            grid_itemContainerCard.Children.Add(gridItemContainerCard);
-        }
-        */
-        #endregion
+ 
+      
         #region Toggle Button Y
         /// <summary>
         /// Category
@@ -2087,9 +2061,6 @@ namespace POS.View
             _Sender = sender;
         }
 
-        private void Grid_containerCard_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-        }
+        
     }
 }
