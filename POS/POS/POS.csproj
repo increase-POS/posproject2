@@ -156,6 +156,7 @@
     <Compile Include="Classes\Card.cs" />
     <Compile Include="Classes\CashTransfer.cs" />
     <Compile Include="Classes\Category.cs" />
+    <Compile Include="Classes\Categoryuser.cs" />
     <Compile Include="Classes\CatigoriesAndItemsView.cs" />
     <Compile Include="Classes\City.cs" />
     <Compile Include="Classes\ClassStaticy.cs" />
@@ -176,6 +177,8 @@
     <Compile Include="Classes\LocalReportExtensions.cs" />
     <Compile Include="Classes\Location.cs" />
     <Compile Include="Classes\Md5Encription.cs" />
+    <Compile Include="Classes\Medal.cs" />
+    <Compile Include="Classes\MedalAgent.cs" />
     <Compile Include="Classes\Offer.cs" />
     <Compile Include="Classes\Pagination.cs" />
     <Compile Include="Classes\Pos.cs" />
@@ -187,8 +190,11 @@
     <Compile Include="Classes\SectionData.cs" />
     <Compile Include="Classes\Serial.cs" />
     <Compile Include="Classes\Service.cs" />
+    <Compile Include="Classes\SettingCls.cs" />
+    <Compile Include="Classes\setValues.cs" />
     <Compile Include="Classes\Unit.cs" />
     <Compile Include="Classes\User.cs" />
+    <Compile Include="Classes\userSetValues.cs" />
     <Compile Include="controlTemplate\UC_rectangleCard.xaml.cs">
       <DependentUpon>UC_rectangleCard.xaml</DependentUpon>
     </Compile>

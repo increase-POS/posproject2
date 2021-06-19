@@ -119,7 +119,7 @@ namespace POS_Server.Controllers
         // add or update medal 
         [HttpPost]
         [Route("Save")]
-        public String Save(string sObject)
+        public String Save(string newObject)
         {
             var re = Request;
             var headers = re.Headers;
@@ -134,24 +134,49 @@ namespace POS_Server.Controllers
             
             if (valid)
             {
-                sObject = sObject.Replace("\\", string.Empty);
-                sObject = sObject.Trim('"');
-                setValues Object = JsonConvert.DeserializeObject<setValues>(sObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                newObject = newObject.Replace("\\", string.Empty);
+                newObject = newObject.Trim('"');
+                setValues Object = JsonConvert.DeserializeObject<setValues>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
                 try
                 {
+                    if (Object.settingId == 0 || Object.settingId == null)
+                    {
+                        Nullable<int> id = null;
+                        Object.settingId = id;
+                    }
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var sEntity = entity.Set<setValues>();
+                        setValues defItem = entity.setValues.Where(p => p.settingId == Object.settingId && p.isDefault == 1).FirstOrDefault();
+                          
                         if (Object.valId == 0)
-                        {
+                        {     
+                            if (Object.isDefault == 1 )
+                            { // get the row with same settingId of newObject
+                                 if (defItem != null)
+                                {
+                                    defItem.isDefault = 0;
+                                    entity.SaveChanges();
+                                }
+                            }
+                            else //Object.isDefault ==0 
+                            {
+                                if (defItem == null)//other values isDefault not 1 
+                                {
+                                    Object.isDefault =1;
+                                }
 
-                            sEntity.Add(Object);
+                            }
+                                sEntity.Add(Object);
                           message = Object.valId.ToString();
                             entity.SaveChanges();
                         }
                         else
                         {
-
+                            if (Object.isDefault == 1)
+                            {
+                                defItem.isDefault = 0;//reset the other default to 0 if exist
+                            }
                             var tmps = entity.setValues.Where(p => p.valId == Object.valId).FirstOrDefault();
                             tmps.valId = Object.valId;                          
                             tmps.notes = Object.notes;

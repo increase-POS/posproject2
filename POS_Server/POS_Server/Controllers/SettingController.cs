@@ -109,12 +109,12 @@ namespace POS_Server.Controllers
         // add or update medal 
         [HttpPost]
         [Route("Save")]
-        public bool Save(string sObject)
+        public string Save(string newObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            
+            string message = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -124,9 +124,9 @@ namespace POS_Server.Controllers
             
             if (valid)
             {
-                sObject = sObject.Replace("\\", string.Empty);
-                sObject = sObject.Trim('"');
-                setting Object = JsonConvert.DeserializeObject<setting>(sObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                newObject = newObject.Replace("\\", string.Empty);
+                newObject = newObject.Trim('"');
+                setting Object = JsonConvert.DeserializeObject<setting>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
@@ -136,7 +136,8 @@ namespace POS_Server.Controllers
                         {
 
                             sEntity.Add(Object);
-                          //  message = "medal Is Added Successfully";
+                            entity.SaveChanges();
+                            message = Object.settingId.ToString();
                         }
                         else
                         {
@@ -151,21 +152,21 @@ namespace POS_Server.Controllers
 
 
 
-
-                            //message = "medal Is Updated Successfully";
-                        }
                         entity.SaveChanges();
+                           message = tmps.settingId.ToString();
+                        }
+                       
                     }
-                    return true;
+                    return message;
                 }
 
                 catch
                 {
-                    return false;
+                    return "-1";
                 }
             }
             else
-                return false;
+                return "-1";
         }
 
         [HttpPost]

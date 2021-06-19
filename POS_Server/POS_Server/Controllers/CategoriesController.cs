@@ -500,7 +500,7 @@ namespace POS_Server.Controllers
 
                 return Ok(res);
             }
-            catch (Exception ex)
+            catch
             {
                 var res = string.Format("some Message");
 
@@ -577,5 +577,98 @@ namespace POS_Server.Controllers
             else
                 return 0;
         }
+
+
+        [HttpGet]
+        [Route("GetSubCategoriesSeq")]
+        public IHttpActionResult GetSubCategoriesSeq(int categoryId, int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    if (categoryId != 0)
+                    {
+                        var categoriesList = (from C in entity.categories
+                                              join S in entity.categoryuser on C.categoryId equals S.categoryId into jS
+                                              from jSS in jS.DefaultIfEmpty()
+                                              select new
+                                              {
+                                                  C.categoryId,
+                                                  C.name,
+                                                  C.categoryCode,
+                                                  C.createDate,
+                                                  C.createUserId,
+                                                  C.details,
+                                                  C.image,
+                                                  C.notes,
+                                                  C.parentId,
+                                                  C.taxes,
+                                                  C.updateDate,
+                                                  C.updateUserId,
+                                                  C.isActive,
+                                                  jSS.sequence,
+                                                  jSS.userId,
+                                              }
+
+
+                      ).Where(c => c.parentId == categoryId && c.isActive == 1 && c.userId == userId).OrderBy(c => c.sequence)
+
+                       .ToList();
+                        if (categoriesList == null)
+                            return NotFound();
+                        else
+                            return Ok(categoriesList);
+                    }
+                    else
+                    {
+                        var categoriesList = (from C in entity.categories
+                                              join S in entity.categoryuser on C.categoryId equals S.categoryId into jS
+                                              from jSS in jS.DefaultIfEmpty()
+                                              select new
+                                              {
+                                                  C.categoryId,
+                                                  C.name,
+                                                  C.categoryCode,
+                                                  C.createDate,
+                                                  C.createUserId,
+                                                  C.details,
+                                                  C.image,
+                                                  C.notes,
+                                                  C.parentId,
+                                                  C.taxes,
+                                                  C.updateDate,
+                                                  C.updateUserId,
+                                                  C.isActive,
+                                                  jSS.sequence,
+                                                  jSS.userId,
+                                              }
+
+
+                      ).Where(c => c.parentId == 0 && c.isActive == 1 && c.userId == userId)
+                       .ToList();
+                        if (categoriesList == null)
+                            return NotFound();
+                        else
+                            return Ok(categoriesList);
+                    }
+                }
+            }
+            else
+                return NotFound();
+        }
+
     }
 }

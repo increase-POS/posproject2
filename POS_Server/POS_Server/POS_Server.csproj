@@ -252,6 +252,7 @@
     <Compile Include="Controllers\ItemsUnitsController.cs" />
     <Compile Include="Controllers\MedalAgentController.cs" />
     <Compile Include="Controllers\userSetValuesController.cs" />
+    <Compile Include="Controllers\CategoryuserController.cs" />
     <Compile Include="Controllers\setValuesController.cs" />
     <Compile Include="Controllers\SettingController.cs" />
     <Compile Include="Controllers\MedalController.cs" />

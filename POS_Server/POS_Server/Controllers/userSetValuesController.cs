@@ -10,7 +10,7 @@ using System.Web.Http;
 namespace POS_Server.Controllers
 {
     [RoutePrefix("api/userSetValues")]
-    public class userSetValuesController : ApiController
+    public class categoryuserController : ApiController
     {
         // GET api/<controller> get all userSetValues
         [HttpGet]
@@ -124,10 +124,10 @@ namespace POS_Server.Controllers
         }
 
 
-        // add or update medal 
+        // add or update 
         [HttpPost]
         [Route("Save")]
-        public String Save(string sObject)
+        public String Save(string newObject)
         {
             var re = Request;
             var headers = re.Headers;
@@ -142,11 +142,31 @@ namespace POS_Server.Controllers
             
             if (valid)
             {
-                sObject = sObject.Replace("\\", string.Empty);
-                sObject = sObject.Trim('"');
-                userSetValues Object = JsonConvert.DeserializeObject<userSetValues>(sObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                newObject = newObject.Replace("\\", string.Empty);
+                newObject = newObject.Trim('"');
+                userSetValues Object = JsonConvert.DeserializeObject<userSetValues>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
                 try
                 {
+                    if (Object.userId == 0 || Object.userId == null)
+                    {
+                        Nullable<int> id = null;
+                        Object.userId = id;
+                    }
+                    if (Object.valId == 0 || Object.valId == null)
+                    {
+                        Nullable<int> id = null;
+                        Object.valId = id;
+                    }
+                    if (Object.updateUserId == 0 || Object.updateUserId == null)
+                    {
+                        Nullable<int> id = null;
+                        Object.updateUserId = id;
+                    }
+                    if (Object.createUserId == 0 || Object.createUserId == null)
+                    {
+                        Nullable<int> id = null;
+                        Object.createUserId = id;
+                    }
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var sEntity = entity.Set<userSetValues>();
@@ -156,7 +176,7 @@ namespace POS_Server.Controllers
                             Object.updateDate = DateTime.Now;
                             Object.updateUserId = Object.createUserId;
                             sEntity.Add(Object);
-                          message = Object.valId.ToString();
+                             message = Object.valId.ToString();
                             entity.SaveChanges();
                         }
                         else
