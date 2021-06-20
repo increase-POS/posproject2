@@ -1,5 +1,6 @@
 ﻿using netoaster;
 using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,8 @@ namespace POS.View.accounts
 
         IEnumerable<Agent> agents;
         IEnumerable<User> users;
-
+        IEnumerable<CashTransfer> cashes;
+        IEnumerable<CashTransfer> cashQuery;
         IEnumerable<Bonds> bondsQuery;
         IEnumerable<Bonds> bondsQueryExcel;
         string searchText = "";
@@ -81,25 +83,54 @@ namespace POS.View.accounts
 
                 if (bond != null)
                 {
+                    if (bond.isRecieved == 1)
+                    {
+                        btn_pay.Content = MainWindow.resourcemanager.GetString("trPaid");
+                        btn_pay.IsEnabled = false;
+                    }
+                    else
+                    {
+                        btn_pay.Content = MainWindow.resourcemanager.GetString("trPay");
+                        btn_pay.IsEnabled = true;
+                    }
+
                     CashTransfer cash = await cashModel.GetByID(bond.cashTransId.Value);
 
-                    switch (cash.side)
+                 
+                    if (cash.side.Equals("v"))
                     {
-                        case "v":
-                            cb_depositorV.SelectedValue = cash.agentId.Value;
-                            cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
-                            cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
-                            break;
-                        case "c":
-                            cb_depositorC.SelectedValue = cash.agentId.Value;
-                            cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
-                            cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
-                            break;
-                        case "u":
-                            cb_depositorU.SelectedValue = cash.userId.Value;
-                            cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
-                            cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
-                            break;
+                        cb_depositorV.SelectedValue = cash.agentId.Value;
+                        cb_depositorV.Visibility = Visibility.Visible;
+                        cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+                        cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+                    }
+                 
+                    if (cash.side.Equals("c"))
+                    {
+                        cb_depositorC.Visibility = Visibility.Visible;
+                        cb_depositorC.SelectedValue = cash.agentId.Value;
+                        cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+                        cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+                    }
+                  
+                    if (cash.side.Equals("u"))
+                    {
+                        cb_depositorU.Visibility = Visibility.Visible;
+                        cb_depositorU.SelectedValue = cash.userId.Value;
+                        cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+                        cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+                    }
+                  
+                    if (bond.isRecieved == 1)
+                    {
+                        cashes = await cashModel.GetCashTransferAsync(bond.type , "all");
+                        cashQuery = cashes.Where(s => s.bondId == bond.bondId);
+
+                        cb_paymentProcessType.SelectedValue = cashQuery.ToList()[0].processType;
+                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                        {
+                            cb_card.SelectedValue = cashQuery.ToList()[0].cardId;
+                        }
                     }
 
                 }
@@ -110,52 +141,55 @@ namespace POS.View.accounts
         private async void Btn_pay_Click(object sender, RoutedEventArgs e)
         {//pay
             //update bond
+            bond.deserveDate = dp_deservecDate.SelectedDate;
             bond.isRecieved = 1;
 
             string s = await bondModel.Save(bond);
-            if (!s.Equals("0"))
-                MessageBox.Show("ok");
 
-            //save new cashtransfer
-            CashTransfer cash = new CashTransfer();
-
-            cash.transType = bond.type;
-            cash.posId = MainWindow.posID.Value;
-            cash.transNum = await SectionData.generateNumber(char.Parse(bond.type), "bnd");
-            cash.cash = decimal.Parse(tb_amount.Text);
-            cash.notes = tb_note.Text;
-            cash.createUserId = MainWindow.userID;
-            cash.side = "bo";
-
-            cash.docNum = tb_number.Text;
-            cash.processType = cb_paymentProcessType.SelectedValue.ToString();
-
-            if (cb_depositorV.IsVisible)
-                cash.agentId = Convert.ToInt32(cb_depositorV.SelectedValue);  
-
-            if (cb_depositorC.IsVisible)
-                cash.agentId = Convert.ToInt32(cb_depositorC.SelectedValue);
-
-            if (cb_depositorU.IsVisible)
-                cash.userId = Convert.ToInt32(cb_depositorU.SelectedValue);
-
-            if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
-
-            s = await cashModel.Save(cash);
-
-            if (!s.Equals("0"))
+            if (s.Equals("true"))
             {
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                Btn_clear_Click(null, null);
+                //save new cashtransfer
+                CashTransfer cash = new CashTransfer();
 
+                cash.transType = bond.type;
+                cash.posId = MainWindow.posID.Value;
+                cash.transNum = await SectionData.generateNumber(char.Parse(bond.type), "bnd");
+                cash.cash = decimal.Parse(tb_amount.Text);
+                cash.notes = tb_note.Text;
+                cash.createUserId = MainWindow.userID;
+                cash.side = "bnd";
+                cash.docNum = tb_number.Text;
+                cash.processType = cb_paymentProcessType.SelectedValue.ToString();
+                cash.bondId = bond.bondId;
 
-                //dg_paymentsAccounts.ItemsSource = await cashModel.GetCashTransferAsync("p", "v");
-                await RefreshBondsList();
-                Tb_search_TextChanged(null, null);
+                if (cb_depositorV.IsVisible)
+                    cash.agentId = Convert.ToInt32(cb_depositorV.SelectedValue);
+
+                if (cb_depositorC.IsVisible)
+                    cash.agentId = Convert.ToInt32(cb_depositorC.SelectedValue);
+
+                if (cb_depositorU.IsVisible)
+                    cash.userId = Convert.ToInt32(cb_depositorU.SelectedValue);
+
+                if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                    cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
+
+                s = await cashModel.Save(cash);
+
+                if (!s.Equals("0"))
+                {
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    Btn_clear_Click(null, null);
+
+                    await RefreshBondsList();
+                    Tb_search_TextChanged(null, null);
+                }
+                //else
+                //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -165,13 +199,15 @@ namespace POS.View.accounts
             this.Dispatcher.Invoke(() =>
             {
                 searchText = tb_search.Text;
-                bondsQuery = bonds.Where(s => (s.number.Contains(searchText)
-                || s.amount.ToString().Contains(searchText)
+                bondsQuery = bonds.Where(s => (
+                //s.number.Contains(searchText)
+                //||
+                s.amount.ToString().Contains(searchText)
                 || s.type.ToString().Contains(searchText)
                 )
                 //&& s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
                 //&& s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                //&& s.isRecieved == tgl_bondState
+                && s.isRecieved == tgl_bondState
                 );
 
             });
@@ -283,18 +319,18 @@ namespace POS.View.accounts
 
         private void Btn_image_Click(object sender, RoutedEventArgs e)
         {//image
-            //if (cashtrans != null || cashtrans.cashTransId != 0)
-            //{
-            //    //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+            if (bonds != null || bond.bondId != 0)
+            {
+                //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
 
-            //    wd_uploadImage w = new wd_uploadImage();
+                wd_uploadImage w = new wd_uploadImage();
 
-            //    w.tableName = "cashTransfer";
-            //    w.tableId = cashtrans.cashTransId;
-            //    w.docNum = cashtrans.docNum;
-            //    w.ShowDialog();
-            //    // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
-            //}
+                w.tableName = "bondes";
+                w.tableId = bond.bondId;
+                w.docNum = bond.number;
+                w.ShowDialog();
+                // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
+            }
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -343,14 +379,59 @@ namespace POS.View.accounts
             dp_endSearchDate.SelectedDate = DateTime.Now;
             dp_startSearchDate.SelectedDate = DateTime.Now;
 
-            //await RefreshBondsList();
-            //Tb_search_TextChanged(null, null);
-            dg_bonds.ItemsSource =await bondModel.GetAll();
+            await RefreshBondsList();
+            Tb_search_TextChanged(null, null);
 
         }
 
         private void translate()
         {
+            txt_bonds.Text = MainWindow.resourcemanager.GetString("trBonds");
+            txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
+            txt_isRecieved.Text = MainWindow.resourcemanager.GetString("trReceivedToggle");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_number, MainWindow.resourcemanager.GetString("trDocNumTooltip"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_depositorV, MainWindow.resourcemanager.GetString("trDepositorHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_depositorC, MainWindow.resourcemanager.GetString("trDepositorHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_depositorU, MainWindow.resourcemanager.GetString("trDepositorHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentProcessType, MainWindow.resourcemanager.GetString("trPaymentTypeHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_amount, MainWindow.resourcemanager.GetString("trCashHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_deservecDate, MainWindow.resourcemanager.GetString("trDocDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
+
+            dg_bonds.Columns[0].Header = MainWindow.resourcemanager.GetString("trDocNumTooltip");
+            dg_bonds.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
+            dg_bonds.Columns[2].Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
+            dg_bonds.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            dg_bonds.Columns[4].Header = MainWindow.resourcemanager.GetString("trDocDateTooltip");
+
+            tt_number.Content = MainWindow.resourcemanager.GetString("trDocNumTooltip");
+            tt_depositorV.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
+            tt_depositorC.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
+            tt_depositorU.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
+            tt_paymentType.Content = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
+            tt_amount.Content = MainWindow.resourcemanager.GetString("trCashTooltip");
+            tt_deserveDate.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
+            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+            tt_startDate.Content = MainWindow.resourcemanager.GetString("trStartDate");
+            tt_endDate.Content = MainWindow.resourcemanager.GetString("trEndDate");
+
+            btn_pay.Content = MainWindow.resourcemanager.GetString("trPay");
+            btn_image.Content = MainWindow.resourcemanager.GetString("trImage");
+            btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
+            btn_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
+            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdf");
         }
 
         void RefreshBondView()

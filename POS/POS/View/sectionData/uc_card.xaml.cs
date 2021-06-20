@@ -22,6 +22,7 @@ using System.IO;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using POS.View.windows;
+using POS.View.sectionData.Charts;
 
 namespace POS.View.sectionData
 {
@@ -546,5 +547,12 @@ namespace POS.View.sectionData
             */
         }
 
+        private void btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            win_lvc win = new win_lvc(cardsQuery, 6);
+            win.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
+        }
     }
 }

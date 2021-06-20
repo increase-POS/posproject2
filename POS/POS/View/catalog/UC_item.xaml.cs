@@ -330,7 +330,7 @@ namespace POS.View
                     if (!checkBarcodeValidity(barcodeString))
                         barcodeString = generateRandomBarcode();
                 }
-                tb_barcode.Text += barcodeString;
+                tb_barcode.Text = barcodeString;
             }
             drawBarcode(tb_barcode.Text);
         }

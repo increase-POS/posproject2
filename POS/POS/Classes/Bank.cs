@@ -12,7 +12,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class Bank
+    public class Bank
     {
         public int bankId { get; set; }
         public string name { get; set; }

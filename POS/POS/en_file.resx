@@ -1239,4 +1239,22 @@
   <data name="trSection" xml:space="preserve">
     <value>Section</value>
   </data>
+  <data name="trBonds" xml:space="preserve">
+    <value>Bonds</value>
+  </data>
+  <data name="trErrorEmptyDepositFromToolTip" xml:space="preserve">
+    <value>Depositor cann't be empty</value>
+  </data>
+  <data name="trErrorEmptyDepositorToolTip" xml:space="preserve">
+    <value>Depositor cann't be empty</value>
+  </data>
+  <data name="trPaid" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="trPay" xml:space="preserve">
+    <value>Pay</value>
+  </data>
+  <data name="trReceivedToggle" xml:space="preserve">
+    <value>Received</value>
+  </data>
 </root>

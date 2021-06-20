@@ -252,8 +252,23 @@
     <Compile Include="View\sales\uc_quotations.xaml.cs">
       <DependentUpon>uc_quotations.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\sales\uc_salesStatistic.xaml.cs">
+      <DependentUpon>uc_salesStatistic.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\sectionData\uc_card.xaml.cs">
       <DependentUpon>uc_card.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\sectionData\win_lvc.xaml.cs">
+      <DependentUpon>win_lvc.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\uc_general.xaml.cs">
+      <DependentUpon>uc_general.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\uc_permissions.xaml.cs">
+      <DependentUpon>uc_permissions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\uc_settings.xaml.cs">
+      <DependentUpon>uc_settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\storage\uc_itemsDestroy.xaml.cs">
       <DependentUpon>uc_itemsDestroy.xaml</DependentUpon>
@@ -343,6 +358,9 @@
     </Compile>
     <Compile Include="View\windows\wd_acceptUser.xaml.cs">
       <DependentUpon>wd_acceptUser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_companyInfo.xaml.cs">
+      <DependentUpon>wd_companyInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\wd_customersList.xaml.cs">
       <DependentUpon>wd_customersList.xaml</DependentUpon>
@@ -458,9 +476,29 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\sales\uc_salesStatistic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\sectionData\uc_card.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\sectionData\win_lvc.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Settings\uc_general.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Settings\uc_permissions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings\uc_settings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\storage\uc_itemsDestroy.xaml">
       <SubType>Designer</SubType>
@@ -583,6 +621,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_acceptUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_companyInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

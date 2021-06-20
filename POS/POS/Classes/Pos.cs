@@ -11,7 +11,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class Pos
+   public class Pos
     {
         public int posId { get; set; }
         public string code { get; set; }
@@ -26,6 +26,7 @@ namespace POS.Classes
         public Boolean canDelete { get; set; }
         public string note { get; set; }
         public string branchName { get; set; }
+        public string branchCode { get; set; }
         public Nullable<decimal> balanceAll { get; set; }
 
         public async Task<List<Pos>> GetPosAsync()

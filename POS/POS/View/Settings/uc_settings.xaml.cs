@@ -88,6 +88,7 @@ namespace POS.View.Settings
         {
             refreashBachgroundClick(btn_permission);
             grid_main.Children.Clear();
+            grid_main.Children.Add(uc_permissions.Instance);
         }
     }
 }

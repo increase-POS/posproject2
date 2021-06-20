@@ -22,6 +22,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using POS.View;
 using POS.View.accounts;
+using POS.View.Settings;
 using WPFTabTip;
 
 namespace POS
@@ -406,7 +407,8 @@ namespace POS
             FN_pathVisible(path_openSettings);
             fn_ColorIconRefreash(path_iconSettings);
             isHome = true;
-
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_settings.Instance);
         }
 
         private void BTN_storage_Click(object sender, RoutedEventArgs e)

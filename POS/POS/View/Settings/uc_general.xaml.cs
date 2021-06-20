@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POS.View.windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,14 @@ namespace POS.View.Settings
         public uc_general()
         {
             InitializeComponent();
+        }
+
+        private void Btn_companyInfo_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_companyInfo w = new wd_companyInfo();
+            w.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
         }
     }
 }

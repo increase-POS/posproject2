@@ -22,6 +22,7 @@ using System.IO;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using POS.View.windows;
+using POS.View.sectionData.Charts;
 
 namespace POS.View
 {
@@ -57,8 +58,8 @@ namespace POS.View
                 return _instance;
             }
         }
-        public UC_posAccounts() 
-         {
+        public UC_posAccounts()
+        {
             InitializeComponent();
 
             if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
@@ -203,7 +204,7 @@ namespace POS.View
         {
             txt_pos.Text = MainWindow.resourcemanager.GetString("trPOS");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-         //   MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectPosNameHint"));
+            //   MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trSelectPosNameHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trPosNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trPosCodeHint"));
@@ -276,7 +277,7 @@ namespace POS.View
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorCode.Visibility = Visibility.Collapsed;
             p_errorSelectBranch.Visibility = Visibility.Collapsed;
-            
+
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             cb_branch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
@@ -419,7 +420,7 @@ namespace POS.View
                 Btn_clear_Click(sender, e);
 
             }
-           
+
 
         }
 
@@ -428,11 +429,11 @@ namespace POS.View
             pos.isActive = 1;
 
             string s = await posModel.savePos(pos);
-             
+
             if (s.Equals("Pos Is Updated Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             await RefreshPosList();
             Tb_search_TextChanged(null, null);
@@ -584,6 +585,14 @@ namespace POS.View
             Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
             if (!regex.IsMatch(e.Text))
                 e.Handled = true;
+        }
+
+        private void btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            win_lvc win = new win_lvc(possQuery, 5);
+            win.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
         }
     }
 }

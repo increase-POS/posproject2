@@ -61,7 +61,7 @@ namespace POS.Classes
         }
 
     }
-    class Branch
+    public class Branch
     {
         public int branchId { get; set; }
         public string code { get; set; }

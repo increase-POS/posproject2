@@ -29,6 +29,8 @@ using Microsoft.Reporting.WinForms;
 
 using System.Data;
 using POS.View.windows;
+using POS.View.sectionData;
+using POS.View.sectionData.Charts;
 
 namespace POS.View
 {
@@ -140,9 +142,9 @@ namespace POS.View
             cb_areaFax.SelectedValuePath = "countryId";
             cb_areaFax.DisplayMemberPath = "code";
 
-            cb_areaMobile.SelectedIndex = 8;
-            cb_areaPhone.SelectedIndex = 8;
-            cb_areaFax.SelectedIndex = 8;
+            //cb_areaMobile.SelectedIndex = 8;
+            //cb_areaPhone.SelectedIndex = 8;
+            //cb_areaFax.SelectedIndex = 8;
         }
        
         async Task<IEnumerable<City>> RefreshCity()
@@ -221,9 +223,9 @@ namespace POS.View
             tb_mobile.Clear();
             tb_upperLimit.Clear();
             tb_phone.Clear();
-            cb_areaMobile.SelectedIndex = 8;
-            cb_areaPhone.SelectedIndex = 8;
-            cb_areaFax.SelectedIndex = 8;
+            //cb_areaMobile.SelectedIndex = 8;
+            //cb_areaPhone.SelectedIndex = 8;
+            //cb_areaFax.SelectedIndex = 8;
             cb_areaPhoneLocal.SelectedIndex = 0;
             cb_areaFaxLocal.SelectedIndex = 0;
             //clear img
@@ -1193,6 +1195,14 @@ namespace POS.View
         private void Grid_containerCard_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+        }
+
+        private void btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            win_lvc win = new win_lvc(agentsQuery,1,true);
+            win.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
         }
     }
 }

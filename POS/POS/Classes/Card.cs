@@ -13,7 +13,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class Card
+    public class Card
     {
         public int cardId { get; set; }
         public string name { get; set; }

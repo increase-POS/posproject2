@@ -69,8 +69,7 @@ namespace POS.View.sales
 
         Coupon couponModel = new Coupon();
         IEnumerable<Coupon> coupons;
-        List<Coupon> selectedCoupons = new List<Coupon>();
-        List<CouponInvoice> invCouponList = new List<CouponInvoice>();
+        List<CouponInvoice> selectedCoupons = new List<CouponInvoice>();
 
         Pos posModel = new Pos();
         Pos pos;
@@ -260,8 +259,13 @@ namespace POS.View.sales
                 couponModel = coupons.ToList().Find(c => c.code == tb_coupon.Text);
                 if (couponModel != null)
                 {
+                    CouponInvoice ci = new CouponInvoice();
+                    ci.couponId = couponModel.cId;
+                    ci.discountType = byte.Parse(couponModel.discountType);
+                    ci.discountValue = couponModel.discountValue;
+
                     lst_coupons.Items.Add(couponModel.code);
-                    selectedCoupons.Add(couponModel);
+                    selectedCoupons.Add(ci);
                     refreshTotalValue();
                 }
                 tb_coupon.Clear();
@@ -457,21 +461,12 @@ namespace POS.View.sales
             if (invoiceId != 0)
             {
                 #region save coupns on invoice
-                CouponInvoice invCoupon;
-                invCouponList.Clear();
-                for (int i = 0; i < selectedCoupons.Count; i++)
+                foreach (CouponInvoice ci in selectedCoupons)
                 {
-                    invCoupon = new CouponInvoice();
-
-                    invCoupon.InvoiceId = invoiceId;
-                    invCoupon.couponId = selectedCoupons[i].cId;
-                    invCoupon.discountValue = selectedCoupons[i].discountValue;
-                    invCoupon.discountType = Byte.Parse(selectedCoupons[i].discountType);
-                    invCoupon.createUserId = MainWindow.userID;
-
-                    invCouponList.Add(invCoupon);
+                    ci.InvoiceId = invoiceId;
+                    ci.createUserId = MainWindow.userID;
                 }
-                await invoiceModel.saveInvoiceCoupons(invCouponList, invoiceId);
+                await invoiceModel.saveInvoiceCoupons(selectedCoupons, invoiceId);
                 #endregion
                 // add invoice details
                 invoiceItems = new List<ItemTransfer>();
@@ -522,9 +517,9 @@ namespace POS.View.sales
         {
             #region calculate discount value
             _Discount = 0;
-            foreach (Coupon coupon in selectedCoupons)
+            foreach (CouponInvoice coupon in selectedCoupons)
             {
-                string discountType = coupon.discountType;
+                string discountType = coupon.discountType.ToString();
                 decimal discountValue = (decimal)coupon.discountValue;
                 if (discountType == "2")
                     discountValue = SectionData.calcPercentage(_Sum, discountValue);
@@ -800,12 +795,10 @@ namespace POS.View.sales
         }
         private async Task getInvoiceCoupons(int invoiceId)
         {
-            invCouponList = await invoiceModel.GetInvoiceCoupons(invoiceId);
-            foreach (CouponInvoice invCoupon in invCouponList)
+            selectedCoupons = await invoiceModel.GetInvoiceCoupons(invoiceId);
+            foreach (CouponInvoice invCoupon in selectedCoupons)
             {
-                var c = coupons.ToList().Find(x => x.cId == invCoupon.couponId);
-                selectedCoupons.Add(c);
-                lst_coupons.Items.Add(c.code);
+                lst_coupons.Items.Add(invCoupon.couponCode);
             }
         }
         private async Task buildInvoiceDetails(int invoiceId)

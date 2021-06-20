@@ -24,6 +24,7 @@ using System.Windows.Resources;
 using System.Windows.Shapes;
 using Microsoft.Reporting.WinForms;
 using POS.View.windows;
+using POS.View.sectionData.Charts;
 
 namespace POS.View
 {
@@ -1292,6 +1293,14 @@ namespace POS.View
         private void Grid_containerCard_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             RefrishItemsCard(pagination.refrishPagination(usersQuery, pageIndex, btns));
+        }
+
+        private void btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            win_lvc win = new win_lvc(usersQuery, 3);
+            win.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
         }
     }
 }

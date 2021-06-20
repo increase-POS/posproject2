@@ -1943,3 +1943,15 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_customersList.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_items.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_locationAddRange.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\winLogIn.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_general.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_settings.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_general.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_settings.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_companyInfo.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_companyInfo.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_permissions.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_salesStatistic.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\sectionData\win_lvc.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_salesStatistic.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\sectionData\win_lvc.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_permissions.baml

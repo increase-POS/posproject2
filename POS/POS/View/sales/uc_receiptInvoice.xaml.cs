@@ -57,8 +57,8 @@ namespace POS.View
         IEnumerable<Card> cards;
         // IEnumerable<Item> itemsQuery;
 
-        Branch branchModel = new Branch();
-        Branch branch;
+        //Branch branchModel = new Branch();
+        //Branch branch;
 
         Agent agentModel = new Agent();
         IEnumerable<Agent> customers;
@@ -72,8 +72,7 @@ namespace POS.View
 
         Coupon couponModel = new Coupon();
         IEnumerable<Coupon> coupons;
-        List<Coupon> selectedCoupons = new List<Coupon>();
-        List<CouponInvoice> invCouponList = new List<CouponInvoice>();
+        List<CouponInvoice> selectedCoupons = new List<CouponInvoice>();
 
         Pos posModel = new Pos();
         Pos pos;
@@ -183,13 +182,14 @@ namespace POS.View
             translate();
             catigoriesAndItemsView.ucReceiptInvoice = this;
 
+            pos = await posModel.getPosById(MainWindow.posID.Value);
+
             await RefrishItems();
             await RefrishCustomers();
             await fillBarcodeList();
             await fillCouponsList();
 
-            pos = await posModel.getPosById(MainWindow.posID.Value);
-            branch = await branchModel.getBranchById((int)pos.branchId);
+            
             #region fill payment type
             var typelist = new[] {
             new { Text = MainWindow.resourcemanager.GetString("trCash")       , Value = "cash" },
@@ -420,14 +420,10 @@ namespace POS.View
                 invoice.invoiceId = 0;              
             }
             if (invoice.invType != "s" || invoice.invoiceId == 0)
-            {
-                invoice.invType = invType;
+            {              
                 invoice.posId = MainWindow.posID;
                 if (!tb_discount.Text.Equals(""))
                     invoice.discountValue = decimal.Parse(tb_discount.Text);
-
-                //if (cb_typeDiscount.SelectedIndex != -1)
-                //    invoice.discountType = cb_typeDiscount.SelectedValue.ToString();
 
                 invoice.total = _Sum;
                 invoice.totalNet = decimal.Parse(tb_total.Text);
@@ -451,8 +447,8 @@ namespace POS.View
                 if (invoice.invNumber == null)
                 {
                     string storeCode = "";
-                    if (branch != null)
-                        storeCode = branch.code;
+                    if (pos != null )
+                        storeCode = pos.branchCode;
 
                     string invoiceCode = "SI";
                     int sequence = await invoiceModel.GetLastNumOfInv("SI");
@@ -499,88 +495,99 @@ namespace POS.View
                     }                    
                     invoice.paid = paid;
                     invoice.deserved = deserved;
-                }
 
+                    if (invoice.invType == "q")
+                        invoice.isApproved = 1;     
+                }
+                invoice.invType = invType;
                 // save invoice in DB
                 int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
 
                 if (invoiceId != 0)
                 {
-                    // edit vendor balance , add cach transfer
-                    if (invType == "s" && paid > 0)
+                    // add invoice details
+                    invoiceItems = new List<ItemTransfer>();
+                    //List<ItemLocation> itemLocList = new List<ItemLocation>();
+                    ItemTransfer itemT;
+                    //ItemLocation itemLoc;
+                    for (int i = 0; i < billDetails.Count; i++)
                     {
-                        switch (cb_paymentProcessType.SelectedIndex)
+                        itemT = new ItemTransfer();
+
+                        itemT.invoiceId = invoiceId;
+                        itemT.quantity = billDetails[i].Count;
+                        itemT.price = billDetails[i].Price;
+                        itemT.itemUnitId = billDetails[i].itemUnitId;
+                        itemT.createUserId = MainWindow.userID;
+
+                        invoiceItems.Add(itemT);
+                    }
+                    await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
+                    
+                    // edit vendor balance , add cach transfer
+                    if (invType == "s")
+                    {
+                       // await invoiceModel.decreaseAmounts(invoiceItems,MainWindow.branchID.Value); // update item quantity in DB
+                        if (paid > 0)
                         {
-                            
-                            case 0:// cash: update pos balance
-                                
-                                pos.balance += balance;
-                                await pos.savePos(pos);
-                                break;
-                            case 1:// balance: update customer balance
-                                await agentModel.updateBalance((int)invoice.agentId, balance);//update customer balance
-                                break;
+                            switch (cb_paymentProcessType.SelectedIndex)
+                            {
+
+                                case 0:// cash: update pos balance
+
+                                    pos.balance += balance;
+                                    await pos.savePos(pos);
+                                    break;
+                                case 1:// balance: update customer balance
+                                    await agentModel.updateBalance((int)invoice.agentId, balance);//update customer balance
+                                    break;
+                            }
+
+                            // cach transfer model
+                            CashTransfer cashTrasnfer = new CashTransfer();
+                            cashTrasnfer.transType = "d"; //deposit
+                            cashTrasnfer.posId = MainWindow.posID;
+                            cashTrasnfer.agentId = invoice.agentId;
+                            cashTrasnfer.invId = invoiceId;
+                            cashTrasnfer.transNum = SectionData.generateNumber('d', "c").ToString();
+                            cashTrasnfer.cash = paid;
+                            cashTrasnfer.side = "c"; // customer
+                            cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
+                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                            {
+                                cashTrasnfer.cardId = Convert.ToInt32(cb_card.SelectedValue);
+                                cashTrasnfer.docNum = tb_processNum.Text;
+                            }
+                            //  cashTrasnfer
+                            cashTrasnfer.createUserId = MainWindow.userID;
+                            await cashTrasnfer.Save(cashTrasnfer); //add cash transfer    
                         }
-                       
-                        // cach transfer model
-                        CashTransfer cashTrasnfer = new CashTransfer();
-                        cashTrasnfer.transType = "d"; //deposit
-                        cashTrasnfer.posId = MainWindow.posID;
-                        cashTrasnfer.agentId = invoice.agentId;
-                        cashTrasnfer.invId = invoiceId;
-                        cashTrasnfer.transNum = SectionData.generateNumber('d', "c").ToString();
-                        cashTrasnfer.cash = paid;
-                        cashTrasnfer.side = "c"; // customer
-                        cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
-                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                        {
-                            cashTrasnfer.cardId = Convert.ToInt32(cb_card.SelectedValue);
-                            cashTrasnfer.docNum = tb_processNum.Text;
-                        }
-                        //  cashTrasnfer
-                        cashTrasnfer.createUserId = MainWindow.userID;
-                        await cashTrasnfer.Save(cashTrasnfer); //add cash transfer                      
+
+                        //update items quantity
                     }
 
                     #region save coupns on invoice
-                    CouponInvoice invCoupon;
-                    invCouponList.Clear();
-                    for (int i = 0; i < selectedCoupons.Count; i++)
+                    //CouponInvoice invCoupon;
+                    //invCouponList.Clear();
+                    foreach (CouponInvoice ci in selectedCoupons)
                     {
-                        invCoupon = new CouponInvoice();
+                    //    invCoupon = new CouponInvoice();
 
-                        invCoupon.InvoiceId = invoiceId;
-                        invCoupon.couponId = selectedCoupons[i].cId;
-                        invCoupon.discountValue = selectedCoupons[i].discountValue;
-                        invCoupon.discountType = Byte.Parse(selectedCoupons[i].discountType);
-                        invCoupon.createUserId = MainWindow.userID;
+                        ci.InvoiceId = invoiceId;
+                    //    invCoupon.couponId = selectedCoupons[i].cId;
+                    //    invCoupon.discountValue = selectedCoupons[i].discountValue;
+                    //    invCoupon.discountType = Byte.Parse(selectedCoupons[i].discountType);
+                        ci.createUserId = MainWindow.userID;
 
-                        invCouponList.Add(invCoupon);
+                    //    invCouponList.Add(invCoupon);
                     }
-                    await invoiceModel.saveInvoiceCoupons(invCouponList, invoiceId);
+                    await invoiceModel.saveInvoiceCoupons(selectedCoupons, invoiceId);
                     #endregion
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                 }
                 else
                     Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-
-                // add invoice details
-                invoiceItems = new List<ItemTransfer>();
-                ItemTransfer itemT;
-                for (int i = 0; i < billDetails.Count; i++)
-                {
-                    itemT = new ItemTransfer();
-
-                    itemT.invoiceId = invoiceId;
-                    itemT.quantity = billDetails[i].Count;
-                    itemT.price = billDetails[i].Price;
-                    itemT.itemUnitId = billDetails[i].itemUnitId;
-                    itemT.createUserId = MainWindow.userID;
-
-                    invoiceItems.Add(itemT);
-                }
-                await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
+   
             }
             clearInvoice();
         }
@@ -703,12 +710,11 @@ namespace POS.View
         }
         private async Task getInvoiceCoupons(int invoiceId)
         {
-            invCouponList = await invoiceModel.GetInvoiceCoupons(invoiceId);
-            foreach (CouponInvoice invCoupon in invCouponList)
+            selectedCoupons = await invoiceModel.GetInvoiceCoupons(invoiceId);
+            foreach (CouponInvoice invCoupon in selectedCoupons)
             {
-              var c = coupons.ToList().Find(x => x.cId == invCoupon.couponId);
-                selectedCoupons.Add(c);
-                lst_coupons.Items.Add(c.code);
+               // var c = coupons.ToList().Find(x => x.cId == invCoupon.couponId);
+                lst_coupons.Items.Add(invCoupon.couponCode);
             }
         }
         private async void Btn_invoices_Click(object sender, RoutedEventArgs e)
@@ -866,11 +872,11 @@ namespace POS.View
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
                     tb_discount.IsEnabled = false;
-                    //cb_typeDiscount.IsEnabled = false;
                     btn_save.IsEnabled = true;
                     btn_updateCustomer.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
                     cb_card.IsEnabled = false;
+                    tb_processNum.IsEnabled = false;
                     tb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     break;
@@ -887,6 +893,7 @@ namespace POS.View
                     btn_updateCustomer.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = true;
                     cb_card.IsEnabled = true;
+                    tb_processNum.IsEnabled = true;
                     tb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
                     break;
@@ -903,6 +910,24 @@ namespace POS.View
                     btn_updateCustomer.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
                     cb_card.IsEnabled = false;
+                    tb_processNum.IsEnabled = false;
+                    tb_coupon.IsEnabled = false;
+                    btn_clearCoupon.IsEnabled = false;
+                    break;
+                case "q": //quontation invoice
+                    dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
+                    dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                    dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                    cb_customer.IsEnabled = false;
+                    dp_desrvedDate.IsEnabled = false;
+                    tb_note.IsEnabled = false;
+                    tb_barcode.IsEnabled = false;
+                    tb_discount.IsEnabled = false;
+                    btn_save.IsEnabled = false;
+                    btn_updateCustomer.IsEnabled = false;
+                    cb_paymentProcessType.IsEnabled = true;
+                    cb_card.IsEnabled = true;
+                    tb_processNum.IsEnabled = true;
                     tb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     break;
@@ -988,9 +1013,9 @@ namespace POS.View
         {
             #region calculate discount value
             _Discount = 0;
-            foreach (Coupon coupon in selectedCoupons)
+            foreach (CouponInvoice coupon in selectedCoupons)
             {
-                string discountType = coupon.discountType;
+                string discountType = coupon.discountType.ToString();
                 decimal discountValue = (decimal)coupon.discountValue;
                 if (discountType == "2")
                     discountValue = SectionData.calcPercentage(_Sum, discountValue);
@@ -1585,19 +1610,13 @@ namespace POS.View
                 couponModel = coupons.ToList().Find(c => c.code == tb_coupon.Text);
                 if(couponModel != null)
                 {
-                    //if (billDetails.Count > 0)
-                    //{
-                    //    string discountType = couponModel.discountType;
-                    //    decimal discountValue = (decimal)couponModel.discountValue;
-                    //    if (discountType == "2")
-                    //        discountValue = SectionData.calcPercentage(_Sum, discountValue);
-                    //    _Discount += discountValue;
-                    //    tb_discount.Text = _Discount.ToString();
-                    //    refreshTotalValue();
-                    //}
+                    CouponInvoice ci = new CouponInvoice();
+                    ci.couponId = couponModel.cId;
+                    ci.discountType = byte.Parse( couponModel.discountType);
+                    ci.discountValue = couponModel.discountValue;
 
                     lst_coupons.Items.Add(couponModel.code);
-                    selectedCoupons.Add(couponModel);
+                    selectedCoupons.Add(ci);
                     refreshTotalValue();
                 }
                 tb_coupon.Clear();

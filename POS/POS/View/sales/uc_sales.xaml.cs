@@ -107,6 +107,8 @@ namespace POS.View
         private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_statistic);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_salesStatistic.Instance);
         }
         private void Btn_coupon_Click(object sender, RoutedEventArgs e)
         {

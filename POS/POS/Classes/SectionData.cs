@@ -291,8 +291,8 @@ namespace POS.Classes
 
         public static void clearValidate(TextBox tb , Path p_error)
         {
-            //tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            //p_error.Visibility = Visibility.Collapsed;
+            tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            p_error.Visibility = Visibility.Collapsed;
         }
 
         public static void clearPasswordValidate(PasswordBox pb, Path p_error)
@@ -571,6 +571,27 @@ namespace POS.Classes
             string str3 = "";
             cashes = await cashModel.GetCashTransferAsync(Convert.ToString(opperationType), side);
             str3 = (cashes.Count()+1).ToString();
+
+            return str1 + str2 + str3;
+        }
+
+        public static async Task<string> generateNumberBond(char opperationType, string side)
+        {
+            IEnumerable<CashTransfer> cashes;
+            //IEnumerable<CashTransfer> cashesQuery;
+
+            Branch b = new Branch();
+            b = await branchModel.getBranchById(MainWindow.branchID.Value);
+
+            string str1 = b.code;
+
+            string str2 = opperationType + side; 
+
+            string str3 = "";
+            cashes = await cashModel.GetCashTransferAsync(Convert.ToString(opperationType), "all");
+            cashes = cashes.Where(s => s.processType == "doc");
+
+            str3 = (cashes.Count() + 1).ToString();
 
             return str1 + str2 + str3;
         }

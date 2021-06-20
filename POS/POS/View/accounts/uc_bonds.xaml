@@ -168,7 +168,7 @@
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                 </materialDesign:PackIcon.ToolTip>
                             </materialDesign:PackIcon>
                         </Button>
@@ -183,7 +183,7 @@
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                 </materialDesign:PackIcon.ToolTip>
                             </materialDesign:PackIcon>
                         </Button>
@@ -227,7 +227,7 @@
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                     </Path.ToolTip>
                                 </Path>
                             </Grid>
@@ -245,7 +245,7 @@
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                 </Path.ToolTip>
                             </Path>
                         </Button>
@@ -256,7 +256,7 @@
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,25,0,0"
-                                              VerticalOffset="-20"/>
+                                              VerticalOffset="-45"/>
                             </TextBlock.ToolTip>
                         </TextBlock>
 
@@ -339,6 +339,7 @@
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      Text="{Binding number, Mode=OneWay}" 
+                                     IsReadOnly="True"
                                      Padding="10,0,5,0" BorderThickness="1" 
                                      materialDesign:HintAssist.Hint="Number..."  
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12"
@@ -352,7 +353,7 @@
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
-                                                          VerticalOffset="20"/>
+                                                          VerticalOffset="30"/>
                             </TextBox.ToolTip>
                         </TextBox>
                         <Path x:Name="p_errorNumber" Grid.Row="1" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
@@ -378,7 +379,7 @@
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
-                                                          VerticalOffset="20"/>
+                                                          VerticalOffset="30"/>
                             </ComboBox.ToolTip>
                         </ComboBox>
                         <ComboBox x:Name="cb_depositorC"  Grid.Row="2"
@@ -434,6 +435,7 @@
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12"
                                      Background="#f8f8f8" BorderBrush="#f8f8f8"
                                      Height="40"   Margin="10,5,10,5"
+                                     IsReadOnly="True"
                                      TextChanged="Tb_validateEmptyTextChange" 
                                      LostFocus="Tb_validateEmptyLostFocus"
                                      PreviewKeyDown="PreventSpaces" >
@@ -442,7 +444,7 @@
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
-                                                          VerticalOffset="20"/>
+                                                          VerticalOffset="30"/>
                             </TextBox.ToolTip>
                         </TextBox>
                         <Path x:Name="p_errorAmount" Grid.Row="3" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
@@ -470,7 +472,7 @@
                                                          Placement="left" 
                                                          HorizontalOffset="35"
                                                          PlacementRectangle="50,0,0,0"
-                                                         VerticalOffset="20"/>
+                                                         VerticalOffset="30"/>
                                 </DatePicker.ToolTip>
                             </DatePicker>
                         <Path Grid.Row="5" x:Name="p_errorDocDate" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
@@ -488,6 +490,7 @@
                                   materialDesign:HintAssist.Hint="Payment Process Type..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                   Height="40" Margin="10,5,10,5"
+                                  IsReadOnly="True"
                                   BorderBrush="#737373" BorderThickness="0" 
                                   LostFocus="Tb_validateEmptyLostFocus" 
                                   SelectionChanged="Cb_paymentProcessType_SelectionChanged">
@@ -496,7 +499,7 @@
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
-                                                          VerticalOffset="20"/>
+                                                          VerticalOffset="30"/>
                             </ComboBox.ToolTip>
                         </ComboBox>
                         <Path Fill="#E81123" x:Name="p_errorpaymentProcessType" Grid.Row="5" Stretch="Fill" Margin="5,5,15,5"
@@ -514,6 +517,7 @@
                                   Grid.Column="0" Height="40"  Margin="10,5,10,5"
                                   BorderBrush="#737373" BorderThickness="0" 
                                   Visibility="Collapsed"
+                                  IsReadOnly="True"
                                   LostFocus="Tb_validateEmptyLostFocus">
                             <ComboBox.ToolTip>
                                 <ToolTip x:Name="tt_card" Content="Card"
@@ -546,7 +550,7 @@
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
-                                                          VerticalOffset="20"/>
+                                                          VerticalOffset="30"/>
                             </TextBox.ToolTip>
                         </TextBox>
                         <Path Fill="#E81123" Grid.Row="7" Stretch="Fill" Margin="5,5,15,5"

@@ -372,8 +372,8 @@ namespace POS.View.accounts
 
             //chk enough money
             if ((!tb_cash.Text.Equals("")) && (!await chkEnoughBalance(decimal.Parse(tb_cash.Text))))
-                SectionData.showTextBoxValidate(tb_cash, p_errorCash, tt_errorCash, "trPopNotEnoughBalance");  
-            
+                SectionData.showTextBoxValidate(tb_cash, p_errorCash, tt_errorCash, "trPopNotEnoughBalance");
+
             //chk empty card 
             if (cb_card.IsVisible)
                 SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
@@ -417,8 +417,8 @@ namespace POS.View.accounts
                 if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
                     cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
 
-                //if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc")) 
-                //    cash.docNum = await SectionData.generateNumberBond('p', cb_depositTo.SelectedValue.ToString());
+                if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
+                    cash.docNum = await SectionData.generateNumberBond('p', "bnd");
 
                 if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
                     cash.docNum = tb_docNumCheque.Text;
@@ -442,6 +442,7 @@ namespace POS.View.accounts
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
+
         }
 
         private async Task<bool> chkEnoughBalance(decimal ammount)
@@ -468,9 +469,6 @@ namespace POS.View.accounts
 
             string s = await bondModel.Save(bond);
 
-            //if (s.Equals("true"))
-            //    MessageBox.Show("ok");
-            //else MessageBox.Show("error");
         }
 
         private async void calcBalance(decimal ammount, string recipient, int agentid)

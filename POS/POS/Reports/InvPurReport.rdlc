@@ -678,7 +678,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Total:</Value>
+                    <Value>TOTAL:</Value>
                     <Style>
                       <FontSize>11pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -701,6 +701,7 @@
                 <Style>Solid</Style>
               </Border>
               <BackgroundColor>WhiteSmoke</BackgroundColor>
+              <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -717,6 +718,7 @@
                     <Value>=Parameters!totalNet.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
+                      <FontSize>11pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -735,6 +737,7 @@
                 <Style>Solid</Style>
               </Border>
               <BackgroundColor>WhiteSmoke</BackgroundColor>
+              <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -936,7 +939,7 @@
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>5.66554cm</Top>
             <Left>4.04136cm</Left>
-            <Height>0.67938cm</Height>
+            <Height>0.71114cm</Height>
             <Width>4.61194cm</Width>
             <ZIndex>12</ZIndex>
             <Style>

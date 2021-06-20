@@ -22,6 +22,7 @@ using System.IO;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using POS.View.windows;
+using POS.View.sectionData.Charts;
 
 namespace POS.View
 {
@@ -809,6 +810,14 @@ namespace POS.View
         private void Btn_stores_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            win_lvc win = new win_lvc(branchesQuery,4,true);
+            win.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
         }
     }
 }
