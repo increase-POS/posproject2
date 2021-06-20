@@ -1,0 +1,355 @@
+﻿<UserControl x:Class="POS.View.Settings.uc_general"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:POS.View.Settings"
+             mc:Ignorable="d" 
+             d:DesignHeight="1000" d:DesignWidth="1300">
+    <ScrollViewer>
+        <WrapPanel Margin="0,15,10,15" HorizontalAlignment="Center">
+
+            <Border Background="White" CornerRadius="7"  Height="125"  Width="260" Margin="10,0,10,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="40"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Path  Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10" 
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Height="60" Width="60"
+                              Data="M172.2,5H25.4v15.4h3.1c0,2.7,0,5.4,0.2,8.1c0,0,0,10.1,0,10.2c0,8.7-9.4,10.6-13.4,16.8c-3,4.6-1.4,13.3-1.4,18.6v44.7  c0,33.1,0,66.3,0,99.5v53.4H7.2V295H170v-12.6c-10.6-5.3-20.1-12.6-27.9-21.3H98.7v-63.8h19.7c0.1-9.5,1.6-18.6,4.4-27.2h-3.7v-35.6  h22.2v2.8c8-9.1,17.6-16.7,28.6-22.2l0-94.8h2.3L172.2,5L172.2,5z M49.1,30.7h22.2V31h0.1v35.6H49.3v-0.2h-0.1V30.7z M49.1,82.8  h22.2v0h0.1v1.4c0,0.7,0.1,1.4,0.1,2.1c0,9.6,0,19.2,0,28.9c0,0.7,0,1.2-0.1,1.7v1.5h-1.1c-0.5,0.2-1.2,0.3-2.1,0.3  c-6.3-0.2-12.6-0.1-19.2-0.1L49.1,82.8L49.1,82.8z M71.5,134.6v35.6H49.3v-35.6H71.5z M91.3,261.2H47.6v-63.9h43.7V261.2z   M106.3,170.2H84.2v-35.6h22.2V170.2z M106.3,118.4L106.3,118.4l-0.1,0.2c-7,0-13.9,0-20.8-0.1c-0.1,0-0.3,0-0.4-0.1h-0.9v-0.9  c-0.2-0.2-0.3-0.5-0.3-0.6c-0.1-11.2-0.1-22.5-0.1-34h0.4v0h22.2L106.3,118.4L106.3,118.4z M106.3,66.6H84.2v-0.3h0V30.7h22V31h0.2  V66.6z M141.4,118.4h-22.2v0h0V82.8h0v0h22.2V118.4z M141.4,66.4L141.4,66.4l0,0.2h-22.2V31h0.1v-0.2h22.2V66.4z M212,117.8  c-44.5-0.1-81.3,36.7-81,81.1c0.2,44.7,36.4,80.8,81,80.8c44.7,0,80.9-36.2,80.8-80.9S256.6,117.9,212,117.8z M211.6,141.7  c8.8-0.2,16.2,7.2,16.2,16.1c0,8.7-7.3,15.9-15.9,15.9c-8.8,0-15.8-7.1-15.9-15.9C195.9,148.9,202.7,141.8,211.6,141.7z M234,254.7  c-1.8,0.8-3.8,1.2-5.8,1.2c-14.8,0-17.9,0-32.7,0c-6.9,0-12.1-4.9-12.2-11.3c-0.1-6.5,5-11.4,11.9-11.6c3.6-0.1,1.3,0,5.4,0v-8.6  c0-4.1,0.1-8.2-0.1-12.3c0-0.9-1.1-2.2-1.9-2.4c-6.4-1.7-10.2-6.5-9.6-12.2c0.7-6.4,5.4-10.5,12.3-10.6c3.4,0,6.8,0,10.1,0  c7.2,0.1,12,4.9,12,12.2c0,11.1,0,22.2,0,33.9c4.2,0,2.1-0.1,5.8,0c5.9,0.2,10.1,3.9,11.1,9.3C241.2,247.5,238.8,252.6,234,254.7z"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
+                        <TextBlock Foreground="Gray" FontWeight="SemiBold" Text="Company Info" FontSize="18"></TextBlock>
+                        <TextBlock Text="Name,Logo,Adress ..." FontSize="10" Margin="0,2,0,0" Foreground="#E8E8E8"></TextBlock>
+                    </StackPanel>
+                    <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="#178DD2" HorizontalAlignment="Center">
+                        <Button Background="Transparent" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                            <materialDesign:PackIcon Kind="LessThan" Foreground="White"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Height="10" Width="10" Margin="-5,0,0,0">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+            <Border Background="White" CornerRadius="7"  Height="125" Width="260" Margin="10,0,10,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="40"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Path Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10" 
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Height="60" Width="60"
+                              Data="M225,0c-30.3,0.1-57.6,18.4-69.3,46.3c6.6,18.5,6.6,38.8,0,57.3c14.4,34.8,52.3,53.5,88.7,43.8c36.4-9.7,59.9-44.9,55-82.2  C294.4,27.9,262.6,0,225,0z M230.4,58.9c3,0,5.4,2.4,5.4,5.4s-2.4,5.4-5.4,5.4h-32.3c-0.6,3.5-0.6,7.2,0,10.7h32.3  c3,0,5.4,2.4,5.4,5.4s-2.4,5.4-5.4,5.4h-29.1c3.9,8.3,10.8,14.9,19.2,18.5c4.6,1.9,9.6,2.9,14.6,2.9c3,0,5.4,2.4,5.4,5.4  c0,3-2.4,5.4-5.4,5.4c-12.8,0-25.1-5.1-34.1-14.1c-4.4-4.4-7.9-9.6-10.3-15.3c-0.4-0.9-0.6-1.8-1-2.7h-7.6c-3,0-5.4-2.4-5.4-5.4  s2.4-5.4,5.4-5.4h5.1c-0.4-3.6-0.4-7.2,0-10.7h-5.1c-3,0-5.4-2.4-5.4-5.4s2.4-5.4,5.4-5.4h7.6c0.3-0.9,0.6-1.8,1-2.7  c2.4-5.7,6-10.9,10.3-15.3c9-9.1,21.3-14.2,34.1-14.1c3,0,5.4,2.4,5.4,5.4s-2.4,5.4-5.4,5.4c-5,0-10,1-14.6,2.9  c-8.5,3.6-15.3,10.2-19.2,18.5H230.4z M145,48.1C132.8,16.1,100.5-3.4,66.5,0.4S5.5,30.7,0.7,64.6s14,66.6,45.6,79.7  c18.5-6.5,38.7-6.5,57.3,0c19-7.8,34-23.1,41.4-42.3C151.7,84.6,151.7,65.4,145,48.1z M96.4,117.9H42.9c-3,0-5.4-2.4-5.4-5.4  s2.4-5.4,5.4-5.4c-0.1,0,10.4-1.3,13.4-26.8h-8c-3,0-5.4-2.4-5.4-5.4s2.4-5.4,5.4-5.4h8.7c0.1-1,0.1-1.8,0.1-2.8  c0.1-17.2,4.7-29,13.8-35.4c8.3-5,18.4-6,27.5-2.8c2.8,1,4.2,4.1,3.2,6.8c-1,2.8-4.1,4.2-6.8,3.2c-5.9-2-12.4-1.4-17.8,1.6  c-5.9,4.1-9.1,13.3-9.1,26.6c0,1-0.1,1.8-0.1,2.7h23.5c3,0,5.4,2.4,5.4,5.4s-2.4,5.4-5.4,5.4H67c-0.6,9.4-3.3,18.6-8,26.8h37.4  c3,0,5.4,2.4,5.4,5.4S99.4,117.9,96.4,117.9z M144.3,196.4c-13.7-33.1-48.8-51.9-83.9-44.9S0,189.2,0,225s25.3,66.6,60.4,73.5  s70.2-11.8,83.9-44.9C137.6,235.1,137.6,214.9,144.3,196.4z M75,219.6c10.8,0,19.9,8,21.3,18.7c1.4,10.7-5.5,20.7-15.9,23.4v6.1  c0,3-2.4,5.4-5.4,5.4s-5.4-2.4-5.4-5.4v-5.4H58.9c-3,0-5.4-2.4-5.4-5.4c0-3,2.4-5.4,5.4-5.4H75c5.9,0,10.7-4.8,10.7-10.7  c0-5.9-4.8-10.7-10.7-10.7c-10.8,0-19.9-8-21.3-18.7c-1.4-10.7,5.5-20.7,15.9-23.4v-6.1c0-3,2.4-5.4,5.4-5.4s5.4,2.4,5.4,5.4v5.4  h10.7c3,0,5.4,2.4,5.4,5.4s-2.4,5.4-5.4,5.4H75c-5.9,0-10.7,4.8-10.7,10.7S69.1,219.6,75,219.6z M253.7,155.7  c-18.5,6.6-38.8,6.6-57.3,0c-19,7.8-34,23.1-41.4,42.3c-6.6,17.4-6.6,36.5,0,53.9c12.3,31.9,44.6,51.5,78.5,47.6  c34-3.9,61-30.3,65.8-64.1C304,201.6,285.3,168.8,253.7,155.7z M250.6,185.5l-20.2,25.3v8.8h10.7c3,0,5.4,2.4,5.4,5.4  s-2.4,5.4-5.4,5.4h-10.7v10.7h10.7c3,0,5.4,2.4,5.4,5.4s-2.4,5.4-5.4,5.4h-10.7v16.1c0,3-2.4,5.4-5.4,5.4s-5.4-2.4-5.4-5.4v-16.1  h-10.7c-3,0-5.4-2.4-5.4-5.4s2.4-5.4,5.4-5.4h10.7v-10.7h-10.7c-3,0-5.4-2.4-5.4-5.4s2.4-5.4,5.4-5.4h10.7v-8.8l-20.2-25.3  c-1.8-2.3-1.4-5.6,0.9-7.5c2.3-1.8,5.6-1.5,7.5,0.8l17.3,21.5l17.3-21.5c1.2-1.5,3.1-2.3,5-2c1.9,0.3,3.5,1.6,4.2,3.3  C252.1,182,251.8,184,250.6,185.5z"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="top" Margin="0,20,0,0" HorizontalAlignment="Center">
+                        <TextBlock Foreground="Gray" FontWeight="SemiBold" Text="Currency" FontSize="18"></TextBlock>
+                        <TextBlock Text="Name,Logo,Adress ..." FontSize="10" Margin="0,2,0,0" Foreground="#E8E8E8"></TextBlock>
+                    </StackPanel>
+                    <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="#178DD2" HorizontalAlignment="Center">
+                        <Button Background="Transparent" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                            <materialDesign:PackIcon Kind="LessThan" Foreground="White"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Height="10" Width="10" Margin="-5,0,0,0">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+            <Border Background="White" CornerRadius="7"  Height="125" Width="260" Margin="10,0,10,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="40"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Path Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10" 
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Height="60" Width="60"
+                              Data="M172.2,5H25.4v15.4h3.1c0,2.7,0,5.4,0.2,8.1c0,0,0,10.1,0,10.2c0,8.7-9.4,10.6-13.4,16.8c-3,4.6-1.4,13.3-1.4,18.6v44.7  c0,33.1,0,66.3,0,99.5v53.4H7.2V295H170v-12.6c-10.6-5.3-20.1-12.6-27.9-21.3H98.7v-63.8h19.7c0.1-9.5,1.6-18.6,4.4-27.2h-3.7v-35.6  h22.2v2.8c8-9.1,17.6-16.7,28.6-22.2l0-94.8h2.3L172.2,5L172.2,5z M49.1,30.7h22.2V31h0.1v35.6H49.3v-0.2h-0.1V30.7z M49.1,82.8  h22.2v0h0.1v1.4c0,0.7,0.1,1.4,0.1,2.1c0,9.6,0,19.2,0,28.9c0,0.7,0,1.2-0.1,1.7v1.5h-1.1c-0.5,0.2-1.2,0.3-2.1,0.3  c-6.3-0.2-12.6-0.1-19.2-0.1L49.1,82.8L49.1,82.8z M71.5,134.6v35.6H49.3v-35.6H71.5z M91.3,261.2H47.6v-63.9h43.7V261.2z   M106.3,170.2H84.2v-35.6h22.2V170.2z M106.3,118.4L106.3,118.4l-0.1,0.2c-7,0-13.9,0-20.8-0.1c-0.1,0-0.3,0-0.4-0.1h-0.9v-0.9  c-0.2-0.2-0.3-0.5-0.3-0.6c-0.1-11.2-0.1-22.5-0.1-34h0.4v0h22.2L106.3,118.4L106.3,118.4z M106.3,66.6H84.2v-0.3h0V30.7h22V31h0.2  V66.6z M141.4,118.4h-22.2v0h0V82.8h0v0h22.2V118.4z M141.4,66.4L141.4,66.4l0,0.2h-22.2V31h0.1v-0.2h22.2V66.4z M212,117.8  c-44.5-0.1-81.3,36.7-81,81.1c0.2,44.7,36.4,80.8,81,80.8c44.7,0,80.9-36.2,80.8-80.9S256.6,117.9,212,117.8z M211.6,141.7  c8.8-0.2,16.2,7.2,16.2,16.1c0,8.7-7.3,15.9-15.9,15.9c-8.8,0-15.8-7.1-15.9-15.9C195.9,148.9,202.7,141.8,211.6,141.7z M234,254.7  c-1.8,0.8-3.8,1.2-5.8,1.2c-14.8,0-17.9,0-32.7,0c-6.9,0-12.1-4.9-12.2-11.3c-0.1-6.5,5-11.4,11.9-11.6c3.6-0.1,1.3,0,5.4,0v-8.6  c0-4.1,0.1-8.2-0.1-12.3c0-0.9-1.1-2.2-1.9-2.4c-6.4-1.7-10.2-6.5-9.6-12.2c0.7-6.4,5.4-10.5,12.3-10.6c3.4,0,6.8,0,10.1,0  c7.2,0.1,12,4.9,12,12.2c0,11.1,0,22.2,0,33.9c4.2,0,2.1-0.1,5.8,0c5.9,0.2,10.1,3.9,11.1,9.3C241.2,247.5,238.8,252.6,234,254.7z"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
+                        <TextBlock Foreground="Gray" Text="Offers" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock Text="Name,Logo,Adress ..." FontSize="10" Margin="0,2,0,0" Foreground="#E8E8E8"></TextBlock>
+                    </StackPanel>
+                    <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="#178DD2" HorizontalAlignment="Center">
+                        <Button Background="Transparent" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                            <materialDesign:PackIcon Kind="LessThan" Foreground="White"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Height="10" Width="10" Margin="-5,0,0,0">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+          
+            <Border Background="White" CornerRadius="7"  Height="125" Width="260" MinHeight="100" Margin="10,0,10,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="40"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Path Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10" 
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Height="60" Width="60"
+                              Data="M150,168.8c5.2,0,9.4-4.2,9.4-9.4s-4.2-9.4-9.4-9.4c-31.1,0-56.3-25.2-56.3-56.3s25.2-56.3,56.3-56.3s56.3,25.2,56.3,56.3  v18.8c0,5.2-4.2,9.4-9.4,9.4s-9.4-4.2-9.4-9.4V93.8c0-20.7-16.8-37.5-37.5-37.5S112.5,73,112.5,93.8s16.8,37.5,37.5,37.5  c7.7,0,15.2-2.4,21.5-6.8c6.7,14,23.4,20,37.5,13.3c9.8-4.6,16-14.4,16.1-25.2V93.8c0-41.4-33.6-75-75-75s-75,33.6-75,75  S108.6,168.8,150,168.8z M150,112.5c-10.4,0-18.8-8.4-18.8-18.8S139.6,75,150,75c10.4,0,18.8,8.4,18.8,18.8S160.4,112.5,150,112.5z   M281.3,131.3v121.9c0,15.5-12.6,28.1-28.1,28.1H46.9c-15.5,0-28.1-12.6-28.1-28.1V131.3c0-2.9,1.4-5.6,3.7-7.4l33.8-26.1v24.1  l-12.8,9.4L150,213.2l106.5-81.9l-12.8-9.4V97.8l33.8,26.1C279.9,125.6,281.2,128.3,281.3,131.3z"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
+                        <TextBlock Foreground="Gray" Text="Emails" FontWeight="SemiBold" FontSize="18"></TextBlock>
+                        <TextBlock Text="Name,Logo,Adress ..." Margin="0,2,0,0" FontSize="10" Foreground="#E8E8E8"></TextBlock>
+                    </StackPanel>
+                    <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="#178DD2" HorizontalAlignment="Center">
+                        <Button Background="Transparent" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                            <materialDesign:PackIcon Kind="LessThan" Foreground="White"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Height="10" Width="10" Margin="-5,0,0,0">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+            <Border Background="White" CornerRadius="7"  Height="125" Width="260" MinHeight="100" Margin="10,0,10,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="40"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Path Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10" 
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Height="60" Width="60"
+                              Data="M125,156c-4.5,4.5-11.9,4.5-16.4,0c-4.5-4.5-4.5-11.9,0-16.4c2.3-2.3,5.2-3.4,8.2-3.4s5.9,1.1,8.2,3.4  C129.5,144.1,129.5,151.4,125,156z M191.4,222.3c-4.5,4.5-11.9,4.5-16.4,0c-4.5-4.5-4.5-11.9,0-16.4c2.3-2.3,5.2-3.4,8.2-3.4  c3,0,5.9,1.1,8.2,3.4C195.9,210.4,195.9,217.8,191.4,222.3z M187.5,24.5H61.6c-9.8,0-17.7,7.9-17.7,17.7v215.6  c0,9.8,7.9,17.7,17.7,17.7h176.7c9.8,0,17.7-7.9,17.7-17.7v-163L187.5,24.5z M100.3,131.3c9.1-9.1,23.9-9.1,33,0  c9.1,9.1,9.1,23.9,0,33c-4.5,4.5-10.5,6.8-16.5,6.8s-12-2.3-16.5-6.8C91.2,155.2,91.2,140.4,100.3,131.3z M102,220.6l87.6-87.6  l8.3,8.3l-87.6,87.6L102,220.6z M199.7,230.6c-4.5,4.5-10.5,6.8-16.5,6.8c-6,0-12-2.3-16.5-6.8c-9.1-9.1-9.1-23.9,0-33  s23.9-9.1,33,0C208.8,206.7,208.8,221.5,199.7,230.6z M196.1,92.2c-3.4,0-6.1-2.8-6.1-6.1V47.5l43.6,44.7L196.1,92.2L196.1,92.2z"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
+                        <TextBlock Foreground="Gray" Text="Tax" FontSize="18" FontWeight="SemiBold" ></TextBlock>
+                        <TextBlock Text="Name,Logo,Adress ..." Foreground="#E8E8E8" FontSize="10" Margin="0,2,0,0"></TextBlock>
+                    </StackPanel>
+                    <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="#178DD2" HorizontalAlignment="Center">
+                        <Button Background="Transparent" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                            <materialDesign:PackIcon Kind="LessThan" Foreground="White"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Height="10" Width="10" Margin="-5,0,0,0">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+            <Border Background="White" CornerRadius="7"  Height="125" Width="260" MinHeight="100" Margin="10,0,10,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="40"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Path Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10" 
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Height="60" Width="60"
+                              Data="M172.2,5H25.4v15.4h3.1c0,2.7,0,5.4,0.2,8.1c0,0,0,10.1,0,10.2c0,8.7-9.4,10.6-13.4,16.8c-3,4.6-1.4,13.3-1.4,18.6v44.7  c0,33.1,0,66.3,0,99.5v53.4H7.2V295H170v-12.6c-10.6-5.3-20.1-12.6-27.9-21.3H98.7v-63.8h19.7c0.1-9.5,1.6-18.6,4.4-27.2h-3.7v-35.6  h22.2v2.8c8-9.1,17.6-16.7,28.6-22.2l0-94.8h2.3L172.2,5L172.2,5z M49.1,30.7h22.2V31h0.1v35.6H49.3v-0.2h-0.1V30.7z M49.1,82.8  h22.2v0h0.1v1.4c0,0.7,0.1,1.4,0.1,2.1c0,9.6,0,19.2,0,28.9c0,0.7,0,1.2-0.1,1.7v1.5h-1.1c-0.5,0.2-1.2,0.3-2.1,0.3  c-6.3-0.2-12.6-0.1-19.2-0.1L49.1,82.8L49.1,82.8z M71.5,134.6v35.6H49.3v-35.6H71.5z M91.3,261.2H47.6v-63.9h43.7V261.2z   M106.3,170.2H84.2v-35.6h22.2V170.2z M106.3,118.4L106.3,118.4l-0.1,0.2c-7,0-13.9,0-20.8-0.1c-0.1,0-0.3,0-0.4-0.1h-0.9v-0.9  c-0.2-0.2-0.3-0.5-0.3-0.6c-0.1-11.2-0.1-22.5-0.1-34h0.4v0h22.2L106.3,118.4L106.3,118.4z M106.3,66.6H84.2v-0.3h0V30.7h22V31h0.2  V66.6z M141.4,118.4h-22.2v0h0V82.8h0v0h22.2V118.4z M141.4,66.4L141.4,66.4l0,0.2h-22.2V31h0.1v-0.2h22.2V66.4z M212,117.8  c-44.5-0.1-81.3,36.7-81,81.1c0.2,44.7,36.4,80.8,81,80.8c44.7,0,80.9-36.2,80.8-80.9S256.6,117.9,212,117.8z M211.6,141.7  c8.8-0.2,16.2,7.2,16.2,16.1c0,8.7-7.3,15.9-15.9,15.9c-8.8,0-15.8-7.1-15.9-15.9C195.9,148.9,202.7,141.8,211.6,141.7z M234,254.7  c-1.8,0.8-3.8,1.2-5.8,1.2c-14.8,0-17.9,0-32.7,0c-6.9,0-12.1-4.9-12.2-11.3c-0.1-6.5,5-11.4,11.9-11.6c3.6-0.1,1.3,0,5.4,0v-8.6  c0-4.1,0.1-8.2-0.1-12.3c0-0.9-1.1-2.2-1.9-2.4c-6.4-1.7-10.2-6.5-9.6-12.2c0.7-6.4,5.4-10.5,12.3-10.6c3.4,0,6.8,0,10.1,0  c7.2,0.1,12,4.9,12,12.2c0,11.1,0,22.2,0,33.9c4.2,0,2.1-0.1,5.8,0c5.9,0.2,10.1,3.9,11.1,9.3C241.2,247.5,238.8,252.6,234,254.7z"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
+                        <TextBlock Foreground="Gray" Text="Backup" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock Text="Name,Logo,Adress ..." Foreground="#E8E8E8" FontSize="10" Margin="0,2,0,0"></TextBlock>
+                    </StackPanel>
+                    <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="#178DD2" HorizontalAlignment="Center">
+                        <Button Background="Transparent" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                            <materialDesign:PackIcon Kind="LessThan" Foreground="White"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Height="10" Width="10" Margin="-5,0,0,0">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+            <Border Background="White" CornerRadius="7"  Height="125" Width="260" MinHeight="100" Margin="10,0,10,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="40"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Path Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10" 
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Height="60" Width="60"
+                              Data="M1.7,61c3.6,0.6,8.7,0.4,13.4-3.3c3.7,2.2,8,3.5,12.5,3.5h19.1C60.1,61.3,71,50.4,71,37.1c0-13.3-10.9-24.2-24.2-24.2H27.7  c-13.3,0-24.2,10.9-24.2,24.2c0,5.2,1.7,10,4.5,14c-1.1,2.6-3.2,6-6.6,7.7C0.3,59.3,0.5,60.8,1.7,61z M51,33.1  c0.3-0.1,0.6-0.2,0.9-0.3c0.3-0.1,0.7-0.1,1-0.1c2.8,0,5,2.3,5,5c0,2.8-2.3,5-5,5c-0.3,0-0.7,0-1-0.1c-0.3-0.1-0.6-0.2-0.9-0.3  c-1.8-0.8-3.1-2.5-3.1-4.6C47.9,35.7,49.2,33.9,51,33.1z M37.5,32.4c2.8,0,5,2.3,5,5c0,2.8-2.2,5-5,5c-2.8,0-5-2.3-5-5  C32.5,34.6,34.7,32.4,37.5,32.4z M17.1,36.5c0.2-1.7,1.2-3.1,2.6-3.8c0.7-0.4,1.5-0.6,2.4-0.6c2.8,0,5,2.3,5,5c0,2.8-2.3,5-5,5  c-0.9,0-1.7-0.2-2.4-0.6c-1.4-0.8-2.4-2.2-2.6-3.8V36.5z M84.9,83.6c-3.7,2.2-8,3.5-12.5,3.5H53.2c-12.4,0-22.6-9.4-24-21.4h17.6  c3.9,0,7.6-0.8,11.2-2.3c3.4-1.5,6.5-3.5,9.1-6.2c2.6-2.6,4.7-5.7,6.2-9.1c1.3-3,2-6.1,2.2-9.3c11.9,1.5,21.1,11.7,21.1,24  c0,5.2-1.7,10-4.5,14c1.1,2.6,3.2,6,6.6,7.7c1.1,0.5,0.8,2.1-0.3,2.3C94.7,87.5,89.6,87.3,84.9,83.6z"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
+                        <TextBlock Foreground="Gray" Text="SMS" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock Text="Name,Logo,Adress ..." Foreground="#E8E8E8" FontSize="10" Margin="0,2,0,0"></TextBlock>
+                    </StackPanel>
+                    <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="#178DD2" HorizontalAlignment="Center">
+                        <Button Background="Transparent" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                            <materialDesign:PackIcon Kind="LessThan" Foreground="White"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Height="10" Width="10" Margin="-5,0,0,0">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+            <Border Background="White" CornerRadius="7"  Height="125" Width="260" MinHeight="100" Margin="10,0,10,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="40"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Path Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10" 
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Height="60" Width="60"
+                              Data="M247.3,201.6l-13.5-46.9h-32.3v42.2c0,12.9-10.5,23.4-23.4,23.4h-23.4c-0.8-4.7,3.4-20.9-11-33.8c6.6-2.3,10.9-8.5,11-15.4  c0-2.4-0.6-4.8-1.6-7h7.2l10,46.9h7.8c7.8,0,14.1-6.3,14.1-14.1v-18.1l-6.8-31.7c-1.4-6.5-7.1-11.1-13.7-11.1h-13.2  c3.8-7.1,9.7-17.1,13.4-23.1l7.6,7.6c0.7,0.6,1.5,1.1,2.4,1.3l19.7,3.9v19.6h37.5c7.8,0,14.1-6.3,14.1-14.1v-28.1  c0-7.8-6.3-14.1-14.1-14.1h-32.8c-2.6,0-4.7,2.1-4.7,4.7v2.8l-8-1.8c-7-7.6-14.5-14.8-22.3-21.7c-5.8-3.3-12.9-3.7-19-1.1  C140,77.3,129,85.1,119.8,94.8c-9.9,11-17.4,24-21.9,38.1c-2.5,7.1-1.4,15,3,21.2l0.5,0.5H53.9c-9,0-16.4,7.3-16.4,16.3  c0,6,3.3,11.6,8.6,14.4c-19.7,10.6-32,31.2-32,53.6c0,2.6,2.1,4.7,4.7,4.7h9.4c0,23.3,18.9,42.2,42.2,42.2s42.2-18.9,42.2-42.2h89.1  c0.1,23.3,19,42.1,42.3,42c23.3-0.1,42.1-19,42-42.3C285.9,221.6,269.1,203.4,247.3,201.6L247.3,201.6z M70.3,276.6  c-18.1,0-32.8-14.7-32.8-32.8s14.7-32.8,32.8-32.8s32.8,14.7,32.8,32.8S88.4,276.6,70.3,276.6z M243.8,276.6  c-18.1,0-32.8-14.7-32.8-32.8s14.7-32.8,32.8-32.8s32.8,14.7,32.8,32.8S261.9,276.6,243.8,276.6z M243.8,225  c10.4,0,18.8,8.4,18.8,18.8s-8.4,18.8-18.8,18.8s-18.8-8.4-18.8-18.8S233.4,225,243.8,225z M70.3,225c10.4,0,18.8,8.4,18.8,18.8  s-8.4,18.8-18.8,18.8s-18.8-8.4-18.8-18.8S60,225,70.3,225z M89.1,93.8c0-2.6-2.1-4.7-4.7-4.7H18.8c-2.6,0-4.7,2.1-4.7,4.7v51.6h75  V93.8z M234.4,39.8c0-14.2-11.6-25.8-25.8-25.8h-14.1c-14.1,0-25.6,11.4-25.8,25.5V51c0,16.3,12,30.1,28.1,32.4V46.9  c0-2.6,2.1-4.7,4.7-4.7h32.8V39.8z M206.3,80.7c14.4-0.9,25.4-13.4,24.4-27.9c0-0.4-0.1-0.8-0.1-1.3h-24.3V80.7z"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
+                        <TextBlock Foreground="Gray" Text="Delevery Cost" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock Text="Name,Logo,Adress ..." Foreground="#E8E8E8" FontSize="10" Margin="0,2,0,0"></TextBlock>
+                    </StackPanel>
+                    <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="#178DD2" HorizontalAlignment="Center">
+                        <Button Background="Transparent" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                            <materialDesign:PackIcon Kind="LessThan" Foreground="White"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Height="10" Width="10" Margin="-5,0,0,0">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+            <Border Background="White" CornerRadius="7"  Height="125" Width="260" MinHeight="100" Margin="10,0,10,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="40"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Path Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10" 
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Height="60" Width="60"
+                              Data="M172.2,5H25.4v15.4h3.1c0,2.7,0,5.4,0.2,8.1c0,0,0,10.1,0,10.2c0,8.7-9.4,10.6-13.4,16.8c-3,4.6-1.4,13.3-1.4,18.6v44.7  c0,33.1,0,66.3,0,99.5v53.4H7.2V295H170v-12.6c-10.6-5.3-20.1-12.6-27.9-21.3H98.7v-63.8h19.7c0.1-9.5,1.6-18.6,4.4-27.2h-3.7v-35.6  h22.2v2.8c8-9.1,17.6-16.7,28.6-22.2l0-94.8h2.3L172.2,5L172.2,5z M49.1,30.7h22.2V31h0.1v35.6H49.3v-0.2h-0.1V30.7z M49.1,82.8  h22.2v0h0.1v1.4c0,0.7,0.1,1.4,0.1,2.1c0,9.6,0,19.2,0,28.9c0,0.7,0,1.2-0.1,1.7v1.5h-1.1c-0.5,0.2-1.2,0.3-2.1,0.3  c-6.3-0.2-12.6-0.1-19.2-0.1L49.1,82.8L49.1,82.8z M71.5,134.6v35.6H49.3v-35.6H71.5z M91.3,261.2H47.6v-63.9h43.7V261.2z   M106.3,170.2H84.2v-35.6h22.2V170.2z M106.3,118.4L106.3,118.4l-0.1,0.2c-7,0-13.9,0-20.8-0.1c-0.1,0-0.3,0-0.4-0.1h-0.9v-0.9  c-0.2-0.2-0.3-0.5-0.3-0.6c-0.1-11.2-0.1-22.5-0.1-34h0.4v0h22.2L106.3,118.4L106.3,118.4z M106.3,66.6H84.2v-0.3h0V30.7h22V31h0.2  V66.6z M141.4,118.4h-22.2v0h0V82.8h0v0h22.2V118.4z M141.4,66.4L141.4,66.4l0,0.2h-22.2V31h0.1v-0.2h22.2V66.4z M212,117.8  c-44.5-0.1-81.3,36.7-81,81.1c0.2,44.7,36.4,80.8,81,80.8c44.7,0,80.9-36.2,80.8-80.9S256.6,117.9,212,117.8z M211.6,141.7  c8.8-0.2,16.2,7.2,16.2,16.1c0,8.7-7.3,15.9-15.9,15.9c-8.8,0-15.8-7.1-15.9-15.9C195.9,148.9,202.7,141.8,211.6,141.7z M234,254.7  c-1.8,0.8-3.8,1.2-5.8,1.2c-14.8,0-17.9,0-32.7,0c-6.9,0-12.1-4.9-12.2-11.3c-0.1-6.5,5-11.4,11.9-11.6c3.6-0.1,1.3,0,5.4,0v-8.6  c0-4.1,0.1-8.2-0.1-12.3c0-0.9-1.1-2.2-1.9-2.4c-6.4-1.7-10.2-6.5-9.6-12.2c0.7-6.4,5.4-10.5,12.3-10.6c3.4,0,6.8,0,10.1,0  c7.2,0.1,12,4.9,12,12.2c0,11.1,0,22.2,0,33.9c4.2,0,2.1-0.1,5.8,0c5.9,0.2,10.1,3.9,11.1,9.3C241.2,247.5,238.8,252.6,234,254.7z"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
+                        <TextBlock Foreground="Gray" Text="Notification" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock Text="Name,Logo,Adress ..." Foreground="#E8E8E8" FontSize="10" Margin="0,2,0,0"></TextBlock>
+                    </StackPanel>
+                    <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="#178DD2" HorizontalAlignment="Center">
+                        <Button Background="Transparent" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                            <materialDesign:PackIcon Kind="LessThan" Foreground="White"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Height="10" Width="10" Margin="-5,0,0,0">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+            <Border Background="White" CornerRadius="7"  Height="125" Width="260" MinHeight="100" Margin="10,0,10,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="40"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Path Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10" 
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Height="60" Width="60"
+                              Data="M277.2,177c-0.6-3.6-2.7-6.6-6-8.4l-57.9-28.8c-7.8,15.9-18,35.7-31.8,59.7c-6.6,11.4-18.3,18.3-31.5,18.3  c-13.2,0-25.2-6.9-31.8-18.3c-12.6-21.6-22.2-39.6-29.4-54.6l-32.4,5.4c-3.6,0.6-6.6,3-8.1,6l-24.6,55.5c-2.4,5.1-0.3,11.4,4.5,13.8  L147.3,291c1.5,0.9,3.3,1.2,5.1,1.2c0.6,0,1.5,0,2.1-0.3l101.7-21c3.3-0.6,6-2.7,7.5-5.7s1.5-6.3,0.3-9.3l-19.8-44.4l29.7-25.5  C276.6,184.2,277.8,180.6,277.2,177z M162.9,189c18.6-32.4,51-92.1,51-117.3c0-35.4-28.8-63.9-63.9-63.9S86.1,36.6,86.1,71.7  c0,25.2,32.4,84.9,51,117.3C142.8,198.9,157.2,198.9,162.9,189z M120.3,71.4c0-16.5,13.5-29.7,29.7-29.7s29.7,13.5,29.7,29.7  c0,16.5-13.5,29.7-29.7,29.7S120.3,87.9,120.3,71.4z"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
+                        <TextBlock Foreground="Gray" Text="Region" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock Text="Name,Logo,Adress ..." Foreground="#E8E8E8" FontSize="10" Margin="0,2,0,0"></TextBlock>
+                    </StackPanel>
+                    <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="#178DD2" HorizontalAlignment="Center">
+                        <Button Background="Transparent" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                            <materialDesign:PackIcon Kind="LessThan" Foreground="White"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Height="10" Width="10" Margin="-5,0,0,0">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+            <Border Background="White" CornerRadius="7"  Height="125" Width="260" MinHeight="100" Margin="10,0,10,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="40"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Path Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10"  
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Height="60" Width="60"
+                              Data="M253.1,65.6H120.2c-4.2-0.2-8,2.4-9.4,6.4c-3.7,9.7-14.5,14.6-24.2,10.9c-5-1.9-9-5.9-10.9-10.9c-1.3-4-5.2-6.6-9.4-6.4  H46.9c-15.5,0-28.1,12.6-28.1,28.1v112.5c0,15.5,12.6,28.1,28.1,28.1h20.4c4.2,0.2,8-2.4,9.4-6.4c3.7-9.7,14.5-14.6,24.2-10.9  c5,1.9,9,5.9,10.9,10.9c1.3,4,5.2,6.6,9.4,6.4h132c15.5,0,28.1-12.6,28.1-28.1V93.8C281.3,78.2,268.7,65.6,253.1,65.6z M93.8,187.5  c-5.2,0-9.4-4.2-9.4-9.4s4.2-9.4,9.4-9.4s9.4,4.2,9.4,9.4S98.9,187.5,93.8,187.5z M93.8,159.4c-5.2,0-9.4-4.2-9.4-9.4  c0-5.2,4.2-9.4,9.4-9.4s9.4,4.2,9.4,9.4C103.1,155.2,98.9,159.4,93.8,159.4z M93.8,131.3c-5.2,0-9.4-4.2-9.4-9.4s4.2-9.4,9.4-9.4  s9.4,4.2,9.4,9.4S98.9,131.3,93.8,131.3z M168.8,103.1c10.4,0,18.8,8.4,18.8,18.8s-8.4,18.8-18.8,18.8s-18.8-8.4-18.8-18.8  S158.4,103.1,168.8,103.1z M206.3,196.9c-10.4,0-18.8-8.4-18.8-18.8s8.4-18.8,18.8-18.8s18.8,8.4,18.8,18.8S216.6,196.9,206.3,196.9  z M222.3,128.5L166,184.8c-3.6,3.7-9.6,3.7-13.3,0.1c0,0,0,0-0.1-0.1c-3.7-3.6-3.7-9.6-0.1-13.3c0,0,0,0,0.1-0.1l56.3-56.2  c3.7-3.7,9.6-3.7,13.3,0C226,118.9,226,124.9,222.3,128.5z"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
+                        <TextBlock Foreground="Gray" Text="Copon" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock Text="Name,Logo,Adress ..." Foreground="#E8E8E8" FontSize="10" Margin="0,2,0,0"></TextBlock>
+                    </StackPanel>
+                    <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="#178DD2" HorizontalAlignment="Center">
+                        <Button Background="Transparent" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                            <materialDesign:PackIcon Kind="LessThan" Foreground="White"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Height="10" Width="10" Margin="-5,0,0,0">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+            <Border Background="White" CornerRadius="7"  Height="125" Width="260" MinHeight="100" Margin="10,0,10,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="40"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Path Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10" 
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Height="60" Width="60"
+                              Data="M172.2,5H25.4v15.4h3.1c0,2.7,0,5.4,0.2,8.1c0,0,0,10.1,0,10.2c0,8.7-9.4,10.6-13.4,16.8c-3,4.6-1.4,13.3-1.4,18.6v44.7  c0,33.1,0,66.3,0,99.5v53.4H7.2V295H170v-12.6c-10.6-5.3-20.1-12.6-27.9-21.3H98.7v-63.8h19.7c0.1-9.5,1.6-18.6,4.4-27.2h-3.7v-35.6  h22.2v2.8c8-9.1,17.6-16.7,28.6-22.2l0-94.8h2.3L172.2,5L172.2,5z M49.1,30.7h22.2V31h0.1v35.6H49.3v-0.2h-0.1V30.7z M49.1,82.8  h22.2v0h0.1v1.4c0,0.7,0.1,1.4,0.1,2.1c0,9.6,0,19.2,0,28.9c0,0.7,0,1.2-0.1,1.7v1.5h-1.1c-0.5,0.2-1.2,0.3-2.1,0.3  c-6.3-0.2-12.6-0.1-19.2-0.1L49.1,82.8L49.1,82.8z M71.5,134.6v35.6H49.3v-35.6H71.5z M91.3,261.2H47.6v-63.9h43.7V261.2z   M106.3,170.2H84.2v-35.6h22.2V170.2z M106.3,118.4L106.3,118.4l-0.1,0.2c-7,0-13.9,0-20.8-0.1c-0.1,0-0.3,0-0.4-0.1h-0.9v-0.9  c-0.2-0.2-0.3-0.5-0.3-0.6c-0.1-11.2-0.1-22.5-0.1-34h0.4v0h22.2L106.3,118.4L106.3,118.4z M106.3,66.6H84.2v-0.3h0V30.7h22V31h0.2  V66.6z M141.4,118.4h-22.2v0h0V82.8h0v0h22.2V118.4z M141.4,66.4L141.4,66.4l0,0.2h-22.2V31h0.1v-0.2h22.2V66.4z M212,117.8  c-44.5-0.1-81.3,36.7-81,81.1c0.2,44.7,36.4,80.8,81,80.8c44.7,0,80.9-36.2,80.8-80.9S256.6,117.9,212,117.8z M211.6,141.7  c8.8-0.2,16.2,7.2,16.2,16.1c0,8.7-7.3,15.9-15.9,15.9c-8.8,0-15.8-7.1-15.9-15.9C195.9,148.9,202.7,141.8,211.6,141.7z M234,254.7  c-1.8,0.8-3.8,1.2-5.8,1.2c-14.8,0-17.9,0-32.7,0c-6.9,0-12.1-4.9-12.2-11.3c-0.1-6.5,5-11.4,11.9-11.6c3.6-0.1,1.3,0,5.4,0v-8.6  c0-4.1,0.1-8.2-0.1-12.3c0-0.9-1.1-2.2-1.9-2.4c-6.4-1.7-10.2-6.5-9.6-12.2c0.7-6.4,5.4-10.5,12.3-10.6c3.4,0,6.8,0,10.1,0  c7.2,0.1,12,4.9,12,12.2c0,11.1,0,22.2,0,33.9c4.2,0,2.1-0.1,5.8,0c5.9,0.2,10.1,3.9,11.1,9.3C241.2,247.5,238.8,252.6,234,254.7z"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
+                        <TextBlock Foreground="Gray" Text="Emails Info" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock Text="Name,Logo,Adress ..." Foreground="#E8E8E8" FontSize="10" Margin="0,2,0,0"></TextBlock>
+                    </StackPanel>
+                    <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="#178DD2" HorizontalAlignment="Center">
+                        <Button Background="Transparent" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                            <materialDesign:PackIcon Kind="LessThan" Foreground="White"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Height="10" Width="10" Margin="-5,0,0,0">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+
+
+
+        </WrapPanel>
+    </ScrollViewer>
+</UserControl>
