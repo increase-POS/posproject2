@@ -13,22 +13,22 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class Object
+   public class Object
     {
-        public int id { get; set; }
-        public Nullable<int> groupId { get; set; }
-        public Nullable<int> objectId { get; set; }
+        //public int id { get; set; }
+        //public Nullable<int> groupId { get; set; }
+        //public Nullable<int> objectId { get; set; }
+        public int objectId { get; set; }
+        public string name { get; set; }
         public string notes { get; set; }
-        public Nullable<byte> addOb { get; set; }
-        public Nullable<byte> updateOb { get; set; }
-        public Nullable<byte> deleteOb { get; set; }
-        public Nullable<byte> showOb { get; set; }
+        //public Nullable<byte> addOb { get; set; }
+        //public Nullable<byte> updateOb { get; set; }
+        //public Nullable<byte> deleteOb { get; set; }
+        //public Nullable<byte> showOb { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
-        public Nullable<int> isActive { get; set; }
-        public Boolean canDelete { get; set; }
 
         public async Task<List<Object>> GetAll()
         {

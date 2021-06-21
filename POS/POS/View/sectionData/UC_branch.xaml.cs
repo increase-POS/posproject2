@@ -122,8 +122,8 @@ namespace POS.View
             cb_area.DisplayMemberPath = "code";
 
 
-            cb_areaPhone.SelectedIndex = 8;
-            cb_area.SelectedIndex = 8;
+            //cb_areaPhone.SelectedIndex = 8;
+            //cb_area.SelectedIndex = 8;
         }
 
         async Task<IEnumerable<City>> RefreshCity()
@@ -737,20 +737,24 @@ namespace POS.View
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            string addpath = @"\Reports\BranchReport.rdlc";
+            ReportParameter[] paramarr = new ReportParameter[6];
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\SectionData\Ar\ArBranchReport.rdlc";
+            }
+            else addpath = @"\Reports\SectionData\En\BranchReport.rdlc";
+
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            rep.ReportPath = reppath;
-            rep.DataSources.Clear();
-            rep.DataSources.Add(new ReportDataSource("DataSetBranches", branchesQuery));
+            ReportCls.checkLang();
 
-            ReportParameter[] paramarr = new ReportParameter[6];
-            paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trBranches"));
-            paramarr[1] = new ReportParameter("trCode", MainWindow.resourcemanager.GetString("trCode"));
-            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
-            paramarr[3] = new ReportParameter("trAddress", MainWindow.resourcemanager.GetString("trAddress"));
-            paramarr[4] = new ReportParameter("trNote", MainWindow.resourcemanager.GetString("trNote"));
-            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+            rptSectionData.branchReport(branchesQuery, rep, reppath);
+            rptSectionData.setReportLanguage(paramarr);
+            rptSectionData.Header(paramarr);
+
             rep.SetParameters(paramarr);
 
             rep.Refresh();

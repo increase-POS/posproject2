@@ -125,7 +125,7 @@ namespace POS.View.accounts
                     {
                         cashes = await cashModel.GetCashTransferAsync(bond.type , "all");
                         cashQuery = cashes.Where(s => s.bondId == bond.bondId);
-
+                        //MessageBox.Show(cashQuery.ToList()[0].processType);
                         cb_paymentProcessType.SelectedValue = cashQuery.ToList()[0].processType;
                         if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
                         {
@@ -140,56 +140,67 @@ namespace POS.View.accounts
 
         private async void Btn_pay_Click(object sender, RoutedEventArgs e)
         {//pay
-            //update bond
-            bond.deserveDate = dp_deservecDate.SelectedDate;
-            bond.isRecieved = 1;
-
-            string s = await bondModel.Save(bond);
-
-            if (s.Equals("true"))
-            {
-                //save new cashtransfer
-                CashTransfer cash = new CashTransfer();
-
-                cash.transType = bond.type;
-                cash.posId = MainWindow.posID.Value;
-                cash.transNum = await SectionData.generateNumber(char.Parse(bond.type), "bnd");
-                cash.cash = decimal.Parse(tb_amount.Text);
-                cash.notes = tb_note.Text;
-                cash.createUserId = MainWindow.userID;
-                cash.side = "bnd";
-                cash.docNum = tb_number.Text;
-                cash.processType = cb_paymentProcessType.SelectedValue.ToString();
-                cash.bondId = bond.bondId;
-
-                if (cb_depositorV.IsVisible)
-                    cash.agentId = Convert.ToInt32(cb_depositorV.SelectedValue);
-
-                if (cb_depositorC.IsVisible)
-                    cash.agentId = Convert.ToInt32(cb_depositorC.SelectedValue);
-
-                if (cb_depositorU.IsVisible)
-                    cash.userId = Convert.ToInt32(cb_depositorU.SelectedValue);
-
-                if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                    cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
-
-                s = await cashModel.Save(cash);
-
-                if (!s.Equals("0"))
-                {
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                    Btn_clear_Click(null, null);
-
-                    await RefreshBondsList();
-                    Tb_search_TextChanged(null, null);
-                }
-                //else
-                //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-            }
+            //chk empty payment type
+            SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
+            //chk empty card 
+            if (cb_card.IsVisible)
+                SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
             else
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                SectionData.clearComboBoxValidate(cb_card, p_errorCard);
 
+            if ((!cb_paymentProcessType.Text.Equals("")) &&
+                  (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible)))
+            {
+                //update bond
+                bond.deserveDate = dp_deservecDate.SelectedDate;
+                bond.isRecieved = 1;
+
+                string s = await bondModel.Save(bond);
+
+                if (s.Equals("true"))
+                {
+                    //save new cashtransfer
+                    CashTransfer cash = new CashTransfer();
+
+                    cash.transType = bond.type;
+                    cash.posId = MainWindow.posID.Value;
+                    cash.transNum = await SectionData.generateNumber(char.Parse(bond.type), "bnd");
+                    cash.cash = decimal.Parse(tb_amount.Text);
+                    cash.notes = tb_note.Text;
+                    cash.createUserId = MainWindow.userID;
+                    cash.side = "bnd";
+                    cash.docNum = tb_number.Text;
+                    cash.processType = cb_paymentProcessType.SelectedValue.ToString();
+                    cash.bondId = bond.bondId;
+
+                    if (cb_depositorV.IsVisible)
+                        cash.agentId = Convert.ToInt32(cb_depositorV.SelectedValue);
+
+                    if (cb_depositorC.IsVisible)
+                        cash.agentId = Convert.ToInt32(cb_depositorC.SelectedValue);
+
+                    if (cb_depositorU.IsVisible)
+                        cash.userId = Convert.ToInt32(cb_depositorU.SelectedValue);
+
+                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                        cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
+
+                    s = await cashModel.Save(cash);
+                    MessageBox.Show(s);
+                    if (!s.Equals("0"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
+
+                        await RefreshBondsList();
+                        Tb_search_TextChanged(null, null);
+                    }
+                    //else
+                    //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            }
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -378,6 +389,11 @@ namespace POS.View.accounts
 
             dp_endSearchDate.SelectedDate = DateTime.Now;
             dp_startSearchDate.SelectedDate = DateTime.Now;
+
+            //TextBox dpDate = (TextBox)dp_deservecDate.Template.FindName("PART_TextBox", dp_deservecDate);
+            //dpDate.IsReadOnly = true;
+
+            btn_pay.IsEnabled = false;
 
             await RefreshBondsList();
             Tb_search_TextChanged(null, null);

@@ -372,6 +372,7 @@
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                   Height="40"   Margin="10,5,10,5"
                                   Visibility="Visible"
+                                  IsEnabled="False"
                                   BorderBrush="#737373" BorderThickness="0" 
                                   LostFocus="Tb_validateEmptyLostFocus">
                             <ComboBox.ToolTip>
@@ -389,6 +390,7 @@
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                   Height="40"   Margin="10,5,10,5"
                                   Visibility="Collapsed"
+                                  IsEnabled="False"
                                   BorderBrush="#737373" BorderThickness="0" 
                                   LostFocus="Tb_validateEmptyLostFocus">
                             <ComboBox.ToolTip>
@@ -406,6 +408,7 @@
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                   Height="40"   Margin="10,5,10,5"
                                   Visibility="Collapsed"
+                                  IsEnabled="False"
                                   BorderBrush="#737373" BorderThickness="0" 
                                   LostFocus="Tb_validateEmptyLostFocus">
                             <ComboBox.ToolTip>
@@ -463,6 +466,7 @@
                                           Text="{Binding deserveDate, Mode=OneWay}"
                                           TextBlock.Foreground="#4E4E4E" 
                                           Padding="10,0,5,0"  
+                                          IsEnabled="False"
                                           materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                           materialDesign:HintAssist.Hint="Deserve date..."  
                                           Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"                                    

@@ -273,8 +273,6 @@ namespace POS.View.accounts
             {
                 //chk empty cash
                 SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
-                //chk empty deposite number
-                //SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositNumberToolTip");
                 //chk empty dicount type
                 SectionData.validateEmptyComboBox(cb_opperationType, p_errorOpperationType, tt_errorOpperationType, "trErrorEmptyOpperationTypeToolTip");
                 //chk empty user
@@ -294,6 +292,7 @@ namespace POS.View.accounts
                 {
 
                     CashTransfer cash = new CashTransfer();
+
                     cash.transType = cb_opperationType.SelectedValue.ToString();
                     cash.userId = Convert.ToInt32(cb_user.SelectedValue);
                     //cash.transNum = await generateNumber();
@@ -322,27 +321,32 @@ namespace POS.View.accounts
             }
             else
             {
-                if(btn_add.IsEnabled)
+                if (btn_add.IsEnabled)
                 {
-                    cashtrans.docNum = tb_depositNumber.Text;
-
-                    string s = await cashModel.Save(cashtrans);
-
-                    if (!s.Equals("0"))
+                    //chk empty deposite number
+                    SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositNumberToolTip");
+                    if (!tb_depositNumber.Text.Equals(""))
                     {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCompleted"), animation: ToasterAnimation.FadeIn);
-                        btn_add.IsEnabled = false;
-                        btn_add.Content = MainWindow.resourcemanager.GetString("trCompleted");
+                        cashtrans.docNum = tb_depositNumber.Text;
 
-                        dg_bankAccounts.ItemsSource = await RefreshCashesList();
-                        Tb_search_TextChanged(null, null);
+                        string s = await cashModel.Save(cashtrans);
 
-                        decimal ammount = cashtrans.cash.Value;
-                        if (cashtrans.transType.Equals("d")) ammount *= -1;
-                        calcBalance(ammount);
+                        if (!s.Equals("0"))
+                        {
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCompleted"), animation: ToasterAnimation.FadeIn);
+                            btn_add.IsEnabled = false;
+                            btn_add.Content = MainWindow.resourcemanager.GetString("trCompleted");
+
+                            dg_bankAccounts.ItemsSource = await RefreshCashesList();
+                            Tb_search_TextChanged(null, null);
+
+                            decimal ammount = cashtrans.cash.Value;
+                            if (cashtrans.transType.Equals("d")) ammount *= -1;
+                            calcBalance(ammount);
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
-                    else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
             }
         }
@@ -371,10 +375,10 @@ namespace POS.View.accounts
 
         }
 
-        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        private async void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             cashtrans.cashTransId = 0;
-
+            tb_transNum.Text = await SectionData.generateNumber(Convert.ToChar(cb_opperationType.SelectedValue), "bn");
             btn_add.IsEnabled = true;
             cb_opperationType.IsEnabled = true;
             cb_user.IsEnabled = true;
@@ -539,9 +543,10 @@ namespace POS.View.accounts
             w.tb_userName.Text = cb_user.Text;
             w.userID = Convert.ToInt32(cb_user.SelectedValue);
             w.ShowDialog();
+            //w.Show();
+
             Window.GetWindow(this).Opacity = 1;
             //System.Windows.MessageBox.Show(w.isOk.ToString());
-
 
             if (w.isOk == true)
                 p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#2BB673"));

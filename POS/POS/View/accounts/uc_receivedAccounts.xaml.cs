@@ -439,19 +439,16 @@ namespace POS.View.accounts
 
             if (s.Equals("Pos Is Updated Successfully"))
             {
-                MessageBox.Show(pos.balance.ToString());
-
                 //decrease depositor balance if agent
                 if ((depositor.Equals("v")) || (depositor.Equals("c")))
                 {
                     Agent agent = await agentModel.getAgentById(agentid);
-                    MessageBox.Show(agent.balance.ToString());
 
                     agent.balance = agent.balance - Convert.ToSingle(ammount);
 
                     s = await agent.saveAgent(agent);
 
-                    if (!s.Equals("0")) MessageBox.Show(agent.balance.ToString());
+                   // if (!s.Equals("0")) MessageBox.Show(agent.balance.ToString());
                 }
             }
         }
@@ -466,8 +463,10 @@ namespace POS.View.accounts
 
         }
 
-        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        private async void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
+            tb_transNum.Text = await SectionData.generateNumber('d', cb_depositFrom.SelectedValue.ToString());
+            btn_add.IsEnabled = true;
             cb_depositFrom.SelectedIndex = -1;
             cb_depositorV.SelectedIndex = -1;
             cb_depositorC.SelectedIndex = -1;

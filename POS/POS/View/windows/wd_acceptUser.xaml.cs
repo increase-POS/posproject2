@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,22 +36,48 @@ namespace POS.View.windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            #region translate
+
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_acceptUser.FlowDirection = FlowDirection.LeftToRight;
+
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_acceptUser.FlowDirection = FlowDirection.RightToLeft;
+
+            }
+
+            translate();
+            #endregion
+        }
+
+        private void translate()
+        {
+            txt_user.Text = MainWindow.resourcemanager.GetString("trUserConfirm");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_userName, MainWindow.resourcemanager.GetString("trUserNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_password, MainWindow.resourcemanager.GetString("trPasswordHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(pb_password, MainWindow.resourcemanager.GetString("trPasswordHint"));
+
+            tt_userName.Content = MainWindow.resourcemanager.GetString("trUserName");
+            tt_password.Content = MainWindow.resourcemanager.GetString("trPassword");
+
+            btn_confirmation.Content = MainWindow.resourcemanager.GetString("trConfirm");
+
+
 
         }
 
         public int userID = 0;
         User userModel = new User();
-        IEnumerable<User> users;
         private void Btn_confirmation_Click(object sender, RoutedEventArgs e)
         {
             chkUser();
-            if (isOk)
-                this.Close();
-            else
-            {
-                SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trErrorPasswordToolTip");
-                p_showPassword.Visibility = Visibility.Collapsed;
-            }
+           
         }
 
         private async void chkUser()
@@ -57,11 +85,19 @@ namespace POS.View.windows
             string password = Md5Encription.MD5Hash("Inc-m" + pb_password.Password);
 
             User user = await userModel.getUserById(userID);
-
-            if ((tb_userName.Text.Equals(user.username)) && (password.Equals(user.password)))
-                isOk = true;
+          
+            if ((tb_userName.Text.Trim().Equals(user.username)) && (password.Trim().Equals(user.password)))
+             isOk = true; 
             else
                 isOk = false;
+
+            if (isOk) 
+                this.Close();
+            else
+            {
+                SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trErrorPasswordToolTip");
+                p_showPassword.Visibility = Visibility.Collapsed;
+            }
 
         }
 
@@ -110,6 +146,15 @@ namespace POS.View.windows
         private void Pb_password_PasswordChanged(object sender, RoutedEventArgs e)
         {
             SectionData.clearPasswordValidate(pb_password, p_errorPassword);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            tb_userName.Clear();
+            pb_password.Clear();
+            tb_password.Clear();
+            e.Cancel = true;
+            this.Visibility = Visibility.Hidden;
         }
     }
 }

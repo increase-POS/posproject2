@@ -26,10 +26,10 @@ namespace POS.View.windows
         }
         public bool isActive;
 
-        ItemUnit itemUnit = new ItemUnit();
+        ItemUnit itemUnitOffer = new ItemUnit();
         List<ItemUnit> allItems = new List<ItemUnit>();
         public List<ItemUnit> selectedItems = new List<ItemUnit>();
-        Item itemModel = new Item();
+        ItemUnit itemModel = new ItemUnit();
         public string txtItemSearch;
         /// <summary>
         /// Selcted Items if selectedItems Have Items At the beginning
@@ -38,25 +38,23 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // للتعديل 
-            //allItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList();
-
-            foreach (var itemUnit in selectedItems)
+            allItems = await itemModel.Getall();
+            //foreach (var itemUnit in selectedItems)
+            //{
+            //    allItems.Remove(itemUnit);
+            //}
+            foreach (var itemUnit in allItems)
             {
-                allItems.Remove(itemUnit);
-
+                MessageBox.Show(itemUnit.itemName);
             }
             selectedItems.AddRange(selectedItems);
-
-
+            
             dg_allItems.ItemsSource = allItems;
+            dg_allItems.SelectedValuePath = "itemUnitId";
+            dg_allItems.DisplayMemberPath = "itemName";
+
             dg_selectedItems.ItemsSource = selectedItems;
-
-
-
-            dg_allItems.SelectedValuePath = "itemId";
             dg_selectedItems.SelectedValuePath = "itemId";
-            dg_allItems.DisplayMemberPath = "name";
             dg_selectedItems.DisplayMemberPath = "name";
         }
         private void Btn_save_Click(object sender, RoutedEventArgs e)
@@ -92,11 +90,11 @@ namespace POS.View.windows
         }
         private void Btn_selectedItem_Click(object sender, RoutedEventArgs e)
         {
-            itemUnit = dg_allItems.SelectedItem as ItemUnit;
-            if (itemUnit != null)
+            itemUnitOffer = dg_allItems.SelectedItem as ItemUnit;
+            if (itemUnitOffer != null)
             {
-                allItems.Remove(itemUnit);
-                selectedItems.Add(itemUnit);
+                //allItems.Remove(itemUnit);
+                //selectedItems.Add(itemUnit);
                 dg_allItems.ItemsSource = allItems;
                 dg_selectedItems.ItemsSource = selectedItems;
                 dg_allItems.Items.Refresh();
@@ -107,11 +105,11 @@ namespace POS.View.windows
         private void Btn_unSelectedItem_Click(object sender, RoutedEventArgs e)
         {
 
-            itemUnit = dg_selectedItems.SelectedItem as ItemUnit;
-            if (itemUnit != null)
+            itemUnitOffer = dg_selectedItems.SelectedItem as ItemUnit;
+            if (itemUnitOffer != null)
             {
-                selectedItems.Remove(itemUnit);
-                allItems.Add(itemUnit);
+                //selectedItems.Remove(itemUnit);
+                allItems.Add(itemUnitOffer);
 
                 dg_allItems.ItemsSource = allItems;
                 dg_allItems.Items.Refresh();
@@ -132,9 +130,6 @@ namespace POS.View.windows
         }
         private void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
         {
- 
-
-
             txtItemSearch = txb_searchitems.Text.ToLower();
             // للتعديل 
             //dg_allItems.ItemsSource = allItems.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||

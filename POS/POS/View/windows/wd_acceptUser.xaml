@@ -9,8 +9,8 @@
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
         Title="wd_itemsList" Height="175" Width="300" Background="#333333" 
-        Loaded="Window_Loaded">
-    <Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  >
+        Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  x:Name="grid_acceptUser">
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
@@ -143,13 +143,13 @@
                                                  Width="15"  Height="15" Margin="4,1,0,0"/>
 
                     </StackPanel>
-                    <Button.ToolTip>
+                    <!--<Button.ToolTip>
                         <ToolTip x:Name="tt_confirmation" Content="Confirmation"
                                     Placement="left" 
                                     HorizontalOffset="15"
                                     PlacementRectangle="50,0,0,0"
                                     VerticalOffset="30"/>
-                    </Button.ToolTip>
+                    </Button.ToolTip>-->
                 </Button>
 
             </Grid>

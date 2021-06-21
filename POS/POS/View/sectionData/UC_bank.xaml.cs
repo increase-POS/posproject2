@@ -119,8 +119,8 @@ namespace POS.View
             cb_area.DisplayMemberPath = "code";
 
 
-            cb_area.SelectedIndex = 8;
-            cb_areaPhone.SelectedIndex = 8;
+            //cb_area.SelectedIndex = 8;
+            //cb_areaPhone.SelectedIndex = 8;
 
 
         }
@@ -259,8 +259,8 @@ namespace POS.View
             tb_phone.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_accNumber.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-            cb_area.SelectedIndex = 8;
-            cb_areaPhone.SelectedIndex = 8;
+            //cb_area.SelectedIndex = 8;
+            //cb_areaPhone.SelectedIndex = 8;
             
         }
 
@@ -685,20 +685,23 @@ namespace POS.View
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            string addpath = @"\Reports\BankReport.rdlc";
+            ReportParameter[] paramarr = new ReportParameter[6];
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
+            }
+            else addpath = @"\Reports\SectionData\EN\BankReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            rep.ReportPath = reppath;
-            rep.DataSources.Clear();
-            rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
+            ReportCls.checkLang();
 
-            ReportParameter[] paramarr = new ReportParameter[6];
-            paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trBanks"));
-            paramarr[1] = new ReportParameter("trMobile", MainWindow.resourcemanager.GetString("trMobile"));
-            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
-            paramarr[3] = new ReportParameter("trAddress", MainWindow.resourcemanager.GetString("trAddress"));
-            paramarr[4] = new ReportParameter("trAccNumber", MainWindow.resourcemanager.GetString("trAccNumber"));
-            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+            rptSectionData.bankReport(banksQuery,rep,reppath);
+            rptSectionData.setReportLanguage(paramarr);
+            rptSectionData.Header(paramarr);
+           
             rep.SetParameters(paramarr);
 
             rep.Refresh();
@@ -707,10 +710,8 @@ namespace POS.View
 
             if (saveFileDialog.ShowDialog() == true)
             {
-
                 string filepath = saveFileDialog.FileName;
                 LocalReportExtensions.ExportToPDF(rep, filepath);
-
             }
         }
 

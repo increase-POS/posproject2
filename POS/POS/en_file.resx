@@ -1257,4 +1257,7 @@
   <data name="trReceivedToggle" xml:space="preserve">
     <value>Received</value>
   </data>
+  <data name="trPayVocher" xml:space="preserve">
+    <value>Pay Voucher</value>
+  </data>
 </root>

@@ -259,6 +259,7 @@ namespace POS.View.accounts
                 if (cashtrans != null)
                 {
                     cb_depositTo.SelectedValue = cashtrans.side;
+                    btn_add.IsEnabled = false;
 
                     switch (cb_depositTo.SelectedValue.ToString())
                     {
@@ -367,6 +368,7 @@ namespace POS.View.accounts
                 SectionData.validateEmptyComboBox(cb_recipientU, p_errorRecipient, tt_errorRecipient, "trErrorEmptyRecipientToolTip");
             else
                 SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
+            
             //chk empty payment type
             SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
 
@@ -468,6 +470,7 @@ namespace POS.View.accounts
             bond.cashTransId = cashId;
 
             string s = await bondModel.Save(bond);
+            MessageBox.Show(s);
 
         }
 
@@ -508,9 +511,10 @@ namespace POS.View.accounts
         {//delete
         }
 
-        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        private async void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            tb_transNum.Text = "";
+            btn_add.IsEnabled = true;
+            tb_transNum.Text = await SectionData.generateNumber('p', cb_depositTo.SelectedValue.ToString());
             cb_depositTo.SelectedIndex = -1;
             //cb_recipient.SelectedIndex = -1;
             cb_paymentProcessType.SelectedIndex = -1;

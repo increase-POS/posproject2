@@ -151,7 +151,6 @@ namespace POS.View
             tb_y.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_z.Background = (Brush)bc.ConvertFrom("#f8f8f8");
         }
-
         bool validate(Location location = null)
         {
             
@@ -166,7 +165,6 @@ namespace POS.View
                 return true;
             else return false;
         }
-
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             location.locationId = 0;
@@ -362,7 +360,6 @@ namespace POS.View
         {
             e.Handled = e.Key == Key.Space;
         }
-      
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {
             if (locations is null)
@@ -427,7 +424,6 @@ namespace POS.View
 
             ExportToExcel.Export(DTForExcel);
         }
-
         private void Btn_addRange_Click(object sender, RoutedEventArgs e)
         {
             Window.GetWindow(this).Opacity = 0.2;

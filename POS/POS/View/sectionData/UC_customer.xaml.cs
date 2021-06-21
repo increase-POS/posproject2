@@ -828,25 +828,26 @@ namespace POS.View
         {
             RefreshCustomersList();
             Tb_search_TextChanged(null, null);
-
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            string addpath = @"\Reports\VendorReport.rdlc";
+            ReportParameter[] paramarr = new ReportParameter[6];
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\SectionData\Ar\ArCustomerReport.rdlc";
+            }
+            else addpath = @"\Reports\SectionData\En\CustomerReport.rdlc";
+
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            rep.ReportPath = reppath;
-            rep.DataSources.Clear();
-            rep.DataSources.Add(new ReportDataSource("AgentDataSet", agentsQuery));
+            rptSectionData.customerReport(agentsQuery, rep, reppath);
+            rptSectionData.setReportLanguage(paramarr);
+            rptSectionData.Header(paramarr);
 
-            ReportParameter[] paramarr = new ReportParameter[6];
-            paramarr[0] = new ReportParameter("agentTitle", MainWindow.resourcemanager.GetString("trCustomers"));
-            paramarr[1] = new ReportParameter("trCode", MainWindow.resourcemanager.GetString("trCode"));
-            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
-            paramarr[3] = new ReportParameter("trCompany", MainWindow.resourcemanager.GetString("trCompany"));
-            paramarr[4] = new ReportParameter("trMobile", MainWindow.resourcemanager.GetString("trMobile"));
-            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
             rep.SetParameters(paramarr);
 
             rep.Refresh();
@@ -860,35 +861,30 @@ namespace POS.View
                 LocalReportExtensions.ExportToPDF(rep, filepath);
 
             }
-
-
-
-
-
-
         }
-
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-            string addpath = @"\Reports\VendorReport.rdlc";
+            ReportParameter[] paramarr = new ReportParameter[6];
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\SectionData\Ar\ArVendorReport.rdlc";
+            }
+            else addpath = @"\Reports\SectionData\En\VendorReport.rdlc";
+
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
+            rptSectionData.customerReport(agentsQuery, rep, reppath);
+            rptSectionData.setReportLanguage(paramarr);
+            rptSectionData.Header(paramarr);
 
-            rep.ReportPath = reppath;
-            rep.DataSources.Clear();
-            rep.DataSources.Add(new ReportDataSource("AgentDataSet", agentsQuery));
-            ReportParameter[] paramarr = new ReportParameter[6];
-            paramarr[0] = new ReportParameter("agentTitle", MainWindow.resourcemanager.GetString("trCustomers"));
-            paramarr[1] = new ReportParameter("trCode", MainWindow.resourcemanager.GetString("trCode"));
-            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
-            paramarr[3] = new ReportParameter("trCompany", MainWindow.resourcemanager.GetString("trCompany"));
-            paramarr[4] = new ReportParameter("trMobile", MainWindow.resourcemanager.GetString("trMobile"));
-            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
             rep.SetParameters(paramarr);
+
             rep.Refresh();
             LocalReportExtensions.PrintToPrinter(rep);
-
         }
 
         private void Tb_email_PreviewTextInput(object sender, TextCompositionEventArgs e)

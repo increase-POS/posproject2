@@ -2230,6 +2230,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to سند دفع.
+        /// </summary>
+        internal static string trPayVocher {
+            get {
+                return ResourceManager.GetString("trPayVocher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to طباعة PDF.
         /// </summary>
         internal static string trPdf {

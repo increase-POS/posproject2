@@ -89,7 +89,7 @@ namespace POS.View
                 txt_update_Icon.Visibility = Visibility.Visible;
                 txt_delete_Icon.Visibility = Visibility.Visible;
             }
-            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360 )
+            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
             {
                 txt_add_Icon.Visibility = Visibility.Collapsed;
                 txt_update_Icon.Visibility = Visibility.Collapsed;
@@ -152,20 +152,20 @@ namespace POS.View
 
 
         }
-      
+
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
 
-      
+
         private void translate()
         {
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-     //       MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trPamentMethodHint"));
+            //       MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trPamentMethodHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trCodeHint"));
@@ -173,7 +173,7 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_address, MainWindow.resourcemanager.GetString("trAdressHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_company, MainWindow.resourcemanager.GetString("trCompanyHint"));
             txt_contactInformation.Text = MainWindow.resourcemanager.GetString("trContactInformation");
-//          MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_areaMobile, MainWindow.resourcemanager.GetString("trAreaHint"));
+            //          MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_areaMobile, MainWindow.resourcemanager.GetString("trAreaHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_mobile, MainWindow.resourcemanager.GetString("trMobileHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_phone, MainWindow.resourcemanager.GetString("trPhoneHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_email, MainWindow.resourcemanager.GetString("trEmailHint"));
@@ -191,7 +191,7 @@ namespace POS.View
             dg_vendor.Columns[1].Header = MainWindow.resourcemanager.GetString("trName");
             dg_vendor.Columns[2].Header = MainWindow.resourcemanager.GetString("trCompany");
             dg_vendor.Columns[3].Header = MainWindow.resourcemanager.GetString("trMobile");
-           
+
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
             tt_code.Content = MainWindow.resourcemanager.GetString("trCode");
@@ -251,18 +251,22 @@ namespace POS.View
             //CreateGridCardContainer();
             catigoriesAndItemsView.ucVendors = this;
             if (MainWindow.lang.Equals("en"))
-            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucVendor.FlowDirection = FlowDirection.LeftToRight; }
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_ucVendor.FlowDirection = FlowDirection.LeftToRight;
+            }
             else
-            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucVendor.FlowDirection = FlowDirection.RightToLeft; }
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_ucVendor.FlowDirection = FlowDirection.RightToLeft;
+            }
 
             translate();
-           
+
             var agents = await agentModel.GetAgentsAsync("v");
             dg_vendor.ItemsSource = agents;
 
-       
+
 
             this.Dispatcher.Invoke(() =>
             {
@@ -272,7 +276,7 @@ namespace POS.View
             fillCountries();
 
             fillCity();
-  
+
             Keyboard.Focus(tb_name);
 
             SectionData.genRandomCode("v");
@@ -284,7 +288,7 @@ namespace POS.View
             BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
             brush.ImageSource = temp;
             img_vendor.Background = brush;
-        
+
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
@@ -316,7 +320,7 @@ namespace POS.View
             {
                 if (emailError)
                     //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
                 else
                 {
                     SectionData.genRandomCode("v");
@@ -401,7 +405,7 @@ namespace POS.View
             {
                 if (emailError)
                     //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
                 else
                 {
                     agent.name = tb_name.Text;
@@ -420,9 +424,9 @@ namespace POS.View
                     string s = await agentModel.saveAgent(agent);
 
                     if (!s.Equals("0")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     await RefreshVendorsList();
                     Tb_search_TextChanged(null, null);
@@ -518,7 +522,7 @@ namespace POS.View
             if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             await RefreshVendorsList();
             Tb_search_TextChanged(null, null);
@@ -535,7 +539,7 @@ namespace POS.View
             SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
         }
 
-      
+
 
         private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -561,7 +565,7 @@ namespace POS.View
         {
             dg_vendor.ItemsSource = agentsQuery;
             txt_count.Text = agentsQuery.Count().ToString();
-          
+
         }
 
         private void tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -635,7 +639,7 @@ namespace POS.View
             Tb_search_TextChanged(null, null);
         }
 
-       
+
         private void tb_search_GotFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -659,16 +663,16 @@ namespace POS.View
 
         private void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-       
+
             if (firstchange == true)
             {
                 if (cb_areaPhone.SelectedValue != null)
                 {
                     if (cb_areaPhone.SelectedIndex >= 0)
                         countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
-                 
+
                     citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
-                 
+
                     cb_areaPhoneLocal.ItemsSource = citynumofcountry;
                     cb_areaPhoneLocal.SelectedValuePath = "cityId";
                     cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
@@ -817,22 +821,22 @@ namespace POS.View
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-
-
-            string addpath = @"\Reports\VendorReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-            //MessageBox.Show(reppath);
-            rep.ReportPath = reppath;
-            rep.DataSources.Clear();
-            rep.DataSources.Add(new ReportDataSource("AgentDataSet", agentsQuery));
-
             ReportParameter[] paramarr = new ReportParameter[6];
-            paramarr[0] = new ReportParameter("agentTitle", MainWindow.resourcemanager.GetString("trSuppliers"));
-            paramarr[1] = new ReportParameter("trCode", MainWindow.resourcemanager.GetString("trCode"));
-            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
-            paramarr[3] = new ReportParameter("trCompany", MainWindow.resourcemanager.GetString("trCompany"));
-            paramarr[4] = new ReportParameter("trMobile", MainWindow.resourcemanager.GetString("trMobile"));
-            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\SectionData\Ar\ArVendorReport.rdlc";
+            }
+            else addpath = @"\Reports\SectionData\En\VendorReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            ReportCls.checkLang();
+
+            rptSectionData.vendorReport(agentsQuery, rep, reppath);
+            rptSectionData.setReportLanguage(paramarr);
+            rptSectionData.Header(paramarr);
+
             rep.SetParameters(paramarr);
 
             rep.Refresh();
@@ -841,31 +845,8 @@ namespace POS.View
             //saveFileDialog.Filter = "WORD|*.doc;";
             if (saveFileDialog.ShowDialog() == true)
             {
-                // string filname= saveFileDialog.SafeFileName;
-
                 string filepath = saveFileDialog.FileName;
-
-
-
                 LocalReportExtensions.ExportToPDF(rep, filepath);
-                // LocalReportExtensions.ExportToWORD(rep, filepath);
-                // MessageBox.Show("File saved");
-
-                /*
-                    saveFileDialog.Filter = "PDF|*.pdf;";
-                //saveFileDialog.Filter = "WORD|*.doc;";
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    // string filname= saveFileDialog.SafeFileName;
-
-                    string filepath = saveFileDialog.FileName;
-
-
-
-                    LocalReportExtensions.ExportToPDF(rep, filepath);
-                    // LocalReportExtensions.ExportToWORD(rep, filepath);
-                    // MessageBox.Show("File saved");
-                 * */
             }
 
 
@@ -1181,7 +1162,7 @@ namespace POS.View
             //    if (!(e.PreviousSize.Width -25 < e.NewSize.Width &&
             //      e.NewSize.Width < e.PreviousSize.Width + 25))
             //    {
-                    RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
             //    }
             //}
         }
@@ -1189,7 +1170,7 @@ namespace POS.View
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
             Window.GetWindow(this).Opacity = 0.2;
-            win_lvc win = new win_lvc(agentsQuery,1,false);
+            win_lvc win = new win_lvc(agentsQuery, 1, false);
             win.ShowDialog();
             Window.GetWindow(this).Opacity = 1;
         }

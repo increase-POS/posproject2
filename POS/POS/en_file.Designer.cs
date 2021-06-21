@@ -2284,6 +2284,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pay Voucher.
+        /// </summary>
+        internal static string trPayVocher {
+            get {
+                return ResourceManager.GetString("trPayVocher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Print Pdf.
         /// </summary>
         internal static string trPdf {

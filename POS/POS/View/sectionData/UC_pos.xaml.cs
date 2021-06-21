@@ -524,20 +524,21 @@ namespace POS.View
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            string addpath = @"\Reports\PosReport.rdlc";
+            ReportParameter[] paramarr = new ReportParameter[6];
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\SectionData\Ar\ArPosReport.rdlc";
+            }
+            else addpath = @"\Reports\SectionData\En\PosReport.rdlc";
+
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            rep.ReportPath = reppath;
-            rep.DataSources.Clear();
-            rep.DataSources.Add(new ReportDataSource("DataSetPos", possQuery));
+            rptSectionData.posReport(possQuery, rep, reppath);
+            rptSectionData.setReportLanguage(paramarr);
+            rptSectionData.Header(paramarr);
 
-            ReportParameter[] paramarr = new ReportParameter[6];
-            paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trPOS"));
-            paramarr[1] = new ReportParameter("trCode", MainWindow.resourcemanager.GetString("trCode"));
-            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
-            paramarr[3] = new ReportParameter("trbranch", MainWindow.resourcemanager.GetString("trBranchName"));
-            paramarr[4] = new ReportParameter("trNote", MainWindow.resourcemanager.GetString("trNote"));
-            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
             rep.SetParameters(paramarr);
 
             rep.Refresh();
@@ -546,10 +547,8 @@ namespace POS.View
 
             if (saveFileDialog.ShowDialog() == true)
             {
-
                 string filepath = saveFileDialog.FileName;
                 LocalReportExtensions.ExportToPDF(rep, filepath);
-
             }
         }
 

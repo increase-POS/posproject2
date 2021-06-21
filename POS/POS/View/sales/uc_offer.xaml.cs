@@ -31,10 +31,13 @@ namespace POS.View
     {
         Offer offer = new Offer();
         Offer offerModel = new Offer();
-        
+        ItemUnit itemUnitsModel = new ItemUnit();
+
         BrushConverter bc = new BrushConverter();
         IEnumerable<Offer> offersQuery;
         IEnumerable<Offer> offers;
+        IEnumerable<ItemUnit> itemUnitsQuery;
+        IEnumerable<ItemUnit> itemUnits;
         byte tgl_offerState;
         string searchText = "";
 
@@ -191,6 +194,8 @@ namespace POS.View
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
             tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
+            btn_items.Content = MainWindow.resourcemanager.GetString("trItems");
             ///////////////////////////////////////------on Item------///////////////////////////////
             ///
 
@@ -336,21 +341,25 @@ namespace POS.View
 
         #endregion
 
-        private void Btn_items_Click(object sender, RoutedEventArgs e)
+        private async void Btn_items_Click(object sender, RoutedEventArgs e)
         {//items
             SectionData.clearValidate(tb_code, p_errorCode);
 
+            itemUnits = await itemUnitsModel.Getall();
+            //itemUnitsQuery = itemUnits.Where(s => s.is == offer.offerId);
+
             Window.GetWindow(this).Opacity = 0.2;
-            
+
             wd_itemsOfferList w = new wd_itemsOfferList();
-            
+            //w.selectedItems.AddRange();
             w.ShowDialog();
             if (w.isActive)
             {
-                foreach (var item in w.selectedItems)
-                {
-                    //MessageBox.Show(item.name + "\t");
-                }
+                //w.selectedItems.AddRange(itemUnits.ToList());
+                //foreach (var item in w.selectedItems)
+                //{
+                //    MessageBox.Show(item.barcode + "\t");
+                //}
             }
 
             Window.GetWindow(this).Opacity =1;

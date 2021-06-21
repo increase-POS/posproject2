@@ -1236,4 +1236,7 @@
   <data name="trReceivedToggle" xml:space="preserve">
     <value>مستلمة</value>
   </data>
+  <data name="trPayVocher" xml:space="preserve">
+    <value>سند دفع</value>
+  </data>
 </root>

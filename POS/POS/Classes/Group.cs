@@ -64,8 +64,6 @@ namespace POS.Classes
                 return list;
             }
         }
-
-   
         public async Task<string> Save(Group newObject)
         {
             // ... Use HttpClient.
@@ -101,8 +99,6 @@ namespace POS.Classes
                 return "";
             }
         }
-
-       
         public async Task<Group> GetByID(int valId)
         {
             Group Object = new Group();
@@ -136,11 +132,6 @@ namespace POS.Classes
                 return Object;
             }
         }
-
-
-
-
-
         public async Task<Boolean> Delete(int groupId, int userId, bool final)
         {
             // ... Use HttpClient.
