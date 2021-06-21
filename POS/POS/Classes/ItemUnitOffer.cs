@@ -28,7 +28,11 @@ namespace POS.Classes
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> quantity { get; set; }
-      
+        public string offerName { get; set; }
+        public string unitName { get; set; }
+        public string code { get; set; }
+        public Nullable<int> itemId { get; set; }
+        public Nullable<int> unitId { get; set; }
 
         public async Task<string> updategroup(int offerId, List<ItemUnitOffer> newitoflist)
         {
@@ -104,9 +108,41 @@ namespace POS.Classes
                 return itemUnitOfferlist;
             }
         }
-        
-     
 
+
+        public async Task<List<ItemUnitOffer>> GetItemsByOfferId(int offerId)
+        {
+            List<ItemUnitOffer> itemUnitOfferlist = null;
+
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "ItemsOffers/GetItemsByOfferId");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Headers.Add("offerId", offerId.ToString());
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+
+                    itemUnitOfferlist = JsonConvert.DeserializeObject<List<ItemUnitOffer>>(jsonString);
+
+                    return itemUnitOfferlist;
+                }
+
+                return itemUnitOfferlist;
+            }
+        }
         // get items in category and sub
 
     }
