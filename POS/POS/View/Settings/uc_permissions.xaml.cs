@@ -130,45 +130,50 @@ namespace POS.View.Settings
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        //private void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (path_canAdd.Visibility == Visibility.Visible)
+        //    { path_canAdd.Visibility    = Visibility.Collapsed;
+        //        path_cantAdd.Visibility = Visibility.Visible;
+        //    }
+        //    else { path_canAdd.Visibility = Visibility.Visible;
+        //        path_cantAdd.Visibility   = Visibility.Collapsed;
+        //    }
+
+
+        //}
+
+        //private void Button_Click_1(object sender, RoutedEventArgs e)
+        //{
+        //    if (path_canUpdate.Visibility == Visibility.Visible)
+        //    {
+        //        path_canUpdate.Visibility = Visibility.Collapsed;
+        //        path_cantUpdate.Visibility = Visibility.Visible;
+        //    }
+        //    else
+        //    {
+        //        path_canUpdate.Visibility  = Visibility.Visible;
+        //        path_cantUpdate.Visibility = Visibility.Collapsed;
+        //    }
+        //}
+
+        //private void Button_Click_2(object sender, RoutedEventArgs e)
+        //{
+        //    if (path_canDelete.Visibility == Visibility.Visible)
+        //    {
+        //        path_canDelete.Visibility  = Visibility.Collapsed;
+        //        path_cantDelete.Visibility = Visibility.Visible;
+        //    }
+        //    else
+        //    {
+        //        path_canDelete.Visibility   = Visibility.Visible;
+        //        path_cantDelete.Visibility = Visibility.Collapsed;
+        //    }
+        //}
+
+        private void Btn_users_Click(object sender, RoutedEventArgs e)
         {
-            if (path_canAdd.Visibility == Visibility.Visible)
-            { path_canAdd.Visibility    = Visibility.Collapsed;
-                path_cantAdd.Visibility = Visibility.Visible;
-            }
-            else { path_canAdd.Visibility = Visibility.Visible;
-                path_cantAdd.Visibility   = Visibility.Collapsed;
-            }
 
-
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (path_canUpdate.Visibility == Visibility.Visible)
-            {
-                path_canUpdate.Visibility = Visibility.Collapsed;
-                path_cantUpdate.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                path_canUpdate.Visibility  = Visibility.Visible;
-                path_cantUpdate.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            if (path_canDelete.Visibility == Visibility.Visible)
-            {
-                path_canDelete.Visibility  = Visibility.Collapsed;
-                path_cantDelete.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                path_canDelete.Visibility   = Visibility.Visible;
-                path_cantDelete.Visibility = Visibility.Collapsed;
-            }
         }
     }
 }

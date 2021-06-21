@@ -28,6 +28,7 @@ using System.Threading;
 using System.Windows.Media.Animation;
 using Zen.Barcode;
 using POS.View.windows;
+using POS.View.catalog;
 
 namespace POS.View
 {
@@ -2061,6 +2062,13 @@ namespace POS.View
             _Sender = sender;
         }
 
-        
+        private void btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            win_lvcCatalog win = new win_lvcCatalog(itemsQuery, 2);
+            win.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
+        }
+
     }
 }

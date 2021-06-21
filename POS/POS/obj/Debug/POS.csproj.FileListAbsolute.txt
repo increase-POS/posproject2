@@ -1955,3 +1955,5 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\sectionData\win_lvc.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_salesStatistic.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sectionData\win_lvc.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_permissions.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\win_lvcCatalog.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\win_lvcCatalog.baml

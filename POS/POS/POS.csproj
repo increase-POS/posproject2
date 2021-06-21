@@ -153,6 +153,7 @@
     <Compile Include="Classes\Bank.cs" />
     <Compile Include="Classes\Bonds.cs" />
     <Compile Include="Classes\Branch.cs" />
+    <Compile Include="Classes\BranchStore.cs" />
     <Compile Include="Classes\Card.cs" />
     <Compile Include="Classes\CashTransfer.cs" />
     <Compile Include="Classes\Category.cs" />
@@ -166,6 +167,8 @@
     <Compile Include="Classes\DocImage.cs" />
     <Compile Include="Classes\ExportToExcel.cs" />
     <Compile Include="Classes\FindVisualChildren.cs" />
+    <Compile Include="Classes\Group.cs" />
+    <Compile Include="Classes\GroupObject.cs" />
     <Compile Include="Classes\ImageProcess.cs" />
     <Compile Include="Classes\InputStream.cs" />
     <Compile Include="Classes\Invoice.cs" />
@@ -179,6 +182,7 @@
     <Compile Include="Classes\Md5Encription.cs" />
     <Compile Include="Classes\Medal.cs" />
     <Compile Include="Classes\MedalAgent.cs" />
+    <Compile Include="Classes\Object.cs" />
     <Compile Include="Classes\Offer.cs" />
     <Compile Include="Classes\Pagination.cs" />
     <Compile Include="Classes\Pos.cs" />
@@ -242,6 +246,9 @@
     </Compile>
     <Compile Include="View\accounts\uc_receivedAccounts.xaml.cs">
       <DependentUpon>uc_receivedAccounts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\catalog\win_lvcCatalog.xaml.cs">
+      <DependentUpon>win_lvcCatalog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\purchases\uc_statistic.xaml.cs">
       <DependentUpon>uc_statistic.xaml</DependentUpon>
@@ -463,6 +470,10 @@
     <Page Include="View\accounts\uc_receivedAccounts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\catalog\win_lvcCatalog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\purchases\uc_statistic.xaml">
       <Generator>MSBuild:Compile</Generator>

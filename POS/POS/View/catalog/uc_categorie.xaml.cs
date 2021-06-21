@@ -2,6 +2,7 @@
 using netoaster;
 using POS.Classes;
 using POS.controlTemplate;
+using POS.View.catalog;
 using POS.View.windows;
 using System;
 using System.Collections.Generic;
@@ -1009,6 +1010,15 @@ namespace POS.View
         private void Tb_taxes_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
+        }
+
+
+        private void btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            win_lvcCatalog win = new win_lvcCatalog(categoriesQuery, 1);
+            win.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
         }
     }
 }
