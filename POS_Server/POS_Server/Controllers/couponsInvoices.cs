@@ -31,19 +31,24 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var couponsInvoicesList = entity.couponsInvoices
-                    .Where(c => c.InvoiceId == invoiceId)
-                   .Select(c => new {
-                     c.id 
-                    ,c.couponId 
-                     ,c.InvoiceId
-                    ,c.createDate
-                     ,c.updateDate 
-                     ,c.createUserId 
-                     , c.updateUserId 
-            
-                 })
-                   .ToList();
+                 var couponsInvoicesList = (from c in entity.couponsInvoices
+                     where c.InvoiceId == invoiceId
+                     join b in entity.coupons on c.couponId equals b.cId into lj
+                     from x in lj.DefaultIfEmpty()
+                     select new CouponInvoiceModel()
+                     {
+                         id = c.id,
+                         couponId = c.couponId,
+                         InvoiceId = c.InvoiceId,
+                         createDate = c.createDate,
+                         updateDate = c.updateDate,
+                         createUserId = c.createUserId,
+                         updateUserId = c.updateUserId,
+                         discountValue = c.discountValue,
+                         discountType = c.discountType,
+                         couponCode = x.code,
+                     }).ToList();
+                   
 
                     if (couponsInvoicesList == null)
                         return NotFound();
@@ -51,8 +56,7 @@ namespace POS_Server.Controllers
                         return Ok(couponsInvoicesList);
                 }
             }
-            //else
-                return NotFound();
+            return NotFound();
         }
 
 

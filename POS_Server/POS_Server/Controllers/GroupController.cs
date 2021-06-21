@@ -42,6 +42,7 @@ namespace POS_Server.Controllers
                        updateDate = c.updateDate,
                        createUserId = c.createUserId,
                        updateUserId = c.updateUserId,
+                       isActive = c.isActive,
                    })
                    .ToList();
                     if (List.Count > 0)
@@ -114,7 +115,7 @@ namespace POS_Server.Controllers
                        c.createUserId,
                        c.updateUserId,
 
-
+                     c.isActive,
                    })
                    .FirstOrDefault();
 
@@ -166,7 +167,7 @@ namespace POS_Server.Controllers
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var sEntity = entity.Set<groups>();
-                        if (Object.groupId == 0)
+                        if (Object.groupId == 0 || Object.groupId== null)
                         {
                             Object.createDate = DateTime.Now;
                             Object.updateDate = DateTime.Now;
@@ -174,9 +175,10 @@ namespace POS_Server.Controllers
                     
 
 
-                            sEntity.Add(Object);
-                             message = Object.groupId.ToString();
+                            entity.groups.Add(Object);
+                             
                             entity.SaveChanges();
+message = Object.groupId.ToString();
                         }
                         else
                         {
@@ -185,6 +187,7 @@ namespace POS_Server.Controllers
                             tmps.groupId = Object.groupId;
                             tmps.name = Object.name;
                             tmps.notes = Object.notes;
+                            tmps.isActive = Object.isActive;
                             tmps.createDate=Object.createDate;
                             tmps.updateDate = DateTime.Now;// server current date
                             tmps.updateUserId = Object.updateUserId;

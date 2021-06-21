@@ -11,6 +11,7 @@ namespace POS_Server.Models
         public string code { get; set; }
         public string name { get; set; }
         public string branchName { get; set; }
+        public string branchCode { get; set; }
         public Nullable<decimal> balance { get; set; }
         public Nullable<int> branchId { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }

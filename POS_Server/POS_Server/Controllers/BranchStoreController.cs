@@ -9,10 +9,10 @@ using System.Web.Http;
 
 namespace POS_Server.Controllers
 {
-    [RoutePrefix("api/GroupObject")]
-    public class GroupObjectController : ApiController
+    [RoutePrefix("api/BranchStore")]
+    public class BranchStoreController : ApiController
     {
-        // GET api/<controller> get all Group
+        // GET api/<controller> get all Objects
         [HttpGet]
         [Route("Get")]
         public IHttpActionResult Get()
@@ -20,7 +20,7 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            
+            bool canDelete = false;
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -32,43 +32,43 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var List = entity.groupObject
+                    var List = entity.branchStore
                   
-                   .Select(c => new GroupObjectModel {
-                     id=  c.id,
-                       groupId = c.groupId,
-                       objectId = c.objectId,
-                       notes = c.notes,
-                       addOb = c.addOb,
-                       updateOb = c.updateOb,
-                       deleteOb = c.deleteOb,
-                       showOb = c.showOb,
-                       objectName = c.objects.name,
-                       desc = c.objects.note,
-
+                   .Select(c => new BranchStoreModel {
+                      id = c.id,
+                       branchId = c.branchId,
+                       storeId = c.storeId,
+                       note = c.note,
+                    
                        createDate = c.createDate,
                        updateDate = c.updateDate,
                        createUserId = c.createUserId,
                        updateUserId = c.updateUserId,
-                       canDelete=true,
+                       isActive=c.isActive,
+                       canDelete = true,
+
                    })
                    .ToList();
                   
                     /*
                      * 
- 
-id
-groupId
-objectId
-notes
-addOb
-updateOb
-deleteOb
-showOb
-createDate
-updateDate
-createUserId
-updateUserId
+    public int id { get; set; }
+        public Nullable<int> branchId { get; set; }
+        public Nullable<int> storeId { get; set; }
+        public string note { get; set; }
+        public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<int> createUserId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
+
+                        id
+                        branchId
+                        storeId
+                        note
+                        createDate
+                        updateDate
+                        createUserId
+                        updateUserId
 
     
                      * */
@@ -109,24 +109,18 @@ updateUserId
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var list = entity.groupObject
+                    var list = entity.branchStore
                    .Where(c => c.id == cId)
                    .Select(c => new {
-                       c.id,
-                       c.groupId,
-                       c.objectId,
-                       c.notes,
-                       c.addOb,
-                       c.updateOb,
-                       c.deleteOb,
-                       c.showOb,
-
-                       c.createDate,
-                       c.updateDate,
-                       c.createUserId,
-                       c.updateUserId,
-
-
+                    c.id,
+                    c.branchId,
+                    c.storeId,
+                    c.note,
+                    c.createDate,
+                    c.updateDate,
+                    c.createUserId,
+                    c.updateUserId,
+                    c.isActive,
                    })
                    .FirstOrDefault();
 
@@ -161,23 +155,20 @@ updateUserId
             {
                 newObject = newObject.Replace("\\", string.Empty);
                 newObject = newObject.Trim('"');
-               groupObject Object = JsonConvert.DeserializeObject<groupObject>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                branchStore Object = JsonConvert.DeserializeObject<branchStore>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
                 try
                 {
-
-                    if (Object.groupId == 0 || Object.groupId == null)
+                    if (Object.branchId == 0 || Object.branchId == null)
                     {
                         Nullable<int> id = null;
-                        Object.groupId = id;
+                        Object.branchId = id;
                     }
 
-                    if (Object.objectId == 0 || Object.objectId == null)
+                    if (Object.storeId == 0 || Object.storeId == null)
                     {
                         Nullable<int> id = null;
-                        Object.objectId = id;
+                        Object.storeId = id;
                     }
-
-
                     if (Object.updateUserId == 0 || Object.updateUserId == null)
                     {
                         Nullable<int> id = null;
@@ -190,36 +181,31 @@ updateUserId
                     }
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-                        var sEntity = entity.Set<groupObject>();
+                        var sEntity = entity.Set<branchStore>();
                         if (Object.id == 0)
                         {
                             Object.createDate = DateTime.Now;
                             Object.updateDate = DateTime.Now;
                             Object.updateUserId = Object.createUserId;
-                    
-
-
                             sEntity.Add(Object);
-                             message = Object.groupId.ToString();
+                             message = Object.id.ToString();
                             entity.SaveChanges();
                         }
                         else
                         {
 
-                            var tmps = entity.groupObject.Where(p => p.id == Object.id).FirstOrDefault();
+                            var tmps = entity.branchStore.Where(p => p.id == Object.id).FirstOrDefault();
+
                             tmps.id = Object.id;
-                            tmps.groupId = Object.groupId;
-                            tmps.objectId = Object.objectId;
-                            tmps.notes = Object.notes;
-                            tmps.addOb = Object.addOb;
-                            tmps.updateOb = Object.updateOb;
-                            tmps.deleteOb = Object.deleteOb;
-                            tmps.showOb = Object.showOb;
-                            //tmps.isActive = Object.isActive;
-
-
+                            tmps.branchId = Object.branchId;
+                            tmps.storeId = Object.storeId;
+                            tmps.note = Object.note;
+                            tmps.isActive = Object.isActive;
+                            tmps.note = Object.note;
+                            tmps.note=Object.note;
                             tmps.createDate=Object.createDate;
                             tmps.updateDate = DateTime.Now;// server current date
+                            
                             tmps.updateUserId = Object.updateUserId;
                             entity.SaveChanges();
                             message = tmps.id.ToString();
@@ -263,8 +249,8 @@ updateUserId
                         using (incposdbEntities entity = new incposdbEntities())
                         {
 
-                            groupObject Deleterow = entity.groupObject.Find(Id);
-                            entity.groupObject.Remove(Deleterow);
+                            branchStore Deleterow = entity.branchStore.Find(Id);
+                            entity.branchStore.Remove(Deleterow);
                             entity.SaveChanges();
                             return Ok("OK");
                         }
@@ -281,7 +267,7 @@ updateUserId
                         using (incposdbEntities entity = new incposdbEntities())
                         {
 
-                            groupObject Obj = entity.groupObject.Find(Id);
+                            branchStore Obj = entity.branchStore.Find(Id);
                             Obj.isActive = 0;
                             Obj.updateUserId = userId;
                             Obj.updateDate = DateTime.Now;
@@ -301,5 +287,89 @@ updateUserId
             else
                 return NotFound();
         }
+
+        //
+        [HttpPost]
+        [Route("UpdateStoresById")]
+        public bool UpdateStoresById(string newList, int branchId,int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            newList = newList.Replace("\\", string.Empty);
+            newList = newList.Trim('"');
+
+            List<branchStore> newListObj = JsonConvert.DeserializeObject<List<branchStore>>(newList, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+
+            if (valid)
+            {
+                // delete old invoice items
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    List<branchStore> items = entity.branchStore.Where(x => x.branchId == branchId).ToList();
+                    entity.branchStore.RemoveRange(items);
+                    try { entity.SaveChanges(); }
+                    catch { }
+
+                }
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    for (int i = 0; i < newListObj.Count; i++)
+                    {
+                        if (newListObj[i].updateUserId == 0 || newListObj[i].updateUserId == null)
+                        {
+                            Nullable<int> id = null;
+                            newListObj[i].updateUserId = id;
+                        }
+                        if (newListObj[i].createUserId == 0 || newListObj[i].createUserId == null)
+                        {
+                            Nullable<int> id = null;
+                            newListObj[i].createUserId = id;
+                        }
+                        if (newListObj[i].branchId == 0 || newListObj[i].branchId == null)
+                        {
+                            Nullable<int> id = null;
+                            newListObj[i].branchId = id;
+                        }
+                        if (newListObj[i].storeId == 0 || newListObj[i].storeId == null)
+                        {
+                            Nullable<int> id = null;
+                            newListObj[i].storeId = id;
+                        }
+                        var branchEntity = entity.Set<branchStore>();
+
+                        newListObj[i].createDate = DateTime.Now;
+                        newListObj[i].updateDate = DateTime.Now;
+                        newListObj[i].updateUserId = newListObj[i].createUserId;
+
+                        branchEntity.Add(newListObj[i]);
+
+                    }
+                    try
+                    {
+                        entity.SaveChanges();
+                    }
+
+                    catch
+                    {
+                        return false;
+                    }
+                }
+
+            }
+
+            return true;
+        }
+
+        //
+
     }
 }

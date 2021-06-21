@@ -108,6 +108,7 @@
     <NavigationProperty Name="branches2" Relationship="Self.FK_branchStore_branches2" FromRole="branchStore" ToRole="branches" />
     <NavigationProperty Name="users" Relationship="Self.FK_branchStore_users" FromRole="branchStore" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_branchStore_users1" FromRole="branchStore" ToRole="users" />
+    <Property Name="isActive" Type="Int32" />
   </EntityType>
   <EntityType Name="cashTransfer">
     <Key>
@@ -3141,10 +3142,10 @@
     <Property Name="groupId" Type="Int32" />
     <Property Name="objectId" Type="Int32" />
     <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="addOb" Type="Byte" />
-    <Property Name="updateOb" Type="Byte" />
-    <Property Name="deleteOb" Type="Byte" />
-    <Property Name="showOb" Type="Byte" />
+    <Property Name="addOb" Type="Boolean" Nullable="false" />
+    <Property Name="updateOb" Type="Boolean" Nullable="false" />
+    <Property Name="deleteOb" Type="Boolean" Nullable="false" />
+    <Property Name="showOb" Type="Boolean" Nullable="false" />
     <Property Name="createDate" Type="DateTime" Precision="7" />
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="createUserId" Type="Int32" />
@@ -3153,6 +3154,7 @@
     <NavigationProperty Name="objects" Relationship="incposdbModel.FK_groupObject_objects" FromRole="groupObject" ToRole="objects" />
     <NavigationProperty Name="users" Relationship="incposdbModel.FK_groupObject_users" FromRole="groupObject" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="incposdbModel.FK_groupObject_users1" FromRole="groupObject" ToRole="users" />
+    <Property Name="isActive" Type="Int32" />
   </EntityType>
   <EntityType Name="groups">
     <Key>
@@ -3169,6 +3171,7 @@
     <NavigationProperty Name="users" Relationship="incposdbModel.FK_groups_users1" FromRole="groups" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="incposdbModel.FK_groups_users2" FromRole="groups" ToRole="users" />
     <NavigationProperty Name="users2" Relationship="incposdbModel.FK_users_groups" FromRole="groups" ToRole="users" />
+    <Property Name="isActive" Type="Int32" />
   </EntityType>
   <EntityType Name="objects">
     <Key>
@@ -3184,6 +3187,7 @@
     <NavigationProperty Name="groupObject" Relationship="incposdbModel.FK_groupObject_objects" FromRole="objects" ToRole="groupObject" />
     <NavigationProperty Name="users" Relationship="incposdbModel.FK_objects_users" FromRole="objects" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="incposdbModel.FK_objects_users1" FromRole="objects" ToRole="users" />
+    <Property Name="isActive" Type="Int32" />
   </EntityType>
   <Association Name="FK_groupObject_groups">
     <End Type="incposdbModel.groups" Role="groups" Multiplicity="0..1" />

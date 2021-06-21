@@ -307,5 +307,72 @@ namespace POS_Server.Controllers
             //else
             return NotFound();
         }
+
+
+
+
+
+        [HttpGet]
+        [Route("GetbyOfferId")]
+        public IHttpActionResult GetbyOfferId()
+        { int offerId = 0;
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            if (headers.Contains("offerId"))
+            {
+                offerId = Convert.ToInt32(headers.GetValues("offerId").First());
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var itemUnitsList = (from IU in entity.itemsUnits
+                                         join IO in entity.itemsOffers on IU.itemUnitId equals IO.iuId
+                                         join u in entity.units on IU.unitId equals u.unitId
+
+                                         join i in entity.items on IU.itemId equals i.itemId
+                                         orderby i.name
+                                         where IO.offerId==offerId
+                                         select new ItemUnitModel()
+                                         {
+                                             itemUnitId = IU.itemUnitId,
+                                             unitId = IU.unitId,
+                                             itemId = IU.itemId,
+                                             mainUnit = u.name,
+                                             createDate = IU.createDate,
+                                             createUserId = IU.createUserId,
+                                             defaultPurchase = IU.defaultPurchase,
+                                             defaultSale = IU.defaultSale,
+                                             price = IU.price,
+                                             subUnitId = IU.subUnitId,
+
+                                             unitValue = IU.unitValue,
+                                             barcode = IU.barcode,
+                                             updateDate = IU.updateDate,
+                                             updateUserId = IU.updateUserId,
+                                             itemName = i.name,
+                                             itemCode = i.code,
+
+
+                                         })
+                                         .ToList();
+
+                    if (itemUnitsList == null)
+                        return NotFound();
+                    else
+                        return Ok(itemUnitsList);
+                }
+            }
+            //else
+            return NotFound();
+        }
     }
 }

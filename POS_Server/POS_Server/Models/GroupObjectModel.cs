@@ -11,10 +11,13 @@ namespace POS_Server.Models
         public Nullable<int> groupId { get; set; }
         public Nullable<int> objectId { get; set; }
         public string notes { get; set; }
-        public Nullable<byte> addOb { get; set; }
-        public Nullable<byte> updateOb { get; set; }
-        public Nullable<byte> deleteOb { get; set; }
-        public Nullable<byte> showOb { get; set; }
+        public bool addOb { get; set; }
+        public bool updateOb { get; set; }
+        public bool deleteOb { get; set; }
+        public bool showOb { get; set; }
+        public string objectName { get; set; }
+        public string desc { get; set; }
+        
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }

@@ -33,5 +33,21 @@ namespace POS_Server.Models
         public Nullable<int> posId { get; set; }
         public Nullable<int> itemsCount { get; set; }
         public Nullable<decimal> tax { get; set; }
+        public Nullable<byte> isApproved { get; set; }
+    }
+
+    public class CouponInvoiceModel
+    {
+        public int id { get; set; }
+        public Nullable<int> couponId { get; set; }
+        public Nullable<int> InvoiceId { get; set; }
+        public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<int> createUserId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
+        public Nullable<decimal> discountValue { get; set; }
+        public Nullable<byte> discountType { get; set; }
+
+        public string couponCode { get; set; }
     }
 }

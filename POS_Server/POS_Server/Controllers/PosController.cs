@@ -50,6 +50,7 @@ namespace POS_Server.Controllers
                                        isActive = p.isActive,
                                       balanceAll=p.balanceAll,
                                        note = p.note,
+                                       branchCode = x.code,
                                    }).ToList();
 
                     if (posList.Count > 0)
@@ -123,6 +124,7 @@ namespace POS_Server.Controllers
                                        isActive = p.isActive,
                                        note = p.note,
                                        balanceAll = p.balanceAll,
+                                       branchCode = x.code,
                                    })
                                    .Where(p=> (p.name.Contains(searchWords) || p.code.Contains(searchWords) || p.branchName.Contains(searchWords) || p.balance == balance ))
                                    .ToList();
@@ -155,24 +157,26 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var pos = entity.pos
-                   .Where(u => u.posId == posId)
-                   .Select(p => new
-                   {
-                       p.posId,
-                       p.balance,
-                       p.branchId,
-                       p.code,
-                       p.name,
-                       p.createDate,
-                       p.updateDate,
-                       p.createUserId,
-                       p.updateUserId,
-                       p.isActive,
-                       p.note,
-                     p.balanceAll,
-                   })
-                   .FirstOrDefault();
+                    var pos = (from p in entity.pos where p.posId == posId
+                                join b in entity.branches on p.branchId equals b.branchId into lj
+                                from x in lj.DefaultIfEmpty()
+                                select new PosModel()
+                                {
+                                    posId = p.posId,
+                                    balance = p.balance,
+                                    branchId = p.branchId,
+                                    code = p.code,
+                                    name = p.name,
+                                    branchName = x.name,
+                                    createDate = p.createDate,
+                                    updateDate = p.updateDate,
+                                    createUserId = p.createUserId,
+                                    updateUserId = p.updateUserId,
+                                    isActive = p.isActive,
+                                    balanceAll = p.balanceAll,
+                                    note = p.note,
+                                    branchCode = x.code,
+                                }).FirstOrDefault();
 
                     if (pos == null)
                         return NotFound();

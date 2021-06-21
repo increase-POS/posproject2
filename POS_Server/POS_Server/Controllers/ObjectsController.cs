@@ -188,8 +188,8 @@ namespace POS_Server.Controllers
                             Object.updateDate = DateTime.Now;
                             Object.updateUserId = Object.createUserId;
                             sEntity.Add(Object);
-                             message = Object.objectId.ToString();
                             entity.SaveChanges();
+                             message = Object.objectId.ToString();
                         }
                         else
                         {

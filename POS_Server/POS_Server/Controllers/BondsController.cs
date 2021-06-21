@@ -210,12 +210,12 @@ canDelete
         // add or update card 
         [HttpPost]
         [Route("Save")]
-        public bool Save(string bondObject)
+        public string Save(string bondObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            
+           string  message = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -233,14 +233,15 @@ canDelete
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var bondEntity = entity.Set<bondes>();
-                        if (Object.bondId == 0)
+                        if (Object.bondId == 0 || Object.bondId == null)
                         {
 
                             Object.createDate = DateTime.Now;
                             Object.updateDate = DateTime.Now;
                             Object.updateUserId = Object.createUserId;
                             bondEntity.Add(Object);
-                          //  message = "card Is Added Successfully";
+                            entity.SaveChanges();
+                            message = Object.bondId.ToString();
                         }
                         else
                         {
@@ -262,19 +263,23 @@ canDelete
                             tmpbond.cashTransId = Object.cashTransId;
 
                             //message = "card Is Updated Successfully";
+                    entity.SaveChanges();
+                    message = tmpbond.bondId.ToString();
+                  
                         }
-                        entity.SaveChanges();
+                       
+                      
                     }
-                    return true;
+                    return message;
                 }
 
                 catch
                 {
-                    return false;
+                    return "-1";
                 }
             }
             else
-                return false;
+                return "-1";
         }
 
         [HttpPost]

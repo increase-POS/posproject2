@@ -243,14 +243,18 @@
     <Compile Include="Controllers\couponsController.cs" />
     <Compile Include="Controllers\couponsInvoices.cs" />
     <Compile Include="Controllers\DocImageController.cs" />
+    <Compile Include="Controllers\GroupController.cs" />
+    <Compile Include="Controllers\GroupObjectController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InvoicesController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
+    <Compile Include="Controllers\ItemsLocationsController.cs" />
     <Compile Include="Controllers\ItemsOffersController.cs" />
     <Compile Include="Controllers\itemsPropController.cs" />
     <Compile Include="Controllers\ItemsTransferController.cs" />
     <Compile Include="Controllers\ItemsUnitsController.cs" />
     <Compile Include="Controllers\MedalAgentController.cs" />
+    <Compile Include="Controllers\ObjectsController.cs" />
     <Compile Include="Controllers\userSetValuesController.cs" />
     <Compile Include="Controllers\CategoryuserController.cs" />
     <Compile Include="Controllers\setValuesController.cs" />
@@ -334,7 +338,10 @@
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CardModel.cs" />
     <Compile Include="Models\CouponModel.cs" />
+    <Compile Include="Models\GroupModel.cs" />
+    <Compile Include="Models\GroupObjectModel.cs" />
     <Compile Include="Models\InvoiceModel.cs" />
+    <Compile Include="Models\ItemLocationModel.cs" />
     <Compile Include="Models\ItemOfferModel.cs" />
     <Compile Include="Models\ItemSalePurModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
@@ -342,6 +349,7 @@
     <Compile Include="Models\ItemUnitModel.cs" />
     <Compile Include="Models\MedalAgentModel.cs" />
     <Compile Include="Models\MedalModel.cs" />
+    <Compile Include="Models\ObjectsModel.cs" />
     <Compile Include="Models\SectionModel.cs" />
     <Compile Include="Models\LocationModel.cs" />
     <Compile Include="Models\OfferModel.cs" />

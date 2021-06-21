@@ -82,6 +82,7 @@
     <EntitySetMapping Name="branchStore">
       <EntityTypeMapping TypeName="incposdbModel.branchStore">
         <MappingFragment StoreEntitySet="branchStore">
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="branchId" ColumnName="branchId" />
           <ScalarProperty Name="storeId" ColumnName="storeId" />
@@ -714,6 +715,7 @@
     <EntitySetMapping Name="groupObject">
       <EntityTypeMapping TypeName="incposdbModel.groupObject">
         <MappingFragment StoreEntitySet="groupObject">
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
           <ScalarProperty Name="createUserId" ColumnName="createUserId" />
           <ScalarProperty Name="updateDate" ColumnName="updateDate" />
@@ -732,6 +734,7 @@
     <EntitySetMapping Name="groups">
       <EntityTypeMapping TypeName="incposdbModel.groups">
         <MappingFragment StoreEntitySet="groups">
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
           <ScalarProperty Name="createUserId" ColumnName="createUserId" />
           <ScalarProperty Name="updateDate" ColumnName="updateDate" />
@@ -745,6 +748,7 @@
     <EntitySetMapping Name="objects">
       <EntityTypeMapping TypeName="incposdbModel.objects">
         <MappingFragment StoreEntitySet="objects">
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
           <ScalarProperty Name="createUserId" ColumnName="createUserId" />
           <ScalarProperty Name="updateDate" ColumnName="updateDate" />

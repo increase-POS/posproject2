@@ -109,6 +109,7 @@
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
+          <Property Name="isActive" Type="int" />
         </EntityType>
         <EntityType Name="cards">
           <Key>
@@ -272,14 +273,15 @@
           <Property Name="groupId" Type="int" />
           <Property Name="objectId" Type="int" />
           <Property Name="notes" Type="ntext" />
-          <Property Name="addOb" Type="tinyint" />
-          <Property Name="updateOb" Type="tinyint" />
-          <Property Name="deleteOb" Type="tinyint" />
-          <Property Name="showOb" Type="tinyint" />
+          <Property Name="addOb" Type="bit" Nullable="false" />
+          <Property Name="updateOb" Type="bit" Nullable="false" />
+          <Property Name="deleteOb" Type="bit" Nullable="false" />
+          <Property Name="showOb" Type="bit" Nullable="false" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
+          <Property Name="isActive" Type="int" />
         </EntityType>
         <EntityType Name="groups">
           <Key>
@@ -292,6 +294,7 @@
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
+          <Property Name="isActive" Type="int" />
         </EntityType>
         <EntityType Name="invoices">
           <Key>
@@ -522,6 +525,7 @@
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
+          <Property Name="isActive" Type="int" />
         </EntityType>
         <EntityType Name="offers">
           <Key>
@@ -876,18 +880,6 @@
             </Principal>
             <Dependent Role="branchStore">
               <PropertyRef Name="branchId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_branchStore_branches1">
-          <End Role="branches" Type="Self.branches" Multiplicity="0..1" />
-          <End Role="branchStore" Type="Self.branchStore" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="branches">
-              <PropertyRef Name="branchId" />
-            </Principal>
-            <Dependent Role="branchStore">
-              <PropertyRef Name="storeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2625,10 +2617,6 @@
             <End Role="branches" EntitySet="branches" />
             <End Role="branchStore" EntitySet="branchStore" />
           </AssociationSet>
-          <AssociationSet Name="FK_branchStore_branches1" Association="Self.FK_branchStore_branches1">
-            <End Role="branches" EntitySet="branches" />
-            <End Role="branchStore" EntitySet="branchStore" />
-          </AssociationSet>
           <AssociationSet Name="FK_branchStore_branches2" Association="Self.FK_branchStore_branches2">
             <End Role="branches" EntitySet="branches" />
             <End Role="branchStore" EntitySet="branchStore" />
@@ -3290,6 +3278,7 @@
           <NavigationProperty Name="branches2" Relationship="Self.FK_branchStore_branches2" FromRole="branchStore" ToRole="branches" />
           <NavigationProperty Name="users" Relationship="Self.FK_branchStore_users" FromRole="branchStore" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_branchStore_users1" FromRole="branchStore" ToRole="users" />
+          <Property Name="isActive" Type="Int32" />
         </EntityType>
         <EntityType Name="cashTransfer">
           <Key>
@@ -6323,10 +6312,10 @@
           <Property Name="groupId" Type="Int32" />
           <Property Name="objectId" Type="Int32" />
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="addOb" Type="Byte" />
-          <Property Name="updateOb" Type="Byte" />
-          <Property Name="deleteOb" Type="Byte" />
-          <Property Name="showOb" Type="Byte" />
+          <Property Name="addOb" Type="Boolean" Nullable="false" />
+          <Property Name="updateOb" Type="Boolean" Nullable="false" />
+          <Property Name="deleteOb" Type="Boolean" Nullable="false" />
+          <Property Name="showOb" Type="Boolean" Nullable="false" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
@@ -6335,6 +6324,7 @@
           <NavigationProperty Name="objects" Relationship="incposdbModel.FK_groupObject_objects" FromRole="groupObject" ToRole="objects" />
           <NavigationProperty Name="users" Relationship="incposdbModel.FK_groupObject_users" FromRole="groupObject" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="incposdbModel.FK_groupObject_users1" FromRole="groupObject" ToRole="users" />
+          <Property Name="isActive" Type="Int32" />
         </EntityType>
         <EntityType Name="groups">
           <Key>
@@ -6351,6 +6341,7 @@
           <NavigationProperty Name="users" Relationship="incposdbModel.FK_groups_users1" FromRole="groups" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="incposdbModel.FK_groups_users2" FromRole="groups" ToRole="users" />
           <NavigationProperty Name="users2" Relationship="incposdbModel.FK_users_groups" FromRole="groups" ToRole="users" />
+          <Property Name="isActive" Type="Int32" />
         </EntityType>
         <EntityType Name="objects">
           <Key>
@@ -6366,6 +6357,7 @@
           <NavigationProperty Name="groupObject" Relationship="incposdbModel.FK_groupObject_objects" FromRole="objects" ToRole="groupObject" />
           <NavigationProperty Name="users" Relationship="incposdbModel.FK_objects_users" FromRole="objects" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="incposdbModel.FK_objects_users1" FromRole="objects" ToRole="users" />
+          <Property Name="isActive" Type="Int32" />
         </EntityType>
         <Association Name="FK_groupObject_groups">
           <End Type="incposdbModel.groups" Role="groups" Multiplicity="0..1" />
@@ -6738,6 +6730,7 @@
           <EntitySetMapping Name="branchStore">
             <EntityTypeMapping TypeName="incposdbModel.branchStore">
               <MappingFragment StoreEntitySet="branchStore">
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="branchId" ColumnName="branchId" />
                 <ScalarProperty Name="storeId" ColumnName="storeId" />
@@ -7370,6 +7363,7 @@
           <EntitySetMapping Name="groupObject">
             <EntityTypeMapping TypeName="incposdbModel.groupObject">
               <MappingFragment StoreEntitySet="groupObject">
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
                 <ScalarProperty Name="createUserId" ColumnName="createUserId" />
                 <ScalarProperty Name="updateDate" ColumnName="updateDate" />
@@ -7388,6 +7382,7 @@
           <EntitySetMapping Name="groups">
             <EntityTypeMapping TypeName="incposdbModel.groups">
               <MappingFragment StoreEntitySet="groups">
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
                 <ScalarProperty Name="createUserId" ColumnName="createUserId" />
                 <ScalarProperty Name="updateDate" ColumnName="updateDate" />
@@ -7401,6 +7396,7 @@
           <EntitySetMapping Name="objects">
             <EntityTypeMapping TypeName="incposdbModel.objects">
               <MappingFragment StoreEntitySet="objects">
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
                 <ScalarProperty Name="createUserId" ColumnName="createUserId" />
                 <ScalarProperty Name="updateDate" ColumnName="updateDate" />

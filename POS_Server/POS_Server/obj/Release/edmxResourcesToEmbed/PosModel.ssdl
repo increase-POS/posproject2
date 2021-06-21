@@ -104,6 +104,7 @@
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
+    <Property Name="isActive" Type="int" />
   </EntityType>
   <EntityType Name="cards">
     <Key>
@@ -267,14 +268,15 @@
     <Property Name="groupId" Type="int" />
     <Property Name="objectId" Type="int" />
     <Property Name="notes" Type="ntext" />
-    <Property Name="addOb" Type="tinyint" />
-    <Property Name="updateOb" Type="tinyint" />
-    <Property Name="deleteOb" Type="tinyint" />
-    <Property Name="showOb" Type="tinyint" />
+    <Property Name="addOb" Type="bit" Nullable="false" />
+    <Property Name="updateOb" Type="bit" Nullable="false" />
+    <Property Name="deleteOb" Type="bit" Nullable="false" />
+    <Property Name="showOb" Type="bit" Nullable="false" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
+    <Property Name="isActive" Type="int" />
   </EntityType>
   <EntityType Name="groups">
     <Key>
@@ -287,6 +289,7 @@
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
+    <Property Name="isActive" Type="int" />
   </EntityType>
   <EntityType Name="invoices">
     <Key>
@@ -517,6 +520,7 @@
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
+    <Property Name="isActive" Type="int" />
   </EntityType>
   <EntityType Name="offers">
     <Key>
@@ -871,18 +875,6 @@
       </Principal>
       <Dependent Role="branchStore">
         <PropertyRef Name="branchId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_branchStore_branches1">
-    <End Role="branches" Type="Self.branches" Multiplicity="0..1" />
-    <End Role="branchStore" Type="Self.branchStore" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="branches">
-        <PropertyRef Name="branchId" />
-      </Principal>
-      <Dependent Role="branchStore">
-        <PropertyRef Name="storeId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2617,10 +2609,6 @@
       <End Role="branchesUsers" EntitySet="branchesUsers" />
     </AssociationSet>
     <AssociationSet Name="FK_branchStore_branches" Association="Self.FK_branchStore_branches">
-      <End Role="branches" EntitySet="branches" />
-      <End Role="branchStore" EntitySet="branchStore" />
-    </AssociationSet>
-    <AssociationSet Name="FK_branchStore_branches1" Association="Self.FK_branchStore_branches1">
       <End Role="branches" EntitySet="branches" />
       <End Role="branchStore" EntitySet="branchStore" />
     </AssociationSet>

@@ -135,8 +135,9 @@ namespace POS_Server.Controllers
         [HttpGet]
         [Route("GetItemsByOfferId")]
 
-        public IHttpActionResult GetItemsByOfferId(int offerId, List<ItemOfferModel> newitoflist)
+        public IHttpActionResult GetItemsByOfferId( )
         {
+            int offerId = 0;
             var re = Request;
             var headers = re.Headers;
             string token = "";
@@ -144,7 +145,10 @@ namespace POS_Server.Controllers
             {
                 token = headers.GetValues("APIKey").First();
             }
-
+            if (headers.Contains("offerId"))
+            {
+                offerId = Convert.ToInt32(headers.GetValues("offerId").First());
+            }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
 
@@ -156,17 +160,25 @@ namespace POS_Server.Controllers
                                    join itunit in entity.itemsUnits on itofr.iuId equals itunit.itemUnitId
                                    join item in entity.items on itunit.itemId equals item.itemId
                                    join ofr in entity.offers on itofr.offerId equals ofr.offerId
+                                   join un in entity.units on itunit.unitId equals un.unitId
                                    select new ItemOfferModel()
                                    {
                                        offerId = itofr.offerId,
-                                    //   offerName = ofr.name,
-                                     //  itemUnitId = itunit.itemUnitId,
-                                      // itemId = item.itemId,
-                                      // unitId = itunit.unitId,
-                                       // unitName = itun.name,
-                                     //  name = item.name,
-                                       //code = item.code,
-                                   }).Where(p => p.offerId == offerId).ToList();
+                                       offerName = ofr.name,
+                                       
+                                       unitId=un.unitId,
+                                       unitName = un.name,
+                                       itemId = item.itemId,
+                                       itemName = item.name,
+                                       iuId = itunit.itemUnitId,
+
+                                       createDate= itofr.createDate,
+                                       updateDate= itofr.updateDate,
+                                       createUserId= itofr.createUserId,
+                                       updateUserId= itofr.updateUserId,
+                     
+        //code = item.code,
+    }).Where(p => p.offerId == offerId).ToList();
 
 
                     if (iuoffer == null)
