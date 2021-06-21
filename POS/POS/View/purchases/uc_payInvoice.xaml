@@ -12,9 +12,9 @@
     <ScrollViewer>
         <Grid x:Name="grid_ucPayInvoice" Margin="0,15,15,15"  >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1.1*"/>
                 <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="1.1*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition   Height="45" />
@@ -22,7 +22,7 @@
                 <!--<RowDefinition Height="1.2*"/>-->
             </Grid.RowDefinitions>
 
-            <Border BorderThickness="0"  Height="auto"  Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,5,0"
+            <Border BorderThickness="0"  Height="auto"  Grid.Column="0"  Margin="10,0,5,0"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
                 <StackPanel  Orientation="Horizontal" Margin="5,0">
 
@@ -132,8 +132,8 @@
 
                 </StackPanel>
             </Border>
-            <Border BorderThickness="0"   Grid.Column="2"  
-                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0" Margin="10,0,5,0">
+            <Border BorderThickness="0" Grid.ColumnSpan="2"  Grid.Column="1"  
+                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0" Margin="5,0,10,0">
                 <DockPanel   Margin="10,0" LastChildFill="False">
 
                     <Button Grid.Column="8" BorderBrush="{x:Null}" DockPanel.Dock="Right" Height="auto" Click="Btn_items_Click"
@@ -288,7 +288,7 @@
                     </Button>
                 </DockPanel>
             </Border>
-            <Grid Grid.Column="0" Grid.Row="1" Margin="0,5,0,5">
+            <Grid Grid.Column="2" Grid.Row="1" Margin="0,5,0,5">
                 <Grid.RowDefinitions >
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
@@ -383,7 +383,7 @@
                                         materialDesign:HintAssist.Hint="Deserved Date..."  
                                         PreviewKeyUp="Dp_date_PreviewKeyUp"
                                         Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"  Height="40"    />
-                                <Path x:Name="p_errorDesrvedDate" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                <Path x:Name="p_errorDesrvedDate" Fill="#E81123" Stretch="Fill" Margin="5,5,30,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 
@@ -676,7 +676,7 @@
                 </Grid>
             </Border>-->
             </Grid>
-            <Grid Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" Margin="0,5,0,5">
+            <Grid Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Margin="0,5,0,5">
                 <Grid.RowDefinitions >
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
