@@ -228,9 +228,10 @@ namespace POS.View.accounts
             {
                 cashtrans = dg_receivedAccounts.SelectedItem as CashTransfer;
                 this.DataContext = cashtrans;
-
                 if (cashtrans != null)
                 {
+                    MessageBox.Show(cashtrans.cashTransId.ToString() + "-" + cashtrans.bondId.ToString());
+
                     btn_add.IsEnabled = false;
                     cb_depositFrom.SelectedValue = cashtrans.side;
 
@@ -388,6 +389,7 @@ namespace POS.View.accounts
                     cash.docNum = tb_docNumCheque.Text;
 
                 string s = await cashModel.Save(cash);
+                MessageBox.Show(s);
 
                 if (!s.Equals("0"))
                 {
@@ -422,7 +424,18 @@ namespace POS.View.accounts
 
             string s = await bondModel.Save(bond);
 
-            //if (s.Equals("true"))
+            if (!s.Equals("0"))
+            {
+                MessageBox.Show(s);
+                //MessageBox.Show(cashId.Value.ToString());
+                CashTransfer c = await cashModel.GetByID(cashId.Value);
+
+                c.bondId = int.Parse(s);
+
+                string x = await cashModel.Save(c);
+
+                MessageBox.Show(c.bondId.ToString());
+            }
             //    MessageBox.Show("ok");
             //else MessageBox.Show("error");
         }
@@ -432,7 +445,7 @@ namespace POS.View.accounts
             string s = "";
             //increase pos balance
             Pos pos = await posModel.getPosById(MainWindow.posID.Value);
-            MessageBox.Show(pos.balance.ToString());
+            //MessageBox.Show(pos.balance.ToString());
             pos.balance += ammount;
            
             s = await pos.savePos(pos);

@@ -37,6 +37,12 @@ namespace POS
         bool menuState = false;
 
         public static string lang = "ar";
+        public static string Reportlang = "ar";
+        public static string companyName = "Increse";
+        public static string Email = "m7mdbonni@gmail.com";
+        public static string Fax = "0215232233";
+        public static string Mobile = "+963967376542";
+        public static string Address = "Aleppo";
         internal static int? userID = 2;
         internal static int? posID = 53;
         internal static int? branchID = 18;

@@ -258,6 +258,8 @@ namespace POS.View.accounts
 
                 if (cashtrans != null)
                 {
+                    //MessageBox.Show(cashtrans.bondId.ToString());
+
                     cb_depositTo.SelectedValue = cashtrans.side;
                     btn_add.IsEnabled = false;
 
@@ -429,6 +431,7 @@ namespace POS.View.accounts
 
                 if (!s.Equals("0"))
                 {
+                    //MessageBox.Show(s);
                     calcBalance(cash.cash.Value, recipient, agentid);
 
                     if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
@@ -470,7 +473,15 @@ namespace POS.View.accounts
             bond.cashTransId = cashId;
 
             string s = await bondModel.Save(bond);
-            MessageBox.Show(s);
+           
+            if(!s.Equals("0"))
+            {
+                //MessageBox.Show(s);
+
+                cashtrans.bondId = int.Parse(s);
+
+                await cashModel.Save(cashtrans);
+            }
 
         }
 
@@ -479,7 +490,7 @@ namespace POS.View.accounts
             string s = "";
             //increase pos balance
             Pos pos = await posModel.getPosById(MainWindow.posID.Value);
-            //MessageBox.Show(pos.balance.ToString());
+
             pos.balance -= ammount;
 
             s = await pos.savePos(pos);
@@ -514,7 +525,7 @@ namespace POS.View.accounts
         private async void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             btn_add.IsEnabled = true;
-            tb_transNum.Text = await SectionData.generateNumber('p', cb_depositTo.SelectedValue.ToString());
+            //tb_transNum.Text = await SectionData.generateNumber('p', cb_depositTo.SelectedValue.ToString());
             cb_depositTo.SelectedIndex = -1;
             //cb_recipient.SelectedIndex = -1;
             cb_paymentProcessType.SelectedIndex = -1;

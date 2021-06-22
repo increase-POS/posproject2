@@ -83,6 +83,8 @@ namespace POS.View.accounts
 
                 if (bond != null)
                 {
+                    //MessageBox.Show(bond.bondId.ToString() +"-"+bond.cashTransId.ToString());
+
                     if (bond.isRecieved == 1)
                     {
                         btn_pay.Content = MainWindow.resourcemanager.GetString("trPaid");
@@ -96,7 +98,6 @@ namespace POS.View.accounts
 
                     CashTransfer cash = await cashModel.GetByID(bond.cashTransId.Value);
 
-                 
                     if (cash.side.Equals("v"))
                     {
                         cb_depositorV.SelectedValue = cash.agentId.Value;
@@ -120,17 +121,25 @@ namespace POS.View.accounts
                         cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
                         cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
                     }
-                  
+
                     if (bond.isRecieved == 1)
                     {
-                        cashes = await cashModel.GetCashTransferAsync(bond.type , "all");
-                        cashQuery = cashes.Where(s => s.bondId == bond.bondId);
-                        //MessageBox.Show(cashQuery.ToList()[0].processType);
-                        cb_paymentProcessType.SelectedValue = cashQuery.ToList()[0].processType;
+                        IEnumerable<CashTransfer> c;
+                        IEnumerable<CashTransfer> cQuery;
+                        c = await cashModel.GetCashTransferAsync(bond.type, "all");
+                        cQuery = c.Where(s => s.bondId == bond.bondId && s.side == "bnd");
+                        //MessageBox.Show(cQuery.ToList()[0].processType);
+                        cb_paymentProcessType.SelectedValue = cQuery.ToList()[0].processType;
                         if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
                         {
-                            cb_card.SelectedValue = cashQuery.ToList()[0].cardId;
+                            cb_card.SelectedValue = cQuery.ToList()[0].cardId;
                         }
+                    }
+                    else
+                    {
+                        cb_paymentProcessType.SelectedIndex = -1;
+                        cb_card.SelectedIndex = -1;
+                        cb_card.Visibility = Visibility.Collapsed;
                     }
 
                 }
@@ -157,7 +166,7 @@ namespace POS.View.accounts
 
                 string s = await bondModel.Save(bond);
 
-                if (s.Equals("true"))
+                if (!s.Equals("0"))
                 {
                     //save new cashtransfer
                     CashTransfer cash = new CashTransfer();
@@ -186,7 +195,8 @@ namespace POS.View.accounts
                         cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
 
                     s = await cashModel.Save(cash);
-                    MessageBox.Show(s);
+                    //MessageBox.Show(cash.bondId.ToString()+"-"+s);
+
                     if (!s.Equals("0"))
                     {
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -211,13 +221,15 @@ namespace POS.View.accounts
             {
                 searchText = tb_search.Text;
                 bondsQuery = bonds.Where(s => (
-                //s.number.Contains(searchText)
-                //||
+                s.number.Contains(searchText)
+                ||
                 s.amount.ToString().Contains(searchText)
                 || s.type.ToString().Contains(searchText)
                 )
-                //&& s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                //&& s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+         //       && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+         //       && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                //&& s.deserveDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                && s.deserveDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
                 && s.isRecieved == tgl_bondState
                 );
 
@@ -225,7 +237,6 @@ namespace POS.View.accounts
 
             bondsQueryExcel = bondsQuery;
             RefreshBondView();
-
 
         }
 
@@ -390,6 +401,9 @@ namespace POS.View.accounts
             dp_endSearchDate.SelectedDate = DateTime.Now;
             dp_startSearchDate.SelectedDate = DateTime.Now;
 
+            dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
+            dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
+
             //TextBox dpDate = (TextBox)dp_deservecDate.Template.FindName("PART_TextBox", dp_deservecDate);
             //dpDate.IsReadOnly = true;
 
@@ -398,6 +412,18 @@ namespace POS.View.accounts
             await RefreshBondsList();
             Tb_search_TextChanged(null, null);
 
+        }
+
+        private async void dp_SelectedEndDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            await RefreshBondsList();
+            Tb_search_TextChanged(null, null);
+        }
+
+        private async void dp_SelectedStartDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            await RefreshBondsList();
+            Tb_search_TextChanged(null, null);
         }
 
         private void translate()

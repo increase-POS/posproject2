@@ -706,6 +706,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Account\Ar\ArPayReport.rdlc" />
+    <EmbeddedResource Include="Reports\Account\Ar\ArReciveReport.rdlc" />
+    <EmbeddedResource Include="Reports\Account\En\PayReport.rdlc" />
+    <EmbeddedResource Include="Reports\Account\En\ReciveReport.rdlc" />
     <EmbeddedResource Include="Reports\ArPayReport.rdlc" />
     <EmbeddedResource Include="Reports\ArReciveReport.rdlc" />
     <EmbeddedResource Include="Reports\BankReport.rdlc" />
@@ -716,8 +720,26 @@
     <EmbeddedResource Include="Reports\MediumSaleReport.rdlc" />
     <EmbeddedResource Include="Reports\PayReport.rdlc" />
     <EmbeddedResource Include="Reports\PosReport.rdlc" />
+    <EmbeddedResource Include="Reports\Purchase\En\InvPurReport.rdlc" />
     <EmbeddedResource Include="Reports\ReciptReport.rdlc" />
     <EmbeddedResource Include="Reports\ReciveReport.rdlc" />
+    <EmbeddedResource Include="Reports\Sale\En\LargeSaleReport.rdlc" />
+    <EmbeddedResource Include="Reports\Sale\En\MediumSaleReport.rdlc" />
+    <EmbeddedResource Include="Reports\Sale\En\SmallSaleReport.rdlc" />
+    <EmbeddedResource Include="Reports\SectionData\Ar\ArBankReport.rdlc" />
+    <EmbeddedResource Include="Reports\SectionData\Ar\ArBranchReport.rdlc" />
+    <EmbeddedResource Include="Reports\SectionData\Ar\ArCustomerReport.rdlc" />
+    <EmbeddedResource Include="Reports\SectionData\Ar\ArPosReport.rdlc" />
+    <EmbeddedResource Include="Reports\SectionData\Ar\ArStoreReport.rdlc" />
+    <EmbeddedResource Include="Reports\SectionData\Ar\ArUserReport.rdlc" />
+    <EmbeddedResource Include="Reports\SectionData\Ar\ArVendorReport.rdlc" />
+    <EmbeddedResource Include="Reports\SectionData\En\BankReport.rdlc" />
+    <EmbeddedResource Include="Reports\SectionData\En\BranchReport.rdlc" />
+    <EmbeddedResource Include="Reports\SectionData\En\CustomerReport.rdlc" />
+    <EmbeddedResource Include="Reports\SectionData\En\PosReport.rdlc" />
+    <EmbeddedResource Include="Reports\SectionData\En\StoreReport.rdlc" />
+    <EmbeddedResource Include="Reports\SectionData\En\UserReport.rdlc" />
+    <EmbeddedResource Include="Reports\SectionData\En\VendorReport.rdlc" />
     <EmbeddedResource Include="Reports\SmallSaleReport.rdlc" />
     <EmbeddedResource Include="Reports\UserReport.rdlc" />
     <EmbeddedResource Include="Reports\VendorReport.rdlc">

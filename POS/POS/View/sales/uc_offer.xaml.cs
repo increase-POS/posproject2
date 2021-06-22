@@ -352,6 +352,7 @@ namespace POS.View
 
             wd_itemsOfferList w = new wd_itemsOfferList();
             //w.selectedItems.AddRange();
+            w.offerId = offer.offerId;
             w.ShowDialog();
             if (w.isActive)
             {

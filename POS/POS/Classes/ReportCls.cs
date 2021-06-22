@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.IO;
 
 using Microsoft.Reporting.WinForms;
+using System.Resources;
+using System.Reflection;
+
 namespace POS.Classes
 {
     class ReportCls
@@ -24,7 +27,7 @@ namespace POS.Classes
             return newPath;
         }
 
-        public string TimeToString(TimeSpan?  time)
+        public string TimeToString(TimeSpan? time)
         {
 
             TimeSpan ts = TimeSpan.Parse(time.ToString());
@@ -35,13 +38,13 @@ namespace POS.Classes
         public string DateToString(DateTime? date)
         {
             string sdate = "";
-           if (date != null)
+            if (date != null)
             {
- DateTime ts = DateTime.Parse(date.ToString());
-            // @"hh\:mm\:ss"
-            sdate = ts.ToString(@"d/M/yyyy");
+                DateTime ts = DateTime.Parse(date.ToString());
+                // @"hh\:mm\:ss"
+                sdate = ts.ToString(@"d/M/yyyy");
             }
-           
+
             return sdate;
         }
 
@@ -54,12 +57,12 @@ namespace POS.Classes
             }
             else
             {
-  decimal dc = decimal.Parse(dec.ToString());
+                decimal dc = decimal.Parse(dec.ToString());
 
 
-           sdc = dc.ToString("0.00");
+                sdc = dc.ToString("0.00");
             }
-         
+
 
             return sdc;
         }
@@ -101,11 +104,28 @@ namespace POS.Classes
 
         }
 
+        public static  bool checkLang()
+        {
+            bool isArabic;
+            if (MainWindow.Reportlang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                isArabic = false;
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                isArabic = true;
+            }
+            return isArabic;
+        }
+
         public ReportParameter[] fillPayReport(CashTransfer cashtrans)
         {
-            string title = "Pay Voucher";//"Receipt Voucher";
-            string company_name = "Increase";
+            checkLang();
 
+            string title = MainWindow.resourcemanager.GetString("trPayVocher");
+            string company_name = "Increase";
             string comapny_address = "Kuwait";
             string company_phone = "+965599959595";
             string company_fax = "+965595959";
@@ -166,7 +186,7 @@ namespace POS.Classes
                 trans_num_txt = "Document Num:";
 
             }
-          
+
             //  rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
 
             ReportParameter[] paramarr = new ReportParameter[23];
@@ -194,6 +214,102 @@ namespace POS.Classes
             paramarr[21] = new ReportParameter("isCash", isCash);
             paramarr[22] = new ReportParameter("trans_num_txt", trans_num_txt);
             return paramarr;
+        }
+        public static string NumberToWordsEN(int number)
+        {
+            if (number == 0)
+                return "zero";
+
+            if (number < 0)
+                return "minus " + NumberToWordsEN(Math.Abs(number));
+
+            string words = "";
+
+            if ((number / 1000000) > 0)
+            {
+                words += NumberToWordsEN(number / 1000000) + " million ";
+                number %= 1000000;
+            }
+
+            if ((number / 1000) > 0)
+            {
+                words += NumberToWordsEN(number / 1000) + " thousand ";
+                number %= 1000;
+            }
+
+            if ((number / 100) > 0)
+            {
+                words += NumberToWordsEN(number / 100) + " hundred ";
+                number %= 100;
+            }
+
+            if (number > 0)
+            {
+                if (words != "")
+                    words += "and ";
+
+                var unitsMap = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" };
+                var tensMap = new[] { "zero", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
+
+                if (number < 20)
+                    words += unitsMap[number];
+                else
+                {
+                    words += tensMap[number / 10];
+                    if ((number % 10) > 0)
+                        words += "-" + unitsMap[number % 10];
+                }
+            }
+
+            return words;
+        }
+        public static string NumberToWordsAR(int number)
+        {
+            if (number == 0)
+                return "صفر";
+
+            if (number < 0)
+                return "ناقص " + NumberToWordsAR(Math.Abs(number));
+
+            string words = "";
+
+            if ((number / 1000000) > 0)
+            {
+                words += NumberToWordsAR(number / 1000000) + " مليون ";
+                number %= 1000000;
+            }
+
+            if ((number / 1000) > 0)
+            {
+                words += NumberToWordsAR(number / 1000) + " الف ";
+                number %= 1000;
+            }
+
+            if ((number / 100) > 0)
+            {
+                words += NumberToWordsAR(number / 100) + " مئة ";
+                number %= 100;
+            }
+
+            if (number > 0)
+            {
+                if (words != "")
+                    words += "و ";
+
+                var unitsMap = new[] { "صفر", "واحد", "اثنان", "ثلاثة", "اربعة", "خمسة", "ستة", "سبعة", "ثمانية", "تسعة", "عشرة", "احدى عشر", "اثنا عشر", "ثلاثة عشر", "اربعة عشر", "خمسة عشر", "ستة عشر", "سبعة عشر", "ثمانية عشر", "تسعة عشر" };
+                var tensMap = new[] { "صفر", "عشرة", "عشرون", "ثلاثون", "اربعون", "خمسون", "ستون", "سبعون", "ثمانون", "تسعون" };
+
+                if (number < 20)
+                    words += unitsMap[number];
+                else
+                {
+                    words += tensMap[number / 10];
+                    if ((number % 10) > 0)
+                        words += "-" + unitsMap[number % 10];
+                }
+            }
+
+            return words;
         }
     }
 }
