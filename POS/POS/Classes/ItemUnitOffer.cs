@@ -35,7 +35,7 @@ namespace POS.Classes
         public Nullable<int> itemId { get; set; }
         public Nullable<int> unitId { get; set; }
 
-        public async Task<string> updategroup(int offerId, List<ItemUnitOffer> newitoflist)
+        public async Task<string> updategroup(int offerId, List<ItemUnitOffer> newitoflist, int userId)
         {
             
             string message = "";
@@ -57,6 +57,7 @@ namespace POS.Classes
                 request.RequestUri = new Uri(Global.APIUri + "ItemsOffers/UpdateItemsByOfferId?newitoflist=" + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Headers.Add("offerId", offerId.ToString());
+                request.Headers.Add("userId", userId.ToString());
                 request.Method = HttpMethod.Post;
                 //set content type
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
