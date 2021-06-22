@@ -1258,7 +1258,6 @@ D:\myproj\posproject2\POS\POS\bin\Debug\SqlServerTypes\x64\msvcr120.dll
 D:\myproj\posproject2\POS\POS\bin\Debug\SqlServerTypes\x64\SqlServerSpatial140.dll
 D:\myproj\posproject2\POS\POS\bin\Debug\SqlServerTypes\x86\msvcr120.dll
 D:\myproj\posproject2\POS\POS\bin\Debug\SqlServerTypes\x86\SqlServerSpatial140.dll
-D:\myproj\posproject2\POS\POS\bin\Debug\Reports\VendorReport.rdlc
 D:\myproj\posproject2\POS\POS\bin\Debug\LiveCharts.dll
 D:\myproj\posproject2\POS\POS\bin\Debug\LiveCharts.Wpf.dll
 D:\myproj\posproject2\POS\POS\bin\Debug\Microsoft.ReportViewer.Common.dll
@@ -1957,3 +1956,17 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\sectionData\win_lvc.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_permissions.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\win_lvcCatalog.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\win_lvcCatalog.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\catalog\win_lvcCatalog.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\sales\uc_salesStatistic.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\sectionData\win_lvc.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_general.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_permissions.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_settings.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_companyInfo.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\catalog\win_lvcCatalog.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\sales\uc_salesStatistic.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\sectionData\win_lvc.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_general.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_permissions.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_settings.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_companyInfo.baml
