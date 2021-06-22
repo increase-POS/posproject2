@@ -869,7 +869,7 @@ namespace POS.View
                 || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
             {
                 // check barcode value if assigned to any item
-                if (!checkBarcodeValidity(tb_barcode.Text))
+                if (!checkBarcodeValidity(tb_barcode.Text) )
                 {
                     SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorDuplicateBarcodeToolTip");
                 }
@@ -935,7 +935,7 @@ namespace POS.View
                 || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
             {
                 // check barcode value if assigned to any item
-                if (!checkBarcodeValidity(tb_barcode.Text))
+                if (!checkBarcodeValidity(tb_barcode.Text) && itemUnit.barcode != tb_barcode.Text)
                 {
                     SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorDuplicateBarcodeToolTip");
                 }

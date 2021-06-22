@@ -78,6 +78,8 @@ namespace POS.View
         Pos pos;
         List<ItemTransfer> invoiceItems;
 
+        ItemLocation itemLocationModel = new ItemLocation();
+
         #region//to handle barcode characters
         static private int _SelectedCustomer = -1;
         static private string _SelectedPaymentType = "cash";
@@ -447,14 +449,18 @@ namespace POS.View
                 if (invoice.invNumber == null)
                 {
                     string storeCode = "";
-                    if (pos != null )
+                    string posCode = "";
+                    if (pos != null)
+                    {
                         storeCode = pos.branchCode;
+                        posCode = pos.code;
+                    }
 
-                    string invoiceCode = "SI";
-                    int sequence = await invoiceModel.GetLastNumOfInv("SI");
+                    string invoiceCode = "si";
+                    int sequence = await invoiceModel.GetLastNumOfInv("si");
                     sequence++;
 
-                    string invoiceNum = storeCode + "_" + invoiceCode + "_" + sequence.ToString();
+                    string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
                     invoice.invNumber = invoiceNum;
                 }
               
@@ -507,9 +513,7 @@ namespace POS.View
                 {
                     // add invoice details
                     invoiceItems = new List<ItemTransfer>();
-                    //List<ItemLocation> itemLocList = new List<ItemLocation>();
                     ItemTransfer itemT;
-                    //ItemLocation itemLoc;
                     for (int i = 0; i < billDetails.Count; i++)
                     {
                         itemT = new ItemTransfer();
@@ -527,7 +531,7 @@ namespace POS.View
                     // edit vendor balance , add cach transfer
                     if (invType == "s")
                     {
-                       // await invoiceModel.decreaseAmounts(invoiceItems,MainWindow.branchID.Value); // update item quantity in DB
+                       await itemLocationModel.decreaseAmounts(invoiceItems,MainWindow.branchID.Value); // update item quantity in DB
                         if (paid > 0)
                         {
                             switch (cb_paymentProcessType.SelectedIndex)
@@ -1085,6 +1089,7 @@ namespace POS.View
 
             if (e.Key.ToString() == "Return" && _BarcodeStr != "" && _InvoiceType =="sd")
             {
+                await dealWithBarcode(_BarcodeStr);
                 if (_Sender != null) //clear barcode from inputs
                 {
                     DatePicker dt = _Sender as DatePicker;
@@ -1108,70 +1113,156 @@ namespace POS.View
                         }
                     }
                 }
-                tb_barcode.Text = _BarcodeStr;
-                _BarcodeStr = "";
+               
+                //string prefix = _BarcodeStr.Substring(0, _BarcodeStr.IndexOf("-"));
+                //switch (prefix)
+                //{
+                //    case "si":// this barcode for invoice
+                //    case "pi":
+                //        break;
+                //    case "cop":// this barcode for coupon
+                //        break;
+                //    case "cus":// this barcode for customer
+                //        break;
+                //    default: // if barcode for item
+                //        tb_barcode.Text = _BarcodeStr;
+                //        // get item matches barcode
+                //        if (barcodesList != null)
+                //        {
+                //            ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text.Trim());
 
-                // get item matches barcode
-                if (barcodesList != null)
-                {
-                    ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text.Trim());
-                  
-                    // get item matches the barcode
-                    if (unit1 != null)
-                    {
-                        int itemId = (int)unit1.itemId;
-                        if (unit1.itemId != 0)
-                        {
-                            int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
+                //            // get item matches the barcode
+                //            if (unit1 != null)
+                //            {
+                //                int itemId = (int)unit1.itemId;
+                //                if (unit1.itemId != 0)
+                //                {
+                //                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
 
-                            if (index == -1)//item doesn't exist in bill
-                            {
-                                // get item units
-                                itemUnits = await itemUnitModel.GetItemUnits(itemId);
-                                //get item from list
-                                item = items.ToList().Find(i => i.itemId == itemId);
+                //                    if (index == -1)//item doesn't exist in bill
+                //                    {
+                //                        // get item units
+                //                        itemUnits = await itemUnitModel.GetItemUnits(itemId);
+                //                        //get item from list
+                //                        item = items.ToList().Find(i => i.itemId == itemId);
 
-                                int count = 1;
-                                decimal price = 0;
-                                if(unit1.price != null)
-                                    price = (decimal) unit1.price;
-                                decimal total = count * price;
-                                decimal tax = (decimal)(count * item.taxes);
-                                addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total,tax);
-                            }
-                            else // item exist prevoiusly in list
-                            {
-                                decimal itemTax = 0;
-                                if (item.taxes != null)
-                                    itemTax = (decimal)item.taxes;
-                                billDetails[index].Count++;
-                                billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
-                                billDetails[index].Tax =(decimal)( billDetails[index].Count * itemTax);
+                //                        int count = 1;
+                //                        decimal price = 0;
+                //                        if (unit1.price != null)
+                //                            price = (decimal)unit1.price;
+                //                        decimal total = count * price;
+                //                        decimal tax = (decimal)(count * item.taxes);
+                //                        addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total, tax);
+                //                    }
+                //                    else // item exist prevoiusly in list
+                //                    {
+                //                        decimal itemTax = 0;
+                //                        if (item.taxes != null)
+                //                            itemTax = (decimal)item.taxes;
+                //                        billDetails[index].Count++;
+                //                        billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
+                //                        billDetails[index].Tax = (decimal)(billDetails[index].Count * itemTax);
 
-                                _Sum += billDetails[index].Price;
-                                _Tax += billDetails[index].Tax;
+                //                        _Sum += billDetails[index].Price;
+                //                        _Tax += billDetails[index].Tax;
 
-                            }
-                            refreshTotalValue();
-                            refrishBillDetails();
-                        }
-                    }
-                    else
-                    {
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemNotFoundToolTip"), animation: ToasterAnimation.FadeIn);
-                    }
-                }
+                //                    }
+                //                    refreshTotalValue();
+                //                    refrishBillDetails();
+                //                }
+                //            }
+                //            else
+                //            {
+                //                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemNotFoundToolTip"), animation: ToasterAnimation.FadeIn);
+                //            }
+                //        }
+                //        break;
+                //}
+                
                 e.Handled = true;
             }
             _Sender = null;
         
                 
-                }
+        }
+        private async Task dealWithBarcode(string barcode)
+        {
+            int codeindex = barcode.IndexOf("-");
+            string prefix = "";
+            if (codeindex >= 0)
+             prefix = barcode.Substring(0, codeindex);
+
+            switch (prefix)
+            {
+                case "si":// this barcode for invoice
+                case "pi":
+                    break;
+                case "cop":// this barcode for coupon
+                    break;
+                case "cus":// this barcode for customer
+                    break;
+                default: // if barcode for item
+                    tb_barcode.Text = barcode;
+                    // get item matches barcode
+                    if (barcodesList != null)
+                    {
+                        ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text.Trim());
+
+                        // get item matches the barcode
+                        if (unit1 != null)
+                        {
+                            int itemId = (int)unit1.itemId;
+                            if (unit1.itemId != 0)
+                            {
+                                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
+
+                                if (index == -1)//item doesn't exist in bill
+                                {
+                                    // get item units
+                                    itemUnits = await itemUnitModel.GetItemUnits(itemId);
+                                    //get item from list
+                                    item = items.ToList().Find(i => i.itemId == itemId);
+
+                                    int count = 1;
+                                    decimal price = 0;
+                                    if (unit1.price != null)
+                                        price = (decimal)unit1.price;
+                                    decimal total = count * price;
+                                    decimal tax = (decimal)(count * item.taxes);
+                                    addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total, tax);
+                                }
+                                else // item exist prevoiusly in list
+                                {
+                                    decimal itemTax = 0;
+                                    if (item.taxes != null)
+                                        itemTax = (decimal)item.taxes;
+                                    billDetails[index].Count++;
+                                    billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
+                                    billDetails[index].Tax = (decimal)(billDetails[index].Count * itemTax);
+
+                                    _Sum += billDetails[index].Price;
+                                    _Tax += billDetails[index].Tax;
+
+                                }
+                                refreshTotalValue();
+                                refrishBillDetails();
+                            }
+                        }
+                        else
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemNotFoundToolTip"), animation: ToasterAnimation.FadeIn);
+                        }
+                    }
+                    break;
+            }
+            _BarcodeStr = "";
+            tb_barcode.Clear();
+        }
         private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
-                if (barcodesList != null && _BarcodeStr.Length < 13) //_BarcodeStr == "" barcode not from barcode reader
+                if (barcodesList != null && _BarcodeStr.Length <= 13) //_BarcodeStr == "" barcode not from barcode reader
                 {
                     ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text);
 
@@ -1194,7 +1285,7 @@ namespace POS.View
                                 decimal price = 0; //?????
                                 decimal total = count * price;
                                 decimal tax = (decimal)(count * item.taxes);
-                                addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total,tax);
+                                addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total, tax);
                             }
                             else // item exist prevoiusly in list
                             {
@@ -1205,7 +1296,7 @@ namespace POS.View
                                 decimal itemTax = 0;
                                 if (item.taxes != null)
                                     itemTax = (decimal)item.taxes;
-                                _Tax += (decimal) itemTax;
+                                _Tax += (decimal)itemTax;
                             }
                             refreshTotalValue();
                             refrishBillDetails();
@@ -1240,12 +1331,83 @@ namespace POS.View
             _Tax += tax;
         }
         #endregion billdetails
-        private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cmb = sender as ComboBox;
-
+            TextBlock tb;
             if (dg_billDetails.SelectedIndex != -1)
-                billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+            {
+                int itemUnitId = (int)cmb.SelectedValue;
+            billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+                var unit = itemUnits.ToList().Find(x=> x.itemUnitId == (int)cmb.SelectedValue);
+            int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
+
+                int oldCount = 0;
+                long newCount = 0;
+                decimal oldPrice = 0;
+                decimal newPrice = (decimal)unit.price;
+
+                //"tb_amont"
+                tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
+                tb.Text = availableAmount.ToString();
+
+                oldCount = billDetails[dg_billDetails.SelectedIndex].Count;
+                oldPrice = billDetails[dg_billDetails.SelectedIndex].Price;
+
+                if (availableAmount < oldCount)
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                    newCount = availableAmount;
+                    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
+                    tb.Text = availableAmount.ToString();
+                }
+                else
+                    newCount = oldCount;
+                //if (_InvoiceType == "sbd")
+                //{
+                //    ItemTransfer item = invoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
+                //    if (newCount > item.quantity)
+                //    {
+                //        // return old value 
+                //        t.Text = item.quantity.ToString();
+
+                //        newCount = (long)item.quantity;
+                //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                //    }
+                //}
+
+                // old total for changed item
+                decimal total = oldPrice * oldCount;
+                _Sum -= total;
+
+
+                // new total for changed item
+                total = newCount * newPrice;
+                _Sum += total;
+
+                decimal itemTax = 0;
+                if (item.taxes != null)
+                    itemTax = (decimal)item.taxes;
+                // old tax for changed item
+                decimal tax = (decimal)itemTax * oldCount;
+                _Tax -= tax;
+                // new tax for changed item
+                tax = (decimal)itemTax * newCount;
+                _Tax += tax;
+
+                //refresh total cell
+                tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
+                tb.Text = total.ToString();
+
+                //  refresh sum and total text box
+                refreshTotalValue();
+
+                // update item in billdetails           
+                billDetails[dg_billDetails.SelectedIndex].Count = (int)newCount;
+                 billDetails[dg_billDetails.SelectedIndex].Price = newPrice;
+                billDetails[dg_billDetails.SelectedIndex].Total = total;
+                refrishBillDetails();
+        }
         }
         private void Cbm_unitItemDetails_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -1332,8 +1494,9 @@ namespace POS.View
 
         }
 
-        private void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private async void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
+            TextBlock tb;
             TextBox t = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
             var columnName = e.Column.Header.ToString();
 
@@ -1363,18 +1526,26 @@ namespace POS.View
 
                 oldCount = row.Count;
 
-                if (_InvoiceType == "sbd")
+                int availableAmount = await itemLocationModel.getAmountInBranch(row.itemUnitId,MainWindow.branchID.Value);
+                if(availableAmount < newCount)
                 {
-                    ItemTransfer item = invoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
-                    if (newCount > item.quantity)
-                    {
-                        // return old value 
-                        t.Text = item.quantity.ToString();
-
-                        newCount = (long)item.quantity;
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
-                    }
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                    newCount = availableAmount;
+                    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
+                    tb.Text = newCount.ToString();
                 }
+                //if (_InvoiceType == "sbd")
+                //{
+                //    ItemTransfer item = invoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
+                //    if (newCount > item.quantity)
+                //    {
+                //        // return old value 
+                //        t.Text = item.quantity.ToString();
+
+                //        newCount = (long)item.quantity;
+                //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                //    }
+                //}
 
                 if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
                     newPrice = decimal.Parse(t.Text);
@@ -1403,7 +1574,7 @@ namespace POS.View
                 _Tax += tax;
 
                 //refresh total cell
-                TextBlock tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
+                tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
                 tb.Text = total.ToString();
 
                 //  refresh sum and total text box
