@@ -1604,9 +1604,7 @@ namespace POS.View
         }
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                string addpath = @"\Reports\InvPurReport.rdlc";
+                string addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
                 if (invoice.invoiceId > 0)
                 {
@@ -1618,23 +1616,28 @@ namespace POS.View
 
 
                     // rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", data));
-                    ReportParameter[] paramarr = new ReportParameter[15];
+                    ReportParameter[] paramarr = new ReportParameter[14];
 
                     paramarr[0] = new ReportParameter("Title", "Purshase Invoice");
-                    paramarr[12] = new ReportParameter("lang", MainWindow.lang);
-                    paramarr[1] = new ReportParameter("invNumber", invoice.invNumber);
-                    paramarr[2] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
-                    paramarr[3] = new ReportParameter("invDate", reportclass.DateToString(invoice.invDate));
-                    paramarr[4] = new ReportParameter("invTime", reportclass.TimeToString(invoice.invTime));
-                    paramarr[5] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
+                    paramarr[1] = new ReportParameter("lang", MainWindow.lang);
+                    paramarr[2] = new ReportParameter("invNumber", invoice.invNumber);
+                    paramarr[3] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
+                    paramarr[4] = new ReportParameter("invDate", reportclass.DateToString(invoice.invDate));
+                    paramarr[5] = new ReportParameter("invTime", reportclass.TimeToString(invoice.invTime));
+                    //paramarr[6] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
                     paramarr[6] = new ReportParameter("total", reportclass.DecTostring(invoice.total));
                     paramarr[7] = new ReportParameter("discountValue", reportclass.DecTostring(invoice.discountValue));
                     paramarr[8] = new ReportParameter("totalNet", reportclass.DecTostring(invoice.totalNet));
                     paramarr[9] = new ReportParameter("paid", reportclass.DecTostring(invoice.paid));
                     paramarr[10] = new ReportParameter("deserved", reportclass.DecTostring(invoice.deserved));
                     paramarr[11] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
-                    paramarr[14] = new ReportParameter("tax", "0");
+                    paramarr[12] = new ReportParameter("tax", "0");
                     paramarr[13] = new ReportParameter("barcodeimage", "file:\\" + reportclass.BarcodeToImage(invoice.invNumber.ToString(), "invnum"));
+                    //paramarr[14] = new ReportParameter("companyName", "Increase");
+                    //paramarr[15] = new ReportParameter("storeName", "Bonni");
+                    //paramarr[16] = new ReportParameter("cashName", "Mohammad Bonni");
+                    //paramarr[17] = new ReportParameter("Notes", "Hello");
+                    //paramarr[18] = new ReportParameter("Address", "Aleppo");
                     //  MessageBox.Show(reportclass.DecTostring(invoice.paid) + "des="+ invoice.deserved.ToString());
 
                     rep.SetParameters(paramarr);
@@ -1650,10 +1653,7 @@ namespace POS.View
                         LocalReportExtensions.ExportToPDF(rep, filepath);
 
                     }
-                }
-
-            }
-            catch { }
+             }
         }
 
         private void Btn_items_Click(object sender, RoutedEventArgs e)

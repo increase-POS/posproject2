@@ -732,9 +732,9 @@ namespace POS.View
 
             ReportCls.checkLang();
 
-            rptSectionData.branchReport(storesQuery, rep, reppath);
-            rptSectionData.setReportLanguage(paramarr);
-            rptSectionData.Header(paramarr);
+            clsReports.branchReport(storesQuery, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
 
             rep.SetParameters(paramarr);
 
@@ -753,23 +753,27 @@ namespace POS.View
 
     private void Btn_print_Click(object sender, RoutedEventArgs e)
     {
+            ReportParameter[] paramarr = new ReportParameter[6];
 
-        string addpath = @"\Reports\BranchReport.rdlc";
-        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            string addpath;
 
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\SectionData\Ar\ArStoreReport.rdlc";
+            }
+            else addpath = @"\Reports\SectionData\En\StoreReport.rdlc";
 
-        rep.ReportPath = reppath;
-        rep.DataSources.Clear();
-        rep.DataSources.Add(new ReportDataSource("DataSetBranches", storesQuery));
-        ReportParameter[] paramarr = new ReportParameter[6];
-        paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trStores"));
-        paramarr[1] = new ReportParameter("trCode", MainWindow.resourcemanager.GetString("trCode"));
-        paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
-        paramarr[3] = new ReportParameter("trAddress", MainWindow.resourcemanager.GetString("trAddress"));
-        paramarr[4] = new ReportParameter("trNote", MainWindow.resourcemanager.GetString("trNote"));
-        paramarr[5] = new ReportParameter("lang", MainWindow.lang);
-        rep.SetParameters(paramarr);
-        rep.Refresh();
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.branchReport(storesQuery, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+            rep.Refresh();
         LocalReportExtensions.PrintToPrinter(rep);
     }
 

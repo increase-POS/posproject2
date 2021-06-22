@@ -844,9 +844,9 @@ namespace POS.View
 
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            rptSectionData.customerReport(agentsQuery, rep, reppath);
-            rptSectionData.setReportLanguage(paramarr);
-            rptSectionData.Header(paramarr);
+            clsReports.customerReport(agentsQuery, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
 
             rep.SetParameters(paramarr);
 
@@ -877,9 +877,9 @@ namespace POS.View
 
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            rptSectionData.customerReport(agentsQuery, rep, reppath);
-            rptSectionData.setReportLanguage(paramarr);
-            rptSectionData.Header(paramarr);
+            clsReports.customerReport(agentsQuery, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
 
             rep.SetParameters(paramarr);
 

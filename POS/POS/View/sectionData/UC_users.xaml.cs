@@ -892,19 +892,24 @@ namespace POS.View
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-            string addpath = @"\Reports\UserReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-           
-            rep.ReportPath = reppath;
-            rep.DataSources.Clear();
-            rep.DataSources.Add(new ReportDataSource("DataSetUser", usersQuery));
             ReportParameter[] paramarr = new ReportParameter[6];
-            paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trUsers"));
-            paramarr[1] = new ReportParameter("trLastName", MainWindow.resourcemanager.GetString("trLastName"));
-            paramarr[2] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
-            paramarr[3] = new ReportParameter("trJob", MainWindow.resourcemanager.GetString("trJob"));
-            paramarr[4] = new ReportParameter("trWorkHours", MainWindow.resourcemanager.GetString("trWorkHours"));
-            paramarr[5] = new ReportParameter("lang", MainWindow.lang);
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\SectionData\Ar\ArUserReport.rdlc";
+            }
+            else addpath = @"\Reports\SectionData\En\UserReport.rdlc";
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.userReport(usersQuery, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
             rep.SetParameters(paramarr);
             rep.Refresh();
             LocalReportExtensions.PrintToPrinter(rep);
@@ -927,9 +932,9 @@ namespace POS.View
 
             ReportCls.checkLang();
 
-            rptSectionData.userReport(usersQuery, rep, reppath);
-            rptSectionData.setReportLanguage(paramarr);
-            rptSectionData.Header(paramarr);
+            clsReports.userReport(usersQuery, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
 
             rep.SetParameters(paramarr);
 

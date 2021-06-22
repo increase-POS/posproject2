@@ -182,8 +182,8 @@
                             </materialDesign:PackIcon>
                         </Button>
 
-                        <Button  x:Name="btn_print" Background="{x:Null}"    Margin="5,0,5,0"
-                          Padding="0" Height="35"  
+                        <Button  x:Name="btn_print" Background="{x:Null}"    Margin="5,0,5,-0.6"
+                          Padding="0" Height="Auto"  
                           BorderBrush="{x:Null}" Click="Btn_print_Click">
                             <materialDesign:PackIcon Foreground="#313131" Kind="Printer"  
                               HorizontalAlignment="Center" 
@@ -328,7 +328,7 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
-                         
+
 
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
@@ -489,8 +489,8 @@
                                       Grid.Row="0"/>
 
 
-                            
-                                <TextBox x:Name="tb_mobile" Padding="10,0,5,0" Grid.Column="1"  Text="{Binding mobile, Mode=OneWay}"
+
+                            <TextBox x:Name="tb_mobile" Padding="10,0,5,0" Grid.Column="1"  Text="{Binding mobile, Mode=OneWay}"
                                          Margin="0,5,5,5"
                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   
@@ -504,26 +504,26 @@
                                       Grid.ColumnSpan="2" 
                                      PreviewKeyDown="tb_mobile_PreviewKeyDown" 
                                      LostFocus="tb_mobile_LostFocus" TextChanged="tb_mobile_TextChanged" >
-                                    <TextBox.ToolTip>
-                                        <ToolTip x:Name="tt_mobile" Content="Mobile"
+                                <TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_mobile" Content="Mobile"
                                                  Placement="left" 
                                                  HorizontalOffset="35"
                                                  PlacementRectangle="50,0,0,0"
                                                  VerticalOffset="20"/>
-                                    </TextBox.ToolTip>
-                                </TextBox>
-                                <Path Fill="#E81123" Stretch="Fill" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                </TextBox.ToolTip>
+                            </TextBox>
+                            <Path Fill="#E81123" Stretch="Fill" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                       HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"  x:Name="p_errorMobile"
                                       VerticalAlignment="Center" Width="15"  Height="15" Margin="5,5,15,5"
                                       Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip x:Name="tt_errorMobile" Content="Mobile Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
-                            </Grid>
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorMobile" Content="Mobile Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
 
 
-                     
+
 
                         <Grid  Grid.Column="1" Grid.Row="8" Margin="5,0,0,0"  >
                             <Grid.ColumnDefinitions>
@@ -647,7 +647,7 @@
 
                         <!--Seprator-->
                         <!--#region -->
-                     
+
                         <!--#endregion-->
 
                         <!--Buttons-->

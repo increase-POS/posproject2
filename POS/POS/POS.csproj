@@ -161,6 +161,7 @@
     <Compile Include="Classes\CatigoriesAndItemsView.cs" />
     <Compile Include="Classes\City.cs" />
     <Compile Include="Classes\ClassStaticy.cs" />
+    <Compile Include="Classes\clsReports.cs" />
     <Compile Include="Classes\CountryCode.cs" />
     <Compile Include="Classes\Coupon.cs" />
     <Compile Include="Classes\DataGridHelper.cs" />
@@ -712,7 +713,13 @@
     <EmbeddedResource Include="Reports\Account\Ar\ArReciveReport.rdlc" />
     <EmbeddedResource Include="Reports\Account\En\PayReport.rdlc" />
     <EmbeddedResource Include="Reports\Account\En\ReciveReport.rdlc" />
+    <EmbeddedResource Include="Reports\Purchase\Ar\ArInvPurReport.rdlc" />
     <EmbeddedResource Include="Reports\Purchase\En\InvPurReport.rdlc" />
+    <EmbeddedResource Include="Reports\Sale\Ar\ArInvPurReport.rdlc" />
+    <EmbeddedResource Include="Reports\Sale\Ar\LargeSaleReport.rdlc" />
+    <EmbeddedResource Include="Reports\Sale\Ar\MediumSaleReport.rdlc" />
+    <EmbeddedResource Include="Reports\Sale\Ar\SmallSaleReport.rdlc" />
+    <EmbeddedResource Include="Reports\Sale\En\InvPurReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\En\LargeSaleReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\En\MediumSaleReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\En\SmallSaleReport.rdlc" />

@@ -119,54 +119,54 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                                <DataGridTextColumn Width="*"  Header="Code"   Binding="{Binding Path=code}">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding isActive}" Value="0">
-                                                    <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
+                        <DataGridTextColumn Width="*"  Header="Code"   Binding="{Binding Path=code}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
 
-                                <DataGridTextColumn Width="*"  Header="Name" Binding="{Binding Path=name}">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding isActive}" Value="0">
-                                                    <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
-                                <DataGridTextColumn Width="*"  Header="Address" Binding="{Binding Path=address}">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding isActive}" Value="0">
-                                                    <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
-                                <DataGridTextColumn Width="*"  Header="Notes"     Binding="{Binding Path=notes}">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding isActive}" Value="0">
-                                                    <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
+                        <DataGridTextColumn Width="*"  Header="Name" Binding="{Binding Path=name}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="*"  Header="Address" Binding="{Binding Path=address}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="*"  Header="Notes"     Binding="{Binding Path=notes}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
 
-                            </DataGrid.Columns>
-                        </DataGrid>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Border>
             <!--#endregion-->
 
@@ -176,8 +176,8 @@
                 <Border BorderThickness="0,0,0,1" BorderBrush="#178DD2" Margin="10,0,10,10" Width="auto" HorizontalAlignment="Left">
                     <StackPanel  Orientation="Horizontal" >
 
-                        <Button x:Name="btn_pdf"   Background="{x:Null}"   Margin="10,0,5,0"
-                          Padding="0" Height="35" 
+                        <Button x:Name="btn_pdf"   Background="{x:Null}"   Margin="10,0,5,-0.6"
+                          Padding="0" Height="Auto" 
                           BorderBrush="{x:Null}" Click="Btn_pdf_Click">
                             <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
                                 
@@ -285,8 +285,8 @@
             <!--#endregion-->
         </Grid>
         <!--#endregion-->
-        
-        
+
+
         <!--Right section-->
         <!--#region -->
 
@@ -306,7 +306,7 @@
                         Background="#4E4E4E">
                     <Button Height="52" Background="{x:Null}" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Height="52" HorizontalAlignment="Center" >
-                                <Path Fill="#E8E8E8" Stretch="Fill"
+                            <Path Fill="#E8E8E8" Stretch="Fill"
                               HorizontalAlignment="Right" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"
                               Data="M787.5,484.5c-0.2-86.7-0.3-173.3-0.6-260c0-3-0.8-6.3-2.1-9c-14.2-28.8-34.9-52.7-57.2-75.3C640.3,51.5,535-3.7,413.1-27.8
@@ -325,7 +325,7 @@
 	c-36.2,0.3-72.3,0-108.5-0.2c-5.1,0-10.4-0.3-15.3-1.7c-14-4-22.4-14.6-23-29.1c-0.7-15.5-1-31-1.1-46.5
 	c-0.2-43.2,0.2-86.3-0.3-129.5c-0.2-14.3,14.9-31.5,28.2-32.1c11.1-0.5,22.3-0.9,33.4-1c16.1-0.2,32.3,0,49.1,0V744h17.8V639.7
 	c17.7,0,34.5-0.1,51.3,0.1c10.8,0.1,21.7,0.1,32.4,1.2c12.2,1.2,23.9,12.1,24.8,21.9C286.4,667.3,286.8,671.8,286.8,676.3z"/>
-                                <TextBlock Text="Store" x:Name="txt_store" Foreground="#E8E8E8" 
+                            <TextBlock Text="Store" x:Name="txt_store" Foreground="#E8E8E8" 
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="5"/>
                         </StackPanel>

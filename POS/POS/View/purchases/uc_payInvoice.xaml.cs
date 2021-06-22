@@ -46,7 +46,7 @@ namespace POS.View
         }
         public uc_payInvoice()
         {
-            InitializeComponent();           
+            InitializeComponent();
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
         //Category categoryModel = new Category();
@@ -58,7 +58,7 @@ namespace POS.View
         Item itemModel = new Item();
         Item item = new Item();
         IEnumerable<Item> items;
-       // IEnumerable<Item> itemsQuery;
+        // IEnumerable<Item> itemsQuery;
 
         Branch branchModel = new Branch();
         IEnumerable<Branch> branches;
@@ -74,7 +74,7 @@ namespace POS.View
         Invoice invoice = new Invoice();
 
         List<ItemTransfer> invoiceItems;
-      //  Bill bill;
+        //  Bill bill;
 
         #region //to handle barcode characters
         static private int _SelectedBranch = -1;
@@ -87,16 +87,16 @@ namespace POS.View
         #endregion
 
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
-      //  int? parentCategorieSelctedValue;
+        //  int? parentCategorieSelctedValue;
         public byte tglCategoryState = 1;
         public byte tglItemState = 1;
         public string txtItemSearch;
-       
+
         //for bill details
         static private int _SequenceNum = 0;
         static private decimal _Sum = 0;
         static private string _InvoiceType = "pd"; // purchase draft
-               
+
         // for report
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
@@ -107,7 +107,7 @@ namespace POS.View
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-      
+
         private void translate()
         {
             ////////////////////////////////----invoice----/////////////////////////////////
@@ -194,7 +194,7 @@ namespace POS.View
             ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
             #endregion
         }
-        
+
         private void configureDiscountType()
         {
             var dislist = new[] {
@@ -230,24 +230,24 @@ namespace POS.View
 
         #endregion
         #region Tab
-       /*
-        private void btn_payInvoice_Click(object sender, RoutedEventArgs e)
-        {
-            grid_vendor.Visibility   = Visibility.Collapsed;
-            grid_payinvoice.Visibility = Visibility.Visible;
-            brd_vendorTab.BorderBrush =  (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
-            brd_payInvoiceTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-        }
+        /*
+         private void btn_payInvoice_Click(object sender, RoutedEventArgs e)
+         {
+             grid_vendor.Visibility   = Visibility.Collapsed;
+             grid_payinvoice.Visibility = Visibility.Visible;
+             brd_vendorTab.BorderBrush =  (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+             brd_payInvoiceTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+         }
 
-        private void btn_vendor_Click(object sender, RoutedEventArgs e)
-        {
-            grid_payinvoice.Visibility = Visibility.Collapsed;
-            grid_vendor.Visibility = Visibility.Visible;
-            brd_payInvoiceTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
-            brd_vendorTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-        }
+         private void btn_vendor_Click(object sender, RoutedEventArgs e)
+         {
+             grid_payinvoice.Visibility = Visibility.Collapsed;
+             grid_vendor.Visibility = Visibility.Visible;
+             brd_payInvoiceTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+             brd_vendorTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+         }
 
-        */
+         */
         #endregion
         #region Button In DataGrid
         void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
@@ -265,13 +265,13 @@ namespace POS.View
 
                     ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)dg_billDetails.ItemsSource;
                     data.Remove(row);
-                  
+
                     // calculate new total
                     refreshTotalValue();
                 }
             _SequenceNum = 0;
             _Sum = 0;
-            for(int i = 0; i < billDetails.Count; i++)
+            for (int i = 0; i < billDetails.Count; i++)
             {
                 _SequenceNum++;
                 _Sum += billDetails[i].Total;
@@ -399,14 +399,14 @@ namespace POS.View
                 if (defaultPurUnit != null)
                 {
                     // create new row in bill details data grid
-                    addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId , 1,0,0);
+                    addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, 0, 0);
 
                     refreshTotalValue();
                     refrishBillDetails();
                 }
             }
         }
-        
+
         #endregion
         //#region Toggle Button Y
         ///// <summary>
@@ -696,7 +696,7 @@ namespace POS.View
             SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
             SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
             SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip");
-            SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate,"trErrorEmptyDeservedDate");
+            SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
         }
 
         private void input_LostFocus(object sender, RoutedEventArgs e)
@@ -717,7 +717,7 @@ namespace POS.View
             else
             {
                 if ((sender as DatePicker).Name == "dp_desrvedDate")
-                    SectionData.validateEmptyDatePicker((DatePicker) sender, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
+                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
             }
         }
         #endregion
@@ -725,12 +725,12 @@ namespace POS.View
 
         private async Task addInvoice(string invType)
         {
-            if (invoice.invType == "p" && (invType == "pb" || invType =="pbd")) // invoice is purchase and will bebounce purchase  or purchase bounce draft bounce , save another invoice in db
+            if (invoice.invType == "p" && (invType == "pb" || invType == "pbd")) // invoice is purchase and will bebounce purchase  or purchase bounce draft bounce , save another invoice in db
             {
                 invoice.invoiceMainId = invoice.invoiceId;
-                invoice.invoiceId = 0;             
+                invoice.invoiceId = 0;
             }
-            
+
             if (invoice.invType != "p" || invoice.invoiceId == 0)
             {
                 invoice.invType = invType;
@@ -871,7 +871,7 @@ namespace POS.View
                 else//p  purchase invoice
                     await addInvoice("p");
 
-                if(invoice.invoiceId == 0) clearInvoice();
+                if (invoice.invoiceId == 0) clearInvoice();
             }
         }
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
@@ -879,12 +879,12 @@ namespace POS.View
             //check mandatory inputs
             validateInvoiceValues();
 
-          // if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
-           if ( billDetails.Count > 0)
-           {
-               await addInvoice(_InvoiceType); 
-                            
-           }
+            // if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
+            if (billDetails.Count > 0)
+            {
+                await addInvoice(_InvoiceType);
+
+            }
             _InvoiceType = "pd";
             inputEditable();
             clearInvoice();
@@ -902,8 +902,8 @@ namespace POS.View
             cb_vendor.SelectedIndex = -1;
             cb_vendor.SelectedItem = "";
             cb_typeDiscount.SelectedIndex = 0;
-            dp_desrvedDate.Text="";
-            txt_vendorIvoiceDetails.Text ="";
+            dp_desrvedDate.Text = "";
+            txt_vendorIvoiceDetails.Text = "";
             tb_invoiceNumber.Clear();
             dp_invoiceDate.Text = "";
             tb_note.Clear();
@@ -923,10 +923,10 @@ namespace POS.View
             Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
             // purchase drafts and purchase bounce drafts
-           // string[] typeArr = { "pd","pdbd" };
-            w.invoiceType = "pd ,pbd";  
-  
- 
+            // string[] typeArr = { "pd","pdbd" };
+            w.invoiceType = "pd ,pbd";
+
+
             w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
             if (w.ShowDialog() == true)
@@ -993,7 +993,7 @@ namespace POS.View
             }
             Window.GetWindow(this).Opacity = 1;
         }
-        private  void  fillInvoiceInputs(Invoice invoice)
+        private void fillInvoiceInputs(Invoice invoice)
         {
             _Sum = (decimal)invoice.total;
 
@@ -1002,7 +1002,7 @@ namespace POS.View
             dp_desrvedDate.Text = invoice.deservedDate.ToString();
             tb_invoiceNumber.Text = invoice.vendorInvNum;
             dp_invoiceDate.Text = invoice.vendorInvDate.ToString();
-            tb_total.Text = Math.Round((double)invoice.totalNet , 2).ToString();
+            tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
             tb_taxValue.Text = invoice.tax.ToString();
             tb_note.Text = invoice.notes;
             tb_sum.Text = invoice.total.ToString();
@@ -1020,13 +1020,13 @@ namespace POS.View
             Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
 
-            
+
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
 
             // purchase invoices
             w.invoiceType = "p"; // invoice type to view in grid
             if (w.ShowDialog() == true)
-            { 
+            {
                 if (w.invoice != null)
                 {
                     _InvoiceType = "pbd";
@@ -1045,7 +1045,7 @@ namespace POS.View
                     inputEditable();
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
                     brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
-                }              
+                }
             }
             Window.GetWindow(this).Opacity = 1;
         }
@@ -1064,7 +1064,7 @@ namespace POS.View
                     Product = itemT.itemName,
                     itemId = (int)itemT.itemId,
                     Unit = itemT.itemUnitId.ToString(),
-                    itemUnitId = (int) itemT.itemUnitId,
+                    itemUnitId = (int)itemT.itemUnitId,
                     Count = (int)itemT.quantity,
                     Price = (decimal)itemT.price,
                     Total = total,
@@ -1094,7 +1094,7 @@ namespace POS.View
                 btn_save.IsEnabled = true;
                 btn_updateVendor.IsEnabled = false;
             }
-            else if(_InvoiceType == "pd")
+            else if (_InvoiceType == "pd")
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                 dg_billDetails.Columns[5].IsReadOnly = false;
@@ -1111,7 +1111,7 @@ namespace POS.View
                 btn_save.IsEnabled = true;
                 btn_updateVendor.IsEnabled = true;
             }
-            else if(_InvoiceType =="p")
+            else if (_InvoiceType == "p")
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
@@ -1131,7 +1131,7 @@ namespace POS.View
         }
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
-            if (invoice != null && invoice.invoiceId != 0) 
+            if (invoice != null && invoice.invoiceId != 0)
             {
                 Window.GetWindow(this).Opacity = 0.2;
 
@@ -1141,7 +1141,7 @@ namespace POS.View
                 w.tableId = invoice.invoiceId;
                 w.docNum = invoice.invNumber;
                 w.ShowDialog();
-                Window.GetWindow(this).Opacity =1;
+                Window.GetWindow(this).Opacity = 1;
             }
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trChooseInvoiceToolTip"), animation: ToasterAnimation.FadeIn);
@@ -1173,20 +1173,20 @@ namespace POS.View
 
         private void Btn_pay_Click(object sender, RoutedEventArgs e)
         {
-          //  btn_vendor_Click(null, null);
+            //  btn_vendor_Click(null, null);
         }
 
         private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-            if (elapsed.TotalMilliseconds > 100 && cb_branch.SelectedIndex != -1 )
+            if (elapsed.TotalMilliseconds > 100 && cb_branch.SelectedIndex != -1)
             {
                 _SelectedBranch = (int)cb_branch.SelectedValue;
             }
-            else 
+            else
             {
                 cb_branch.SelectedValue = _SelectedBranch;
-            }           
+            }
         }
         private void Cb_vendor_KeyUp(object sender, KeyEventArgs e)
         {
@@ -1209,9 +1209,9 @@ namespace POS.View
         }
         private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-             _Sender = sender;
+            _Sender = sender;
         }
-        private  void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
             if (elapsed.TotalMilliseconds > 100 && cb_typeDiscount.SelectedIndex != -1)
@@ -1223,15 +1223,15 @@ namespace POS.View
             {
                 cb_typeDiscount.SelectedValue = _SelectedDiscountType;
             }
-          
+
         }
-        private  void tb_discount_TextChanged(object sender, TextChangedEventArgs e)
+        private void tb_discount_TextChanged(object sender, TextChangedEventArgs e)
         {
             _Sender = sender;
             refreshTotalValue();
             e.Handled = true;
         }
-        private void refreshTotalValue( )
+        private void refreshTotalValue()
         {
             decimal discountValue = 0;
             if (tb_discount.Text != "." && !tb_discount.Text.Equals(""))
@@ -1239,7 +1239,7 @@ namespace POS.View
 
             if (cb_typeDiscount.SelectedIndex != -1 && int.Parse(cb_typeDiscount.SelectedValue.ToString()) == 2) // discount type is rate
             {
-                    discountValue = SectionData.calcPercentage(_Sum, discountValue);
+                discountValue = SectionData.calcPercentage(_Sum, discountValue);
             }
 
             decimal total = _Sum - discountValue;
@@ -1248,27 +1248,27 @@ namespace POS.View
             if (!tb_taxValue.Text.Equals(""))
                 taxInputVal = decimal.Parse(tb_taxValue.Text);
             if (total != 0)
-                taxValue = SectionData.calcPercentage(total , taxInputVal);
+                taxValue = SectionData.calcPercentage(total, taxInputVal);
 
             tb_sum.Text = _Sum.ToString();
             total = total - taxValue;
-            tb_total.Text = Math.Round( total,2).ToString() ;
+            tb_total.Text = Math.Round(total, 2).ToString();
         }
-       //private void refreshTotalValue(decimal discountVal)
-       // {
-       //     decimal discountVal = 0;
-       //     if (!tb_discount.Text.Equals(""))
-       //     {
-       //         if (tb_discount.Text.Equals("."))
-       //             discountVal = 0;
-       //         else
-       //             discountVal = decimal.Parse(tb_discount.Text);
-       //     }
-       //     decimal total = _Sum - discountVal;
-       //     tb_sum.Text = _Sum.ToString();
-       //     tb_total.Text = total.ToString();
-       // }
-       
+        //private void refreshTotalValue(decimal discountVal)
+        // {
+        //     decimal discountVal = 0;
+        //     if (!tb_discount.Text.Equals(""))
+        //     {
+        //         if (tb_discount.Text.Equals("."))
+        //             discountVal = 0;
+        //         else
+        //             discountVal = decimal.Parse(tb_discount.Text);
+        //     }
+        //     decimal total = _Sum - discountVal;
+        //     tb_sum.Text = _Sum.ToString();
+        //     tb_total.Text = total.ToString();
+        // }
+
         #region billdetails
         /*
         List<ItemUnit> GetItemUnits(int itemId)
@@ -1320,8 +1320,8 @@ namespace POS.View
         // read item from barcode
         private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            
-                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+
+            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
             if (elapsed.TotalMilliseconds > 50)
             {
                 _BarcodeStr = "";
@@ -1332,29 +1332,30 @@ namespace POS.View
             if (e.Key >= Key.D0 && e.Key <= Key.D9)
             {
                 //digit pressed!         
-                digit = e.Key.ToString().Substring(1);               
+                digit = e.Key.ToString().Substring(1);
                 // = "1" when D1 is pressed
             }
-            else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9 )
+            else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
             {
                 digit = e.Key.ToString().Substring(6); // = "1" when NumPad1 is pressed
             }
             _BarcodeStr += digit;
             _lastKeystroke = DateTime.Now;
             // process barcode
-           
+
             if (e.Key.ToString() == "Return" && _BarcodeStr != "" && _InvoiceType == "pd")
             {
                 if (_Sender != null)
                 {
                     DatePicker dt = _Sender as DatePicker;
                     TextBox tb = _Sender as TextBox;
-                    if (dt != null) {
+                    if (dt != null)
+                    {
                         if (dt.Name == "dp_desrvedDate" || dt.Name == "dp_invoiceDate")
                             _BarcodeStr = _BarcodeStr.Substring(1);
                     }
                     else if (tb != null)
-                    { 
+                    {
                         if (tb.Name == "tb_invoiceNumber" || tb.Name == "tb_note" || tb.Name == "tb_discount")// remove barcode from text box
                         {
                             string tbString = tb.Text;
@@ -1362,7 +1363,7 @@ namespace POS.View
                             int startIndex = tbString.IndexOf(_BarcodeStr);
                             if (startIndex != -1)
                                 newStr = tbString.Remove(startIndex, _BarcodeStr.Length);
-                            
+
                             tb.Text = newStr;
                         }
                     }
@@ -1382,7 +1383,7 @@ namespace POS.View
                         if (unit1.itemId != 0)
                         {
                             int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
-                            
+
                             if (index == -1)//item doesn't exist in bill
                             {
                                 // get item units
@@ -1393,7 +1394,7 @@ namespace POS.View
                                 int count = 1;
                                 decimal price = 0; //?????
                                 decimal total = count * price;
-                                addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId,count, price ,total);                                                           
+                                addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
                             }
                             else // item exist prevoiusly in list
                             {
@@ -1420,7 +1421,7 @@ namespace POS.View
         private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
-            {              
+            {
                 if (barcodesList != null && _BarcodeStr.Length < 13) //_BarcodeStr == "" barcode not from barcode reader
                 {
                     ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text);
@@ -1464,12 +1465,12 @@ namespace POS.View
                 }
             }
         }
-       
-        private  void addRowToBill(string itemName,int itemId,string unitName, int itemUnitId , int count, decimal price, decimal total)
-        {            
+
+        private void addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total)
+        {
             // increase sequence for each read
             _SequenceNum++;
-               
+
             billDetails.Add(new BillDetails()
             {
                 ID = _SequenceNum,
@@ -1497,8 +1498,8 @@ namespace POS.View
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cmb = sender as ComboBox;
-         
-            if(dg_billDetails.SelectedIndex != -1)
+
+            if (dg_billDetails.SelectedIndex != -1)
                 billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
         }
 
@@ -1608,8 +1609,8 @@ namespace POS.View
         //}
         private void Dp_date_PreviewKeyUp(object sender, KeyEventArgs e)
         {
-           _Sender = sender;
-            moveControlToBarcode(sender,e);
+            _Sender = sender;
+            moveControlToBarcode(sender, e);
         }
         private void moveControlToBarcode(object sender, KeyEventArgs e)
         {
@@ -1623,55 +1624,54 @@ namespace POS.View
         }
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-           try {
-                string addpath = @"\Reports\InvPurReport.rdlc";
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-                if (invoice.invoiceId > 0)
+            ReportParameter[] paramarr = new ReportParameter[19];
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+            }
+            else addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            if (invoice.invoiceId > 0)
+            {
+                invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                paramarr[6] = new ReportParameter("invNumber", invoice.invNumber);
+                paramarr[7] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
+                paramarr[8] = new ReportParameter("invDate", reportclass.DateToString(invoice.invDate));
+                paramarr[9] = new ReportParameter("invTime", reportclass.TimeToString(invoice.invTime));
+                paramarr[10] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
+                paramarr[11] = new ReportParameter("total", reportclass.DecTostring(invoice.total));
+                paramarr[12] = new ReportParameter("discountValue", reportclass.DecTostring(invoice.discountValue));
+                paramarr[13] = new ReportParameter("totalNet", reportclass.DecTostring(invoice.totalNet));
+                paramarr[14] = new ReportParameter("paid", reportclass.DecTostring(invoice.paid));
+                paramarr[15] = new ReportParameter("deserved", reportclass.DecTostring(invoice.deserved));
+                paramarr[16] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
+                paramarr[17] = new ReportParameter("tax", "0");
+                paramarr[18] = new ReportParameter("barcodeimage", "file:\\" + reportclass.BarcodeToImage(invoice.invNumber.ToString(), "invnum"));
+                ReportCls.checkLang();
+
+                clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+                rep.Refresh();
+
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
                 {
-                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                    rep.ReportPath = reppath;
-                    rep.DataSources.Clear();
-                    rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", invoiceItems));
-                rep.EnableExternalImages = true;
-                
 
-                    // rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", data));
-                    ReportParameter[] paramarr = new ReportParameter[15];
-
-                    paramarr[0] = new ReportParameter("Title", "Purshase Invoice");
-                    paramarr[12] = new ReportParameter("lang", MainWindow.lang);
-                    paramarr[1] = new ReportParameter("invNumber", invoice.invNumber);
-                    paramarr[2] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
-                    paramarr[3] = new ReportParameter("invDate", reportclass.DateToString(invoice.invDate));
-                    paramarr[4] = new ReportParameter("invTime", reportclass.TimeToString(invoice.invTime));
-                    paramarr[5] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
-                    paramarr[6] = new ReportParameter("total", reportclass.DecTostring(invoice.total));
-                    paramarr[7] = new ReportParameter("discountValue", reportclass.DecTostring(invoice.discountValue));
-                    paramarr[8] = new ReportParameter("totalNet", reportclass.DecTostring(invoice.totalNet));
-                    paramarr[9] = new ReportParameter("paid", reportclass.DecTostring(invoice.paid));
-                    paramarr[10] = new ReportParameter("deserved", reportclass.DecTostring(invoice.deserved));
-                    paramarr[11] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
-                    paramarr[14] = new ReportParameter("tax", "0");
-  paramarr[13] = new ReportParameter("barcodeimage", "file:\\" + reportclass.BarcodeToImage(invoice.invNumber.ToString(), "invnum"));
-                    //  MessageBox.Show(reportclass.DecTostring(invoice.paid) + "des="+ invoice.deserved.ToString());
-
-                    rep.SetParameters(paramarr);
-
-                    rep.Refresh();
-
-                    saveFileDialog.Filter = "PDF|*.pdf;";
-
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-
-                        string filepath = saveFileDialog.FileName;
-                        LocalReportExtensions.ExportToPDF(rep, filepath);
-                    }
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
-           }
-            catch { }
+            }
 
-            
+
+
 
         }
 
@@ -1697,7 +1697,45 @@ namespace POS.View
             clearInvoice();
         }
 
-       
-    }
+        private async void btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            ReportParameter[] paramarr = new ReportParameter[19];
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+            }
+            else addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
 
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            if (invoice.invoiceId > 0)
+            {
+                invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                paramarr[6] = new ReportParameter("invNumber", invoice.invNumber);
+                paramarr[7] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
+                paramarr[8] = new ReportParameter("invDate", reportclass.DateToString(invoice.invDate));
+                paramarr[9] = new ReportParameter("invTime", reportclass.TimeToString(invoice.invTime));
+                paramarr[10] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
+                paramarr[11] = new ReportParameter("total", reportclass.DecTostring(invoice.total));
+                paramarr[12] = new ReportParameter("discountValue", reportclass.DecTostring(invoice.discountValue));
+                paramarr[13] = new ReportParameter("totalNet", reportclass.DecTostring(invoice.totalNet));
+                paramarr[14] = new ReportParameter("paid", reportclass.DecTostring(invoice.paid));
+                paramarr[15] = new ReportParameter("deserved", reportclass.DecTostring(invoice.deserved));
+                paramarr[16] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
+                paramarr[17] = new ReportParameter("tax", "0");
+                paramarr[18] = new ReportParameter("barcodeimage", "file:\\" + reportclass.BarcodeToImage(invoice.invNumber.ToString(), "invnum"));
+                ReportCls.checkLang();
+
+                clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+                rep.Refresh();
+                LocalReportExtensions.PrintToPrinter(rep);
+            }
+        }
+    }
 }
