@@ -338,5 +338,10 @@ namespace POS.View.storage
         {
 
         }
+
+        private void Cb_processType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -184,7 +184,7 @@ namespace POS.Classes
             }
             else if (ucItemsDestroy != null)
             {
-                ucItemsDestroy.ChangeCategoryIdEvent(idCatigories);
+                //ucItemsDestroy.ChangeCategoryIdEvent(idCatigories);
 
             }
             else if (ucreceiptOfPurchaseInvoice != null)

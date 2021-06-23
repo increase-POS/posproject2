@@ -1196,7 +1196,6 @@ E:\GitHub\posproject2\POS\POS\bin\Debug\SqlServerTypes\x64\msvcr120.dll
 E:\GitHub\posproject2\POS\POS\bin\Debug\SqlServerTypes\x64\SqlServerSpatial140.dll
 E:\GitHub\posproject2\POS\POS\bin\Debug\SqlServerTypes\x86\msvcr120.dll
 E:\GitHub\posproject2\POS\POS\bin\Debug\SqlServerTypes\x86\SqlServerSpatial140.dll
-E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\VendorReport.rdlc
 E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.ReportViewer.Common.dll
 E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.ReportViewer.DataVisualization.dll
 E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.ReportViewer.Design.dll
@@ -1970,3 +1969,5 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_general.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_permissions.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_settings.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_companyInfo.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\storage\uc_inventory.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\storage\uc_inventory.baml

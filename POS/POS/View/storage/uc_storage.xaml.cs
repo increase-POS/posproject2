@@ -69,8 +69,8 @@ namespace POS.View
             btn_itemsStorage.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
 
-            btn_itemsImport.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_itemsImport.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            //btn_itemsImport.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            //btn_itemsImport.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
             btn_itemsExport.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_itemsExport.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -123,7 +123,7 @@ namespace POS.View
         }
         private void Btn_itemsImport_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_itemsImport);
+            //refreashBachgroundClick(btn_itemsImport);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_itemsImport.Instance);
             //uc_itemsImport uc = new uc_itemsImport();
@@ -151,7 +151,11 @@ namespace POS.View
 
         private void Btn_inventory_Click(object sender, RoutedEventArgs e)
         {
-
+            refreashBachgroundClick(btn_itemsDestroy);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_inventory.Instance);
         }
+
+       
     }
 }
