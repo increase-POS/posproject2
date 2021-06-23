@@ -58,7 +58,7 @@ namespace POS.View.windows
             lst_selectedItems.DisplayMemberPath = "name";
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
-        {
+        { 
             if (e.Key == Key.Return)
             {
                 Btn_save_Click(null, null);

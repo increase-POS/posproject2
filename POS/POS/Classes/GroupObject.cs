@@ -23,6 +23,7 @@ namespace POS.Classes
         public Nullable<bool> updateOb { get; set; }
         public Nullable<bool> deleteOb { get; set; }
         public Nullable<bool> showOb { get; set; }
+        public Nullable<bool> reportOb { get; set; }
         public string objectName { get; set; }
         public string desc { get; set; }
 

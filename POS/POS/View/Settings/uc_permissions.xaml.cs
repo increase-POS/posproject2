@@ -50,6 +50,8 @@ namespace POS.View.Settings
         IEnumerable<Object> objects;
 
         BrushConverter bc = new BrushConverter();
+
+       
         public uc_permissions()
         {
             InitializeComponent();
@@ -82,6 +84,9 @@ namespace POS.View.Settings
                 txt_deleteGroup_Icon.Visibility = Visibility.Visible;
 
             }
+
+
+           
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {

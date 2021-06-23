@@ -258,7 +258,7 @@ namespace POS.View.accounts
 
                 if (cashtrans != null)
                 {
-                    //MessageBox.Show(cashtrans.bondId.ToString());
+                    MessageBox.Show(cashtrans.cashTransId.ToString()+"-"+ cashtrans.bondId.ToString());
 
                     cb_depositTo.SelectedValue = cashtrans.side;
                     btn_add.IsEnabled = false;
@@ -308,8 +308,8 @@ namespace POS.View.accounts
                 cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
                 || s.cash.ToString().Contains(searchText)
                 )
-                && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m")
-                && s.transType == "p"
+                && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m" || s.side == "bnd")
+                && s.transType == "p" 
                 && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
                 && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
                 );
@@ -477,10 +477,11 @@ namespace POS.View.accounts
             if(!s.Equals("0"))
             {
                 //MessageBox.Show(s);
+                CashTransfer c = await cashModel.GetByID(cashId.Value);
 
-                cashtrans.bondId = int.Parse(s);
+                c.bondId = int.Parse(s);
 
-                await cashModel.Save(cashtrans);
+                string x = await cashModel.Save(c);
             }
 
         }
@@ -586,14 +587,14 @@ namespace POS.View.accounts
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
-            this.Dispatcher.Invoke(() =>
-            {
+            //this.Dispatcher.Invoke(() =>
+            //{
                 //await Task.Run(FN_ExportToExcel);
                 //var result = await SimLongRunningProcessAsync();
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
-            });
+            //});
            
         }
 

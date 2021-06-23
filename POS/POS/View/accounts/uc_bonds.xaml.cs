@@ -83,8 +83,8 @@ namespace POS.View.accounts
 
                 if (bond != null)
                 {
-                    //MessageBox.Show(bond.bondId.ToString() +"-"+bond.cashTransId.ToString());
-
+                    MessageBox.Show(bond.bondId.ToString() +"-"+bond.cashTransId.ToString());
+                    //MessageBox.Show(bond.deserveDate.ToString() +"-"+bond.updateDate.ToString());
                     if (bond.isRecieved == 1)
                     {
                         btn_pay.Content = MainWindow.resourcemanager.GetString("trPaid");
@@ -161,7 +161,7 @@ namespace POS.View.accounts
                   (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible)))
             {
                 //update bond
-                bond.deserveDate = dp_deservecDate.SelectedDate;
+                //bond.deserveDate = dp_deservecDate.SelectedDate.Value;
                 bond.isRecieved = 1;
 
                 string s = await bondModel.Save(bond);
@@ -217,23 +217,24 @@ namespace POS.View.accounts
         {//search
             if (bonds is null)
                 await RefreshBondsList();
-            this.Dispatcher.Invoke(() =>
-            {
+            //this.Dispatcher.Invoke(() =>
+            //{
                 searchText = tb_search.Text;
+
                 bondsQuery = bonds.Where(s => (
                 s.number.Contains(searchText)
                 ||
                 s.amount.ToString().Contains(searchText)
                 || s.type.ToString().Contains(searchText)
                 )
-         //       && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-         //       && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                //&& s.deserveDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                && s.deserveDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                //&& s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                //&& s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                && s.deserveDate.Value.Date >= sDate
+                && s.deserveDate.Value.Date <= eDate
                 && s.isRecieved == tgl_bondState
                 );
 
-            });
+            //});
 
             bondsQueryExcel = bondsQuery;
             RefreshBondView();
@@ -318,20 +319,33 @@ namespace POS.View.accounts
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
-            this.Dispatcher.Invoke(() =>
-            {
+            //this.Dispatcher.Invoke(() =>
+            //{
                 //await Task.Run(FN_ExportToExcel);
-                //var result = await SimLongRunningProcessAsync();
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
-            });
+            //});
 
         }
         
         void FN_ExportToExcel()
         {
-          
+            var QueryExcel = bondsQueryExcel.AsEnumerable().Select(x => new
+            {
+                TransNum = x.number,
+                Ammount = x.amount,
+                Recipient = x.type,
+                Notes   = x.notes
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trCash");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trRecepient");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trNote");
+
+            ExportToExcel.Export(DTForExcel);
+
 
         }
         private void PreventSpaces(object sender, KeyEventArgs e)
@@ -401,6 +415,9 @@ namespace POS.View.accounts
             dp_endSearchDate.SelectedDate = DateTime.Now;
             dp_startSearchDate.SelectedDate = DateTime.Now;
 
+            sDate = dp_startSearchDate.SelectedDate.Value;
+            eDate = dp_endSearchDate.SelectedDate.Value;
+
             dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
             dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
 
@@ -416,12 +433,16 @@ namespace POS.View.accounts
 
         private async void dp_SelectedEndDateChanged(object sender, SelectionChangedEventArgs e)
         {
+            eDate = dp_endSearchDate.SelectedDate.Value;
+
             await RefreshBondsList();
             Tb_search_TextChanged(null, null);
         }
-
+        DateTime sDate , eDate;
         private async void dp_SelectedStartDateChanged(object sender, SelectionChangedEventArgs e)
         {
+            sDate = dp_startSearchDate.SelectedDate.Value;
+
             await RefreshBondsList();
             Tb_search_TextChanged(null, null);
         }

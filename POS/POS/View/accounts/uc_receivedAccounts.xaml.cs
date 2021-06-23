@@ -268,8 +268,8 @@ namespace POS.View.accounts
                 cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
                 || s.cash.ToString().Contains(searchText)
                 )
-                && (s.side == "v" || s.side == "c" || s.side == "u" ||  s.side == "m")
-                && s.transType == "d"
+                && (s.side == "v" || s.side == "c" || s.side == "u" ||  s.side == "m" || s.side == "bnd")
+                && s.transType == "d" 
                 && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
                 && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
                 );
@@ -426,7 +426,7 @@ namespace POS.View.accounts
 
             if (!s.Equals("0"))
             {
-                MessageBox.Show(s);
+                //MessageBox.Show(s);
                 //MessageBox.Show(cashId.Value.ToString());
                 CashTransfer c = await cashModel.GetByID(cashId.Value);
 
@@ -434,7 +434,7 @@ namespace POS.View.accounts
 
                 string x = await cashModel.Save(c);
 
-                MessageBox.Show(c.bondId.ToString());
+                //MessageBox.Show(c.bondId.ToString());
             }
             //    MessageBox.Show("ok");
             //else MessageBox.Show("error");

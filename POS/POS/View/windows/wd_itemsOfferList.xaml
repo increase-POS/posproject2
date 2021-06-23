@@ -146,7 +146,7 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader" MouseDoubleClick="Dg_allItems_MouseDoubleClick" >
                         <DataGrid.Columns>
-                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Item" Binding="{Binding Path=test}"/>
+                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Item" Binding="{Binding Path=itemName}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
@@ -205,9 +205,9 @@
                     Visibility="Visible"
                          IsReadOnly="False" CanUserAddRows="False"
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader" MouseDoubleClick="Dg_selectedItems_MouseDoubleClick"  >
+                        ColumnWidth="SizeToHeader" MouseDoubleClick="Dg_selectedItems_MouseDoubleClick" SelectionChanged="Dg_selectedItems_SelectionChanged"  >
                         <DataGrid.Columns >
-                            <DataGridTextColumn Width="*" IsReadOnly="True"  Header="Item" Binding="{Binding Path=test}"/>
+                            <DataGridTextColumn Width="*" IsReadOnly="True"  Header="Item" Binding="{Binding Path=itemName}"/>
                             <DataGridTextColumn Width="*" Header="Quantity" Binding="{Binding Path=quantity}"/>
                         </DataGrid.Columns>
                     </DataGrid>

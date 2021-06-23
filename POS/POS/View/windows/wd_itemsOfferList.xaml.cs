@@ -1,6 +1,7 @@
 ﻿using POS.Classes;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,11 +27,27 @@ namespace POS.View.windows
         }
         public bool isActive;
 
-        ItemUnit itemUnitOffer = new ItemUnit();
-        List<ItemUnit> allItems = new List<ItemUnit>();
-        public List<ItemUnit> selectedItems = new List<ItemUnit>();
+        ItemUnitOffer itemUnitOffer = new ItemUnitOffer();
         ItemUnit itemModel = new ItemUnit();
+        ItemUnitOffer itemUnitOfferModel = new ItemUnitOffer();
+        Offer offerModel = new Offer();
+
+        List<ItemUnit> allItems = new List<ItemUnit>();
+        List<ItemUnitOffer> selectedItems = new List<ItemUnitOffer>();
+
+        List<ItemUnit> allItemsSource = new List<ItemUnit>();
+        List<ItemUnitOffer> selectedItemsSource = new List<ItemUnitOffer>();
+
+        ItemUnit itemUnit = new ItemUnit();
+        Offer offer = new Offer();
+
+        string searchText = "";
+
         public string txtItemSearch;
+
+        IEnumerable<ItemUnit> itemUnitQuery;
+
+        public int offerId { get; set; }
         /// <summary>
         /// Selcted Items if selectedItems Have Items At the beginning
         /// </summary>
@@ -38,24 +55,33 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            allItems = await itemModel.Getall();
-            //foreach (var itemUnit in selectedItems)
-            //{
-            //    allItems.Remove(itemUnit);
-            //}
-            foreach (var itemUnit in allItems)
-            {
-                MessageBox.Show(itemUnit.itemName);
-            }
-            selectedItems.AddRange(selectedItems);
+            offer = await offerModel.getOfferById(offerId);
             
+            allItemsSource = await itemModel.Getall();
+            selectedItemsSource = await itemUnitOffer.GetItemsByOfferId(offerId);
+
+            allItems.AddRange(allItemsSource);
+            foreach (var i in allItems)
+            {
+                i.itemName = i.itemName + "-" + i.unitName;
+            }
+
+            selectedItems.AddRange(selectedItemsSource);
+            foreach (var i in selectedItems)
+            {
+                i.itemName = i.itemName + "-" + i.unitName;
+            }
+
+            //MessageBox.Show(selectedItems[0].quantity.ToString());
+
             dg_allItems.ItemsSource = allItems;
             dg_allItems.SelectedValuePath = "itemUnitId";
             dg_allItems.DisplayMemberPath = "itemName";
 
             dg_selectedItems.ItemsSource = selectedItems;
-            dg_selectedItems.SelectedValuePath = "itemId";
-            dg_selectedItems.DisplayMemberPath = "name";
+            dg_selectedItems.SelectedValuePath = "itemUnitId";
+            dg_selectedItems.DisplayMemberPath = "itemName";
+
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
@@ -64,8 +90,18 @@ namespace POS.View.windows
                 Btn_save_Click(null, null);
             }
         }
-        private void Btn_save_Click(object sender, RoutedEventArgs e)
-        {
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
+        {//save
+            for (int i = 0; i < selectedItems.Count; i++)
+            {
+                //DataRowView dataRow = (DataRowView)dg_selectedItems.SelectedItem;
+                //int index = dg_selectedItems.CurrentCell.Column.DisplayIndex;
+                //string cellValue = dataRow.Row.ItemArray[index].ToString();
+
+                //string s = await itemUnitOfferModel.updategroup(offerId, selectedItems, MainWindow.userID.Value);
+            }
+            //MessageBox.Show(selectedItems[0].quantity.ToString());
+
             isActive = true;
             this.Close();
         }
@@ -86,63 +122,90 @@ namespace POS.View.windows
 
         }
         private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
-        {
-            // للتعديل 
-            //selectedItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList();
-            allItems.Clear();
-            dg_allItems.ItemsSource = allItems;
-            dg_selectedItems.ItemsSource = selectedItems;
-            dg_allItems.Items.Refresh();
-            dg_selectedItems.Items.Refresh();
+        {//select all
+            int x = allItems.Count;
+            for (int i = 0; i < x; i++)
+            {
+                //MessageBox.Show(i.ToString());
+                dg_allItems.SelectedIndex = 0;
+                Btn_selectedItem_Click(null, null);
+            }
         }
         private void Btn_selectedItem_Click(object sender, RoutedEventArgs e)
-        {
-            itemUnitOffer = dg_allItems.SelectedItem as ItemUnit;
-            if (itemUnitOffer != null)
+        {//select item
+            itemUnit = dg_allItems.SelectedItem as ItemUnit;
+            if (itemUnit != null)
             {
-                //allItems.Remove(itemUnit);
-                //selectedItems.Add(itemUnit);
+                ItemUnitOffer iUO = new ItemUnitOffer();
+                iUO.ioId = 0;
+                iUO.iuId = itemUnit.itemUnitId;
+                iUO.offerId = offerId;
+                iUO.createUserId = MainWindow.userID;
+                iUO.quantity = 5;//dg_selectedItems.Columns[1];
+                iUO.offerName = offer.name;
+                iUO.unitName = itemUnit.unitName;
+                iUO.itemName = itemUnit.itemName;
+                iUO.code = offer.code;///////////??????????offer/item
+                iUO.itemId = itemUnit.itemId;
+                iUO.unitId = itemUnit.unitId;
+
+                allItems.Remove(itemUnit);
+
+                selectedItems.Add(iUO);
+
                 dg_allItems.ItemsSource = allItems;
                 dg_selectedItems.ItemsSource = selectedItems;
+
                 dg_allItems.Items.Refresh();
                 dg_selectedItems.Items.Refresh();
             }
 
         }
         private void Btn_unSelectedItem_Click(object sender, RoutedEventArgs e)
-        {
-
-            itemUnitOffer = dg_selectedItems.SelectedItem as ItemUnit;
+        {//unselect item
+            itemUnitOffer = dg_selectedItems.SelectedItem as ItemUnitOffer;
+            ItemUnit i = new ItemUnit();
             if (itemUnitOffer != null)
             {
-                //selectedItems.Remove(itemUnit);
-                allItems.Add(itemUnitOffer);
+                i = allItemsSource.Where(s => s.itemUnitId == itemUnitOffer.iuId.Value).FirstOrDefault();
+
+                allItems.Add(i);
+
+                selectedItems.Remove(itemUnitOffer);
 
                 dg_allItems.ItemsSource = allItems;
-                dg_allItems.Items.Refresh();
                 dg_selectedItems.ItemsSource = selectedItems;
+
+                dg_allItems.Items.Refresh();
                 dg_selectedItems.Items.Refresh();
             }
         }
         private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
-        {
-            // للتعديل 
-            //allItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList();
-            selectedItems.Clear();
-            dg_allItems.ItemsSource = allItems;
-            dg_allItems.Items.Refresh();
-            dg_selectedItems.ItemsSource = selectedItems;
-            dg_selectedItems.Items.Refresh();
-
+        {//unselect all
+            int x = selectedItems.Count;
+            for (int i = 0; i < x ; i++)
+            {
+                //MessageBox.Show(i.ToString());
+                dg_selectedItems.SelectedIndex = 0;
+                Btn_unSelectedItem_Click(null, null);
+            }
+            
         }
         private void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        {//search
             txtItemSearch = txb_searchitems.Text.ToLower();
             // للتعديل 
             //dg_allItems.ItemsSource = allItems.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
             //x.name.ToLower().Contains(txtItemSearch) ||
             //x.details.ToLower().Contains(txtItemSearch)
             //) && x.isActive == 1);
+
+            if (allItems is null)
+                allItems = allItemsSource;
+            searchText = txb_searchitems.Text;
+            itemUnitQuery = allItems.Where(s => s.itemName.Contains(searchText) || s.unitName.Contains(searchText));
+            dg_allItems.ItemsSource = itemUnitQuery;
+
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -155,6 +218,12 @@ namespace POS.View.windows
             {
 
             }
+        }
+
+        private void Dg_selectedItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //ItemUnitOffer i = dg_selectedItems.SelectedItem as ItemUnitOffer;
+            //MessageBox.Show(i.quantity.ToString());
         }
     }
 }

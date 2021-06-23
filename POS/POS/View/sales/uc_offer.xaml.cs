@@ -244,6 +244,8 @@ namespace POS.View
 
             //tb_discountValue.Text = _numValue.ToString();
 
+            btn_items.IsEnabled = false;
+
             Keyboard.Focus(tb_code);
 
             SectionData.clearValidate(tb_code, p_errorCode);
@@ -352,7 +354,7 @@ namespace POS.View
 
             wd_itemsOfferList w = new wd_itemsOfferList();
             //w.selectedItems.AddRange();
-          //  w.offerId = offer.offerId;
+            w.offerId = offer.offerId;
             w.ShowDialog();
             if (w.isActive)
             {
@@ -430,6 +432,7 @@ namespace POS.View
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
+            btn_items.IsEnabled = false;
             tb_code.Clear();
             tb_name.Clear();
             tgl_ActiveOffer.IsChecked = false;
@@ -546,6 +549,8 @@ namespace POS.View
 
                 if (offer != null)
                 {
+                    btn_items.IsEnabled = true;
+
                     tgl_ActiveOffer.IsChecked = Convert.ToBoolean(offer.isActive);
                     cb_discountType.SelectedValue = offer.discountType;
                     tb_discountValue.Text = (Convert.ToInt32(offer.discountValue)).ToString();
