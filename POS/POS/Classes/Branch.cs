@@ -13,54 +13,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class BranchPos
-    {
-        
-        public Nullable<decimal> balance { get; set; }
-        public int branchId { get; set; }
-        public string branchname { get; set; }
-     
-      
-                                       
 
-        public async Task<List<BranchPos>> GetBalance(string type)
-        {
-          
-            List<BranchPos> Branchs = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Branches/GetBalance?type=" + type);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    Branchs = JsonConvert.DeserializeObject<List<BranchPos>>(jsonString);
-
-                    return Branchs;
-                }
-                else //web api sent error response 
-                {
-                    return Branchs;
-                }
-               // return Branchs;
-            }
-
-        }
-
-    }
     public class Branch
     {
         public int branchId { get; set; }
@@ -79,7 +32,7 @@ namespace POS.Classes
         public string type { get; set; }
         public int isActive { get; set; }
         public Boolean canDelete { get; set; }
-
+        public Nullable<decimal> balance { get; set; }
         public async Task<List<Branch>> Get()
         {
             List<Branch> Branchs = null;
@@ -457,7 +410,42 @@ namespace POS.Classes
             }
         }
 
+        public async Task<List<Branch>> GetBalance(string type)
+        {
 
+            List<Branch> Branchs = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Branches/GetBalance?type=" + type);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+
+                    Branchs = JsonConvert.DeserializeObject<List<Branch>>(jsonString);
+
+                    return Branchs;
+                }
+                else //web api sent error response 
+                {
+                    return Branchs;
+                }
+                // return Branchs;
+            }
+
+        }
 
     }
 }

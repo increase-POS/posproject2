@@ -82,5 +82,15 @@ namespace POS.View.windows
 
             }
         }
+
+
+        private async void HandleKeyPress(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                Btn_ok_Click(null, null);
+            }
+        }
+
     }
 }

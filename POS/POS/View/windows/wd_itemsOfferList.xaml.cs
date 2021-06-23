@@ -57,6 +57,13 @@ namespace POS.View.windows
             dg_selectedItems.SelectedValuePath = "itemId";
             dg_selectedItems.DisplayMemberPath = "name";
         }
+        private void HandleKeyPress(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                Btn_save_Click(null, null);
+            }
+        }
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
             isActive = true;

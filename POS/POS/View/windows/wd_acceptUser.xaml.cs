@@ -74,12 +74,19 @@ namespace POS.View.windows
 
         public int userID = 0;
         User userModel = new User();
+
         private void Btn_confirmation_Click(object sender, RoutedEventArgs e)
         {
             chkUser();
            
         }
-
+        private void HandleKeyPress(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                Btn_confirmation_Click(null, null);
+            }
+        }
         private async void chkUser()
         {
             string password = Md5Encription.MD5Hash("Inc-m" + pb_password.Password);

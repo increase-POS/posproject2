@@ -44,7 +44,13 @@ namespace POS.View.windows
             this.Close();
 
         }
-
+        private void HandleKeyPress(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                Btn_select_Click(null, null);
+            }
+        }
         private void Txb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
 

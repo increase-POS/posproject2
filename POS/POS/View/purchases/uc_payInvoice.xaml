@@ -411,7 +411,7 @@
                                     <TextBlock x:Name="txt_vendorIvoiceDetails" Text="Vendor invoice details"  Foreground="#737373"
                                  FontSize="10"      VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Margin="5,5,0,5"/>
-                                    <Separator Background="#999999"   Width="300"  Margin="5,0,5,0"
+                                    <Separator Background="#999999"    Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                                 </Grid>
                                 <Grid Grid.Column="0" Grid.Row="1" >

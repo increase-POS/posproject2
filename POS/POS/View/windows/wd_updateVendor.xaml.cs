@@ -285,7 +285,13 @@ namespace POS.View.windows
             agents = await agentModel.GetAgentsAsync("v");
             return agents;
         }
-
+        private void HandleKeyPress(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                Btn_save_Click(null, null);
+            }
+        }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
             if (tb_name.Text.Equals(""))

@@ -61,6 +61,13 @@ namespace POS.View.windows
             lst_selectedLocations.DisplayMemberPath = "name";
         }
 
+        private void HandleKeyPress(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                Btn_save_Click(null, null);
+            }
+        }
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
             isActive = true;

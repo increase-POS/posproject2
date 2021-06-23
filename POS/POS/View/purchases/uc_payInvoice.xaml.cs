@@ -101,13 +101,11 @@ namespace POS.View
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
-
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
         private void translate()
         {
             ////////////////////////////////----invoice----/////////////////////////////////
@@ -194,7 +192,6 @@ namespace POS.View
             ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
             #endregion
         }
-
         private void configureDiscountType()
         {
             var dislist = new[] {
@@ -1321,12 +1318,30 @@ namespace POS.View
         private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
 
+            if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
+            {
+                switch (e.Key)
+                {
+                    case Key.P:
+                        //handle D key
+                        //MessageBox.Show("You want Print");
+                        btn_printInvoice_Click(null, null);
+                        break;
+                    case Key.S:
+                        //handle X key
+                        //MessageBox.Show("You want Save");
+                        Btn_save_Click(null, null);
+                        break;
+                }
+            }
+           
+            
+
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
             if (elapsed.TotalMilliseconds > 50)
             {
                 _BarcodeStr = "";
             }
-
             string digit = "";
             // record keystroke & timestamp 
             if (e.Key >= Key.D0 && e.Key <= Key.D9)
@@ -1416,6 +1431,8 @@ namespace POS.View
                 e.Handled = true;
                 cb_branch.SelectedValue = _SelectedBranch;
             }
+
+
             _Sender = null;
         }
         private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)

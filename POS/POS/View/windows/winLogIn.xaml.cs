@@ -42,5 +42,12 @@ namespace POS.View.windows
         {
             
         }
+        private  void HandleKeyPress(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                btnLogIn_Click(null, null);
+            }
+        }
     }
 }

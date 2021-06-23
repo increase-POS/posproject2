@@ -28,15 +28,15 @@ namespace POS.View.windows
     /// </summary>
     public partial class wd_uploadImage : Window
     {
-        public string tableName { get; set; }      
+        public string tableName { get; set; }
         public int tableId { get; set; }
         public string docNum { get; set; }
 
-        private int docId=0;
+        private int docId = 0;
 
         DocImage docImgModel = new DocImage();
         List<DocImage> imageList;
-       
+
         ImageBrush brush = new ImageBrush();
 
         Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
@@ -105,7 +105,7 @@ namespace POS.View.windows
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
-        {        
+        {
             if (docImgModel.id != 0)
             {
                 Boolean res = await docImgModel.delete(docId);
@@ -163,7 +163,7 @@ namespace POS.View.windows
                     bitmapImage.EndInit();
                 }
 
-            img_upload.Background = new ImageBrush(bitmapImage);
+                img_upload.Background = new ImageBrush(bitmapImage);
             }
         }
         // display image in IMG_customer 
@@ -224,7 +224,7 @@ namespace POS.View.windows
             {
                 System.Windows.MessageBox.Show("Problem with scanning device. Please ensure that the scanner is properly connected and switched on", "Inweon Grain Management System");
             }
-            
+
         }
         private static void SaveImageToJpgFile(ImageFile image, string fileName)
         {
@@ -258,7 +258,7 @@ namespace POS.View.windows
         }
         private static void SetWIAProperty(IProperties properties, object propName, object propValue)
         {
-           WIA.Property prop = properties.get_Item(ref propName);
+            WIA.Property prop = properties.get_Item(ref propName);
             prop.set_Value(ref propValue);
         }
 
@@ -287,7 +287,7 @@ namespace POS.View.windows
 
                 int docImageId = int.Parse(res);
 
-                if(openFileDialog.FileName != "")
+                if (openFileDialog.FileName != "")
                     await docImgModel.uploadImage(openFileDialog.FileName, tableName, docImageId);
 
                 //refresh image list
@@ -307,5 +307,32 @@ namespace POS.View.windows
 
             }
         }
+        private  void HandleKeyPress(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+
+            if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
+            {
+                switch (e.Key)
+                {
+                    case Key.P:
+                        //handle D key
+                        //MessageBox.Show("You want Print");
+                        Btn_print_Click(null, null);
+                        break;
+                    case Key.S:
+                        //handle X key
+                        //MessageBox.Show("You want Save");
+                        Btn_save_Click(null, null);
+                        break;
+                }
+            }
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+       
     }
 }
