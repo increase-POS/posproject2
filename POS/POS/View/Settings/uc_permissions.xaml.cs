@@ -239,14 +239,8 @@ namespace POS.View.Settings
             groupObjects = await GroupObject.GetAll();
             return groupObjects;
         }
-        private void Dg_permissions_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-
-        }
-        private void Dg_permissions_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
+       
+        
         #endregion
 
         #region object
@@ -502,9 +496,24 @@ namespace POS.View.Settings
          
         private void Btn_users_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
-        
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
+        {
+            string s = "";
+            foreach (var item in groupObjectsQuery)
+            {
+                 s = await GroupObject.Save(item);
+            }
+            if (!s.Equals("-1"))
+            {
+                addObjects(int.Parse(s));
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                Btn_clear_Click(null, null);
+            }
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+        }
     }
 }

@@ -99,7 +99,7 @@
 
             <Border Margin="5,5,5,0" Grid.Row="1"  Background="White" CornerRadius="7,7,0,0">
                 <Grid>
-                    <Grid Grid.Row="1" x:Name="grid_cards" Visibility="Visible" Margin="5,5,5,17.5" >
+                    <Grid Grid.Row="1" x:Name="grid_cards" Visibility="Collapsed" Margin="5,5,5,17.5" >
                         <Grid Grid.Row="0" x:Name="grid_containerCard" Visibility="Visible" SizeChanged="Grid_containerCard_SizeChanged"  Background="{x:Null}" Grid.ColumnSpan="2">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
@@ -114,7 +114,7 @@
                             </Grid.ColumnDefinitions>
                         </Grid>
                     </Grid>
-                    <Grid Margin="5,5,5,17.5"  Grid.Row="1" x:Name="grid_datagrid" Visibility="Collapsed">
+                    <Grid Margin="5,5,5,17.5"  Grid.Row="1" x:Name="grid_datagrid" Visibility="Visible">
                         <DataGrid   Grid.Row="1"  IsReadOnly="True"  Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
                        SelectionChanged="DG_users_SelectionChanged"
@@ -371,7 +371,7 @@
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="-10"/>
                                 </Button.ToolTip>
-                                <Path Fill="#4e4e4e" Stretch="Fill"
+                                <Path Fill="{StaticResource MainColorBlue}" Stretch="Fill"
                           Width="18" Height="18"  x:Name="path_itemsInGrid"
                           Data="M18.9,14h-2.1c-1.2,0-2.1,0.9-2.1,2v2c0,1.1,0.9,2,2.1,2h2.1c1.2,0,2.1-0.9,2.1-2v-2
 	C21,14.9,20.1,14,18.9,14 M11.6,14H9.4c-1.2,0-2.1,0.9-2.1,2v2c0,1.1,0.9,2,2.1,2h2.1c1.2,0,2.1-0.9,2.1-2v-2
@@ -393,7 +393,7 @@
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="-10"/>
                                 </Button.ToolTip>
-                                <Path Fill="#178DD2" Stretch="Fill"
+                                <Path Fill="{StaticResource MainColorGrey}" Stretch="Fill"
                           Width="18" Height="18"  x:Name="path_itemsInCards"
                           Data="M528,32H48C21.5,32,0,53.5,0,80v352c0,26.5,21.5,48,48,48h480c26.5,0,48-21.5,48-48V80
 	C576,53.5,554.5,32,528,32z M176,128c35.3,0,64,28.7,64,64s-28.7,64-64,64s-64-28.7-64-64S140.7,128,176,128z M288,364.8

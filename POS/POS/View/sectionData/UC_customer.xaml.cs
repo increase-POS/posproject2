@@ -1038,7 +1038,7 @@ namespace POS.View
             grid_cards.Visibility = Visibility.Collapsed;
             grid_datagrid.Visibility = Visibility.Visible;
             path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
 
             Tb_search_TextChanged(null, null);
         }

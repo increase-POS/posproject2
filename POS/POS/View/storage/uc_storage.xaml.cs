@@ -151,7 +151,7 @@ namespace POS.View
 
         private void Btn_inventory_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_itemsDestroy);
+            refreashBachgroundClick(btn_inventory);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_inventory.Instance);
         }
