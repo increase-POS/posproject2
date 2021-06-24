@@ -113,7 +113,62 @@ namespace POS_Server.Controllers
                         b.name,
                         b.isApproved,
                     })
-                    .ToList();
+                    .FirstOrDefault();
+
+                    if (banksList == null)
+                        return NotFound();
+                    else
+                        return Ok(banksList);
+                }
+            }
+            return NotFound();
+        }
+        [HttpGet]
+        [Route("GetByInvNum")]
+        public IHttpActionResult GetByInvNum(string invNum)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var banksList = entity.invoices.Where(b => b.invNumber == invNum).Select(b => new {
+                        b.invoiceId,
+                        b.invNumber,
+                        b.agentId,
+                        b.invType,
+                        b.total,
+                        b.totalNet,
+                        b.paid,
+                        b.deserved,
+                        b.deservedDate,
+                        b.invDate,
+                        b.invoiceMainId,
+                        b.invCase,
+                        b.invTime,
+                        b.notes,
+                        b.vendorInvNum,
+                        b.vendorInvDate,
+                        b.createUserId,
+                        b.updateDate,
+                        b.updateUserId,
+                        b.branchId,
+                        b.discountType,
+                        b.discountValue,
+                        b.tax,
+                        b.name,
+                        b.isApproved,
+                    })
+                    .FirstOrDefault();
 
                     if (banksList == null)
                         return NotFound();
@@ -311,5 +366,82 @@ namespace POS_Server.Controllers
             }
             return NotFound();
         }
+
+        // for report
+        [HttpGet]
+        [Route("GetinvCountBydate")]
+        public IHttpActionResult GetinvCountBydate(string invtype, string branchType, DateTime startDate, DateTime endDate)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invListm = (from I in entity.invoices
+                                    join B in entity.branches on I.branchId equals B.branchId into JB
+                                    from JBB in JB.DefaultIfEmpty()
+                                    where (invtype == "all" ? true : I.invType == invtype)
+                                       && (branchType == "all" ? true : JBB.type == branchType)
+                                    && System.DateTime.Compare((DateTime)startDate, (DateTime)I.invDate) <= 0
+                                    && System.DateTime.Compare((DateTime)endDate, (DateTime)I.invDate) >= 0
+                                    // I.invType == invtype
+                                    //     && branchType == "all" ? true : JBB.type == branchType
+
+                                    //  && startDate <= I.invDate && endDate >= I.invDate
+                                    // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
+                                    group new { I, JBB } by (I.branchId) into g
+                                    select new
+                                    {
+                                        branchId = g.Key,
+                                        name = g.Select(t => t.JBB.name).FirstOrDefault(),
+
+
+                                        count = g.Count(),
+                                        total = g.Sum(S => S.I.total),
+                                        totalNet = g.Sum(S => S.I.totalNet),
+                                        paid = g.Sum(S => S.I.paid),
+                                        deserved = g.Sum(S => S.I.deserved),
+                                        discountValue = g.Sum(S => S.I.discountType == "1" ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
+
+                                        //  I.invoiceId,
+                                        //    JBB.name
+                                    }).ToList();
+                    /*
+          if(S.I.discountType == "1")
+{
+    return S.I.discountValue;
+}else if(S.I.discountType == "2")
+{
+   return (S.I.discountValue / 100);
+}
+else
+{
+    return 0;
+}
+*/
+
+
+
+                    if (invListm == null)
+                        return NotFound();
+                    else
+                        return Ok(invListm);
+                }
+
+            }
+
+            //else
+            return NotFound();
+        }
+
     }
 }

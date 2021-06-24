@@ -5,17 +5,21 @@ using System.Web;
 
 namespace POS_Server.Models
 {
-    public class ObjectsModel
+    public class InventoryItemLocationModel
     {
-        public int objectId { get; set; }
-        public string name { get; set; }
-        public string note { get; set; }
+        public int id { get; set; }
+        public Nullable<bool> isDestroyed { get; set; }
+        public Nullable<int> amount { get; set; }
+        public Nullable<int> amountDestroyed { get; set; }
+        public Nullable<int> realAmount { get; set; }
+        public Nullable<int> itemLocationId { get; set; }
+        public Nullable<int> inventoryId { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public Nullable<byte> isActive { get; set; }
+        public string notes { get; set; }
         public Boolean canDelete { get; set; }
-        public Nullable<int> parentObjectId { get; set; }
     }
 }

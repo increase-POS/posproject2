@@ -101,6 +101,10 @@ namespace POS_Server
             this.userSetValues = new HashSet<userSetValues>();
             this.userSetValues1 = new HashSet<userSetValues>();
             this.userSetValues2 = new HashSet<userSetValues>();
+            this.Inventory = new HashSet<Inventory>();
+            this.Inventory1 = new HashSet<Inventory>();
+            this.inventoryItemLocation = new HashSet<inventoryItemLocation>();
+            this.inventoryItemLocation1 = new HashSet<inventoryItemLocation>();
         }
     
         public int userId { get; set; }
@@ -294,5 +298,13 @@ namespace POS_Server
         public virtual ICollection<userSetValues> userSetValues1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<userSetValues> userSetValues2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Inventory> Inventory { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Inventory> Inventory1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<inventoryItemLocation> inventoryItemLocation { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<inventoryItemLocation> inventoryItemLocation1 { get; set; }
     }
 }

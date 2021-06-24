@@ -20,8 +20,8 @@ namespace POS_Server.Models
         public string code { get; set; }
         public Nullable<int> itemId { get; set; }
         public Nullable<int>  unitId { get; set; }
-        
-  public string itemName { get; set; }
+        public Nullable<int> quantity { get; set; }
+        public string itemName { get; set; }
 
 
 

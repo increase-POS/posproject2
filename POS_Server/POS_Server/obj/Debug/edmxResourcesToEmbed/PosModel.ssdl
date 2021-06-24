@@ -277,6 +277,7 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="int" />
+    <Property Name="reportOb" Type="bit" />
   </EntityType>
   <EntityType Name="groups">
     <Key>
@@ -290,6 +291,37 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="int" />
+  </EntityType>
+  <EntityType Name="Inventory">
+    <Key>
+      <PropertyRef Name="inventoryId" />
+    </Key>
+    <Property Name="inventoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="num" Type="nvarchar" MaxLength="200" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
+    <Property Name="isActive" Type="tinyint" />
+    <Property Name="notes" Type="ntext" />
+  </EntityType>
+  <EntityType Name="inventoryItemLocation">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="isDestroyed" Type="bit" />
+    <Property Name="amount" Type="int" />
+    <Property Name="amountDestroyed" Type="int" />
+    <Property Name="realAmount" Type="int" />
+    <Property Name="itemLocationId" Type="int" />
+    <Property Name="inventoryId" Type="int" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
+    <Property Name="isActive" Type="tinyint" />
+    <Property Name="notes" Type="ntext" />
   </EntityType>
   <EntityType Name="invoices">
     <Key>
@@ -521,6 +553,7 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="int" />
+    <Property Name="parentObjectId" Type="int" />
   </EntityType>
   <EntityType Name="offers">
     <Key>
@@ -1334,6 +1367,78 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Inventory_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Inventory_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_inventoryItemLocation_Inventory">
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="0..1" />
+    <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Inventory">
+        <PropertyRef Name="inventoryId" />
+      </Principal>
+      <Dependent Role="inventoryItemLocation">
+        <PropertyRef Name="inventoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_inventoryItemLocation_itemsLocations">
+    <End Role="itemsLocations" Type="Self.itemsLocations" Multiplicity="0..1" />
+    <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="itemsLocations">
+        <PropertyRef Name="itemsLocId" />
+      </Principal>
+      <Dependent Role="inventoryItemLocation">
+        <PropertyRef Name="itemLocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_inventoryItemLocation_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="inventoryItemLocation">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_inventoryItemLocation_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="inventoryItemLocation">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_invoices_agents">
     <End Role="agents" Type="Self.agents" Multiplicity="0..1" />
     <End Role="invoices" Type="Self.invoices" Multiplicity="*" />
@@ -2042,6 +2147,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_objects_objects">
+    <End Role="objects" Type="Self.objects" Multiplicity="0..1" />
+    <End Role="objects1" Type="Self.objects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="objects">
+        <PropertyRef Name="objectId" />
+      </Principal>
+      <Dependent Role="objects1">
+        <PropertyRef Name="parentObjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_objects_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="objects" Type="Self.objects" Multiplicity="*" />
@@ -2541,6 +2658,8 @@
     <EntitySet Name="Expenses" EntityType="Self.Expenses" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="groupObject" EntityType="Self.groupObject" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="groups" EntityType="Self.groups" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="inventoryItemLocation" EntityType="Self.inventoryItemLocation" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="invoices" EntityType="Self.invoices" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="invoicesOrders" EntityType="Self.invoicesOrders" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="items" EntityType="Self.items" Schema="dbo" store:Type="Tables" />
@@ -2763,6 +2882,30 @@
     <AssociationSet Name="FK_groups_users2" Association="Self.FK_groups_users2">
       <End Role="users" EntitySet="users" />
       <End Role="groups" EntitySet="groups" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Inventory_users" Association="Self.FK_Inventory_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="Inventory" EntitySet="Inventory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Inventory_users1" Association="Self.FK_Inventory_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="Inventory" EntitySet="Inventory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_inventoryItemLocation_Inventory" Association="Self.FK_inventoryItemLocation_Inventory">
+      <End Role="Inventory" EntitySet="Inventory" />
+      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_inventoryItemLocation_itemsLocations" Association="Self.FK_inventoryItemLocation_itemsLocations">
+      <End Role="itemsLocations" EntitySet="itemsLocations" />
+      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_inventoryItemLocation_users" Association="Self.FK_inventoryItemLocation_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_inventoryItemLocation_users1" Association="Self.FK_inventoryItemLocation_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
     </AssociationSet>
     <AssociationSet Name="FK_invoices_agents" Association="Self.FK_invoices_agents">
       <End Role="agents" EntitySet="agents" />
@@ -2999,6 +3142,10 @@
     <AssociationSet Name="FK_medals_users1" Association="Self.FK_medals_users1">
       <End Role="users" EntitySet="users" />
       <End Role="medals" EntitySet="medals" />
+    </AssociationSet>
+    <AssociationSet Name="FK_objects_objects" Association="Self.FK_objects_objects">
+      <End Role="objects" EntitySet="objects" />
+      <End Role="objects1" EntitySet="objects" />
     </AssociationSet>
     <AssociationSet Name="FK_objects_users" Association="Self.FK_objects_users">
       <End Role="users" EntitySet="users" />

@@ -18,6 +18,7 @@ namespace POS_Server
         public objects()
         {
             this.groupObject = new HashSet<groupObject>();
+            this.objects1 = new HashSet<objects>();
         }
     
         public int objectId { get; set; }
@@ -28,10 +29,14 @@ namespace POS_Server
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> isActive { get; set; }
+        public Nullable<int> parentObjectId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<groupObject> groupObject { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<objects> objects1 { get; set; }
+        public virtual objects objects2 { get; set; }
     }
 }

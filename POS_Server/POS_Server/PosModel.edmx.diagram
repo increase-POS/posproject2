@@ -202,6 +202,15 @@
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users" />
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users1" />
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users2" />
+        <AssociationConnector Association="incposdbModel.FK_objects_objects" />
+        <EntityTypeShape EntityType="incposdbModel.Inventory" Width="1.5" PointX="3" PointY="80.25" />
+        <EntityTypeShape EntityType="incposdbModel.inventoryItemLocation" Width="1.5" PointX="21" PointY="58.875" />
+        <AssociationConnector Association="incposdbModel.FK_Inventory_users" />
+        <AssociationConnector Association="incposdbModel.FK_Inventory_users1" />
+        <AssociationConnector Association="incposdbModel.FK_inventoryItemLocation_Inventory" />
+        <AssociationConnector Association="incposdbModel.FK_inventoryItemLocation_itemsLocations" />
+        <AssociationConnector Association="incposdbModel.FK_inventoryItemLocation_users" />
+        <AssociationConnector Association="incposdbModel.FK_inventoryItemLocation_users1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

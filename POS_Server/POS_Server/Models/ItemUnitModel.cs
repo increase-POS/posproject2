@@ -24,5 +24,6 @@ namespace POS_Server.Models
         public Nullable<int> subUnitId { get; set; }
         public string itemName { get; set; }
         public string itemCode { get; set; }
+        public string unitName { get; set; }
     }
 }

@@ -12,25 +12,24 @@ namespace POS_Server
     using System;
     using System.Collections.Generic;
     
-    public partial class groupObject
+    public partial class inventoryItemLocation
     {
         public int id { get; set; }
-        public Nullable<int> groupId { get; set; }
-        public Nullable<int> objectId { get; set; }
-        public string notes { get; set; }
-        public bool addOb { get; set; }
-        public bool updateOb { get; set; }
-        public bool deleteOb { get; set; }
-        public bool showOb { get; set; }
+        public Nullable<bool> isDestroyed { get; set; }
+        public Nullable<int> amount { get; set; }
+        public Nullable<int> amountDestroyed { get; set; }
+        public Nullable<int> realAmount { get; set; }
+        public Nullable<int> itemLocationId { get; set; }
+        public Nullable<int> inventoryId { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
-        public Nullable<int> isActive { get; set; }
-        public Nullable<bool> reportOb { get; set; }
+        public Nullable<byte> isActive { get; set; }
+        public string notes { get; set; }
     
-        public virtual groups groups { get; set; }
-        public virtual objects objects { get; set; }
+        public virtual Inventory Inventory { get; set; }
+        public virtual itemsLocations itemsLocations { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
     }

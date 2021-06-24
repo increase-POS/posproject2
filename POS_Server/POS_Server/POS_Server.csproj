@@ -246,6 +246,8 @@
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\GroupObjectController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InventoryController.cs" />
+    <Compile Include="Controllers\InventoryItemLocationController.cs" />
     <Compile Include="Controllers\InvoicesController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\ItemsLocationsController.cs" />
@@ -289,6 +291,12 @@
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="groups.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="inventoryItemLocation.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="invoices.cs">
@@ -340,6 +348,8 @@
     <Compile Include="Models\CouponModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\GroupObjectModel.cs" />
+    <Compile Include="Models\InventoryItemLocationModel.cs" />
+    <Compile Include="Models\InventoryModel.cs" />
     <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\ItemLocationModel.cs" />
     <Compile Include="Models\ItemOfferModel.cs" />

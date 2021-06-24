@@ -12,33 +12,25 @@ namespace POS_Server
     using System;
     using System.Collections.Generic;
     
-    public partial class itemsLocations
+    public partial class Inventory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public itemsLocations()
+        public Inventory()
         {
             this.inventoryItemLocation = new HashSet<inventoryItemLocation>();
         }
     
-        public int itemsLocId { get; set; }
-        public Nullable<int> locationId { get; set; }
-        public Nullable<long> quantity { get; set; }
+        public int inventoryId { get; set; }
+        public string num { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
-        public Nullable<System.DateTime> startDate { get; set; }
-        public Nullable<System.DateTime> endDate { get; set; }
-        public Nullable<int> itemUnitId { get; set; }
-        public string note { get; set; }
-        public Nullable<decimal> storeCost { get; set; }
+        public Nullable<byte> isActive { get; set; }
+        public string notes { get; set; }
     
-        public virtual itemsUnits itemsUnits { get; set; }
-        public virtual locations locations { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
-        public virtual users users2 { get; set; }
-        public virtual users users3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<inventoryItemLocation> inventoryItemLocation { get; set; }
     }

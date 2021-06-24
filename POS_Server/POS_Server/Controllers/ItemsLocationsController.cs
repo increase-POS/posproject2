@@ -59,7 +59,7 @@ namespace POS_Server.Controllers
         }
         [HttpGet]
         [Route("GetByItemUnitId")]
-        public IHttpActionResult GetByItemUnitId(int itemUnitId,int locationId)
+        public IHttpActionResult GetByItemUnitId(int itemUnitId, int locationId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -123,11 +123,11 @@ namespace POS_Server.Controllers
 
             if (valid)
             {
-               List<itemsLocations> itemLocList = JsonConvert.DeserializeObject<List<itemsLocations>>(itemLocationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-                
-                    itemsLocations item;
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {
+                List<itemsLocations> itemLocList = JsonConvert.DeserializeObject<List<itemsLocations>>(itemLocationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+
+                itemsLocations item;
+                using (incposdbEntities entity = new incposdbEntities())
+                {
                     foreach (itemsLocations itemLoc in itemLocList)
                     {
                         if (itemLoc.updateUserId == 0 || itemLoc.updateUserId == null)
@@ -168,12 +168,12 @@ namespace POS_Server.Controllers
                     }
                     catch { }
                 }
-            }               
+            }
             return false;
         }
         [HttpPost]
         [Route("decraseAmounts")]
-        public Boolean decraseAmounts(string itemLocationObject,int branchId)
+        public Boolean decraseAmounts(string itemLocationObject, int branchId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -190,70 +190,53 @@ namespace POS_Server.Controllers
 
             if (valid)
             {
-               List<itemsTransfer> itemList = JsonConvert.DeserializeObject<List<itemsTransfer>>(itemLocationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-                
-                   // itemsLocations item;
-               using (incposdbEntities entity = new incposdbEntities())
-               {
+                List<itemsTransfer> itemList = JsonConvert.DeserializeObject<List<itemsTransfer>>(itemLocationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
                     foreach (itemsTransfer item in itemList)
                     {
-                        updateItemQuantity(item.itemUnitId.Value, branchId,(int)item.quantity);
-                        itemsLocations itemL = new itemsLocations();
-                        if (item.createUserId == 0 || item.updateUserId == null)
-                        {
-                            Nullable<int> id = null;
-                            itemL.updateUserId = id;
-                        }
-                        else
-                            itemL.updateUserId = item.createUserId;
-                        itemL.updateDate = DateTime.Now;
-                        //itemL.quan
-                        //var itemEntity = entity.Set<itemsLocations>();
-                        
+                        updateItemQuantity(item.itemUnitId.Value, branchId, (int)item.quantity);      
                     }
-                    try
-                    {
-                        entity.SaveChanges();
-                        return true;
-                    }
-                    catch { }
                 }
-            }               
+            }
             return false;
         }
         [HttpGet]
         [Route("updateItemQuantity")]
-        public IHttpActionResult updateItemQuantity(int itemUnitId , int branchId, int requiredAmount)
+        public IHttpActionResult updateItemQuantity(int itemUnitId, int branchId, int requiredAmount)
         {
             using (incposdbEntities entity = new incposdbEntities())
             {
                 var itemInLocs = (from b in entity.branches
-                                 where b.branchId == branchId
-                                 join s in entity.sections on b.branchId equals s.branchId
-                                 join l in entity.locations on s.sectionId equals l.sectionId
-                                 join il in entity.itemsLocations on l.locationId equals il.locationId where il.itemUnitId == itemUnitId && il.quantity >0
-                                 select new {
-                                    il.itemsLocId,
-                                    il.quantity,
-                                    il.itemUnitId,
-                                    il.locationId,
-                                    s.sectionId,
-                                 }).ToList();
-                for (int i=0; i< itemInLocs.Count; i++)
+                                  where b.branchId == branchId
+                                  join s in entity.sections on b.branchId equals s.branchId
+                                  join l in entity.locations on s.sectionId equals l.sectionId
+                                  join il in entity.itemsLocations on l.locationId equals il.locationId
+                                  where il.itemUnitId == itemUnitId && il.quantity > 0
+                                  select new
+                                  {
+                                      il.itemsLocId,
+                                      il.quantity,
+                                      il.itemUnitId,
+                                      il.locationId,
+                                      s.sectionId,
+                                  }).ToList();
+                for (int i = 0; i < itemInLocs.Count; i++)
                 {
                     int availableAmount = (int)itemInLocs[i].quantity;
                     var itemL = entity.itemsLocations.Find(itemInLocs[i].itemsLocId);
                     itemL.updateDate = DateTime.Now;
                     if (availableAmount >= requiredAmount)
                     {
-                        itemL.quantity = availableAmount - requiredAmount;                       
+                        itemL.quantity = availableAmount - requiredAmount;
                         requiredAmount = 0;
                         entity.SaveChanges();
                     }
-                    else if(availableAmount > 0)
+                    else if (availableAmount > 0)
                     {
-                        itemL.quantity =  0;
-                        requiredAmount =  requiredAmount - availableAmount;
+                        itemL.quantity = 0;
+                        requiredAmount = requiredAmount - availableAmount;
                         entity.SaveChanges();
                     }
 
@@ -262,79 +245,20 @@ namespace POS_Server.Controllers
                 }
                 if (requiredAmount != 0)
                 {
-                    // int x = checkUpperUnit(itemUnitId, branchId, requiredAmount);
-                    //return Ok(x );
+                    int newQuant = checkUpperUnit(itemUnitId, branchId, requiredAmount);
+                    var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
+                    var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
-                    var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x=> new { x.unitId , x.itemId} ).FirstOrDefault();
-                    var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x=> new { x.unitValue , x.itemUnitId}).FirstOrDefault();
-
-                    if (upperUnit != null)
-                    {
-                        decimal unitValue = (decimal)upperUnit.unitValue;
-                        int breakNum = (int)Math.Ceiling(requiredAmount / unitValue);
-        
-                        var itemInLocs1 = (from b in entity.branches
-                                          where b.branchId == branchId
-                                          join s in entity.sections on b.branchId equals s.branchId
-                                          join l in entity.locations on s.sectionId equals l.sectionId
-                                          join il in entity.itemsLocations on l.locationId equals il.locationId
-                                          where il.itemUnitId == upperUnit.itemUnitId && il.quantity > 0
-                                          select new
-                                          {
-                                              il.itemsLocId,
-                                              il.quantity,
-                                              il.itemUnitId,
-                                              il.locationId,
-                                              s.sectionId,
-                                          }).ToList();
-
-                        for (int i = 0; i < itemInLocs1.Count; i++)
-                        {
-                            var itemL = entity.itemsLocations.Find(itemInLocs1[i].itemsLocId);
-                            var smallUnitLocId = entity.itemsLocations.Where(x => x.itemUnitId == itemUnitId).
-                                Select(x=> x.itemsLocId).FirstOrDefault();
-                            var smallUnit = entity.itemsLocations.Find(smallUnitLocId);
-                            decimal newQuant = 0;
-                            if (breakNum <= itemInLocs1[i].quantity)
-                            {
-                                itemL.quantity = itemInLocs1[i].quantity - breakNum;
-                               
-                                newQuant = (decimal)(breakNum * upperUnit.unitValue);
-                               
-                                if (newQuant >= requiredAmount)
+                    var item = (from  il in entity.itemsLocations 
+                                where il.itemUnitId == itemUnitId
+                                select new
                                 {
-                                    smallUnit.quantity = (long)newQuant - requiredAmount;
-                                    entity.SaveChanges();
-                                    requiredAmount = 0;
-                                }
-                                else if (newQuant > 0)
-                                {
-                                    smallUnit.quantity = 0;
-                                    entity.SaveChanges();
-                                    requiredAmount = (int)(requiredAmount - newQuant);
-                                }
-                                entity.SaveChanges();
-                                if (requiredAmount == 0)
-                                    return Ok("0a");
-                            }
-                            else
-                            {
-                                itemL.quantity = 0;
-                                breakNum = (int)(breakNum - itemInLocs1[i].quantity);
-                                newQuant = (decimal)(breakNum * upperUnit.unitValue);
-                                if (newQuant > 0)
-                                {
-                                    smallUnit.quantity = 0;
-                                    requiredAmount = (int)(requiredAmount - newQuant);
-                                }
-                                entity.SaveChanges();
+                                    il.itemsLocId,
+                                }).FirstOrDefault();
+                    var itemloc = entity.itemsLocations.Find(item.itemsLocId);
+                    itemloc.quantity = (int)newQuant;
+                    entity.SaveChanges();
 
-                            }
-                        }
-                        if (breakNum != 0)
-                            checkUpperUnit(upperUnit.itemUnitId, branchId, breakNum);
-                        return Ok("d");
-                    }
                 }
             }
             return Ok();
@@ -342,16 +266,19 @@ namespace POS_Server.Controllers
 
         private int checkUpperUnit(int itemUnitId, int branchId, int requiredAmount)
         {
+            int remainQuantity = 0;
+            int firstRequir = requiredAmount;
+            decimal newQuant = 0;
             using (incposdbEntities entity = new incposdbEntities())
             {
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
                 var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
                 if (upperUnit != null)
-                {
+                {  
                     decimal unitValue = (decimal)upperUnit.unitValue;
                     int breakNum = (int)Math.Ceiling(requiredAmount / unitValue);
-
+                    newQuant = (decimal)(breakNum * upperUnit.unitValue);
                     var itemInLocs1 = (from b in entity.branches
                                        where b.branchId == branchId
                                        join s in entity.sections on b.branchId equals s.branchId
@@ -369,53 +296,105 @@ namespace POS_Server.Controllers
 
                     for (int i = 0; i < itemInLocs1.Count; i++)
                     {
+                        
                         var itemL = entity.itemsLocations.Find(itemInLocs1[i].itemsLocId);
                         var smallUnitLocId = entity.itemsLocations.Where(x => x.itemUnitId == itemUnitId).
                             Select(x => x.itemsLocId).FirstOrDefault();
                         var smallUnit = entity.itemsLocations.Find(smallUnitLocId);
-                        decimal newQuant = 0;
+                        
                         if (breakNum <= itemInLocs1[i].quantity)
                         {
                             itemL.quantity = itemInLocs1[i].quantity - breakNum;
-
-                            newQuant = (decimal)(breakNum * upperUnit.unitValue);
-
-                            if (newQuant >= requiredAmount)
-                            {
-                                smallUnit.quantity = (long)newQuant - requiredAmount;
-                                entity.SaveChanges();
-                                requiredAmount = 0;
-                            }
-                            else if (newQuant > 0)
-                            {
-                                smallUnit.quantity = 0;
-                                entity.SaveChanges();
-                                requiredAmount = (int)(requiredAmount - newQuant);
-                            }
                             entity.SaveChanges();
-                            if (requiredAmount == 0)
-                                return 0;
+                            remainQuantity = (int)newQuant - firstRequir;
+                            requiredAmount = 0;
+                            return (remainQuantity);
                         }
-                        else
+                        else 
                         {
                             itemL.quantity = 0;
                             breakNum = (int)(breakNum - itemInLocs1[i].quantity);
-                            newQuant = (decimal)(breakNum * upperUnit.unitValue);
-                            if (newQuant > 0)
-                            {
-                                smallUnit.quantity = 0;
-                                requiredAmount = (int)(requiredAmount - newQuant);
-                            }
+                            requiredAmount = requiredAmount -( (int)itemInLocs1[i].quantity * (int)upperUnit.unitValue);
                             entity.SaveChanges();
 
                         }
                     }
                     if (breakNum != 0)
-                        checkUpperUnit(upperUnit.itemUnitId, branchId, breakNum);
-                    return 0 ;
+                    {
+                        remainQuantity = checkUpperUnit(upperUnit.itemUnitId, branchId, breakNum);
+                        var item = (from b in entity.branches
+                                           where b.branchId == branchId
+                                           join s in entity.sections on b.branchId equals s.branchId
+                                           join l in entity.locations on s.sectionId equals l.sectionId
+                                           join il in entity.itemsLocations on l.locationId equals il.locationId
+                                           where il.itemUnitId == upperUnit.itemUnitId
+                                           select new
+                                           {
+                                               il.itemsLocId,
+                                           }).FirstOrDefault();
+                        var itemloc= entity.itemsLocations.Find(item.itemsLocId);
+                        itemloc.quantity =(int) remainQuantity;
+                        entity.SaveChanges();
+                        remainQuantity = (int)newQuant - firstRequir;
+                        return (int)remainQuantity;
+                    }
                 }
-                else return 0;
             }
+           return 0;
+        }
+        [HttpGet]
+        [Route("getAmountInBranch")]
+        public int getAmountInBranch(int itemUnitId, int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            int amount = 0;
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                amount += getItemUnitAmount(itemUnitId,branchId);
+            }
+            return amount;
+        }
+        private int getItemUnitAmount(int itemUnitId,int branchId)
+        {
+            int amount = 0;
+
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                var itemInLocs = (from b in entity.branches
+                                  where b.branchId == branchId
+                                  join s in entity.sections on b.branchId equals s.branchId
+                                  join l in entity.locations on s.sectionId equals l.sectionId
+                                  join il in entity.itemsLocations on l.locationId equals il.locationId
+                                  where il.itemUnitId == itemUnitId && il.quantity > 0
+                                  select new
+                                  {
+                                      il.itemsLocId,
+                                      il.quantity,
+                                      il.itemUnitId,
+                                      il.locationId,
+                                      s.sectionId,
+                                  }).ToList();
+                for (int i = 0; i < itemInLocs.Count; i++)
+                {
+                    amount += (int) itemInLocs[i].quantity;
+                }
+
+                var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+
+                if (upperUnit != null)
+                    amount += (int)upperUnit.unitValue * getItemUnitAmount(upperUnit.itemUnitId,branchId);
+                return amount;
+            }    
         }
         // DELETE api/<controller>/5
         public void Delete(int id)

@@ -715,6 +715,7 @@
     <EntitySetMapping Name="groupObject">
       <EntityTypeMapping TypeName="incposdbModel.groupObject">
         <MappingFragment StoreEntitySet="groupObject">
+          <ScalarProperty Name="reportOb" ColumnName="reportOb" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
           <ScalarProperty Name="createUserId" ColumnName="createUserId" />
@@ -748,6 +749,7 @@
     <EntitySetMapping Name="objects">
       <EntityTypeMapping TypeName="incposdbModel.objects">
         <MappingFragment StoreEntitySet="objects">
+          <ScalarProperty Name="parentObjectId" ColumnName="parentObjectId" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
           <ScalarProperty Name="createUserId" ColumnName="createUserId" />
@@ -804,6 +806,39 @@
           <ScalarProperty Name="note" ColumnName="note" />
           <ScalarProperty Name="valId" ColumnName="valId" />
           <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Inventory">
+      <EntityTypeMapping TypeName="incposdbModel.Inventory">
+        <MappingFragment StoreEntitySet="Inventory">
+          <ScalarProperty Name="notes" ColumnName="notes" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+          <ScalarProperty Name="createDate" ColumnName="createDate" />
+          <ScalarProperty Name="num" ColumnName="num" />
+          <ScalarProperty Name="inventoryId" ColumnName="inventoryId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="inventoryItemLocation">
+      <EntityTypeMapping TypeName="incposdbModel.inventoryItemLocation">
+        <MappingFragment StoreEntitySet="inventoryItemLocation">
+          <ScalarProperty Name="notes" ColumnName="notes" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+          <ScalarProperty Name="createDate" ColumnName="createDate" />
+          <ScalarProperty Name="inventoryId" ColumnName="inventoryId" />
+          <ScalarProperty Name="itemLocationId" ColumnName="itemLocationId" />
+          <ScalarProperty Name="realAmount" ColumnName="realAmount" />
+          <ScalarProperty Name="amountDestroyed" ColumnName="amountDestroyed" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="isDestroyed" ColumnName="isDestroyed" />
           <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>

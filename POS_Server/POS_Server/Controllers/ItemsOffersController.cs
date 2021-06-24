@@ -62,11 +62,11 @@ namespace POS_Server.Controllers
         #region
         [HttpPost]
         [Route("UpdateItemsByOfferId")]
-
         public int UpdateItemsByOfferId( string  newitoflist)
         {
+            int userId=0;
             int offerId = 0;
-               var re = Request;
+            var re = Request;
             var headers = re.Headers;
             int res = 0;
             string token = "";
@@ -77,6 +77,10 @@ namespace POS_Server.Controllers
             if (headers.Contains("offerId"))
             {
                 offerId = Convert.ToInt32(headers.GetValues("offerId").First());
+            }
+            if (headers.Contains("userId"))
+            {
+                userId = Convert.ToInt32(headers.GetValues("userId").First());
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
@@ -97,19 +101,21 @@ namespace POS_Server.Controllers
                         foreach (itemsOffers newitofrow in newitofObj)
                         {
                             newitofrow.offerId = offerId;
-                            if (newitofrow.createDate == null)
+                           
+                            if (newitofrow.createUserId == null || newitofrow.createUserId ==0 )
                             {
                             newitofrow.createDate = DateTime.Now;
                             newitofrow.updateDate = DateTime.Now;
-                                newitofrow.updateUserId = newitofrow.createUserId;
+                            
+                                newitofrow.createUserId = userId;
+                                newitofrow.updateUserId =userId;
                             }
                             else
                             {
                                 newitofrow.updateDate = DateTime.Now;
-                            }
-                           
-                       
+                                newitofrow.updateUserId = userId;
 
+                            }
 
                         }
                         entity.itemsOffers.AddRange(newitofObj);
@@ -118,7 +124,6 @@ namespace POS_Server.Controllers
                   
                         return res;
                                     
-
                 }
 
             }
@@ -171,8 +176,8 @@ namespace POS_Server.Controllers
                                        itemId = item.itemId,
                                        itemName = item.name,
                                        iuId = itunit.itemUnitId,
-
-                                       createDate= itofr.createDate,
+                                       quantity= itofr.quantity,
+                                       createDate = itofr.createDate,
                                        updateDate= itofr.updateDate,
                                        createUserId= itofr.createUserId,
                                        updateUserId= itofr.updateUserId,

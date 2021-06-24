@@ -282,6 +282,7 @@
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="isActive" Type="int" />
+          <Property Name="reportOb" Type="bit" />
         </EntityType>
         <EntityType Name="groups">
           <Key>
@@ -295,6 +296,37 @@
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="isActive" Type="int" />
+        </EntityType>
+        <EntityType Name="Inventory">
+          <Key>
+            <PropertyRef Name="inventoryId" />
+          </Key>
+          <Property Name="inventoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="num" Type="nvarchar" MaxLength="200" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
+          <Property Name="createUserId" Type="int" />
+          <Property Name="updateUserId" Type="int" />
+          <Property Name="isActive" Type="tinyint" />
+          <Property Name="notes" Type="ntext" />
+        </EntityType>
+        <EntityType Name="inventoryItemLocation">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="isDestroyed" Type="bit" />
+          <Property Name="amount" Type="int" />
+          <Property Name="amountDestroyed" Type="int" />
+          <Property Name="realAmount" Type="int" />
+          <Property Name="itemLocationId" Type="int" />
+          <Property Name="inventoryId" Type="int" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
+          <Property Name="createUserId" Type="int" />
+          <Property Name="updateUserId" Type="int" />
+          <Property Name="isActive" Type="tinyint" />
+          <Property Name="notes" Type="ntext" />
         </EntityType>
         <EntityType Name="invoices">
           <Key>
@@ -526,6 +558,7 @@
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="isActive" Type="int" />
+          <Property Name="parentObjectId" Type="int" />
         </EntityType>
         <EntityType Name="offers">
           <Key>
@@ -1339,6 +1372,78 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Inventory_users">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventory_users1">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="updateUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_inventoryItemLocation_Inventory">
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="0..1" />
+          <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="inventoryId" />
+            </Principal>
+            <Dependent Role="inventoryItemLocation">
+              <PropertyRef Name="inventoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_inventoryItemLocation_itemsLocations">
+          <End Role="itemsLocations" Type="Self.itemsLocations" Multiplicity="0..1" />
+          <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="itemsLocations">
+              <PropertyRef Name="itemsLocId" />
+            </Principal>
+            <Dependent Role="inventoryItemLocation">
+              <PropertyRef Name="itemLocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_inventoryItemLocation_users">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="inventoryItemLocation">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_inventoryItemLocation_users1">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="inventoryItemLocation">
+              <PropertyRef Name="updateUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_invoices_agents">
           <End Role="agents" Type="Self.agents" Multiplicity="0..1" />
           <End Role="invoices" Type="Self.invoices" Multiplicity="*" />
@@ -2047,6 +2152,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_objects_objects">
+          <End Role="objects" Type="Self.objects" Multiplicity="0..1" />
+          <End Role="objects1" Type="Self.objects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="objects">
+              <PropertyRef Name="objectId" />
+            </Principal>
+            <Dependent Role="objects1">
+              <PropertyRef Name="parentObjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_objects_users">
           <End Role="users" Type="Self.users" Multiplicity="0..1" />
           <End Role="objects" Type="Self.objects" Multiplicity="*" />
@@ -2546,6 +2663,8 @@
           <EntitySet Name="Expenses" EntityType="Self.Expenses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="groupObject" EntityType="Self.groupObject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="groups" EntityType="Self.groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="inventoryItemLocation" EntityType="Self.inventoryItemLocation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="invoices" EntityType="Self.invoices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="invoicesOrders" EntityType="Self.invoicesOrders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="items" EntityType="Self.items" Schema="dbo" store:Type="Tables" />
@@ -2768,6 +2887,30 @@
           <AssociationSet Name="FK_groups_users2" Association="Self.FK_groups_users2">
             <End Role="users" EntitySet="users" />
             <End Role="groups" EntitySet="groups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventory_users" Association="Self.FK_Inventory_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventory_users1" Association="Self.FK_Inventory_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_inventoryItemLocation_Inventory" Association="Self.FK_inventoryItemLocation_Inventory">
+            <End Role="Inventory" EntitySet="Inventory" />
+            <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_inventoryItemLocation_itemsLocations" Association="Self.FK_inventoryItemLocation_itemsLocations">
+            <End Role="itemsLocations" EntitySet="itemsLocations" />
+            <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_inventoryItemLocation_users" Association="Self.FK_inventoryItemLocation_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_inventoryItemLocation_users1" Association="Self.FK_inventoryItemLocation_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
           </AssociationSet>
           <AssociationSet Name="FK_invoices_agents" Association="Self.FK_invoices_agents">
             <End Role="agents" EntitySet="agents" />
@@ -3004,6 +3147,10 @@
           <AssociationSet Name="FK_medals_users1" Association="Self.FK_medals_users1">
             <End Role="users" EntitySet="users" />
             <End Role="medals" EntitySet="medals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_objects_objects" Association="Self.FK_objects_objects">
+            <End Role="objects" EntitySet="objects" />
+            <End Role="objects1" EntitySet="objects" />
           </AssociationSet>
           <AssociationSet Name="FK_objects_users" Association="Self.FK_objects_users">
             <End Role="users" EntitySet="users" />
@@ -3562,6 +3709,7 @@
           <NavigationProperty Name="users2" Relationship="Self.FK_itemsLocations_users2" FromRole="itemsLocations" ToRole="users" />
           <NavigationProperty Name="users3" Relationship="Self.FK_itemsLocations_users3" FromRole="itemsLocations" ToRole="users" />
           <Property Name="storeCost" Type="Decimal" Precision="20" Scale="4" />
+          <NavigationProperty Name="inventoryItemLocation" Relationship="incposdbModel.FK_inventoryItemLocation_itemsLocations" FromRole="itemsLocations" ToRole="inventoryItemLocation" />
         </EntityType>
         <EntityType Name="itemsMaterials">
           <Key>
@@ -4024,6 +4172,10 @@
           <NavigationProperty Name="userSetValues" Relationship="incposdbModel.FK_userSetValues_users" FromRole="users" ToRole="userSetValues" />
           <NavigationProperty Name="userSetValues1" Relationship="incposdbModel.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
           <NavigationProperty Name="userSetValues2" Relationship="incposdbModel.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
+          <NavigationProperty Name="Inventory" Relationship="incposdbModel.FK_Inventory_users" FromRole="users" ToRole="Inventory" />
+          <NavigationProperty Name="Inventory1" Relationship="incposdbModel.FK_Inventory_users1" FromRole="users" ToRole="Inventory" />
+          <NavigationProperty Name="inventoryItemLocation" Relationship="incposdbModel.FK_inventoryItemLocation_users" FromRole="users" ToRole="inventoryItemLocation" />
+          <NavigationProperty Name="inventoryItemLocation1" Relationship="incposdbModel.FK_inventoryItemLocation_users1" FromRole="users" ToRole="inventoryItemLocation" />
         </EntityType>
         <EntityType Name="usersLogs">
           <Key>
@@ -6059,6 +6211,36 @@
             <End Role="users" EntitySet="users" />
             <End Role="userSetValues" EntitySet="userSetValues" />
           </AssociationSet>
+          <AssociationSet Name="FK_objects_objects" Association="incposdbModel.FK_objects_objects">
+            <End Role="objects" EntitySet="objects" />
+            <End Role="objects1" EntitySet="objects" />
+          </AssociationSet>
+          <EntitySet Name="Inventory" EntityType="incposdbModel.Inventory" />
+          <EntitySet Name="inventoryItemLocation" EntityType="incposdbModel.inventoryItemLocation" />
+          <AssociationSet Name="FK_Inventory_users" Association="incposdbModel.FK_Inventory_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventory_users1" Association="incposdbModel.FK_Inventory_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_inventoryItemLocation_Inventory" Association="incposdbModel.FK_inventoryItemLocation_Inventory">
+            <End Role="Inventory" EntitySet="Inventory" />
+            <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_inventoryItemLocation_itemsLocations" Association="incposdbModel.FK_inventoryItemLocation_itemsLocations">
+            <End Role="itemsLocations" EntitySet="itemsLocations" />
+            <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_inventoryItemLocation_users" Association="incposdbModel.FK_inventoryItemLocation_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_inventoryItemLocation_users1" Association="incposdbModel.FK_inventoryItemLocation_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="cards">
           <Key>
@@ -6325,6 +6507,7 @@
           <NavigationProperty Name="users" Relationship="incposdbModel.FK_groupObject_users" FromRole="groupObject" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="incposdbModel.FK_groupObject_users1" FromRole="groupObject" ToRole="users" />
           <Property Name="isActive" Type="Int32" />
+          <Property Name="reportOb" Type="Boolean" />
         </EntityType>
         <EntityType Name="groups">
           <Key>
@@ -6358,6 +6541,9 @@
           <NavigationProperty Name="users" Relationship="incposdbModel.FK_objects_users" FromRole="objects" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="incposdbModel.FK_objects_users1" FromRole="objects" ToRole="users" />
           <Property Name="isActive" Type="Int32" />
+          <Property Name="parentObjectId" Type="Int32" />
+          <NavigationProperty Name="objects1" Relationship="incposdbModel.FK_objects_objects" FromRole="objects" ToRole="objects1" />
+          <NavigationProperty Name="objects2" Relationship="incposdbModel.FK_objects_objects" FromRole="objects1" ToRole="objects" />
         </EntityType>
         <Association Name="FK_groupObject_groups">
           <End Type="incposdbModel.groups" Role="groups" Multiplicity="0..1" />
@@ -6639,6 +6825,128 @@
               <PropertyRef Name="userId" />
             </Principal>
             <Dependent Role="userSetValues">
+              <PropertyRef Name="updateUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_objects_objects">
+          <End Type="incposdbModel.objects" Role="objects" Multiplicity="0..1" />
+          <End Type="incposdbModel.objects" Role="objects1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="objects">
+              <PropertyRef Name="objectId" />
+            </Principal>
+            <Dependent Role="objects1">
+              <PropertyRef Name="parentObjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Inventory">
+          <Key>
+            <PropertyRef Name="inventoryId" />
+          </Key>
+          <Property Name="inventoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="num" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
+          <Property Name="createUserId" Type="Int32" />
+          <Property Name="updateUserId" Type="Int32" />
+          <Property Name="isActive" Type="Byte" />
+          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="users" Relationship="incposdbModel.FK_Inventory_users" FromRole="Inventory" ToRole="users" />
+          <NavigationProperty Name="users1" Relationship="incposdbModel.FK_Inventory_users1" FromRole="Inventory" ToRole="users" />
+          <NavigationProperty Name="inventoryItemLocation" Relationship="incposdbModel.FK_inventoryItemLocation_Inventory" FromRole="Inventory" ToRole="inventoryItemLocation" />
+        </EntityType>
+        <EntityType Name="inventoryItemLocation">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="isDestroyed" Type="Boolean" />
+          <Property Name="amount" Type="Int32" />
+          <Property Name="amountDestroyed" Type="Int32" />
+          <Property Name="realAmount" Type="Int32" />
+          <Property Name="itemLocationId" Type="Int32" />
+          <Property Name="inventoryId" Type="Int32" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
+          <Property Name="createUserId" Type="Int32" />
+          <Property Name="updateUserId" Type="Int32" />
+          <Property Name="isActive" Type="Byte" />
+          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Inventory" Relationship="incposdbModel.FK_inventoryItemLocation_Inventory" FromRole="inventoryItemLocation" ToRole="Inventory" />
+          <NavigationProperty Name="itemsLocations" Relationship="incposdbModel.FK_inventoryItemLocation_itemsLocations" FromRole="inventoryItemLocation" ToRole="itemsLocations" />
+          <NavigationProperty Name="users" Relationship="incposdbModel.FK_inventoryItemLocation_users" FromRole="inventoryItemLocation" ToRole="users" />
+          <NavigationProperty Name="users1" Relationship="incposdbModel.FK_inventoryItemLocation_users1" FromRole="inventoryItemLocation" ToRole="users" />
+        </EntityType>
+        <Association Name="FK_Inventory_users">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.Inventory" Role="Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventory_users1">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.Inventory" Role="Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="updateUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_inventoryItemLocation_Inventory">
+          <End Type="incposdbModel.Inventory" Role="Inventory" Multiplicity="0..1" />
+          <End Type="incposdbModel.inventoryItemLocation" Role="inventoryItemLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="inventoryId" />
+            </Principal>
+            <Dependent Role="inventoryItemLocation">
+              <PropertyRef Name="inventoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_inventoryItemLocation_itemsLocations">
+          <End Type="incposdbModel.itemsLocations" Role="itemsLocations" Multiplicity="0..1" />
+          <End Type="incposdbModel.inventoryItemLocation" Role="inventoryItemLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="itemsLocations">
+              <PropertyRef Name="itemsLocId" />
+            </Principal>
+            <Dependent Role="inventoryItemLocation">
+              <PropertyRef Name="itemLocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_inventoryItemLocation_users">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.inventoryItemLocation" Role="inventoryItemLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="inventoryItemLocation">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_inventoryItemLocation_users1">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.inventoryItemLocation" Role="inventoryItemLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="inventoryItemLocation">
               <PropertyRef Name="updateUserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -7363,6 +7671,7 @@
           <EntitySetMapping Name="groupObject">
             <EntityTypeMapping TypeName="incposdbModel.groupObject">
               <MappingFragment StoreEntitySet="groupObject">
+                <ScalarProperty Name="reportOb" ColumnName="reportOb" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
                 <ScalarProperty Name="createUserId" ColumnName="createUserId" />
@@ -7396,6 +7705,7 @@
           <EntitySetMapping Name="objects">
             <EntityTypeMapping TypeName="incposdbModel.objects">
               <MappingFragment StoreEntitySet="objects">
+                <ScalarProperty Name="parentObjectId" ColumnName="parentObjectId" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
                 <ScalarProperty Name="createUserId" ColumnName="createUserId" />
@@ -7452,6 +7762,39 @@
                 <ScalarProperty Name="note" ColumnName="note" />
                 <ScalarProperty Name="valId" ColumnName="valId" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Inventory">
+            <EntityTypeMapping TypeName="incposdbModel.Inventory">
+              <MappingFragment StoreEntitySet="Inventory">
+                <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+                <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="createDate" ColumnName="createDate" />
+                <ScalarProperty Name="num" ColumnName="num" />
+                <ScalarProperty Name="inventoryId" ColumnName="inventoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="inventoryItemLocation">
+            <EntityTypeMapping TypeName="incposdbModel.inventoryItemLocation">
+              <MappingFragment StoreEntitySet="inventoryItemLocation">
+                <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+                <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="createDate" ColumnName="createDate" />
+                <ScalarProperty Name="inventoryId" ColumnName="inventoryId" />
+                <ScalarProperty Name="itemLocationId" ColumnName="itemLocationId" />
+                <ScalarProperty Name="realAmount" ColumnName="realAmount" />
+                <ScalarProperty Name="amountDestroyed" ColumnName="amountDestroyed" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="isDestroyed" ColumnName="isDestroyed" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

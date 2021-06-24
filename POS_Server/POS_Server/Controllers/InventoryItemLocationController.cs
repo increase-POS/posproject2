@@ -9,10 +9,10 @@ using System.Web.Http;
 
 namespace POS_Server.Controllers
 {
-    [RoutePrefix("api/Group")]
-    public class GroupController : ApiController
+    [RoutePrefix("api/InventoryItemLocation")]
+    public class InventoryItemLocationController : ApiController
     {
-        // GET api/<controller> get all Group
+        // GET api/<controller> get all InventoryItemLocation
         [HttpGet]
         [Route("Get")]
         public IHttpActionResult Get()
@@ -32,20 +32,29 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var List = entity.groups
+                    var List = entity.inventoryItemLocation
                   
-                   .Select(c => new GroupModel {
-                       groupId=  c.groupId,
-                       name= c.name,
-                       notes = c.notes,
+                   .Select(c => new InventoryItemLocationModel()
+                   {
+                             id=  c.id,
+                    
+                        isDestroyed = c.isDestroyed,
+                           amount = c.amount,
+                         amountDestroyed = c.amountDestroyed,
+                          realAmount = c.realAmount,
+                          itemLocationId = c.itemLocationId,
+                         inventoryId = c.inventoryId,
+                         isActive = c.isActive,
+                         notes = c.notes,
                        createDate = c.createDate,
                        updateDate = c.updateDate,
                        createUserId = c.createUserId,
                        updateUserId = c.updateUserId,
-                       isActive = c.isActive,
-                       
-                   })
+                       canDelete = true,
+
+                })
                    .ToList();
+                    /*
                     if (List.Count > 0)
                     {
                         for (int i = 0; i < List.Count; i++)
@@ -53,8 +62,8 @@ namespace POS_Server.Controllers
                             canDelete = false;
                             if (List[i].isActive == 1)
                             {
-                                int groupId = (int)List[i].groupId;
-                                var operationsL = entity.groupObject.Where(x => x.groupId == groupId).Select(b => new { b.id }).FirstOrDefault();
+                                int inventoryId = (int)List[i].id;
+                                var operationsL = entity.inventoryItemLocation.Where(x => x.id == inventoryId).Select(b => new { b.id }).FirstOrDefault();
 
                                 if (operationsL is null)
                                     canDelete = true;
@@ -62,11 +71,30 @@ namespace POS_Server.Controllers
                             List[i].canDelete = canDelete;
                         }
                     }
+                    */
                     /*
                      * 
 
+   
+id
+isDestroyed
+amount
+amountDestroyed
+realAmount
+itemLocationId
+inventoryId
+isActive
+notes
 
+createDate
+updateDate
+createUserId
+updateUserId
+
+canDelete
     
+
+
                      * */
 
                     if (List == null)
@@ -105,18 +133,24 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var list = entity.groups
-                   .Where(c => c.groupId == cId)
+                    var list = entity.inventoryItemLocation
+                   .Where(c => c.id == cId)
                    .Select(c => new {
-                       c.groupId,
-                       c.name,
+                       c.id,
+                       c.isDestroyed,
+                       c.amount,
+                       c.amountDestroyed,
+                       c.realAmount,
+                       c.itemLocationId,
+                       c.inventoryId,
+                        c.isActive,
                        c.notes,
+                     
                        c.createDate,
                        c.updateDate,
                        c.createUserId,
                        c.updateUserId,
-
-                     c.isActive,
+                   
                    })
                    .FirstOrDefault();
 
@@ -151,7 +185,7 @@ namespace POS_Server.Controllers
             {
                 newObject = newObject.Replace("\\", string.Empty);
                 newObject = newObject.Trim('"');
-               groups Object = JsonConvert.DeserializeObject<groups>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+               inventoryItemLocation Object = JsonConvert.DeserializeObject<inventoryItemLocation>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
                 try
                 {
                     
@@ -167,8 +201,8 @@ namespace POS_Server.Controllers
                     }
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-                        var sEntity = entity.Set<groups>();
-                        if (Object.groupId == 0 || Object.groupId== null)
+                        var sEntity = entity.Set<inventoryItemLocation>();
+                        if (Object.id == 0 || Object.id == null)
                         {
                             Object.createDate = DateTime.Now;
                             Object.updateDate = DateTime.Now;
@@ -176,24 +210,31 @@ namespace POS_Server.Controllers
                     
 
 
-                            entity.groups.Add(Object);
+                            entity.inventoryItemLocation.Add(Object);
                              
                             entity.SaveChanges();
-message = Object.groupId.ToString();
+message = Object.id.ToString();
                         }
                         else
                         {
 
-                            var tmps = entity.groups.Where(p => p.groupId == Object.groupId).FirstOrDefault();
-                            tmps.groupId = Object.groupId;
-                            tmps.name = Object.name;
+                            var tmps = entity.inventoryItemLocation.Where(p => p.id == Object.id).FirstOrDefault();
+                            tmps.id = Object.id;
+
+                            tmps.isDestroyed = Object.isDestroyed;
+                       tmps.amount=Object.amount;
+                       tmps.amountDestroyed=Object.amountDestroyed;
+                       tmps.realAmount=Object.realAmount;
+                       tmps.itemLocationId=Object.itemLocationId;
+                       tmps.inventoryId=Object.inventoryId;
+                         
                             tmps.notes = Object.notes;
                             tmps.isActive = Object.isActive;
                             tmps.createDate=Object.createDate;
                             tmps.updateDate = DateTime.Now;// server current date
                             tmps.updateUserId = Object.updateUserId;
                             entity.SaveChanges();
-                            message = tmps.groupId.ToString();
+                            message = tmps.id.ToString();
                         }
                        
                        
@@ -212,7 +253,7 @@ message = Object.groupId.ToString();
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int groupId, int userId, Boolean final)
+        public IHttpActionResult Delete(int id, int userId, Boolean final)
         {
             var re = Request;
             var headers = re.Headers;
@@ -234,8 +275,8 @@ message = Object.groupId.ToString();
                         using (incposdbEntities entity = new incposdbEntities())
                         {
 
-                            groups Deleterow = entity.groups.Find(groupId);
-                            entity.groups.Remove(Deleterow);
+                            inventoryItemLocation Deleterow = entity.inventoryItemLocation.Find(id);
+                            entity.inventoryItemLocation.Remove(Deleterow);
                             entity.SaveChanges();
                             return Ok("OK");
                         }
@@ -252,7 +293,7 @@ message = Object.groupId.ToString();
                         using (incposdbEntities entity = new incposdbEntities())
                         {
 
-                            groups Obj = entity.groups.Find(groupId);
+                            inventoryItemLocation Obj = entity.inventoryItemLocation.Find(id);
                            Obj.isActive = 0;
                             Obj.updateUserId = userId;
                             Obj.updateDate = DateTime.Now;

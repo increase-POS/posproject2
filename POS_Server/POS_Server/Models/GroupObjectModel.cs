@@ -17,7 +17,8 @@ namespace POS_Server.Models
         public bool showOb { get; set; }
         public string objectName { get; set; }
         public string desc { get; set; }
-        
+        public Nullable<bool> reportOb { get; set; }
+
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }

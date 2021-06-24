@@ -293,7 +293,7 @@ namespace POS_Server.Controllers
                                              updateUserId = IU.updateUserId,
                                              itemName=i.name,
                                              itemCode=i.code,
-                                             
+                                             unitName = u.name,
 
                                          })
                                          .ToList();
@@ -360,7 +360,7 @@ namespace POS_Server.Controllers
                                              updateUserId = IU.updateUserId,
                                              itemName = i.name,
                                              itemCode = i.code,
-
+                                             unitName = u.name,
 
                                          })
                                          .ToList();

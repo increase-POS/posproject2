@@ -74,5 +74,7 @@ namespace POS_Server
         public virtual DbSet<setting> setting { get; set; }
         public virtual DbSet<setValues> setValues { get; set; }
         public virtual DbSet<userSetValues> userSetValues { get; set; }
+        public virtual DbSet<Inventory> Inventory { get; set; }
+        public virtual DbSet<inventoryItemLocation> inventoryItemLocation { get; set; }
     }
 }
