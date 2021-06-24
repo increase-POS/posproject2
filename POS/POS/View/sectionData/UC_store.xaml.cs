@@ -42,8 +42,7 @@ namespace POS.View
         byte tgl_storeState;
         string searchText = "";
 
-        IEnumerable<Branch> branchesQuery;
-        IEnumerable<Branch> branches;
+       
 
         int ParentId = 0;
 
@@ -570,12 +569,15 @@ namespace POS.View
         //MessageBox.Show(ParentId.ToString());
     }
 
-    async Task<IEnumerable<Branch>> RefreshStoresList()
-    {
-        stores = await storeModel.GetBranchesAsync("s");
-        return stores;
-    }
-    void RefreshStoreView()
+        async Task<IEnumerable<Branch>> RefreshStoresList()
+        {
+
+            MainWindow.mainWindow.StartAwait();
+            stores = await storeModel.GetBranchesAsync("s");
+            MainWindow.mainWindow.EndAwait();
+            return stores;
+        }
+        void RefreshStoreView()
     {
         dg_store.ItemsSource = storesQuery;
         txt_count.Text = storesQuery.Count().ToString();
@@ -623,7 +625,7 @@ namespace POS.View
 
     void FN_ExportToExcel()
     {
-        var QueryExcel = branchesQuery.AsEnumerable().Select(x => new
+        var QueryExcel = storesQuery.AsEnumerable().Select(x => new
         {
             Code = x.code,
             Name = x.name,

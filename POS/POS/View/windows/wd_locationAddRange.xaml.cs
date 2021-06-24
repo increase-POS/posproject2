@@ -65,16 +65,16 @@ namespace POS.View.windows
                     {
                         SectionData.SetError(tb_fromX, p_errorFromX, tt_errorFromX, "trValidLocationToBigger");
                         SectionData.SetError(tb_toX, p_errorToX, tt_errorToX, "trValidLocationToBigger");
-                isValid = false;
+                        isValid = false;
                     }
                 }
-            else
+                else
                 {
                     if (int.Parse(tb_fromX.Text.ToString().ToUpper()) > int.Parse(tb_toX.Text.ToString().ToUpper()))
                     {
                         SectionData.SetError(tb_fromX, p_errorFromX, tt_errorFromX, "trValidLocationToBigger");
                         SectionData.SetError(tb_toX, p_errorToX, tt_errorToX, "trValidLocationToBigger");
-                isValid = false;
+                        isValid = false;
                     }
                 }
             }
@@ -88,16 +88,16 @@ namespace POS.View.windows
                     {
                         SectionData.SetError(tb_fromY, p_errorFromY, tt_errorFromY, "trValidLocationToBigger");
                         SectionData.SetError(tb_toY, p_errorToY, tt_errorToY, "trValidLocationToBigger");
-                isValid = false;
+                        isValid = false;
                     }
                 }
-            else
+                else
                 {
                     if (int.Parse(tb_fromY.Text.ToString().ToUpper()) > int.Parse(tb_toY.Text.ToString().ToUpper()))
                     {
                         SectionData.SetError(tb_fromY, p_errorFromY, tt_errorFromY, "trValidLocationToBigger");
                         SectionData.SetError(tb_toY, p_errorToY, tt_errorToY, "trValidLocationToBigger");
-                isValid = false;
+                        isValid = false;
                     }
                 }
             }
@@ -149,12 +149,9 @@ namespace POS.View.windows
                 isValid = false;
             }
             /////////////////////////////////
-            
 
-
-
-            if ((tb_fromX.Text.Equals("")) || (tb_fromX.Text.Equals("")) || (tb_fromZ.Text.Equals("")) ||
-                (tb_toX.Text.Equals("")) || (tb_toX.Text.Equals("")) || (tb_toZ.Text.Equals("")))
+            if ((!tb_fromX.Text.Equals("")) && (!tb_fromX.Text.Equals("")) && (!tb_fromZ.Text.Equals("")) &&
+                (!tb_toX.Text.Equals("")) && (!tb_toX.Text.Equals("")) && (!tb_toZ.Text.Equals("")))
              isValid = false;
 
             return isValid;
@@ -278,7 +275,7 @@ namespace POS.View.windows
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             }
-            //this.Close();
+          
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
@@ -370,8 +367,30 @@ namespace POS.View.windows
                 SectionData.validateEmptyTextBox(tb_toZ, p_errorToZ, tt_errorToZ, "");
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             AllLocations = await location.Get();
+
+            translate();
+        }
+
+        private void translate()
+        {
+            txt_title.Text = MainWindow.resourcemanager.GetString("trLocation");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_fromX, MainWindow.resourcemanager.GetString("trFromXHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_fromY, MainWindow.resourcemanager.GetString("trFromYHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_fromZ, MainWindow.resourcemanager.GetString("trFromZHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_toX, MainWindow.resourcemanager.GetString("trToXHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_toY, MainWindow.resourcemanager.GetString("trToYHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_toZ, MainWindow.resourcemanager.GetString("trToZHint"));
+
+            tt_fromX.Content = MainWindow.resourcemanager.GetString("trFromX");
+            tt_fromY.Content = MainWindow.resourcemanager.GetString("trFromY");
+            tt_fromZ.Content = MainWindow.resourcemanager.GetString("trFromZ");
+            tt_ToX.Content = MainWindow.resourcemanager.GetString("trToX");
+            tt_toY.Content = MainWindow.resourcemanager.GetString("trToY");
+            tt_toZ.Content = MainWindow.resourcemanager.GetString("trToZ");
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

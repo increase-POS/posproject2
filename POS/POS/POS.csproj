@@ -149,6 +149,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\Animations.cs" />
     <Compile Include="Classes\BadDateFixingConverter.cs" />
     <Compile Include="Classes\Bank.cs" />
     <Compile Include="Classes\Bonds.cs" />
@@ -172,6 +173,8 @@
     <Compile Include="Classes\GroupObject.cs" />
     <Compile Include="Classes\ImageProcess.cs" />
     <Compile Include="Classes\InputStream.cs" />
+    <Compile Include="Classes\Inventory.cs" />
+    <Compile Include="Classes\InventoryItemLocation.cs" />
     <Compile Include="Classes\Invoice.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\ItemCardView.cs" />

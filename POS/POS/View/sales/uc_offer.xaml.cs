@@ -160,6 +160,10 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discountValue, MainWindow.resourcemanager.GetString("trDiscountValueHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            TextBox tbStart = (TextBox)tp_startTime.Template.FindName("PART_TextBox", tp_startTime);
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tbStart, MainWindow.resourcemanager.GetString("trStartTimeHint"));
+            TextBox tbEnd = (TextBox)tp_endTime.Template.FindName("PART_TextBox", tp_endTime);
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tbEnd, MainWindow.resourcemanager.GetString("trEndTimeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
 
             txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
@@ -370,6 +374,7 @@ namespace POS.View
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
+
             await RefreshOffersList();
             Tb_search_TextChanged(null, null);
         }
@@ -421,7 +426,9 @@ namespace POS.View
 
         async Task<IEnumerable<Offer>> RefreshOffersList()
         {
+            MainWindow.mainWindow.StartAwait();
             offers = await offerModel.GetOffersAsync();
+            MainWindow.mainWindow.EndAwait();
             return offers;
         }
         void RefreshOfferView()

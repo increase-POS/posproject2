@@ -509,6 +509,21 @@ namespace POS.View.accounts
             validateEmpty(name, sender);
         }
 
+
+        private void Tb_validateEmptyTextChangeCash(object sender, TextChangedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+            Cb_user_SelectionChanged(null , null);
+        }
+
+        private void Tb_validateEmptyLostFocusCash(object sender, RoutedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+            Cb_user_SelectionChanged(null, null);
+        }
+
         async Task<IEnumerable<CashTransfer>> RefreshCashesList()
         {
             cashes = await cashModel.GetCashTransferAsync("all","bn");
@@ -551,6 +566,14 @@ namespace POS.View.accounts
             if (w.isOk == true)
                 p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#2BB673"));
             else p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E65B65"));
+        }
+
+        private void Cb_user_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((cb_user.SelectedIndex != -1) && (!tb_cash.Text.Equals("")))
+                btn_confirmUser.IsEnabled = true;
+            else
+                btn_confirmUser.IsEnabled = false;
         }
 
     }

@@ -613,7 +613,9 @@ namespace POS.View
 
         async Task<IEnumerable<Branch>> RefreshBranchesList()
         {
+            MainWindow.mainWindow.StartAwait();
             branches = await branchModel.GetAllWithoutMain("b");
+            MainWindow.mainWindow.EndAwait();
             return branches;
         }
         void RefreshBranchView()
@@ -722,7 +724,6 @@ namespace POS.View
         {
             RefreshBranchesList();
             tb_search_TextChanged(null, null);
-
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)

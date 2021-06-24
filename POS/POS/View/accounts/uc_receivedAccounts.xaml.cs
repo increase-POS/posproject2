@@ -268,7 +268,7 @@ namespace POS.View.accounts
                 cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
                 || s.cash.ToString().Contains(searchText)
                 )
-                && (s.side == "v" || s.side == "c" || s.side == "u" ||  s.side == "m" || s.side == "bnd")
+                && (s.side == "v" || s.side == "c" || s.side == "u" ||  s.side == "m")
                 && s.transType == "d" 
                 && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
                 && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
@@ -389,7 +389,7 @@ namespace POS.View.accounts
                     cash.docNum = tb_docNumCheque.Text;
 
                 string s = await cashModel.Save(cash);
-                MessageBox.Show(s);
+                //MessageBox.Show(s);
 
                 if (!s.Equals("0"))
                 {

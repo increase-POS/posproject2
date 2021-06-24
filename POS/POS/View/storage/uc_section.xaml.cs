@@ -84,9 +84,20 @@ namespace POS.View
         Branch branch = new Branch();
         private void translate()
         {
-            
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trBranch/StoreHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
+
+            btn_locations.Content = MainWindow.resourcemanager.GetString("trLocation");
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
+            dg_section.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
+            dg_section.Columns[1].Header = MainWindow.resourcemanager.GetString("trBranch/Store");
+            dg_section.Columns[2].Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
+
+            txt_title.Text = MainWindow.resourcemanager.GetString("trSection");
+            txt_active.Text = MainWindow.resourcemanager.GetString("trActive");
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
             txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
@@ -95,8 +106,17 @@ namespace POS.View
             tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
             tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
+            tt_name.Content = MainWindow.resourcemanager.GetString("trName");
+            tt_branch.Content = MainWindow.resourcemanager.GetString("trBranch/Store");
+            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
         }
 
@@ -371,7 +391,9 @@ namespace POS.View
         }
         async Task<IEnumerable<Section>> RefreshSectionsList()
         {
+            MainWindow.mainWindow.StartAwait();
             sections = await sectionModel.Get();
+            MainWindow.mainWindow.EndAwait();
             return sections;
         }
         void RefreshSectionView()

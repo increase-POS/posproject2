@@ -445,11 +445,13 @@ namespace POS.View
         #region Refrish Y
         async Task<IEnumerable<Category>> RefrishCategories()
         {
+            MainWindow.mainWindow.StartAwait();
             categories = await categoryModel.GetAllCategories();
+            MainWindow.mainWindow.EndAwait();
             return categories;
         }
 
-       
+
         void RefrishCategoriesDatagrid(IEnumerable<Category> _categories)
         {
             dg_categories.ItemsSource = _categories;
@@ -991,9 +993,10 @@ namespace POS.View
         {
             RefrishCategories();
             Txb_searchcategories_TextChanged(null ,null);
+
         }
 
-     
+
         private void Tb_categoryCode_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;

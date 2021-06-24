@@ -11,7 +11,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class Unit
+    public class Unit
     {
         public int      unitId { get; set; }
         public string   name { get; set; }

@@ -558,7 +558,9 @@ namespace POS.View
 
         async Task<IEnumerable<Agent>> RefreshVendorsList()
         {
+            MainWindow.mainWindow.StartAwait();
             agents = await agentModel.GetAgentsAsync("v");
+            MainWindow.mainWindow.EndAwait();
             return agents;
         }
         void RefreshVendorView()
@@ -775,7 +777,12 @@ namespace POS.View
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Dispatcher.Invoke(() =>
+            {
+                Thread t1 = new Thread(FN_ExportToExcel);
+                t1.SetApartmentState(ApartmentState.STA);
+                t1.Start();
+            });
         }
 
 

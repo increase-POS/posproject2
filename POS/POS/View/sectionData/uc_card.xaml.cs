@@ -437,7 +437,9 @@ namespace POS.View.sectionData
 
         async Task<IEnumerable<Card>> RefreshCardsList()
         {
+            MainWindow.mainWindow.StartAwait();
             cards = await cardModel.GetAll();
+            MainWindow.mainWindow.EndAwait();
             return cards;
         }
         void RefreshCardView()
@@ -465,7 +467,6 @@ namespace POS.View.sectionData
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-
             RefreshCardsList();
             Tb_search_TextChanged(null, null);
         }

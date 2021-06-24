@@ -1683,13 +1683,8 @@
                   
                     </Grid>
                 </Grid>
-
-
-
                 <!--#endregion-->
             </Grid>
         </Border>
-
-
     </Grid>
 </UserControl>

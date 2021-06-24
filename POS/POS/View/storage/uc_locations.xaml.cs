@@ -84,9 +84,14 @@ namespace POS.View
         {
             
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_x, MainWindow.resourcemanager.GetString("trXHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_y, MainWindow.resourcemanager.GetString("trYHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_z, MainWindow.resourcemanager.GetString("trZHint"));
+
             btn_refresh.ToolTip = MainWindow.resourcemanager.GetString("trRefresh");
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
             txt_location.Text = MainWindow.resourcemanager.GetString("trLocation");
+            txt_active.Text = MainWindow.resourcemanager.GetString("trActive");
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
             btn_addRange.Content = MainWindow.resourcemanager.GetString("trAddRange");
@@ -97,17 +102,27 @@ namespace POS.View
             tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
             tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
+            tt_x.Content = MainWindow.resourcemanager.GetString("trX");
+            tt_y.Content = MainWindow.resourcemanager.GetString("trY");
+            tt_z.Content = MainWindow.resourcemanager.GetString("trZ");
+            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
-            
+
             dg_location.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
             dg_location.Columns[1].Header = MainWindow.resourcemanager.GetString("trSection");
             dg_location.Columns[2].Header = MainWindow.resourcemanager.GetString("trNote");
         }
 
         private  void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -122,6 +137,8 @@ namespace POS.View
             translate();
 
             Keyboard.Focus(tb_x);
+
+            SectionData.clearValidate(tb_x, p_errorX);
 
             this.Dispatcher.Invoke(() =>
             {
@@ -155,11 +172,11 @@ namespace POS.View
         {
             
             //chk empty x
-            SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "");
+            SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyError");
             //chk empty x
-            SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "");
+            SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "trEmptyError");
             //chk empty x
-            SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "");
+            SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyError");
 
             if ((!tb_x.Text.Equals("")) && (!tb_y.Text.Equals("")) && (!tb_z.Text.Equals("")))
                 return true;
@@ -376,7 +393,9 @@ namespace POS.View
         }
         async Task<IEnumerable<Location>> RefreshLocationsList()
         {
+            MainWindow.mainWindow.StartAwait();
             locations = await locationModel.Get();
+            MainWindow.mainWindow.EndAwait();
             return locations;
         }
         void RefreshLocationView()

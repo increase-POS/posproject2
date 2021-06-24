@@ -129,3 +129,4 @@ D:\ملفات المشروع\دينا\POS8-6\POS\netoaster\obj\Debug\netoaster.c
 D:\ملفات المشروع\دينا\POS8-6\POS\netoaster\obj\Debug\netoaster.csproj.CoreCompileInputs.cache
 D:\ملفات المشروع\دينا\POS8-6\POS\netoaster\obj\Debug\netoaster.dll
 D:\ملفات المشروع\دينا\POS8-6\POS\netoaster\obj\Debug\netoaster.pdb
+E:\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache

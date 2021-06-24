@@ -442,7 +442,9 @@ namespace POS.View
 
         async Task<IEnumerable<Pos>> RefreshPosList()
         {
+            MainWindow.mainWindow.StartAwait();
             poss = await posModel.GetPosAsync();
+            MainWindow.mainWindow.EndAwait();
             return poss;
         }
         void RefreshPosView()

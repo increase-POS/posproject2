@@ -1260,4 +1260,82 @@
   <data name="trPayVocher" xml:space="preserve">
     <value>Pay Voucher</value>
   </data>
+  <data name="trBranch/Store" xml:space="preserve">
+    <value>Branch/Store</value>
+  </data>
+  <data name="trBranch/StoreHint" xml:space="preserve">
+    <value>Branch/Store...</value>
+  </data>
+  <data name="trEmptyError" xml:space="preserve">
+    <value>This field cann't be empty</value>
+  </data>
+  <data name="trFromX" xml:space="preserve">
+    <value>From X</value>
+  </data>
+  <data name="trFromXHint" xml:space="preserve">
+    <value>From X...</value>
+  </data>
+  <data name="trFromY" xml:space="preserve">
+    <value>From Y</value>
+  </data>
+  <data name="trFromYHint" xml:space="preserve">
+    <value>From Y...</value>
+  </data>
+  <data name="trFromZ" xml:space="preserve">
+    <value>From Z</value>
+  </data>
+  <data name="trFromZHint" xml:space="preserve">
+    <value>From Z...</value>
+  </data>
+  <data name="trSelectAllItems" xml:space="preserve">
+    <value>Select all items</value>
+  </data>
+  <data name="trSelectedItems" xml:space="preserve">
+    <value>Selcted items</value>
+  </data>
+  <data name="trSelectOneItem" xml:space="preserve">
+    <value>Select item</value>
+  </data>
+  <data name="trToX" xml:space="preserve">
+    <value>To X</value>
+  </data>
+  <data name="trToXHint" xml:space="preserve">
+    <value>To X...</value>
+  </data>
+  <data name="trToY" xml:space="preserve">
+    <value>To Y</value>
+  </data>
+  <data name="trToYHint" xml:space="preserve">
+    <value>To Y...</value>
+  </data>
+  <data name="trToZ" xml:space="preserve">
+    <value>To Z</value>
+  </data>
+  <data name="trToZHint" xml:space="preserve">
+    <value>To Z...</value>
+  </data>
+  <data name="trUnSelectAllItems" xml:space="preserve">
+    <value>Unselect all items</value>
+  </data>
+  <data name="trUnSelectOneItem" xml:space="preserve">
+    <value>Un select item</value>
+  </data>
+  <data name="trX" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="trXHint" xml:space="preserve">
+    <value>X...</value>
+  </data>
+  <data name="trY" xml:space="preserve">
+    <value>Y</value>
+  </data>
+  <data name="trYHint" xml:space="preserve">
+    <value>Y...</value>
+  </data>
+  <data name="trZ" xml:space="preserve">
+    <value>Z</value>
+  </data>
+  <data name="trZHint" xml:space="preserve">
+    <value>Z...</value>
+  </data>
 </root>

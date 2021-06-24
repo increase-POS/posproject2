@@ -308,7 +308,7 @@ namespace POS.View.accounts
                 cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
                 || s.cash.ToString().Contains(searchText)
                 )
-                && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m" || s.side == "bnd")
+                && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m")
                 && s.transType == "p" 
                 && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
                 && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date

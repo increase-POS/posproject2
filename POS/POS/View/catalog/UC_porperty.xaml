@@ -47,7 +47,7 @@
                               Foreground="#4e4e4e" TextBlock.FontSize="14"
                                VerticalAlignment="Center" 
                               Height="40"   Width="auto" Margin="10,5" 
-                              >
+                              TextChanged="Tb_search_TextChanged">
                         <TextBox.ToolTip>
                             <ToolTip x:Name="tt_search" Content="Search"
                                     Placement="left" 

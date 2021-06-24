@@ -283,7 +283,7 @@ namespace POS.View
             }
 
             RefrishCategoriesCard();
-            Txb_searchitems_TextChanged(null, null);
+            //Txb_searchitems_TextChanged(null, null);
 
 
             translate();
@@ -1527,10 +1527,13 @@ namespace POS.View
 
         async Task<IEnumerable<Item>> RefrishItems()
         {
+            MainWindow.mainWindow.StartAwait();
             if (category.categoryId == 0)
                 items = await itemModel.GetAllItems();
             else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
+            MainWindow.mainWindow.EndAwait();
             return items;
+
         }
 
         void RefrishItemsDatagrid(IEnumerable<Item> _items)
@@ -1866,6 +1869,7 @@ namespace POS.View
             #endregion
             RefrishItemsDatagrid(itemsQuery);
             tb_barcode.Focus();
+
         }
 
         #endregion
@@ -2046,6 +2050,8 @@ namespace POS.View
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             await RefrishItems();
+            Txb_searchitems_TextChanged(null, null);
+
         }
         private void Img_item_Click(object sender, RoutedEventArgs e)
         {

@@ -587,7 +587,9 @@ namespace POS.View
 
         async Task<IEnumerable<Bank>> RefreshBanksList()
         {
+            MainWindow.mainWindow.StartAwait();
             banks = await bankModel.GetBanksAsync();
+            MainWindow.mainWindow.EndAwait();
             return banks;
         }
         void RefreshBankView()
@@ -649,9 +651,9 @@ namespace POS.View
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-
             RefreshBanksList();
             Tb_search_TextChanged(null, null);
+
         }
 
         private async Task<bool> chkDuplicateBank()

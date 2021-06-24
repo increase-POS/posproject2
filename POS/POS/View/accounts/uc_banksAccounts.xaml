@@ -376,7 +376,7 @@
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                   Grid.Column="0" Height="40"   Margin="10,5,10,5"
                                   BorderBrush="#737373" BorderThickness="0" 
-                                  LostFocus="Tb_validateEmptyLostFocus">
+                                  LostFocus="Tb_validateEmptyLostFocus" SelectionChanged="Cb_user_SelectionChanged">
                             <ComboBox.ToolTip>
                                 <ToolTip x:Name="tt_user" Content="User"
                                                           Placement="left" 
@@ -396,6 +396,7 @@
                         <Button  Grid.Row="3"  x:Name="btn_confirmUser"   Grid.Column="2" Padding="0"
                                  HorizontalAlignment="Right"      Background="{x:Null}" 
                                  BorderBrush="{x:Null}" Click="Btn_confirmUser_Click"
+                                 IsEnabled="False"
                                  Margin="5,5,30,5"   >
                             <Path Fill="#E65B65" x:Name="p_confirmUser" Stretch="Fill" FlowDirection="LeftToRight"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Visible"   
@@ -467,8 +468,8 @@
                                  Grid.Column="0"   Height="40"   Margin="10,5,10,5"
                                  PreviewKeyDown="PreventSpaces" 
                                  PreviewTextInput="Tb_cash_PreviewTextInput"
-                                 TextChanged="Tb_validateEmptyTextChange" 
-                                 LostFocus="Tb_validateEmptyLostFocus">
+                                 TextChanged="Tb_validateEmptyTextChangeCash" 
+                                 LostFocus="Tb_validateEmptyLostFocusCash">
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_cash" Content="Cash"
                                                          Placement="left" 

@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using POS.View.windows;
+using System.Threading;
 
 namespace POS.View
 {
@@ -29,9 +30,12 @@ namespace POS.View
         public int propertyItemId;
         Property property = new Property();
         PropertiesItems propertyItem = new PropertiesItems();
-
         Property propertyModel = new Property();
-        PropertiesItems PropertiesItemsModel = new PropertiesItems();
+        PropertiesItems propertiesItemsModel = new PropertiesItems();
+        IEnumerable<Property> propertiesQuery;
+        IEnumerable<Property> properties;
+        byte tgl_PropertyState;
+        string searchText = "";
 
         private static UC_porperty _instance;
         public static UC_porperty Instance
@@ -154,8 +158,11 @@ namespace POS.View
 
             translate();
 
-            var properties = await propertyModel.getProperty();
-            dg_property.ItemsSource = properties;
+            await RefreshPropertiesList();
+            Tb_search_TextChanged(null, null);
+
+            //var properties = await propertyModel.getProperty();
+            //dg_property.ItemsSource = properties;
         }
 
         private void Dg_subProperty_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -202,8 +209,10 @@ namespace POS.View
             else 
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-            var poss = await propertyModel.getProperty();
-            dg_property.ItemsSource = poss;
+            await RefreshPropertiesList();
+            Tb_search_TextChanged(null, null);
+            //var poss = await propertyModel.getProperty();
+            //dg_property.ItemsSource = poss;
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
@@ -258,8 +267,11 @@ namespace POS.View
                 }
             }
 
-            var prop = await propertyModel.getProperty();
-            dg_property.ItemsSource = prop;
+            await RefreshPropertiesList();
+            Tb_search_TextChanged(null, null);
+
+            //var prop = await propertyModel.getProperty();
+            //dg_property.ItemsSource = prop;
             Btn_clear_Click(sender, e);
         }
         private async Task activateProperty()
@@ -281,7 +293,7 @@ namespace POS.View
             propertyItem.isActive = 1;
             propertyItem.name = propertyItem.propertyItemName;
 
-            Boolean s = await PropertiesItemsModel.SavePropertiesItems(propertyItem);
+            Boolean s = await propertiesItemsModel.SavePropertiesItems(propertyItem);
 
             if (s) 
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
@@ -305,7 +317,7 @@ namespace POS.View
                 if (property.propertyId != 0)
                 {
                                         
-                    var propItems = await PropertiesItemsModel.GetPropertyItems(property.propertyId);
+                    var propItems = await propertiesItemsModel.GetPropertyItems(property.propertyId);
                     dg_subProperty.ItemsSource = propItems;
                 }
 
@@ -366,7 +378,7 @@ namespace POS.View
                 propertyItem.createUserId = MainWindow.userID;
                 propertyItem.isActive = 1;
 
-                Boolean res = await PropertiesItemsModel.SavePropertiesItems(propertyItem);
+                Boolean res = await propertiesItemsModel.SavePropertiesItems(propertyItem);
 
                 if (res) 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -377,7 +389,7 @@ namespace POS.View
                 var properties = await propertyModel.getProperty();
                 dg_property.ItemsSource = properties;
 
-                var propertiesItemss = await PropertiesItemsModel.GetPropertyItems(property.propertyId);
+                var propertiesItemss = await propertiesItemsModel.GetPropertyItems(property.propertyId);
                 dg_subProperty.ItemsSource = propertiesItemss;
             }
             
@@ -393,7 +405,7 @@ namespace POS.View
                 if (propertyItem.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                 if ((!propertyItem.canDelete) && (propertyItem.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
                 int userId = (int)MainWindow.userID;
-                Boolean res = await PropertiesItemsModel.DeletePropertiesItems(propertyItem.propertyItemId, userId, propertyItem.canDelete);
+                Boolean res = await propertiesItemsModel.DeletePropertiesItems(propertyItem.propertyItemId, userId, propertyItem.canDelete);
 
                 if (res) 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
@@ -401,7 +413,7 @@ namespace POS.View
                     Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
 
-            var propertiesitems = await PropertiesItemsModel.GetPropertyItems(property.propertyId);
+            var propertiesitems = await propertiesItemsModel.GetPropertyItems(property.propertyId);
             dg_subProperty.ItemsSource = propertiesitems;       
         }
 
@@ -424,8 +436,13 @@ namespace POS.View
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             tb_name.Text = null;
-            var properties = await propertyModel.getProperty();
-            dg_property.ItemsSource = properties;
+
+
+            await RefreshPropertiesList();
+            Tb_search_TextChanged(null, null);
+
+            //var properties = await propertyModel.getProperty();
+            //dg_property.ItemsSource = properties;
         }
 
         private async void Btn_updateValue_Click(object sender, RoutedEventArgs e)
@@ -448,36 +465,83 @@ namespace POS.View
                 propertyItem.name = tb_valueName.Text;
                 propertyItem.updateUserId = MainWindow.userID;
 
-                Boolean res = await PropertiesItemsModel.SavePropertiesItems(propertyItem);
+                Boolean res = await propertiesItemsModel.SavePropertiesItems(propertyItem);
 
                 if (res) 
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                 else 
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                var propertiesItemss = await PropertiesItemsModel.GetPropertyItems(property.propertyId);
+                var propertiesItemss = await propertiesItemsModel.GetPropertyItems(property.propertyId);
                 dg_subProperty.ItemsSource = propertiesItemss;
             }
         }
 
+
+
+        void refreshPropertiesGrid()
+        {
+            dg_property.ItemsSource = propertiesQuery;
+            txt_count.Text = propertiesQuery.Count().ToString();
+        }
+
+        async Task<IEnumerable<Property>> RefreshPropertiesList()
+        {
+            MainWindow.mainWindow.StartAwait();
+            properties = await propertyModel.getProperty();
+            MainWindow.mainWindow.EndAwait();
+            return properties;
+        }
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {//search
+
+            if (properties is null)
+                await RefreshPropertiesList();
+            searchText = tb_search.Text;
+            propertiesQuery = properties.Where(s => s.name.Contains(searchText) && s.isActive == tgl_PropertyState);
+            refreshPropertiesGrid();
+        }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-          
+            RefreshPropertiesList();
+            Tb_search_TextChanged(null, null);
         }
-
-        private void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
+        private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {
-
+            if (properties is null)
+                await RefreshPropertiesList();
+            tgl_PropertyState = 1;
+            Tb_search_TextChanged(null, null);
         }
-
-        private void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
+        private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            if (properties is null)
+                await RefreshPropertiesList();
+            tgl_PropertyState = 0;
+            Tb_search_TextChanged(null, null);
         }
-
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
+            this.Dispatcher.Invoke(() =>
+            {
+                Thread t1 = new Thread(FN_ExportToExcel);
+                t1.SetApartmentState(ApartmentState.STA);
+                t1.Start();
+            });
+        }
+        void FN_ExportToExcel()
+        {
 
+            var QueryExcel = propertiesQuery.AsEnumerable().Select(x => new
+            {
+                Name = x.name,
+                Notes = x.propertyValues
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trProperty");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trValues");
+
+            ExportToExcel.Export(DTForExcel);
         }
     }
  } 

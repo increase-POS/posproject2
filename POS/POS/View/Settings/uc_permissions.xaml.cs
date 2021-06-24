@@ -41,6 +41,7 @@ namespace POS.View.Settings
         IEnumerable<Group> groups;
         byte tgl_groupState;
         string searchGroupText = "";
+   
 
         GroupObject GroupObject = new GroupObject();
         IEnumerable<GroupObject> groupObjectsQuery;
@@ -56,6 +57,7 @@ namespace POS.View.Settings
         public uc_permissions()
         {
             InitializeComponent();
+       
             if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
             {
                 txt_deleteGroupButton.Visibility = Visibility.Visible;
@@ -83,7 +85,7 @@ namespace POS.View.Settings
                 txt_addGroup_Icon.Visibility = Visibility.Visible;
                 txt_updateGroup_Icon.Visibility = Visibility.Visible;
                 txt_deleteGroup_Icon.Visibility = Visibility.Visible;
-
+                
             }
 
 
@@ -410,10 +412,10 @@ namespace POS.View.Settings
         }
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {
-            if (groups is null)
-                await RefreshGroupList();
-            tgl_groupState = 1;
-            Tb_searchGroup_TextChanged(null, null);
+            //if (groups is null)
+            //    await RefreshGroupList();
+            //tgl_groupState = 1;
+            //Tb_searchGroup_TextChanged(null, null);
         }
         private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -435,11 +437,11 @@ namespace POS.View.Settings
         }
         private async void Tb_searchGroup_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (groups is null)
-                await RefreshGroupList();
-            searchGroupText = tb_searchGroup.Text;
-            groupsQuery = groups.Where(s => (s.name.Contains(searchGroupText)) && s.isActive == tgl_groupState);
-            RefreshGroupView();
+            //if (groups is null)
+            //    await RefreshGroupList();
+            //searchGroupText = tb_searchGroup.Text;
+            //groupsQuery = groups.Where(s => (s.name.Contains(searchGroupText)) && s.isActive == tgl_groupState);
+            //RefreshGroupView();
         }
         private void Btn_refreshGroup_Click(object sender, RoutedEventArgs e)
         {
@@ -583,37 +585,140 @@ namespace POS.View.Settings
         }
         public void fn_ColorIconRefreash(Path p)
         {
-            path_catalog.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            path_storage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            path_purchases.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            path_sales.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            path_accounting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            path_reports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            path_sectionData.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            path_settings.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            
 
-            p.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            //p.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ti_catalog.IsSelected)
-                fn_ColorIconRefreash(path_catalog);
-            else if (ti_storage.IsSelected)
-                fn_ColorIconRefreash(path_storage);
-            else if (ti_purchases.IsSelected)
-                    fn_ColorIconRefreash(path_purchases);
-            else if (ti_sales.IsSelected)
-                     fn_ColorIconRefreash(path_sales);
-            else if (ti_accounting.IsSelected)
-                fn_ColorIconRefreash(path_accounting);
-            else if (ti_reports.IsSelected)
-                fn_ColorIconRefreash(path_reports);
-            else if (ti_sectionData.IsSelected)
-                fn_ColorIconRefreash(path_sectionData);
-            else if (ti_settings.IsSelected)
-                fn_ColorIconRefreash(path_settings);
+            //if (ti_catalog.IsSelected)
+            //    fn_ColorIconRefreash(path_catalog);
+            //else if (ti_storage.IsSelected)
+            //    fn_ColorIconRefreash(path_storage);
+            //else if (ti_purchases.IsSelected)
+            //        fn_ColorIconRefreash(path_purchases);
+            //else if (ti_sales.IsSelected)
+            //         fn_ColorIconRefreash(path_sales);
+            //else if (ti_accounting.IsSelected)
+            //    fn_ColorIconRefreash(path_accounting);
+            //else if (ti_reports.IsSelected)
+            //    fn_ColorIconRefreash(path_reports);
+            //else if (ti_sectionData.IsSelected)
+            //    fn_ColorIconRefreash(path_sectionData);
+            //else if (ti_settings.IsSelected)
+            //    fn_ColorIconRefreash(path_settings);
         }
-        
+
+
+        private void btn_home_Click(object sender, RoutedEventArgs e)
+        {
+            paint();
+            bdr_home.Background = Brushes.White;
+            path_home.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            grid_bank.Visibility = Visibility.Visible;
+        }
+
+   
+
+        private void btn_catalog_Click(object sender, RoutedEventArgs e)
+        {
+            paint();
+            bdr_catalog.Background = Brushes.White;
+            path_catalog.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            grid_catalog.Visibility = Visibility.Visible;
+        }
+
+        private void btn_store_Click(object sender, RoutedEventArgs e)
+        {
+            paint();
+            bdr_store.Background = Brushes.White;
+            path_storage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            grid_store.Visibility = Visibility.Visible;
+        }
+
+        private void btn_sale_Click(object sender, RoutedEventArgs e)
+        {
+            paint();
+            bdr_sale.Background = Brushes.White;
+            path_sales.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            grid_sales.Visibility = Visibility.Visible;
+        }
+
+        private void btn_purchase_Click(object sender, RoutedEventArgs e)
+        {
+            paint();
+            bdr_purchase.Background = Brushes.White;
+            path_purchases.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            grid_purchase.Visibility = Visibility.Visible;
+        }
+
+        private void btn_account_Click(object sender, RoutedEventArgs e)
+        {
+            paint();
+            bdr_accounts.Background = Brushes.White;
+            path_accounting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            grid_account.Visibility = Visibility.Visible;
+        }
+
+        private void btn_charts_Click(object sender, RoutedEventArgs e)
+        {
+            paint();
+            bdr_charts.Background = Brushes.White;
+            path_reports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            grid_charts.Visibility = Visibility.Visible;
+        }
+
+        private void btn_data_Click(object sender, RoutedEventArgs e)
+        {
+            paint();
+            bdr_data.Background = Brushes.White;
+            path_sectionData.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            grid_data.Visibility = Visibility.Visible;
+        }
+
+        private void btn_settings_Click(object sender, RoutedEventArgs e)
+        {
+            paint();
+            bdr_settings.Background = Brushes.White;
+            path_settings.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            grid_settings.Visibility = Visibility.Visible;
+        }
+        public void paint()
+        {
+
+
+            bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
+
+            bdr_accounts.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_catalog.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_charts.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_data.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_home.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_purchase.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_sale.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_settings.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_store.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+            path_home.Fill = Brushes.White;
+            path_catalog.Fill = Brushes.White;
+            path_storage.Fill = Brushes.White;
+            path_purchases.Fill = Brushes.White;
+            path_sales.Fill = Brushes.White;
+            path_accounting.Fill = Brushes.White;
+            path_reports.Fill = Brushes.White;
+            path_sectionData.Fill = Brushes.White;
+            path_settings.Fill = Brushes.White;
+
+            grid_bank.Visibility = Visibility.Hidden;
+            grid_catalog.Visibility = Visibility.Hidden;
+            grid_store.Visibility = Visibility.Hidden;
+            grid_purchase.Visibility = Visibility.Hidden;
+            grid_sales.Visibility = Visibility.Hidden;
+            grid_charts.Visibility = Visibility.Hidden;
+            grid_data.Visibility = Visibility.Hidden;
+            grid_settings.Visibility = Visibility.Hidden;
+            grid_account.Visibility = Visibility.Hidden;
+        }
     }
 }

@@ -83,7 +83,7 @@ namespace POS.View.accounts
 
                 if (bond != null)
                 {
-                    MessageBox.Show(bond.bondId.ToString() +"-"+bond.cashTransId.ToString());
+                    //MessageBox.Show(bond.bondId.ToString() +"-"+bond.cashTransId.ToString());
                     //MessageBox.Show(bond.deserveDate.ToString() +"-"+bond.updateDate.ToString());
                     if (bond.isRecieved == 1)
                     {
@@ -227,10 +227,10 @@ namespace POS.View.accounts
                 s.amount.ToString().Contains(searchText)
                 || s.type.ToString().Contains(searchText)
                 )
-                //&& s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                //&& s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                && s.deserveDate.Value.Date >= sDate
-                && s.deserveDate.Value.Date <= eDate
+                && s.updateDate.Value.Date >= sDate
+                && s.updateDate.Value.Date <= eDate
+                //&& s.deserveDate.Value.Date >= sDate
+                //&& s.deserveDate.Value.Date <= eDate
                 && s.isRecieved == tgl_bondState
                 );
 
@@ -475,6 +475,7 @@ namespace POS.View.accounts
             tt_depositorC.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
             tt_depositorU.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
             tt_paymentType.Content = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
+            tt_card.Content = MainWindow.resourcemanager.GetString("trCardTooltip");
             tt_amount.Content = MainWindow.resourcemanager.GetString("trCashTooltip");
             tt_deserveDate.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");

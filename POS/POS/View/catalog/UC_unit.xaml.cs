@@ -9,7 +9,10 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Threading.Tasks;
 using POS.View.windows;
-
+using System.Linq;
+using System.Windows.Input;
+using System.Text.RegularExpressions;
+using System.Threading;
 namespace POS.View
 {
     /// <summary>
@@ -21,7 +24,9 @@ namespace POS.View
 
         Unit unitModel = new Unit();
         Unit unit = new Unit();
-        List<Unit> units = new List<Unit>();
+        //List<Unit> units = new List<Unit>();
+        IEnumerable<Unit> unitsQuery;
+        IEnumerable<Unit> units;
         private static UC_unit _instance;
         public static UC_unit Instance
         {
@@ -32,7 +37,6 @@ namespace POS.View
                 return _instance;
             }
         }
-        
         public UC_unit()
         {
             InitializeComponent();
@@ -66,6 +70,8 @@ namespace POS.View
 
             }
         }
+        string searchText = "";
+        byte tgl_unitState;
 
         private void DG_unit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -205,11 +211,7 @@ namespace POS.View
             refreshUnitsGrid();
 
         }
-        async void refreshUnitsGrid()
-        {
-            units = await unitModel.GetUnitsAsync();
-            dg_unit.ItemsSource = units;
-        }
+       
         private void validateEmptyValues()
         {
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
@@ -222,7 +224,7 @@ namespace POS.View
             if (!tb_name.Text.Equals(""))
             {
                 // check if new unit doesn't match old units
-                var unitObj = units.Find( x => x.name == tb_name.Text);
+                var unitObj = units.ToList().Find(x => x.name == tb_name.Text);
                 if (unitObj is null)
                 {
                     unit = new Unit
@@ -318,7 +320,7 @@ namespace POS.View
             if (!tb_name.Text.Equals(""))
             {
                 // check if new unit doesn't match old units
-                var unitObj = units.Find(x => x.name == tb_name.Text);
+                var unitObj = units.ToList().Find(x => x.name == tb_name.Text);
                 if (unitObj is null || unitObj.name == unit.name)
                 {
                     unit.name = tb_name.Text;
@@ -340,24 +342,74 @@ namespace POS.View
             }
         }
 
-        private void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
+
+
+        void refreshUnitsGrid()
         {
+            
+            dg_unit.ItemsSource = unitsQuery;
+            txt_count.Text = unitsQuery.Count().ToString();
 
         }
 
-        private void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
+        async Task<IEnumerable<Unit>> RefreshUnitsList()
         {
-
+            MainWindow.mainWindow.StartAwait();
+            units = await unitModel.GetUnitsAsync();
+            MainWindow.mainWindow.EndAwait();
+            return units;
         }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {//search
+
+            if (units is null)
+                await RefreshUnitsList();
+            searchText = tb_search.Text;
+            unitsQuery = units.Where(s => s.name   .Contains(searchText) && s.isActive == tgl_unitState);
             refreshUnitsGrid();
         }
-
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshUnitsList();
+            Tb_search_TextChanged(null, null);
+        }
+        private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
+        {
+            if (units is null)
+                await RefreshUnitsList();
+            tgl_unitState = 1;
+            Tb_search_TextChanged(null, null);
+        }
+        private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (units is null)
+                await RefreshUnitsList();
+            tgl_unitState = 0;
+            Tb_search_TextChanged(null, null);
+        }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
+            this.Dispatcher.Invoke(() =>
+            {
+                Thread t1 = new Thread(FN_ExportToExcel);
+                t1.SetApartmentState(ApartmentState.STA);
+                t1.Start();
+            });
+        }
+        void FN_ExportToExcel()
+        {
 
+            var QueryExcel = unitsQuery.AsEnumerable().Select(x => new
+            {
+                Name = x.name,
+                Notes = x.notes
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trNote");
+
+            ExportToExcel.Export(DTForExcel);
         }
     }
 }

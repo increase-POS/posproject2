@@ -716,7 +716,9 @@ namespace POS.View
 
         async Task<IEnumerable<User>> RefreshUsersList()
         {
+            MainWindow.mainWindow.StartAwait();
             users = await userModel.GetUsersAsync();
+            MainWindow.mainWindow.EndAwait();
             return users;
         }
         void RefreshUserView()
@@ -835,8 +837,6 @@ namespace POS.View
         {
             RefreshUsersList();
             Tb_search_TextChanged(null, null);
-
-
         }
 
         private async void getImg()

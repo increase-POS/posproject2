@@ -105,6 +105,18 @@ namespace POS
 
             mainWindow = this;
         }
+        public void StartAwait()
+        {
+            MainWindow.mainWindow.prg_awaitRing.IsActive = true;
+            MainWindow.mainWindow.grid_main.IsEnabled = false;
+            MainWindow.mainWindow.grid_main.Opacity = 0.6;
+        }
+        public void EndAwait()
+        {
+            MainWindow.mainWindow.prg_awaitRing.IsActive = false;
+            MainWindow.mainWindow.grid_main.IsEnabled = true;
+            MainWindow.mainWindow.grid_main.Opacity = 1;
+        }
         void timer_Tick(object sender, EventArgs e)
         {
             txtTime.Text = DateTime.Now.ToShortTimeString();
@@ -149,7 +161,6 @@ namespace POS
         }
         void colorTextRefreash(TextBlock txt)
         {
-
             txt_home.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
             txt_catalog.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
             txt_storage.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
@@ -161,9 +172,7 @@ namespace POS
             txt_sectiondata.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
             txt_settings.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
 
-
             txt.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
-
         }
         void fn_ColorIconRefreash(Path p)
         {

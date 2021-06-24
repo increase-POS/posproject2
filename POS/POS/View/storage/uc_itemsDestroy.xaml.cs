@@ -168,5 +168,10 @@ namespace POS.View.storage
         {
 
         }
+
+        private void btn_destroy_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

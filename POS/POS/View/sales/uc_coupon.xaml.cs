@@ -284,6 +284,13 @@ namespace POS.View
 
         #endregion
 
+        private async Task<string> genBarCode(string code)
+        {
+            string s = "cop-"+ code;
+
+            return s;
+        }
+
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
 
@@ -321,6 +328,7 @@ namespace POS.View
                 if (decimal.Parse(tb_MaxInvoiceValue.Text) < decimal.Parse(tb_MinInvoiceValue.Text)) isMaxInvoiceValueSmaller = true;
             }
             catch { }
+
             if ((!tb_name.Text.Equals("")) && (!tb_barcode.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
                 (!cb_typeDiscount.Text.Equals("")) && (!tb_discountValue.Text.Equals("")) &&
                 (dp_startDate.Text != null) && (dp_endDate.Text != null) &&
@@ -361,6 +369,7 @@ namespace POS.View
                     coupon.invMax = decimal.Parse(tb_MaxInvoiceValue.Text);
                     coupon.quantity = Int32.Parse(tb_quantity.Text);
                     //coupon.remainQ = int.Parse(tb_remainQuantity.Text);
+                    coupon.remainQ = Int32.Parse(tb_quantity.Text);
                     coupon.createUserId = MainWindow.userID; ;
 
                     string s = await couponModel.Save(coupon);
@@ -379,11 +388,11 @@ namespace POS.View
             }
         }
 
-        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        private async void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             tb_code.Clear();
             tb_name.Clear();
-            tb_barcode.Clear();
+            //tb_barcode.Clear();
             tgl_ActiveCoupon.IsChecked = false;
             cb_typeDiscount.SelectedIndex = -1;
             tb_discountValue.Clear();
@@ -483,6 +492,7 @@ namespace POS.View
                     tgl_ActiveCoupon.IsChecked = Convert.ToBoolean(coupon.isActive);
                     cb_typeDiscount.SelectedValue = coupon.discountType ;
                     tb_discountValue.Text = (Convert.ToInt32(coupon.discountValue)).ToString();
+                    tb_barcode.Text = coupon.barcode;
                     drawBarcode(coupon.barcode);
                     #region delete
                     if (coupon.canDelete)
@@ -660,7 +670,8 @@ namespace POS.View
                     coupon.invMax = decimal.Parse(tb_MaxInvoiceValue.Text);
                     coupon.quantity = Int32.Parse(tb_quantity.Text);
                     //coupon.remainQ = int.Parse(tb_remainQuantity.Text);
-                    coupon.createUserId = MainWindow.userID; ;
+                    coupon.remainQ = Int32.Parse(tb_quantity.Text);
+                    coupon.createUserId = MainWindow.userID; 
 
                     string s = await couponModel.Save(coupon);
 
@@ -691,7 +702,9 @@ namespace POS.View
 
         async Task<IEnumerable<Coupon>> RefreshCouponsList()
         {
+            MainWindow.mainWindow.StartAwait();
             coupons = await couponModel.GetCouponsAsync();
+            MainWindow.mainWindow.EndAwait();
             return coupons;
         }
         void RefreshCouponView()
@@ -750,6 +763,12 @@ namespace POS.View
 
             else
                 e.Handled = true;
+        }
+
+        private async void Tb_code_Loaded(object sender, RoutedEventArgs e)
+        {
+            tb_barcode.Text = await genBarCode(tb_code.Text);
+
         }
     }
 }

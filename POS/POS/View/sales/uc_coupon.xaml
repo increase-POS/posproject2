@@ -376,7 +376,7 @@
                                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                  Height="40"   Margin="10,5,10,5" 
                                                  PreviewKeyDown="Tb_preventSpaces" 
-                                                 PreviewTextInput="Tb_OnlyLatinAndDigits" >
+                                                 PreviewTextInput="Tb_OnlyLatinAndDigits" Loaded="Tb_code_Loaded" >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_code" Content="Code"
                                                           Placement="left" 
@@ -423,14 +423,14 @@
                         <TextBox x:Name="tb_barcode" Grid.Row="3" Text="{Binding barcode, Mode=OneWay}" Padding="10,0,5,0"   
                                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Barcode..."  
                                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-
+                                                 IsReadOnly="True"
                                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                                  BorderBrush="AliceBlue" 
                                               MaxLength="20" 
                                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                  Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2"
                                                  PreviewKeyDown="Tb_preventSpaces" 
-                                                 PreviewTextInput="Tb_OnlyLatinAndDigits">
+                                                 PreviewTextInput="Tb_OnlyLatinAndDigits" >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_barcode" Content="Barcode"
                                                          Placement="left" 

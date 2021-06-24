@@ -54,7 +54,9 @@ namespace POS.View.windows
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
+            translat();
+
             offer = await offerModel.getOfferById(offerId);
             
             allItemsSource = await itemModel.Getall();
@@ -83,6 +85,28 @@ namespace POS.View.windows
             dg_selectedItems.DisplayMemberPath = "itemName";
 
         }
+
+        private void translat()
+        {
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_searchitems, MainWindow.resourcemanager.GetString("trSearchHint"));
+
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+
+            dg_allItems.Columns[0].Header = MainWindow.resourcemanager.GetString("trItem");
+            dg_selectedItems.Columns[0].Header = MainWindow.resourcemanager.GetString("trItem");
+            dg_selectedItems.Columns[1].Header = MainWindow.resourcemanager.GetString("trQuantity");
+
+            txt_title.Text = MainWindow.resourcemanager.GetString("trOffer");
+            txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
+            txt_selectedItems.Text = MainWindow.resourcemanager.GetString("trSelectedItems");
+
+            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+            tt_selectAllItem.Content = MainWindow.resourcemanager.GetString("trSelectAllItems");
+            tt_unselectAllItem.Content = MainWindow.resourcemanager.GetString("trUnSelectAllItems");
+            tt_selectItem.Content = MainWindow.resourcemanager.GetString("trSelectOneItem");
+            tt_unselectItem.Content = MainWindow.resourcemanager.GetString("trUnSelectOneItem");
+
+        }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
@@ -98,9 +122,8 @@ namespace POS.View.windows
                 //int index = dg_selectedItems.CurrentCell.Column.DisplayIndex;
                 //string cellValue = dataRow.Row.ItemArray[index].ToString();
 
-                //string s = await itemUnitOfferModel.updategroup(offerId, selectedItems, MainWindow.userID.Value);
+                string s = await itemUnitOfferModel.updategroup(offerId, selectedItems, MainWindow.userID.Value);
             }
-            //MessageBox.Show(selectedItems[0].quantity.ToString());
 
             isActive = true;
             this.Close();
@@ -141,11 +164,11 @@ namespace POS.View.windows
                 iUO.iuId = itemUnit.itemUnitId;
                 iUO.offerId = offerId;
                 iUO.createUserId = MainWindow.userID;
-                iUO.quantity = 5;//dg_selectedItems.Columns[1];
+                iUO.quantity = 0;//dg_selectedItems.Columns[1];
                 iUO.offerName = offer.name;
                 iUO.unitName = itemUnit.unitName;
                 iUO.itemName = itemUnit.itemName;
-                iUO.code = offer.code;///////////??????????offer/item
+                //iUO.code = offer.code;///////////??????????offer/item
                 iUO.itemId = itemUnit.itemId;
                 iUO.unitId = itemUnit.unitId;
 
@@ -185,7 +208,6 @@ namespace POS.View.windows
             int x = selectedItems.Count;
             for (int i = 0; i < x ; i++)
             {
-                //MessageBox.Show(i.ToString());
                 dg_selectedItems.SelectedIndex = 0;
                 Btn_unSelectedItem_Click(null, null);
             }
@@ -194,11 +216,6 @@ namespace POS.View.windows
         private void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
         {//search
             txtItemSearch = txb_searchitems.Text.ToLower();
-            // للتعديل 
-            //dg_allItems.ItemsSource = allItems.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            //x.name.ToLower().Contains(txtItemSearch) ||
-            //x.details.ToLower().Contains(txtItemSearch)
-            //) && x.isActive == 1);
 
             if (allItems is null)
                 allItems = allItemsSource;

@@ -675,7 +675,9 @@ namespace POS.View
         }
         async Task<IEnumerable<Agent>> RefreshCustomersList()
         {
+            MainWindow.mainWindow.StartAwait();
             agents = await agentModel.GetAgentsAsync("c");
+            MainWindow.mainWindow.EndAwait();
             return agents;
         }
         void RefreshCustomerView()
