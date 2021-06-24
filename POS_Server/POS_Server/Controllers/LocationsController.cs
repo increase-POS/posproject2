@@ -327,5 +327,95 @@ namespace POS_Server.Controllers
 
         }
         #endregion
+
+
+        // add or update List of locations
+        [HttpPost]
+        [Route("AddLocationsToSection")]
+        public int AddLocationsToSection(string locationsObject, int sectionId,int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                locationsObject = locationsObject.Replace("\\", string.Empty);
+                locationsObject = locationsObject.Trim('"');
+                List<locations> Object = JsonConvert.DeserializeObject<List<locations>>(locationsObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var oldList = entity.locations.Where(x => x.sectionId == sectionId).Select(x => new { x.locationId }).ToList();
+                    for (int i = 0; i < oldList.Count; i++)
+                    {
+                        int locationId = (int)oldList[i].locationId;
+                        var loc = entity.locations.Find(locationId);
+
+                        if (Object != null && Object.Count > 0)
+                        {
+                            var isExist = Object.Find(x => x.locationId == oldList[i].locationId);
+                            if (isExist == null)// unlink location to section
+                            {
+                                loc.sectionId = null;
+                               
+                            }
+                            else// edit location info
+                            {
+                              
+                            }
+                        }
+                        loc.updateDate = DateTime.Now;
+                        loc.updateUserId = userId;
+                        entity.SaveChanges();
+                    }
+                    foreach (locations loc in Object)// loop to add new locations
+                    {
+                        Boolean isInList = false;
+                        if (oldList != null)
+                        {
+                            var old = oldList.ToList().Find(x => x.locationId == loc.locationId);
+                            if (old != null)
+                            {
+                                isInList = true;
+
+                            }
+
+                            if (!isInList)
+                            {
+                                var loc1 = entity.locations.Find(loc.locationId);
+                                if (loc1.updateUserId == 0 || loc1.updateUserId == null)
+                                {
+                                    Nullable<int> id = null;
+                                    loc1.updateUserId = id;
+                                }
+                                if (loc1.createUserId == 0 || loc1.createUserId == null)
+                                {
+                                    Nullable<int> id = null;
+                                    loc1.createUserId = id;
+                                }
+                                loc1.updateDate = DateTime.Now;
+                                loc1.sectionId = sectionId;
+                                loc.createUserId = userId;
+                                loc.updateUserId = userId;
+
+                                entity.SaveChanges();
+                            }
+                        }
+                        try
+                        {
+                            entity.SaveChanges();
+                        }
+                        catch { return 0; }
+                    }
+                }
+            }
+            return 1;
+        }
     }
 }
