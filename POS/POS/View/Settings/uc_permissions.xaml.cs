@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using Group = POS.Classes.Group;
 using Object = POS.Classes.Object;
 
@@ -115,7 +116,7 @@ namespace POS.View.Settings
         {
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_searchGroup, MainWindow.resourcemanager.GetString("trSearchHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             btn_refreshGroup.ToolTip = MainWindow.resourcemanager.GetString("trRefresh");
             btn_refresh.ToolTip = MainWindow.resourcemanager.GetString("trRefresh");
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
@@ -520,5 +521,99 @@ namespace POS.View.Settings
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
         }
+
+        private void Btn_categories_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_item_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_properties_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_units_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_locations_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_section_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_receiptOfPurchaseInvoice_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_itemsStorage_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_itemsExport_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_itemsDestroy_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_inventory_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_statistic_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        public void fn_ColorIconRefreash(Path p)
+        {
+            path_catalog.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            path_storage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            path_purchases.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            path_sales.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            path_accounting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            path_reports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            path_sectionData.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            path_settings.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+            p.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ti_catalog.IsSelected)
+                fn_ColorIconRefreash(path_catalog);
+            else if (ti_storage.IsSelected)
+                fn_ColorIconRefreash(path_storage);
+            else if (ti_purchases.IsSelected)
+                    fn_ColorIconRefreash(path_purchases);
+            else if (ti_sales.IsSelected)
+                     fn_ColorIconRefreash(path_sales);
+            else if (ti_accounting.IsSelected)
+                fn_ColorIconRefreash(path_accounting);
+            else if (ti_reports.IsSelected)
+                fn_ColorIconRefreash(path_reports);
+            else if (ti_sectionData.IsSelected)
+                fn_ColorIconRefreash(path_sectionData);
+            else if (ti_settings.IsSelected)
+                fn_ColorIconRefreash(path_settings);
+        }
+        
     }
 }

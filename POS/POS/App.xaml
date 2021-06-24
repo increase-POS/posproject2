@@ -612,7 +612,6 @@
             <SolidColorBrush x:Key="MainColorOrange" Color="#FFA926"/>
             <SolidColorBrush x:Key="MainColorRed" Color="#D22A17"/>
             <SolidColorBrush x:Key="MainColorGrey" Color="#4E4E4E"/>
-
             <!--#endregion-->
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
