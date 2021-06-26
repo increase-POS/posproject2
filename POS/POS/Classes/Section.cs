@@ -23,6 +23,7 @@ namespace POS.Classes
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public Nullable<byte> isActive { get; set; }
+        public Nullable<byte> isFreeZone { get; set; }
         public Boolean canDelete { get; set; }
 
         public async Task<List<Section>> Get()
