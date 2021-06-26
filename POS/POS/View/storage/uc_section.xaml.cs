@@ -82,6 +82,9 @@ namespace POS.View
         BrushConverter bc = new BrushConverter();
         Branch branchModel = new Branch();
         Branch branch = new Branch();
+
+        IEnumerable<Location> location;
+        Location locationModel = new Location();
         private void translate()
         {
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
@@ -121,7 +124,7 @@ namespace POS.View
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -409,7 +412,7 @@ namespace POS.View
                 await RefreshSectionsList();
             searchText = tb_search.Text;
             sectionsQuery = sections.Where(s => (s.name.Contains(searchText) 
-            ) && s.isActive == tgl_sectionState);
+            ) && s.isActive == tgl_sectionState && s.isFreeZone != 1);
             RefreshSectionView();
         }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -453,19 +456,27 @@ namespace POS.View
             cb_branch.SelectedValuePath = "branchId";
             cb_branch.DisplayMemberPath = "name";
         }
-        private void Btn_locations_Click(object sender, RoutedEventArgs e)
-        {
+
+      
+        private async void Btn_locations_Click(object sender, RoutedEventArgs e)
+        {//locations
+            SectionData.clearValidate(tb_name, p_errorName);
+
+            location = await locationModel.Get();
             Window.GetWindow(this).Opacity = 0.2;
+
             wd_locationsList w = new wd_locationsList();
+            w.sectionId = section.sectionId;
             w.ShowDialog();
             if (w.isActive)
             {
-                foreach (var location in w.selectedLocations)
-                {
-                    MessageBox.Show(location.name + "\t");
-                }
+                //foreach (var location in w.selectedLocations)
+                //{
+                //    MessageBox.Show(location.name + "\t");
+                //}
             }
             Window.GetWindow(this).Opacity = 1;
+
         }
 
        

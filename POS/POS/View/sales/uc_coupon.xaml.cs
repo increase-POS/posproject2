@@ -27,7 +27,6 @@ namespace POS.View
     /// </summary>
     public partial class uc_coupon : UserControl
     {
-
         Coupon coupon = new Coupon();
         Coupon couponModel = new Coupon();
         private static uc_coupon _instance;
@@ -107,6 +106,8 @@ namespace POS.View
 
         private void tb_discountValue_TextChanged(object sender, TextChangedEventArgs e)
         {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
             if (tb_discountValue == null)
             {
                 return;
@@ -296,14 +297,14 @@ namespace POS.View
 
             bool codeNotExist = await SectionData.CouponCodeNotExist(tb_code.Text , 0);
 
-            bool isBarcodeExist = await SectionData.chkIfCouponBarCodeIsExist(tb_barcode.Text , 0);
+            //bool isBarcodeExist = await SectionData.chkIfCouponBarCodeIsExist(tb_barcode.Text , 0);
 
             //chk empty code
             SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
             //chk empty name
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             //chk empty barcode
-            SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trEmptyBarcodeToolTip");
+            //SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trEmptyBarcodeToolTip");
             //chk empty discount type
             SectionData.validateEmptyComboBox(cb_typeDiscount, p_errorTypeDiscount, tt_errorTypeDiscount, "trEmptyDiscountTypeToolTip");
             //chk empty discount value
@@ -329,18 +330,20 @@ namespace POS.View
             }
             catch { }
 
-            if ((!tb_name.Text.Equals("")) && (!tb_barcode.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
+            //if ((!tb_name.Text.Equals("")) && (!tb_barcode.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
+            if ((!tb_name.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
                 (!cb_typeDiscount.Text.Equals("")) && (!tb_discountValue.Text.Equals("")) &&
                 (dp_startDate.Text != null) && (dp_endDate.Text != null) &&
                 (!tb_MinInvoiceValue.Text.Equals("")) && (!tb_MaxInvoiceValue.Text.Equals("")) &&
                 (!tb_quantity.Text.Equals("")))
             {
-                if ((!codeNotExist) || (isBarcodeExist) || (isEndDateSmaller) || (isMaxInvoiceValueSmaller))
+                //if ((!codeNotExist) || (isBarcodeExist) || (isEndDateSmaller) || (isMaxInvoiceValueSmaller))
+                if ((!codeNotExist) ||  (isEndDateSmaller) || (isMaxInvoiceValueSmaller))
                 {
                     if (!codeNotExist)
                         SectionData.showTextBoxValidate(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
-                    if (isBarcodeExist)
-                        SectionData.showTextBoxValidate(tb_barcode, p_errorBarcode, tt_errorBarcode, "trDuplicateBarcodeToolTip");
+                    //if (isBarcodeExist)
+                    //    SectionData.showTextBoxValidate(tb_barcode, p_errorBarcode, tt_errorBarcode, "trDuplicateBarcodeToolTip");
                     if (isEndDateSmaller)
                     {
                         SectionData.showDatePickerValidate(dp_startDate, p_errorStartDate, tt_errorStartDate, "trErrorEndDateSmallerToolTip");
@@ -360,6 +363,7 @@ namespace POS.View
                     coupon.name = tb_name.Text;
                     coupon.notes = tb_note.Text;
                     coupon.barcode = tb_barcode.Text;
+                    //coupon.barcode = await genBarCode(tb_code.Text);
                     coupon.isActive = Convert.ToByte(tgl_ActiveCoupon.IsChecked);
                     coupon.discountType = cb_typeDiscount.SelectedValue.ToString();
                     coupon.startDate = DateTime.Parse(dp_startDate.Text);
@@ -392,7 +396,7 @@ namespace POS.View
         {//clear
             tb_code.Clear();
             tb_name.Clear();
-            //tb_barcode.Clear();
+            tb_barcode.Clear();
             tgl_ActiveCoupon.IsChecked = false;
             cb_typeDiscount.SelectedIndex = -1;
             tb_discountValue.Clear();
@@ -404,6 +408,9 @@ namespace POS.View
             //tb_remainQuantity.Clear();
             tb_note.Clear();
             img_barcode.Source = null;
+
+            //tb_barcode.Visibility = Visibility.Collapsed;
+            //img_barcode.Visibility = Visibility.Collapsed;
 
             SectionData.clearValidate(tb_name, p_errorName);
             SectionData.clearValidate(tb_code, p_errorCode);
@@ -492,6 +499,8 @@ namespace POS.View
                     tgl_ActiveCoupon.IsChecked = Convert.ToBoolean(coupon.isActive);
                     cb_typeDiscount.SelectedValue = coupon.discountType ;
                     tb_discountValue.Text = (Convert.ToInt32(coupon.discountValue)).ToString();
+                    tb_barcode.Visibility = Visibility.Visible;
+                    img_barcode.Visibility = Visibility.Visible;
                     tb_barcode.Text = coupon.barcode;
                     drawBarcode(coupon.barcode);
                     #region delete
@@ -599,14 +608,14 @@ namespace POS.View
         {//update
             bool codeNotExist = await SectionData.CouponCodeNotExist(tb_code.Text , coupon.cId);
 
-            bool isBarcodeExist = await SectionData.chkIfCouponBarCodeIsExist(tb_barcode.Text , coupon.cId);
+            //bool isBarcodeExist = await SectionData.chkIfCouponBarCodeIsExist(tb_barcode.Text , coupon.cId);
 
             //chk empty code
             SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
             //chk empty name
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             //chk empty barcode
-            SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trEmptyBarcodeToolTip");
+            //SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trEmptyBarcodeToolTip");
             //chk empty discount type
             SectionData.validateEmptyComboBox(cb_typeDiscount, p_errorTypeDiscount, tt_errorTypeDiscount, "trEmptyDiscountTypeToolTip");
             //chk empty discount value
@@ -632,18 +641,20 @@ namespace POS.View
             }
             catch { }
 
-            if ((!tb_name.Text.Equals("")) && (!tb_barcode.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
+            //if ((!tb_name.Text.Equals("")) && (!tb_barcode.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
+            if ((!tb_name.Text.Equals(""))  && (!tb_code.Text.Equals("")) &&
                 (!cb_typeDiscount.Text.Equals("")) && (!tb_discountValue.Text.Equals("")) &&
                 (dp_startDate.Text != null) && (dp_endDate.Text != null) &&
                 (!tb_MinInvoiceValue.Text.Equals("")) && (!tb_MaxInvoiceValue.Text.Equals("")) &&
                 (!tb_quantity.Text.Equals("")))
             {
-                if ((!codeNotExist) || (isBarcodeExist) || (isEndDateSmaller) || (isMaxInvoiceValueSmaller))
+                // if ((!codeNotExist) || (isBarcodeExist) || (isEndDateSmaller) || (isMaxInvoiceValueSmaller))
+                if ((!codeNotExist) || (isEndDateSmaller) || (isMaxInvoiceValueSmaller))
                 {
                     if (!codeNotExist)
                         SectionData.showTextBoxValidate(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
-                    if (isBarcodeExist)
-                        SectionData.showTextBoxValidate(tb_barcode, p_errorBarcode, tt_errorBarcode, "trDuplicateBarcodeToolTip");
+                    //if (isBarcodeExist)
+                    //    SectionData.showTextBoxValidate(tb_barcode, p_errorBarcode, tt_errorBarcode, "trDuplicateBarcodeToolTip");
                     if (isEndDateSmaller)
                     {
                         SectionData.showDatePickerValidate(dp_startDate, p_errorStartDate, tt_errorStartDate, "trErrorEndDateSmallerToolTip");
@@ -661,6 +672,7 @@ namespace POS.View
                     coupon.name = tb_name.Text;
                     coupon.notes = tb_note.Text;
                     coupon.barcode = tb_barcode.Text;
+                    //coupon.barcode = await genBarCode(tb_code.Text);
                     coupon.isActive = Convert.ToByte(tgl_ActiveCoupon.IsChecked);
                     coupon.discountType = cb_typeDiscount.SelectedValue.ToString();
                     coupon.startDate = DateTime.Parse(dp_startDate.Text);
@@ -765,10 +777,71 @@ namespace POS.View
                 e.Handled = true;
         }
 
-        private async void Tb_code_Loaded(object sender, RoutedEventArgs e)
+        private async void Tb_code_LostFocus(object sender, RoutedEventArgs e)
         {
-            tb_barcode.Text = await genBarCode(tb_code.Text);
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+        }
 
+        private async void Tb_code_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (tb_barcode.Text.Equals(""))
+            {
+                //string name = sender.GetType().Name;
+                //validateEmpty(name, sender);
+                //SectionData.validateEmptyTextBox((TextBox)sender, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+                p_errorCode.Visibility = Visibility.Visible;
+                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyCodeToolTip");
+                tb_code.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            p_errorCode.Visibility = Visibility.Collapsed;
+
+            tb_barcode.Text = await genBarCode(tb_code.Text);
+            drawBarcode(tb_barcode.Text);
+        }
+
+        private void validateEmpty(string name, object sender)
+        {
+            if (name == "TextBox")
+            {
+                if ((sender as TextBox).Name == "tb_code")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+                else if ((sender as TextBox).Name == "tb_name")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                else if ((sender as TextBox).Name == "tb_MinInvoiceValue")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorMinInvoiceValue, tt_errorMinInvoiceValue, "trEmptyMinInvoiceValueToolTip");
+                else if ((sender as TextBox).Name == "tb_MaxInvoiceValue")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorMaxInvoiceValue, tt_errorMaxInvoiceValue, "trEmptyMaxInvoiceValueToolTip");
+                else if ((sender as TextBox).Name == "tb_quantity")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
+                else if ((sender as TextBox).Name == "tb_discountValue")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorValueDiscount, tt_errorValueDiscount, "trEmptyDiscountValueToolTip");
+            }
+            else if (name == "ComboBox")
+            {
+                if ((sender as ComboBox).Name == "cb_typeDiscount")
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorTypeDiscount, tt_errorTypeDiscount, "trEmptyDiscountTypeToolTip");
+            }
+            else if (name == "DatePicker")
+            {
+                if ((sender as DatePicker).Name == "dp_startDate")
+                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorStartDate, tt_errorStartDate, "trEmptyStartDateToolTip");
+                else if ((sender as DatePicker).Name == "dp_endDate")
+                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");//
+            }
+        }
+
+        private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+        }
+
+        private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
         }
     }
 }

@@ -150,8 +150,8 @@ namespace POS.View.windows
             }
             /////////////////////////////////
 
-            if ((!tb_fromX.Text.Equals("")) && (!tb_fromX.Text.Equals("")) && (!tb_fromZ.Text.Equals("")) &&
-                (!tb_toX.Text.Equals("")) && (!tb_toX.Text.Equals("")) && (!tb_toZ.Text.Equals("")))
+            if ((tb_fromX.Text.Equals("")) || (tb_fromX.Text.Equals("")) || (tb_fromZ.Text.Equals("")) ||
+                (tb_toX.Text.Equals("")) || (tb_toX.Text.Equals("")) || (tb_toZ.Text.Equals("")))
              isValid = false;
 
             return isValid;
@@ -261,6 +261,7 @@ namespace POS.View.windows
                         item.note = "";
                         item.isActive = 1;
                         item.sectionId = null;
+                        item.branchId = MainWindow.branchID;
 
                         s = await location.saveLocation(item);
                     }

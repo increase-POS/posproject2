@@ -76,9 +76,9 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Sections/GetSectionByID");
+                request.RequestUri = new Uri(Global.APIUri + "Sections/GetSectionByID?sectionId=" + sectionId);
                 request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("sectionId", sectionId.ToString());
+                //request.Headers.Add("sectionId", sectionId.ToString());
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var response = await client.SendAsync(request);
@@ -95,6 +95,7 @@ namespace POS.Classes
                 return section;
             }
         }
+
 
         public async Task<string> saveSection(Section section)
         {

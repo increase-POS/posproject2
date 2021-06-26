@@ -73,6 +73,8 @@ namespace POS.View
         Invoice invoiceModel = new Invoice();
         Invoice invoice = new Invoice();
 
+        Pos pos = new Pos();
+
         List<ItemTransfer> invoiceItems;
         //  Bill bill;
 
@@ -153,6 +155,8 @@ namespace POS.View
             #endregion
             if (w.isOk)
                 Btn_newDraft_Click(null, null);
+            else
+                clearInvoice();
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -182,6 +186,7 @@ namespace POS.View
 
             translate();
             catigoriesAndItemsView.ucPayInvoice = this;
+            pos = await pos.getPosById(MainWindow.posID.Value);
             await RefrishItems();
             //await RefrishCategories();
             //RefrishCategoriesCard();
@@ -450,13 +455,13 @@ namespace POS.View
 
         private async Task addInvoice(string invType)
         {
-            if (invoice.invType == "p" && (invType == "pb" || invType == "pbd")) // invoice is purchase and will bebounce purchase  or purchase bounce draft bounce , save another invoice in db
+            if (invoice.invType == "pw" && (invType == "pb" || invType == "pbd")) // invoice is purchase and will bebounce purchase  or purchase bounce draft bounce , save another invoice in db
             {
                 invoice.invoiceMainId = invoice.invoiceId;
                 invoice.invoiceId = 0;
             }
 
-            if (invoice.invType != "p" || invoice.invoiceId == 0)
+            if (invoice.invType != "pw" || invoice.invoiceId == 0)
             {
                 invoice.invType = invType;
                 if (!tb_discount.Text.Equals(""))
@@ -487,19 +492,24 @@ namespace POS.View
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
 
-                // build invoice NUM like storCode_PI_sequence exp: 123_PI_2
+                // build invoice NUM like pi-storCode-posCode-sequence exp: 123_PI_2
                 if (invoice.invNumber == null)
                 {
                     Branch store = branches.ToList().Find(b => b.branchId == invoice.branchId);
                     string storeCode = "";
                     if (store != null)
                         storeCode = store.code;
-
-                    string invoiceCode = "PI";
-                    int sequence = await invoiceModel.GetLastNumOfInv("PI");
+                    string posCode = "";
+                    if (pos != null)
+                    {
+                        storeCode = pos.branchCode;
+                        posCode = pos.code;
+                    }
+                    string invoiceCode = "pi";
+                    int sequence = await invoiceModel.GetLastNumOfInv("pi");
                     sequence++;
 
-                    string invoiceNum = storeCode + "_" + invoiceCode + "_" + sequence.ToString();
+                    string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
                     invoice.invNumber = invoiceNum;
                 }
 
@@ -509,7 +519,7 @@ namespace POS.View
                 if (vendor != null)
                     balance = (decimal)vendor.balance;
                 decimal paid = 0;
-                if (invType == "p")
+                if (invType == "pw")
                 {
                     decimal deserved = 0;
 
@@ -525,7 +535,7 @@ namespace POS.View
                 if (invoiceId != 0)
                 {
                     // edit vendor balance , add cach transfer
-                    if (invType == "p" && paid > 0)
+                    if (invType == "pw" && paid > 0)
                     {
                         await agentModel.updateBalance((int)invoice.agentId, balance);//update balance
 
@@ -594,7 +604,7 @@ namespace POS.View
                 if (_InvoiceType == "pbd") //pbd means purchase bounse draft
                     await addInvoice("pb"); // pb means purchase bounce
                 else//p  purchase invoice
-                    await addInvoice("p");
+                    await addInvoice("pw");
 
                 if (invoice.invoiceId == 0) clearInvoice();
             }
@@ -602,7 +612,7 @@ namespace POS.View
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
             //check mandatory inputs
-            validateInvoiceValues();
+            //validateInvoiceValues();
 
             // if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
             if (billDetails.Count > 0)
@@ -610,9 +620,10 @@ namespace POS.View
                 await addInvoice(_InvoiceType);
 
             }
-            _InvoiceType = "pd";
-            inputEditable();
-            clearInvoice();
+            else
+            {
+                clearInvoice();
+            }
         }
         private void clearInvoice()
         {
@@ -638,9 +649,13 @@ namespace POS.View
             tb_sum.Text = null;
             tb_taxValue.Text = MainWindow.tax.ToString();
 
+            TextBox tbStartDate = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
+            SectionData.clearValidate(tbStartDate, p_errorDesrvedDate);
+
             btn_updateVendor.IsEnabled = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
             refrishBillDetails();
+            inputEditable();
         }
         #endregion
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
@@ -673,14 +688,7 @@ namespace POS.View
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
                         brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                     }
-                    fillInvoiceInputs(invoice);
-
-                    //get invoice items
-                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-
-                    // build invoice details grid
-                    buildInvoiceDetails(invoiceItems);
-                    inputEditable();
+                   await fillInvoiceInputs(invoice);
                 }
             }
             Window.GetWindow(this).Opacity = 1;
@@ -691,7 +699,7 @@ namespace POS.View
             wd_invoice w = new wd_invoice();
 
             // purchase invoices
-            w.invoiceType = "p";
+            w.invoiceType = "pw";
 
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
 
@@ -706,19 +714,13 @@ namespace POS.View
                     // set title to bill
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
                     brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-                    fillInvoiceInputs(invoice);
+                   await fillInvoiceInputs(invoice);
 
-                    //get invoice items
-                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-
-                    // build invoice details grid
-                    buildInvoiceDetails(invoiceItems);
-                    inputEditable();
                 }
             }
             Window.GetWindow(this).Opacity = 1;
         }
-        private void fillInvoiceInputs(Invoice invoice)
+        private async Task fillInvoiceInputs(Invoice invoice)
         {
             _Sum = (decimal)invoice.total;
 
@@ -739,6 +741,11 @@ namespace POS.View
                 cb_typeDiscount.SelectedIndex = 2;
             else
                 cb_typeDiscount.SelectedIndex = 0;
+
+            // build invoice details grid
+            await buildInvoiceDetails();
+
+            inputEditable();
         }
         private async void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
         {
@@ -749,7 +756,7 @@ namespace POS.View
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
 
             // purchase invoices
-            w.invoiceType = "p"; // invoice type to view in grid
+            w.invoiceType = "pw"; // invoice type to view in grid
             if (w.ShowDialog() == true)
             {
                 if (w.invoice != null)
@@ -759,23 +766,18 @@ namespace POS.View
 
                     this.DataContext = invoice;
 
-                    fillInvoiceInputs(invoice);
+                   await fillInvoiceInputs(invoice);
 
-                    //get invoice items
-                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-
-                    // build invoice details grid
-                    buildInvoiceDetails(invoiceItems);
-
-                    inputEditable();
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
                     brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                 }
             }
             Window.GetWindow(this).Opacity = 1;
         }
-        private void buildInvoiceDetails(List<ItemTransfer> invoiceItems)
+        private async Task buildInvoiceDetails()
         {
+            //get invoice items
+            invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
             // build invoice details grid
             _SequenceNum = 0;
             billDetails.Clear();
@@ -836,7 +838,7 @@ namespace POS.View
                 btn_save.IsEnabled = true;
                 btn_updateVendor.IsEnabled = true;
             }
-            else if (_InvoiceType == "p")
+            else if (_InvoiceType == "pw")
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
@@ -1082,12 +1084,19 @@ namespace POS.View
             {
                 digit = e.Key.ToString().Substring(6); // = "1" when NumPad1 is pressed
             }
+            else if (e.Key >= Key.A && e.Key <= Key.Z)
+                digit = e.Key.ToString();
+            else if (e.Key == Key.OemMinus)
+            {
+                digit = "-";
+            }
             _BarcodeStr += digit;
             _lastKeystroke = DateTime.Now;
             // process barcode
 
-            if (e.Key.ToString() == "Return" && _BarcodeStr != "" && _InvoiceType == "pd")
+            if (e.Key.ToString() == "Return" && _BarcodeStr != "")
             {
+                await dealWithBarcode(_BarcodeStr);
                 if (_Sender != null)
                 {
                     DatePicker dt = _Sender as DatePicker;
@@ -1099,7 +1108,7 @@ namespace POS.View
                     }
                     else if (tb != null)
                     {
-                        if (tb.Name == "tb_invoiceNumber" || tb.Name == "tb_note" || tb.Name == "tb_discount")// remove barcode from text box
+                        if (tb.Name == "tb_invoiceNumber" || tb.Name == "tb_note" || tb.Name == "tb_discount" || tb.Name == "tb_barcode")// remove barcode from text box
                         {
                             string tbString = tb.Text;
                             string newStr = "";
@@ -1113,101 +1122,154 @@ namespace POS.View
                 }
                 tb_barcode.Text = _BarcodeStr;
                 _BarcodeStr = "";
-
-                // get item matches barcode
-                if (barcodesList != null)
-                {
-                    ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text.Trim());
-
-                    // get item matches the barcode
-                    if (unit1 != null)
-                    {
-                        int itemId = (int)unit1.itemId;
-                        if (unit1.itemId != 0)
-                        {
-                            int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
-
-                            if (index == -1)//item doesn't exist in bill
-                            {
-                                // get item units
-                                itemUnits = await itemUnitModel.GetItemUnits(itemId);
-                                //get item from list
-                                item = items.ToList().Find(i => i.itemId == itemId);
-
-                                int count = 1;
-                                decimal price = 0; //?????
-                                decimal total = count * price;
-                                addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
-                            }
-                            else // item exist prevoiusly in list
-                            {
-                                billDetails[index].Count++;
-                                billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
-
-                                _Sum += billDetails[index].Price;
-
-                            }
-                            refreshTotalValue();
-                            refrishBillDetails();
-                        }
-                    }
-                    else
-                    {
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemNotFoundToolTip"), animation: ToasterAnimation.FadeIn);
-                    }
-                }
+   
                 e.Handled = true;
                 cb_branch.SelectedValue = _SelectedBranch;
             }
-
-
             _Sender = null;
+        }
+        private async Task dealWithBarcode(string barcode)
+        {
+            int codeindex = barcode.IndexOf("-");
+            string prefix = "";
+            if (codeindex >= 0)
+                prefix = barcode.Substring(0, codeindex);
+            prefix = prefix.ToLower();
+            barcode = barcode.ToLower();
+            switch (prefix)
+            {
+                case "pi":// this barcode for invoice               
+                    Btn_newDraft_Click(null, null);
+                    invoice = await invoiceModel.GetInvoicesByNum(barcode);
+                    _InvoiceType = invoice.invType;
+                    if (_InvoiceType.Equals("pd") || _InvoiceType.Equals("pw") || _InvoiceType.Equals("pbd") || _InvoiceType.Equals("pb"))
+                    {
+                        // set title to bill
+                        if (_InvoiceType == "pd")
+                        {
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                        }
+                        else if (_InvoiceType == "pw")
+                        {
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
+                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                        }
+                        else if (_InvoiceType == "pbd")
+                        {
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
+                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                        }
+                        else if (_InvoiceType == "pb")
+                        {
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                            // orange #FFA926 red #D22A17
+                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                        }
+
+                        await fillInvoiceInputs(invoice);
+                    }
+                    break;
+               
+                default: // if barcode for item
+                         // get item matches barcode
+                    if (barcodesList != null)
+                    {
+                        ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text.Trim());
+
+                        // get item matches the barcode
+                        if (unit1 != null)
+                        {
+                            int itemId = (int)unit1.itemId;
+                            if (unit1.itemId != 0)
+                            {
+                                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
+
+                                if (index == -1)//item doesn't exist in bill
+                                {
+                                    // get item units
+                                    itemUnits = await itemUnitModel.GetItemUnits(itemId);
+                                    //get item from list
+                                    item = items.ToList().Find(i => i.itemId == itemId);
+
+                                    int count = 1;
+                                    decimal price = 0; //?????
+                                    decimal total = count * price;
+                                    addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
+                                }
+                                else // item exist prevoiusly in list
+                                {
+                                    billDetails[index].Count++;
+                                    billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
+
+                                    _Sum += billDetails[index].Price;
+
+                                }
+                                refreshTotalValue();
+                                refrishBillDetails();
+                            }
+                        }
+                        else
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemNotFoundToolTip"), animation: ToasterAnimation.FadeIn);
+                        }
+                    }
+                    break;
+            }
+
+            tb_barcode.Clear();
         }
         private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
-                if (barcodesList != null && _BarcodeStr.Length < 13) //_BarcodeStr == "" barcode not from barcode reader
+                string barcode = "";
+                if (_BarcodeStr.Length < 13)
                 {
-                    ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text);
-
-                    // get item matches the barcode
-                    if (unit1 != null)
-                    {
-                        int itemId = (int)unit1.itemId;
-                        if (unit1.itemId != 0)
-                        {
-                            int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
-                            //item doesn't exist in bill
-                            if (index == -1)
-                            {
-                                // get item units
-                                itemUnits = await itemUnitModel.GetItemUnits(itemId);
-                                //get item from list
-                                item = items.ToList().Find(i => i.itemId == itemId);
-
-                                int count = 1;
-                                decimal price = 0; //?????
-                                decimal total = count * price;
-                                addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
-                            }
-                            else // item exist prevoiusly in list
-                            {
-                                billDetails[index].Count++;
-                                billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
-
-                                _Sum += billDetails[index].Price;
-
-                            }
-                            refreshTotalValue();
-                            refrishBillDetails();
-                        }
-                    }
-                    else
-                    {
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemNotFoundToolTip"), animation: ToasterAnimation.FadeIn);
-                    }
+                    barcode = tb_barcode.Text;
+                    await dealWithBarcode(barcode);
                 }
+                //if (barcodesList != null && _BarcodeStr.Length < 13) //_BarcodeStr == "" barcode not from barcode reader
+                //{
+                //    ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text);
+
+                //    // get item matches the barcode
+                //    if (unit1 != null)
+                //    {
+                //        int itemId = (int)unit1.itemId;
+                //        if (unit1.itemId != 0)
+                //        {
+                //            int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
+                //            //item doesn't exist in bill
+                //            if (index == -1)
+                //            {
+                //                // get item units
+                //                itemUnits = await itemUnitModel.GetItemUnits(itemId);
+                //                //get item from list
+                //                item = items.ToList().Find(i => i.itemId == itemId);
+
+                //                int count = 1;
+                //                decimal price = 0; //?????
+                //                decimal total = count * price;
+                //                addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
+                //            }
+                //            else // item exist prevoiusly in list
+                //            {
+                //                billDetails[index].Count++;
+                //                billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
+
+                //                _Sum += billDetails[index].Price;
+
+                //            }
+                //            refreshTotalValue();
+                //            refrishBillDetails();
+                //        }
+                //    }
+                //    else
+                //    {
+                //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemNotFoundToolTip"), animation: ToasterAnimation.FadeIn);
+                //    }
+                //}
             }
         }
 
@@ -1481,6 +1543,11 @@ namespace POS.View
                 rep.Refresh();
                 LocalReportExtensions.PrintToPrinter(rep);
             }
+        }
+
+        private void Tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _Sender = sender;
         }
     }
 }

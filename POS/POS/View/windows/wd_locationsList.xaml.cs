@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data;
 
 namespace POS.View.windows
 {
@@ -27,11 +28,22 @@ namespace POS.View.windows
 
        
         public bool isActive;
-        Location location = new Location();
+        //Location location = new Location();
+        
+        
+        //bool isOpend=true;
+        public int sectionId { get; set; }
+        Classes.Section section = new Classes.Section();
+        Classes.Section sectionModel = new Classes.Section();
+
+        List<Location> allLocationsSource = new List<Location>();
+        public List<Location> selectedLocationsSource = new List<Location>();
+
         List<Location> allLocations = new List<Location>();
         public List<Location> selectedLocations = new List<Location>();
+
         Location locationModel = new Location();
-        bool isOpend=true;
+        Location location = new Location();
 
         /// <summary>
         /// Selcted Locations if selectedLocations Have Locations At the beginning
@@ -40,25 +52,61 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            allLocations = (await locationModel.Get()).Where(x => x.isActive == 1).ToList();
+            //MessageBox.Show(sectionId.ToString());
+           
+            translat();
 
-            foreach (var location in selectedLocations)
+            section = await sectionModel.GetSectionByID(sectionId);
+            //MessageBox.Show(section.name);
+            allLocationsSource = await locationModel.Get();
+            var query = allLocationsSource.Where(i => i.sectionId == sectionId && i.isFreeZone != 1);
+            selectedLocationsSource = query.ToList();
+
+            allLocations.AddRange(allLocationsSource);
+            foreach (var i in allLocations)
             {
-                allLocations.Remove(location);
-
+                i.x = i.x.Trim() + "-" + i.y.Trim() + "-" + i.z.Trim();
             }
-            selectedLocations.AddRange(selectedLocations);
 
+            selectedLocations.AddRange(selectedLocationsSource);
+            foreach (var i in selectedLocations)
+            {
+                i.x = i.x.Trim() + "-" + i.y.Trim() + "-" + i.z.Trim();
+            }
+
+            //MessageBox.Show(allLocations[0].x.ToString());
 
             lst_allLocations.ItemsSource = allLocations;
+            lst_allLocations.SelectedValuePath = "x";
+            lst_allLocations.DisplayMemberPath = "locationId";
+
             lst_selectedLocations.ItemsSource = selectedLocations;
+            lst_selectedLocations.SelectedValuePath = "x";
+            lst_selectedLocations.DisplayMemberPath = "locationId";
+        }
 
+        private void translat()
+        {
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_searchitems, MainWindow.resourcemanager.GetString("trSearchHint"));
 
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
-            lst_allLocations.SelectedValuePath = "locationId";
-            lst_selectedLocations.SelectedValuePath = "locationId";
-            lst_allLocations.DisplayMemberPath = "name";
-            lst_selectedLocations.DisplayMemberPath = "name";
+            lst_allLocations.Columns[0].Header = MainWindow.resourcemanager.GetString("trLocation");
+            lst_selectedLocations.Columns[0].Header = MainWindow.resourcemanager.GetString("trSelectedLocations");
+
+            txt_locations.Text = MainWindow.resourcemanager.GetString("trLocation");
+            txt_location.Text = MainWindow.resourcemanager.GetString("trLocation");
+            txt_selectedLocations.Text = MainWindow.resourcemanager.GetString("trSelectedLocations");
+            txt_HeaderTitle.Text = MainWindow.resourcemanager.GetString("trSection");
+            tt_searchX.Content = MainWindow.resourcemanager.GetString("trX");
+            tt_searchY.Content = MainWindow.resourcemanager.GetString("trY");
+            tt_searchZ.Content = MainWindow.resourcemanager.GetString("trZ");
+
+            tt_selectAllItem.Content = MainWindow.resourcemanager.GetString("trSelectAllItems");
+            tt_unselectAllItem.Content = MainWindow.resourcemanager.GetString("trUnSelectAllItems");
+            tt_selectItem.Content = MainWindow.resourcemanager.GetString("trSelectOneItem");
+            tt_unselectItem.Content = MainWindow.resourcemanager.GetString("trUnSelectOneItem");
+
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
@@ -68,8 +116,14 @@ namespace POS.View.windows
                 Btn_save_Click(null, null);
             }
         }
-        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
+            for (int i = 0; i < selectedLocations.Count; i++)
+            {
+                string s = await location.saveLocationsSection(selectedLocations , sectionId, MainWindow.userID.Value);
+               // MessageBox.Show(s);
+            }
+
             isActive = true;
             this.Close();
         }
@@ -95,23 +149,27 @@ namespace POS.View.windows
 
 
         private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
-        {
-            selectedLocations =( await locationModel.Get() ).Where(x => x.isActive == 1).ToList();
-            allLocations.Clear();
-            lst_allLocations.ItemsSource = allLocations;
-            lst_selectedLocations.ItemsSource = selectedLocations;
-            lst_allLocations.Items.Refresh();
-            lst_selectedLocations.Items.Refresh();
+        {//select all
+            int x = allLocations.Count;
+            for (int i = 0; i < x; i++)
+            {
+                //MessageBox.Show(i.ToString());
+                lst_allLocations.SelectedIndex = 0;
+                Btn_selectedLocation_Click(null, null);
+            }
         }
         private void Btn_selectedLocation_Click(object sender, RoutedEventArgs e)
-        {
+        {//select one
             location = lst_allLocations.SelectedItem as Location;
             if (location != null)
             {
                 allLocations.Remove(location);
+
                 selectedLocations.Add(location);
+
                 lst_allLocations.ItemsSource = allLocations;
                 lst_selectedLocations.ItemsSource = selectedLocations;
+
                 lst_allLocations.Items.Refresh();
                 lst_selectedLocations.Items.Refresh();
             }
@@ -120,29 +178,30 @@ namespace POS.View.windows
 
 
         private void Btn_unSelectedLocation_Click(object sender, RoutedEventArgs e)
-        {
-
+        {//unselect one
             location = lst_selectedLocations.SelectedItem as Location;
             if (location != null)
             {
                 selectedLocations.Remove(location);
+
                 allLocations.Add(location);
 
                 lst_allLocations.ItemsSource = allLocations;
-                lst_allLocations.Items.Refresh();
                 lst_selectedLocations.ItemsSource = selectedLocations;
+
+                lst_allLocations.Items.Refresh();
                 lst_selectedLocations.Items.Refresh();
             }
         }
 
         private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
-        {
-            allLocations = (await locationModel.Get()).Where(x => x.isActive == 1).ToList();
-            selectedLocations.Clear();
-            lst_allLocations.ItemsSource = allLocations;
-            lst_allLocations.Items.Refresh();
-            lst_selectedLocations.ItemsSource = selectedLocations;
-            lst_selectedLocations.Items.Refresh();
+        {//unselect all
+            int x = selectedLocations.Count;
+            for (int i = 0; i < x; i++)
+            {
+                lst_selectedLocations.SelectedIndex = 0;
+                Btn_unSelectedLocation_Click(null, null);
+            }
 
         }
 

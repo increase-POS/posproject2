@@ -195,6 +195,7 @@ namespace POS.View
                 location.updateUserId = MainWindow.userID;
                 location.isActive = 1;
                 location.sectionId = null;
+                location.branchId = MainWindow.branchID;
 
                 string s = await locationModel.saveLocation(location);
 
@@ -403,23 +404,25 @@ namespace POS.View
             dg_location.ItemsSource = locationsQuery;
             txt_count.Text = locationsQuery.Count().ToString();
         }
+
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-
             if (locations is null)
                 await RefreshLocationsList();
             searchText = tb_search.Text;
             locationsQuery = locations.Where(s => (s.x.Contains(searchText) ||
             s.y.Contains(searchText) ||
             s.z.Contains(searchText)
-            ) && s.isActive == tgl_locationState);
+            ) && s.isActive == tgl_locationState && s.isFreeZone != 1);
             RefreshLocationView();
-        } 
+        }
+
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             RefreshLocationsList();
             Tb_search_TextChanged(null, null);
         }
+
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
             this.Dispatcher.Invoke(() =>
@@ -429,6 +432,7 @@ namespace POS.View
                 t1.Start();
             });
         }
+
         void FN_ExportToExcel()
         {
             
@@ -443,6 +447,7 @@ namespace POS.View
 
             ExportToExcel.Export(DTForExcel);
         }
+
         private void Btn_addRange_Click(object sender, RoutedEventArgs e)
         {
             Window.GetWindow(this).Opacity = 0.2;
@@ -451,5 +456,6 @@ namespace POS.View
             Window.GetWindow(this).Opacity = 1;
             Btn_refresh_Click(null, null);
         }
+
     }
 }

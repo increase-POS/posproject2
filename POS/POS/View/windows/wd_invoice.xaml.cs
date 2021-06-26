@@ -32,6 +32,7 @@ namespace POS.View.windows
        public Invoice invoice = new Invoice();
         IEnumerable<Invoice> invoices;
         public int posId { get; set; }
+        public int branchId { get; set; }
         /// <summary>
         /// for filtering invoice type
         /// </summary>
@@ -75,7 +76,7 @@ namespace POS.View.windows
         }
         private async Task refreshInvoices()
         {
-            invoices = await invoice.GetInvoicesByType(invoiceType);
+            invoices = await invoice.GetInvoicesByType(invoiceType,branchId);
 
             dg_Invoice.ItemsSource = invoices.ToList();
         }

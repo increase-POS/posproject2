@@ -1330,11 +1330,65 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الكمية غير متوفرة من العنصر.
+        /// </summary>
+        internal static string trErrorAmountNotAvailableFromToolTip {
+            get {
+                return ResourceManager.GetString("trErrorAmountNotAvailableFromToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الكمية غير متاحة.
+        /// </summary>
+        internal static string trErrorAmountNotAvailableToolTip {
+            get {
+                return ResourceManager.GetString("trErrorAmountNotAvailableToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to باركود خاطئ.
         /// </summary>
         internal static string trErrorBarcodeToolTip {
             get {
                 return ResourceManager.GetString("trErrorBarcodeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الكوبون مضاف مسبقاً إلى الفاتورة.
+        /// </summary>
+        internal static string trErrorCouponExist {
+            get {
+                return ResourceManager.GetString("trErrorCouponExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to انتهت صلاحية الكوبون.
+        /// </summary>
+        internal static string trErrorCouponExpire {
+            get {
+                return ResourceManager.GetString("trErrorCouponExpire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الكوبون غير فعال.
+        /// </summary>
+        internal static string trErrorCouponNotActive {
+            get {
+                return ResourceManager.GetString("trErrorCouponNotActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تم استهلاك جميع الكوبونات.
+        /// </summary>
+        internal static string trErrorCouponQuantity {
+            get {
+                return ResourceManager.GetString("trErrorCouponQuantity", resourceCulture);
             }
         }
         
@@ -1447,6 +1501,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تاريخ الانتهاء لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trErrorEmptyEndDateToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyEndDateToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to نقطة البيع الساحبة لا يمكن أن تكون فارغ.
         /// </summary>
         internal static string trErrorEmptyFromPosToolTip {
@@ -1506,6 +1569,15 @@ namespace POS {
         internal static string trErrorEmptyRecipientToolTip {
             get {
                 return ResourceManager.GetString("trErrorEmptyRecipientToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ البداية لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trErrorEmptyStartDateToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyStartDateToolTip", resourceCulture);
             }
         }
         
@@ -2860,7 +2932,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to اختيار جميع العناصر.
+        ///   Looks up a localized string similar to اختيار الكل.
         /// </summary>
         internal static string trSelectAllItems {
             get {
@@ -2905,6 +2977,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to أماكن التخزين المختارة.
+        /// </summary>
+        internal static string trSelectedLocations {
+            get {
+                return ResourceManager.GetString("trSelectedLocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اختر نوع العنصر.
         /// </summary>
         internal static string trSelectItemTypeHint {
@@ -2923,7 +3004,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to اختيار عنصر.
+        ///   Looks up a localized string similar to اختيار .
         /// </summary>
         internal static string trSelectOneItem {
             get {
@@ -3364,7 +3445,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to إلغاء اختيار جميع العناصر.
+        ///   Looks up a localized string similar to إلغاء اختيار الكل.
         /// </summary>
         internal static string trUnSelectAllItems {
             get {
@@ -3373,7 +3454,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to إلغاء اختيار عنصر.
+        ///   Looks up a localized string similar to إلغاء اختيار.
         /// </summary>
         internal static string trUnSelectOneItem {
             get {

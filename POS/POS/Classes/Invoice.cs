@@ -70,6 +70,7 @@ namespace POS.Classes
         public string notes { get; set; }
         public string vendorInvNum { get; set; }
         public string name { get; set; }
+        public string branchName { get; set; }
         public Nullable<System.DateTime> vendorInvDate { get; set; }
         public Nullable<int> branchId { get; set; }
         public Nullable<int> itemsCount { get; set; }
@@ -146,7 +147,7 @@ namespace POS.Classes
                 return message;
             }
         }
-        public async Task<string> saveInvoiceCoupons(List<CouponInvoice> invoiceCoupons, int invoiceId)
+        public async Task<string> saveInvoiceCoupons(List<CouponInvoice> invoiceCoupons, int invoiceId, string invType)
         {
             string message = "";
             // ... Use HttpClient.
@@ -164,7 +165,7 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "couponsInvoices/Save?couponsInvoicesObject=" + myContent + "&invoiceId=" + invoiceId);
+                request.RequestUri = new Uri(Global.APIUri + "couponsInvoices/Save?couponsInvoicesObject=" + myContent + "&invoiceId=" + invoiceId+"&invType="+invType);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -210,7 +211,7 @@ namespace POS.Classes
         }
 
 
-        public async Task<List<Invoice>> GetInvoicesByType(string invType)
+        public async Task<List<Invoice>> GetInvoicesByType(string invType,int branchId )
         {
             List<Invoice> invoices = null;
             // ... Use HttpClient.
@@ -223,7 +224,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Invoices/GetByInvoiceType?invType=" + invType);
+                request.RequestUri = new Uri(Global.APIUri + "Invoices/GetByInvoiceType?invType=" + invType+"&branchId="+branchId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -250,7 +251,7 @@ namespace POS.Classes
                 return invoices;
             }
         }
-        public async Task<Invoice> GetInvoicesByNum(string invNum)
+        public async Task<Invoice> GetInvoicesByNum(string invNum, int branchId = 0)
         {
             Invoice invoice = null;
             // ... Use HttpClient.
@@ -263,7 +264,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Invoices/GetByInvNum?invNum=" + invNum);
+                request.RequestUri = new Uri(Global.APIUri + "Invoices/GetByInvNum?invNum=" + invNum + "&branchId="+branchId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

@@ -1267,13 +1267,13 @@
     <value>من Z ...</value>
   </data>
   <data name="trSelectAllItems" xml:space="preserve">
-    <value>اختيار جميع العناصر</value>
+    <value>اختيار الكل</value>
   </data>
   <data name="trSelectedItems" xml:space="preserve">
     <value>العناصر المختارة</value>
   </data>
   <data name="trSelectOneItem" xml:space="preserve">
-    <value>اختيار عنصر</value>
+    <value>اختيار </value>
   </data>
   <data name="trToX" xml:space="preserve">
     <value>إلى X</value>
@@ -1294,10 +1294,10 @@
     <value>إلى Z...</value>
   </data>
   <data name="trUnSelectAllItems" xml:space="preserve">
-    <value>إلغاء اختيار جميع العناصر</value>
+    <value>إلغاء اختيار الكل</value>
   </data>
   <data name="trUnSelectOneItem" xml:space="preserve">
-    <value>إلغاء اختيار عنصر</value>
+    <value>إلغاء اختيار</value>
   </data>
   <data name="trX" xml:space="preserve">
     <value>X</value>
@@ -1316,5 +1316,32 @@
   </data>
   <data name="trZHint" xml:space="preserve">
     <value>Z...</value>
+  </data>
+  <data name="trErrorAmountNotAvailableFromToolTip" xml:space="preserve">
+    <value>الكمية غير متوفرة من العنصر</value>
+  </data>
+  <data name="trErrorAmountNotAvailableToolTip" xml:space="preserve">
+    <value>الكمية غير متاحة</value>
+  </data>
+  <data name="trErrorCouponExist" xml:space="preserve">
+    <value>الكوبون مضاف مسبقاً إلى الفاتورة</value>
+  </data>
+  <data name="trErrorCouponExpire" xml:space="preserve">
+    <value>انتهت صلاحية الكوبون</value>
+  </data>
+  <data name="trErrorCouponNotActive" xml:space="preserve">
+    <value>الكوبون غير فعال</value>
+  </data>
+  <data name="trErrorCouponQuantity" xml:space="preserve">
+    <value>تم استهلاك جميع الكوبونات</value>
+  </data>
+  <data name="trErrorEmptyEndDateToolTip" xml:space="preserve">
+    <value>تاريخ الانتهاء لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trErrorEmptyStartDateToolTip" xml:space="preserve">
+    <value>تاريخ البداية لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trSelectedLocations" xml:space="preserve">
+    <value>أماكن التخزين المختارة</value>
   </data>
 </root>

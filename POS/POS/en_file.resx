@@ -1288,13 +1288,13 @@
     <value>From Z...</value>
   </data>
   <data name="trSelectAllItems" xml:space="preserve">
-    <value>Select all items</value>
+    <value>Select all</value>
   </data>
   <data name="trSelectedItems" xml:space="preserve">
     <value>Selcted items</value>
   </data>
   <data name="trSelectOneItem" xml:space="preserve">
-    <value>Select item</value>
+    <value>Select one</value>
   </data>
   <data name="trToX" xml:space="preserve">
     <value>To X</value>
@@ -1315,10 +1315,10 @@
     <value>To Z...</value>
   </data>
   <data name="trUnSelectAllItems" xml:space="preserve">
-    <value>Unselect all items</value>
+    <value>Unselect all</value>
   </data>
   <data name="trUnSelectOneItem" xml:space="preserve">
-    <value>Un select item</value>
+    <value>Unselect one</value>
   </data>
   <data name="trX" xml:space="preserve">
     <value>X</value>
@@ -1337,5 +1337,32 @@
   </data>
   <data name="trZHint" xml:space="preserve">
     <value>Z...</value>
+  </data>
+  <data name="trErrorAmountNotAvailableFromToolTip" xml:space="preserve">
+    <value>Quantity not available of item</value>
+  </data>
+  <data name="trErrorAmountNotAvailableToolTip" xml:space="preserve">
+    <value>Quantity not available</value>
+  </data>
+  <data name="trErrorCouponExist" xml:space="preserve">
+    <value>Coupon already added to invoice</value>
+  </data>
+  <data name="trErrorCouponExpire" xml:space="preserve">
+    <value>Coupon has expired</value>
+  </data>
+  <data name="trErrorCouponNotActive" xml:space="preserve">
+    <value>Coupon not active</value>
+  </data>
+  <data name="trErrorCouponQuantity" xml:space="preserve">
+    <value>All coupons are used</value>
+  </data>
+  <data name="trErrorEmptyEndDateToolTip" xml:space="preserve">
+    <value>End date cann't be empty</value>
+  </data>
+  <data name="trErrorEmptyStartDateToolTip" xml:space="preserve">
+    <value>Start date cnn't be empty</value>
+  </data>
+  <data name="trSelectedLocations" xml:space="preserve">
+    <value>Selected locations</value>
   </data>
 </root>

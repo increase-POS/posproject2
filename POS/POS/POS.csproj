@@ -381,6 +381,9 @@
     <Compile Include="View\windows\wd_customersList.xaml.cs">
       <DependentUpon>wd_customersList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_deliveryReceiptInvoice.xaml.cs">
+      <DependentUpon>wd_deliveryReceiptInvoice.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_invoice.xaml.cs">
       <DependentUpon>wd_invoice.xaml</DependentUpon>
     </Compile>
@@ -653,6 +656,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_customersList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_deliveryReceiptInvoice.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

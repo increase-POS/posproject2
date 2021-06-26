@@ -376,7 +376,8 @@
                                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                  Height="40"   Margin="10,5,10,5" 
                                                  PreviewKeyDown="Tb_preventSpaces" 
-                                                 PreviewTextInput="Tb_OnlyLatinAndDigits" Loaded="Tb_code_Loaded" >
+                                                 PreviewTextInput="Tb_OnlyLatinAndDigits" 
+                                                 LostFocus="Tb_code_LostFocus" TextChanged="Tb_code_TextChanged"  >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_code" Content="Code"
                                                           Placement="left" 
@@ -402,7 +403,9 @@
                                                  BorderBrush="AliceBlue" 
                                                   MaxLength="20" 
                                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                                 Height="40"  Margin="10,5,10,5" Grid.ColumnSpan="2" >
+                                                 Height="40"  Margin="10,5,10,5" Grid.ColumnSpan="2"
+                                                 TextChanged="Tb_validateEmptyTextChange" 
+                                                 LostFocus="Tb_validateEmptyLostFocus">
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_name" Content="Name"
                                                          Placement="left" 
@@ -484,7 +487,7 @@
                                                   Background="#f8f8f8" 
                                                   BorderBrush="#737373"       BorderThickness="0" 
                                                   FontFamily="Segoe UI"   
-                                                   >
+                                                  LostFocus="Tb_validateEmptyLostFocus">
                                 <ComboBox.ToolTip>
                                     <ToolTip x:Name="tt_discountType" Content="Discount Type"
                                                          Placement="left" 
@@ -522,7 +525,9 @@
                                                         
                                                            materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                            Height="40"  
-                                                           PreviewKeyDown="Tb_preventSpaces"   >
+                                                           PreviewKeyDown="Tb_preventSpaces"  
+                                                           
+                                                           LostFocus="Tb_validateEmptyLostFocus">
                                         <TextBox.ToolTip>
                                             <ToolTip x:Name="tt_discountValue" Content="Discount Value"
                                                          Placement="left" 
@@ -569,7 +574,7 @@
                                                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                          materialDesign:HintAssist.Hint="Start date..."  
                                                          Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
-                                               
+                                                         LostFocus="Tb_validateEmptyLostFocus" 
                                                Height="40"  Margin="10,5,0,5" >
                                     <DatePicker.ToolTip>
                                         <ToolTip x:Name="tt_startDate" Content="Start Date"
@@ -581,7 +586,7 @@
                                 </DatePicker>
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                                                           x:Name="p_errorStartDate"
-                                                          HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                                          HorizontalAlignment="Right" Grid.Column="0"  Visibility="Collapsed"   
                                                           VerticalAlignment="Center" Width="15"  Height="15"
                                                           Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 
                                                       L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -601,7 +606,7 @@
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                  materialDesign:HintAssist.Hint="End date..."  
                                Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
-                               
+                               LostFocus="Tb_validateEmptyLostFocus" 
                             Grid.Column="1"  Height="40"  Margin="5,5,10,5" >
                                     <DatePicker.ToolTip>
                                         <ToolTip x:Name="tt_endDate" Content="End Date"
@@ -646,7 +651,9 @@
                           MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                       Height="40" 
                                                      PreviewKeyDown="Tb_preventSpaces" 
-                                                     PreviewTextInput="Tb_Decimal_PreviewTextInput">
+                                                     PreviewTextInput="Tb_Decimal_PreviewTextInput"
+                                          TextChanged="Tb_validateEmptyTextChange" 
+                                             LostFocus="Tb_validateEmptyLostFocus">
                                     <TextBox.ToolTip>
                                         <ToolTip x:Name="tt_minInvoiceValue" Content="Minimum Invoice Value"
                                                          Placement="left" 
@@ -657,7 +664,7 @@
                                 </TextBox>
 
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" 
-                                  HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
+                                  HorizontalAlignment="Right"  Grid.Column="0"  Visibility="Collapsed" 
                              VerticalAlignment="Center" Width="15"  Height="15"
                                                    x:Name="p_errorMinInvoiceValue"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -676,7 +683,9 @@
                          MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                       Height="40"    Grid.Column="2" 
                                                       PreviewKeyDown="Tb_preventSpaces"
-                                                      PreviewTextInput="Tb_Decimal_PreviewTextInput">
+                                                      PreviewTextInput="Tb_Decimal_PreviewTextInput"
+                                           TextChanged="Tb_validateEmptyTextChange" 
+                                             LostFocus="Tb_validateEmptyLostFocus">
                                     <TextBox.ToolTip>
                                         <ToolTip x:Name="tt_maxInvoiceValue" Content="Maximum Invoice Value"
                                                          Placement="left" 
@@ -706,9 +715,10 @@
                                                      BorderBrush="AliceBlue"   
                                              MaxLength="20" 
                                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                                      Height="40"  Margin="10,5,10,5" 
-                                                     PreviewKeyDown="Tb_preventSpaces" PreviewTextInput="Tb_quantity_PreviewTextInput"
-                                                     >
+                                                     Height="40"  Margin="10,5,10,5" 
+                                                    PreviewKeyDown="Tb_preventSpaces" PreviewTextInput="Tb_quantity_PreviewTextInput"
+                                                     TextChanged="Tb_validateEmptyTextChange" 
+                                                     LostFocus="Tb_validateEmptyLostFocus">
                             <TextBox.ToolTip>
                                 <ToolTip Grid.Row="10" x:Name="tt_quantity" Content="Quantity"
                                                          Placement="left" 
@@ -718,7 +728,7 @@
                             </TextBox.ToolTip>
                         </TextBox>
 
-                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" 
+                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" Grid.Row="10"
                                   HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                              VerticalAlignment="Center" Width="15"  Height="15"
                                                    x:Name="p_errorQuantity"

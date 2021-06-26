@@ -208,7 +208,8 @@ namespace POS.View
 
             translate();
 
-            refreshUnitsGrid();
+            //await RefreshUnitsList();
+            //Tb_search_TextChanged(null, null);
 
         }
        
@@ -241,7 +242,8 @@ namespace POS.View
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    refreshUnitsGrid();
+                    await RefreshUnitsList();
+                    Tb_search_TextChanged(null, null);
 
                     Btn_clear_Click(null, null);
                 }
@@ -289,7 +291,8 @@ namespace POS.View
                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
             }
-            refreshUnitsGrid();
+            await RefreshUnitsList();
+            Tb_search_TextChanged(null, null);
 
             Btn_clear_Click(sender,e);
         }
@@ -332,7 +335,8 @@ namespace POS.View
                     else 
                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    refreshUnitsGrid();
+                    await RefreshUnitsList();
+                    Tb_search_TextChanged(null, null);
                 }
                 else
                 {

@@ -86,7 +86,7 @@ namespace POS.Classes
                 return 0;
             }
         }
-        public async Task<Boolean> recieptInvoice(List<ItemTransfer> invoiceItems, int branchId, int invoiceId,int userId)
+        public async Task<Boolean> recieptInvoice(List<ItemTransfer> invoiceItems, int branchId,int userId)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -103,7 +103,7 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "itemsLocations/receiptInvoice?itemLocationObject=" + myContent + "&branchId=" + branchId + "&invoiceId" + invoiceId+"&userId="+userId);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/receiptInvoice?itemLocationObject=" + myContent + "&branchId=" + branchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

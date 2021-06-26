@@ -1357,11 +1357,65 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quantity not available of item.
+        /// </summary>
+        internal static string trErrorAmountNotAvailableFromToolTip {
+            get {
+                return ResourceManager.GetString("trErrorAmountNotAvailableFromToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity not available.
+        /// </summary>
+        internal static string trErrorAmountNotAvailableToolTip {
+            get {
+                return ResourceManager.GetString("trErrorAmountNotAvailableToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error barcode.
         /// </summary>
         internal static string trErrorBarcodeToolTip {
             get {
                 return ResourceManager.GetString("trErrorBarcodeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Coupon already added to invoice.
+        /// </summary>
+        internal static string trErrorCouponExist {
+            get {
+                return ResourceManager.GetString("trErrorCouponExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Coupon has expired.
+        /// </summary>
+        internal static string trErrorCouponExpire {
+            get {
+                return ResourceManager.GetString("trErrorCouponExpire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Coupon not active.
+        /// </summary>
+        internal static string trErrorCouponNotActive {
+            get {
+                return ResourceManager.GetString("trErrorCouponNotActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All coupons are used.
+        /// </summary>
+        internal static string trErrorCouponQuantity {
+            get {
+                return ResourceManager.GetString("trErrorCouponQuantity", resourceCulture);
             }
         }
         
@@ -1474,6 +1528,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End date cann&apos;t be empty.
+        /// </summary>
+        internal static string trErrorEmptyEndDateToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyEndDateToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pull Pos can not be empty.
         /// </summary>
         internal static string trErrorEmptyFromPosToolTip {
@@ -1533,6 +1596,15 @@ namespace POS {
         internal static string trErrorEmptyRecipientToolTip {
             get {
                 return ResourceManager.GetString("trErrorEmptyRecipientToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start date cnn&apos;t be empty.
+        /// </summary>
+        internal static string trErrorEmptyStartDateToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyStartDateToolTip", resourceCulture);
             }
         }
         
@@ -2914,7 +2986,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select all items.
+        ///   Looks up a localized string similar to Select all.
         /// </summary>
         internal static string trSelectAllItems {
             get {
@@ -2959,6 +3031,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selected locations.
+        /// </summary>
+        internal static string trSelectedLocations {
+            get {
+                return ResourceManager.GetString("trSelectedLocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Item Type.
         /// </summary>
         internal static string trSelectItemTypeHint {
@@ -2977,7 +3058,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select item.
+        ///   Looks up a localized string similar to Select one.
         /// </summary>
         internal static string trSelectOneItem {
             get {
@@ -3427,7 +3508,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unselect all items.
+        ///   Looks up a localized string similar to Unselect all.
         /// </summary>
         internal static string trUnSelectAllItems {
             get {
@@ -3436,7 +3517,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Un select item.
+        ///   Looks up a localized string similar to Unselect one.
         /// </summary>
         internal static string trUnSelectOneItem {
             get {

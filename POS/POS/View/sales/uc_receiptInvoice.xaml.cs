@@ -159,6 +159,19 @@ namespace POS.View
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             MainWindow.mainWindow.KeyDown -= HandleKeyPress;
+
+            #region Accept
+            MainWindow.mainWindow.Opacity = 0.2;
+            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+            //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+            w.contentText = "Do you want save sale invoice in drafts?";
+            w.ShowDialog();
+            MainWindow.mainWindow.Opacity = 1;
+            #endregion
+            if (w.isOk)
+                Btn_newDraft_Click(null, null);
+            else
+                clearInvoice();
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -445,7 +458,7 @@ namespace POS.View
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
 
-                // build invoice NUM like storCode_PI_sequence exp: 123_PI_2
+                // build invoice NUM like si-storCode-posCode-sequence exp: 123_PI_2
                 if (invoice.invoiceId == 0)
                 {
                     string storeCode = "";
@@ -575,17 +588,10 @@ namespace POS.View
                     //invCouponList.Clear();
                     foreach (CouponInvoice ci in selectedCoupons)
                     {
-                    //    invCoupon = new CouponInvoice();
-
                         ci.InvoiceId = invoiceId;
-                    //    invCoupon.couponId = selectedCoupons[i].cId;
-                    //    invCoupon.discountValue = selectedCoupons[i].discountValue;
-                    //    invCoupon.discountType = Byte.Parse(selectedCoupons[i].discountType);
                         ci.createUserId = MainWindow.userID;
-
-                    //    invCouponList.Add(invCoupon);
                     }
-                    await invoiceModel.saveInvoiceCoupons(selectedCoupons, invoiceId);
+                    await invoiceModel.saveInvoiceCoupons(selectedCoupons, invoiceId,invoice.invType);
                     #endregion
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                 }
@@ -618,22 +624,18 @@ namespace POS.View
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
             //check mandatory inputs
-            validateInvoiceValues();
+            //validateInvoiceValues();
             Boolean available = true;
             if (_InvoiceType == "sd")
                 available = await checkItemsAmounts();
-            if (billDetails.Count > 0 && available)
+            if (billDetails.Count > 0 && available )
             {
                 await addInvoice(_InvoiceType);
-
             }
-            else if (billDetails.Count == 0)
+            else if(billDetails.Count == 0)
             {
                 _InvoiceType = "sd";
-                inputEditable();
-                clearInvoice();
-
-                brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                clearInvoice();     
             }
         }
         private void clearInvoice()
@@ -675,6 +677,8 @@ namespace POS.View
             SectionData.clearValidate(tb_processNum,p_errorProcessNum);
             refrishBillDetails();
             tb_barcode.Focus();
+            inputEditable();
+            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
         }
         #endregion
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
@@ -1090,7 +1094,7 @@ namespace POS.View
             _lastKeystroke = DateTime.Now;
             // process barcode
 
-            if (e.Key.ToString() == "Return" && _BarcodeStr != "" && _InvoiceType =="sd")
+            if (e.Key.ToString() == "Return" && _BarcodeStr != "")
             {  
                 await dealWithBarcode(_BarcodeStr);
                 if (_Sender != null) //clear barcode from inputs
@@ -1200,32 +1204,37 @@ namespace POS.View
             switch (prefix)
             {
                 case "si":// this barcode for invoice
+                   
+                    Btn_newDraft_Click(null, null);
                     invoice = await invoiceModel.GetInvoicesByNum(barcode);
                     _InvoiceType = invoice.invType;
-                    // set title to bill
-                    if (_InvoiceType == "sd")
+                    if (_InvoiceType.Equals("sd") || _InvoiceType.Equals("s") || _InvoiceType.Equals("sbd") || _InvoiceType.Equals("sb"))
                     {
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
-                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-                    }  
-                    else if(_InvoiceType =="s")
-                    {
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
-                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-                    }
-                    else if (_InvoiceType == "sbd")
-                    {
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
-                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
-                    }
-                    else if (_InvoiceType == "sb")
-                    {
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
-                        // orange #FFA926 red #D22A17
-                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
-                    }
+                        // set title to bill
+                        if (_InvoiceType == "sd")
+                        {
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                        }
+                        else if (_InvoiceType == "s")
+                        {
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
+                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                        }
+                        else if (_InvoiceType == "sbd")
+                        {
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
+                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                        }
+                        else if (_InvoiceType == "sb")
+                        {
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                            // orange #FFA926 red #D22A17
+                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                        }
 
-                    await fillInvoiceInputs(invoice);
+                        await fillInvoiceInputs(invoice);
+                    }
                     break;
                 case "cop":// this barcode for coupon
                     {

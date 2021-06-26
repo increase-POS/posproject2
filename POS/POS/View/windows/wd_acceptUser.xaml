@@ -139,7 +139,7 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock  FontSize="16" Foreground="White"  Name="txt_confirmation" Text="Confirmation" VerticalAlignment="Center"/>
                         <materialDesign:PackIcon Name="path_confirmation"
-                                                 Kind="CloseBold" VerticalAlignment="Center" 
+                                                 Kind="CheckCircle" VerticalAlignment="Center" 
                                                  Width="15"  Height="15" Margin="4,1,0,0"/>
 
                     </StackPanel>

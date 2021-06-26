@@ -668,7 +668,15 @@
                         <TextBlock Text="Store/Branch" x:Name="txt_store" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
-                        <Grid Grid.Row="1" Margin="5"  >
+                        <TextBox  MaxHeight="70" x:Name="tb_branch"  Text="{Binding notes, Mode=OneWay}"
+                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}" Height="40"
+                                      Grid.Row="2" Padding="10,0,5,0"  
+                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                      BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  
+                                      Foreground="#4E4E4E" TextBlock.FontSize="12" Background="#f8f8f8"
+                                      BorderBrush="#f8f8f8" 
+                                      Grid.Column="1" Margin="5,5" TextWrapping="Wrap"/>
+                        <!--<Grid Grid.Row="1" Margin="5"  >
                             <ComboBox   Grid.Row="1" x:Name="cb_branch"
                                            Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                              Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
@@ -686,7 +694,7 @@
                                     <ToolTip  x:Name="tt_errorBranch"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
-                        </Grid>
+                        </Grid>-->
 
                     </Grid>
                 </Border>
@@ -808,26 +816,10 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn  Header="Amount"  Width="*"  Binding="{Binding Path=Count}"/>
-                                <DataGridTextColumn  Header="Price"  Width="*"  Binding="{Binding Path=Price}"/>
-                                <DataGridTextColumn IsReadOnly="True"  Width="*"  Header="Total" Binding="{Binding Path=Total}"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                        <Separator Margin="5,0" Grid.Row="2"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
+                       
 
-                        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,5">
-                            <TextBlock Grid.Row="0"  Text="SUM" x:Name="txt_sum" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
-                                  VerticalAlignment="Center"   
-                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
-                            <!--Text="{Binding total, Mode=OneWay}"-->
-                            <TextBlock Grid.Row="1"   x:Name="tb_sum" Grid.Column="1" Margin="10,5,0,5" 
-                       Foreground="#4E4E4E" Text="{Binding total, Mode=OneWay}"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                                  FontWeight="Bold"  FontSize="12"/>
-                            <TextBlock Grid.Row="1"   x:Name="tb_moneyIcon" Grid.Column="1" Margin="0,0,5,0"  
-                       Foreground="#4E4E4E" Text="$"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                                  FontWeight="Bold"  FontSize="12"/>
-                        </StackPanel>
                     </Grid>
                 </Border>
                 <Border BorderThickness="0"  Grid.Column="0" Grid.Row="1"  Height="35"   Margin="10,10,5,10"

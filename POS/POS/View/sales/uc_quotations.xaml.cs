@@ -278,18 +278,23 @@ namespace POS.View.sales
             switch (prefix)
             {
                 case "si":// this barcode for invoice
+                   
+                    Btn_newDraft_Click(null, null);
                     invoice = await invoiceModel.GetInvoicesByNum(barcode);
                     _InvoiceType = invoice.invType;
-                    // set title to bill
-                    if (_InvoiceType == "qd")
+                    if (_InvoiceType.Equals("qd") || _InvoiceType.Equals("q"))
                     {
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftQuontaion");
+                        // set title to bill
+                        if (_InvoiceType == "qd")
+                        {
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftQuontaion");
+                        }
+                        else if (_InvoiceType == "q")
+                        {
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
+                        }
+                        await fillInvoiceInputs(invoice);
                     }
-                    else if (_InvoiceType == "q")
-                    {
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
-                    }
-                    await fillInvoiceInputs(invoice);
                     break;
                 case "cop":// this barcode for coupon
                     {
@@ -449,9 +454,11 @@ namespace POS.View.sales
             {
                 await addInvoice(_InvoiceType);
             }
-            _InvoiceType = "qd";
-            inputEditable();
-            clearInvoice();
+            else if(billDetails.Count == 0)
+            { 
+                clearInvoice();
+                _InvoiceType = "qd";
+            }
         }
         private void clearInvoice()
         {
@@ -491,6 +498,7 @@ namespace POS.View.sales
             SectionData.clearValidate(tb_name, p_errorName);
             refrishBillDetails();
             tb_barcode.Focus();
+            inputEditable();
         }
       
         private void inputEditable()
@@ -580,7 +588,7 @@ namespace POS.View.sales
                     ci.InvoiceId = invoiceId;
                     ci.createUserId = MainWindow.userID;
                 }
-                await invoiceModel.saveInvoiceCoupons(selectedCoupons, invoiceId);
+                await invoiceModel.saveInvoiceCoupons(selectedCoupons, invoiceId,invoice.invType);
                 #endregion
                 // add invoice details
                 invoiceItems = new List<ItemTransfer>();

@@ -1971,3 +1971,5 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_settings.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_companyInfo.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\storage\uc_inventory.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\storage\uc_inventory.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_deliveryReceiptInvoice.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_deliveryReceiptInvoice.baml
