@@ -143,16 +143,16 @@ namespace POS.View
         {
             MainWindow.mainWindow.KeyDown -= HandleKeyPress;
 
-            //#region Accept
-            //Window.GetWindow(this).Opacity = 0.2;
-            //wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-            ////w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-            //w.contentText ="Do you want save this draft?";
-            //w.ShowDialog();
-            //Window.GetWindow(this).Opacity = 1;
-            //#endregion
-            //if (w.isOk)
-            //    Btn_newDraft_Click(null, null);
+            #region Accept
+            MainWindow.mainWindow.Opacity = 0.2;
+            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+            //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+            w.contentText = "Do you want save pay invoice in drafts?";
+            w.ShowDialog();
+            MainWindow.mainWindow.Opacity = 1;
+            #endregion
+            if (w.isOk)
+                Btn_newDraft_Click(null, null);
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {

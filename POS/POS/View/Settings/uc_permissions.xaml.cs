@@ -437,11 +437,11 @@ namespace POS.View.Settings
         }
         private async void Tb_searchGroup_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //if (groups is null)
-            //    await RefreshGroupList();
-            //searchGroupText = tb_searchGroup.Text;
-            //groupsQuery = groups.Where(s => (s.name.Contains(searchGroupText)) && s.isActive == tgl_groupState);
-            //RefreshGroupView();
+            if (groups is null)
+                await RefreshGroupList();
+            searchGroupText = tb_searchGroup.Text;
+            groupsQuery = groups.Where(s => (s.name.Contains(searchGroupText)) && s.isActive == tgl_groupState);
+            RefreshGroupView();
         }
         private void Btn_refreshGroup_Click(object sender, RoutedEventArgs e)
         {
