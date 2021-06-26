@@ -402,20 +402,26 @@ namespace POS.View
 
         private void Btn_barcode_Click(object sender, RoutedEventArgs e)
         {
-            grid_itemData.Visibility = grid_properties.Visibility = Visibility.Collapsed;
-            dg_barcode.Visibility = Visibility.Visible;
-            brd_itemDataTab.BorderBrush = brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
-            brd_barcodeTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            tb_barcode.Focus();
+            if (item.itemId > 0)
+            {
+                grid_itemData.Visibility = grid_properties.Visibility = Visibility.Collapsed;
+                dg_barcode.Visibility = Visibility.Visible;
+                brd_itemDataTab.BorderBrush = brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+                brd_barcodeTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                tb_barcode.Focus();
+            }
         }
 
         private void Btn_properties_Click(object sender, RoutedEventArgs e)
         {
-            grid_itemData.Visibility = dg_barcode.Visibility = Visibility.Collapsed;
-            grid_properties.Visibility = Visibility.Visible;
-            brd_barcodeTab.BorderBrush = brd_itemDataTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
-            brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            cb_selectProperties.Focus();
+            if (item.itemId > 0)
+            {
+                grid_itemData.Visibility = dg_barcode.Visibility = Visibility.Collapsed;
+                grid_properties.Visibility = Visibility.Visible;
+                brd_barcodeTab.BorderBrush = brd_itemDataTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+                brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                cb_selectProperties.Focus();
+            }
         }
 
         //0Normal Item

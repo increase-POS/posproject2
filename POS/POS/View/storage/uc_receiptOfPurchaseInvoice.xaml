@@ -692,7 +692,7 @@
                 </Border>
 
                 <Border BorderThickness="0"  Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="3"   Height="70" Margin="10,10,10,10"
-                    CornerRadius="7" BorderBrush="Black" Background="#FFA926" Padding="0">
+                    CornerRadius="7" BorderBrush="Black" Background="#FFA926" Padding="0" x:Name="brd_count">
                     <StackPanel Orientation="Horizontal" Margin="5,0" >
                         <TextBlock Text="Count" x:Name="txt_count" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" 
                                Margin="2,2,5,2" FontSize="22"/>
