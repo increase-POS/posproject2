@@ -159,9 +159,10 @@ namespace POS.View
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-
-            #region Accept
-            MainWindow.mainWindow.Opacity = 0.2;
+            if (billDetails.Count > 0)
+            {
+                #region Accept
+                MainWindow.mainWindow.Opacity = 0.2;
             wd_acceptCancelPopup w = new wd_acceptCancelPopup();
             //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
             w.contentText = "Do you want save sale invoice in drafts?";
@@ -172,6 +173,7 @@ namespace POS.View
                 Btn_newDraft_Click(null, null);
             else
                 clearInvoice();
+        }
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {

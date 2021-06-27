@@ -176,11 +176,11 @@ namespace POS.Classes
             }
         }
 
-      
 
 
 
-        public async Task<Boolean> deleteMedal(int medalId, int userId, bool final)
+
+        public async Task<string> deleteMedal(int medalId, int userId, bool final)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -193,7 +193,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "medals/Delete?Id=" + medalId + "&userId=" + userId + "&final=" + final);
+                request.RequestUri = new Uri(Global.APIUri + "medal/Delete?medalId=" + medalId + "&userId=" + userId + "&final=" + final);
 
                 request.Headers.Add("APIKey", Global.APIKey);
 
@@ -204,11 +204,16 @@ namespace POS.Classes
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return true;
+                    var message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
+                    return message;
                 }
-                return false;
+                return "error";
             }
         }
+
+
+
 
 
         // get is exist

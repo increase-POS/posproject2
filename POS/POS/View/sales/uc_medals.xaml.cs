@@ -1,10 +1,13 @@
-﻿using POS.View.windows;
+﻿using netoaster;
+using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +26,15 @@ namespace POS.View.sales
     /// </summary>
     public partial class uc_medals : UserControl
     {
+
+        Medal medalModel = new Medal();
+        Medal medal = new Medal();
+        IEnumerable<Medal> medalsQuery;
+        IEnumerable<Medal> medals;
+        byte tgl_medalState;
+        string searchText = "";
+        BrushConverter bc = new BrushConverter();
+
         private static uc_medals _instance;
         public static uc_medals Instance
         {
@@ -36,6 +48,7 @@ namespace POS.View.sales
         public uc_medals()
         {
             InitializeComponent();
+
             if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
             {
                 txt_deleteButton.Visibility = Visibility.Visible;
@@ -53,7 +66,6 @@ namespace POS.View.sales
                 txt_deleteButton.Visibility = Visibility.Visible;
                 txt_addButton.Visibility = Visibility.Visible;
                 txt_updateButton.Visibility = Visibility.Visible;
-
             }
             else
             {
@@ -63,12 +75,11 @@ namespace POS.View.sales
                 txt_add_Icon.Visibility = Visibility.Visible;
                 txt_update_Icon.Visibility = Visibility.Visible;
                 txt_delete_Icon.Visibility = Visibility.Visible;
-
             }
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {//load
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_ucStore.FlowDirection = FlowDirection.LeftToRight; }
@@ -77,17 +88,34 @@ namespace POS.View.sales
                 grid_ucStore.FlowDirection = FlowDirection.RightToLeft; }
 
             translate();
+
+            Keyboard.Focus(tb_name);
+
+            SectionData.clearValidate(tb_name, p_errorName);
+
+            await RefreshMedalsList();
+            Tb_search_TextChanged(null, null);
+
+            //dg_medal.ItemsSource = await medalModel.GetAll();
+
         }
         private void translate()
         {
+            txt_medals.Text = MainWindow.resourcemanager.GetString("trMedals");
+            txt_details.Text = MainWindow.resourcemanager.GetString("trDetails");
+            txt_active.Text = MainWindow.resourcemanager.GetString("trActive");
+
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
+
             txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
             txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
             txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-            dg_store.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
-            dg_store.Columns[3].Header = MainWindow.resourcemanager.GetString("trNote");
+            btn_customers.Content = MainWindow.resourcemanager.GetString("trCustomers");
+
+            dg_medal.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
+            dg_medal.Columns[3].Header = MainWindow.resourcemanager.GetString("trNote");
 
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
@@ -100,30 +128,40 @@ namespace POS.View.sales
             tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
 
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
-        {
+        {//clear
+            tb_name.Clear();
+            tb_notes.Clear();
 
+            //clear validate
+            SectionData.clearValidate(tb_name, p_errorName);
         }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {
-
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {//refresh
+            RefreshMedalsList();
+            Tb_search_TextChanged(null, null);
         }
 
-        private void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {//search
+            if (medals is null)
+                await RefreshMedalsList();
+            searchText = tb_search.Text;
+            medalsQuery = medals.Where(s => s.name.Contains(searchText)
+            && s.isActive == 1);
 
-        }
-
-        private void Dg_store_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
+            RefreshMedalView();
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
@@ -137,14 +175,33 @@ namespace POS.View.sales
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
-
+        {//export
+            this.Dispatcher.Invoke(() =>
+            {
+                Thread t1 = new Thread(FN_ExportToExcel);
+                t1.SetApartmentState(ApartmentState.STA);
+                t1.Start();
+            });
         }
+
+        void FN_ExportToExcel()
+        {
+            var QueryExcel = medalsQuery.AsEnumerable().Select(x => new
+            {
+                Name = x.name,
+                Notes = x.notes
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trNote");
+
+            ExportToExcel.Export(DTForExcel);
+        }
+
 
         private void Btn_customers_Click(object sender, RoutedEventArgs e)
         {
-            //customer
-
+            //customers
             Window.GetWindow(this).Opacity = 0.2;
 
             wd_customersList w = new wd_customersList();
@@ -160,28 +217,258 @@ namespace POS.View.sales
 
             Window.GetWindow(this).Opacity = 1;
         }
+     
+        private async void Btn_add_Click(object sender, RoutedEventArgs e)
+        {//add
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk not exist
+            string txt = tb_name.Text;
+            bool isExist = medalsQuery.Any(i => i.name == tb_name.Text);
+            if(isExist)
+            {
+                p_errorName.Visibility = Visibility.Visible;
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trDublicateMedal");
+                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            if ((!tb_name.Text.Equals("")) && !isExist)
+            {
+                Medal medal = new Medal();
+                medal.name = tb_name.Text;
+                medal.notes = tb_notes.Text;
+                medal.createUserId = MainWindow.userID;
+                medal.isActive = 1;
 
-        private void Btn_add_Click(object sender, RoutedEventArgs e)
-        {
+                string s = await medalModel.Save(medal);
+
+                if (s.Equals("true"))
+                {
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    Btn_clear_Click(null, null);
+                }
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                await RefreshMedalsList();
+                Tb_search_TextChanged(null, null);
+            }
+        }
+
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {//update
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk not exist
+            string txt = tb_name.Text;
+            bool isExist = medalsQuery.Any(i => i.name == tb_name.Text && i.medalId != medal.medalId);
+            if (isExist)
+            {
+                p_errorName.Visibility = Visibility.Visible;
+                tt_errorName.Content = MainWindow.resourcemanager.GetString("trDublicateMedal");
+                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            if ((!tb_name.Text.Equals("")) && !isExist)
+            {
+                medal.name = tb_name.Text;
+                medal.createUserId = MainWindow.userID;
+                medal.notes = tb_notes.Text;
+                medal.isActive = 1;
+
+                string s = await medalModel.Save(medal);
+
+                if (s.Equals("true"))
+                {
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                }
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                await RefreshMedalsList();
+                Tb_search_TextChanged(null, null);
+            }
 
         }
 
-        private void Btn_update_Click(object sender, RoutedEventArgs e)
-        {
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {//delete
+            if (medal.medalId != 0)
+            {
+                if ((!medal.canDelete) && (medal.isActive == 0))
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                        activate();
+                }
+                else
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    if (medal.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                    if (!medal.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                    {
+                        //MessageBox.Show(medal.canDelete.ToString());
+                        string popupContent = "";
+                        if (medal.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                        if ((!medal.canDelete) && (medal.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                        string b = await medalModel.deleteMedal(medal.medalId, MainWindow.userID.Value, medal.canDelete);
+                       // MessageBox.Show(b.ToString());
+                        if (b.Equals("medal is Deleted Successfully"))
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
+                }
+
+                await RefreshMedalsList();
+                Tb_search_TextChanged(null, null);
+            }
+            //clear textBoxs
+            Btn_clear_Click(sender, e);
+        }
+
+        private async void activate()
+        {//activate
+            medal.isActive = 1;
+
+            string s = await medalModel.Save(medal);
+
+            if (!s.Equals("0"))
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+            await RefreshMedalsList();
+            Tb_search_TextChanged(null, null);
+        }
+
+        private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
+        {//active
+            if (medals is null)
+                await RefreshMedalsList();
+            tgl_medalState = 1;
+            Tb_search_TextChanged(null, null);
+        }
+
+        private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
+        {//disactive
+            if (medals is null)
+                await RefreshMedalsList();
+            tgl_medalState = 0;
+            Tb_search_TextChanged(null, null);
 
         }
 
-        private void Btn_delete_Click(object sender, RoutedEventArgs e)
+        async Task<IEnumerable<Medal>> RefreshMedalsList()
         {
+            MainWindow.mainWindow.StartAwait();
+            medals = await medalModel.GetAll();
+            MainWindow.mainWindow.EndAwait();
+            return medals;
+        }
+        void RefreshMedalView()
+        {
+            dg_medal.ItemsSource = medalsQuery;
+            txt_count.Text = medalsQuery.Count().ToString();
+        }
+
+        private void validateEmpty(string name, object sender)
+        {
+            if (name == "TextBox")
+            {
+                 if ((sender as TextBox).Name == "tb_name")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                //else if ((sender as TextBox).Name == "tb_code")
+                //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+
+            }
+            //else if (name == "ComboBox")
+            //{
+            //    if ((sender as ComboBox).Name == "cb_typeDiscount")
+            //        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorTypeDiscount, tt_errorTypeDiscount, "trEmptyDiscountTypeToolTip");
+            //}
+            //else if (name == "DatePicker")
+            //{
+            //    if ((sender as DatePicker).Name == "dp_startDate")
+            //        SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorStartDate, tt_errorStartDate, "trEmptyStartDateToolTip");
+            //    else if ((sender as DatePicker).Name == "dp_endDate")
+            //        SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");//
+            //}
+        }
+
+        private void Tb_LostFocus(object sender, RoutedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+        }
+
+        private void Tb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+        }
+
+        private void Dg_medal_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {//selection
+            SectionData.clearValidate(tb_name, p_errorName);
+
+            if (dg_medal.SelectedIndex != -1)
+            {
+                medal = dg_medal.SelectedItem as Medal;
+                this.DataContext = medal;
+
+                if (medal != null)
+                {
+                    #region delete
+                    if (medal.canDelete)
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                        txt_delete_Icon.Kind =
+                                 MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                    }
+
+                    else
+                    {
+                        if (medal.isActive == 0)
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                            txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Check;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                        }
+                        else
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                            txt_delete_Icon.Kind =
+                                 MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                        }
+                    }
+                    #endregion
+                }
+            }
 
         }
 
-        private void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
+        private void Btn_symbol_Click(object sender, RoutedEventArgs e)
         {
 
         }

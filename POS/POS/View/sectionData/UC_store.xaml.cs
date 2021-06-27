@@ -326,49 +326,92 @@ namespace POS.View
             if (!SectionData.IsValid(tb_email.Text))
                 emailError = true;
 
-        if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
-        {
-            if ((emailError) || (iscodeExist))
+            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
             {
-                if (emailError)
-                    SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-                //duplicate
-                if (iscodeExist)
-                    SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                if ((emailError) || (iscodeExist))
+                {
+                    if (emailError)
+                        SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                    //duplicate
+                    if (iscodeExist)
+                        SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                }
+                else
+                {
+                    store.code = tb_code.Text;
+                    store.name = tb_name.Text;
+                    store.notes = tb_notes.Text;
+                    store.address = tb_address.Text;
+                    store.email = tb_email.Text;
+                    store.phone = phoneStr;
+                    store.mobile = cb_area.Text + "-" + tb_mobile.Text;
+                    store.createUserId = MainWindow.userID;
+                    store.updateUserId = MainWindow.userID;
+                    store.type = "s";
+                    store.isActive = 1;
+                    store.parentId = Convert.ToInt32(cb_branch.SelectedValue);
+
+                    string s = await storeModel.saveBranch(store);
+                    if (!s.Equals("-1"))
+                    {
+                        AddFreeThone(int.Parse(s));
+                    }
+                    else 
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                    await RefreshStoresList();
+                    Tb_search_TextChanged(null, null);
+                }
             }
-            else
+
+    }
+        async void AddFreeThone(int branchId)
+        {
+            var section = new Classes.Section();
+            section.name = "FreeZone";
+            section.branchId = branchId;
+            section.note = "";
+            section.createUserId = MainWindow.userID;
+            section.updateUserId = MainWindow.userID;
+            section.isActive = 1;
+            section.isFreeZone = 1;
+            string sectionId = await section.saveSection(section);
+            if (!sectionId.Equals("-1"))
             {
-                store.code = tb_code.Text;
-                store.name = tb_name.Text;
-                store.notes = tb_notes.Text;
-                store.address = tb_address.Text;
-                store.email = tb_email.Text;
-                store.phone = phoneStr;
-                store.mobile = cb_area.Text + "-" + tb_mobile.Text;
-                store.createUserId = MainWindow.userID;
-                store.updateUserId = MainWindow.userID;
-                store.type = "s";
-                store.isActive = 1;
-                store.parentId = Convert.ToInt32(cb_branch.SelectedValue);
+                var location = new Classes.Location();
+                location.x = location.y = location.z = "0";
+                location.note = tb_notes.Text;
+                location.createUserId = MainWindow.userID;
+                location.updateUserId = MainWindow.userID;
+                location.isActive = 1;
+                location.sectionId = null;
+                location.branchId = branchId;
+                location.isFreeZone = 1;
+                location.sectionId = int.Parse(sectionId);
 
-                string s = await storeModel.saveBranch(store);
+                string l = await location.saveLocation(location);
 
-                if (s.Equals("true"))   //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);  }
+                if (!l.Equals("-1"))
                 {
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     Btn_clear_Click(null, null);
                 }
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                else
+                {
+                    await section.Delete(int.Parse(sectionId), MainWindow.userID.Value, true);
+                    await storeModel.deleteBranch(branchId, MainWindow.userID.Value, true);
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+            }
+            else
+            {
 
-                await RefreshStoresList();
-                Tb_search_TextChanged(null, null);
+                await storeModel.deleteBranch(branchId, MainWindow.userID.Value, true);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
         }
 
-    }
-
-    private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
     {//update
         bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "s", "Branch", store.branchId);
 

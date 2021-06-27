@@ -93,8 +93,17 @@
                 <TextBlock Text="Customers" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"
                            Foreground="#999999" FontWeight="SemiBold"  FontSize="16"/>
                 <Border Grid.Row="3"  Margin="10"   BorderBrush="#999999" BorderThickness="1">
-                    <ListView x:Name="lst_allAgents" 
-                    MouseDoubleClick="Lst_allAgents_MouseDoubleClick" />
+                    <!--<ListView x:Name="lst_allAgents" 
+                    MouseDoubleClick="Lst_allAgents_MouseDoubleClick" />-->
+                    <DataGrid x:Name="dg_allAgents"  Background="White"
+                    Visibility="Visible"
+                         IsReadOnly="False" CanUserAddRows="False"
+                        AutoGenerateColumns="False" 
+                        ColumnWidth="SizeToHeader" MouseDoubleClick="Dg_allAgents_MouseDoubleClick" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Customer" Binding="{Binding Path=name}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Border>
 
                 <Grid Grid.Row="3" Grid.Column="1">
@@ -147,8 +156,17 @@
                 <TextBlock Text="Selcted customer" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"
                            Foreground="#999999" FontWeight="SemiBold"  FontSize="16"/>
                 <Border  Margin="10" Grid.Row="3"  Grid.Column="4"  BorderBrush="#999999" BorderThickness="1"  >
-                    <ListView  x:Name="lst_selectedAgents"
-                     MouseDoubleClick="Lst_selectedAgents_MouseDoubleClick"/>
+                    <!--<ListView  x:Name="lst_selectedAgents"
+                     MouseDoubleClick="Lst_selectedAgents_MouseDoubleClick"/>-->
+                    <DataGrid x:Name="dg_selectedAgents"  Background="White"
+                    Visibility="Visible"
+                         IsReadOnly="False" CanUserAddRows="False"
+                        AutoGenerateColumns="False" 
+                        ColumnWidth="SizeToHeader" MouseDoubleClick="Dg_selectedAgents_MouseDoubleClick" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Customer" Binding="{Binding Path=name}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Border>
 
 

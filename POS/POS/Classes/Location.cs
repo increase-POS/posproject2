@@ -31,7 +31,6 @@ namespace POS.Classes
         public string z { get; set; }
         public string note { get; set; }
         public Nullable<int> branchId { get; set; }
-        public Nullable<byte> isFreeZone { get; set; }
         public string sectionName { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
@@ -40,6 +39,7 @@ namespace POS.Classes
         public Nullable<byte> isActive { get; set; }
         public Boolean canDelete { get; set; }
         public Nullable<int> sectionId { get; set; }
+        public Nullable<byte> isFreeZone { get; set; }
 
         public async Task<List<Location>> Get()
         {
@@ -246,5 +246,44 @@ namespace POS.Classes
                 return message;
             }
         }
+
+
+
+        public async Task<List<Location>> GetLocsByBranchId(int branchId)
+        {
+            List<Location> Locations = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Locations/GetLocsByBranchId?branchId=" + branchId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+
+                    Locations = JsonConvert.DeserializeObject<List<Location>>(jsonString);
+
+                    return Locations;
+                }
+                else //web api sent error response 
+                {
+                    Locations = new List<Location>();
+                }
+                return Locations;
+            }
+
+        }
+
     }
 }

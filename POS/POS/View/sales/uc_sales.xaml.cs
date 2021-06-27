@@ -43,7 +43,7 @@ namespace POS.View
             btn_statistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
             btn_coupon.Content = MainWindow.resourcemanager.GetString("trCoupon");
             btn_offer.Content = MainWindow.resourcemanager.GetString("trOffer");
-
+            btn_medals.Content = MainWindow.resourcemanager.GetString("trMedals");
 
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

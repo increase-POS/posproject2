@@ -46,17 +46,38 @@ namespace POS.View.windows
             }
             selectedAgents.AddRange(selectedAgents);
 
+            dg_allAgents.ItemsSource = allAgents;
+            dg_allAgents.SelectedValuePath = "agentId";
+            dg_allAgents.DisplayMemberPath = "name";
 
-            lst_allAgents.ItemsSource = allAgents;
-            lst_selectedAgents.ItemsSource = selectedAgents;
+            //////////////////////////////
+            translat();
 
+            //offer = await offerModel.getOfferById(offerId);
 
+            //allItemsSource = await itemModel.Getall();
+            //selectedItemsSource = await itemUnitOffer.GetItemsByOfferId(offerId);
 
-            lst_allAgents.SelectedValuePath = "agentId";
-            lst_selectedAgents.SelectedValuePath = "agentId";
-            lst_allAgents.DisplayMemberPath = "name";
-            lst_selectedAgents.DisplayMemberPath = "name";
+            //allItems.AddRange(allItemsSource);
+            //foreach (var i in allItems)
+            //{
+            //    i.itemName = i.itemName + "-" + i.unitName;
+            //}
+
+            //selectedItems.AddRange(selectedItemsSource);
+            //foreach (var i in selectedItems)
+            //{
+            //    i.itemName = i.itemName + "-" + i.unitName;
+            //}
+
+            //MessageBox.Show(selectedItems[0].quantity.ToString());
+
         }
+
+        private void translat()
+        {
+        }
+
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
@@ -77,68 +98,78 @@ namespace POS.View.windows
         private void Lst_allAgents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
-            Btn_selectedAgent_Click(null, null);
+            //Btn_selectedAgent_Click(null, null);
 
         }
         private void Lst_selectedAgents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Btn_unSelectedAgent_Click(null, null);
+           // Btn_unSelectedAgent_Click(null, null);
 
         }
         private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
         {
-            selectedAgents = (await agentModel.GetAgentsAsync("c")).Where(x => x.isActive == 1).ToList();
-            allAgents.Clear();
-            lst_allAgents.ItemsSource = allAgents;
-            lst_selectedAgents.ItemsSource = selectedAgents;
-            lst_allAgents.Items.Refresh();
-            lst_selectedAgents.Items.Refresh();
+            //selectedAgents = (await agentModel.GetAgentsAsync("c")).Where(x => x.isActive == 1).ToList();
+            //allAgents.Clear();
+            //lst_allAgents.ItemsSource = allAgents;
+            //lst_selectedAgents.ItemsSource = selectedAgents;
+            //lst_allAgents.Items.Refresh();
+            //lst_selectedAgents.Items.Refresh();
         }
         private void Btn_selectedAgent_Click(object sender, RoutedEventArgs e)
         {
-            agent = lst_allAgents.SelectedItem as Agent;
-            if (agent != null)
-            {
-                allAgents.Remove(agent);
-                selectedAgents.Add(agent);
-                lst_allAgents.ItemsSource = allAgents;
-                lst_selectedAgents.ItemsSource = selectedAgents;
-                lst_allAgents.Items.Refresh();
-                lst_selectedAgents.Items.Refresh();
-            }
+            //agent = lst_allAgents.SelectedItem as Agent;
+            //if (agent != null)
+            //{
+            //    allAgents.Remove(agent);
+            //    selectedAgents.Add(agent);
+            //    lst_allAgents.ItemsSource = allAgents;
+            //    lst_selectedAgents.ItemsSource = selectedAgents;
+            //    lst_allAgents.Items.Refresh();
+            //    lst_selectedAgents.Items.Refresh();
+            //}
 
         }
         private void Btn_unSelectedAgent_Click(object sender, RoutedEventArgs e)
         {
 
-            agent = lst_selectedAgents.SelectedItem as Agent;
-            if (agent != null)
-            {
-                selectedAgents.Remove(agent);
-                allAgents.Add(agent);
+            //agent = lst_selectedAgents.SelectedItem as Agent;
+            //if (agent != null)
+            //{
+            //    selectedAgents.Remove(agent);
+            //    allAgents.Add(agent);
 
-                lst_allAgents.ItemsSource = allAgents;
-                lst_allAgents.Items.Refresh();
-                lst_selectedAgents.ItemsSource = selectedAgents;
-                lst_selectedAgents.Items.Refresh();
-            }
+            //    lst_allAgents.ItemsSource = allAgents;
+            //    lst_allAgents.Items.Refresh();
+            //    lst_selectedAgents.ItemsSource = selectedAgents;
+            //    lst_selectedAgents.Items.Refresh();
+            //}
         }
         private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
         {
-            allAgents = (await agentModel.GetAgentsAsync("c")).Where(x => x.isActive == 1).ToList();
-            selectedAgents.Clear();
-            lst_allAgents.ItemsSource = allAgents;
-            lst_allAgents.Items.Refresh();
-            lst_selectedAgents.ItemsSource = selectedAgents;
-            lst_selectedAgents.Items.Refresh();
+            //allAgents = (await agentModel.GetAgentsAsync("c")).Where(x => x.isActive == 1).ToList();
+            //selectedAgents.Clear();
+            //lst_allAgents.ItemsSource = allAgents;
+            //lst_allAgents.Items.Refresh();
+            //lst_selectedAgents.ItemsSource = selectedAgents;
+            //lst_selectedAgents.Items.Refresh();
 
         }
         private void Txb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            txtAgentSearch = txb_search.Text.ToLower();
-            lst_allAgents.ItemsSource = allAgents.Where(x => (x.code.ToLower().Contains(txtAgentSearch) ||
-            x.name.ToLower().Contains(txtAgentSearch)
-            ) && x.isActive == 1);
+            //txtAgentSearch = txb_search.Text.ToLower();
+            //lst_allAgents.ItemsSource = allAgents.Where(x => (x.code.ToLower().Contains(txtAgentSearch) ||
+            //x.name.ToLower().Contains(txtAgentSearch)
+            //) && x.isActive == 1);
+        }
+
+        private void Dg_selectedAgents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void Dg_allAgents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

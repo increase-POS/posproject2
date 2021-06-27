@@ -502,7 +502,7 @@
                 <DockPanel   Margin="10,0" LastChildFill="False">
 
                     <Button Grid.Column="8" BorderBrush="{x:Null}" DockPanel.Dock="Right" Height="auto" Click="Btn_items_Click"
-                    Background="{x:Null}" x:Name="btn_items" Padding="0" Margin="5,0"   >
+                    Background="{x:Null}" x:Name="btn_items" Padding="0" Margin="5,0" IsEnabled="False"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  x:Name="path_itemsIcon"
                          Height="30" Width="30"
                            FlowDirection="LeftToRight" Data="M473.2,341.6c-10.5-18.1-21-36.2-31.5-54.2c-1.9-3.3-3.8-6.6-5.8-9.9c2.1-3.7,3.3-8,3.3-12.8c0-7.7,0-15.4,0-23
@@ -547,7 +547,7 @@
 
                     <Border Grid.Column="6"  Background="White" Margin="5"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" DockPanel.Dock="Right"/>
                     <Button Grid.Column="5" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}" x:Name="btn_invoiceImages" Click="Btn_invoiceImage_Click"  >
+                    Background="{x:Null}" x:Name="btn_invoiceImages" Click="Btn_invoiceImage_Click"  IsEnabled="False">
                         <Path Fill="#4E4E4E" Stretch="Fill"  
                          Height="30" Width="30"
                            Data="M368,224c26.5,0,48-21.5,48-48s-21.5-48-48-48s-48,21.5-48,48S341.5,224,368,224z M452,64H60
@@ -730,7 +730,7 @@
                         <Grid  Margin="5" Grid.Row="3"   >
                             <TextBox x:Name="tb_barcode"  Text="{Binding discount, Mode=OneWay}"
                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                             Grid.Row="2" Padding="10,0,5,0"
+                                             Grid.Row="2" Padding="10,0,5,0" IsReadOnly="True"
                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      MaxLength="20" 
                                             BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..."  

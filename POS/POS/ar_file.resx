@@ -1344,4 +1344,10 @@
   <data name="trSelectedLocations" xml:space="preserve">
     <value>أماكن التخزين المختارة</value>
   </data>
+  <data name="trDublicateMedal" xml:space="preserve">
+    <value>الميدالية موجودة مسبقاً</value>
+  </data>
+  <data name="trMedals" xml:space="preserve">
+    <value>الميداليات</value>
+  </data>
 </root>

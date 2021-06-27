@@ -1365,4 +1365,10 @@
   <data name="trSelectedLocations" xml:space="preserve">
     <value>Selected locations</value>
   </data>
+  <data name="trDublicateMedal" xml:space="preserve">
+    <value>Medal is already exist</value>
+  </data>
+  <data name="trMedals" xml:space="preserve">
+    <value>Medals</value>
+  </data>
 </root>

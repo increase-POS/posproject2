@@ -76,6 +76,7 @@ namespace POS.View
         Pos pos = new Pos();
 
         List<ItemTransfer> invoiceItems;
+        List<ItemTransfer> mainInvoiceItems;
         //  Bill bill;
 
         #region //to handle barcode characters
@@ -144,19 +145,21 @@ namespace POS.View
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-
-            #region Accept
-            MainWindow.mainWindow.Opacity = 0.2;
-            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-            //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-            w.contentText = "Do you want save pay invoice in drafts?";
-            w.ShowDialog();
-            MainWindow.mainWindow.Opacity = 1;
-            #endregion
-            if (w.isOk)
-                Btn_newDraft_Click(null, null);
-            else
-                clearInvoice();
+            if (billDetails.Count > 0)
+            {
+                #region Accept
+                MainWindow.mainWindow.Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                w.contentText = "Do you want save pay invoice in drafts?";
+                w.ShowDialog();
+                MainWindow.mainWindow.Opacity = 1;
+                #endregion
+                if (w.isOk)
+                    Btn_newDraft_Click(null, null);
+                else
+                    clearInvoice();
+            }
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -603,6 +606,8 @@ namespace POS.View
             {
                 if (_InvoiceType == "pbd") //pbd means purchase bounse draft
                     await addInvoice("pb"); // pb means purchase bounce
+                else if(_InvoiceType == "pbw")//pbw  purchase invoice
+                    await addInvoice("pb");
                 else//p  purchase invoice
                     await addInvoice("pw");
 
@@ -651,6 +656,7 @@ namespace POS.View
 
             TextBox tbStartDate = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
             SectionData.clearValidate(tbStartDate, p_errorDesrvedDate);
+            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
 
             btn_updateVendor.IsEnabled = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
@@ -675,7 +681,7 @@ namespace POS.View
                 {
                     invoice = w.invoice;
                     //this.DataContext = invoice;
-
+                    mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
                     _InvoiceType = invoice.invType;
                     // set title to bill
                     if (_InvoiceType == "pd")
@@ -752,7 +758,6 @@ namespace POS.View
             Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
 
-
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
 
             // purchase invoices
@@ -767,6 +772,33 @@ namespace POS.View
                     this.DataContext = invoice;
 
                    await fillInvoiceInputs(invoice);
+                    mainInvoiceItems = invoiceItems;
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                    brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                }
+            }
+            Window.GetWindow(this).Opacity = 1;
+        }
+        private async void Btn_returnWInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_invoice w = new wd_invoice();
+
+            w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
+
+            // purchase invoices
+            w.invoiceType = "pbw"; // invoice type to view in grid
+            if (w.ShowDialog() == true)
+            {
+                if (w.invoice != null)
+                {
+                    invoice = w.invoice;
+                    _InvoiceType = invoice.invType;
+                   
+                    mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
+                    this.DataContext = invoice;
+
+                    await fillInvoiceInputs(invoice);
 
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
                     brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
@@ -804,10 +836,10 @@ namespace POS.View
         }
         private void inputEditable()
         {
-            if (_InvoiceType == "pbd") // return invoice
+            if (_InvoiceType == "pbd" || _InvoiceType == "pbw") // return invoice
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
-                dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
+                dg_billDetails.Columns[5].IsReadOnly = false; //make price read only
                 dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
                 cb_vendor.IsEnabled = false;
@@ -1368,9 +1400,9 @@ namespace POS.View
 
                 oldCount = row.Count;
 
-                if (_InvoiceType == "pbd")
+                if (_InvoiceType == "pbd" || _InvoiceType == "pbw")
                 {
-                    ItemTransfer item = invoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
+                    ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
                     if (newCount > item.quantity)
                     {
                         // return old value 
@@ -1549,5 +1581,7 @@ namespace POS.View
         {
             _Sender = sender;
         }
+
+       
     }
 }

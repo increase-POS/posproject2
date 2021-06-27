@@ -961,6 +961,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الميدالية موجودة مسبقاً.
+        /// </summary>
+        internal static string trDublicateMedal {
+            get {
+                return ResourceManager.GetString("trDublicateMedal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to البار كود محجوز مسبقاً.
         /// </summary>
         internal static string trDuplicateBarcodeToolTip {
@@ -2064,6 +2073,15 @@ namespace POS {
         internal static string trMaxInvoiceValue {
             get {
                 return ResourceManager.GetString("trMaxInvoiceValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الميداليات.
+        /// </summary>
+        internal static string trMedals {
+            get {
+                return ResourceManager.GetString("trMedals", resourceCulture);
             }
         }
         

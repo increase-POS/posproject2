@@ -395,14 +395,11 @@ namespace POS.View
                     branch.parentId = Convert.ToInt32(cb_branch.SelectedValue);
 
                     string s = await branchModel.saveBranch(branch);
-
-                    if (s.Equals("true"))  //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
+                    if (!s.Equals("-1"))
                     {
                         AddFreeThone(int.Parse(s));
-                        //Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                        //Btn_clear_Click(null, null);
                     }
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    else
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     await RefreshBranchesList();
@@ -420,32 +417,40 @@ namespace POS.View
             section.updateUserId = MainWindow.userID;
             section.isActive = 1;
             section.isFreeZone = 1;
-            string s = await section.saveSection(section);
-
-            if (s.Equals("Section Is Added Successfully"))
+            string sectionId = await section.saveSection(section);
+            if (!sectionId.Equals("-1"))
             {
                 var location = new Classes.Location();
                 location.x = location.y = location.z = "0";
                 location.note = tb_notes.Text;
-                    location.createUserId = MainWindow.userID;
-                    location.updateUserId = MainWindow.userID;
-                    location.isActive = 1;
-                    location.sectionId = null;
-                    location.branchId = MainWindow.branchID;
+                location.createUserId = MainWindow.userID;
+                location.updateUserId = MainWindow.userID;
+                location.isActive = 1;
+                location.sectionId = null;
+                location.branchId = branchId;
+                location.isFreeZone = 1;
+                location.sectionId = int.Parse(sectionId);
 
-                    string l = await location.saveLocation(location);
+                string l = await location.saveLocation(location);
 
-                    if (l.Equals("Location Is Added Successfully"))
+                if (!l.Equals("-1"))
                 {
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     Btn_clear_Click(null, null);
                 }
                 else
+                {
+                    await section.Delete(int.Parse(sectionId), MainWindow.userID.Value, true);
+                    await branchModel.deleteBranch(branchId, MainWindow.userID.Value, true);
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
             }
             else
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            {
 
+                await branchModel.deleteBranch(branchId, MainWindow.userID.Value, true);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            }
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update

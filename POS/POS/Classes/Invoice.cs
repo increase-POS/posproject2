@@ -75,8 +75,30 @@ namespace POS.Classes
         public Nullable<int> branchId { get; set; }
         public Nullable<int> itemsCount { get; set; }
         public Nullable<decimal> tax { get; set; }
+        public Nullable<int> taxtype { get; set; }
         public Nullable<int> posId { get; set; }
         public Nullable<byte> isApproved { get; set; }
+
+        // for report
+        public int countP { get; set; }
+        public int countS { get; set; }
+        public decimal totalS { get; set; }
+        public decimal totalNetS { get; set; }
+        public decimal totalP { get; set; }
+        public decimal totalNetP { get; set; }
+
+        
+        public string branchType { get; set; }
+        public string posName { get; set; }
+        public string posCode { get; set; }
+        public string agentName { get; set; }
+        public string agentCode { get; set; }
+        public string cuserName { get; set; }
+        public string cuserLast { get; set; }
+        public string cUserAccName { get; set; }
+        public string uuserName { get; set; }
+        public string uuserLast { get; set; }
+        public string uUserAccName { get; set; }
 
         //*************************************************
         //------------------------------------------------------

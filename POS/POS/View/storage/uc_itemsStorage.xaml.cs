@@ -37,35 +37,35 @@ namespace POS.View.storage
         public uc_itemsStorage()
         {
             InitializeComponent();
-            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
-            {
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
-            }
-            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
-            {
-                txt_add_Icon.Visibility = Visibility.Collapsed;
-                txt_update_Icon.Visibility = Visibility.Collapsed;
-                txt_delete_Icon.Visibility = Visibility.Collapsed;
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
+            //if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+            //{
+            //    txt_deleteButton.Visibility = Visibility.Visible;
+            //    txt_addButton.Visibility = Visibility.Visible;
+            //    txt_updateButton.Visibility = Visibility.Visible;
+            //    txt_add_Icon.Visibility = Visibility.Visible;
+            //    txt_update_Icon.Visibility = Visibility.Visible;
+            //    txt_delete_Icon.Visibility = Visibility.Visible;
+            //}
+            //else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+            //{
+            //    txt_add_Icon.Visibility = Visibility.Collapsed;
+            //    txt_update_Icon.Visibility = Visibility.Collapsed;
+            //    txt_delete_Icon.Visibility = Visibility.Collapsed;
+            //    txt_deleteButton.Visibility = Visibility.Visible;
+            //    txt_addButton.Visibility = Visibility.Visible;
+            //    txt_updateButton.Visibility = Visibility.Visible;
 
-            }
-            else
-            {
-                txt_deleteButton.Visibility = Visibility.Collapsed;
-                txt_addButton.Visibility = Visibility.Collapsed;
-                txt_updateButton.Visibility = Visibility.Collapsed;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
+            //}
+            //else
+            //{
+            //    txt_deleteButton.Visibility = Visibility.Collapsed;
+            //    txt_addButton.Visibility = Visibility.Collapsed;
+            //    txt_updateButton.Visibility = Visibility.Collapsed;
+            //    txt_add_Icon.Visibility = Visibility.Visible;
+            //    txt_update_Icon.Visibility = Visibility.Visible;
+            //    txt_delete_Icon.Visibility = Visibility.Visible;
 
-            }
+            //}
         }
 
         
@@ -83,18 +83,18 @@ namespace POS.View.storage
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucItemsStorage.FlowDirection = FlowDirection.RightToLeft;
             }
-            #region bill
-            List<Bill> items = new List<Bill>();
-            items.Add(new Bill() { Id = 336554944, Total = 255 });
-            items.Add(new Bill() { Id = 336545142, Total = 260 });
-            items.Add(new Bill() { Id = 336556165, Total = 1200 });
-            items.Add(new Bill() { Id = 336551515, Total = 150 });
-            items.Add(new Bill() { Id = 336555162, Total = 840 });
-            items.Add(new Bill() { Id = 336558897, Total = 325 });
-            dg_invoice.ItemsSource = items;
-            billDetails = LoadCollectionData();
-            dg_billDetails.ItemsSource = billDetails;
-            #endregion
+            //#region bill
+            //List<Bill> items = new List<Bill>();
+            //items.Add(new Bill() { Id = 336554944, Total = 255 });
+            //items.Add(new Bill() { Id = 336545142, Total = 260 });
+            //items.Add(new Bill() { Id = 336556165, Total = 1200 });
+            //items.Add(new Bill() { Id = 336551515, Total = 150 });
+            //items.Add(new Bill() { Id = 336555162, Total = 840 });
+            //items.Add(new Bill() { Id = 336558897, Total = 325 });
+            //dg_invoice.ItemsSource = items;
+            //billDetails = LoadCollectionData();
+            //dg_billDetails.ItemsSource = billDetails;
+            //#endregion
             translate();
 
             #region Style Date
@@ -126,18 +126,18 @@ namespace POS.View.storage
         {
             ////////////////////////////////----invoice----/////////////////////////////////
             //txt_invoiceToggle.Text = MainWindow.resourcemanager.GetString("trInvoice");
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_InvoicenName, MainWindow.resourcemanager.GetString("trInvoiceHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_InvoicenName, MainWindow.resourcemanager.GetString("trInvoiceHint"));
 
-            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
-            dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
-            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
-            dg_invoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
-            txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
-            txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
-            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-            tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
-            tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
-            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+            //dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
+            //dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
+            //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
+            //dg_invoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
+            //txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
+            //txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
+            //txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+            //tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
+            //tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            //tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
         }
         #region bill
@@ -238,25 +238,25 @@ namespace POS.View.storage
 
         }
 
-        private void Tgl_invoiceDropDown_Checked(object sender, RoutedEventArgs e)
-        {
-            grid_invoice.Visibility = Visibility.Visible;
-        }
-        private void Tgl_invoiceDropDown_Unchecked(object sender, RoutedEventArgs e)
-        {
-            grid_invoice.Visibility = Visibility.Collapsed;
-        }
-        void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
-        {
-            for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
-                if (vis is DataGridRow)
-                {
-                    BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
-                    ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)dg_billDetails.ItemsSource;
-                    data.Remove(row);
-                }
+        //private void Tgl_invoiceDropDown_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    grid_invoice.Visibility = Visibility.Visible;
+        //}
+        //private void Tgl_invoiceDropDown_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    grid_invoice.Visibility = Visibility.Collapsed;
+        //}
+        //void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
+        //{
+        //    for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
+        //        if (vis is DataGridRow)
+        //        {
+        //            BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
+        //            ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)dg_billDetails.ItemsSource;
+        //            data.Remove(row);
+        //        }
 
-        }
+        //}
       
         private void Btn_add_Click(object sender, RoutedEventArgs e)
         {
@@ -291,6 +291,16 @@ namespace POS.View.storage
         {
             dg_collapsed.IsEnabled = true;
             dg_collapsed.Opacity = 1;
+
+        }
+
+        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_transfer_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }
