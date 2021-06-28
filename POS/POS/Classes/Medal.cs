@@ -24,6 +24,10 @@ namespace POS.Classes
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Boolean canDelete { get; set; }
+        public string symbol { get; set; }
+        public Nullable<int> CashPointsRequired { get; set; }
+        public Nullable<int> invoiceCountPointsRequired { get; set; }
+
         public async Task<List<Medal>> GetAll()
         {
             List<Medal> medals = null;

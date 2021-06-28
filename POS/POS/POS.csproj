@@ -149,6 +149,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\AgentMemberships.cs" />
     <Compile Include="Classes\Animations.cs" />
     <Compile Include="Classes\BadDateFixingConverter.cs" />
     <Compile Include="Classes\Bank.cs" />
@@ -187,9 +188,11 @@
     <Compile Include="Classes\Md5Encription.cs" />
     <Compile Include="Classes\Medal.cs" />
     <Compile Include="Classes\MedalAgent.cs" />
+    <Compile Include="Classes\Memberships.cs" />
     <Compile Include="Classes\Object.cs" />
     <Compile Include="Classes\Offer.cs" />
     <Compile Include="Classes\Pagination.cs" />
+    <Compile Include="Classes\Points.cs" />
     <Compile Include="Classes\Pos.cs" />
     <Compile Include="Classes\PropertiesItems.cs" />
     <Compile Include="Classes\Property.cs" />
@@ -202,6 +205,7 @@
     <Compile Include="Classes\Service.cs" />
     <Compile Include="Classes\SettingCls.cs" />
     <Compile Include="Classes\setValues.cs" />
+    <Compile Include="Classes\ShippingCompanies.cs" />
     <Compile Include="Classes\Unit.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Classes\userSetValues.cs" />
