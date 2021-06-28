@@ -1350,4 +1350,16 @@
   <data name="trMedals" xml:space="preserve">
     <value>الميداليات</value>
   </data>
+  <data name="trCashPointsRequired" xml:space="preserve">
+    <value>النقاط النقدية</value>
+  </data>
+  <data name="trCashPointsRequiredHint" xml:space="preserve">
+    <value>النقاط النقدية...</value>
+  </data>
+  <data name="trInvoiceCountPoints" xml:space="preserve">
+    <value>نقاط الفواتير</value>
+  </data>
+  <data name="trInvoiceCountPointsHint" xml:space="preserve">
+    <value>نقاط الفواتير...</value>
+  </data>
 </root>

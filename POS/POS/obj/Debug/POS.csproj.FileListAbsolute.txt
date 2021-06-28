@@ -1997,3 +1997,9 @@ C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_items
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsOfferList.g.cs
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_locationAddRange.g.cs
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\winLogIn.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_membership.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_membership.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_subscriptions.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_subscriptionFees.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_subscriptions.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_subscriptionFees.baml

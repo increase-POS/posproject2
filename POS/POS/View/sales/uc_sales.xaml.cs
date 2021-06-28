@@ -86,6 +86,9 @@ namespace POS.View
             btn_medals.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_medals.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
+            btn_membership.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_membership.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
         }
         void refreashBachgroundClick(Button btn)
         {
@@ -148,6 +151,13 @@ namespace POS.View
             refreashBachgroundClick(btn_medals);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_medals.Instance);
+        }
+
+        private void Btn_membership_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_membership);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_membership.Instance);
         }
     }
 }

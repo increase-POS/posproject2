@@ -7,6 +7,7 @@
              xmlns:Classes="clr-namespace:POS.Classes"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
+             xmlns:converters="clr-namespace:POS.converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="675" d:DesignWidth="800" Loaded="UserControl_Loaded">
     <Grid x:Name="grid_ucPermissions" >
@@ -2054,6 +2055,7 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
+                        <converters:levelGroupConverter x:Key="levelGroupConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Permission" IsReadOnly="True"   Binding="{Binding Path=objectName}">
@@ -2102,24 +2104,17 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Level"  >
+                        <DataGridTemplateColumn Header="Level"  Width="*" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ComboBox IsEnabled="{Binding showOb}"  
-                                              ItemsSource="{Binding item}"
-                                                              DisplayMemberPath="mainUnit" 
-                                                              SelectedValuePath="itemUnitId"
-                                                              SelectedItem="{Binding Unit}"/>
+                                    <ComboBox    SelectionChanged="Cbm_levelGroup_SelectionChanged" 
+                                                              x:Name="cbm_levelGroup"
+                                                              ItemsSource="{Binding levelOb,Converter={StaticResource levelGroupConverter}}"
+                                                              DisplayMemberPath="Text" 
+                                                              SelectedValuePath="Value"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <!--<DataGridTemplateColumn>
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button IsEnabled="{Binding Status}">I am a button</Button>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>-->
                         <DataGridTextColumn Width="*"  Header="Describe"    IsReadOnly="True" 
                                                         Binding="{Binding Path=desc}">
                             <DataGridTextColumn.ElementStyle>
@@ -2204,51 +2199,6 @@
                                     </materialDesign:PackIcon.ToolTip>
                                 </materialDesign:PackIcon>
                             </Button>
-                            <Button FlowDirection="LeftToRight"   Background="{x:Null}"    Grid.Column="2" Margin="2.5,0,2.5,0" 
-                            Padding="0" Height="20" Width="25"   x:Name="btn_pieChart"   
-                                       BorderBrush="{x:Null}">
-                                <Grid Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Path Width="8.8" Height="9.6" Stretch="Fill" Data="M27.7,8.3l-10.2,7.8l9.1,9.1c2.1-2.5,3.4-5.7,3.4-9.2C30,13.1,29.1,10.5,27.7,8.3z" Fill="#DD191B"
-                              RenderTransformOrigin="5,5" >
-                                        <Path.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform />
-                                                <SkewTransform/>
-                                                <RotateTransform Angle="0"/>
-                                                <TranslateTransform  X="6.5" Y="0.2"/>
-                                            </TransformGroup>
-                                        </Path.RenderTransform>
-                                    </Path>
-                                    <Path Width="7.2" Height="7.2" Stretch="Fill" Data="M17,14l9.4-7.3c-2.4-2.6-5.7-4.4-9.4-4.7V14z" Fill="#F74110" RenderTransformOrigin="0,0">
-                                        <Path.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform />
-                                                <SkewTransform/>
-                                                <RotateTransform/>
-                                                <TranslateTransform  X="6.2" Y="-6"/>
-                                            </TransformGroup>
-                                        </Path.RenderTransform>
-                                    </Path>
-                                    <Path Fill="#377EB8" Width="16" Height="17" Stretch="Fill" Data="M15.3,16.7C15.3,16.7,15.3,16.7,15.3,16.7C15.2,16.6,15.2,16.6,15.3,16.7c-0.1-0.1-0.1-0.2-0.1-0.2c0-0.1-0.1-0.1-0.1-0.2
-   s0-0.1,0-0.2c0,0,0-0.1,0-0.1V2.1C7.7,2.6,2,8.6,2,16c0,7.7,6.3,14,14,14c3.5,0,6.7-1.3,9.2-3.4L15.3,16.7z" RenderTransformOrigin="0,0">
-                                        <Path.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform ScaleX="1"/>
-                                                <SkewTransform/>
-                                                <RotateTransform/>
-                                                <TranslateTransform/>
-                                            </TransformGroup>
-                                        </Path.RenderTransform>
-                                        <Path.ToolTip>
-                                            <ToolTip x:Name="tt_pieChart" Content="Pie Chart"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
-                                        </Path.ToolTip>
-                                    </Path>
-                                </Grid>
-                            </Button>
                             <Button   Background="{x:Null}"    Grid.Column="3" Margin="5,0,5,0" 
                             Padding="0" Height="35"   x:Name="btn_exportToExcel"   Click="Btn_exportToExcel_Click"
                                        BorderBrush="{x:Null}">
@@ -2266,17 +2216,6 @@
                                     </Path.ToolTip>
                                 </Path>
                             </Button>
-                            <TextBlock   Background="{x:Null}" x:Name="txt_count"   Grid.Column="4" Margin="0,0,0,5" 
-                            Padding="10"   Text="0" Foreground="#378500" FontSize="12"  >
-                                <TextBlock.ToolTip>
-                                    <ToolTip x:Name="tt_count" Content="Customers Count"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,25,0,0"
-                                              VerticalOffset="-20"/>
-                                </TextBlock.ToolTip>
-                            </TextBlock>
-
                         </StackPanel >
                     </Border>
                     <Button Grid.Column="1" Content="Update" Height="auto" BorderBrush="{x:Null}"  FontSize="14" x:Name="btn_save"

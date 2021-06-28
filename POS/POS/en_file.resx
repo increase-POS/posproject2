@@ -1371,4 +1371,16 @@
   <data name="trMedals" xml:space="preserve">
     <value>Medals</value>
   </data>
+  <data name="trCashPointsRequired" xml:space="preserve">
+    <value>Cash points</value>
+  </data>
+  <data name="trCashPointsRequiredHint" xml:space="preserve">
+    <value>Cash points...</value>
+  </data>
+  <data name="trInvoiceCountPoints" xml:space="preserve">
+    <value>Invoice points</value>
+  </data>
+  <data name="trInvoiceCountPointsHint" xml:space="preserve">
+    <value>Invoice points...</value>
+  </data>
 </root>

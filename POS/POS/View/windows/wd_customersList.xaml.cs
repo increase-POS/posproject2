@@ -25,52 +25,46 @@ namespace POS.View.windows
             InitializeComponent();
         }
         public bool isActive;
+
         Agent agent = new Agent();
+        MedalAgent medalAgent = new MedalAgent();
+
         List<Agent> allAgents = new List<Agent>();
-        public List<Agent> selectedAgents = new List<Agent>();
+        List<Agent> allAgentsSource = new List<Agent>();
+        List<MedalAgent> selectedAgents = new List<MedalAgent>();
+
         Agent agentModel = new Agent();
+        MedalAgent medalAgentModel = new MedalAgent();
         public string txtAgentSearch;
+        public int medalId;
         /// <summary>
         /// Selcted Items if selectedItems Have Items At the beginning
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             allAgents = (await agentModel.GetAgentsAsync("c")).Where(x => x.isActive == 1).ToList();
-
-            foreach (var agent in selectedAgents)
+            allAgentsSource = allAgents;
+            selectedAgents = (await medalAgentModel.GetAll()).Where(x => x.medalId == medalId).ToList();
+            MessageBox.Show(selectedAgents.Count.ToString());
+            for(int i  = 0; i < selectedAgents.Count; i++)
             {
-                allAgents.Remove(agent);
-
+                if (allAgents.Any(s => s.agentId == selectedAgents[i].agentId))
+                    agent = await agentModel.getAgentById(selectedAgents[0].agentId.Value);
+                    allAgents.Remove(agent);
             }
-            selectedAgents.AddRange(selectedAgents);
 
             dg_allAgents.ItemsSource = allAgents;
             dg_allAgents.SelectedValuePath = "agentId";
             dg_allAgents.DisplayMemberPath = "name";
 
+            dg_selectedAgents.ItemsSource = selectedAgents;
+            dg_selectedAgents.SelectedValuePath = "agentId";
+            dg_selectedAgents.DisplayMemberPath = "agentName";
+
             //////////////////////////////
             translat();
-
-            //offer = await offerModel.getOfferById(offerId);
-
-            //allItemsSource = await itemModel.Getall();
-            //selectedItemsSource = await itemUnitOffer.GetItemsByOfferId(offerId);
-
-            //allItems.AddRange(allItemsSource);
-            //foreach (var i in allItems)
-            //{
-            //    i.itemName = i.itemName + "-" + i.unitName;
-            //}
-
-            //selectedItems.AddRange(selectedItemsSource);
-            //foreach (var i in selectedItems)
-            //{
-            //    i.itemName = i.itemName + "-" + i.unitName;
-            //}
-
-            //MessageBox.Show(selectedItems[0].quantity.ToString());
 
         }
 
@@ -85,8 +79,12 @@ namespace POS.View.windows
                 Btn_save_Click(null, null);
             }
         }
-        private void Btn_save_Click(object sender, RoutedEventArgs e)
-        {
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
+        {//save
+            //MessageBox.Show(medalId.ToString() +"-"+selectedAgents.Count.ToString()+"-"+MainWindow.userID.Value.ToString());
+            string s = await medalAgentModel.UpdateAgentsByMedalId(medalId, selectedAgents, MainWindow.userID.Value);
+            //MessageBox.Show(s);
+
             isActive = true;
             this.Close();
         }
@@ -95,63 +93,70 @@ namespace POS.View.windows
             isActive = false;
             this.Close();
         }
-        private void Lst_allAgents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-            //Btn_selectedAgent_Click(null, null);
-
-        }
-        private void Lst_selectedAgents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-           // Btn_unSelectedAgent_Click(null, null);
-
-        }
+        
         private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
-        {
-            //selectedAgents = (await agentModel.GetAgentsAsync("c")).Where(x => x.isActive == 1).ToList();
-            //allAgents.Clear();
-            //lst_allAgents.ItemsSource = allAgents;
-            //lst_selectedAgents.ItemsSource = selectedAgents;
-            //lst_allAgents.Items.Refresh();
-            //lst_selectedAgents.Items.Refresh();
+        {//select all
+            int x = allAgents.Count;
+            for (int i = 0; i < x; i++)
+            {
+                //MessageBox.Show(i.ToString());
+                dg_allAgents.SelectedIndex = 0;
+                Btn_selectedAgent_Click(null, null);
+            }
         }
         private void Btn_selectedAgent_Click(object sender, RoutedEventArgs e)
-        {
-            //agent = lst_allAgents.SelectedItem as Agent;
-            //if (agent != null)
-            //{
-            //    allAgents.Remove(agent);
-            //    selectedAgents.Add(agent);
-            //    lst_allAgents.ItemsSource = allAgents;
-            //    lst_selectedAgents.ItemsSource = selectedAgents;
-            //    lst_allAgents.Items.Refresh();
-            //    lst_selectedAgents.Items.Refresh();
-            //}
+        {//select one
+            agent = dg_allAgents.SelectedItem as Agent;
+            if (agent != null)
+            {
+                MedalAgent mA = new MedalAgent();
+                mA.id = 0;
+                mA.agentName = agent.name;
+                mA.agentId = agent.agentId;
+                mA.medalId = medalId;
+
+                allAgents.Remove(agent);
+
+                selectedAgents.Add(mA);
+
+                dg_allAgents.ItemsSource = allAgents;
+                dg_selectedAgents.ItemsSource = selectedAgents;
+
+                dg_allAgents.Items.Refresh();
+                dg_selectedAgents.Items.Refresh();
+            }
 
         }
-        private void Btn_unSelectedAgent_Click(object sender, RoutedEventArgs e)
-        {
+        private async void Btn_unSelectedAgent_Click(object sender, RoutedEventArgs e)
+        {//unselect one
+            medalAgent = dg_selectedAgents.SelectedItem as MedalAgent;
+            Agent i = new Agent();
+            if (medalAgent != null)
+            {
+                int id = medalAgent.agentId.Value;
 
-            //agent = lst_selectedAgents.SelectedItem as Agent;
-            //if (agent != null)
-            //{
-            //    selectedAgents.Remove(agent);
-            //    allAgents.Add(agent);
+                i = await agentModel.getAgentById(id);
 
-            //    lst_allAgents.ItemsSource = allAgents;
-            //    lst_allAgents.Items.Refresh();
-            //    lst_selectedAgents.ItemsSource = selectedAgents;
-            //    lst_selectedAgents.Items.Refresh();
-            //}
+                allAgents.Add(i);
+
+                selectedAgents.Remove(medalAgent);
+                MessageBox.Show(selectedAgents.Count.ToString());
+                dg_allAgents.ItemsSource = allAgents;
+                dg_selectedAgents.ItemsSource = selectedAgents;
+
+                dg_allAgents.Items.Refresh();
+                dg_selectedAgents.Items.Refresh();
+            }
         }
         private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
-        {
-            //allAgents = (await agentModel.GetAgentsAsync("c")).Where(x => x.isActive == 1).ToList();
-            //selectedAgents.Clear();
-            //lst_allAgents.ItemsSource = allAgents;
-            //lst_allAgents.Items.Refresh();
-            //lst_selectedAgents.ItemsSource = selectedAgents;
-            //lst_selectedAgents.Items.Refresh();
+        {//unselect all
+            int x = selectedAgents.Count;
+            for (int i = 0; i < x; i++)
+            {
+                dg_selectedAgents.SelectedIndex = 0;
+
+                Btn_unSelectedAgent_Click(null, null);
+            }
 
         }
         private void Txb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -164,12 +169,12 @@ namespace POS.View.windows
 
         private void Dg_selectedAgents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            Btn_unSelectedAgent_Click(null, null);
         }
 
         private void Dg_allAgents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            Btn_selectedAgent_Click(null, null);
         }
     }
 }

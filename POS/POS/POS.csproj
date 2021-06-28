@@ -229,6 +229,7 @@
     </Compile>
     <Compile Include="Classes\ValidatorExtensions.cs" />
     <Compile Include="converters\invoiceTypeConverter.cs" />
+    <Compile Include="converters\levelGroupConverter.cs" />
     <Compile Include="converters\unitItemsListConverter.cs" />
     <Compile Include="Keyboard\AnimationHelper.cs" />
     <Compile Include="Keyboard\EnvironmentEx.cs" />
@@ -257,6 +258,9 @@
     <Compile Include="View\accounts\uc_receivedAccounts.xaml.cs">
       <DependentUpon>uc_receivedAccounts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\accounts\uc_subscriptions.xaml.cs">
+      <DependentUpon>uc_subscriptions.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\catalog\win_lvcCatalog.xaml.cs">
       <DependentUpon>win_lvcCatalog.xaml</DependentUpon>
     </Compile>
@@ -265,6 +269,9 @@
     </Compile>
     <Compile Include="View\sales\uc_medals.xaml.cs">
       <DependentUpon>uc_medals.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\sales\uc_membership.xaml.cs">
+      <DependentUpon>uc_membership.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\sales\uc_quotations.xaml.cs">
       <DependentUpon>uc_quotations.xaml</DependentUpon>
@@ -409,6 +416,9 @@
     <Compile Include="View\windows\wd_locationsList.xaml.cs">
       <DependentUpon>wd_locationsList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_subscriptionFees.xaml.cs">
+      <DependentUpon>wd_subscriptionFees.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_updateVendor.xaml.cs">
       <DependentUpon>wd_updateVendor.xaml</DependentUpon>
     </Compile>
@@ -490,6 +500,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\accounts\uc_subscriptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\catalog\win_lvcCatalog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -499,6 +513,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\sales\uc_medals.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\sales\uc_membership.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -695,6 +713,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_locationsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_subscriptionFees.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

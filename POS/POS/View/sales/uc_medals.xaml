@@ -131,7 +131,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Offer" Binding="{Binding Path=test}">
+                        <DataGridTextColumn Width="*"  Header="Offer" Binding="{Binding Path=CashPointsRequired}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -142,7 +142,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Coupon" Binding="{Binding Path=test}">
+                        <DataGridTextColumn Width="*"  Header="Coupon" Binding="{Binding Path=invoiceCountPointsRequired}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -371,7 +371,7 @@
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="50" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                     Height="40"   Margin="10,5,5,5" 
+                                     Height="40"   Margin="10,5,5,5"  Grid.Column="0"
                                      LostFocus="Tb_LostFocus" TextChanged="Tb_TextChanged">
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_name" Content="Name"
@@ -381,10 +381,19 @@
                                               VerticalOffset="20"/>
                                 </TextBox.ToolTip>
                             </TextBox>
-                            <Button  x:Name="btn_symbol" Grid.Column="2" Padding="0"  Background="#4E4E4E" Height="35" Width="35"
+                            <Path Fill="#E81123" Grid.Row="1" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
+                              HorizontalAlignment="Right"    Visibility="Collapsed" 
+                         VerticalAlignment="Center" Width="15"  Height="15"  
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorName"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+
+                            <Button  x:Name="btn_symbol" Grid.Column="1" Padding="0"  Background="#4E4E4E" Height="35" Width="35"
                               materialDesign:ButtonAssist.CornerRadius="7"      BorderBrush="{x:Null}" Click="Btn_symbol_Click" Margin="5,1,10,1" ToolTip="symbol" >
                                 <Path Fill="White" Stretch="Fill" Margin="2.5" x:Name="path_symbol"
-                              HorizontalAlignment="Right" Grid.Column="0"  
+                              HorizontalAlignment="Right" 
                          VerticalAlignment="Center" Width="{Binding Path=ActualHeight, ElementName=path_symbol}" Height="20"
                               Data="M88,78.4l-4,4.3c-2.4,2.6-6,3.8-9.5,3.3l-5.8-0.9l-5.5,1.9c-3.4,1.2-7.1,0.6-10-1.5l-4.7-3.4l-5.8-0.9
 	c-1.4-0.2-2.7-0.7-3.9-1.4v44.4l24-16.1c0.9-0.6,2-0.6,2.9,0l24,16.1V77.8L88,78.4z M102.4,31.5l-4.7-5.5l-1.5-7.1
@@ -405,24 +414,19 @@
                             </Button>
 
                         </Grid>
-                        <Path Fill="#E81123" Grid.Row="1" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
-                              HorizontalAlignment="Right"    Visibility="Collapsed" 
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                            <Path.ToolTip>
-                                <ToolTip  x:Name="tt_errorName"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                            </Path.ToolTip>
-                        </Path>
 
 
-                        <TextBox x:Name="tb_cashPointsRequired" Grid.Row="2" Text="{Binding cashPointsRequired, Mode=OneWay}"  Padding="10,0,5,0"  
+
+                        <TextBox x:Name="tb_cashPointsRequired" Grid.Row="2" Text="{Binding CashPointsRequired, Mode=OneWay}"  Padding="10,0,5,0"  
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Cash Points Required..."   
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="50" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="40"   Margin="10,5,10,5" 
-                                     LostFocus="Tb_LostFocus" TextChanged="Tb_TextChanged">
+                                     LostFocus="Tb_LostFocus" TextChanged="Tb_TextChanged" 
+                                     PreviewKeyDown="Tb_PreventSpaces" 
+                                     PreviewTextInput="Tb_discountValue_PreviewTextInput" >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_cashPointsRequired" Content="CashPointsRequired"
                                              Placement="left" 
@@ -442,14 +446,16 @@
 
 
 
-                        <TextBox x:Name="tb_invoiceCountPointsRequired" Grid.Row="3" Text="{Binding name, Mode=OneWay}"  Padding="10,0,5,0"  
+                        <TextBox x:Name="tb_invoiceCountPointsRequired" Grid.Row="3" Text="{Binding invoiceCountPointsRequired, Mode=OneWay}"  Padding="10,0,5,0"  
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Invoice Count Points Required..."   
-                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="50" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="40"   Margin="10,5,10,5" 
-                                     LostFocus="Tb_LostFocus" TextChanged="Tb_TextChanged">
+                                     LostFocus="Tb_LostFocus" TextChanged="Tb_TextChanged"
+                                     PreviewKeyDown="Tb_PreventSpaces" 
+                                     PreviewTextInput="Tb_discountValue_PreviewTextInput" >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_invoiceCountPointsRequired" Content="Invoice Count Points Required"
                                              Placement="left" 
