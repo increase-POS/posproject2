@@ -26,7 +26,6 @@ namespace POS_Server
     
         public virtual branches branches { get; set; }
         public virtual branches branches1 { get; set; }
-        public virtual branches branches2 { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
     }

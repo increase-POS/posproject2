@@ -58,6 +58,52 @@ namespace POS_Server.Controllers
             }
             return NotFound();
         }
+        [HttpGet]
+        [Route("GetOriginal")]
+        public IHttpActionResult GetOriginal(int invoiceId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                 var couponsInvoicesList = (from c in entity.couponsInvoices
+                     where c.InvoiceId == invoiceId 
+                     join b in entity.coupons on c.couponId equals b.cId into lj
+                     from x in lj.DefaultIfEmpty()
+                     where x.startDate <= DateTime.Now && x.endDate >= DateTime.Now && x.remainQ >0
+                     select new CouponInvoiceModel()
+                     {
+                         id = c.id,
+                         couponId = c.couponId,
+                         InvoiceId = c.InvoiceId,
+                         createDate = c.createDate,
+                         updateDate = c.updateDate,
+                         createUserId = c.createUserId,
+                         updateUserId = c.updateUserId,
+                         discountValue = x.discountValue, 
+                         //discountType = x.discountType,
+                         couponCode = x.code,
+                     }).ToList();
+                   
+
+                    if (couponsInvoicesList == null)
+                        return NotFound();
+                    else
+                        return Ok(couponsInvoicesList);
+                }
+            }
+            return NotFound();
+        }
 
 
 
@@ -108,14 +154,10 @@ namespace POS_Server.Controllers
                 return NotFound();
         }
 
-
-
-
-
         // add or update couponsInvoices
         [HttpPost]
         [Route("Save")]
-        public Boolean Save(string couponsInvoicesObject, int invoiceId)
+        public int Save(string couponsInvoicesObject, int invoiceId,string invType)
         {
             var re = Request;
             var headers = re.Headers;
@@ -129,47 +171,113 @@ namespace POS_Server.Controllers
 
             if (valid)
             {
-                // delete old invoice items
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    List<couponsInvoices> coupons = entity.couponsInvoices.Where(x => x.InvoiceId == invoiceId).ToList();
-                    entity.couponsInvoices.RemoveRange(coupons);
-                    try { entity.SaveChanges(); }
-                    catch { }
-
-                }
                 couponsInvoicesObject = couponsInvoicesObject.Replace("\\", string.Empty);
                 couponsInvoicesObject = couponsInvoicesObject.Trim('"');
                 List<couponsInvoices> Object = JsonConvert.DeserializeObject<List<couponsInvoices>>(couponsInvoicesObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    for (int i = 0; i < Object.Count; i++)
+                    if (invType == "sd" || invType == "qd")
                     {
-                        var couponsInvoicesEntity = entity.Set<couponsInvoices>();
-                        if (Object[i].updateUserId == 0 || Object[i].updateUserId == null)
+                        var oldList = entity.couponsInvoices.Where(p => p.InvoiceId == invoiceId);
+                        if (oldList.Count() > 0)
                         {
-                            Nullable<int> id = null;
-                            Object[i].updateUserId = id;
+                            entity.couponsInvoices.RemoveRange(oldList);
                         }
-                        if (Object[i].createUserId == 0 || Object[i].createUserId == null)
+                        if (Object.Count() > 0)
                         {
-                            Nullable<int> id = null;
-                            Object[i].createUserId = id;
+                            foreach (couponsInvoices coupon  in Object)
+                            {
+                                //coupon.userId = userId;
+                                if (coupon.createDate == null)
+                                {
+                                    coupon.createDate = DateTime.Now;
+                                    coupon.updateDate = DateTime.Now;
+                                    coupon.updateUserId = coupon.createUserId;
+                                }
+                                else
+                                {
+                                    coupon.updateDate = DateTime.Now;
+                                }
+                            }
+                            entity.couponsInvoices.AddRange(Object);
                         }
-                        Object[i].createDate = DateTime.Now;
-                        Object[i].updateDate = DateTime.Now;
-                        Object[i].updateUserId = Object[i].createUserId;
-
-                        couponsInvoicesEntity.Add(Object[i]);
-                    }
-                    try
-                    {
                         entity.SaveChanges();
                     }
-                    catch { return false; }
+                    else
+                    {
+                        var oldList = entity.couponsInvoices.Where(x => x.InvoiceId == invoiceId).Select(x => new { x.couponId, x.id }).ToList();
+                        for (int i = 0; i < oldList.Count; i++)// loop to remove not exist coupon
+                        {
+                            int exist = 0;
+                            coupons c = entity.coupons.Find(oldList[i].couponId);
+
+                            int couponId = (int)oldList[i].couponId;
+                            var tci = entity.couponsInvoices.Where(x => x.couponId == couponId && x.InvoiceId == invoiceId).FirstOrDefault();
+                            couponsInvoices ci = entity.couponsInvoices.Find(tci.id);
+
+                            if (Object != null && Object.Count > 0)
+                            {
+                                var isExist = Object.Find(x => x.couponId == oldList[i].couponId);
+                                if (isExist == null)
+                                    exist = 0;
+                                else
+                                    exist = 1;
+                            }
+                            //return exist;
+                            if (exist == 0)// remove coupon from invoice
+                            {
+                                c.remainQ++;
+                                entity.couponsInvoices.Remove(ci);
+                            }
+                            else // edit previously added coupons
+                            {
+                                ci.discountType = byte.Parse(c.discountType);
+                                ci.discountValue = c.discountValue;
+                                ci.updateDate = DateTime.Now;
+                            }
+                            entity.SaveChanges();
+                        }
+                        foreach (couponsInvoices coupon in Object)// loop to add new coupons
+                        {
+                            Boolean isInList = false;
+                            if (oldList != null)
+                            {
+                                var old = oldList.ToList().Find(x => x.couponId == coupon.couponId);
+                                if (old != null)
+                                    isInList = true;
+                            }
+                            if (!isInList)
+                            {
+                                if (coupon.updateUserId == 0 || coupon.updateUserId == null)
+                                {
+                                    Nullable<int> id = null;
+                                    coupon.updateUserId = id;
+                                }
+                                if (coupon.createUserId == 0 || coupon.createUserId == null)
+                                {
+                                    Nullable<int> id = null;
+                                    coupon.createUserId = id;
+                                }
+                                coupon.createDate = DateTime.Now;
+                                coupon.updateDate = DateTime.Now;
+                                coupon.updateUserId = coupon.createUserId;
+
+                                entity.couponsInvoices.Add(coupon);
+                                entity.SaveChanges();
+                                coupons c = entity.coupons.Find(coupon.couponId);
+                                c.remainQ--;
+                                entity.SaveChanges();
+                            }
+                        }
+                        try
+                        {
+                            entity.SaveChanges();
+                        }
+                        catch { return 0; }
+                    }
                 }
             }
-            return true;
+            return 1;
         }
 
         [HttpPost]

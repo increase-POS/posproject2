@@ -262,7 +262,7 @@ namespace POS_Server.Controllers
         // add or update branch
         [HttpPost]
         [Route("Save")]
-        public bool Save(string branchObject)
+        public string Save(string branchObject)
         {
             var re = Request;
             var headers = re.Headers;
@@ -302,6 +302,8 @@ namespace POS_Server.Controllers
 
 
                             branchEntity.Add(newObject);
+                            entity.SaveChanges();
+                            return newObject.branchId.ToString();
                         }
                         else
                         {
@@ -318,19 +320,21 @@ namespace POS_Server.Controllers
                             tmpBranch.updateDate = DateTime.Now;// server current date
                             tmpBranch.updateUserId = newObject.updateUserId;
                             tmpBranch.isActive = newObject.isActive;
+                            entity.SaveChanges();
+                            return newObject.branchId.ToString();
                         }
-                        entity.SaveChanges();
+                       // entity.SaveChanges();
                     }
-                    return true;
+                   
                 }
 
                 catch
                 {
-                    return false;
+                    return "-1";
                 }
             }
             else
-                return false;
+                return "-1";
         }
 
         [HttpPost]
@@ -594,6 +598,61 @@ namespace POS_Server.Controllers
                         return Ok(branchesList);
 
                 }
+            }
+            else
+                return NotFound();
+        }
+
+        [HttpGet]
+        [Route("GetJoindBrByBranchId")]
+        public IHttpActionResult GetJoindBrByBranchId(int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+            if (valid)
+            {
+             
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var branchesList =(from b in entity.branches
+                                         
+                                          join S in entity.branchStore on b.branchId equals S.storeId into JS
+                                           from JSS in JS.DefaultIfEmpty()
+                                           where JSS.branchId==branchId
+                                          select new BranchModel
+                        {
+                            branchId = b.branchId,
+                            address = b.address,
+                            createDate = b.createDate,
+                            createUserId = b.createUserId,
+                            email = b.email,
+                            mobile = b.mobile,
+                            name = b.name,
+                            code = b.code,
+                            notes = b.notes,
+                            parentId = b.parentId,
+                            phone = b.phone,
+                            updateDate = b.updateDate,
+                            updateUserId = b.updateUserId,
+                            isActive = b.isActive,
+                            type = b.type
+
+                        })
+                            .ToList();
+                        if (branchesList == null)
+                            return NotFound();
+                        else
+                            return Ok(branchesList);
+                    }
+                
             }
             else
                 return NotFound();

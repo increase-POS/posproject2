@@ -33,13 +33,13 @@ namespace POS_Server
         public string note { get; set; }
         public Nullable<decimal> storeCost { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<inventoryItemLocation> inventoryItemLocation { get; set; }
         public virtual itemsUnits itemsUnits { get; set; }
         public virtual locations locations { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
         public virtual users users2 { get; set; }
         public virtual users users3 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<inventoryItemLocation> inventoryItemLocation { get; set; }
     }
 }

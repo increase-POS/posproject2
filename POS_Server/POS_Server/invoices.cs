@@ -31,6 +31,8 @@ namespace POS_Server
         public Nullable<int> agentId { get; set; }
         public Nullable<int> createUserId { get; set; }
         public string invType { get; set; }
+        public string discountType { get; set; }
+        public Nullable<decimal> discountValue { get; set; }
         public Nullable<decimal> total { get; set; }
         public Nullable<decimal> totalNet { get; set; }
         public Nullable<decimal> paid { get; set; }
@@ -47,12 +49,11 @@ namespace POS_Server
         public Nullable<System.DateTime> vendorInvDate { get; set; }
         public Nullable<int> branchId { get; set; }
         public Nullable<int> posId { get; set; }
-        public string discountType { get; set; }
-        public Nullable<decimal> discountValue { get; set; }
         public Nullable<decimal> tax { get; set; }
         public Nullable<int> taxtype { get; set; }
         public string name { get; set; }
         public Nullable<byte> isApproved { get; set; }
+        public Nullable<int> shippingCompanyId { get; set; }
     
         public virtual agents agents { get; set; }
         public virtual branches branches { get; set; }
@@ -64,6 +65,7 @@ namespace POS_Server
         public virtual ICollection<invoices> invoices1 { get; set; }
         public virtual invoices invoices2 { get; set; }
         public virtual pos pos { get; set; }
+        public virtual shippingCompanies shippingCompanies { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
         public virtual users users2 { get; set; }

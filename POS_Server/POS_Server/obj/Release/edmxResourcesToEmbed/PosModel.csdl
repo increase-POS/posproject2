@@ -1,10 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="incposdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="agentMemberships">
+    <Key>
+      <PropertyRef Name="agentMembershipsId" />
+    </Key>
+    <Property Name="agentMembershipsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="membershipId" Type="Int32" />
+    <Property Name="agentId" Type="Int32" />
+    <Property Name="startDate" Type="DateTime" Precision="7" />
+    <Property Name="EndDate" Type="DateTime" Precision="7" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="isActive" Type="Byte" />
+    <NavigationProperty Name="agents" Relationship="Self.FK_agentMemberships_agents" FromRole="agentMemberships" ToRole="agents" />
+    <NavigationProperty Name="memberships" Relationship="Self.FK_agentMemberships_memberships" FromRole="agentMemberships" ToRole="memberships" />
+    <NavigationProperty Name="memberships1" Relationship="Self.FK_agentMemberships_memberships1" FromRole="agentMemberships" ToRole="memberships" />
+    <NavigationProperty Name="users" Relationship="Self.FK_agentMemberships_users1" FromRole="agentMemberships" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_agentMemberships_users2" FromRole="agentMemberships" ToRole="users" />
+    <Property Name="subscriptionFeesId" Type="Int32" />
+    <Property Name="cashTransId" Type="Int32" />
+    <NavigationProperty Name="cashTransfer" Relationship="incposdbModel.FK_agentMemberships_cashTransfer" FromRole="agentMemberships" ToRole="cashTransfer" />
+    <NavigationProperty Name="cashTransfer1" Relationship="incposdbModel.FK_cashTransfer_agentMemberships" FromRole="agentMemberships" ToRole="cashTransfer" />
+    <NavigationProperty Name="subscriptionFees" Relationship="incposdbModel.FK_agentMemberships_subscriptionFees" FromRole="agentMemberships" ToRole="subscriptionFees" />
+  </EntityType>
   <EntityType Name="agents">
     <Key>
       <PropertyRef Name="agentId" />
     </Key>
     <Property Name="agentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="pointId" Type="Int32" />
     <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="company" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -24,11 +51,14 @@
     <Property Name="isActive" Type="Byte" />
     <Property Name="fax" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="maxDeserve" Type="Decimal" Precision="20" Scale="4" />
+    <NavigationProperty Name="agentMemberships" Relationship="Self.FK_agentMemberships_agents" FromRole="agents" ToRole="agentMemberships" />
+    <NavigationProperty Name="Points" Relationship="Self.FK_agents_Points" FromRole="agents" ToRole="Points" />
     <NavigationProperty Name="users" Relationship="Self.FK_agents_users" FromRole="agents" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_agents_users1" FromRole="agents" ToRole="users" />
     <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_agents" FromRole="agents" ToRole="cashTransfer" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_agents" FromRole="agents" ToRole="invoices" />
-    <NavigationProperty Name="medalAgent" Relationship="incposdbModel.FK_medalAgent_agents" FromRole="agents" ToRole="medalAgent" />
+    <NavigationProperty Name="medalAgent" Relationship="Self.FK_medalAgent_agents" FromRole="agents" ToRole="medalAgent" />
+    <NavigationProperty Name="Points1" Relationship="Self.FK_Points_agents" FromRole="agents" ToRole="Points" />
   </EntityType>
   <EntityType Name="banks">
     <Key>
@@ -47,6 +77,28 @@
     <Property Name="updateUserId" Type="Int32" />
     <Property Name="isActive" Type="Byte" />
     <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_banks" FromRole="banks" ToRole="cashTransfer" />
+  </EntityType>
+  <EntityType Name="bondes">
+    <Key>
+      <PropertyRef Name="bondId" />
+    </Key>
+    <Property Name="bondId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="number" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="amount" Type="Decimal" Precision="20" Scale="4" />
+    <Property Name="deserveDate" Type="DateTime" Precision="7" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="isRecieved" Type="Byte" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="isActive" Type="Byte" />
+    <Property Name="cashTransId" Type="Int32" />
+    <NavigationProperty Name="cashTransfer" Relationship="Self.FK_bondes_cashTransfer" FromRole="bondes" ToRole="cashTransfer" />
+    <NavigationProperty Name="users" Relationship="Self.FK_bondes_users" FromRole="bondes" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_bondes_users1" FromRole="bondes" ToRole="users" />
+    <NavigationProperty Name="cashTransfer1" Relationship="Self.FK_cashTransfer_bondes" FromRole="bondes" ToRole="cashTransfer" />
   </EntityType>
   <EntityType Name="branches">
     <Key>
@@ -71,9 +123,9 @@
     <NavigationProperty Name="users1" Relationship="Self.FK_branches_users1" FromRole="branches" ToRole="users" />
     <NavigationProperty Name="branchesUsers" Relationship="Self.FK_branchesUsers_branches" FromRole="branches" ToRole="branchesUsers" />
     <NavigationProperty Name="branchStore" Relationship="Self.FK_branchStore_branches" FromRole="branches" ToRole="branchStore" />
-    <NavigationProperty Name="branchStore1" Relationship="Self.FK_branchStore_branches1" FromRole="branches" ToRole="branchStore" />
-    <NavigationProperty Name="branchStore2" Relationship="Self.FK_branchStore_branches2" FromRole="branches" ToRole="branchStore" />
+    <NavigationProperty Name="branchStore1" Relationship="Self.FK_branchStore_branches2" FromRole="branches" ToRole="branchStore" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_branches" FromRole="branches" ToRole="invoices" />
+    <NavigationProperty Name="locations" Relationship="Self.FK_locations_branches1" FromRole="branches" ToRole="locations" />
     <NavigationProperty Name="pos" Relationship="Self.FK_pos_branches" FromRole="branches" ToRole="pos" />
     <NavigationProperty Name="sections" Relationship="Self.FK_sections_branches" FromRole="branches" ToRole="sections" />
   </EntityType>
@@ -103,12 +155,27 @@
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="createUserId" Type="Int32" />
     <Property Name="updateUserId" Type="Int32" />
+    <Property Name="isActive" Type="Int32" />
     <NavigationProperty Name="branches" Relationship="Self.FK_branchStore_branches" FromRole="branchStore" ToRole="branches" />
-    <NavigationProperty Name="branches1" Relationship="Self.FK_branchStore_branches1" FromRole="branchStore" ToRole="branches" />
-    <NavigationProperty Name="branches2" Relationship="Self.FK_branchStore_branches2" FromRole="branchStore" ToRole="branches" />
+    <NavigationProperty Name="branches1" Relationship="Self.FK_branchStore_branches2" FromRole="branchStore" ToRole="branches" />
     <NavigationProperty Name="users" Relationship="Self.FK_branchStore_users" FromRole="branchStore" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_branchStore_users1" FromRole="branchStore" ToRole="users" />
-    <Property Name="isActive" Type="Int32" />
+  </EntityType>
+  <EntityType Name="cards">
+    <Key>
+      <PropertyRef Name="cardId" />
+    </Key>
+    <Property Name="cardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="notes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="isActive" Type="Byte" />
+    <NavigationProperty Name="users" Relationship="Self.FK_cards_users" FromRole="cards" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_cards_users1" FromRole="cards" ToRole="users" />
+    <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_cards" FromRole="cards" ToRole="cashTransfer" />
   </EntityType>
   <EntityType Name="cashTransfer">
     <Key>
@@ -135,8 +202,14 @@
     <Property Name="docNum" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="docImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="bankId" Type="Int32" />
+    <Property Name="processType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cardId" Type="Int32" />
+    <Property Name="bondId" Type="Int32" />
     <NavigationProperty Name="agents" Relationship="Self.FK_cashTransfer_agents" FromRole="cashTransfer" ToRole="agents" />
     <NavigationProperty Name="banks" Relationship="Self.FK_cashTransfer_banks" FromRole="cashTransfer" ToRole="banks" />
+    <NavigationProperty Name="bondes" Relationship="Self.FK_bondes_cashTransfer" FromRole="cashTransfer" ToRole="bondes" />
+    <NavigationProperty Name="bondes1" Relationship="Self.FK_cashTransfer_bondes" FromRole="cashTransfer" ToRole="bondes" />
+    <NavigationProperty Name="cards" Relationship="Self.FK_cashTransfer_cards" FromRole="cashTransfer" ToRole="cards" />
     <NavigationProperty Name="cashTransfer1" Relationship="Self.FK_cashTransfer_cashTransfer" FromRole="cashTransfer" ToRole="cashTransfer1" />
     <NavigationProperty Name="cashTransfer2" Relationship="Self.FK_cashTransfer_cashTransfer" FromRole="cashTransfer1" ToRole="cashTransfer" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_cashTransfer_invoices" FromRole="cashTransfer" ToRole="invoices" />
@@ -145,12 +218,9 @@
     <NavigationProperty Name="users" Relationship="Self.FK_cashTransfer_users" FromRole="cashTransfer" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_cashTransfer_users1" FromRole="cashTransfer" ToRole="users" />
     <NavigationProperty Name="users2" Relationship="Self.FK_cashTransfer_users2" FromRole="cashTransfer" ToRole="users" />
-    <Property Name="processType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cardId" Type="Int32" />
-    <NavigationProperty Name="cards" Relationship="incposdbModel.FK_cashTransfer_cards" FromRole="cashTransfer" ToRole="cards" />
-    <Property Name="bondId" Type="Int32" />
-    <NavigationProperty Name="bondes" Relationship="incposdbModel.FK_cashTransfer_bondes" FromRole="cashTransfer" ToRole="bondes" />
-    <NavigationProperty Name="bondes1" Relationship="incposdbModel.FK_bondes_cashTransfer" FromRole="cashTransfer" ToRole="bondes" />
+    <Property Name="agentMembershipsId" Type="Int32" />
+    <NavigationProperty Name="agentMemberships" Relationship="incposdbModel.FK_agentMemberships_cashTransfer" FromRole="cashTransfer" ToRole="agentMemberships" />
+    <NavigationProperty Name="agentMemberships1" Relationship="incposdbModel.FK_cashTransfer_agentMemberships" FromRole="cashTransfer" ToRole="agentMemberships" />
   </EntityType>
   <EntityType Name="categories">
     <Key>
@@ -171,8 +241,25 @@
     <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="users" Relationship="Self.FK_categories_users" FromRole="categories" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_categories_users1" FromRole="categories" ToRole="users" />
+    <NavigationProperty Name="categoryuser" Relationship="Self.FK_categoryuser_categories" FromRole="categories" ToRole="categoryuser" />
     <NavigationProperty Name="items" Relationship="Self.FK_items_categories" FromRole="categories" ToRole="items" />
-    <NavigationProperty Name="categoryuser" Relationship="incposdbModel.FK_categoryuser_categories" FromRole="categories" ToRole="categoryuser" />
+  </EntityType>
+  <EntityType Name="categoryuser">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="categoryId" Type="Int32" />
+    <Property Name="userId" Type="Int32" />
+    <Property Name="sequence" Type="Int32" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <NavigationProperty Name="categories" Relationship="Self.FK_categoryuser_categories" FromRole="categoryuser" ToRole="categories" />
+    <NavigationProperty Name="users" Relationship="Self.FK_categoryuser_users" FromRole="categoryuser" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_categoryuser_users1" FromRole="categoryuser" ToRole="users" />
+    <NavigationProperty Name="users2" Relationship="Self.FK_categoryuser_users2" FromRole="categoryuser" ToRole="users" />
   </EntityType>
   <EntityType Name="cities">
     <Key>
@@ -216,7 +303,6 @@
     <NavigationProperty Name="users" Relationship="Self.FK_coupons_users" FromRole="coupons" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_coupons_users1" FromRole="coupons" ToRole="users" />
     <NavigationProperty Name="couponsInvoices" Relationship="Self.FK_couponsInvoices_coupons" FromRole="coupons" ToRole="couponsInvoices" />
-    <NavigationProperty Name="medalAgent" Relationship="incposdbModel.FK_medalAgent_coupons" FromRole="coupons" ToRole="medalAgent" />
   </EntityType>
   <EntityType Name="couponsInvoices">
     <Key>
@@ -229,30 +315,30 @@
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="createUserId" Type="Int32" />
     <Property Name="updateUserId" Type="Int32" />
+    <Property Name="discountValue" Type="Decimal" Precision="20" Scale="4" />
+    <Property Name="discountType" Type="Byte" />
     <NavigationProperty Name="coupons" Relationship="Self.FK_couponsInvoices_coupons" FromRole="couponsInvoices" ToRole="coupons" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_couponsInvoices_invoices" FromRole="couponsInvoices" ToRole="invoices" />
     <NavigationProperty Name="users" Relationship="Self.FK_couponsInvoices_users" FromRole="couponsInvoices" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_couponsInvoices_users1" FromRole="couponsInvoices" ToRole="users" />
-    <Property Name="discountValue" Type="Decimal" Precision="20" Scale="4" />
-    <Property Name="discountType" Type="Byte" />
   </EntityType>
   <EntityType Name="docImages">
     <Key>
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="docName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="docnum" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="tableName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="createDate" Type="DateTime" Precision="7" />
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="createUserId" Type="Int32" />
     <Property Name="updateUserId" Type="Int32" />
+    <Property Name="tableId" Type="Int32" />
     <NavigationProperty Name="users" Relationship="Self.FK_docImages_users" FromRole="docImages" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_docImages_users1" FromRole="docImages" ToRole="users" />
-    <Property Name="docName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="tableName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="tableId" Type="Int32" />
   </EntityType>
   <EntityType Name="Expenses">
     <Key>
@@ -268,6 +354,85 @@
     <Property Name="updateUserId" Type="Int32" />
     <NavigationProperty Name="users" Relationship="Self.FK_Expenses_users" FromRole="Expenses" ToRole="users" />
   </EntityType>
+  <EntityType Name="groupObject">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="groupId" Type="Int32" />
+    <Property Name="objectId" Type="Int32" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="addOb" Type="Boolean" Nullable="false" />
+    <Property Name="updateOb" Type="Boolean" Nullable="false" />
+    <Property Name="deleteOb" Type="Boolean" Nullable="false" />
+    <Property Name="showOb" Type="Boolean" Nullable="false" />
+    <Property Name="reportOb" Type="Boolean" />
+    <Property Name="levelOb" Type="Byte" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="isActive" Type="Int32" />
+    <NavigationProperty Name="groups" Relationship="Self.FK_groupObject_groups" FromRole="groupObject" ToRole="groups" />
+    <NavigationProperty Name="objects" Relationship="Self.FK_groupObject_objects" FromRole="groupObject" ToRole="objects" />
+    <NavigationProperty Name="users" Relationship="Self.FK_groupObject_users" FromRole="groupObject" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_groupObject_users1" FromRole="groupObject" ToRole="users" />
+  </EntityType>
+  <EntityType Name="groups">
+    <Key>
+      <PropertyRef Name="groupId" />
+    </Key>
+    <Property Name="groupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="isActive" Type="Int32" />
+    <NavigationProperty Name="groupObject" Relationship="Self.FK_groupObject_groups" FromRole="groups" ToRole="groupObject" />
+    <NavigationProperty Name="users" Relationship="Self.FK_groups_users1" FromRole="groups" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_groups_users2" FromRole="groups" ToRole="users" />
+    <NavigationProperty Name="users2" Relationship="Self.FK_users_groups" FromRole="groups" ToRole="users" />
+  </EntityType>
+  <EntityType Name="Inventory">
+    <Key>
+      <PropertyRef Name="inventoryId" />
+    </Key>
+    <Property Name="inventoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="num" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="isActive" Type="Byte" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="users" Relationship="Self.FK_Inventory_users" FromRole="Inventory" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_Inventory_users1" FromRole="Inventory" ToRole="users" />
+    <NavigationProperty Name="inventoryItemLocation" Relationship="Self.FK_inventoryItemLocation_Inventory" FromRole="Inventory" ToRole="inventoryItemLocation" />
+  </EntityType>
+  <EntityType Name="inventoryItemLocation">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="isDestroyed" Type="Boolean" />
+    <Property Name="amount" Type="Int32" />
+    <Property Name="amountDestroyed" Type="Int32" />
+    <Property Name="realAmount" Type="Int32" />
+    <Property Name="itemLocationId" Type="Int32" />
+    <Property Name="inventoryId" Type="Int32" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="isActive" Type="Byte" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Inventory" Relationship="Self.FK_inventoryItemLocation_Inventory" FromRole="inventoryItemLocation" ToRole="Inventory" />
+    <NavigationProperty Name="itemsLocations" Relationship="Self.FK_inventoryItemLocation_itemsLocations" FromRole="inventoryItemLocation" ToRole="itemsLocations" />
+    <NavigationProperty Name="users" Relationship="Self.FK_inventoryItemLocation_users" FromRole="inventoryItemLocation" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_inventoryItemLocation_users1" FromRole="inventoryItemLocation" ToRole="users" />
+  </EntityType>
   <EntityType Name="invoices">
     <Key>
       <PropertyRef Name="invoiceId" />
@@ -277,6 +442,8 @@
     <Property Name="agentId" Type="Int32" />
     <Property Name="createUserId" Type="Int32" />
     <Property Name="invType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="discountType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="discountValue" Type="Decimal" Precision="20" Scale="4" />
     <Property Name="total" Type="Decimal" Precision="20" Scale="4" />
     <Property Name="totalNet" Type="Decimal" Precision="20" Scale="4" />
     <Property Name="paid" Type="Decimal" Precision="20" Scale="4" />
@@ -293,6 +460,11 @@
     <Property Name="vendorInvDate" Type="DateTime" Precision="7" />
     <Property Name="branchId" Type="Int32" />
     <Property Name="posId" Type="Int32" />
+    <Property Name="tax" Type="Decimal" Precision="20" Scale="4" />
+    <Property Name="taxtype" Type="Int32" />
+    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="isApproved" Type="Byte" />
+    <Property Name="shippingCompanyId" Type="Int32" />
     <NavigationProperty Name="agents" Relationship="Self.FK_invoices_agents" FromRole="invoices" ToRole="agents" />
     <NavigationProperty Name="branches" Relationship="Self.FK_invoices_branches" FromRole="invoices" ToRole="branches" />
     <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_invoices" FromRole="invoices" ToRole="cashTransfer" />
@@ -300,6 +472,7 @@
     <NavigationProperty Name="invoices1" Relationship="Self.FK_invoices_invoices" FromRole="invoices" ToRole="invoices1" />
     <NavigationProperty Name="invoices2" Relationship="Self.FK_invoices_invoices" FromRole="invoices1" ToRole="invoices" />
     <NavigationProperty Name="pos" Relationship="Self.FK_invoices_pos" FromRole="invoices" ToRole="pos" />
+    <NavigationProperty Name="shippingCompanies" Relationship="Self.FK_invoices_shippingCompanies" FromRole="invoices" ToRole="shippingCompanies" />
     <NavigationProperty Name="users" Relationship="Self.FK_invoices_users" FromRole="invoices" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_invoices_users1" FromRole="invoices" ToRole="users" />
     <NavigationProperty Name="users2" Relationship="Self.FK_invoices_users2" FromRole="invoices" ToRole="users" />
@@ -308,12 +481,6 @@
     <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_invoices" FromRole="invoices" ToRole="itemsTransfer" />
     <NavigationProperty Name="orders" Relationship="Self.FK_orders_invoices" FromRole="invoices" ToRole="orders" />
     <NavigationProperty Name="orderscontents" Relationship="Self.FK_orderscontents_invoices" FromRole="invoices" ToRole="orderscontents" />
-    <Property Name="discountType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="discountValue" Type="Decimal" Precision="20" Scale="4" />
-    <Property Name="tax" Type="Decimal" Precision="20" Scale="4" />
-    <Property Name="taxtype" Type="Int32" />
-    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="isApproved" Type="Byte" />
   </EntityType>
   <EntityType Name="invoicesOrders">
     <Key>
@@ -385,14 +552,14 @@
     <Property Name="endDate" Type="DateTime" Precision="0" />
     <Property Name="itemUnitId" Type="Int32" />
     <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="storeCost" Type="Decimal" Precision="20" Scale="4" />
+    <NavigationProperty Name="inventoryItemLocation" Relationship="Self.FK_inventoryItemLocation_itemsLocations" FromRole="itemsLocations" ToRole="inventoryItemLocation" />
     <NavigationProperty Name="itemsUnits" Relationship="Self.FK_itemsLocations_itemsUnits" FromRole="itemsLocations" ToRole="itemsUnits" />
     <NavigationProperty Name="locations" Relationship="Self.FK_itemsLocations_locations" FromRole="itemsLocations" ToRole="locations" />
     <NavigationProperty Name="users" Relationship="Self.FK_itemsLocations_users" FromRole="itemsLocations" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_itemsLocations_users1" FromRole="itemsLocations" ToRole="users" />
     <NavigationProperty Name="users2" Relationship="Self.FK_itemsLocations_users2" FromRole="itemsLocations" ToRole="users" />
     <NavigationProperty Name="users3" Relationship="Self.FK_itemsLocations_users3" FromRole="itemsLocations" ToRole="users" />
-    <Property Name="storeCost" Type="Decimal" Precision="20" Scale="4" />
-    <NavigationProperty Name="inventoryItemLocation" Relationship="incposdbModel.FK_inventoryItemLocation_itemsLocations" FromRole="itemsLocations" ToRole="inventoryItemLocation" />
   </EntityType>
   <EntityType Name="itemsMaterials">
     <Key>
@@ -419,11 +586,11 @@
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="createUserId" Type="Int32" />
     <Property Name="updateUserId" Type="Int32" />
+    <Property Name="quantity" Type="Int32" />
     <NavigationProperty Name="itemsUnits" Relationship="Self.FK_itemsOffers_itemsUnits" FromRole="itemsOffers" ToRole="itemsUnits" />
     <NavigationProperty Name="offers" Relationship="Self.FK_itemsOffers_offers" FromRole="itemsOffers" ToRole="offers" />
     <NavigationProperty Name="users" Relationship="Self.FK_itemsOffers_users" FromRole="itemsOffers" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_itemsOffers_users1" FromRole="itemsOffers" ToRole="users" />
-    <Property Name="quantity" Type="Int32" />
   </EntityType>
   <EntityType Name="itemsProp">
     <Key>
@@ -480,6 +647,7 @@
     <Property Name="createUserId" Type="Int32" />
     <Property Name="updateUserId" Type="Int32" />
     <Property Name="subUnitId" Type="Int32" />
+    <Property Name="purchasePrice" Type="Decimal" Precision="20" Scale="4" />
     <NavigationProperty Name="items" Relationship="Self.FK_itemsUnits_items" FromRole="itemsUnits" ToRole="items" />
     <NavigationProperty Name="itemsLocations" Relationship="Self.FK_itemsLocations_itemsUnits" FromRole="itemsUnits" ToRole="itemsLocations" />
     <NavigationProperty Name="itemsOffers" Relationship="Self.FK_itemsOffers_itemsUnits" FromRole="itemsUnits" ToRole="itemsOffers" />
@@ -487,7 +655,6 @@
     <NavigationProperty Name="units" Relationship="Self.FK_itemsUnits_units" FromRole="itemsUnits" ToRole="units" />
     <NavigationProperty Name="users" Relationship="Self.FK_itemsUnits_users" FromRole="itemsUnits" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_itemsUnits_users1" FromRole="itemsUnits" ToRole="users" />
-    <Property Name="purchasePrice" Type="Decimal" Precision="20" Scale="4" />
   </EntityType>
   <EntityType Name="itemTransferOffer">
     <Key>
@@ -523,12 +690,93 @@
     <Property Name="isActive" Type="Byte" />
     <Property Name="sectionId" Type="Int32" />
     <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="branchId" Type="Int32" />
+    <Property Name="isFreeZone" Type="Byte" />
+    <NavigationProperty Name="branches" Relationship="Self.FK_locations_branches1" FromRole="locations" ToRole="branches" />
     <NavigationProperty Name="itemsLocations" Relationship="Self.FK_itemsLocations_locations" FromRole="locations" ToRole="itemsLocations" />
     <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_locations" FromRole="locations" ToRole="itemsTransfer" />
     <NavigationProperty Name="itemsTransfer1" Relationship="Self.FK_itemsTransfer_locations1" FromRole="locations" ToRole="itemsTransfer" />
     <NavigationProperty Name="sections" Relationship="Self.FK_locations_sections" FromRole="locations" ToRole="sections" />
     <NavigationProperty Name="users" Relationship="Self.FK_locations_users" FromRole="locations" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_locations_users1" FromRole="locations" ToRole="users" />
+  </EntityType>
+  <EntityType Name="medalAgent">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="medalId" Type="Int32" />
+    <Property Name="agentId" Type="Int32" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="isActive" Type="Byte" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <NavigationProperty Name="agents" Relationship="Self.FK_medalAgent_agents" FromRole="medalAgent" ToRole="agents" />
+    <NavigationProperty Name="medals" Relationship="Self.FK_medalAgent_medals" FromRole="medalAgent" ToRole="medals" />
+    <NavigationProperty Name="users" Relationship="Self.FK_medalAgent_users" FromRole="medalAgent" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_medalAgent_users1" FromRole="medalAgent" ToRole="users" />
+  </EntityType>
+  <EntityType Name="medals">
+    <Key>
+      <PropertyRef Name="medalId" />
+    </Key>
+    <Property Name="medalId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="symbol" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CashPointsRequired" Type="Int32" />
+    <Property Name="invoiceCountPointsRequired" Type="Int32" />
+    <Property Name="isActive" Type="Byte" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <NavigationProperty Name="medalAgent" Relationship="Self.FK_medalAgent_medals" FromRole="medals" ToRole="medalAgent" />
+    <NavigationProperty Name="users" Relationship="Self.FK_medals_users" FromRole="medals" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_medals_users1" FromRole="medals" ToRole="users" />
+  </EntityType>
+  <EntityType Name="memberships">
+    <Key>
+      <PropertyRef Name="membershipId" />
+    </Key>
+    <Property Name="membershipId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="deliveryDiscount" Type="Decimal" Precision="20" Scale="4" />
+    <Property Name="deliveryDiscountType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="invoiceDiscount" Type="Decimal" Precision="20" Scale="4" />
+    <Property Name="invoiceDiscountType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="isActive" Type="Byte" />
+    <NavigationProperty Name="agentMemberships" Relationship="Self.FK_agentMemberships_memberships" FromRole="memberships" ToRole="agentMemberships" />
+    <NavigationProperty Name="agentMemberships1" Relationship="Self.FK_agentMemberships_memberships1" FromRole="memberships" ToRole="agentMemberships" />
+    <NavigationProperty Name="users" Relationship="Self.FK_memberships_users" FromRole="memberships" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_memberships_users1" FromRole="memberships" ToRole="users" />
+    <NavigationProperty Name="subscriptionFees" Relationship="incposdbModel.FK_subscriptionFees_memberships" FromRole="memberships" ToRole="subscriptionFees" />
+  </EntityType>
+  <EntityType Name="objects">
+    <Key>
+      <PropertyRef Name="objectId" />
+    </Key>
+    <Property Name="objectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="isActive" Type="Int32" />
+    <Property Name="parentObjectId" Type="Int32" />
+    <NavigationProperty Name="groupObject" Relationship="Self.FK_groupObject_objects" FromRole="objects" ToRole="groupObject" />
+    <NavigationProperty Name="objects1" Relationship="Self.FK_objects_objects" FromRole="objects" ToRole="objects1" />
+    <NavigationProperty Name="objects2" Relationship="Self.FK_objects_objects" FromRole="objects1" ToRole="objects" />
+    <NavigationProperty Name="users" Relationship="Self.FK_objects_users" FromRole="objects" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_objects_users1" FromRole="objects" ToRole="users" />
   </EntityType>
   <EntityType Name="offers">
     <Key>
@@ -549,7 +797,6 @@
     <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="itemsOffers" Relationship="Self.FK_itemsOffers_offers" FromRole="offers" ToRole="itemsOffers" />
     <NavigationProperty Name="itemTransferOffer" Relationship="Self.FK_itemTransferOffer_offers" FromRole="offers" ToRole="itemTransferOffer" />
-    <NavigationProperty Name="medalAgent" Relationship="incposdbModel.FK_medalAgent_offers" FromRole="offers" ToRole="medalAgent" />
   </EntityType>
   <EntityType Name="orders">
     <Key>
@@ -591,6 +838,31 @@
     <NavigationProperty Name="users" Relationship="Self.FK_orderscontents_users" FromRole="orderscontents" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_orderscontents_users1" FromRole="orderscontents" ToRole="users" />
   </EntityType>
+  <EntityType Name="Points">
+    <Key>
+      <PropertyRef Name="pointId" />
+    </Key>
+    <Property Name="pointId" Type="Int32" Nullable="false" />
+    <Property Name="Cash" Type="Decimal" Precision="20" Scale="4" />
+    <Property Name="CashPoints" Type="Int32" />
+    <Property Name="invoiceCount" Type="Int32" />
+    <Property Name="invoiceCountPoints" Type="Int32" />
+    <Property Name="CashArchive" Type="Decimal" Precision="20" Scale="4" />
+    <Property Name="CashPointsArchive" Type="Int32" />
+    <Property Name="invoiceCountArchive" Type="Int32" />
+    <Property Name="invoiceCountPoinstArchive" Type="Int32" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="isActive" Type="Byte" />
+    <Property Name="agentId" Type="Int32" />
+    <NavigationProperty Name="agents" Relationship="Self.FK_agents_Points" FromRole="Points" ToRole="agents" />
+    <NavigationProperty Name="agents1" Relationship="Self.FK_Points_agents" FromRole="Points" ToRole="agents" />
+    <NavigationProperty Name="users" Relationship="Self.FK_Points_users" FromRole="Points" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_Points_users1" FromRole="Points" ToRole="users" />
+  </EntityType>
   <EntityType Name="pos">
     <Key>
       <PropertyRef Name="posId" />
@@ -606,6 +878,7 @@
     <Property Name="updateUserId" Type="Int32" />
     <Property Name="isActive" Type="Byte" />
     <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="balanceAll" Type="Decimal" Precision="20" Scale="4" />
     <NavigationProperty Name="branches" Relationship="Self.FK_pos_branches" FromRole="pos" ToRole="branches" />
     <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_pos" FromRole="pos" ToRole="cashTransfer" />
     <NavigationProperty Name="cashTransfer1" Relationship="Self.FK_cashTransfer_pos1" FromRole="pos" ToRole="cashTransfer" />
@@ -614,7 +887,6 @@
     <NavigationProperty Name="users1" Relationship="Self.FK_pos_users1" FromRole="pos" ToRole="users" />
     <NavigationProperty Name="posUsers" Relationship="Self.FK_posUsers_pos" FromRole="pos" ToRole="posUsers" />
     <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_pos" FromRole="pos" ToRole="usersLogs" />
-    <Property Name="balanceAll" Type="Decimal" Precision="20" Scale="4" />
   </EntityType>
   <EntityType Name="posUsers">
     <Key>
@@ -678,6 +950,7 @@
     <Property Name="branchId" Type="Int32" />
     <Property Name="isActive" Type="Byte" />
     <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="isFreeZone" Type="Byte" />
     <NavigationProperty Name="branches" Relationship="Self.FK_sections_branches" FromRole="sections" ToRole="branches" />
     <NavigationProperty Name="locations" Relationship="Self.FK_locations_sections" FromRole="sections" ToRole="locations" />
   </EntityType>
@@ -712,6 +985,47 @@
     <NavigationProperty Name="items" Relationship="Self.FK_servicesCosts_items" FromRole="servicesCosts" ToRole="items" />
     <NavigationProperty Name="users" Relationship="Self.FK_servicesCosts_users" FromRole="servicesCosts" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_servicesCosts_users1" FromRole="servicesCosts" ToRole="users" />
+  </EntityType>
+  <EntityType Name="setting">
+    <Key>
+      <PropertyRef Name="settingId" />
+    </Key>
+    <Property Name="settingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="setValues" Relationship="Self.FK_setValues_setting" FromRole="setting" ToRole="setValues" />
+  </EntityType>
+  <EntityType Name="setValues">
+    <Key>
+      <PropertyRef Name="valId" />
+    </Key>
+    <Property Name="valId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="isDefault" Type="Int32" />
+    <Property Name="isSystem" Type="Int32" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="settingId" Type="Int32" />
+    <NavigationProperty Name="setting" Relationship="Self.FK_setValues_setting" FromRole="setValues" ToRole="setting" />
+    <NavigationProperty Name="userSetValues" Relationship="Self.FK_userSetValues_setValues" FromRole="setValues" ToRole="userSetValues" />
+  </EntityType>
+  <EntityType Name="shippingCompanies">
+    <Key>
+      <PropertyRef Name="shippingCompanyId" />
+    </Key>
+    <Property Name="shippingCompanyId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="RealDeliveryCost" Type="Decimal" Precision="20" Scale="4" />
+    <Property Name="deliveryCost" Type="Decimal" Precision="20" Scale="4" />
+    <Property Name="deliveryType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="isActive" Type="Byte" />
+    <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_shippingCompanies" FromRole="shippingCompanies" ToRole="invoices" />
+    <NavigationProperty Name="users" Relationship="Self.FK_shippingCompanies_users1" FromRole="shippingCompanies" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_shippingCompanies_users2" FromRole="shippingCompanies" ToRole="users" />
   </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>
@@ -769,18 +1083,28 @@
     <Property Name="isOnline" Type="Byte" />
     <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="groupId" Type="Int32" />
+    <NavigationProperty Name="agentMemberships" Relationship="Self.FK_agentMemberships_users1" FromRole="users" ToRole="agentMemberships" />
+    <NavigationProperty Name="agentMemberships1" Relationship="Self.FK_agentMemberships_users2" FromRole="users" ToRole="agentMemberships" />
     <NavigationProperty Name="agents" Relationship="Self.FK_agents_users" FromRole="users" ToRole="agents" />
     <NavigationProperty Name="agents1" Relationship="Self.FK_agents_users1" FromRole="users" ToRole="agents" />
+    <NavigationProperty Name="bondes" Relationship="Self.FK_bondes_users" FromRole="users" ToRole="bondes" />
+    <NavigationProperty Name="bondes1" Relationship="Self.FK_bondes_users1" FromRole="users" ToRole="bondes" />
     <NavigationProperty Name="branches" Relationship="Self.FK_branches_users" FromRole="users" ToRole="branches" />
     <NavigationProperty Name="branches1" Relationship="Self.FK_branches_users1" FromRole="users" ToRole="branches" />
     <NavigationProperty Name="branchesUsers" Relationship="Self.FK_branchesUsers_users" FromRole="users" ToRole="branchesUsers" />
     <NavigationProperty Name="branchStore" Relationship="Self.FK_branchStore_users" FromRole="users" ToRole="branchStore" />
     <NavigationProperty Name="branchStore1" Relationship="Self.FK_branchStore_users1" FromRole="users" ToRole="branchStore" />
+    <NavigationProperty Name="cards" Relationship="Self.FK_cards_users" FromRole="users" ToRole="cards" />
+    <NavigationProperty Name="cards1" Relationship="Self.FK_cards_users1" FromRole="users" ToRole="cards" />
     <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_users" FromRole="users" ToRole="cashTransfer" />
     <NavigationProperty Name="cashTransfer1" Relationship="Self.FK_cashTransfer_users1" FromRole="users" ToRole="cashTransfer" />
     <NavigationProperty Name="cashTransfer2" Relationship="Self.FK_cashTransfer_users2" FromRole="users" ToRole="cashTransfer" />
     <NavigationProperty Name="categories" Relationship="Self.FK_categories_users" FromRole="users" ToRole="categories" />
     <NavigationProperty Name="categories1" Relationship="Self.FK_categories_users1" FromRole="users" ToRole="categories" />
+    <NavigationProperty Name="categoryuser" Relationship="Self.FK_categoryuser_users" FromRole="users" ToRole="categoryuser" />
+    <NavigationProperty Name="categoryuser1" Relationship="Self.FK_categoryuser_users1" FromRole="users" ToRole="categoryuser" />
+    <NavigationProperty Name="categoryuser2" Relationship="Self.FK_categoryuser_users2" FromRole="users" ToRole="categoryuser" />
     <NavigationProperty Name="coupons" Relationship="Self.FK_coupons_users" FromRole="users" ToRole="coupons" />
     <NavigationProperty Name="coupons1" Relationship="Self.FK_coupons_users1" FromRole="users" ToRole="coupons" />
     <NavigationProperty Name="couponsInvoices" Relationship="Self.FK_couponsInvoices_users" FromRole="users" ToRole="couponsInvoices" />
@@ -788,6 +1112,15 @@
     <NavigationProperty Name="docImages" Relationship="Self.FK_docImages_users" FromRole="users" ToRole="docImages" />
     <NavigationProperty Name="docImages1" Relationship="Self.FK_docImages_users1" FromRole="users" ToRole="docImages" />
     <NavigationProperty Name="Expenses" Relationship="Self.FK_Expenses_users" FromRole="users" ToRole="Expenses" />
+    <NavigationProperty Name="groupObject" Relationship="Self.FK_groupObject_users" FromRole="users" ToRole="groupObject" />
+    <NavigationProperty Name="groupObject1" Relationship="Self.FK_groupObject_users1" FromRole="users" ToRole="groupObject" />
+    <NavigationProperty Name="groups" Relationship="Self.FK_groups_users1" FromRole="users" ToRole="groups" />
+    <NavigationProperty Name="groups1" Relationship="Self.FK_groups_users2" FromRole="users" ToRole="groups" />
+    <NavigationProperty Name="groups2" Relationship="Self.FK_users_groups" FromRole="users" ToRole="groups" />
+    <NavigationProperty Name="Inventory" Relationship="Self.FK_Inventory_users" FromRole="users" ToRole="Inventory" />
+    <NavigationProperty Name="Inventory1" Relationship="Self.FK_Inventory_users1" FromRole="users" ToRole="Inventory" />
+    <NavigationProperty Name="inventoryItemLocation" Relationship="Self.FK_inventoryItemLocation_users" FromRole="users" ToRole="inventoryItemLocation" />
+    <NavigationProperty Name="inventoryItemLocation1" Relationship="Self.FK_inventoryItemLocation_users1" FromRole="users" ToRole="inventoryItemLocation" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_users" FromRole="users" ToRole="invoices" />
     <NavigationProperty Name="invoices1" Relationship="Self.FK_invoices_users1" FromRole="users" ToRole="invoices" />
     <NavigationProperty Name="invoices2" Relationship="Self.FK_invoices_users2" FromRole="users" ToRole="invoices" />
@@ -812,11 +1145,21 @@
     <NavigationProperty Name="itemTransferOffer1" Relationship="Self.FK_itemTransferOffer_users1" FromRole="users" ToRole="itemTransferOffer" />
     <NavigationProperty Name="locations" Relationship="Self.FK_locations_users" FromRole="users" ToRole="locations" />
     <NavigationProperty Name="locations1" Relationship="Self.FK_locations_users1" FromRole="users" ToRole="locations" />
+    <NavigationProperty Name="medalAgent" Relationship="Self.FK_medalAgent_users" FromRole="users" ToRole="medalAgent" />
+    <NavigationProperty Name="medalAgent1" Relationship="Self.FK_medalAgent_users1" FromRole="users" ToRole="medalAgent" />
+    <NavigationProperty Name="medals" Relationship="Self.FK_medals_users" FromRole="users" ToRole="medals" />
+    <NavigationProperty Name="medals1" Relationship="Self.FK_medals_users1" FromRole="users" ToRole="medals" />
+    <NavigationProperty Name="memberships" Relationship="Self.FK_memberships_users" FromRole="users" ToRole="memberships" />
+    <NavigationProperty Name="memberships1" Relationship="Self.FK_memberships_users1" FromRole="users" ToRole="memberships" />
+    <NavigationProperty Name="objects" Relationship="Self.FK_objects_users" FromRole="users" ToRole="objects" />
+    <NavigationProperty Name="objects1" Relationship="Self.FK_objects_users1" FromRole="users" ToRole="objects" />
     <NavigationProperty Name="orders" Relationship="Self.FK_orders_users" FromRole="users" ToRole="orders" />
     <NavigationProperty Name="orders1" Relationship="Self.FK_orders_users1" FromRole="users" ToRole="orders" />
     <NavigationProperty Name="orders2" Relationship="Self.FK_orders_users2" FromRole="users" ToRole="orders" />
     <NavigationProperty Name="orderscontents" Relationship="Self.FK_orderscontents_users" FromRole="users" ToRole="orderscontents" />
     <NavigationProperty Name="orderscontents1" Relationship="Self.FK_orderscontents_users1" FromRole="users" ToRole="orderscontents" />
+    <NavigationProperty Name="Points" Relationship="Self.FK_Points_users" FromRole="users" ToRole="Points" />
+    <NavigationProperty Name="Points1" Relationship="Self.FK_Points_users1" FromRole="users" ToRole="Points" />
     <NavigationProperty Name="pos" Relationship="Self.FK_pos_users" FromRole="users" ToRole="pos" />
     <NavigationProperty Name="pos1" Relationship="Self.FK_pos_users1" FromRole="users" ToRole="pos" />
     <NavigationProperty Name="posUsers" Relationship="Self.FK_posUsers_users" FromRole="users" ToRole="posUsers" />
@@ -830,35 +1173,31 @@
     <NavigationProperty Name="serials1" Relationship="Self.FK_serials_users1" FromRole="users" ToRole="serials" />
     <NavigationProperty Name="servicesCosts" Relationship="Self.FK_servicesCosts_users" FromRole="users" ToRole="servicesCosts" />
     <NavigationProperty Name="servicesCosts1" Relationship="Self.FK_servicesCosts_users1" FromRole="users" ToRole="servicesCosts" />
+    <NavigationProperty Name="shippingCompanies" Relationship="Self.FK_shippingCompanies_users1" FromRole="users" ToRole="shippingCompanies" />
+    <NavigationProperty Name="shippingCompanies1" Relationship="Self.FK_shippingCompanies_users2" FromRole="users" ToRole="shippingCompanies" />
     <NavigationProperty Name="units" Relationship="Self.FK_units_users" FromRole="users" ToRole="units" />
     <NavigationProperty Name="units1" Relationship="Self.FK_units_users1" FromRole="users" ToRole="units" />
+    <NavigationProperty Name="userSetValues" Relationship="Self.FK_userSetValues_users" FromRole="users" ToRole="userSetValues" />
+    <NavigationProperty Name="userSetValues1" Relationship="Self.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
+    <NavigationProperty Name="userSetValues2" Relationship="Self.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
     <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
-    <NavigationProperty Name="cards" Relationship="incposdbModel.FK_cards_users" FromRole="users" ToRole="cards" />
-    <NavigationProperty Name="cards1" Relationship="incposdbModel.FK_cards_users1" FromRole="users" ToRole="cards" />
-    <NavigationProperty Name="bondes" Relationship="incposdbModel.FK_bondes_users" FromRole="users" ToRole="bondes" />
-    <NavigationProperty Name="bondes1" Relationship="incposdbModel.FK_bondes_users1" FromRole="users" ToRole="bondes" />
-    <NavigationProperty Name="medalAgent" Relationship="incposdbModel.FK_medalAgent_users" FromRole="users" ToRole="medalAgent" />
-    <NavigationProperty Name="medalAgent1" Relationship="incposdbModel.FK_medalAgent_users1" FromRole="users" ToRole="medalAgent" />
-    <NavigationProperty Name="medals" Relationship="incposdbModel.FK_medals_users" FromRole="users" ToRole="medals" />
-    <NavigationProperty Name="medals1" Relationship="incposdbModel.FK_medals_users1" FromRole="users" ToRole="medals" />
-    <Property Name="groupId" Type="Int32" />
-    <NavigationProperty Name="groupObject" Relationship="incposdbModel.FK_groupObject_users" FromRole="users" ToRole="groupObject" />
-    <NavigationProperty Name="groupObject1" Relationship="incposdbModel.FK_groupObject_users1" FromRole="users" ToRole="groupObject" />
-    <NavigationProperty Name="groups" Relationship="incposdbModel.FK_groups_users1" FromRole="users" ToRole="groups" />
-    <NavigationProperty Name="groups1" Relationship="incposdbModel.FK_groups_users2" FromRole="users" ToRole="groups" />
-    <NavigationProperty Name="groups2" Relationship="incposdbModel.FK_users_groups" FromRole="users" ToRole="groups" />
-    <NavigationProperty Name="objects" Relationship="incposdbModel.FK_objects_users" FromRole="users" ToRole="objects" />
-    <NavigationProperty Name="objects1" Relationship="incposdbModel.FK_objects_users1" FromRole="users" ToRole="objects" />
-    <NavigationProperty Name="categoryuser" Relationship="incposdbModel.FK_categoryuser_users" FromRole="users" ToRole="categoryuser" />
-    <NavigationProperty Name="categoryuser1" Relationship="incposdbModel.FK_categoryuser_users1" FromRole="users" ToRole="categoryuser" />
-    <NavigationProperty Name="categoryuser2" Relationship="incposdbModel.FK_categoryuser_users2" FromRole="users" ToRole="categoryuser" />
-    <NavigationProperty Name="userSetValues" Relationship="incposdbModel.FK_userSetValues_users" FromRole="users" ToRole="userSetValues" />
-    <NavigationProperty Name="userSetValues1" Relationship="incposdbModel.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
-    <NavigationProperty Name="userSetValues2" Relationship="incposdbModel.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
-    <NavigationProperty Name="Inventory" Relationship="incposdbModel.FK_Inventory_users" FromRole="users" ToRole="Inventory" />
-    <NavigationProperty Name="Inventory1" Relationship="incposdbModel.FK_Inventory_users1" FromRole="users" ToRole="Inventory" />
-    <NavigationProperty Name="inventoryItemLocation" Relationship="incposdbModel.FK_inventoryItemLocation_users" FromRole="users" ToRole="inventoryItemLocation" />
-    <NavigationProperty Name="inventoryItemLocation1" Relationship="incposdbModel.FK_inventoryItemLocation_users1" FromRole="users" ToRole="inventoryItemLocation" />
+  </EntityType>
+  <EntityType Name="userSetValues">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="userId" Type="Int32" />
+    <Property Name="valId" Type="Int32" />
+    <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <NavigationProperty Name="setValues" Relationship="Self.FK_userSetValues_setValues" FromRole="userSetValues" ToRole="setValues" />
+    <NavigationProperty Name="users" Relationship="Self.FK_userSetValues_users" FromRole="userSetValues" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_userSetValues_users1" FromRole="userSetValues" ToRole="users" />
+    <NavigationProperty Name="users2" Relationship="Self.FK_userSetValues_users2" FromRole="userSetValues" ToRole="users" />
   </EntityType>
   <EntityType Name="usersLogs">
     <Key>
@@ -872,6 +1211,78 @@
     <NavigationProperty Name="pos" Relationship="Self.FK_usersLogs_pos" FromRole="usersLogs" ToRole="pos" />
     <NavigationProperty Name="users" Relationship="Self.FK_usersLogs_users" FromRole="usersLogs" ToRole="users" />
   </EntityType>
+  <Association Name="FK_agentMemberships_agents">
+    <End Role="agents" Type="Self.agents" Multiplicity="0..1" />
+    <End Role="agentMemberships" Type="Self.agentMemberships" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="agents">
+        <PropertyRef Name="agentId" />
+      </Principal>
+      <Dependent Role="agentMemberships">
+        <PropertyRef Name="agentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_agentMemberships_memberships">
+    <End Role="memberships" Type="Self.memberships" Multiplicity="0..1" />
+    <End Role="agentMemberships" Type="Self.agentMemberships" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="memberships">
+        <PropertyRef Name="membershipId" />
+      </Principal>
+      <Dependent Role="agentMemberships">
+        <PropertyRef Name="membershipId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_agentMemberships_memberships1">
+    <End Role="memberships" Type="Self.memberships" Multiplicity="0..1" />
+    <End Role="agentMemberships" Type="Self.agentMemberships" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="memberships">
+        <PropertyRef Name="membershipId" />
+      </Principal>
+      <Dependent Role="agentMemberships">
+        <PropertyRef Name="membershipId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_agentMemberships_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="agentMemberships" Type="Self.agentMemberships" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="agentMemberships">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_agentMemberships_users2">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="agentMemberships" Type="Self.agentMemberships" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="agentMemberships">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_agents_Points">
+    <End Role="Points" Type="Self.Points" Multiplicity="0..1" />
+    <End Role="agents" Type="Self.agents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Points">
+        <PropertyRef Name="pointId" />
+      </Principal>
+      <Dependent Role="agents">
+        <PropertyRef Name="pointId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_agents_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="agents" Type="Self.agents" Multiplicity="*" />
@@ -920,6 +1331,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_medalAgent_agents">
+    <End Role="agents" Type="Self.agents" Multiplicity="0..1" />
+    <End Role="medalAgent" Type="Self.medalAgent" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="agents">
+        <PropertyRef Name="agentId" />
+      </Principal>
+      <Dependent Role="medalAgent">
+        <PropertyRef Name="agentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Points_agents">
+    <End Role="agents" Type="Self.agents" Multiplicity="0..1" />
+    <End Role="Points" Type="Self.Points" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="agents">
+        <PropertyRef Name="agentId" />
+      </Principal>
+      <Dependent Role="Points">
+        <PropertyRef Name="agentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_cashTransfer_banks">
     <End Role="banks" Type="Self.banks" Multiplicity="0..1" />
     <End Role="cashTransfer" Type="Self.cashTransfer" Multiplicity="*" />
@@ -929,6 +1364,54 @@
       </Principal>
       <Dependent Role="cashTransfer">
         <PropertyRef Name="bankId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_bondes_cashTransfer">
+    <End Role="cashTransfer" Type="Self.cashTransfer" Multiplicity="0..1" />
+    <End Role="bondes" Type="Self.bondes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="cashTransfer">
+        <PropertyRef Name="cashTransId" />
+      </Principal>
+      <Dependent Role="bondes">
+        <PropertyRef Name="cashTransId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_bondes_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="bondes" Type="Self.bondes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="bondes">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_bondes_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="bondes" Type="Self.bondes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="bondes">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_cashTransfer_bondes">
+    <End Role="bondes" Type="Self.bondes" Multiplicity="0..1" />
+    <End Role="cashTransfer" Type="Self.cashTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="bondes">
+        <PropertyRef Name="bondId" />
+      </Principal>
+      <Dependent Role="cashTransfer">
+        <PropertyRef Name="bondId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -980,18 +1463,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_branchStore_branches1">
-    <End Role="branches" Type="Self.branches" Multiplicity="0..1" />
-    <End Role="branchStore" Type="Self.branchStore" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="branches">
-        <PropertyRef Name="branchId" />
-      </Principal>
-      <Dependent Role="branchStore">
-        <PropertyRef Name="storeId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_branchStore_branches2">
     <End Role="branches" Type="Self.branches" Multiplicity="0..1" />
     <End Role="branchStore" Type="Self.branchStore" Multiplicity="*" />
@@ -1012,6 +1483,18 @@
         <PropertyRef Name="branchId" />
       </Principal>
       <Dependent Role="invoices">
+        <PropertyRef Name="branchId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_locations_branches1">
+    <End Role="branches" Type="Self.branches" Multiplicity="0..1" />
+    <End Role="locations" Type="Self.locations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="branches">
+        <PropertyRef Name="branchId" />
+      </Principal>
+      <Dependent Role="locations">
         <PropertyRef Name="branchId" />
       </Dependent>
     </ReferentialConstraint>
@@ -1073,6 +1556,42 @@
       </Principal>
       <Dependent Role="branchStore">
         <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_cards_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="cards" Type="Self.cards" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="cards">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_cards_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="cards" Type="Self.cards" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="cards">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_cashTransfer_cards">
+    <End Role="cards" Type="Self.cards" Multiplicity="0..1" />
+    <End Role="cashTransfer" Type="Self.cashTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="cards">
+        <PropertyRef Name="cardId" />
+      </Principal>
+      <Dependent Role="cashTransfer">
+        <PropertyRef Name="cardId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1184,6 +1703,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_categoryuser_categories">
+    <End Role="categories" Type="Self.categories" Multiplicity="0..1" />
+    <End Role="categoryuser" Type="Self.categoryuser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="categories">
+        <PropertyRef Name="categoryId" />
+      </Principal>
+      <Dependent Role="categoryuser">
+        <PropertyRef Name="categoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_items_categories">
     <End Role="categories" Type="Self.categories" Multiplicity="0..1" />
     <End Role="items" Type="Self.items" Multiplicity="*" />
@@ -1193,6 +1724,42 @@
       </Principal>
       <Dependent Role="items">
         <PropertyRef Name="categoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_categoryuser_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="categoryuser" Type="Self.categoryuser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="categoryuser">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_categoryuser_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="categoryuser" Type="Self.categoryuser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="categoryuser">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_categoryuser_users2">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="categoryuser" Type="Self.categoryuser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="categoryuser">
+        <PropertyRef Name="updateUserId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1316,6 +1883,162 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_groupObject_groups">
+    <End Role="groups" Type="Self.groups" Multiplicity="0..1" />
+    <End Role="groupObject" Type="Self.groupObject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="groups">
+        <PropertyRef Name="groupId" />
+      </Principal>
+      <Dependent Role="groupObject">
+        <PropertyRef Name="groupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_groupObject_objects">
+    <End Role="objects" Type="Self.objects" Multiplicity="0..1" />
+    <End Role="groupObject" Type="Self.groupObject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="objects">
+        <PropertyRef Name="objectId" />
+      </Principal>
+      <Dependent Role="groupObject">
+        <PropertyRef Name="objectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_groupObject_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="groupObject" Type="Self.groupObject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="groupObject">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_groupObject_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="groupObject" Type="Self.groupObject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="groupObject">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_groups_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="groups" Type="Self.groups" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="groups">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_groups_users2">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="groups" Type="Self.groups" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="groups">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_users_groups">
+    <End Role="groups" Type="Self.groups" Multiplicity="0..1" />
+    <End Role="users" Type="Self.users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="groups">
+        <PropertyRef Name="groupId" />
+      </Principal>
+      <Dependent Role="users">
+        <PropertyRef Name="groupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Inventory_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Inventory_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_inventoryItemLocation_Inventory">
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="0..1" />
+    <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Inventory">
+        <PropertyRef Name="inventoryId" />
+      </Principal>
+      <Dependent Role="inventoryItemLocation">
+        <PropertyRef Name="inventoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_inventoryItemLocation_itemsLocations">
+    <End Role="itemsLocations" Type="Self.itemsLocations" Multiplicity="0..1" />
+    <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="itemsLocations">
+        <PropertyRef Name="itemsLocId" />
+      </Principal>
+      <Dependent Role="inventoryItemLocation">
+        <PropertyRef Name="itemLocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_inventoryItemLocation_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="inventoryItemLocation">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_inventoryItemLocation_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="inventoryItemLocation">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_invoices_invoices">
     <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
     <End Role="invoices1" Type="Self.invoices" Multiplicity="*" />
@@ -1337,6 +2060,18 @@
       </Principal>
       <Dependent Role="invoices">
         <PropertyRef Name="posId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoices_shippingCompanies">
+    <End Role="shippingCompanies" Type="Self.shippingCompanies" Multiplicity="0..1" />
+    <End Role="invoices" Type="Self.invoices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="shippingCompanies">
+        <PropertyRef Name="shippingCompanyId" />
+      </Principal>
+      <Dependent Role="invoices">
+        <PropertyRef Name="shippingCompanyId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1952,6 +2687,126 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_medalAgent_medals">
+    <End Role="medals" Type="Self.medals" Multiplicity="0..1" />
+    <End Role="medalAgent" Type="Self.medalAgent" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="medals">
+        <PropertyRef Name="medalId" />
+      </Principal>
+      <Dependent Role="medalAgent">
+        <PropertyRef Name="medalId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_medalAgent_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="medalAgent" Type="Self.medalAgent" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="medalAgent">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_medalAgent_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="medalAgent" Type="Self.medalAgent" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="medalAgent">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_medals_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="medals" Type="Self.medals" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="medals">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_medals_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="medals" Type="Self.medals" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="medals">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_memberships_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="memberships" Type="Self.memberships" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="memberships">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_memberships_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="memberships" Type="Self.memberships" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="memberships">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_objects_objects">
+    <End Role="objects" Type="Self.objects" Multiplicity="0..1" />
+    <End Role="objects1" Type="Self.objects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="objects">
+        <PropertyRef Name="objectId" />
+      </Principal>
+      <Dependent Role="objects1">
+        <PropertyRef Name="parentObjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_objects_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="objects" Type="Self.objects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="objects">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_objects_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="objects" Type="Self.objects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="objects">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_orders_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="orders" Type="Self.orders" Multiplicity="*" />
@@ -2020,6 +2875,30 @@
         <PropertyRef Name="userId" />
       </Principal>
       <Dependent Role="orderscontents">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Points_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="Points" Type="Self.Points" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Points">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Points_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="Points" Type="Self.Points" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Points">
         <PropertyRef Name="updateUserId" />
       </Dependent>
     </ReferentialConstraint>
@@ -2216,6 +3095,54 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_setValues_setting">
+    <End Role="setting" Type="Self.setting" Multiplicity="0..1" />
+    <End Role="setValues" Type="Self.setValues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="setting">
+        <PropertyRef Name="settingId" />
+      </Principal>
+      <Dependent Role="setValues">
+        <PropertyRef Name="settingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_userSetValues_setValues">
+    <End Role="setValues" Type="Self.setValues" Multiplicity="0..1" />
+    <End Role="userSetValues" Type="Self.userSetValues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="setValues">
+        <PropertyRef Name="valId" />
+      </Principal>
+      <Dependent Role="userSetValues">
+        <PropertyRef Name="valId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_shippingCompanies_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="shippingCompanies" Type="Self.shippingCompanies" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="shippingCompanies">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_shippingCompanies_users2">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="shippingCompanies" Type="Self.shippingCompanies" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="shippingCompanies">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_units_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="units" Type="Self.units" Multiplicity="*" />
@@ -2240,6 +3167,42 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_userSetValues_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="userSetValues" Type="Self.userSetValues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="userSetValues">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_userSetValues_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="userSetValues" Type="Self.userSetValues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="userSetValues">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_userSetValues_users2">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="userSetValues" Type="Self.userSetValues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="userSetValues">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_usersLogs_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="usersLogs" Type="Self.usersLogs" Multiplicity="*" />
@@ -2253,19 +3216,27 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="incposdbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="agentMemberships" EntityType="Self.agentMemberships" />
     <EntitySet Name="agents" EntityType="Self.agents" />
     <EntitySet Name="banks" EntityType="Self.banks" />
+    <EntitySet Name="bondes" EntityType="Self.bondes" />
     <EntitySet Name="branches" EntityType="Self.branches" />
     <EntitySet Name="branchesUsers" EntityType="Self.branchesUsers" />
     <EntitySet Name="branchStore" EntityType="Self.branchStore" />
+    <EntitySet Name="cards" EntityType="Self.cards" />
     <EntitySet Name="cashTransfer" EntityType="Self.cashTransfer" />
     <EntitySet Name="categories" EntityType="Self.categories" />
+    <EntitySet Name="categoryuser" EntityType="Self.categoryuser" />
     <EntitySet Name="cities" EntityType="Self.cities" />
     <EntitySet Name="countriesCodes" EntityType="Self.countriesCodes" />
     <EntitySet Name="coupons" EntityType="Self.coupons" />
     <EntitySet Name="couponsInvoices" EntityType="Self.couponsInvoices" />
     <EntitySet Name="docImages" EntityType="Self.docImages" />
     <EntitySet Name="Expenses" EntityType="Self.Expenses" />
+    <EntitySet Name="groupObject" EntityType="Self.groupObject" />
+    <EntitySet Name="groups" EntityType="Self.groups" />
+    <EntitySet Name="Inventory" EntityType="Self.Inventory" />
+    <EntitySet Name="inventoryItemLocation" EntityType="Self.inventoryItemLocation" />
     <EntitySet Name="invoices" EntityType="Self.invoices" />
     <EntitySet Name="invoicesOrders" EntityType="Self.invoicesOrders" />
     <EntitySet Name="items" EntityType="Self.items" />
@@ -2277,9 +3248,14 @@
     <EntitySet Name="itemsUnits" EntityType="Self.itemsUnits" />
     <EntitySet Name="itemTransferOffer" EntityType="Self.itemTransferOffer" />
     <EntitySet Name="locations" EntityType="Self.locations" />
+    <EntitySet Name="medalAgent" EntityType="Self.medalAgent" />
+    <EntitySet Name="medals" EntityType="Self.medals" />
+    <EntitySet Name="memberships" EntityType="Self.memberships" />
+    <EntitySet Name="objects" EntityType="Self.objects" />
     <EntitySet Name="offers" EntityType="Self.offers" />
     <EntitySet Name="orders" EntityType="Self.orders" />
     <EntitySet Name="orderscontents" EntityType="Self.orderscontents" />
+    <EntitySet Name="Points" EntityType="Self.Points" />
     <EntitySet Name="pos" EntityType="Self.pos" />
     <EntitySet Name="posUsers" EntityType="Self.posUsers" />
     <EntitySet Name="properties" EntityType="Self.properties" />
@@ -2287,10 +3263,38 @@
     <EntitySet Name="sections" EntityType="Self.sections" />
     <EntitySet Name="serials" EntityType="Self.serials" />
     <EntitySet Name="servicesCosts" EntityType="Self.servicesCosts" />
+    <EntitySet Name="setting" EntityType="Self.setting" />
+    <EntitySet Name="setValues" EntityType="Self.setValues" />
+    <EntitySet Name="shippingCompanies" EntityType="Self.shippingCompanies" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
     <EntitySet Name="units" EntityType="Self.units" />
     <EntitySet Name="users" EntityType="Self.users" />
+    <EntitySet Name="userSetValues" EntityType="Self.userSetValues" />
     <EntitySet Name="usersLogs" EntityType="Self.usersLogs" />
+    <AssociationSet Name="FK_agentMemberships_agents" Association="Self.FK_agentMemberships_agents">
+      <End Role="agents" EntitySet="agents" />
+      <End Role="agentMemberships" EntitySet="agentMemberships" />
+    </AssociationSet>
+    <AssociationSet Name="FK_agentMemberships_memberships" Association="Self.FK_agentMemberships_memberships">
+      <End Role="memberships" EntitySet="memberships" />
+      <End Role="agentMemberships" EntitySet="agentMemberships" />
+    </AssociationSet>
+    <AssociationSet Name="FK_agentMemberships_memberships1" Association="Self.FK_agentMemberships_memberships1">
+      <End Role="memberships" EntitySet="memberships" />
+      <End Role="agentMemberships" EntitySet="agentMemberships" />
+    </AssociationSet>
+    <AssociationSet Name="FK_agentMemberships_users1" Association="Self.FK_agentMemberships_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="agentMemberships" EntitySet="agentMemberships" />
+    </AssociationSet>
+    <AssociationSet Name="FK_agentMemberships_users2" Association="Self.FK_agentMemberships_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="agentMemberships" EntitySet="agentMemberships" />
+    </AssociationSet>
+    <AssociationSet Name="FK_agents_Points" Association="Self.FK_agents_Points">
+      <End Role="Points" EntitySet="Points" />
+      <End Role="agents" EntitySet="agents" />
+    </AssociationSet>
     <AssociationSet Name="FK_agents_users" Association="Self.FK_agents_users">
       <End Role="users" EntitySet="users" />
       <End Role="agents" EntitySet="agents" />
@@ -2307,8 +3311,32 @@
       <End Role="agents" EntitySet="agents" />
       <End Role="invoices" EntitySet="invoices" />
     </AssociationSet>
+    <AssociationSet Name="FK_medalAgent_agents" Association="Self.FK_medalAgent_agents">
+      <End Role="agents" EntitySet="agents" />
+      <End Role="medalAgent" EntitySet="medalAgent" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Points_agents" Association="Self.FK_Points_agents">
+      <End Role="agents" EntitySet="agents" />
+      <End Role="Points" EntitySet="Points" />
+    </AssociationSet>
     <AssociationSet Name="FK_cashTransfer_banks" Association="Self.FK_cashTransfer_banks">
       <End Role="banks" EntitySet="banks" />
+      <End Role="cashTransfer" EntitySet="cashTransfer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_bondes_cashTransfer" Association="Self.FK_bondes_cashTransfer">
+      <End Role="cashTransfer" EntitySet="cashTransfer" />
+      <End Role="bondes" EntitySet="bondes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_bondes_users" Association="Self.FK_bondes_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="bondes" EntitySet="bondes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_bondes_users1" Association="Self.FK_bondes_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="bondes" EntitySet="bondes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_cashTransfer_bondes" Association="Self.FK_cashTransfer_bondes">
+      <End Role="bondes" EntitySet="bondes" />
       <End Role="cashTransfer" EntitySet="cashTransfer" />
     </AssociationSet>
     <AssociationSet Name="FK_branches_users" Association="Self.FK_branches_users">
@@ -2327,10 +3355,6 @@
       <End Role="branches" EntitySet="branches" />
       <End Role="branchStore" EntitySet="branchStore" />
     </AssociationSet>
-    <AssociationSet Name="FK_branchStore_branches1" Association="Self.FK_branchStore_branches1">
-      <End Role="branches" EntitySet="branches" />
-      <End Role="branchStore" EntitySet="branchStore" />
-    </AssociationSet>
     <AssociationSet Name="FK_branchStore_branches2" Association="Self.FK_branchStore_branches2">
       <End Role="branches" EntitySet="branches" />
       <End Role="branchStore" EntitySet="branchStore" />
@@ -2338,6 +3362,10 @@
     <AssociationSet Name="FK_invoices_branches" Association="Self.FK_invoices_branches">
       <End Role="branches" EntitySet="branches" />
       <End Role="invoices" EntitySet="invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_locations_branches1" Association="Self.FK_locations_branches1">
+      <End Role="branches" EntitySet="branches" />
+      <End Role="locations" EntitySet="locations" />
     </AssociationSet>
     <AssociationSet Name="FK_pos_branches" Association="Self.FK_pos_branches">
       <End Role="branches" EntitySet="branches" />
@@ -2358,6 +3386,18 @@
     <AssociationSet Name="FK_branchStore_users1" Association="Self.FK_branchStore_users1">
       <End Role="users" EntitySet="users" />
       <End Role="branchStore" EntitySet="branchStore" />
+    </AssociationSet>
+    <AssociationSet Name="FK_cards_users" Association="Self.FK_cards_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="cards" EntitySet="cards" />
+    </AssociationSet>
+    <AssociationSet Name="FK_cards_users1" Association="Self.FK_cards_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="cards" EntitySet="cards" />
+    </AssociationSet>
+    <AssociationSet Name="FK_cashTransfer_cards" Association="Self.FK_cashTransfer_cards">
+      <End Role="cards" EntitySet="cards" />
+      <End Role="cashTransfer" EntitySet="cashTransfer" />
     </AssociationSet>
     <AssociationSet Name="FK_cashTransfer_cashTransfer" Association="Self.FK_cashTransfer_cashTransfer">
       <End Role="cashTransfer" EntitySet="cashTransfer" />
@@ -2395,9 +3435,25 @@
       <End Role="users" EntitySet="users" />
       <End Role="categories" EntitySet="categories" />
     </AssociationSet>
+    <AssociationSet Name="FK_categoryuser_categories" Association="Self.FK_categoryuser_categories">
+      <End Role="categories" EntitySet="categories" />
+      <End Role="categoryuser" EntitySet="categoryuser" />
+    </AssociationSet>
     <AssociationSet Name="FK_items_categories" Association="Self.FK_items_categories">
       <End Role="categories" EntitySet="categories" />
       <End Role="items" EntitySet="items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_categoryuser_users" Association="Self.FK_categoryuser_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="categoryuser" EntitySet="categoryuser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_categoryuser_users1" Association="Self.FK_categoryuser_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="categoryuser" EntitySet="categoryuser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_categoryuser_users2" Association="Self.FK_categoryuser_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="categoryuser" EntitySet="categoryuser" />
     </AssociationSet>
     <AssociationSet Name="FK_cities_countriesCodes" Association="Self.FK_cities_countriesCodes">
       <End Role="countriesCodes" EntitySet="countriesCodes" />
@@ -2439,12 +3495,68 @@
       <End Role="users" EntitySet="users" />
       <End Role="Expenses" EntitySet="Expenses" />
     </AssociationSet>
+    <AssociationSet Name="FK_groupObject_groups" Association="Self.FK_groupObject_groups">
+      <End Role="groups" EntitySet="groups" />
+      <End Role="groupObject" EntitySet="groupObject" />
+    </AssociationSet>
+    <AssociationSet Name="FK_groupObject_objects" Association="Self.FK_groupObject_objects">
+      <End Role="objects" EntitySet="objects" />
+      <End Role="groupObject" EntitySet="groupObject" />
+    </AssociationSet>
+    <AssociationSet Name="FK_groupObject_users" Association="Self.FK_groupObject_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="groupObject" EntitySet="groupObject" />
+    </AssociationSet>
+    <AssociationSet Name="FK_groupObject_users1" Association="Self.FK_groupObject_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="groupObject" EntitySet="groupObject" />
+    </AssociationSet>
+    <AssociationSet Name="FK_groups_users1" Association="Self.FK_groups_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="groups" EntitySet="groups" />
+    </AssociationSet>
+    <AssociationSet Name="FK_groups_users2" Association="Self.FK_groups_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="groups" EntitySet="groups" />
+    </AssociationSet>
+    <AssociationSet Name="FK_users_groups" Association="Self.FK_users_groups">
+      <End Role="groups" EntitySet="groups" />
+      <End Role="users" EntitySet="users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Inventory_users" Association="Self.FK_Inventory_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="Inventory" EntitySet="Inventory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Inventory_users1" Association="Self.FK_Inventory_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="Inventory" EntitySet="Inventory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_inventoryItemLocation_Inventory" Association="Self.FK_inventoryItemLocation_Inventory">
+      <End Role="Inventory" EntitySet="Inventory" />
+      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_inventoryItemLocation_itemsLocations" Association="Self.FK_inventoryItemLocation_itemsLocations">
+      <End Role="itemsLocations" EntitySet="itemsLocations" />
+      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_inventoryItemLocation_users" Association="Self.FK_inventoryItemLocation_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_inventoryItemLocation_users1" Association="Self.FK_inventoryItemLocation_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+    </AssociationSet>
     <AssociationSet Name="FK_invoices_invoices" Association="Self.FK_invoices_invoices">
       <End Role="invoices" EntitySet="invoices" />
       <End Role="invoices1" EntitySet="invoices" />
     </AssociationSet>
     <AssociationSet Name="FK_invoices_pos" Association="Self.FK_invoices_pos">
       <End Role="pos" EntitySet="pos" />
+      <End Role="invoices" EntitySet="invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoices_shippingCompanies" Association="Self.FK_invoices_shippingCompanies">
+      <End Role="shippingCompanies" EntitySet="shippingCompanies" />
       <End Role="invoices" EntitySet="invoices" />
     </AssociationSet>
     <AssociationSet Name="FK_invoices_users" Association="Self.FK_invoices_users">
@@ -2651,6 +3763,46 @@
       <End Role="users" EntitySet="users" />
       <End Role="locations" EntitySet="locations" />
     </AssociationSet>
+    <AssociationSet Name="FK_medalAgent_medals" Association="Self.FK_medalAgent_medals">
+      <End Role="medals" EntitySet="medals" />
+      <End Role="medalAgent" EntitySet="medalAgent" />
+    </AssociationSet>
+    <AssociationSet Name="FK_medalAgent_users" Association="Self.FK_medalAgent_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="medalAgent" EntitySet="medalAgent" />
+    </AssociationSet>
+    <AssociationSet Name="FK_medalAgent_users1" Association="Self.FK_medalAgent_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="medalAgent" EntitySet="medalAgent" />
+    </AssociationSet>
+    <AssociationSet Name="FK_medals_users" Association="Self.FK_medals_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="medals" EntitySet="medals" />
+    </AssociationSet>
+    <AssociationSet Name="FK_medals_users1" Association="Self.FK_medals_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="medals" EntitySet="medals" />
+    </AssociationSet>
+    <AssociationSet Name="FK_memberships_users" Association="Self.FK_memberships_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="memberships" EntitySet="memberships" />
+    </AssociationSet>
+    <AssociationSet Name="FK_memberships_users1" Association="Self.FK_memberships_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="memberships" EntitySet="memberships" />
+    </AssociationSet>
+    <AssociationSet Name="FK_objects_objects" Association="Self.FK_objects_objects">
+      <End Role="objects" EntitySet="objects" />
+      <End Role="objects1" EntitySet="objects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_objects_users" Association="Self.FK_objects_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="objects" EntitySet="objects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_objects_users1" Association="Self.FK_objects_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="objects" EntitySet="objects" />
+    </AssociationSet>
     <AssociationSet Name="FK_orders_users" Association="Self.FK_orders_users">
       <End Role="users" EntitySet="users" />
       <End Role="orders" EntitySet="orders" />
@@ -2674,6 +3826,14 @@
     <AssociationSet Name="FK_orderscontents_users1" Association="Self.FK_orderscontents_users1">
       <End Role="users" EntitySet="users" />
       <End Role="orderscontents" EntitySet="orderscontents" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Points_users" Association="Self.FK_Points_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="Points" EntitySet="Points" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Points_users1" Association="Self.FK_Points_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="Points" EntitySet="Points" />
     </AssociationSet>
     <AssociationSet Name="FK_pos_users" Association="Self.FK_pos_users">
       <End Role="users" EntitySet="users" />
@@ -2739,6 +3899,22 @@
       <End Role="users" EntitySet="users" />
       <End Role="servicesCosts" EntitySet="servicesCosts" />
     </AssociationSet>
+    <AssociationSet Name="FK_setValues_setting" Association="Self.FK_setValues_setting">
+      <End Role="setting" EntitySet="setting" />
+      <End Role="setValues" EntitySet="setValues" />
+    </AssociationSet>
+    <AssociationSet Name="FK_userSetValues_setValues" Association="Self.FK_userSetValues_setValues">
+      <End Role="setValues" EntitySet="setValues" />
+      <End Role="userSetValues" EntitySet="userSetValues" />
+    </AssociationSet>
+    <AssociationSet Name="FK_shippingCompanies_users1" Association="Self.FK_shippingCompanies_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="shippingCompanies" EntitySet="shippingCompanies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_shippingCompanies_users2" Association="Self.FK_shippingCompanies_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="shippingCompanies" EntitySet="shippingCompanies" />
+    </AssociationSet>
     <AssociationSet Name="FK_units_users" Association="Self.FK_units_users">
       <End Role="users" EntitySet="users" />
       <End Role="units" EntitySet="units" />
@@ -2747,890 +3923,102 @@
       <End Role="users" EntitySet="users" />
       <End Role="units" EntitySet="units" />
     </AssociationSet>
+    <AssociationSet Name="FK_userSetValues_users" Association="Self.FK_userSetValues_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="userSetValues" EntitySet="userSetValues" />
+    </AssociationSet>
+    <AssociationSet Name="FK_userSetValues_users1" Association="Self.FK_userSetValues_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="userSetValues" EntitySet="userSetValues" />
+    </AssociationSet>
+    <AssociationSet Name="FK_userSetValues_users2" Association="Self.FK_userSetValues_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="userSetValues" EntitySet="userSetValues" />
+    </AssociationSet>
     <AssociationSet Name="FK_usersLogs_users" Association="Self.FK_usersLogs_users">
       <End Role="users" EntitySet="users" />
       <End Role="usersLogs" EntitySet="usersLogs" />
     </AssociationSet>
-    <EntitySet Name="cards" EntityType="incposdbModel.cards" />
-    <AssociationSet Name="FK_cards_users" Association="incposdbModel.FK_cards_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="cards" EntitySet="cards" />
+    <AssociationSet Name="FK_agentMemberships_cashTransfer" Association="incposdbModel.FK_agentMemberships_cashTransfer">
+      <End Role="cashTransfer" EntitySet="cashTransfer" />
+      <End Role="agentMemberships" EntitySet="agentMemberships" />
     </AssociationSet>
-    <AssociationSet Name="FK_cards_users1" Association="incposdbModel.FK_cards_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="cards" EntitySet="cards" />
-    </AssociationSet>
-    <AssociationSet Name="FK_cashTransfer_cards" Association="incposdbModel.FK_cashTransfer_cards">
-      <End Role="cards" EntitySet="cards" />
+    <AssociationSet Name="FK_cashTransfer_agentMemberships" Association="incposdbModel.FK_cashTransfer_agentMemberships">
+      <End Role="agentMemberships" EntitySet="agentMemberships" />
       <End Role="cashTransfer" EntitySet="cashTransfer" />
     </AssociationSet>
-    <EntitySet Name="bondes" EntityType="incposdbModel.bondes" />
-    <AssociationSet Name="FK_bondes_users" Association="incposdbModel.FK_bondes_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="bondes" EntitySet="bondes" />
+    <EntitySet Name="subscriptionFees" EntityType="incposdbModel.subscriptionFees" />
+    <AssociationSet Name="FK_agentMemberships_subscriptionFees" Association="incposdbModel.FK_agentMemberships_subscriptionFees">
+      <End Role="subscriptionFees" EntitySet="subscriptionFees" />
+      <End Role="agentMemberships" EntitySet="agentMemberships" />
     </AssociationSet>
-    <AssociationSet Name="FK_bondes_users1" Association="incposdbModel.FK_bondes_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="bondes" EntitySet="bondes" />
-    </AssociationSet>
-    <AssociationSet Name="FK_cashTransfer_bondes" Association="incposdbModel.FK_cashTransfer_bondes">
-      <End Role="bondes" EntitySet="bondes" />
-      <End Role="cashTransfer" EntitySet="cashTransfer" />
-    </AssociationSet>
-    <EntitySet Name="medalAgent" EntityType="incposdbModel.medalAgent" />
-    <EntitySet Name="medals" EntityType="incposdbModel.medals" />
-    <AssociationSet Name="FK_medalAgent_agents" Association="incposdbModel.FK_medalAgent_agents">
-      <End Role="agents" EntitySet="agents" />
-      <End Role="medalAgent" EntitySet="medalAgent" />
-    </AssociationSet>
-    <AssociationSet Name="FK_medalAgent_coupons" Association="incposdbModel.FK_medalAgent_coupons">
-      <End Role="coupons" EntitySet="coupons" />
-      <End Role="medalAgent" EntitySet="medalAgent" />
-    </AssociationSet>
-    <AssociationSet Name="FK_medalAgent_medals" Association="incposdbModel.FK_medalAgent_medals">
-      <End Role="medals" EntitySet="medals" />
-      <End Role="medalAgent" EntitySet="medalAgent" />
-    </AssociationSet>
-    <AssociationSet Name="FK_medalAgent_offers" Association="incposdbModel.FK_medalAgent_offers">
-      <End Role="offers" EntitySet="offers" />
-      <End Role="medalAgent" EntitySet="medalAgent" />
-    </AssociationSet>
-    <AssociationSet Name="FK_medalAgent_users" Association="incposdbModel.FK_medalAgent_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="medalAgent" EntitySet="medalAgent" />
-    </AssociationSet>
-    <AssociationSet Name="FK_medalAgent_users1" Association="incposdbModel.FK_medalAgent_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="medalAgent" EntitySet="medalAgent" />
-    </AssociationSet>
-    <AssociationSet Name="FK_medals_users" Association="incposdbModel.FK_medals_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="medals" EntitySet="medals" />
-    </AssociationSet>
-    <AssociationSet Name="FK_medals_users1" Association="incposdbModel.FK_medals_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="medals" EntitySet="medals" />
-    </AssociationSet>
-    <EntitySet Name="groupObject" EntityType="incposdbModel.groupObject" />
-    <EntitySet Name="groups" EntityType="incposdbModel.groups" />
-    <EntitySet Name="objects" EntityType="incposdbModel.objects" />
-    <AssociationSet Name="FK_groupObject_groups" Association="incposdbModel.FK_groupObject_groups">
-      <End Role="groups" EntitySet="groups" />
-      <End Role="groupObject" EntitySet="groupObject" />
-    </AssociationSet>
-    <AssociationSet Name="FK_groupObject_objects" Association="incposdbModel.FK_groupObject_objects">
-      <End Role="objects" EntitySet="objects" />
-      <End Role="groupObject" EntitySet="groupObject" />
-    </AssociationSet>
-    <AssociationSet Name="FK_groupObject_users" Association="incposdbModel.FK_groupObject_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="groupObject" EntitySet="groupObject" />
-    </AssociationSet>
-    <AssociationSet Name="FK_groupObject_users1" Association="incposdbModel.FK_groupObject_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="groupObject" EntitySet="groupObject" />
-    </AssociationSet>
-    <AssociationSet Name="FK_groups_users1" Association="incposdbModel.FK_groups_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="groups" EntitySet="groups" />
-    </AssociationSet>
-    <AssociationSet Name="FK_groups_users2" Association="incposdbModel.FK_groups_users2">
-      <End Role="users" EntitySet="users" />
-      <End Role="groups" EntitySet="groups" />
-    </AssociationSet>
-    <AssociationSet Name="FK_users_groups" Association="incposdbModel.FK_users_groups">
-      <End Role="groups" EntitySet="groups" />
-      <End Role="users" EntitySet="users" />
-    </AssociationSet>
-    <AssociationSet Name="FK_objects_users" Association="incposdbModel.FK_objects_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="objects" EntitySet="objects" />
-    </AssociationSet>
-    <AssociationSet Name="FK_objects_users1" Association="incposdbModel.FK_objects_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="objects" EntitySet="objects" />
-    </AssociationSet>
-    <AssociationSet Name="FK_bondes_cashTransfer" Association="incposdbModel.FK_bondes_cashTransfer">
-      <End Role="cashTransfer" EntitySet="cashTransfer" />
-      <End Role="bondes" EntitySet="bondes" />
-    </AssociationSet>
-    <EntitySet Name="categoryuser" EntityType="incposdbModel.categoryuser" />
-    <EntitySet Name="setting" EntityType="incposdbModel.setting" />
-    <EntitySet Name="setValues" EntityType="incposdbModel.setValues" />
-    <EntitySet Name="userSetValues" EntityType="incposdbModel.userSetValues" />
-    <AssociationSet Name="FK_categoryuser_categories" Association="incposdbModel.FK_categoryuser_categories">
-      <End Role="categories" EntitySet="categories" />
-      <End Role="categoryuser" EntitySet="categoryuser" />
-    </AssociationSet>
-    <AssociationSet Name="FK_categoryuser_users" Association="incposdbModel.FK_categoryuser_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="categoryuser" EntitySet="categoryuser" />
-    </AssociationSet>
-    <AssociationSet Name="FK_categoryuser_users1" Association="incposdbModel.FK_categoryuser_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="categoryuser" EntitySet="categoryuser" />
-    </AssociationSet>
-    <AssociationSet Name="FK_categoryuser_users2" Association="incposdbModel.FK_categoryuser_users2">
-      <End Role="users" EntitySet="users" />
-      <End Role="categoryuser" EntitySet="categoryuser" />
-    </AssociationSet>
-    <AssociationSet Name="FK_setValues_setting" Association="incposdbModel.FK_setValues_setting">
-      <End Role="setting" EntitySet="setting" />
-      <End Role="setValues" EntitySet="setValues" />
-    </AssociationSet>
-    <AssociationSet Name="FK_userSetValues_setValues" Association="incposdbModel.FK_userSetValues_setValues">
-      <End Role="setValues" EntitySet="setValues" />
-      <End Role="userSetValues" EntitySet="userSetValues" />
-    </AssociationSet>
-    <AssociationSet Name="FK_userSetValues_users" Association="incposdbModel.FK_userSetValues_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="userSetValues" EntitySet="userSetValues" />
-    </AssociationSet>
-    <AssociationSet Name="FK_userSetValues_users1" Association="incposdbModel.FK_userSetValues_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="userSetValues" EntitySet="userSetValues" />
-    </AssociationSet>
-    <AssociationSet Name="FK_userSetValues_users2" Association="incposdbModel.FK_userSetValues_users2">
-      <End Role="users" EntitySet="users" />
-      <End Role="userSetValues" EntitySet="userSetValues" />
-    </AssociationSet>
-    <AssociationSet Name="FK_objects_objects" Association="incposdbModel.FK_objects_objects">
-      <End Role="objects" EntitySet="objects" />
-      <End Role="objects1" EntitySet="objects" />
-    </AssociationSet>
-    <EntitySet Name="Inventory" EntityType="incposdbModel.Inventory" />
-    <EntitySet Name="inventoryItemLocation" EntityType="incposdbModel.inventoryItemLocation" />
-    <AssociationSet Name="FK_Inventory_users" Association="incposdbModel.FK_Inventory_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="Inventory" EntitySet="Inventory" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Inventory_users1" Association="incposdbModel.FK_Inventory_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="Inventory" EntitySet="Inventory" />
-    </AssociationSet>
-    <AssociationSet Name="FK_inventoryItemLocation_Inventory" Association="incposdbModel.FK_inventoryItemLocation_Inventory">
-      <End Role="Inventory" EntitySet="Inventory" />
-      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
-    </AssociationSet>
-    <AssociationSet Name="FK_inventoryItemLocation_itemsLocations" Association="incposdbModel.FK_inventoryItemLocation_itemsLocations">
-      <End Role="itemsLocations" EntitySet="itemsLocations" />
-      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
-    </AssociationSet>
-    <AssociationSet Name="FK_inventoryItemLocation_users" Association="incposdbModel.FK_inventoryItemLocation_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
-    </AssociationSet>
-    <AssociationSet Name="FK_inventoryItemLocation_users1" Association="incposdbModel.FK_inventoryItemLocation_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+    <AssociationSet Name="FK_subscriptionFees_memberships" Association="incposdbModel.FK_subscriptionFees_memberships">
+      <End Role="memberships" EntitySet="memberships" />
+      <End Role="subscriptionFees" EntitySet="subscriptionFees" />
     </AssociationSet>
   </EntityContainer>
-  <EntityType Name="cards">
-    <Key>
-      <PropertyRef Name="cardId" />
-    </Key>
-    <Property Name="cardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="notes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <Property Name="updateDate" Type="DateTime" Precision="7" />
-    <Property Name="createUserId" Type="Int32" />
-    <Property Name="updateUserId" Type="Int32" />
-    <NavigationProperty Name="users" Relationship="incposdbModel.FK_cards_users" FromRole="cards" ToRole="users" />
-    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_cards_users1" FromRole="cards" ToRole="users" />
-    <NavigationProperty Name="cashTransfer" Relationship="incposdbModel.FK_cashTransfer_cards" FromRole="cards" ToRole="cashTransfer" />
-    <Property Name="isActive" Type="Byte" />
-  </EntityType>
-  <Association Name="FK_cards_users">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.cards" Role="cards" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="cards">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_cards_users1">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.cards" Role="cards" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="cards">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_cashTransfer_cards">
-    <End Type="incposdbModel.cards" Role="cards" Multiplicity="0..1" />
-    <End Type="incposdbModel.cashTransfer" Role="cashTransfer" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="cards">
-        <PropertyRef Name="cardId" />
-      </Principal>
-      <Dependent Role="cashTransfer">
-        <PropertyRef Name="cardId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="bondes">
-    <Key>
-      <PropertyRef Name="bondId" />
-    </Key>
-    <Property Name="bondId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="number" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="amount" Type="Decimal" Precision="20" Scale="4" />
-    <Property Name="deserveDate" Type="DateTime" Precision="7" />
-    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="isRecieved" Type="Byte" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="createUserId" Type="Int32" />
-    <Property Name="updateUserId" Type="Int32" />
-    <Property Name="updateDate" Type="DateTime" Precision="7" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <NavigationProperty Name="users" Relationship="incposdbModel.FK_bondes_users" FromRole="bondes" ToRole="users" />
-    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_bondes_users1" FromRole="bondes" ToRole="users" />
-    <NavigationProperty Name="cashTransfer" Relationship="incposdbModel.FK_cashTransfer_bondes" FromRole="bondes" ToRole="cashTransfer" />
-    <Property Name="isActive" Type="Byte" />
-    <Property Name="cashTransId" Type="Int32" />
-    <NavigationProperty Name="cashTransfer1" Relationship="incposdbModel.FK_bondes_cashTransfer" FromRole="bondes" ToRole="cashTransfer" />
-  </EntityType>
-  <Association Name="FK_bondes_users">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.bondes" Role="bondes" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="bondes">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_bondes_users1">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.bondes" Role="bondes" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="bondes">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_cashTransfer_bondes">
-    <End Type="incposdbModel.bondes" Role="bondes" Multiplicity="0..1" />
-    <End Type="incposdbModel.cashTransfer" Role="cashTransfer" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="bondes">
-        <PropertyRef Name="bondId" />
-      </Principal>
-      <Dependent Role="cashTransfer">
-        <PropertyRef Name="bondId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="medalAgent">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="medalId" Type="Int32" />
-    <Property Name="agentId" Type="Int32" />
-    <Property Name="offerId" Type="Int32" />
-    <Property Name="couponId" Type="Int32" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="isActive" Type="Byte" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <Property Name="updateDate" Type="DateTime" Precision="7" />
-    <Property Name="createUserId" Type="Int32" />
-    <Property Name="updateUserId" Type="Int32" />
-    <NavigationProperty Name="agents" Relationship="incposdbModel.FK_medalAgent_agents" FromRole="medalAgent" ToRole="agents" />
-    <NavigationProperty Name="coupons" Relationship="incposdbModel.FK_medalAgent_coupons" FromRole="medalAgent" ToRole="coupons" />
-    <NavigationProperty Name="medals" Relationship="incposdbModel.FK_medalAgent_medals" FromRole="medalAgent" ToRole="medals" />
-    <NavigationProperty Name="offers" Relationship="incposdbModel.FK_medalAgent_offers" FromRole="medalAgent" ToRole="offers" />
-    <NavigationProperty Name="users" Relationship="incposdbModel.FK_medalAgent_users" FromRole="medalAgent" ToRole="users" />
-    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_medalAgent_users1" FromRole="medalAgent" ToRole="users" />
-  </EntityType>
-  <EntityType Name="medals">
-    <Key>
-      <PropertyRef Name="medalId" />
-    </Key>
-    <Property Name="medalId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="isActive" Type="Byte" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="createUserId" Type="Int32" />
-    <Property Name="updateUserId" Type="Int32" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <Property Name="updateDate" Type="DateTime" Precision="7" />
-    <NavigationProperty Name="medalAgent" Relationship="incposdbModel.FK_medalAgent_medals" FromRole="medals" ToRole="medalAgent" />
-    <NavigationProperty Name="users" Relationship="incposdbModel.FK_medals_users" FromRole="medals" ToRole="users" />
-    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_medals_users1" FromRole="medals" ToRole="users" />
-  </EntityType>
-  <Association Name="FK_medalAgent_agents">
-    <End Type="incposdbModel.agents" Role="agents" Multiplicity="0..1" />
-    <End Type="incposdbModel.medalAgent" Role="medalAgent" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="agents">
-        <PropertyRef Name="agentId" />
-      </Principal>
-      <Dependent Role="medalAgent">
-        <PropertyRef Name="agentId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_medalAgent_coupons">
-    <End Type="incposdbModel.coupons" Role="coupons" Multiplicity="0..1" />
-    <End Type="incposdbModel.medalAgent" Role="medalAgent" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="coupons">
-        <PropertyRef Name="cId" />
-      </Principal>
-      <Dependent Role="medalAgent">
-        <PropertyRef Name="couponId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_medalAgent_medals">
-    <End Type="incposdbModel.medals" Role="medals" Multiplicity="0..1" />
-    <End Type="incposdbModel.medalAgent" Role="medalAgent" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="medals">
-        <PropertyRef Name="medalId" />
-      </Principal>
-      <Dependent Role="medalAgent">
-        <PropertyRef Name="medalId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_medalAgent_offers">
-    <End Type="incposdbModel.offers" Role="offers" Multiplicity="0..1" />
-    <End Type="incposdbModel.medalAgent" Role="medalAgent" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="offers">
-        <PropertyRef Name="offerId" />
-      </Principal>
-      <Dependent Role="medalAgent">
-        <PropertyRef Name="offerId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_medalAgent_users">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.medalAgent" Role="medalAgent" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="medalAgent">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_medalAgent_users1">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.medalAgent" Role="medalAgent" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="medalAgent">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_medals_users">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.medals" Role="medals" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="medals">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_medals_users1">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.medals" Role="medals" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="medals">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="groupObject">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="groupId" Type="Int32" />
-    <Property Name="objectId" Type="Int32" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="addOb" Type="Boolean" Nullable="false" />
-    <Property Name="updateOb" Type="Boolean" Nullable="false" />
-    <Property Name="deleteOb" Type="Boolean" Nullable="false" />
-    <Property Name="showOb" Type="Boolean" Nullable="false" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <Property Name="updateDate" Type="DateTime" Precision="7" />
-    <Property Name="createUserId" Type="Int32" />
-    <Property Name="updateUserId" Type="Int32" />
-    <NavigationProperty Name="groups" Relationship="incposdbModel.FK_groupObject_groups" FromRole="groupObject" ToRole="groups" />
-    <NavigationProperty Name="objects" Relationship="incposdbModel.FK_groupObject_objects" FromRole="groupObject" ToRole="objects" />
-    <NavigationProperty Name="users" Relationship="incposdbModel.FK_groupObject_users" FromRole="groupObject" ToRole="users" />
-    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_groupObject_users1" FromRole="groupObject" ToRole="users" />
-    <Property Name="isActive" Type="Int32" />
-    <Property Name="reportOb" Type="Boolean" />
-  </EntityType>
-  <EntityType Name="groups">
-    <Key>
-      <PropertyRef Name="groupId" />
-    </Key>
-    <Property Name="groupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <Property Name="updateDate" Type="DateTime" Precision="7" />
-    <Property Name="createUserId" Type="Int32" />
-    <Property Name="updateUserId" Type="Int32" />
-    <NavigationProperty Name="groupObject" Relationship="incposdbModel.FK_groupObject_groups" FromRole="groups" ToRole="groupObject" />
-    <NavigationProperty Name="users" Relationship="incposdbModel.FK_groups_users1" FromRole="groups" ToRole="users" />
-    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_groups_users2" FromRole="groups" ToRole="users" />
-    <NavigationProperty Name="users2" Relationship="incposdbModel.FK_users_groups" FromRole="groups" ToRole="users" />
-    <Property Name="isActive" Type="Int32" />
-  </EntityType>
-  <EntityType Name="objects">
-    <Key>
-      <PropertyRef Name="objectId" />
-    </Key>
-    <Property Name="objectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <Property Name="updateDate" Type="DateTime" Precision="7" />
-    <Property Name="createUserId" Type="Int32" />
-    <Property Name="updateUserId" Type="Int32" />
-    <NavigationProperty Name="groupObject" Relationship="incposdbModel.FK_groupObject_objects" FromRole="objects" ToRole="groupObject" />
-    <NavigationProperty Name="users" Relationship="incposdbModel.FK_objects_users" FromRole="objects" ToRole="users" />
-    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_objects_users1" FromRole="objects" ToRole="users" />
-    <Property Name="isActive" Type="Int32" />
-    <Property Name="parentObjectId" Type="Int32" />
-    <NavigationProperty Name="objects1" Relationship="incposdbModel.FK_objects_objects" FromRole="objects" ToRole="objects1" />
-    <NavigationProperty Name="objects2" Relationship="incposdbModel.FK_objects_objects" FromRole="objects1" ToRole="objects" />
-  </EntityType>
-  <Association Name="FK_groupObject_groups">
-    <End Type="incposdbModel.groups" Role="groups" Multiplicity="0..1" />
-    <End Type="incposdbModel.groupObject" Role="groupObject" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="groups">
-        <PropertyRef Name="groupId" />
-      </Principal>
-      <Dependent Role="groupObject">
-        <PropertyRef Name="groupId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_groupObject_objects">
-    <End Type="incposdbModel.objects" Role="objects" Multiplicity="0..1" />
-    <End Type="incposdbModel.groupObject" Role="groupObject" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="objects">
-        <PropertyRef Name="objectId" />
-      </Principal>
-      <Dependent Role="groupObject">
-        <PropertyRef Name="objectId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_groupObject_users">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.groupObject" Role="groupObject" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="groupObject">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_groupObject_users1">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.groupObject" Role="groupObject" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="groupObject">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_groups_users1">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.groups" Role="groups" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="groups">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_groups_users2">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.groups" Role="groups" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="groups">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_users_groups">
-    <End Type="incposdbModel.groups" Role="groups" Multiplicity="0..1" />
-    <End Type="incposdbModel.users" Role="users" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="groups">
-        <PropertyRef Name="groupId" />
-      </Principal>
-      <Dependent Role="users">
-        <PropertyRef Name="groupId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_objects_users">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.objects" Role="objects" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="objects">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_objects_users1">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.objects" Role="objects" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="objects">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_bondes_cashTransfer">
+  <Association Name="FK_agentMemberships_cashTransfer">
     <End Type="incposdbModel.cashTransfer" Role="cashTransfer" Multiplicity="0..1" />
-    <End Type="incposdbModel.bondes" Role="bondes" Multiplicity="*" />
+    <End Type="incposdbModel.agentMemberships" Role="agentMemberships" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="cashTransfer">
         <PropertyRef Name="cashTransId" />
       </Principal>
-      <Dependent Role="bondes">
+      <Dependent Role="agentMemberships">
         <PropertyRef Name="cashTransId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityType Name="categoryuser">
+  <Association Name="FK_cashTransfer_agentMemberships">
+    <End Type="incposdbModel.agentMemberships" Role="agentMemberships" Multiplicity="0..1" />
+    <End Type="incposdbModel.cashTransfer" Role="cashTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="agentMemberships">
+        <PropertyRef Name="agentMembershipsId" />
+      </Principal>
+      <Dependent Role="cashTransfer">
+        <PropertyRef Name="agentMembershipsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="subscriptionFees">
     <Key>
-      <PropertyRef Name="id" />
+      <PropertyRef Name="subscriptionFeesId" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="categoryId" Type="Int32" />
-    <Property Name="userId" Type="Int32" />
-    <Property Name="sequence" Type="Int32" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <Property Name="updateDate" Type="DateTime" Precision="7" />
-    <Property Name="createUserId" Type="Int32" />
-    <Property Name="updateUserId" Type="Int32" />
-    <NavigationProperty Name="categories" Relationship="incposdbModel.FK_categoryuser_categories" FromRole="categoryuser" ToRole="categories" />
-    <NavigationProperty Name="users" Relationship="incposdbModel.FK_categoryuser_users" FromRole="categoryuser" ToRole="users" />
-    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_categoryuser_users1" FromRole="categoryuser" ToRole="users" />
-    <NavigationProperty Name="users2" Relationship="incposdbModel.FK_categoryuser_users2" FromRole="categoryuser" ToRole="users" />
-  </EntityType>
-  <EntityType Name="setting">
-    <Key>
-      <PropertyRef Name="settingId" />
-    </Key>
-    <Property Name="settingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="subscriptionFeesId" Type="Int32" Nullable="false" />
+    <Property Name="membershipId" Type="Int32" />
+    <Property Name="monthsCount" Type="Int32" />
+    <Property Name="Amount" Type="Decimal" Precision="20" Scale="4" />
     <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="setValues" Relationship="incposdbModel.FK_setValues_setting" FromRole="setting" ToRole="setValues" />
-  </EntityType>
-  <EntityType Name="setValues">
-    <Key>
-      <PropertyRef Name="valId" />
-    </Key>
-    <Property Name="valId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="isDefault" Type="Int32" />
-    <Property Name="isSystem" Type="Int32" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="settingId" Type="Int32" />
-    <NavigationProperty Name="setting" Relationship="incposdbModel.FK_setValues_setting" FromRole="setValues" ToRole="setting" />
-    <NavigationProperty Name="userSetValues" Relationship="incposdbModel.FK_userSetValues_setValues" FromRole="setValues" ToRole="userSetValues" />
-  </EntityType>
-  <EntityType Name="userSetValues">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="userId" Type="Int32" />
-    <Property Name="valId" Type="Int32" />
-    <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <Property Name="updateDate" Type="DateTime" Precision="7" />
-    <Property Name="createUserId" Type="Int32" />
-    <Property Name="updateUserId" Type="Int32" />
-    <NavigationProperty Name="setValues" Relationship="incposdbModel.FK_userSetValues_setValues" FromRole="userSetValues" ToRole="setValues" />
-    <NavigationProperty Name="users" Relationship="incposdbModel.FK_userSetValues_users" FromRole="userSetValues" ToRole="users" />
-    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_userSetValues_users1" FromRole="userSetValues" ToRole="users" />
-    <NavigationProperty Name="users2" Relationship="incposdbModel.FK_userSetValues_users2" FromRole="userSetValues" ToRole="users" />
-  </EntityType>
-  <Association Name="FK_categoryuser_categories">
-    <End Type="incposdbModel.categories" Role="categories" Multiplicity="0..1" />
-    <End Type="incposdbModel.categoryuser" Role="categoryuser" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="categories">
-        <PropertyRef Name="categoryId" />
-      </Principal>
-      <Dependent Role="categoryuser">
-        <PropertyRef Name="categoryId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_categoryuser_users">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.categoryuser" Role="categoryuser" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="categoryuser">
-        <PropertyRef Name="userId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_categoryuser_users1">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.categoryuser" Role="categoryuser" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="categoryuser">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_categoryuser_users2">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.categoryuser" Role="categoryuser" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="categoryuser">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_setValues_setting">
-    <End Type="incposdbModel.setting" Role="setting" Multiplicity="0..1" />
-    <End Type="incposdbModel.setValues" Role="setValues" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="setting">
-        <PropertyRef Name="settingId" />
-      </Principal>
-      <Dependent Role="setValues">
-        <PropertyRef Name="settingId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_userSetValues_setValues">
-    <End Type="incposdbModel.setValues" Role="setValues" Multiplicity="0..1" />
-    <End Type="incposdbModel.userSetValues" Role="userSetValues" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="setValues">
-        <PropertyRef Name="valId" />
-      </Principal>
-      <Dependent Role="userSetValues">
-        <PropertyRef Name="valId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_userSetValues_users">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.userSetValues" Role="userSetValues" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="userSetValues">
-        <PropertyRef Name="userId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_userSetValues_users1">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.userSetValues" Role="userSetValues" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="userSetValues">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_userSetValues_users2">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.userSetValues" Role="userSetValues" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="userSetValues">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_objects_objects">
-    <End Type="incposdbModel.objects" Role="objects" Multiplicity="0..1" />
-    <End Type="incposdbModel.objects" Role="objects1" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="objects">
-        <PropertyRef Name="objectId" />
-      </Principal>
-      <Dependent Role="objects1">
-        <PropertyRef Name="parentObjectId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="Inventory">
-    <Key>
-      <PropertyRef Name="inventoryId" />
-    </Key>
-    <Property Name="inventoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="num" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="createDate" Type="DateTime" Precision="7" />
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="createUserId" Type="Int32" />
     <Property Name="updateUserId" Type="Int32" />
     <Property Name="isActive" Type="Byte" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="users" Relationship="incposdbModel.FK_Inventory_users" FromRole="Inventory" ToRole="users" />
-    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_Inventory_users1" FromRole="Inventory" ToRole="users" />
-    <NavigationProperty Name="inventoryItemLocation" Relationship="incposdbModel.FK_inventoryItemLocation_Inventory" FromRole="Inventory" ToRole="inventoryItemLocation" />
+    <NavigationProperty Name="agentMemberships" Relationship="incposdbModel.FK_agentMemberships_subscriptionFees" FromRole="subscriptionFees" ToRole="agentMemberships" />
+    <NavigationProperty Name="memberships" Relationship="incposdbModel.FK_subscriptionFees_memberships" FromRole="subscriptionFees" ToRole="memberships" />
   </EntityType>
-  <EntityType Name="inventoryItemLocation">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="isDestroyed" Type="Boolean" />
-    <Property Name="amount" Type="Int32" />
-    <Property Name="amountDestroyed" Type="Int32" />
-    <Property Name="realAmount" Type="Int32" />
-    <Property Name="itemLocationId" Type="Int32" />
-    <Property Name="inventoryId" Type="Int32" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <Property Name="updateDate" Type="DateTime" Precision="7" />
-    <Property Name="createUserId" Type="Int32" />
-    <Property Name="updateUserId" Type="Int32" />
-    <Property Name="isActive" Type="Byte" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Inventory" Relationship="incposdbModel.FK_inventoryItemLocation_Inventory" FromRole="inventoryItemLocation" ToRole="Inventory" />
-    <NavigationProperty Name="itemsLocations" Relationship="incposdbModel.FK_inventoryItemLocation_itemsLocations" FromRole="inventoryItemLocation" ToRole="itemsLocations" />
-    <NavigationProperty Name="users" Relationship="incposdbModel.FK_inventoryItemLocation_users" FromRole="inventoryItemLocation" ToRole="users" />
-    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_inventoryItemLocation_users1" FromRole="inventoryItemLocation" ToRole="users" />
-  </EntityType>
-  <Association Name="FK_Inventory_users">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.Inventory" Role="Inventory" Multiplicity="*" />
+  <Association Name="FK_agentMemberships_subscriptionFees">
+    <End Type="incposdbModel.subscriptionFees" Role="subscriptionFees" Multiplicity="0..1" />
+    <End Type="incposdbModel.agentMemberships" Role="agentMemberships" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
+      <Principal Role="subscriptionFees">
+        <PropertyRef Name="subscriptionFeesId" />
       </Principal>
-      <Dependent Role="Inventory">
-        <PropertyRef Name="createUserId" />
+      <Dependent Role="agentMemberships">
+        <PropertyRef Name="subscriptionFeesId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Inventory_users1">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.Inventory" Role="Inventory" Multiplicity="*" />
+  <Association Name="FK_subscriptionFees_memberships">
+    <End Type="incposdbModel.memberships" Role="memberships" Multiplicity="0..1" />
+    <End Type="incposdbModel.subscriptionFees" Role="subscriptionFees" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
+      <Principal Role="memberships">
+        <PropertyRef Name="membershipId" />
       </Principal>
-      <Dependent Role="Inventory">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_inventoryItemLocation_Inventory">
-    <End Type="incposdbModel.Inventory" Role="Inventory" Multiplicity="0..1" />
-    <End Type="incposdbModel.inventoryItemLocation" Role="inventoryItemLocation" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Inventory">
-        <PropertyRef Name="inventoryId" />
-      </Principal>
-      <Dependent Role="inventoryItemLocation">
-        <PropertyRef Name="inventoryId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_inventoryItemLocation_itemsLocations">
-    <End Type="incposdbModel.itemsLocations" Role="itemsLocations" Multiplicity="0..1" />
-    <End Type="incposdbModel.inventoryItemLocation" Role="inventoryItemLocation" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="itemsLocations">
-        <PropertyRef Name="itemsLocId" />
-      </Principal>
-      <Dependent Role="inventoryItemLocation">
-        <PropertyRef Name="itemLocationId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_inventoryItemLocation_users">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.inventoryItemLocation" Role="inventoryItemLocation" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="inventoryItemLocation">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_inventoryItemLocation_users1">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.inventoryItemLocation" Role="inventoryItemLocation" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="inventoryItemLocation">
-        <PropertyRef Name="updateUserId" />
+      <Dependent Role="subscriptionFees">
+        <PropertyRef Name="membershipId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

@@ -28,11 +28,13 @@ namespace POS_Server.Models
         public string notes { get; set; }
         public string vendorInvNum { get; set; }
         public string name { get; set; }
+        public string branchName { get; set; }
         public Nullable<System.DateTime> vendorInvDate { get; set; }
         public Nullable<int> branchId { get; set; }
         public Nullable<int> posId { get; set; }
         public Nullable<int> itemsCount { get; set; }
         public Nullable<decimal> tax { get; set; }
+        public Nullable<int> taxtype { get; set; }
         public Nullable<byte> isApproved { get; set; }
     }
 

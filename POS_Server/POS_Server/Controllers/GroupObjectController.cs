@@ -43,6 +43,7 @@ namespace POS_Server.Controllers
                        updateOb = c.updateOb,
                        deleteOb = c.deleteOb,
                        showOb = c.showOb,
+                       
                        objectName = c.objects.name,
                        desc = c.objects.note,
 
@@ -52,6 +53,8 @@ namespace POS_Server.Controllers
                        updateUserId = c.updateUserId,
                        canDelete=true,
                        reportOb=c.reportOb,
+                       levelOb = c.levelOb
+
                    })
                    .ToList();
                   
@@ -127,6 +130,7 @@ updateUserId
                        c.createUserId,
                        c.updateUserId,
                        c.reportOb,
+                       c.levelOb,
 
                    })
                    .FirstOrDefault();
@@ -218,7 +222,8 @@ updateUserId
                             tmps.showOb = Object.showOb;
                             //tmps.isActive = Object.isActive;
                             tmps.reportOb = Object.reportOb;
-
+                            tmps.levelOb = Object.levelOb;
+                            
                             tmps.createDate=Object.createDate;
                             tmps.updateDate = DateTime.Now;// server current date
                             tmps.updateUserId = Object.updateUserId;
