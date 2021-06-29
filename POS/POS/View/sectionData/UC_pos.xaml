@@ -345,15 +345,12 @@
                             <Separator Background="#999999" VerticalAlignment="Center" Width="auto" />
                         </DockPanel>
 
-                          
-                        
-
                        
                             <TextBox x:Name="tb_code" Grid.Row="1" Text="{Binding code, Mode=OneWay}" Padding="10,0,5,0"
                                      
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="POS Code..."
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                     TabIndex="1"
+                                     TabIndex="0"
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                      BorderBrush="AliceBlue" TextChanged="Tb_code_TextChanged" LostFocus="Tb_code_LostFocus"
                                      MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
@@ -381,7 +378,7 @@
                                      BorderThickness="0,0,0,2"  materialDesign:HintAssist.Hint="POS Name..."
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                     BorderBrush="AliceBlue" TabIndex="0"
+                                     BorderBrush="AliceBlue" TabIndex="1"
                                      TextChanged="Tb_name_TextChanged" LostFocus="Tb_name_LostFocus"
                                       MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="40"  Margin="10,5,10,5" Grid.Row="2" >
@@ -402,7 +399,7 @@
                             </Path.ToolTip>
                         </Path>
                         <ComboBox x:Name="cb_branch" Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                                      materialDesign:HintAssist.Hint="Select Branch..."  
+                                      materialDesign:HintAssist.Hint="Select Branch/Store..."  
                                       TextBlock.FontSize="12" Margin="10,5,10,5"
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       Height="40"    LostFocus="Cb_branchId_LostFocus" 
@@ -426,11 +423,8 @@
                                     <ToolTip  x:Name="tt_errorSelectBranch"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
-
-
-
                         <TextBox x:Name="tb_notes" Grid.Row="4" Text="{Binding notes, Mode=OneWay}" 
-                                 Padding="10,0,5,5"   TabIndex="9" Margin="10,5,10,5"
+                                 Padding="10,0,5,5"   TabIndex="3" Margin="10,5,10,5"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 

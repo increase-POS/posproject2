@@ -361,6 +361,7 @@ namespace POS.View
 
                     await RefreshStoresList();
                     Tb_search_TextChanged(null, null);
+                    fillComboBranchParent();
                 }
             }
 
@@ -462,15 +463,15 @@ namespace POS.View
 
                 string s = await storeModel.saveBranch(store);
 
-                if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    if (!s.Equals("-1")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 await RefreshStoresList();
                 Tb_search_TextChanged(null, null);
-
-                cb_branch.SelectedValue = store.parentId;
+                    fillComboBranchParent();
+                    cb_branch.SelectedValue = store.parentId;
 
                 SectionData.getMobile(store.mobile, cb_area, tb_mobile);
 
@@ -518,7 +519,7 @@ namespace POS.View
                     bool b = await storeModel.deleteBranch(store.branchId, MainWindow.userID.Value, store.canDelete);
 
                     if (b) //SectionData.popUpResponse("", popupContent);
-                        Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
@@ -526,7 +527,8 @@ namespace POS.View
 
             await RefreshStoresList();
             Tb_search_TextChanged(null, null);
-        }
+                fillComboBranchParent();
+            }
         //clear textBoxs
         Btn_clear_Click(sender, e);
 
@@ -538,8 +540,8 @@ namespace POS.View
 
         string s = await storeModel.saveBranch(store);
 
-        if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
-            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+        if (!s.Equals("-1"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
         else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
@@ -557,15 +559,13 @@ namespace POS.View
                 grid_ucStore.FlowDirection = FlowDirection.RightToLeft; }
 
         translate();
+            //fill combo
+            //var branches = await branchModel.GetBranchesAsync("b");
+            //cb_branch.ItemsSource = branches;
+            fillComboBranchParent();
 
-        //fill combo
-        var branches = await branchModel.GetBranchesAsync("b");
-        cb_branch.ItemsSource = branches;
-        cb_branch.SelectedValuePath = "branchId";
-        cb_branch.DisplayMemberPath = "name";
-        cb_branch.SelectedIndex = -1;
 
-        cb_area.SelectedIndex = 0;
+            cb_area.SelectedIndex = 0;
         cb_areaPhone.SelectedIndex = 0;
         cb_areaPhoneLocal.SelectedIndex = 0;
         //if(cb_branch.Items.Count > 0)
@@ -581,20 +581,26 @@ namespace POS.View
         {
             Tb_search_TextChanged(null, null);
         });
-
     }
-
-    private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        async void fillComboBranchParent()
+        {
+            var branchesWithMain = await branchModel.GetAll();
+            cb_branch.ItemsSource = branchesWithMain.Where(b => b.type == "b" || b.type == "bs");
+            cb_branch.DisplayMemberPath = "name";
+            cb_branch.SelectedValuePath = "branchId";
+            cb_branch.SelectedIndex = -1;
+        }
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
     {//search
         p_errorName.Visibility = Visibility.Collapsed;
         tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
         if (stores is null)
             await RefreshStoresList();
-        searchText = tb_search.Text;
-        storesQuery = stores.Where(s => (s.code.Contains(searchText) ||
-        s.name.Contains(searchText) ||
-        s.mobile.Contains(searchText)
+        searchText = tb_search.Text.ToLower();
+        storesQuery = stores.Where(s => (s.code.ToLower().Contains(searchText) ||
+        s.name.ToLower().Contains(searchText) ||
+        s.mobile.ToLower().Contains(searchText)
         ) && s.isActive == tgl_storeState);
         RefreshStoreView();
     }

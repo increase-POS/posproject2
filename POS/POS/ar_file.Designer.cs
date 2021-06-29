@@ -997,7 +997,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to الرمز غير صالح.
+        ///   Looks up a localized string similar to موجود سابقاً.
         /// </summary>
         internal static string trDuplicateCodeToolTip {
             get {
@@ -1285,6 +1285,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لا يمكن أن يكون القسم فارغ.
+        /// </summary>
+        internal static string trEmptySectionToolTip {
+            get {
+                return ResourceManager.GetString("trEmptySectionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تاريخ البدء لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyStartDateToolTip {
@@ -1546,6 +1555,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مكان التخزين لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trErrorEmptyLocationToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyLocationToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الحد الأعلى لا يمكن أن يكون فارغاً.
         /// </summary>
         internal static string trErrorEmptyMaxToolTip {
@@ -1722,6 +1740,15 @@ namespace POS {
         internal static string trErrorSamePos {
             get {
                 return ResourceManager.GetString("trErrorSamePos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ النهاية لا يمكن أن يكون قبل تاريخ البداية.
+        /// </summary>
+        internal static string trErrorStartBeforEndToolTip {
+            get {
+                return ResourceManager.GetString("trErrorStartBeforEndToolTip", resourceCulture);
             }
         }
         

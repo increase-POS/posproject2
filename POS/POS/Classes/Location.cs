@@ -284,6 +284,41 @@ namespace POS.Classes
             }
 
         }
+        public async Task<List<Location>> getLocsBySectionId(int sectionId)
+        {
+            List<Location> Locations = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Locations/GetLocsBySectionId?sectionId=" + sectionId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+
+                    Locations = JsonConvert.DeserializeObject<List<Location>>(jsonString);
+
+                    return Locations;
+                }
+                else //web api sent error response 
+                {
+                    Locations = new List<Location>();
+                }
+                return Locations;
+            }
+
+        }
 
     }
 }

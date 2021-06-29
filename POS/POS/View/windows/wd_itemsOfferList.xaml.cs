@@ -63,6 +63,7 @@ namespace POS.View.windows
             selectedItemsSource = await itemUnitOffer.GetItemsByOfferId(offerId);
 
             allItems.AddRange(allItemsSource);
+
             foreach (var i in allItems)
             {
                 i.itemName = i.itemName + "-" + i.unitName;
@@ -73,8 +74,12 @@ namespace POS.View.windows
             {
                 i.itemName = i.itemName + "-" + i.unitName;
             }
-
-            //MessageBox.Show(selectedItems[0].quantity.ToString());
+            //remove selected items from all items
+            foreach (var i in selectedItems)
+            {
+                itemUnit = allItemsSource.Where(s => s.itemUnitId == i.iuId).FirstOrDefault<ItemUnit>();
+                allItems.Remove(itemUnit);
+            }
 
             dg_allItems.ItemsSource = allItems;
             dg_allItems.SelectedValuePath = "itemUnitId";

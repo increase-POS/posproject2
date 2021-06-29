@@ -220,14 +220,9 @@ namespace POS.View
             //fill combo
             //if (branches == null) branches = await branchModel.GetBranchesAsync("b");
             //branchesQuery = branches.Where(s =>  s.isActive == 1);
-            var branchesWithMain = await branchModel.Get();
 
-            cb_branch.ItemsSource = branchesQuery;
-            cb_branch.DisplayMemberPath = "name";
-            cb_branch.SelectedValuePath = "branchId";
-            cb_branch.SelectedIndex = -1;
+            fillComboBranchParent();
 
-            
             //if (cb_branch.Items.Count > 0)
             //    cb_branch.SelectedIndex = 0;
             fillCountries();
@@ -244,7 +239,14 @@ namespace POS.View
             //});
 
         }
-
+        async void fillComboBranchParent()
+        {
+            var branchesWithMain = await branchModel.GetAll();
+            cb_branch.ItemsSource = branchesWithMain.Where(b => b.type == "b" || b.type == "bs");
+            cb_branch.DisplayMemberPath = "name";
+            cb_branch.SelectedValuePath = "branchId";
+            cb_branch.SelectedIndex = -1;
+        }
         private void Dg_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             p_errorBranch.Visibility = Visibility.Collapsed;
@@ -406,7 +408,9 @@ namespace POS.View
 
                     await RefreshBranchesList();
                     tb_search_TextChanged(null, null);
+                fillComboBranchParent();
                 }
+
             }
         }
         async void AddFreeThone(int branchId)
@@ -505,8 +509,8 @@ namespace POS.View
 
                     string s = await branchModel.saveBranch(branch);
 
-                    if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    if (!s.Equals("-1")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
@@ -515,6 +519,7 @@ namespace POS.View
 
                     await RefreshBranchesList();
                     tb_search_TextChanged(null, null);
+                    fillComboBranchParent();
 
                     cb_branch.SelectedValue = branch.parentId;
 
@@ -566,7 +571,7 @@ namespace POS.View
                         bool b = await branchModel.deleteBranch(branch.branchId, MainWindow.userID.Value, branch.canDelete);
 
                         if (b) //SectionData.popUpResponse("", popupContent);
-                            Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                         else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
@@ -574,6 +579,8 @@ namespace POS.View
 
                 await RefreshBranchesList();
                 tb_search_TextChanged(null, null);
+                fillComboBranchParent();
+
             }
             //clear textBoxs
             Btn_clear_Click(sender, e);
@@ -586,7 +593,7 @@ namespace POS.View
 
             string s = await branchModel.saveBranch(branch);
 
-            if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+            if (!s.Equals("-1"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -605,10 +612,10 @@ namespace POS.View
 
             if (branches is null)
                 await RefreshBranchesList();
-            searchText = tb_search.Text;
-            branchesQuery = branches.Where(s => (s.code.Contains(searchText) ||
-            s.name.Contains(searchText) ||
-            s.mobile.Contains(searchText)
+            searchText = tb_search.Text.ToLower();
+            branchesQuery = branches.Where(s => (s.code.ToLower().Contains(searchText) ||
+            s.name.ToLower().Contains(searchText) ||
+            s.mobile.ToLower().Contains(searchText)
             ) && s.isActive == tgl_branchState);
             RefreshBranchView();
 

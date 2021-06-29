@@ -77,6 +77,7 @@ namespace POS.View
         Pos posModel = new Pos();
         Pos pos;
         List<ItemTransfer> invoiceItems;
+        List<ItemTransfer> mainInvoiceItems;
 
         ItemLocation itemLocationModel = new ItemLocation();
 
@@ -434,7 +435,8 @@ namespace POS.View
             if (invoice.invType == "s" && (invType == "sb" || invType == "sbd")) // invoice is sale and will be bounce sale  or sale bounce draft  , save another invoice in db
             {
                 invoice.invoiceMainId = invoice.invoiceId;
-                invoice.invoiceId = 0;              
+                invoice.invoiceId = 0;
+                invoice.invNumber = await generateInvNumber("sb");
             }
             if (invoice.invType != "s" || invoice.invoiceId == 0)
             {              
@@ -463,20 +465,7 @@ namespace POS.View
                 // build invoice NUM like si-storCode-posCode-sequence exp: 123_PI_2
                 if (invoice.invoiceId == 0)
                 {
-                    string storeCode = "";
-                    string posCode = "";
-                    if (pos != null)
-                    {
-                        storeCode = pos.branchCode;
-                        posCode = pos.code;
-                    }
-
-                    string invoiceCode = "si";
-                    int sequence = await invoiceModel.GetLastNumOfInv("si");
-                    sequence++;
-
-                    string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
-                    invoice.invNumber = invoiceNum;
+                    invoice.invNumber = await generateInvNumber("si");
                 }
               
                 decimal balance = 0;
@@ -603,6 +592,21 @@ namespace POS.View
             }
             clearInvoice();
         }
+        private async Task<string> generateInvNumber(string invoiceCode)
+        {
+            string storeCode = "";
+            string posCode = "";
+            if (pos != null)
+            {
+                storeCode = pos.branchCode;
+                posCode = pos.code;
+            }
+            int sequence = await invoiceModel.GetLastNumOfInv(invoiceCode);
+            sequence++;
+
+            string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
+            return invoiceNum;
+        }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
             //check mandatory inputs
@@ -698,17 +702,17 @@ namespace POS.View
                 if (w.invoice != null)
                 {
                     invoice = w.invoice;
-                    //this.DataContext = invoice;
-
                     _InvoiceType = invoice.invType;
                     // set title to bill
                     if (_InvoiceType == "sd")
                     {
+                        mainInvoiceItems = invoiceItems;
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
                         brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                     }
                     if (_InvoiceType == "sbd")
                     {
+                        mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
                         brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                     }
@@ -1610,13 +1614,28 @@ namespace POS.View
 
                 oldCount = row.Count;
 
-                int availableAmount = await itemLocationModel.getAmountInBranch(row.itemUnitId,MainWindow.branchID.Value);
-                if(availableAmount < newCount)
+                if (_InvoiceType == "sbd")
                 {
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                    newCount = availableAmount;
-                    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
-                    tb.Text = newCount.ToString();
+                    ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
+                    if (newCount > item.quantity)
+                    {
+                        // return old value 
+                        t.Text = item.quantity.ToString();
+
+                        newCount = (long)item.quantity;
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                    }
+                }
+                else
+                {
+                    int availableAmount = await itemLocationModel.getAmountInBranch(row.itemUnitId, MainWindow.branchID.Value);
+                    if (availableAmount < newCount)
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                        newCount = availableAmount;
+                        tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
+                        tb.Text = newCount.ToString();
+                    }
                 }
 
                 if (columnName == MainWindow.resourcemanager.GetString("trPrice"))

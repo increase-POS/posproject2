@@ -565,16 +565,7 @@ namespace POS.View.sales
             // build invoice NUM like storCode_PI_sequence exp: 123_PI_2
             if (invoice.invNumber == null)
             {
-                string storeCode = "";
-                if (branch != null)
-                    storeCode = branch.code;
-
-                string invoiceCode = "QI";
-                int sequence = await invoiceModel.GetLastNumOfInv("QI");
-                sequence++;
-
-                string invoiceNum = storeCode + "_" + invoiceCode + "_" + sequence.ToString();
-                invoice.invNumber = invoiceNum;
+                invoice.invNumber = await generateInvNumber("si"); 
             }
 
             // save invoice in DB
@@ -608,6 +599,21 @@ namespace POS.View.sales
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
             }
             clearInvoice();
+        }
+        private async Task<string> generateInvNumber(string invoiceCode)
+        {
+            string storeCode = "";
+            string posCode = "";
+            if (pos != null)
+            {
+                storeCode = pos.branchCode;
+                posCode = pos.code;
+            }
+            int sequence = await invoiceModel.GetLastNumOfInv(invoiceCode);
+            sequence++;
+
+            string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
+            return invoiceNum;
         }
         #region Get Id By Click  Y
         public async void ChangeItemIdEvent(int itemId)

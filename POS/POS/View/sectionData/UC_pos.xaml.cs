@@ -95,7 +95,7 @@ namespace POS.View
 
         private async void fillBranches()
         {
-            var branches = await branchModel.GetBranchesAsync("b");
+            var branches = await branchModel.GetAllWithoutMain("all");
             cb_branch.ItemsSource = branches;
             cb_branch.SelectedValuePath = "branchId";
             cb_branch.DisplayMemberPath = "name";
@@ -251,7 +251,7 @@ namespace POS.View
 
             fillBranches();
 
-            Keyboard.Focus(tb_name);
+            Keyboard.Focus(tb_code);
 
             cb_branch.SelectedIndex = 0;
 
@@ -461,9 +461,9 @@ namespace POS.View
 
             if (poss is null)
                 await RefreshPosList();
-            searchText = tb_search.Text;
-            possQuery = poss.Where(s => (s.name.Contains(searchText) ||
-            s.code.Contains(searchText)
+            searchText = tb_search.Text.ToLower();
+            possQuery = poss.Where(s => (s.name.ToLower().Contains(searchText) ||
+            s.code.ToLower().Contains(searchText)
             ) && s.isActive == tgl_posState);
             RefreshPosView();
 

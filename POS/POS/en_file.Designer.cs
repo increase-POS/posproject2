@@ -1015,7 +1015,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Code is not valid.
+        ///   Looks up a localized string similar to already exists.
         /// </summary>
         internal static string trDuplicateCodeToolTip {
             get {
@@ -1312,6 +1312,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Section can not be empty.
+        /// </summary>
+        internal static string trEmptySectionToolTip {
+            get {
+                return ResourceManager.GetString("trEmptySectionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start date can not be empty.
         /// </summary>
         internal static string trEmptyStartDateToolTip {
@@ -1573,6 +1582,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Location can not be empty.
+        /// </summary>
+        internal static string trErrorEmptyLocationToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyLocationToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max can not be empty.
         /// </summary>
         internal static string trErrorEmptyMaxToolTip {
@@ -1758,6 +1776,15 @@ namespace POS {
         internal static string trErrorSamePos {
             get {
                 return ResourceManager.GetString("trErrorSamePos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End date can not be before start date.
+        /// </summary>
+        internal static string trErrorStartBeforEndToolTip {
+            get {
+                return ResourceManager.GetString("trErrorStartBeforEndToolTip", resourceCulture);
             }
         }
         

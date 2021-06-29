@@ -287,7 +287,7 @@ namespace POS.View
 
 
             translate();
-            //fillCategories();
+            fillCategories();
             fillUnits();
             fillProperties();
             fillBarcodeList();
@@ -350,14 +350,14 @@ namespace POS.View
                 if(barcodeStr.Length == 13)
                     barcodeStr = barcodeStr.Substring(1);//remove check sum from barcode string
                 var barcodeImage = drawObject.Draw(barcodeStr, barcodeMetrics);
-                using (var graphics = System.Drawing.Graphics.FromImage(barcodeImage))
-                using (var font = new System.Drawing.Font("Consolas", 12)) // Any font you want
-                using (var brush = new System.Drawing.SolidBrush(System.Drawing.Color.Blue))
-                using (var format = new System.Drawing.StringFormat() { LineAlignment = System.Drawing.StringAlignment.Far }) // To align text above the specified point
-                {
-                    // Print a string at the left bottom corner of image
-                    graphics.DrawString(tb_barcode.Text, font, brush, 0, barcodeImage.Height, format);
-                }
+                //using (var graphics = System.Drawing.Graphics.FromImage(barcodeImage))
+                //using (var font = new System.Drawing.Font("Consolas", 12)) // Any font you want
+                //using (var brush = new System.Drawing.SolidBrush(System.Drawing.Color.Blue))
+                //using (var format = new System.Drawing.StringFormat() { LineAlignment = System.Drawing.StringAlignment.Far }) // To align text above the specified point
+                //{
+                //    // Print a string at the left bottom corner of image
+                //    graphics.DrawString(tb_barcode.Text, font, brush, 0, barcodeImage.Height, format);
+                //}
                 using (MemoryStream ms = new MemoryStream())
                 {
                     barcodeImage.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
@@ -984,9 +984,9 @@ namespace POS.View
                     itemUnit.createUserId = MainWindow.userID;
 
                     string res = await itemUnit.saveItemUnit(itemUnit);
-                    if (res.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                    if (res.Equals("true")) 
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    else 
                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     refreshItemUnitsGrid(item.itemId);
@@ -1003,7 +1003,7 @@ namespace POS.View
                 Boolean res = await itemUnit.Delete(itemUnit.itemUnitId);
 
                 if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                     Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
@@ -1195,10 +1195,11 @@ namespace POS.View
         #endregion
 
         #region fill
-        void fillCategories()
+        async void fillCategories()
         {
-            //categories = await categoryModel.GetAllCategories();
-            cb_categorie.ItemsSource = categories.ToList();
+            categories = await categoryModel.GetAllCategories();
+            if(categories != null)
+                cb_categorie.ItemsSource = categories.ToList();
             cb_categorie.SelectedValuePath = "categoryId";
             cb_categorie.DisplayMemberPath = "name";
         }
@@ -2082,5 +2083,22 @@ namespace POS.View
             Window.GetWindow(this).Opacity = 1;
         }
 
+        private void Cb_selectUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cb_selectUnit.SelectedIndex != -1 && cb_unit.SelectedIndex != -1)
+            {
+                if ((int)cb_selectUnit.SelectedValue == (int)cb_unit.SelectedValue)
+                    tb_count.Text = "1";
+            }
+        }
+
+        private void Cb_unit_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cb_selectUnit.SelectedIndex != -1 && cb_unit.SelectedIndex != -1)
+            {
+                if ((int)cb_selectUnit.SelectedValue == (int)cb_unit.SelectedValue)
+                    tb_count.Text = "1";
+            }
+        }
     }
 }

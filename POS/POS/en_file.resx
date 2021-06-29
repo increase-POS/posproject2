@@ -763,7 +763,7 @@
     <value>Parent Branch</value>
   </data>
   <data name="trDuplicateCodeToolTip" xml:space="preserve">
-    <value>Code is not valid</value>
+    <value>already exists</value>
   </data>
   <data name="trEmptyBranchToolTip" xml:space="preserve">
     <value>Branch can not be empty</value>
@@ -1382,5 +1382,14 @@
   </data>
   <data name="trInvoiceCountPointsHint" xml:space="preserve">
     <value>Invoice points...</value>
+  </data>
+  <data name="trEmptySectionToolTip" xml:space="preserve">
+    <value>Section can not be empty</value>
+  </data>
+  <data name="trErrorEmptyLocationToolTip" xml:space="preserve">
+    <value>Location can not be empty</value>
+  </data>
+  <data name="trErrorStartBeforEndToolTip" xml:space="preserve">
+    <value>End date can not be before start date</value>
   </data>
 </root>

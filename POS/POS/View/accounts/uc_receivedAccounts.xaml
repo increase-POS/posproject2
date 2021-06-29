@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:POS.converters"
              xmlns:local="clr-namespace:POS.View.accounts"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -121,13 +122,19 @@
 
 
             <Border Margin="5,5,5,0" Grid.Row="1"  Background="White" CornerRadius="7,7,0,0">
-                <DataGrid  Margin="5,5,5,17.5"  Grid.Row="1"  IsReadOnly="True"  Background="White"
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                <DataGrid  Margin="5,5,0,17.5"  Grid.Column="0"  IsReadOnly="True"  Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
                      
                        x:Name="dg_receivedAccounts"
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader" 
-                           SelectionChanged="Dg_receivedAccounts_SelectionChanged"    AlternatingRowBackground="#f3f3f3" AlternationCount="2">
+                           SelectionChanged="Dg_receivedAccounts_SelectionChanged"    
+                           AlternatingRowBackground="#f3f3f3" AlternationCount="2">
                     <DataGrid.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
                         <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
@@ -135,14 +142,17 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
-                    </DataGrid.Resources>
+                            <converters:depositorTypeConverter x:Key="depositorTypeConverter"/>
+                            <converters:depositorNameConverter x:Key="depositorNameConverter"/>
+                        </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Transfer number" Binding="{Binding Path=transNum}"/>
-                        <DataGridTextColumn Width="*"  Header="Deposit From"   Binding="{Binding Path=agentId}"/>
-                        <DataGridTextColumn Width="*"  Header="Depositor"     Binding="{Binding Path=agentName}"/>
+                            <DataGridTextColumn Width="*"  Header="Deposit From"   Binding="{Binding Path=.,Converter={StaticResource depositorNameConverter }}" />
+                            <DataGridTextColumn Width="*"  Header="Depositor"    Binding="{Binding side,Converter={StaticResource depositorTypeConverter }}"  />
                         <DataGridTextColumn Width="*"  Header="Cash" Binding="{Binding Path=cash}"/>
                     </DataGrid.Columns>
                 </DataGrid>
+                </Grid>
             </Border>
             <!--#region -->
             <Border Grid.Row="2" Margin="5,0,5,0" Background="White" CornerRadius="0,0,7,7" >

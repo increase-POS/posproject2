@@ -745,7 +745,7 @@
     <value>الفرع الأب</value>
   </data>
   <data name="trDuplicateCodeToolTip" xml:space="preserve">
-    <value>الرمز غير صالح</value>
+    <value>موجود سابقاً</value>
   </data>
   <data name="trEmptyBranchToolTip" xml:space="preserve">
     <value>الفرع لا يمكن أن يكون فارغاً</value>
@@ -1361,5 +1361,14 @@
   </data>
   <data name="trInvoiceCountPointsHint" xml:space="preserve">
     <value>نقاط الفواتير...</value>
+  </data>
+  <data name="trEmptySectionToolTip" xml:space="preserve">
+    <value>لا يمكن أن يكون القسم فارغ</value>
+  </data>
+  <data name="trErrorEmptyLocationToolTip" xml:space="preserve">
+    <value>مكان التخزين لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trErrorStartBeforEndToolTip" xml:space="preserve">
+    <value>تاريخ النهاية لا يمكن أن يكون قبل تاريخ البداية</value>
   </data>
 </root>
