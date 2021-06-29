@@ -24,7 +24,6 @@
     <Property Name="cashTransId" Type="Int32" />
     <NavigationProperty Name="cashTransfer" Relationship="incposdbModel.FK_agentMemberships_cashTransfer" FromRole="agentMemberships" ToRole="cashTransfer" />
     <NavigationProperty Name="cashTransfer1" Relationship="incposdbModel.FK_cashTransfer_agentMemberships" FromRole="agentMemberships" ToRole="cashTransfer" />
-    <NavigationProperty Name="subscriptionFees" Relationship="incposdbModel.FK_agentMemberships_subscriptionFees" FromRole="agentMemberships" ToRole="subscriptionFees" />
   </EntityType>
   <EntityType Name="agents">
     <Key>
@@ -286,7 +285,7 @@
     <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="isActive" Type="Byte" />
-    <Property Name="discountType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="discountType" Type="Byte" Nullable="true" />
     <Property Name="discountValue" Type="Decimal" Precision="20" Scale="4" />
     <Property Name="startDate" Type="DateTime" Precision="7" />
     <Property Name="endDate" Type="DateTime" Precision="7" />
@@ -449,7 +448,7 @@
     <Property Name="paid" Type="Decimal" Precision="20" Scale="4" />
     <Property Name="deserved" Type="Decimal" Precision="20" Scale="4" />
     <Property Name="deservedDate" Type="DateTime" Precision="0" />
-    <Property Name="invDate" Type="DateTime" Precision="0" />
+    <Property Name="invDate" Type="DateTime" Precision="7" />
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="updateUserId" Type="Int32" />
     <Property Name="invoiceMainId" Type="Int32" />
@@ -757,7 +756,6 @@
     <NavigationProperty Name="agentMemberships1" Relationship="Self.FK_agentMemberships_memberships1" FromRole="memberships" ToRole="agentMemberships" />
     <NavigationProperty Name="users" Relationship="Self.FK_memberships_users" FromRole="memberships" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_memberships_users1" FromRole="memberships" ToRole="users" />
-    <NavigationProperty Name="subscriptionFees" Relationship="incposdbModel.FK_subscriptionFees_memberships" FromRole="memberships" ToRole="subscriptionFees" />
   </EntityType>
   <EntityType Name="objects">
     <Key>
@@ -3947,15 +3945,6 @@
       <End Role="agentMemberships" EntitySet="agentMemberships" />
       <End Role="cashTransfer" EntitySet="cashTransfer" />
     </AssociationSet>
-    <EntitySet Name="subscriptionFees" EntityType="incposdbModel.subscriptionFees" />
-    <AssociationSet Name="FK_agentMemberships_subscriptionFees" Association="incposdbModel.FK_agentMemberships_subscriptionFees">
-      <End Role="subscriptionFees" EntitySet="subscriptionFees" />
-      <End Role="agentMemberships" EntitySet="agentMemberships" />
-    </AssociationSet>
-    <AssociationSet Name="FK_subscriptionFees_memberships" Association="incposdbModel.FK_subscriptionFees_memberships">
-      <End Role="memberships" EntitySet="memberships" />
-      <End Role="subscriptionFees" EntitySet="subscriptionFees" />
-    </AssociationSet>
   </EntityContainer>
   <Association Name="FK_agentMemberships_cashTransfer">
     <End Type="incposdbModel.cashTransfer" Role="cashTransfer" Multiplicity="0..1" />
@@ -3978,47 +3967,6 @@
       </Principal>
       <Dependent Role="cashTransfer">
         <PropertyRef Name="agentMembershipsId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="subscriptionFees">
-    <Key>
-      <PropertyRef Name="subscriptionFeesId" />
-    </Key>
-    <Property Name="subscriptionFeesId" Type="Int32" Nullable="false" />
-    <Property Name="membershipId" Type="Int32" />
-    <Property Name="monthsCount" Type="Int32" />
-    <Property Name="Amount" Type="Decimal" Precision="20" Scale="4" />
-    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <Property Name="updateDate" Type="DateTime" Precision="7" />
-    <Property Name="createUserId" Type="Int32" />
-    <Property Name="updateUserId" Type="Int32" />
-    <Property Name="isActive" Type="Byte" />
-    <NavigationProperty Name="agentMemberships" Relationship="incposdbModel.FK_agentMemberships_subscriptionFees" FromRole="subscriptionFees" ToRole="agentMemberships" />
-    <NavigationProperty Name="memberships" Relationship="incposdbModel.FK_subscriptionFees_memberships" FromRole="subscriptionFees" ToRole="memberships" />
-  </EntityType>
-  <Association Name="FK_agentMemberships_subscriptionFees">
-    <End Type="incposdbModel.subscriptionFees" Role="subscriptionFees" Multiplicity="0..1" />
-    <End Type="incposdbModel.agentMemberships" Role="agentMemberships" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="subscriptionFees">
-        <PropertyRef Name="subscriptionFeesId" />
-      </Principal>
-      <Dependent Role="agentMemberships">
-        <PropertyRef Name="subscriptionFeesId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_subscriptionFees_memberships">
-    <End Type="incposdbModel.memberships" Role="memberships" Multiplicity="0..1" />
-    <End Type="incposdbModel.subscriptionFees" Role="subscriptionFees" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="memberships">
-        <PropertyRef Name="membershipId" />
-      </Principal>
-      <Dependent Role="subscriptionFees">
-        <PropertyRef Name="membershipId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

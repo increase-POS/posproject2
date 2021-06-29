@@ -85,9 +85,7 @@ namespace POS.Classes
         public decimal totalS { get; set; }
         public decimal totalNetS { get; set; }
         public decimal totalP { get; set; }
-        public decimal totalNetP { get; set; }
-
-        
+        public decimal totalNetP { get; set; }  
         public string branchType { get; set; }
         public string posName { get; set; }
         public string posCode { get; set; }
@@ -99,6 +97,22 @@ namespace POS.Classes
         public string uuserName { get; set; }
         public string uuserLast { get; set; }
         public string uUserAccName { get; set; }
+        
+            public int countPb { get; set; }
+        public int countD { get; set; }
+        public decimal totalPb{ get; set; }
+        public decimal totalD{ get; set; }
+        public decimal totalNetPb{ get; set; }
+        public decimal totalNetD{ get; set; }
+      
+      
+        public decimal paidPb { get; set; }
+        public decimal deservedPb { get; set; }
+        public decimal discountValuePb { get; set; }
+        public decimal paidD { get; set; }
+        public decimal deservedD { get; set; }
+        public decimal discountValueD { get; set; }
+       
 
         //*************************************************
         //------------------------------------------------------

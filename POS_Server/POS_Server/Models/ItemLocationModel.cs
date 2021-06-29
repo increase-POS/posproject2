@@ -9,6 +9,7 @@ namespace POS_Server.Models
     {
         public int itemsLocId { get; set; }
         public Nullable<int> locationId { get; set; }
+        public Nullable<int> sectionId { get; set; }
         public Nullable<long> quantity { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
@@ -18,6 +19,12 @@ namespace POS_Server.Models
         public Nullable<System.DateTime> endDate { get; set; }
         public Nullable<int> itemUnitId { get; set; }
         public string note { get; set; }
+        public string itemName { get; set; }
+        public string location { get; set; }
+        public string itemType { get; set; }
         public Nullable<decimal> storeCost { get; set; }
+        public Nullable<byte> isFreeZone { get; set; }
+
+
     }
 }

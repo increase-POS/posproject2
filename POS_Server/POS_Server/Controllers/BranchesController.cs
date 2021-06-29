@@ -84,6 +84,57 @@ namespace POS_Server.Controllers
         }
 
         [HttpGet]
+        [Route("GetAll")]
+        public IHttpActionResult GetAll()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            Boolean canDelete = false;
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var branchesList = entity.branches
+                   .Select(b => new BranchModel
+                   {
+                       branchId = b.branchId,
+                       address = b.address,
+                       createDate = b.createDate,
+                       createUserId = b.createUserId,
+                       email = b.email,
+                       mobile = b.mobile,
+                       name = b.name,
+                       code = b.code,
+                       notes = b.notes,
+                       parentId = b.parentId,
+                       phone = b.phone,
+                       updateDate = b.updateDate,
+                       updateUserId = b.updateUserId,
+                       isActive = b.isActive,
+                       type = b.type
+                   })
+                   .ToList();
+                    if (branchesList == null)
+                        return NotFound();
+                    else
+                        return Ok(branchesList);
+
+                }
+            }
+            else
+                return NotFound();
+        }
+
+        [HttpGet]
         [Route("Search")]
         public IHttpActionResult Search(string type,string searchWords)
         {
@@ -515,7 +566,7 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
-
+            bool canDelete = false;
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -529,25 +580,44 @@ namespace POS_Server.Controllers
                 {
 
                     var branchesList = entity.branches
-                        .Where(b => b.type == type && b.branchId != 1)
-                   .Select(b => new {
-                       b.branchId,
-                       b.address,
-                       b.createDate,
-                       b.createUserId,
-                       b.email,
-                       b.mobile,
-                       b.name,
-                       b.code,
-                       b.notes,
-                       b.parentId,
-                       b.phone,
-                       b.updateDate,
-                       b.updateUserId,
-                       b.isActive,
-                       b.type
+                        .Where(b => (type=="all"? true: b.type == type) && b.branchId != 1)                      
+                   .Select(b => new BranchModel
+                   {
+                       branchId = b.branchId,
+                       address = b.address,
+                       createDate = b.createDate,
+                       createUserId = b.createUserId,
+                       email = b.email,
+                       mobile = b.mobile,
+                       name = b.name,
+                       code = b.code,
+                       notes = b.notes,
+                       parentId = b.parentId,
+                       phone = b.phone,
+                       updateDate = b.updateDate,
+                       updateUserId = b.updateUserId,
+                       isActive = b.isActive,
+                       type = b.type
                    })
                    .ToList();
+                    if (branchesList.Count > 0)
+                    {
+                        for (int i = 0; i < branchesList.Count; i++)
+                        {
+                            canDelete = false;
+                            if (branchesList[i].isActive == 1)
+                            {
+                                int branchId = (int)branchesList[i].branchId;
+                                var parentBrancheL = entity.branches.Where(x => x.parentId == branchId).Select(x => new { x.branchId }).FirstOrDefault();
+                                var posL = entity.pos.Where(x => x.branchId == branchId).Select(b => new { b.posId }).FirstOrDefault();
+                                // var locationsL = entity.locations.Where(x => x.branchId == branchId).Select(x => new { x.locationId }).FirstOrDefault();
+                                var usersL = entity.branchesUsers.Where(x => x.branchId == branchId).Select(x => new { x.branchsUsersId }).FirstOrDefault();
+                                if ((parentBrancheL is null) && (posL is null) && (usersL is null))
+                                    canDelete = true;
+                            }
+                            branchesList[i].canDelete = canDelete;
+                        }
+                    }
 
                     if (branchesList == null)
                         return NotFound();

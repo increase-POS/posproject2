@@ -497,6 +497,57 @@ namespace POS_Server.Controllers
             //else
             return NotFound();
         }
+        [HttpGet]
+        [Route("GetLocsBySectionId")]
+        public IHttpActionResult GetLocsBySectionId(int sectionId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var locationsList = (from L in entity.locations where L.sectionId == sectionId
+                                         join s in entity.sections on L.sectionId equals s.sectionId into lj
+                                         from v in lj.DefaultIfEmpty()
+
+                                         select new LocationModel()
+                                         {
+                                             locationId = L.locationId,
+                                             x = L.x,
+                                             y = L.y,
+                                             z = L.z,
+                                             createDate = L.createDate,
+                                             updateDate = L.updateDate,
+                                             createUserId = L.createUserId,
+                                             updateUserId = L.updateUserId,
+                                             isActive = L.isActive,
+                                             isFreeZone = L.isFreeZone,
+                                             branchId = L.branchId,
+                                             sectionId = L.sectionId,
+                                             sectionName = v.name,
+                                             note = L.note,
+
+                                         }).ToList();
+
+                    if (locationsList == null)
+                        return NotFound();
+                    else
+                        return Ok(locationsList);
+                }
+            }
+            //else
+            return NotFound();
+        }
 
     }
 }

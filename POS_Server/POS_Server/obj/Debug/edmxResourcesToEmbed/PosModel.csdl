@@ -285,7 +285,7 @@
     <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="isActive" Type="Byte" />
-    <Property Name="discountType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="discountType" Type="Byte" Nullable="true" />
     <Property Name="discountValue" Type="Decimal" Precision="20" Scale="4" />
     <Property Name="startDate" Type="DateTime" Precision="7" />
     <Property Name="endDate" Type="DateTime" Precision="7" />
@@ -448,7 +448,7 @@
     <Property Name="paid" Type="Decimal" Precision="20" Scale="4" />
     <Property Name="deserved" Type="Decimal" Precision="20" Scale="4" />
     <Property Name="deservedDate" Type="DateTime" Precision="0" />
-    <Property Name="invDate" Type="DateTime" Precision="0" />
+    <Property Name="invDate" Type="DateTime" Precision="7" />
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="updateUserId" Type="Int32" />
     <Property Name="invoiceMainId" Type="Int32" />

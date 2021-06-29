@@ -42,6 +42,5 @@ namespace POS_Server
         public virtual cashTransfer cashTransfer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cashTransfer> cashTransfer1 { get; set; }
-        public virtual subscriptionFees subscriptionFees { get; set; }
     }
 }

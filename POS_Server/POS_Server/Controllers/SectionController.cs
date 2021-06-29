@@ -79,6 +79,73 @@ namespace POS_Server.Controllers
             return NotFound();
         }
 
+        [HttpGet]
+        [Route("getBranchSections")]
+        public IHttpActionResult getBranchSections(int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            Boolean canDelete = false;
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var sectionList =(from L in entity.sections where L.branchId == branchId && L.isFreeZone != 1
+                                      join b in entity.branches on L.branchId equals b.branchId into lj
+                                      from v in lj.DefaultIfEmpty()
+                                      select new SectionModel()
+                                        {
+                                          sectionId=  L.sectionId,
+                                            name=   L.name,
+                                            isActive=  L.isActive,
+                                            isFreeZone=  L.isFreeZone,
+                                          branchId =  L.branchId,
+                                            note=   L.note,
+                                            branchName = v.name,
+                                            createDate=  L.createDate,
+                                            updateDate=    L.updateDate,
+                                            createUserId=  L.createUserId,
+                                            updateUserId=  L.updateUserId,
+                       
+                                        })
+                                        .ToList();
+
+                    if (sectionList.Count > 0)
+                    {// for each 
+                        for (int i = 0; i < sectionList.Count; i++)
+                        {
+                            if (sectionList[i].isActive == 1)
+                            {
+                                int sectionId = (int)sectionList[i].sectionId;
+                                var LocationL = entity.locations.Where(x => x.sectionId == sectionId).Select(b => new { b.locationId }).FirstOrDefault();
+                                //var itemsTransferL = entity.itemsTransfer.Where(x => x.locationIdNew == locationId || x.locationIdOld == locationId).Select(x => new { x.itemsTransId }).FirstOrDefault();
+                               
+                                if ((LocationL is null)  )
+                                    canDelete = true;
+                            }
+                            sectionList[i].canDelete = canDelete;
+                        }
+                    }
+
+                    if (sectionList == null)
+                        return NotFound();
+                    else
+                        return Ok(sectionList);
+                }
+            }
+            //else
+            return NotFound();
+        }
+
         // GET api/<controller>
         [HttpGet]
         [Route("GetSectionByID")]

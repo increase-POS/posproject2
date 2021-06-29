@@ -222,7 +222,7 @@
     <Property Name="name" Type="nvarchar" MaxLength="100" />
     <Property Name="code" Type="nvarchar" MaxLength="100" />
     <Property Name="isActive" Type="tinyint" />
-    <Property Name="discountType" Type="nvarchar" MaxLength="100" />
+    <Property Name="discountType" Type="tinyint" />
     <Property Name="discountValue" Type="decimal" Precision="20" Scale="4" />
     <Property Name="startDate" Type="datetime2" Precision="7" />
     <Property Name="endDate" Type="datetime2" Precision="7" />
@@ -360,7 +360,7 @@
     <Property Name="paid" Type="decimal" Precision="20" Scale="4" />
     <Property Name="deserved" Type="decimal" Precision="20" Scale="4" />
     <Property Name="deservedDate" Type="date" />
-    <Property Name="invDate" Type="date" />
+    <Property Name="invDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="invoiceMainId" Type="int" />

@@ -15,7 +15,7 @@ namespace POS_Server.Controllers
     {
         [HttpGet]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(int branchId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -31,22 +31,86 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var docImageList = entity.itemsLocations
-                        .Select(b => new {
-                            b.createDate,
-                            b.createUserId,
-                            b.endDate,
-                            b.itemsLocId,
-                            b.itemUnitId,
-                            b.locationId,
-                            b.note,
-                            b.quantity,
-                            b.startDate,
-                            b.storeCost,
-                            b.updateDate,
-                            b.updateUserId,
-                        })
-                    .ToList();
+                    var docImageList = (from b in entity.itemsLocations where b.quantity > 0
+                                        join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
+                                        join i in entity.items on u.itemId equals i.itemId
+                                        join l in entity.locations on b.locationId equals l.locationId
+                                       join s in entity.sections on l.sectionId equals s.sectionId where s.branchId == branchId && s.isFreeZone != 1
+
+                                        select new ItemLocationModel
+                                        {
+                                            createDate = b.createDate,
+                                            createUserId = b.createUserId,
+                                            endDate = b.endDate,
+                                            itemsLocId = b.itemsLocId,
+                                            itemUnitId = b.itemUnitId,
+                                            locationId = b.locationId,
+                                            note = b.note,
+                                            quantity = b.quantity,
+                                            startDate = b.startDate,
+                                            storeCost = b.storeCost,
+                                            updateDate = b.updateDate,
+                                            updateUserId = b.updateUserId,
+                                            itemName = i.name,
+                                            location = l.x+l.y+l.z,
+                                            sectionId = s.sectionId,
+                                            itemType = i.type,
+                                        }).ToList();
+
+                    if (docImageList == null)
+                        return NotFound();
+                    else
+                        return Ok(docImageList);
+                }
+            }
+            //else
+            return NotFound();
+        }
+        [HttpGet]
+        [Route("GetFreeZoneItems")]
+        public IHttpActionResult GetFreeZoneItems(int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var docImageList = (from b in entity.itemsLocations where b.quantity > 0
+                                        join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
+                                        join i in entity.items on u.itemId equals i.itemId
+                                        join l in entity.locations on b.locationId equals l.locationId
+                                        join s in entity.sections on l.sectionId equals s.sectionId
+                                        where s.branchId == branchId && s.isFreeZone == 1
+
+                                        select new ItemLocationModel
+                                        {
+                                          createDate =  b.createDate,
+                                            createUserId = b.createUserId,
+                                            endDate = b.endDate,
+                                            itemsLocId = b.itemsLocId,
+                                            itemUnitId = b.itemUnitId,
+                                            locationId = b.locationId,
+                                            note = b.note,
+                                            quantity = b.quantity,
+                                            startDate = b.startDate,
+                                            storeCost = b.storeCost,
+                                            updateDate = b.updateDate,
+                                            updateUserId = b.updateUserId,
+                                            itemName = i.name,
+                                            sectionId = s.sectionId,
+                                            isFreeZone = s.isFreeZone,
+                                            itemType = i.type,
+                                        })
+                                    .ToList();
 
                     if (docImageList == null)
                         return NotFound();
@@ -235,6 +299,76 @@ namespace POS_Server.Controllers
                 }
                 entity.SaveChanges();
             }
+       }
+        [HttpPost]
+        [Route("trasnferItem")]
+        public IHttpActionResult trasnferItem(int itemLocId, string itemLocation)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+            if (valid)
+            {
+                itemLocation = itemLocation.Replace("\\", string.Empty);
+                itemLocation = itemLocation.Trim('"');
+                ItemLocationModel itemObject = JsonConvert.DeserializeObject<ItemLocationModel>(itemLocation, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    itemsLocations oldItemL = new itemsLocations();
+                    oldItemL = entity.itemsLocations.Find(itemLocId);
+                   
+                    oldItemL.quantity -= itemObject.quantity;
+                    oldItemL.updateDate = DateTime.Now;
+                    oldItemL.updateUserId = itemObject.updateUserId;
+                    if (oldItemL.quantity == 0)
+                        entity.itemsLocations.Remove(oldItemL);
+                 
+                    entity.SaveChanges();
+                    var newtemLocation = (from il in entity.itemsLocations
+                                          where il.itemUnitId == itemObject.itemUnitId && il.locationId == itemObject.locationId
+                                          && il.startDate == itemObject.startDate && il.endDate == itemObject.endDate
+                                          select new { il.itemsLocId }
+                                   ).FirstOrDefault();
+                  
+                    itemsLocations newItemL;
+                    if (newtemLocation == null)//add item in new location
+                    {
+                        newItemL = new itemsLocations();
+                        newItemL.createDate = DateTime.Now;
+                        newItemL.createUserId = itemObject.createUserId;
+                        newItemL.endDate = itemObject.endDate;
+                        newItemL.startDate = itemObject.startDate;
+                        newItemL.storeCost = itemObject.storeCost;
+                        newItemL.updateDate = DateTime.Now;
+                        newItemL.updateUserId = itemObject.createUserId;
+                        newItemL.itemUnitId = itemObject.itemUnitId;
+                        newItemL.locationId = itemObject.locationId;
+                        newItemL.note = itemObject.note;
+                        newItemL.quantity = itemObject.quantity;
+                        entity.itemsLocations.Add(newItemL);
+                    }
+                    else
+                    {
+                        newItemL = new itemsLocations();
+                        newItemL = entity.itemsLocations.Find(newtemLocation.itemsLocId);
+
+                        oldItemL.quantity += itemObject.quantity;
+                        oldItemL.updateDate = DateTime.Now;
+                        oldItemL.updateUserId = itemObject.updateUserId;
+                        entity.SaveChanges();
+                    }
+                    
+                    return Ok("here");
+                }
+            }
+            return NotFound();
+           
        }
         [HttpGet]
         [Route("updateItemQuantity")]
@@ -429,6 +563,56 @@ namespace POS_Server.Controllers
                     amount += (int)upperUnit.unitValue * getItemUnitAmount(upperUnit.itemUnitId,branchId);
                 return amount;
             }    
+        }
+        [HttpPost]
+        [Route("returnInvoice")]
+        public IHttpActionResult returnInvoice(string itemLocationObject, int branchId, int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            itemLocationObject = itemLocationObject.Replace("\\", string.Empty);
+            itemLocationObject = itemLocationObject.Trim('"');
+
+            if (valid)
+            {
+                List<itemsTransfer> itemList = JsonConvert.DeserializeObject<List<itemsTransfer>>(itemLocationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var freeZoneLocation = (from s in entity.sections.Where(x => x.branchId == branchId && x.isFreeZone == 1)
+                                            join l in entity.locations on s.sectionId equals l.sectionId
+                                            select l.locationId).SingleOrDefault();
+                    foreach (itemsTransfer item in itemList)
+                    {
+                        decreaseItemQuantity(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity, userId);
+                    }
+                }
+            }
+            return Ok(1);
+        }
+        private void decreaseItemQuantity(int itemUnitId, int locationId, int quantity, int userId)
+        {
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                var itemUnit = (from il in entity.itemsLocations
+                                where il.itemUnitId == itemUnitId && il.locationId == locationId
+                                select new { il.itemsLocId }
+                                ).FirstOrDefault();
+                itemsLocations itemL = new itemsLocations();
+
+                itemL = entity.itemsLocations.Find(itemUnit.itemsLocId);
+                itemL.quantity -= quantity;
+                itemL.updateDate = DateTime.Now;
+                itemL.updateUserId = userId;
+                entity.SaveChanges();
+            }
         }
         // DELETE api/<controller>/5
         public void Delete(int id)

@@ -231,7 +231,7 @@ namespace POS_Server.Controllers
                             }
                             else // edit previously added coupons
                             {
-                                ci.discountType = byte.Parse(c.discountType);
+                                ci.discountType =c.discountType;
                                 ci.discountValue = c.discountValue;
                                 ci.updateDate = DateTime.Now;
                             }

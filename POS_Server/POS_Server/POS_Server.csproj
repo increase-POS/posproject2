@@ -449,9 +449,6 @@
     <Compile Include="shippingCompanies.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="subscriptionFees.cs">
-      <DependentUpon>PosModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="sysdiagrams.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
