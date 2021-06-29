@@ -218,8 +218,10 @@ namespace POS.View
             translate();
 
             //fill combo
-            if (branches == null) branches = await branchModel.GetBranchesAsync("b");
-            branchesQuery = branches.Where(s =>  s.isActive == 1);
+            //if (branches == null) branches = await branchModel.GetBranchesAsync("b");
+            //branchesQuery = branches.Where(s =>  s.isActive == 1);
+            var branchesWithMain = await branchModel.Get();
+
             cb_branch.ItemsSource = branchesQuery;
             cb_branch.DisplayMemberPath = "name";
             cb_branch.SelectedValuePath = "branchId";

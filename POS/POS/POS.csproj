@@ -206,6 +206,7 @@
     <Compile Include="Classes\SettingCls.cs" />
     <Compile Include="Classes\setValues.cs" />
     <Compile Include="Classes\ShippingCompanies.cs" />
+    <Compile Include="Classes\Statistics.cs" />
     <Compile Include="Classes\Unit.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Classes\userSetValues.cs" />

@@ -43,7 +43,10 @@ namespace POS
         public static string Fax = "0215232233";
         public static string Mobile = "+963967376542";
         public static string Address = "Aleppo";
-        internal static int? userID = 2;
+        internal static int? userID ;
+        internal static string userName;
+        internal static string userJob;
+        internal static string userRole;
         internal static int? posID = 53;
         internal static int? branchID = 18;
         bool isHome = false;
@@ -351,17 +354,17 @@ namespace POS
 
         }
 
-
-
-
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
+            //translate
             if (lang.Equals("en"))
             { resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_mainWindow.FlowDirection = FlowDirection.LeftToRight; }
             else
             { resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_mainWindow.FlowDirection = FlowDirection.RightToLeft; }
             translate();
+            //user info
+            txt_userName.Text = userName;
+            txt_userJob.Text = userJob;
             BTN_Home_Click(null, null);
         }
 

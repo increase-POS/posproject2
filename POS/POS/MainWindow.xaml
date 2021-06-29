@@ -9,7 +9,7 @@
         Title="MainWindow"     
           xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
      WindowStartupLocation="CenterScreen"  WindowStyle="None"
-    WindowState="Maximized"  Loaded="Window_Loaded"  >
+    WindowState="Maximized"  Loaded="Window_Loaded">
     <Window.Resources>
         <Storyboard x:Key="Storyboard1">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="rectangle">
@@ -163,8 +163,8 @@
                 </Ellipse.Fill>
             </Ellipse>
             <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="8" Margin="5,5,5,5">
-                <TextBlock  Text="Mohamad" FontSize="12" Foreground="White" HorizontalAlignment="Center" />
-                <TextBlock  Text="admin" FontSize="12" FontWeight="Light" Foreground="#E8E8E8" HorizontalAlignment="Left" />
+                <TextBlock x:Name="txt_userName"  Text="Mohamad" FontSize="12" Foreground="White" HorizontalAlignment="Center" />
+                <TextBlock x:Name="txt_userJob"  Text="admin"   FontSize="12" FontWeight="Light" Foreground="#E8E8E8" HorizontalAlignment="Left" />
             </StackPanel>
             <Button Grid.Column="9" x:Name="BTN_Minimize" Click="BTN_Minimize_Click"
                 Margin="5,10,5,10" ToolTip="Minimize" 
