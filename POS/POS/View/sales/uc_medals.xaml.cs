@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,6 +35,7 @@ namespace POS.View.sales
         byte tgl_medalState;
         string searchText = "";
         BrushConverter bc = new BrushConverter();
+        string symbol = "";
 
         private static uc_medals _instance;
         public static uc_medals Instance
@@ -107,6 +109,8 @@ namespace POS.View.sales
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cashPointsRequired, MainWindow.resourcemanager.GetString("trCashPointsRequiredHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_invoiceCountPointsRequired, MainWindow.resourcemanager.GetString("trInvoiceCountPointsHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
 
             txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
@@ -115,11 +119,15 @@ namespace POS.View.sales
             btn_customers.Content = MainWindow.resourcemanager.GetString("trCustomers");
 
             dg_medal.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
+            dg_medal.Columns[1].Header = MainWindow.resourcemanager.GetString("trCashPointsRequired");
+            dg_medal.Columns[2].Header = MainWindow.resourcemanager.GetString("trInvoiceCountPoints");
             dg_medal.Columns[3].Header = MainWindow.resourcemanager.GetString("trNote");
 
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
             tt_name.Content = MainWindow.resourcemanager.GetString("trName");
+            tt_cashPointsRequired.Content = MainWindow.resourcemanager.GetString("trCashPointsRequired");
+            tt_invoiceCountPointsRequired.Content = MainWindow.resourcemanager.GetString("trInvoiceCountPoints");
             tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
 
@@ -141,6 +149,9 @@ namespace POS.View.sales
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             tb_name.Clear();
+            tb_cashPointsRequired.Clear();
+            tb_invoiceCountPointsRequired.Clear();
+            symbol = "";
             tb_notes.Clear();
 
             //clear validate
@@ -159,18 +170,18 @@ namespace POS.View.sales
                 await RefreshMedalsList();
             searchText = tb_search.Text;
             medalsQuery = medals.Where(s => s.name.Contains(searchText)
-            && s.isActive == 1);
+            && s.isActive == tgl_medalState);
 
             RefreshMedalView();
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
 
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
 
         }
 
@@ -200,24 +211,22 @@ namespace POS.View.sales
 
 
         private void Btn_customers_Click(object sender, RoutedEventArgs e)
-        {
-            //customers
+        { //customers
             Window.GetWindow(this).Opacity = 0.2;
 
             wd_customersList w = new wd_customersList();
-
+            w.medalId = medal.medalId;
             w.ShowDialog();
-            if (w.isActive)
-            {
-                foreach (var item in w.selectedAgents)
-                {
-                    MessageBox.Show(item.name + "\t");
-                }
-            }
+            //if (w.isActive)
+            //{
+            //    foreach (var item in w.selectedAgents)
+            //    {
+            //        MessageBox.Show(item.name + "\t");
+            //    }
+            //}
 
             Window.GetWindow(this).Opacity = 1;
         }
-     
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             //chk empty name
@@ -225,23 +234,35 @@ namespace POS.View.sales
             //chk not exist
             string txt = tb_name.Text;
             bool isExist = medalsQuery.Any(i => i.name == tb_name.Text);
-            if(isExist)
+
+            if (isExist)
             {
                 p_errorName.Visibility = Visibility.Visible;
                 tt_errorName.Content = MainWindow.resourcemanager.GetString("trDublicateMedal");
                 tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
             }
+
             if ((!tb_name.Text.Equals("")) && !isExist)
             {
+                int cashPoint = 0, invoiceCount = 0;
+                if(!tb_cashPointsRequired.Text.Equals(""))
+                    cashPoint = Convert.ToInt32(tb_cashPointsRequired.Text);
+                if(!tb_invoiceCountPointsRequired.Text.Equals(""))
+                    invoiceCount = Convert.ToInt32(tb_invoiceCountPointsRequired.Text);
+
                 Medal medal = new Medal();
+
                 medal.name = tb_name.Text;
                 medal.notes = tb_notes.Text;
+                //medal.symbol = path_symbol.Data.ToString();
+                medal.CashPointsRequired = cashPoint;
+                medal.invoiceCountPointsRequired = invoiceCount;
                 medal.createUserId = MainWindow.userID;
-                medal.isActive = 1;
+                medal.isActive = 0;
 
                 string s = await medalModel.Save(medal);
-
-                if (s.Equals("true"))
+                //MessageBox.Show(s);
+                if (!s.Equals("0"))
                 {
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     Btn_clear_Click(null, null);
@@ -252,7 +273,8 @@ namespace POS.View.sales
                 await RefreshMedalsList();
                 Tb_search_TextChanged(null, null);
             }
-        }
+
+         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
@@ -269,24 +291,31 @@ namespace POS.View.sales
             }
             if ((!tb_name.Text.Equals("")) && !isExist)
             {
+                int cashPoint = 0, invoiceCount = 0;
+                if (!tb_cashPointsRequired.Text.Equals(""))
+                    cashPoint = Convert.ToInt32(tb_cashPointsRequired.Text);
+                if (!tb_invoiceCountPointsRequired.Text.Equals(""))
+                    invoiceCount = Convert.ToInt32(tb_invoiceCountPointsRequired.Text);
+
                 medal.name = tb_name.Text;
-                medal.createUserId = MainWindow.userID;
                 medal.notes = tb_notes.Text;
+                //medal.symbol = path_symbol.Data.ToString();
+                medal.CashPointsRequired = cashPoint;
+                medal.invoiceCountPointsRequired = invoiceCount;
+                medal.createUserId = MainWindow.userID;
                 medal.isActive = 1;
 
                 string s = await medalModel.Save(medal);
-
-                if (s.Equals("true"))
-                {
+                //MessageBox.Show(s);
+                if (!s.Equals("0"))
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                }
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 await RefreshMedalsList();
                 Tb_search_TextChanged(null, null);
-            }
 
+            }
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
@@ -469,8 +498,19 @@ namespace POS.View.sales
         }
 
         private void Btn_symbol_Click(object sender, RoutedEventArgs e)
-        {
+        {//symbol
 
+        }
+
+        private void Tb_PreventSpaces(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void Tb_discountValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

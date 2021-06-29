@@ -127,7 +127,6 @@
                         <ToolTip   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                     </Path.ToolTip>
                 </Path>
-
                 <!--#endregion-->
                 <!--#region  Email-->
                 <TextBox x:Name="tb_email" Grid.Row="2" Text="{Binding email, Mode=OneWay}"   Padding="10,0,5,0"  

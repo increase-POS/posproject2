@@ -31,6 +31,7 @@ namespace POS.Classes
         public string offerName { get; set; }
         public string couponName { get; set; }
         public string createUserName { get; set; }
+
         public async Task<List<MedalAgent>> GetAll()
         {
             List<MedalAgent> medalAgents = null;
@@ -72,7 +73,7 @@ namespace POS.Classes
             }
         }
 
-  
+
         public async Task<string> Save(MedalAgent medalAgentObj)
         {
             // ... Use HttpClient.
@@ -91,7 +92,7 @@ namespace POS.Classes
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
                 request.RequestUri = new Uri(Global.APIUri
-                                             + "medalAgentObj/Save?medalAgent="
+                                             + "medalAgent/Save?medalAgent="
                                              + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
@@ -109,7 +110,7 @@ namespace POS.Classes
             }
         }
 
-       
+
         public async Task<MedalAgent> GetByID(int id)
         {
             MedalAgent medalAgent = new MedalAgent();
@@ -144,7 +145,7 @@ namespace POS.Classes
             }
         }
 
- 
+
 
         public async Task<Boolean> deleteMedalAgent(int Id, int userId, bool final)
         {
@@ -177,7 +178,42 @@ namespace POS.Classes
         }
 
 
-        // get is exist
+        public async Task<string> UpdateAgentsByMedalId(int medalId, List<MedalAgent> newMedalAgentlist, int userId)
+        {
+
+            string message = "";
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            // 
+            var myContent = JsonConvert.SerializeObject(newMedalAgentlist);
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+                request.RequestUri = new Uri(Global.APIUri + "medalAgent/UpdateAgentsByMedalId?newagentlist=" + myContent);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Headers.Add("medalId", medalId.ToString());
+                request.Headers.Add("userId", userId.ToString());
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
+                }
+                return message;
+            }
+        }
 
 
     }

@@ -202,7 +202,6 @@ namespace POS.View
             new { Text = MainWindow.resourcemanager.GetString("trValueDiscount"), Value = "1" },
             new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = "2" },
              };
-
             cb_typeDiscount.DisplayMemberPath = "Text";
             cb_typeDiscount.SelectedValuePath = "Value";
             cb_typeDiscount.ItemsSource= dislist;

@@ -2,6 +2,8 @@
 using POS.Classes;
 using POS.View.windows;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -10,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -47,7 +50,9 @@ namespace POS.View.Settings
 
 
 
-        GroupObject GroupObject = new GroupObject();
+        GroupObject groupObject = new GroupObject();
+        //ObservableCollection<GroupObject> groupObjectsQuery = new ObservableCollection<GroupObject>();
+        //ObservableCollection<GroupObject> groupObjects = new ObservableCollection<GroupObject>();
         IEnumerable<GroupObject> groupObjectsQuery;
         IEnumerable<GroupObject> groupObjects;
         string searchText = "";
@@ -95,7 +100,7 @@ namespace POS.View.Settings
 
 
         }
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
 
             if (MainWindow.lang.Equals("en"))
@@ -108,7 +113,18 @@ namespace POS.View.Settings
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucPermissions.FlowDirection = FlowDirection.RightToLeft;
             }
+            #region
+            //new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = "2" },
 
+            //var levelsList = new[] {
+            //new { Text = "المستوى الاول", Value = "1" },
+            //new { Text = "المستوى الثاني", Value = "2" },
+            //new { Text = "المستوى الثالث", Value = "3" },
+            // };
+            //cb_level.DisplayMemberPath = "Text";
+            //cb_level.SelectedValuePath = "Value";
+            //cb_level.ItemsSource = levelsList;
+            #endregion
             translate();
 
             Keyboard.Focus(tb_name);
@@ -117,6 +133,23 @@ namespace POS.View.Settings
             {
                 Tb_searchGroup_TextChanged(null, null);
             });
+
+            #region datagridChange
+            CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_permissions.Items);
+            ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+            #endregion
+            await RefreshGroupObjectList();
+            //dg_permissions.ItemsSource = groupObjectsQuery;
+            //dg_permissions.ItemsSource = null;
+
+
+            //var levelsList = new[] {
+            //new { Text = "المستوى الاول", Value = "1" },
+            //new { Text = "المستوى الثاني", Value = "2" },
+            //new { Text = "المستوى الثالث", Value = "3" },
+            // };
+
+            //DataContext = levelsList;
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -179,18 +212,20 @@ namespace POS.View.Settings
                 await RefreshObjectList();
             foreach (var item in objects)
             {
-                GroupObject.id = 0;
-                GroupObject.groupId = groupId;
-                GroupObject.objectId = item.objectId;
-                GroupObject.showOb = false;
-                GroupObject.addOb = false;
-                GroupObject.updateOb = false;
-                GroupObject.deleteOb = false;
-                GroupObject.notes = "";
-                GroupObject.createUserId = MainWindow.userID;
-                GroupObject.updateUserId = MainWindow.userID;
-                GroupObject.isActive = 1;
-                string s = await GroupObject.Save(GroupObject);
+                groupObject.id = 0;
+                groupObject.groupId = groupId;
+                groupObject.objectId = item.objectId;
+                groupObject.showOb = false;
+                groupObject.addOb = false;
+                groupObject.updateOb = false;
+                groupObject.deleteOb = false;
+                groupObject.reportOb = false;
+                groupObject.levelOb = 0;
+                groupObject.notes = "";
+                groupObject.createUserId = MainWindow.userID;
+                groupObject.updateUserId = MainWindow.userID;
+                groupObject.isActive = 1;
+                string s = await groupObject.Save(groupObject);
                 //if (!s.Equals("-1"))
                 //{
                 //    addObjects(int.Parse(s));
@@ -201,10 +236,12 @@ namespace POS.View.Settings
                 //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
         }
+
+
         void RefreshGroupObjectsView()
         {
             dg_permissions.ItemsSource = groupObjectsQuery;
-            txt_count.Text = groupObjectsQuery.Count().ToString();
+            //txt_count.Text = groupObjectsQuery.Count().ToString();
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
@@ -212,7 +249,15 @@ namespace POS.View.Settings
                 await RefreshGroupObjectList();
             searchText = tb_searchGroup.Text;
             //groupObjectsQuery = groupObjects.Where(s => (s.name.Contains(searchText)));
-            groupObjectsQuery = groupObjects.Where(s => s.groupId == group.groupId);
+           groupObjectsQuery = groupObjects.Where(s => s.groupId == group.groupId);
+            
+            if (objects!= null)
+            if(groupObjectsQuery.Count() != objects.Count())
+            {
+                await RefreshGroupObjectList();
+                Tb_search_TextChanged(null, null);
+                return;
+            }
             RefreshGroupObjectsView();
         }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -223,7 +268,9 @@ namespace POS.View.Settings
         }
         async Task<IEnumerable<GroupObject>> RefreshGroupObjectList()
         {
-            groupObjects = await GroupObject.GetAll();
+            MainWindow.mainWindow.StartAwait();
+            groupObjects = await groupObject.GetAll();
+            MainWindow.mainWindow.EndAwait();
             return groupObjects;
         }
 
@@ -326,7 +373,6 @@ namespace POS.View.Settings
         private void Dg_group_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             p_errorName.Visibility = Visibility.Collapsed;
-
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
             if (dg_group.SelectedIndex != -1)
@@ -345,9 +391,7 @@ namespace POS.View.Settings
                     txt_deleteGroup_Icon.Kind =
                              MaterialDesignThemes.Wpf.PackIconKind.Delete;
                     tt_deleteGroup_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
-
                 }
-
                 else
                 {
                     if (group.isActive == 0)
@@ -391,10 +435,10 @@ namespace POS.View.Settings
         }
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {
-            //if (groups is null)
-            //    await RefreshGroupList();
-            //tgl_groupState = 1;
-            //Tb_searchGroup_TextChanged(null, null);
+            if (groups is null)
+                await RefreshGroupList();
+            tgl_groupState = 1;
+            Tb_searchGroup_TextChanged(null, null);
         }
         private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -405,7 +449,9 @@ namespace POS.View.Settings
         }
         async Task<IEnumerable<Group>> RefreshGroupList()
         {
+            MainWindow.mainWindow.StartAwait();
             groups = await groupModel.GetAll();
+            MainWindow.mainWindow.EndAwait();
             return groups;
         }
         void RefreshGroupView()
@@ -416,16 +462,19 @@ namespace POS.View.Settings
         }
         private async void Tb_searchGroup_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //if (groups is null)
-            //    await RefreshGroupList();
-            //searchGroupText = tb_searchGroup.Text;
-            //groupsQuery = groups.Where(s => (s.name.Contains(searchGroupText)) && s.isActive == tgl_groupState);
-            //RefreshGroupView();
+            if (groups is null)
+                await RefreshGroupList();
+            searchGroupText = tb_searchGroup.Text;
+            groupsQuery = groups.Where(s => (s.name.Contains(searchGroupText)) && s.isActive == tgl_groupState);
+            RefreshGroupView();
         }
-        private void Btn_refreshGroup_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refreshGroup_Click(object sender, RoutedEventArgs e)
         {
-            RefreshGroupList();
+            await RefreshGroupList();
             Tb_searchGroup_TextChanged(null, null);
+
+            await RefreshGroupObjectList();
+            Tb_search_TextChanged(null, null);
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
@@ -490,7 +539,7 @@ namespace POS.View.Settings
             string s = "";
             foreach (var item in groupObjectsQuery)
             {
-                s = await GroupObject.Save(item);
+                s = await groupObject.Save(item);
             }
             if (!s.Equals("-1"))
             {
@@ -885,7 +934,7 @@ namespace POS.View.Settings
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
-            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+            //tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
 
             dg_group.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
             dg_group.Columns[1].Header = MainWindow.resourcemanager.GetString("trNote");
@@ -1105,5 +1154,62 @@ namespace POS.View.Settings
             path_membership.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_membership.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
+
+
+        private void Cbm_levelGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cmb = sender as ComboBox;
+            if (dg_permissions.SelectedIndex != -1)
+            {
+
+                byte level = byte.Parse(cmb.SelectedValue.ToString());
+
+                if (dg_permissions.SelectedIndex != -1)
+                {
+                    groupObject = dg_permissions.SelectedItem as GroupObject;
+                    groupObject.levelOb = level;
+                }
+
+
+                //refrishBillDetails();
+            }
+        }
+        //void refrishBillDetails()
+        //{
+        //    dg_permissions.ItemsSource = null;
+        //        dg_permissions.ItemsSource = groupObjectsQuery;
+        //}
+
+        private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            //billDetails
+            int count = 0;
+            foreach (var item in groupObjectsQuery)
+            {
+                if (dg_permissions.Items.Count != 0)
+                {
+                    if (dg_permissions.Items.Count > 1)
+                    {
+                        var cell = DataGridHelper.GetCell(dg_permissions, count, 6);
+                        if (cell != null)
+                        {
+                            var cp = (ContentPresenter)cell.Content;
+                            var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_levelGroup", cp);
+                            combo.SelectedValue = (int)item.levelOb;
+                            count++;
+                        }
+                    }
+
+                }
+            }
+            //int Repait = 0;
+            //if (Repait==0)
+            //{
+            //    DataGrid_CollectionChanged(sender, e);
+            //}
+            //Repait++;
+        }
+
+       
     }
 }

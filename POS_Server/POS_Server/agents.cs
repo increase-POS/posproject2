@@ -17,12 +17,15 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public agents()
         {
+            this.agentMemberships = new HashSet<agentMemberships>();
             this.cashTransfer = new HashSet<cashTransfer>();
             this.invoices = new HashSet<invoices>();
             this.medalAgent = new HashSet<medalAgent>();
+            this.Points1 = new HashSet<Points>();
         }
     
         public int agentId { get; set; }
+        public Nullable<int> pointId { get; set; }
         public string name { get; set; }
         public string code { get; set; }
         public string company { get; set; }
@@ -43,6 +46,9 @@ namespace POS_Server
         public string fax { get; set; }
         public Nullable<decimal> maxDeserve { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<agentMemberships> agentMemberships { get; set; }
+        public virtual Points Points { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -51,5 +57,7 @@ namespace POS_Server
         public virtual ICollection<invoices> invoices { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<medalAgent> medalAgent { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Points> Points1 { get; set; }
     }
 }

@@ -38,7 +38,6 @@ namespace POS_Server.Controllers
                                          from v in lj.DefaultIfEmpty()
                                          select new LocationModel()
                                          {
-                   
                                             locationId=  L.locationId,
                                             x =  L.x,
                                             y = L.y,
@@ -48,7 +47,9 @@ namespace POS_Server.Controllers
                                             createUserId = L.createUserId,
                                             updateUserId=L.updateUserId,
                                             isActive=L.isActive,
-                                            sectionId=L.sectionId,
+                                            isFreeZone=L.isFreeZone,
+                                            branchId=L.branchId,
+                                             sectionId =L.sectionId,
                                             sectionName = v.name,
                                             note = L.note,
                                         }).ToList();
@@ -112,6 +113,8 @@ namespace POS_Server.Controllers
                        L.createUserId,
                        L.updateUserId,
                        L.isActive,
+                       L.isFreeZone,
+                       L.branchId,
                        L.sectionId,
                        note = L.note,
 
@@ -176,7 +179,8 @@ namespace POS_Server.Controllers
                             newObject.updateUserId = newObject.createUserId;
 
                             locationEntity.Add(newObject);
-                            message = "Location Is Added Successfully";
+                            entity.SaveChanges();
+                            message = newObject.locationId.ToString();
                         }
                         else
                         {
@@ -184,19 +188,22 @@ namespace POS_Server.Controllers
                             tmpLocation.x = newObject.x;
                             tmpLocation.y = newObject.y;
                             tmpLocation.z = newObject.z;
-                           // tmpLocation.branchId = newObject.branchId;
+                            tmpLocation.branchId = newObject.branchId;
+                            tmpLocation.isFreeZone = newObject.isFreeZone;
                             tmpLocation.updateDate = DateTime.Now;
                             tmpLocation.updateUserId = newObject.updateUserId;
                             tmpLocation.sectionId = newObject.sectionId;
                             tmpLocation.note = newObject.note;
-                            message = "Location Is Updated Successfully";
+                            entity.SaveChanges();
+
+                            message = tmpLocation.locationId.ToString();
                         }
-                        entity.SaveChanges();
+                      //  entity.SaveChanges();
                     }
                 }
                 catch
                 {
-                    message = "an error ocurred";
+                    message = "-1";
                 }
             }
             return message;
@@ -417,5 +424,79 @@ namespace POS_Server.Controllers
             }
             return 1;
         }
+
+        // GET api/<controller>
+        [HttpGet]
+        [Route("GetLocsByBranchID")]
+        public IHttpActionResult GetLocsByBranchID(int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            Boolean canDelete = false;
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var locationsList = (from L in entity.locations
+                                         join s in entity.sections on L.sectionId equals s.sectionId into lj
+                                         join b in entity.branches on L.branchId equals b.branchId into bj
+                                         from v in lj.DefaultIfEmpty()
+                                         from bbj in bj.DefaultIfEmpty()
+                                         where L.branchId == branchId
+                                         select new LocationModel()
+                                         {
+                                             locationId = L.locationId,
+                                             x = L.x,
+                                             y = L.y,
+                                             z = L.z,
+                                             createDate = L.createDate,
+                                             updateDate = L.updateDate,
+                                             createUserId = L.createUserId,
+                                             updateUserId = L.updateUserId,
+                                             isActive = L.isActive,
+                                             isFreeZone = L.isFreeZone,
+                                             branchId = L.branchId,
+                                             sectionId = L.sectionId,
+                                             sectionName = v.name,
+                                             note = L.note,
+
+                                         }).ToList();
+
+                    if (locationsList.Count > 0)
+                    {
+                        for (int i = 0; i < locationsList.Count; i++)
+                        {
+                            if (locationsList[i].isActive == 1)
+                            {
+                                int locationId = (int)locationsList[i].locationId;
+                                var itemsLocationL = entity.itemsLocations.Where(x => x.locationId == locationId).Select(b => new { b.itemsLocId }).FirstOrDefault();
+                                var itemsTransferL = entity.itemsTransfer.Where(x => x.locationIdNew == locationId || x.locationIdOld == locationId).Select(x => new { x.itemsTransId }).FirstOrDefault();
+
+                                if ((itemsLocationL is null) && (itemsTransferL is null))
+                                    canDelete = true;
+                            }
+                            locationsList[i].canDelete = canDelete;
+                        }
+                    }
+
+                    if (locationsList == null)
+                        return NotFound();
+                    else
+                        return Ok(locationsList);
+                }
+            }
+            //else
+            return NotFound();
+        }
+
     }
 }

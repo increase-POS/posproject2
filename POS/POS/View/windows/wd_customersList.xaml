@@ -164,7 +164,7 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader" MouseDoubleClick="Dg_selectedAgents_MouseDoubleClick" >
                         <DataGrid.Columns>
-                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Customer" Binding="{Binding Path=name}"/>
+                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Customer" Binding="{Binding Path=agentName}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>

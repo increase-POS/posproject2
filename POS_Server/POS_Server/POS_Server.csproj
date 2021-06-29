@@ -165,6 +165,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="agentMemberships.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="agents.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
@@ -232,6 +235,7 @@
     </Compile>
     <Compile Include="Classes\Calculate.cs" />
     <Compile Include="Controllers\AgentController.cs" />
+    <Compile Include="Controllers\AgentMembershipsController.cs" />
     <Compile Include="Controllers\BanksController.cs" />
     <Compile Include="Controllers\BondsController.cs" />
     <Compile Include="Controllers\BranchesController.cs" />
@@ -256,7 +260,11 @@
     <Compile Include="Controllers\ItemsTransferController.cs" />
     <Compile Include="Controllers\ItemsUnitsController.cs" />
     <Compile Include="Controllers\MedalAgentController.cs" />
+    <Compile Include="Controllers\MembershipsController.cs" />
     <Compile Include="Controllers\ObjectsController.cs" />
+    <Compile Include="Controllers\PointsController.cs" />
+    <Compile Include="Controllers\shippingCompaniesController.cs" />
+    <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\userSetValuesController.cs" />
     <Compile Include="Controllers\CategoryuserController.cs" />
     <Compile Include="Controllers\setValuesController.cs" />
@@ -338,6 +346,10 @@
     <Compile Include="medals.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="memberships.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AgentMembershipsModel.cs" />
     <Compile Include="Models\AgentModel.cs" />
     <Compile Include="Models\BankModel.cs" />
     <Compile Include="Models\BondsModel.cs" />
@@ -359,13 +371,16 @@
     <Compile Include="Models\ItemUnitModel.cs" />
     <Compile Include="Models\MedalAgentModel.cs" />
     <Compile Include="Models\MedalModel.cs" />
+    <Compile Include="Models\MembershipsModel.cs" />
     <Compile Include="Models\ObjectsModel.cs" />
+    <Compile Include="Models\PointsModel.cs" />
     <Compile Include="Models\SectionModel.cs" />
     <Compile Include="Models\LocationModel.cs" />
     <Compile Include="Models\OfferModel.cs" />
     <Compile Include="Models\PosModel.cs" />
     <Compile Include="Models\PropertiesItemModel.cs" />
     <Compile Include="Models\PropertyModel.cs" />
+    <Compile Include="Models\shippingCompaniesModel.cs" />
     <Compile Include="Models\UnitModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\Validation.cs" />
@@ -383,6 +398,9 @@
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="orderscontents.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Points.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="pos.cs">
@@ -426,6 +444,12 @@
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="setValues.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="shippingCompanies.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="subscriptionFees.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="sysdiagrams.cs">

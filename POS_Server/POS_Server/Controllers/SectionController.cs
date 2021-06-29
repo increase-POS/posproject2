@@ -40,7 +40,8 @@ namespace POS_Server.Controllers
                                           sectionId=  L.sectionId,
                                             name=   L.name,
                                             isActive=  L.isActive,
-                                            branchId=  L.branchId,
+                                            isFreeZone=  L.isFreeZone,
+                                          branchId =  L.branchId,
                                             note=   L.note,
                                             branchName = v.name,
                                             createDate=  L.createDate,
@@ -104,6 +105,7 @@ namespace POS_Server.Controllers
                        sectionId = L.sectionId,
                        name = L.name,
                        isActive = L.isActive,
+                       isFreeZone = L.isFreeZone,
                        branchId = L.branchId,
                        note = L.note,
                       
@@ -173,7 +175,8 @@ namespace POS_Server.Controllers
                             newObject.updateUserId = newObject.createUserId;
 
                             sectionEntity.Add(newObject);
-                            message = "Section Is Added Successfully";
+                            entity.SaveChanges();
+                            message = newObject.sectionId.ToString();
                         }
                         else
                         {
@@ -181,18 +184,19 @@ namespace POS_Server.Controllers
                             tmpSection.name = newObject.name;
                             tmpSection.branchId = newObject.branchId;
                             tmpSection.isActive = newObject.isActive;
+                            tmpSection.isFreeZone = newObject.isFreeZone;
                             tmpSection.note = newObject.note;
                             tmpSection.updateDate = DateTime.Now;
                             tmpSection.updateUserId = newObject.updateUserId;
-                          
-                            message = "Section Is Updated Successfully";
+                            entity.SaveChanges();
+                            message = tmpSection.sectionId.ToString(); ;
                         }
-                        entity.SaveChanges();
+                      
                     }
                 }
                 catch
                 {
-                    message = "an error ocurred";
+                    message = "-1";
                 }
             }
             return message;

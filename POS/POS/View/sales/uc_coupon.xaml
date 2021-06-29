@@ -481,8 +481,7 @@
                                                   TextBlock.Foreground="#4E4E4E" Margin="10,5,0,5" 
                                                   materialDesign:HintAssist.Hint="Discount Type..." 
                                                   TextBlock.FontSize="12" 
-                                                                       Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
-
+                                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                                   Height="40"  
                                                   Background="#f8f8f8" 
                                                   BorderBrush="#737373"       BorderThickness="0" 

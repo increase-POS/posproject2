@@ -403,6 +403,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to النقاط النقدية.
+        /// </summary>
+        internal static string trCashPointsRequired {
+            get {
+                return ResourceManager.GetString("trCashPointsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to النقاط النقدية....
+        /// </summary>
+        internal static string trCashPointsRequiredHint {
+            get {
+                return ResourceManager.GetString("trCashPointsRequiredHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to المبلغ.
         /// </summary>
         internal static string trCashTooltip {
@@ -1857,6 +1875,24 @@ namespace POS {
         internal static string trInvoice {
             get {
                 return ResourceManager.GetString("trInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نقاط الفواتير.
+        /// </summary>
+        internal static string trInvoiceCountPoints {
+            get {
+                return ResourceManager.GetString("trInvoiceCountPoints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نقاط الفواتير....
+        /// </summary>
+        internal static string trInvoiceCountPointsHint {
+            get {
+                return ResourceManager.GetString("trInvoiceCountPointsHint", resourceCulture);
             }
         }
         

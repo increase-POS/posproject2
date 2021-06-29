@@ -44,7 +44,10 @@ namespace POS_Server.Controllers
                       updateUserId=c.updateUserId,
                       createDate=c.createDate,
                       updateDate=c.updateDate,
-                      
+                      symbol=c.symbol,
+                      CashPointsRequired =c.CashPointsRequired,
+                      invoiceCountPointsRequired =c.invoiceCountPointsRequired,
+
                    })
                    .ToList();
 
@@ -58,6 +61,9 @@ namespace POS_Server.Controllers
                       updateUserId 
                       createDate 
                       updateDate
+                              public string symbol { get; set; }
+        public Nullable<int> CashPointsRequired { get; set; }
+        public Nullable<int> invoiceCountPointsRequired { get; set; }
                      * */
                     // can delet or not
                     if (medalsList.Count > 0)
@@ -124,7 +130,9 @@ namespace POS_Server.Controllers
                    c.updateUserId,
                    c.createDate,
                    c.updateDate,
-                     
+                   c.symbol,
+                   c.CashPointsRequired,
+                   c.invoiceCountPointsRequired,
 
                    })
                    .FirstOrDefault();
@@ -175,6 +183,9 @@ namespace POS_Server.Controllers
                        c.updateUserId,
                        c.createDate,
                        c.updateDate,
+                       c.symbol,
+                       c.CashPointsRequired,
+                       c.invoiceCountPointsRequired,
                    })
                    .ToList();
 
@@ -192,12 +203,12 @@ namespace POS_Server.Controllers
         // add or update medal 
         [HttpPost]
         [Route("Save")]
-        public bool Save(string medalObject)
+        public string Save(string medalObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            
+           string message = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -222,7 +233,8 @@ namespace POS_Server.Controllers
                             Object.updateDate = DateTime.Now;
                             Object.updateUserId = Object.createUserId;
                             medalEntity.Add(Object);
-                          //  message = "medal Is Added Successfully";
+                            entity.SaveChanges();
+                      message = Object.medalId.ToString();
                         }
                         else
                         {
@@ -244,28 +256,31 @@ namespace POS_Server.Controllers
                             tmpmedal.isActive = Object.isActive;
                             tmpmedal.updateDate = DateTime.Now;// server current date;
                             tmpmedal.updateUserId = Object.updateUserId;
-                            
+                            tmpmedal.symbol = Object.symbol;
+                   tmpmedal.CashPointsRequired=Object.CashPointsRequired;
+                   tmpmedal.invoiceCountPointsRequired=Object.invoiceCountPointsRequired;
 
+                            entity.SaveChanges();
 
-                            //message = "medal Is Updated Successfully";
+                            message = tmpmedal.medalId.ToString();
                         }
-                        entity.SaveChanges();
+                      
                     }
-                    return true;
+                    return message;
                 }
 
                 catch
                 {
-                    return false;
+                    return "-1";
                 }
             }
             else
-                return false;
+                return "-1";
         }
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int medalId, int userId, Boolean final)
+        public IHttpActionResult Delete(int medalId, int userId, bool final)
         {
             var re = Request;
             var headers = re.Headers;
@@ -311,17 +326,17 @@ namespace POS_Server.Controllers
                             medalObj.updateDate = DateTime.Now;
                             entity.SaveChanges();
 
-                            return Ok("Offer is Deleted Successfully");
+                            return Ok("Deleted Successfully");
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        return Ok("Not Deleted");
                     }
                 }
             }
             else
-                return NotFound();
+                return Ok("isActive Not changed");
         }
     }
 }

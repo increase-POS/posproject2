@@ -18,5 +18,6 @@ namespace POS_Server.Models
         public Nullable<byte> isActive { get; set; }
         public string note { get; set; }
         public Boolean canDelete { get; set; }
+        public Nullable<byte> isFreeZone { get; set; }
     }
 }

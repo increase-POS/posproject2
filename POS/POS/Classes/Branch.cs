@@ -33,6 +33,23 @@ namespace POS.Classes
         public int isActive { get; set; }
         public Boolean canDelete { get; set; }
         public Nullable<decimal> balance { get; set; }
+        // for report
+        public int count { get; set; }
+
+        public string invType { get; set; }
+        public Nullable<decimal> total { get; set; }
+        public Nullable<decimal> totalNet { get; set; }
+        public Nullable<decimal> paid { get; set; }
+        public Nullable<decimal> deserved { get; set; }
+
+
+        public Nullable<decimal> discountValue { get; set; }
+        public string discountType { get; set; }
+        public Nullable<decimal> tax { get; set; }
+
+        public string posName { get; set; }
+        public string posCode { get; set; }
+        public Nullable<int> invoiceId { get; set; }
         public async Task<List<Branch>> Get()
         {
             List<Branch> Branchs = null;

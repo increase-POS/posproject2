@@ -104,5 +104,10 @@ namespace POS.View.sectionData
         {
 
         }
+
+        private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

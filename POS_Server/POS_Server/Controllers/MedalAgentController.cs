@@ -35,13 +35,13 @@ namespace POS_Server.Controllers
                     var medalsList = (from MA in entity.medalAgent
                                       join M in entity.medals on MA.medalId equals M.medalId into JM
                                       join A in entity.agents on MA.agentId equals A.agentId into JA
-                                      join O in entity.offers on MA.offerId equals O.offerId into JO
-                                      join C in entity.coupons on MA.couponId equals C.cId into JC
+                                     
+                                   
                                       join U in entity.users on MA.createUserId equals U.userId into JU
                                       from JMM in JM.DefaultIfEmpty()
                                       from JAA in JA.DefaultIfEmpty()
-                                      from JOO in JO.DefaultIfEmpty()
-                                      from JCC in JC.DefaultIfEmpty()
+                                    
+                                     
                                       from JUU in JU.DefaultIfEmpty()
 
                                       select new MedalAgentModel()
@@ -49,8 +49,7 @@ namespace POS_Server.Controllers
                                           id = MA.id,
                                           medalId = MA.medalId,
                                           agentId = MA.agentId,
-                                          offerId = MA.offerId,
-                                          couponId = MA.couponId,
+                                       
                                           notes = MA.notes,
                                           isActive = MA.isActive,
                                           createDate = MA.createDate,
@@ -59,8 +58,7 @@ namespace POS_Server.Controllers
                                           updateUserId = MA.updateUserId,
                                           agentName=JAA.name,
                                           medalName=JMM.name,
-                                          offerName=JOO.name,
-                                          couponName=JCC.name,
+                                        
                                           createUserName=JUU.username,
 
                                       }
@@ -134,8 +132,7 @@ namespace POS_Server.Controllers
                        c.id,
                      c.medalId,
                      c.agentId,
-                      c.offerId,
-                     c.couponId,
+                   
                      c.notes,
                       c.isActive,
                      c.createDate,
@@ -206,8 +203,7 @@ namespace POS_Server.Controllers
                             tmpmedal.id = Object.id;
                      tmpmedal.medalId = Object.medalId;
                      tmpmedal.agentId = Object.agentId;
-                      tmpmedal.offerId =  Object.offerId;
-                     tmpmedal.couponId =  Object.couponId;
+                  
                      tmpmedal.notes =  Object.notes;
                   
                             tmpmedal.createDate = Object.createDate;
@@ -296,5 +292,84 @@ namespace POS_Server.Controllers
             else
                 return NotFound();
         }
+
+
+
+        #region
+        [HttpPost]
+        [Route("UpdateAgentsByMedalId")]
+        public int UpdateAgentsByMedalId(string newagentlist)
+        {
+            int userId = 0;
+            int medalId = 0;
+            var re = Request;
+            var headers = re.Headers;
+            int res = 0;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            if (headers.Contains("medalId"))
+            {
+                medalId = Convert.ToInt32(headers.GetValues("medalId").First());
+            }
+            if (headers.Contains("userId"))
+            {
+                userId = Convert.ToInt32(headers.GetValues("userId").First());
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+            newagentlist = newagentlist.Replace("\\", string.Empty);
+            newagentlist = newagentlist.Trim('"');
+            List<medalAgent> newmagObj = JsonConvert.DeserializeObject<List<medalAgent>>(newagentlist, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var oldlist = entity.medalAgent.Where(p => p.medalId == medalId);
+                    if (oldlist.Count() > 0)
+                    {
+                        entity.medalAgent.RemoveRange(oldlist);
+                    }
+                    if (newmagObj.Count() > 0)
+                    {
+                        foreach (medalAgent newrow in newmagObj)
+                        {
+                            newrow.medalId = medalId;
+
+                            if (newrow.createUserId == null || newrow.createUserId == 0)
+                            {
+                                newrow.createDate = DateTime.Now;
+                                newrow.updateDate = DateTime.Now;
+
+                                newrow.createUserId = userId;
+                                newrow.updateUserId = userId;
+                            }
+                            else
+                            {
+                                newrow.updateDate = DateTime.Now;
+                                newrow.updateUserId = userId;
+
+                            }
+
+                        }
+                        entity.medalAgent.AddRange(newmagObj);
+                    }
+                    res = entity.SaveChanges();
+
+                    return res;
+
+                }
+
+            }
+            else
+            {
+                return -1;
+            }
+
+        }
+        #endregion
+
     }
 }

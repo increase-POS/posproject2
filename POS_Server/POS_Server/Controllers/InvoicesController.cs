@@ -54,6 +54,7 @@ namespace POS_Server.Controllers
                         b.updateUserId ,
                         b.branchId,
                         b.tax,
+                        b.taxtype,
                         b.name,
                         b.isApproved,
                 })
@@ -110,6 +111,7 @@ namespace POS_Server.Controllers
                         b.discountType,
                         b.discountValue,
                         b.tax,
+                        b.taxtype,
                         b.name,
                         b.isApproved,
                     })
@@ -125,7 +127,7 @@ namespace POS_Server.Controllers
         }
         [HttpGet]
         [Route("GetByInvNum")]
-        public IHttpActionResult GetByInvNum(string invNum)
+        public IHttpActionResult GetByInvNum(string invNum, int branchId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -141,46 +143,99 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var banksList = entity.invoices.Where(b => b.invNumber == invNum).Select(b => new {
-                        b.invoiceId,
-                        b.invNumber,
-                        b.agentId,
-                        b.invType,
-                        b.total,
-                        b.totalNet,
-                        b.paid,
-                        b.deserved,
-                        b.deservedDate,
-                        b.invDate,
-                        b.invoiceMainId,
-                        b.invCase,
-                        b.invTime,
-                        b.notes,
-                        b.vendorInvNum,
-                        b.vendorInvDate,
-                        b.createUserId,
-                        b.updateDate,
-                        b.updateUserId,
-                        b.branchId,
-                        b.discountType,
-                        b.discountValue,
-                        b.tax,
-                        b.name,
-                        b.isApproved,
-                    })
-                    .FirstOrDefault();
+                    if (branchId == 0)
+                    {
+                        var banksList =(from b in entity.invoices.Where(b => b.invNumber == invNum)
+                                        join l in entity.branches on b.branchId equals l.branchId into lj
+                                        from x in lj.DefaultIfEmpty()
+                                        select new InvoiceModel()
+                                        {
+                                            invoiceId = b.invoiceId,
+                                            invNumber = b.invNumber,
+                                            agentId = b.agentId,
+                                            invType = b.invType,
+                                            total = b.total,
+                                            totalNet = b.totalNet,
+                                            paid = b.paid,
+                                            deserved = b.deserved,
+                                            deservedDate = b.deservedDate,
+                                            invDate = b.invDate,
+                                            invoiceMainId = b.invoiceMainId,
+                                            invCase = b.invCase,
+                                            invTime = b.invTime,
+                                            notes = b.notes,
+                                            vendorInvNum = b.vendorInvNum,
+                                            vendorInvDate = b.vendorInvDate,
+                                            createUserId = b.createUserId,
+                                            updateDate = b.updateDate,
+                                            updateUserId = b.updateUserId,
+                                            branchId = b.branchId,
+                                            discountValue = b.discountValue,
+                                            discountType = b.discountType,
+                                            tax = b.tax,
+                                            taxtype = b.taxtype,
+                                            name = b.name,
+                                            isApproved = b.isApproved,
+                                            branchName = x.name,
+                                        })
 
-                    if (banksList == null)
-                        return NotFound();
+                               .FirstOrDefault();
+
+                        if (banksList == null)
+                            return NotFound();
+                        else
+                            return Ok(banksList);
+                    }
                     else
-                        return Ok(banksList);
+                    {
+                        var banksList = (from b in entity.invoices.Where(b => b.invNumber == invNum && b.branchId == branchId)
+                                         join l in entity.branches on b.branchId equals l.branchId into lj
+                                         from x in lj.DefaultIfEmpty()
+                                         select new InvoiceModel()
+                                         {
+                                             invoiceId = b.invoiceId,
+                                             invNumber = b.invNumber,
+                                             agentId = b.agentId,
+                                             invType = b.invType,
+                                             total = b.total,
+                                             totalNet = b.totalNet,
+                                             paid = b.paid,
+                                             deserved = b.deserved,
+                                             deservedDate = b.deservedDate,
+                                             invDate = b.invDate,
+                                             invoiceMainId = b.invoiceMainId,
+                                             invCase = b.invCase,
+                                             invTime = b.invTime,
+                                             notes = b.notes,
+                                             vendorInvNum = b.vendorInvNum,
+                                             vendorInvDate = b.vendorInvDate,
+                                             createUserId = b.createUserId,
+                                             updateDate = b.updateDate,
+                                             updateUserId = b.updateUserId,
+                                             branchId = b.branchId,
+                                             discountValue = b.discountValue,
+                                             discountType = b.discountType,
+                                             tax = b.tax,
+                                             taxtype = b.taxtype,
+                                             name = b.name,
+                                             isApproved = b.isApproved,
+                                             branchName = x.name,
+                                         })
+
+                               .FirstOrDefault();
+
+                        if (banksList == null)
+                            return NotFound();
+                        else
+                            return Ok(banksList);
+                    }
                 }
             }
             return NotFound();
         }
         [HttpGet]
         [Route("GetByInvoiceType")]
-        public IHttpActionResult GetByInvoiceType(string invType)
+        public IHttpActionResult GetByInvoiceType(string invType,int branchId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -201,50 +256,106 @@ namespace POS_Server.Controllers
 
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                 
-                    var invoicesList = entity.invoices.Where(x => invTypeL.Contains(x.invType)) 
-                        .Select(b => new InvoiceModel {
-                       invoiceId= b.invoiceId,
-                            invNumber= b.invNumber,
-                            agentId= b.agentId,
-                            invType= b.invType,
-                            total=b.total,
-                            totalNet= b.totalNet,
-                            paid= b.paid,
-                            deserved= b.deserved,
-                            deservedDate= b.deservedDate,
-                            invDate= b.invDate,
-                            invoiceMainId= b.invoiceMainId,
-                            invCase= b.invCase,
-                            invTime= b.invTime,
-                            notes= b.notes,
-                            vendorInvNum= b.vendorInvNum,
-                            vendorInvDate= b.vendorInvDate,
-                            createUserId= b.createUserId,
-                            updateDate= b.updateDate,
-                            updateUserId= b.updateUserId,
-                            branchId= b.branchId,
-                            discountValue = b.discountValue,
-                            discountType = b.discountType,
-                            tax = b.tax,
-                           name = b.name,
-                           isApproved = b.isApproved,
-                        })
-                    .ToList();
-
-                    if (invoicesList != null)
+                    if (branchId == 0)
                     {
-                        for (int i = 0; i < invoicesList.Count; i++)
+                        var invoicesList =(from b in entity.invoices.Where(x => invTypeL.Contains(x.invType))
+                                           join l in entity.branches on b.branchId equals l.branchId into lj
+                                           from x in lj.DefaultIfEmpty()
+                                 select new InvoiceModel()
+                            {
+                                invoiceId = b.invoiceId,
+                                invNumber = b.invNumber,
+                                agentId = b.agentId,
+                                invType = b.invType,
+                                total = b.total,
+                                totalNet = b.totalNet,
+                                paid = b.paid,
+                                deserved = b.deserved,
+                                deservedDate = b.deservedDate,
+                                invDate = b.invDate,
+                                invoiceMainId = b.invoiceMainId,
+                                invCase = b.invCase,
+                                invTime = b.invTime,
+                                notes = b.notes,
+                                vendorInvNum = b.vendorInvNum,
+                                vendorInvDate = b.vendorInvDate,
+                                createUserId = b.createUserId,
+                                updateDate = b.updateDate,
+                                updateUserId = b.updateUserId,
+                                branchId = b.branchId,
+                                discountValue = b.discountValue,
+                                discountType = b.discountType,
+                                tax = b.tax,
+                                taxtype = b.taxtype,
+                                     name = b.name,
+                                isApproved = b.isApproved,
+                                branchName = x.name,
+                            })
+                        .ToList();
+                        if (invoicesList != null)
                         {
-                            int invoiceId = invoicesList[i].invoiceId;
-                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
-                            invoicesList[i].itemsCount = itemCount;
+                            for (int i = 0; i < invoicesList.Count; i++)
+                            {
+                                int invoiceId = invoicesList[i].invoiceId;
+                                int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                                invoicesList[i].itemsCount = itemCount;
+                            }
                         }
+                        if (invoicesList == null)
+                            return NotFound();
+                        else
+                            return Ok(invoicesList);
                     }
-                    if (invoicesList == null)
-                        return NotFound();
                     else
-                        return Ok(invoicesList);
+                    {
+                        var invoicesList = (from b in entity.invoices.Where(x => invTypeL.Contains(x.invType) && x.branchId == branchId)
+                                            join l in entity.branches on b.branchId equals l.branchId into lj
+                                            from x in lj.DefaultIfEmpty()
+                                            select new InvoiceModel()
+                                            {
+                                                invoiceId = b.invoiceId,
+                                                invNumber = b.invNumber,
+                                                agentId = b.agentId,
+                                                invType = b.invType,
+                                                total = b.total,
+                                                totalNet = b.totalNet,
+                                                paid = b.paid,
+                                                deserved = b.deserved,
+                                                deservedDate = b.deservedDate,
+                                                invDate = b.invDate,
+                                                invoiceMainId = b.invoiceMainId,
+                                                invCase = b.invCase,
+                                                invTime = b.invTime,
+                                                notes = b.notes,
+                                                vendorInvNum = b.vendorInvNum,
+                                                vendorInvDate = b.vendorInvDate,
+                                                createUserId = b.createUserId,
+                                                updateDate = b.updateDate,
+                                                updateUserId = b.updateUserId,
+                                                branchId = b.branchId,
+                                                discountValue = b.discountValue,
+                                                discountType = b.discountType,
+                                                tax = b.tax,
+                                                taxtype = b.taxtype,
+                                                name = b.name,
+                                                isApproved = b.isApproved,
+                                                branchName = x.name,
+                                            })
+                        .ToList();
+                        if (invoicesList != null)
+                        {
+                            for (int i = 0; i < invoicesList.Count; i++)
+                            {
+                                int invoiceId = invoicesList[i].invoiceId;
+                                int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                                invoicesList[i].itemsCount = itemCount;
+                            }
+                        }
+                        if (invoicesList == null)
+                            return NotFound();
+                        else
+                            return Ok(invoicesList);
+                    }                
                 }
             }
             return NotFound();
@@ -316,6 +427,7 @@ namespace POS_Server.Controllers
                             tmpInvoice.discountType = newObject.discountType;
                             tmpInvoice.discountValue = newObject.discountValue;
                             tmpInvoice.tax = newObject.tax;
+                            tmpInvoice.taxtype = newObject.taxtype;
                             tmpInvoice.name = newObject.name;
                             tmpInvoice.isApproved = newObject.isApproved;
                         }
@@ -351,12 +463,12 @@ namespace POS_Server.Controllers
                 int lastNum = 0;
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    numberList = entity.invoices.Where(b => b.invNumber.Contains(invCode)).Select(b => b.invNumber).ToList();
+                    numberList = entity.invoices.Where(b => b.invNumber.Contains(invCode+"-")).Select(b => b.invNumber).ToList();
                      
                     for(int i=0; i< numberList.Count; i++)
                     {
                         string code = numberList[i];
-                        string s = code.Substring(code.LastIndexOf(invCode)+3);
+                        string s = code.Substring(code.LastIndexOf("-")+1);
                         numberList[i] = s;
                     }
                     numberList.Sort();
@@ -370,7 +482,7 @@ namespace POS_Server.Controllers
         // for report
         [HttpGet]
         [Route("GetinvCountBydate")]
-        public IHttpActionResult GetinvCountBydate(string invtype, string branchType, DateTime startDate, DateTime endDate)
+        public IHttpActionResult GetinvCountBydate(string branchType, DateTime startDate, DateTime endDate)
         {
             var re = Request;
             var headers = re.Headers;
@@ -389,8 +501,8 @@ namespace POS_Server.Controllers
                     var invListm = (from I in entity.invoices
                                     join B in entity.branches on I.branchId equals B.branchId into JB
                                     from JBB in JB.DefaultIfEmpty()
-                                    where (invtype == "all" ? true : I.invType == invtype)
-                                       && (branchType == "all" ? true : JBB.type == branchType)
+                                    where //(invtype == "all" ? true : I.invType == invtype)  &&
+                                      (branchType == "all" ? true : JBB.type == branchType)
                                     && System.DateTime.Compare((DateTime)startDate, (DateTime)I.invDate) <= 0
                                     && System.DateTime.Compare((DateTime)endDate, (DateTime)I.invDate) >= 0
                                     // I.invType == invtype
@@ -405,9 +517,12 @@ namespace POS_Server.Controllers
                                         name = g.Select(t => t.JBB.name).FirstOrDefault(),
 
 
-                                        count = g.Count(),
-                                        total = g.Sum(S => S.I.total),
-                                        totalNet = g.Sum(S => S.I.totalNet),
+                                        countP = g.Where(t => t.I.invType == "p").Count(),
+                                        countS = g.Where(t => t.I.invType == "s").Count(),
+                                        totalS = g.Where(t => t.I.invType == "s").Sum(S => S.I.total),
+                                        totalNetS = g.Where(t => t.I.invType == "s").Sum(S => S.I.totalNet),
+                                        totalP = g.Where(t => t.I.invType == "p").Sum(S => S.I.total),
+                                        totalNetP = g.Where(t => t.I.invType == "p").Sum(S => S.I.totalNet),
                                         paid = g.Sum(S => S.I.paid),
                                         deserved = g.Sum(S => S.I.deserved),
                                         discountValue = g.Sum(S => S.I.discountType == "1" ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
@@ -415,6 +530,7 @@ namespace POS_Server.Controllers
                                         //  I.invoiceId,
                                         //    JBB.name
                                     }).ToList();
+
                     /*
           if(S.I.discountType == "1")
 {
@@ -442,6 +558,7 @@ else
             //else
             return NotFound();
         }
+
 
     }
 }

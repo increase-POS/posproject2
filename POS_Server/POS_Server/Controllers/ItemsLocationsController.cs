@@ -172,8 +172,8 @@ namespace POS_Server.Controllers
             return false;
         }
         [HttpPost]
-        [Route("decraseAmounts")]
-        public Boolean decraseAmounts(string itemLocationObject, int branchId)
+        [Route("receiptInvoice")]
+        public IHttpActionResult receiptInvoice(string itemLocationObject, int branchId,int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -189,19 +189,53 @@ namespace POS_Server.Controllers
             itemLocationObject = itemLocationObject.Trim('"');
 
             if (valid)
-            {
+            {            
                 List<itemsTransfer> itemList = JsonConvert.DeserializeObject<List<itemsTransfer>>(itemLocationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-
                 using (incposdbEntities entity = new incposdbEntities())
                 {
+                    var freeZoneLocation =  (from s in entity.sections.Where(x => x.branchId == branchId && x.isFreeZone==1)
+                                     join l in entity.locations on s.sectionId equals l.sectionId
+                                     select l.locationId).SingleOrDefault();
                     foreach (itemsTransfer item in itemList)
                     {
-                        updateItemQuantity(item.itemUnitId.Value, branchId, (int)item.quantity);      
+                        increaseItemQuantity(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity,userId);      
                     }
                 }
             }
-            return false;
+            return Ok(1);
         }
+
+        private void  increaseItemQuantity(int itemUnitId,int locationId, int quantity, int userId)
+        {
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                var itemUnit = (from  il in entity.itemsLocations 
+                                where il.itemUnitId == itemUnitId && il.locationId == locationId
+                                select new { il.itemsLocId }
+                                ).FirstOrDefault();
+                itemsLocations itemL = new itemsLocations();
+                if (itemUnit == null)//add item in new location
+                { 
+                    itemL.itemUnitId = itemUnitId;
+                    itemL.locationId = locationId;
+                    itemL.quantity = quantity;
+                    itemL.createDate = DateTime.Now;
+                    itemL.updateDate = DateTime.Now;
+                    itemL.createUserId = userId;
+                    itemL.updateUserId = userId;
+
+                    entity.itemsLocations.Add(itemL);
+                }
+                else
+                {
+                    itemL = entity.itemsLocations.Find(itemUnit.itemsLocId);
+                    itemL.quantity += quantity;
+                    itemL.updateDate = DateTime.Now;
+                    itemL.updateUserId = userId;
+                }
+                entity.SaveChanges();
+            }
+       }
         [HttpGet]
         [Route("updateItemQuantity")]
         public IHttpActionResult updateItemQuantity(int itemUnitId, int branchId, int requiredAmount)
