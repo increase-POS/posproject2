@@ -19,7 +19,7 @@ namespace POS.Classes
         public string name { get; set; }
         public string code { get; set; }
         public Nullable<byte> isActive { get; set; }
-        public string discountType { get; set; }
+        public Nullable<byte> discountType { get; set; }
         public Nullable<decimal> discountValue { get; set; }
         public Nullable<System.DateTime> startDate { get; set; }
         public Nullable<System.DateTime> endDate { get; set; }

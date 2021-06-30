@@ -98,7 +98,7 @@
             <Border Margin="5,5,5,0" Grid.Row="1"  Background="White" CornerRadius="7,7,0,0">
                 <DataGrid  Margin="5,5,5,17.5"  Grid.Row="1"  IsReadOnly="True"  Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
-                       x:Name="dg_itemsStorage"
+                       x:Name="dg_itemsStorage" SelectionChanged="Dg_itemsStorage_SelectionChanged"
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"    AlternatingRowBackground="#f3f3f3" AlternationCount="2">
                     <DataGrid.Resources>
@@ -110,7 +110,7 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="*"  Header="Item"     Binding="{Binding Path=test}">
+                        <DataGridTextColumn Width="*"  Header="Item"     Binding="{Binding Path=itemName}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -132,7 +132,29 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Location"  Binding="{Binding Path=test}">
+                        <DataGridTextColumn Width="*"  Header="Location"  Binding="{Binding Path=location}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="*"  Header="Start Date"  Binding="{Binding Path=startDate,StringFormat=d}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="*"  Header="End Date"  Binding="{Binding Path=endDate,StringFormat=d}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -334,7 +356,7 @@
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <TextBox      BorderThickness="0,0,0,2" BorderBrush="AliceBlue"
-                                    x:Name="tb_itemName" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0" 
+                                    x:Name="tb_itemName" Text="{Binding itemName, Mode=OneWay}" Padding="10,0,5,0" 
                                     materialDesign:HintAssist.Hint="Item Name..."  Background="#f8f8f8"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                     KeyboardNavigation.IsTabStop="False" 
@@ -353,10 +375,11 @@
                                 <TextBox x:Name="tb_quantity" Grid.Column="1" Text="{Binding quantity, Mode=OneWay}" Padding="10,0,5,0"                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
 
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Quantity..."    
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                 BorderBrush="AliceBlue"  
-                     MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="40"   Margin="5,5,10,5" Grid.ColumnSpan="2" />
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
+                                    BorderBrush="AliceBlue"  TextChanged="Tb_quantity_TextChanged"
+                                         PreviewTextInput="NumberValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
+                                    MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                    Height="40"   Margin="5,5,10,5" Grid.ColumnSpan="2" LostFocus="input_LostFocus" />
 
                                 <Path Fill="#E81123" Grid.Column="1" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorQuantity"
                               HorizontalAlignment="Right"   Visibility="Collapsed" 
@@ -368,28 +391,30 @@
                                 </Path>
                             </Grid>
                             <ComboBox   Grid.Row="2" x:Name="cb_section"
-                                             Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Section... "  
-                           TextBlock.FontSize="12"   Background="#f8f8f8" 
-                         Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                          Height="40"   Margin="10,5,10,5"
-                           BorderBrush="#737373" BorderThickness="0" />
-                            <Path Fill="#E81123" Grid.Row="3" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                        Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                        materialDesign:HintAssist.Hint="Section... "  
+                                        TextBlock.FontSize="12"   Background="#f8f8f8" 
+                                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                        Height="40"   Margin="10,5,10,5"
+                                        BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_section_SelectionChanged"
+                                        LostFocus="input_LostFocus"/>
+                            <Path Fill="#E81123" Grid.Row="2" Stretch="Fill" Margin="5,5,15,5"
+                              x:Name="p_errorSection" HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                 <Path.ToolTip>
-                                    <ToolTip   Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    <ToolTip x:Name="tt_errorSection"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
-                            <ComboBox   Grid.Row="4" x:Name="cb_XYZ"
+                            <ComboBox   Grid.Row="3" x:Name="cb_XYZ"
                                              Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="X Y Z... "  
-                           TextBlock.FontSize="12"   Background="#f8f8f8" 
-                                    Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                          Height="40"   Margin="10,5,10,5"
-                           BorderBrush="#737373" BorderThickness="0" />
-                            <Path Fill="#E81123" Grid.Row="5" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorXYZ"
+                                        materialDesign:HintAssist.Hint="X Y Z... "  
+                                        TextBlock.FontSize="12"   Background="#f8f8f8" 
+                                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                        Height="40"   Margin="10,5,10,5"
+                                        BorderBrush="#737373" BorderThickness="0"
+                                        LostFocus="input_LostFocus"/>
+                            <Path Fill="#E81123" Grid.Row="3" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorXYZ"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -397,7 +422,7 @@
                                     <ToolTip  x:Name="tt_errorXYZ"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
-                            <Grid Grid.Row="6">
+                            <Grid Grid.Row="4" x:Name="gd_date" Visibility="Collapsed">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -409,7 +434,8 @@
                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                              materialDesign:HintAssist.Hint="Star Date..."  
                            Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
-                      
+                                SelectedDateChanged="Dp_date_SelectedDateChanged"
+                                             LostFocus="input_LostFocus"
                        Height="40"  Margin="10,5,0,5" />
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorStartDate"
                               HorizontalAlignment="Right"  Grid.Column="0"  Visibility="Collapsed" 
@@ -420,16 +446,25 @@
                                     </Path.ToolTip>
                                 </Path>
                                 <DatePicker  x:Name="dp_endDate" 
-                           BorderBrush="#737373"  BorderThickness="0" 
-                                TextBlock.Foreground="#4E4E4E" Text="{Binding endDate, Mode=OneWay}"
-                                             Grid.Row="2" Padding="10,5,5,5"  
-                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                             materialDesign:HintAssist.Hint="End Date..."  
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
-                       
-                        Grid.Column="1"  Height="40"   Margin="5,5,10,5" />
+                                        BorderBrush="#737373"  BorderThickness="0" 
+                                        TextBlock.Foreground="#4E4E4E" Text="{Binding endDate, Mode=OneWay}"
+                                        Grid.Row="2" Padding="10,5,5,5"  
+                                        materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                        materialDesign:HintAssist.Hint="End Date..."  
+                                        Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
+                                        Grid.Column="1"  Height="40"   Margin="5,5,10,5"
+                                        SelectedDateChanged="Dp_date_SelectedDateChanged"
+                                             LostFocus="input_LostFocus"/>
+                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorEndDate"
+                              HorizontalAlignment="Right"  Grid.Column="1"  Visibility="Collapsed" 
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                    <Path.ToolTip>
+                                        <ToolTip  x:Name="tt_errorEndDate"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    </Path.ToolTip>
+                                </Path>
                             </Grid>
-                            <TextBox x:Name="tb_notes" Visibility="Visible" Grid.Row="7" Text="{Binding notes, Mode=OneWay}" 
+                            <TextBox x:Name="tb_notes" Visibility="Visible" Grid.Row="5" Text="{Binding note, Mode=OneWay}" 
                                  Padding="10,0,5,0"   
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
@@ -445,7 +480,7 @@
                                               VerticalOffset="20"/>
                                 </TextBox.ToolTip>
                             </TextBox>
-                            <Path Fill="#E81123" Grid.Row="8" Stretch="Fill" Margin="15,12,15,5"
+                            <Path Fill="#E81123" Grid.Row="5" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
                          VerticalAlignment="Top" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">

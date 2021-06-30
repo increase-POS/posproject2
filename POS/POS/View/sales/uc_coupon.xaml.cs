@@ -364,7 +364,7 @@ namespace POS.View
                     coupon.barcode = tb_barcode.Text;
                     //coupon.barcode = await genBarCode(tb_code.Text);
                     coupon.isActive = Convert.ToByte(tgl_ActiveCoupon.IsChecked);
-                    coupon.discountType = cb_typeDiscount.SelectedValue.ToString();
+                    coupon.discountType =(byte) cb_typeDiscount.SelectedValue;
                     coupon.startDate = DateTime.Parse(dp_startDate.Text);
                     coupon.endDate = DateTime.Parse(dp_endDate.Text);
                     coupon.discountValue = decimal.Parse(tb_discountValue.Text);
@@ -673,7 +673,7 @@ namespace POS.View
                     coupon.barcode = tb_barcode.Text;
                     //coupon.barcode = await genBarCode(tb_code.Text);
                     coupon.isActive = Convert.ToByte(tgl_ActiveCoupon.IsChecked);
-                    coupon.discountType = cb_typeDiscount.SelectedValue.ToString();
+                    coupon.discountType = (byte)cb_typeDiscount.SelectedValue;
                     coupon.startDate = DateTime.Parse(dp_startDate.Text);
                     coupon.endDate = DateTime.Parse(dp_endDate.Text);
                     coupon.discountValue = decimal.Parse(tb_discountValue.Text);

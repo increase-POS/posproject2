@@ -71,7 +71,7 @@
                     </DockPanel>
                     <CheckBox Grid.Row="3" Margin="5,20,0,0" x:Name="cbxRemmemberMe" Content="Remmember Me" VerticalAlignment="Center"></CheckBox>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="4" >
-                        <Button x:Name="btnLogIn" Background="#FF2196F3" Foreground="White" Margin="0,0,10,0" Click="btnLogIn_Click" >
+                    <Button x:Name="btnLogIn" Background="#FF2196F3" Foreground="White" Margin="0,0,10,0" Click="btnLogIn_Click" >
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0">
                                         <materialDesign:PackIcon Kind="Login"></materialDesign:PackIcon>
@@ -93,9 +93,9 @@
             <!--Main-->
             <Border Grid.Column="1" CornerRadius="0,10,10,0">
                 <Border.Background>
-                    <ImageBrush Stretch="Fill" />
+                    <ImageBrush Stretch="Fill" ImageSource="/pic/increase-login-bg.png" />
                 </Border.Background>
-                <!--ImageSource="/pic/increase-login-bg.png"-->
+                
             </Border>
            
 

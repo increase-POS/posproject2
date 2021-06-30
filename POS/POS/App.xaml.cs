@@ -19,13 +19,13 @@ namespace POS
             //user21-6-2021
             //if(somecase)
             //{
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
+            //MainWindow mainWindow = new MainWindow();
+            //mainWindow.Show();
             //}
             //else
             //{
-            //winLogIn logIn = new winLogIn();
-            //logIn.Show();
+            winLogIn logIn = new winLogIn();
+            logIn.Show();
             //}
 
         }

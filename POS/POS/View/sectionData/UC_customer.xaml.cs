@@ -142,9 +142,9 @@ namespace POS.View
             cb_areaFax.SelectedValuePath = "countryId";
             cb_areaFax.DisplayMemberPath = "code";
 
-            //cb_areaMobile.SelectedIndex = 8;
-            //cb_areaPhone.SelectedIndex = 8;
-            //cb_areaFax.SelectedIndex = 8;
+            cb_areaMobile.SelectedIndex = 8;
+            cb_areaPhone.SelectedIndex = 8;
+            cb_areaFax.SelectedIndex = 8;
         }
        
         async Task<IEnumerable<City>> RefreshCity()
@@ -551,7 +551,7 @@ namespace POS.View
                         bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
 
                         if (b) //SectionData.popUpResponse("", popupContent);
-                            Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                         else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
@@ -1039,8 +1039,8 @@ namespace POS.View
         {
             grid_cards.Visibility = Visibility.Collapsed;
             grid_datagrid.Visibility = Visibility.Visible;
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
 
             Tb_search_TextChanged(null, null);
         }
@@ -1058,13 +1058,13 @@ namespace POS.View
         {
             if (agents is null)
                 await RefreshCustomersList();
-            searchText = tb_search.Text;
+            searchText = tb_search.Text.ToLower();
             pageIndex = 1;
             #region
-            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
-            s.name.Contains(searchText) ||
-            s.company.Contains(searchText) ||
-            s.mobile.Contains(searchText)
+            agentsQuery = agents.Where(s => (s.code.ToLower().Contains(searchText) ||
+            s.name.ToLower().Contains(searchText) ||
+            s.company.ToLower().Contains(searchText) ||
+            s.mobile.ToLower().Contains(searchText)
             ) && s.isActive == tgl_customerState);
             if (btns is null)
                 btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };

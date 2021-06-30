@@ -55,12 +55,11 @@ namespace POS.View.windows
                 
                 //send user info to main window
                 MainWindow.userID = user.userId;
-                MainWindow.userName = user.username;
-                MainWindow.userRole = user.role;
+                MainWindow.userLogin = user;
               
                 //make user online
                 user.isOnline = 1;
-                user.isActive = 1;
+                //user.isActive = 1;
                 string s = await userModel.saveUser(user);
 
                 //create lognin record

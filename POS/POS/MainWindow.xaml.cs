@@ -20,6 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using POS.Classes;
 using POS.View;
 using POS.View.accounts;
 using POS.View.Settings;
@@ -44,9 +45,7 @@ namespace POS
         public static string Mobile = "+963967376542";
         public static string Address = "Aleppo";
         internal static int? userID ;
-        internal static string userName;
-        internal static string userJob;
-        internal static string userRole;
+        internal static User userLogin;
         internal static int? posID = 53;
         internal static int? branchID = 18;
         bool isHome = false;
@@ -363,8 +362,8 @@ namespace POS
             { resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_mainWindow.FlowDirection = FlowDirection.RightToLeft; }
             translate();
             //user info
-            txt_userName.Text = userName;
-            txt_userJob.Text = userJob;
+            txt_userName.Text = userLogin.name;
+            txt_userJob.Text = userLogin.job;
             BTN_Home_Click(null, null);
         }
 

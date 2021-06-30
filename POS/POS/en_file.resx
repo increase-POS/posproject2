@@ -1392,4 +1392,10 @@
   <data name="trErrorStartBeforEndToolTip" xml:space="preserve">
     <value>End date can not be before start date</value>
   </data>
+  <data name="trPopCardExist" xml:space="preserve">
+    <value>Card is already exist</value>
+  </data>
+  <data name="trCardNameHint" xml:space="preserve">
+    <value>Card Name...</value>
+  </data>
 </root>

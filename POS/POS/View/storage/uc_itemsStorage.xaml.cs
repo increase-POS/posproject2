@@ -1,10 +1,13 @@
-﻿using System;
+﻿using netoaster;
+using POS.Classes;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,6 +28,15 @@ namespace POS.View.storage
     public partial class uc_itemsStorage : UserControl
     {
         private static uc_itemsStorage _instance;
+
+        ItemLocation itemLocation = new ItemLocation();
+        IEnumerable<ItemLocation> itemLocationList;
+
+        Classes.Section sectionModel = new Classes.Section();
+        IEnumerable<Classes.Section> sections;
+
+        Location locationModel = new Location();
+        IEnumerable<Location> locations;
         public static uc_itemsStorage Instance
         {
             get
@@ -68,10 +80,7 @@ namespace POS.View.storage
             //}
         }
 
-        
-        ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
             {
@@ -96,7 +105,9 @@ namespace POS.View.storage
             //dg_billDetails.ItemsSource = billDetails;
             //#endregion
             translate();
-
+            // await refreshItemsLocations();
+            // await refreshFreeZoneItemsLocations();
+            await fillSections();
             #region Style Date
             dp_startDate.Loaded += delegate
             {
@@ -140,79 +151,42 @@ namespace POS.View.storage
             //tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
         }
-        #region bill
-
-
-        private class Bill
+        private async Task refreshItemsLocations()
         {
-            public int Id { get; set; }
-            public int Total { get; set; }
-
+            itemLocationList = await itemLocation.get(MainWindow.branchID.Value);
+            dg_itemsStorage.ItemsSource = itemLocationList;
         }
-        private class BillDetails
+        private async Task refreshFreeZoneItemsLocations()
         {
-            public int ID { get; set; }
-            public string Product { get; set; }
-            public int Count { get; set; }
-            public int Price { get; set; }
-            public int Total { get; set; }
+            itemLocationList = await itemLocation.GetFreeZoneItems(MainWindow.branchID.Value);
+            dg_itemsStorage.ItemsSource = itemLocationList;
         }
-        private ObservableCollection<BillDetails> LoadCollectionData()
+        private async Task refreshLocations()
         {
-            ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
-            billDetails.Add(new BillDetails()
+            if (cb_section.SelectedIndex != -1)
             {
-                ID = 101,
-                Product = "Watch",
-                Count = 2,
-                Price = 1200,
-                Total = 2400
-            });
-            billDetails.Add(new BillDetails()
-            {
-                ID = 201,
-                Product = "Cocacola",
-                Count = 5,
-                Price = 200,
-                Total = 1000
-            });
-            billDetails.Add(new BillDetails()
-            {
-                ID = 244,
-                Product = "CarToy",
-                Count = 1,
-                Price = 300,
-                Total = 300
-            });
-            billDetails.Add(new BillDetails()
-            {
-                ID = 244,
-                Product = "CarToy",
-                Count = 1,
-                Price = 300,
-                Total = 300
-            });
-            billDetails.Add(new BillDetails()
-            {
-                ID = 244,
-                Product = "CarToy",
-                Count = 1,
-                Price = 300,
-                Total = 300
-            });
-            billDetails.Add(new BillDetails()
-            {
-                ID = 244,
-                Product = "CarToy",
-                Count = 1,
-                Price = 300,
-                Total = 300
-            });
-
-
-            return billDetails;
+                locations = await locationModel.getLocsBySectionId((int)cb_section.SelectedValue);
+                cb_XYZ.ItemsSource = locations;
+                cb_XYZ.SelectedValuePath = "locationId";
+                cb_XYZ.DisplayMemberPath = "name";
+            }
         }
-        #endregion
+        private async Task fillSections()
+        {
+            sections = await sectionModel.getBranchSections(MainWindow.branchID.Value);
+            cb_section.ItemsSource = sections.ToList();
+            cb_section.SelectedValuePath = "sectionId";
+            cb_section.DisplayMemberPath = "name";
+        }
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+        private void space_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
 
@@ -228,14 +202,18 @@ namespace POS.View.storage
 
         }
 
-        private void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
+        private async void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
         {
-
+            await refreshItemsLocations();
+            
+            clearInputs();
         }
 
-        private void Tgl_IsActive_Unchecked(object sender, RoutedEventArgs e)
+        private async void Tgl_IsActive_Unchecked(object sender, RoutedEventArgs e)
         {
-
+           await refreshFreeZoneItemsLocations();
+         
+            clearInputs();
         }
 
         //private void Tgl_invoiceDropDown_Checked(object sender, RoutedEventArgs e)
@@ -298,10 +276,172 @@ namespace POS.View.storage
         {
 
         }
-
-        private void Btn_transfer_Click(object sender, RoutedEventArgs e)
+        private void validateMandatoryInputs()
         {
+            SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
 
+            SectionData.validateEmptyComboBox(cb_section, p_errorSection, tt_errorSection, "trEmptySectionToolTip");
+            SectionData.validateEmptyComboBox(cb_XYZ, p_errorXYZ, tt_errorXYZ, "trErrorEmptyLocationToolTip");
+            if(itemLocation.itemType.Equals("d"))
+            {
+                SectionData.showDatePickerValidate(dp_startDate,p_errorStartDate,tt_errorStartDate, "trEmptyStartDateToolTip");
+                SectionData.showDatePickerValidate(dp_endDate,p_errorEndDate,tt_errorEndDate, "trEmptyEndDateToolTip");
+            }
+        }
+        private async void Btn_transfer_Click(object sender, RoutedEventArgs e)
+        {
+            validateMandatoryInputs();
+            if (itemLocation != null && !tb_quantity.Text.Equals("") && cb_section.SelectedIndex != -1 && cb_XYZ.SelectedIndex != -1 && (!itemLocation.itemType.Equals("d") || (itemLocation.itemType.Equals("d") && dp_startDate.SelectedDate != null && dp_endDate.SelectedDate != null) )) 
+            {
+                int oldLocationId = (int)itemLocation.locationId;
+                int newLocationId = (int)cb_XYZ.SelectedValue;
+                int quantity = int.Parse(tb_quantity.Text);
+                ItemLocation newLocation = new ItemLocation();
+                newLocation.itemUnitId = itemLocation.itemUnitId;
+                newLocation.locationId = newLocationId;
+                newLocation.quantity = quantity;
+                newLocation.startDate = dp_startDate.SelectedDate;
+                newLocation.endDate = dp_endDate.SelectedDate;
+                newLocation.note = tb_notes.Text;
+                newLocation.updateUserId = MainWindow.userID.Value;
+                newLocation.createUserId = MainWindow.userID.Value;
+                //newLocation.storeCost 
+                bool res = await itemLocation.trasnferItem(itemLocation.itemsLocId, newLocation);
+                if (res)
+                {
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                }
+                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                if (tgl_IsActive.IsChecked == true)
+                    await refreshItemsLocations();
+                else
+                    await refreshFreeZoneItemsLocations();
+
+                clearInputs();
+            }
+        }
+
+        private async void Cb_section_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            await refreshLocations();
+        }
+
+        private async void Dg_itemsStorage_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dg_itemsStorage.SelectedIndex != -1)
+            {
+                clearInputs();
+
+                itemLocation = dg_itemsStorage.SelectedItem as ItemLocation;
+                this.DataContext = itemLocation;
+                dp_startDate.SelectedDate = itemLocation.startDate;
+                dp_endDate.SelectedDate = itemLocation.endDate;
+                if (itemLocation.itemType.Equals("d"))
+                    gd_date.Visibility = Visibility.Visible;
+                else
+                    gd_date.Visibility = Visibility.Collapsed;
+                if (tgl_IsActive.IsChecked == true)
+                {
+                    tb_itemName.IsReadOnly = true;
+                    dp_endDate.IsEnabled = false;
+                    dp_startDate.IsEnabled = false;
+                    cb_section.SelectedValue = itemLocation.sectionId;
+                    await refreshLocations();
+                    cb_XYZ.SelectedValue = itemLocation.locationId;
+                }
+                else
+                {
+                    dp_endDate.IsEnabled = true;
+                    dp_startDate.IsEnabled = true;
+                    cb_section.SelectedIndex = -1;
+                    cb_XYZ.SelectedIndex = -1;
+                }
+
+            }
+        }
+
+        private void Tb_quantity_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(itemLocation != null && !tb_quantity.Text.Equals(""))
+            {
+                if(int.Parse(tb_quantity.Text) > itemLocation.quantity)
+                {
+                    tb_quantity.Text = itemLocation.quantity.ToString();
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                }
+            }
+        }
+        private void clearInputs()
+        {
+            tb_itemName.Clear();
+            tb_quantity.Clear();
+            cb_section.SelectedIndex = -1;
+            cb_XYZ.SelectedIndex = -1;
+            dp_startDate.SelectedDate = null;
+            dp_startDate.Text = "";
+            dp_endDate.SelectedDate = null;
+            dp_endDate.Text = "";
+            tb_notes.Clear();
+            itemLocation = new ItemLocation();
+            gd_date.Visibility = Visibility.Collapsed;
+
+            SectionData.clearComboBoxValidate(cb_section,p_errorSection);
+            SectionData.clearComboBoxValidate(cb_XYZ,p_errorXYZ);
+            SectionData.clearValidate(tb_quantity,p_errorQuantity);
+            if (gd_date.Visibility == Visibility.Visible)
+            {
+                TextBox tbStartDate = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
+                SectionData.clearValidate(tbStartDate, p_errorStartDate);
+                TextBox tbEndDate = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
+                SectionData.clearValidate(tbEndDate, p_errorEndDate);
+            }
+        }
+
+        private void Dp_date_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(dp_endDate.SelectedDate != null && dp_startDate.SelectedDate != null)
+            {
+                if(dp_endDate.SelectedDate < dp_startDate.SelectedDate)
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorStartBeforEndToolTip"), animation: ToasterAnimation.FadeIn);
+            }
+        }
+        //private void clearValidity()
+        //{
+        //    SectionData.clearComboBoxValidate(cb_section, p_errorSection);
+        //    SectionData.clearComboBoxValidate(cb_XYZ, p_errorXYZ);
+        //    SectionData.clearValidate(tb_quantity, p_errorQuantity);
+        //    if (gd_date.Visibility == Visibility.Visible)
+        //    {
+        //        TextBox tbStartDate = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
+        //        SectionData.clearValidate(tbStartDate, p_errorStartDate);
+        //        TextBox tbEndDate = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
+        //        SectionData.clearValidate(tbEndDate, p_errorEndDate);
+        //    }
+        //}
+        private void input_LostFocus(object sender, RoutedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            if (name == "TextBox")
+            {
+                if ((sender as TextBox).Name == "tb_quantity")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");  
+            }
+            else if (name == "ComboBox")
+            {
+                if ((sender as ComboBox).Name == "cb_section")
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorSection, tt_errorSection, "trEmptySectionToolTip");
+                else if ((sender as ComboBox).Name == "cb_XYZ")
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorXYZ, tt_errorXYZ, "trErrorEmptyLocationToolTip");
+            }
+            else if (name == "DatePicker")
+            {
+                if ((sender as DatePicker).Name == "dp_startDate")
+                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorStartDate, tt_errorStartDate, "trEmptyStartDateToolTip");
+                else if ((sender as DatePicker).Name == "dp_endDate")
+                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
+            }
         }
     }
 }

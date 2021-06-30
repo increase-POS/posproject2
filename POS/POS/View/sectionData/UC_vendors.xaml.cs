@@ -983,6 +983,7 @@ namespace POS.View
         {
             grid_datagrid.Visibility = Visibility.Collapsed;
             grid_cards.Visibility = Visibility.Visible;
+            grid_pagination.Visibility = Visibility.Visible;
             path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
 
@@ -992,6 +993,7 @@ namespace POS.View
         private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
         {
             grid_cards.Visibility = Visibility.Collapsed;
+            grid_pagination.Visibility = Visibility.Collapsed;
             grid_datagrid.Visibility = Visibility.Visible;
             path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
@@ -1016,12 +1018,12 @@ namespace POS.View
             if (agents is null)
                 await RefreshVendorsList();
             pageIndex = 1;
-            searchText = tb_search.Text;
+            searchText = tb_search.Text.ToLower();
             #region
-            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
-            s.name.Contains(searchText) ||
-            s.company.Contains(searchText) ||
-            s.mobile.Contains(searchText)
+            agentsQuery = agents.Where(s => (s.code.ToLower().Contains(searchText) ||
+            s.name.ToLower().Contains(searchText) ||
+            s.company.ToLower().Contains(searchText) ||
+            s.mobile.ToLower().Contains(searchText)
             ) && s.isActive == tgl_vendorState);
             if (btns is null)
                 btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };

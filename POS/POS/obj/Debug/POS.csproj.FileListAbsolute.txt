@@ -2047,3 +2047,5 @@ C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_items
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_locationAddRange.baml
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_subscriptionFees.baml
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\winLogIn.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_transItemsLocation.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_transItemsLocation.baml

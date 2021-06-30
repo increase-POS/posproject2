@@ -455,15 +455,15 @@ namespace POS.View.sectionData
 
             if (cards is null)
                 await RefreshCardsList();
-            searchText = tb_search.Text;
+            searchText = tb_search.Text.ToLower();
             cardsQuery = cards.Where(s =>(
-            s.name.Contains(searchText)
+            s.name.ToLower().Contains(searchText)
             
              && s.isActive == tgl_cardState));
             RefreshCardView();
 
         }
-
+         
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {

@@ -1371,4 +1371,10 @@
   <data name="trErrorStartBeforEndToolTip" xml:space="preserve">
     <value>تاريخ النهاية لا يمكن أن يكون قبل تاريخ البداية</value>
   </data>
+  <data name="trPopCardExist" xml:space="preserve">
+    <value>البطاقة موجودة سابقاً</value>
+  </data>
+  <data name="trCardNameHint" xml:space="preserve">
+    <value>اسم البطاقة...</value>
+  </data>
 </root>

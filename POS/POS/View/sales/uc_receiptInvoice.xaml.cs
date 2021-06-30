@@ -201,22 +201,12 @@ namespace POS.View
 
             pos = await posModel.getPosById(MainWindow.posID.Value);
 
+            configurProcessType();
             await RefrishItems();
             await RefrishCustomers();
             await fillBarcodeList();
             await fillCouponsList();
-
-            
-            #region fill payment type
-            var typelist = new[] {
-            new { Text = MainWindow.resourcemanager.GetString("trCash")       , Value = "cash" },
-            new { Text = MainWindow.resourcemanager.GetString("trBalance") , Value = "balance" },
-            new { Text = MainWindow.resourcemanager.GetString("trCreditCard") , Value = "card" },
-             };
-            cb_paymentProcessType.DisplayMemberPath = "Text";
-            cb_paymentProcessType.SelectedValuePath = "Value";
-            cb_paymentProcessType.ItemsSource = typelist;
-            #endregion
+                      
 
             #region fill card combo
             cards = await cardModel.GetAll();
@@ -257,6 +247,29 @@ namespace POS.View
         async Task fillCouponsList()
         {
             coupons = await couponModel.GetCouponsAsync();
+        }
+        private void configurProcessType()
+        {
+            cb_paymentProcessType.DisplayMemberPath = "Text";
+            cb_paymentProcessType.SelectedValuePath = "Value";
+            if ( _InvoiceType.Equals("sbd"))
+            {
+                var typelist = new[] {
+                 new { Text = MainWindow.resourcemanager.GetString("trCash")       , Value = "cash" },
+                new { Text = MainWindow.resourcemanager.GetString("trBalance") , Value = "balance" },
+                };
+                cb_paymentProcessType.ItemsSource = typelist;
+            }
+            else
+            {
+                var typelist = new[] {
+                new { Text = MainWindow.resourcemanager.GetString("trCash")       , Value = "cash" },
+                new { Text = MainWindow.resourcemanager.GetString("trBalance") , Value = "balance" },
+                new { Text = MainWindow.resourcemanager.GetString("trCreditCard") , Value = "card" },
+                 };
+
+                cb_paymentProcessType.ItemsSource = typelist;
+            }
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -463,7 +476,7 @@ namespace POS.View
                 invoice.updateUserId = MainWindow.userID;
 
                 // build invoice NUM like si-storCode-posCode-sequence exp: 123_PI_2
-                if (invoice.invoiceId == 0)
+                if (invoice.invNumber == null)
                 {
                     invoice.invNumber = await generateInvNumber("si");
                 }
@@ -471,7 +484,7 @@ namespace POS.View
                 decimal balance = 0;
                 decimal paid = 0;
                 decimal deserved = (decimal) invoice.totalNet ;
-                if (invType == "s" )
+                if (invType == "s")
                 {
                     switch (cb_paymentProcessType.SelectedIndex)
                     {
@@ -502,12 +515,16 @@ namespace POS.View
                             paid = (decimal)invoice.totalNet;
                             deserved = 0;
                             break;
-                    }                    
+                    }
+                }
+                else if (invType == "sb")
+                {                 
+                    paid = (decimal)invoice.totalNet;
+                    deserved = 0;
+                    balance = (decimal)invoice.totalNet;
+ 
                     invoice.paid = paid;
-                    invoice.deserved = deserved;
-
-                    if (invoice.invType == "q")
-                        invoice.isApproved = 1;     
+                    invoice.deserved = deserved;    
                 }
                 invoice.invType = invType;
                 // save invoice in DB
@@ -547,6 +564,7 @@ namespace POS.View
                                     await pos.savePos(pos);
                                     break;
                                 case 1:// balance: update customer balance
+
                                     await agentModel.updateBalance((int)invoice.agentId, balance);//update customer balance
                                     break;
                             }
@@ -558,6 +576,49 @@ namespace POS.View
                             cashTrasnfer.agentId = invoice.agentId;
                             cashTrasnfer.invId = invoiceId;
                             cashTrasnfer.transNum = SectionData.generateNumber('d', "c").ToString();
+                            cashTrasnfer.cash = paid;
+                            cashTrasnfer.side = "c"; // customer
+                            cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
+                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                            {
+                                cashTrasnfer.cardId = Convert.ToInt32(cb_card.SelectedValue);
+                                cashTrasnfer.docNum = tb_processNum.Text;
+                            }
+                            //  cashTrasnfer
+                            cashTrasnfer.createUserId = MainWindow.userID;
+                            await cashTrasnfer.Save(cashTrasnfer); //add cash transfer    
+                        }
+
+                        //update items quantity
+                    }
+                    else if (invType == "sb")
+                    {
+                       await itemLocationModel.recieptInvoice(invoiceItems,MainWindow.branchID.Value,MainWindow.userID.Value); // update item quantity in DB
+                        if (paid > 0)
+                        {
+                            switch (cb_paymentProcessType.SelectedIndex)
+                            {
+                                case 0:
+                                case 2: // cash:card: update pos balance
+                                    
+                                    pos.balance -= balance;
+                                    await pos.savePos(pos);
+                                    break;
+                                case 1:// balance: update customer balance
+                                    Agent customer = customers.ToList().Find(b => b.agentId == invoice.agentId);
+                                    if (customer != null)
+                                        balance = (decimal)customer.balance + balance;
+                                    await agentModel.updateBalance((int)invoice.agentId, balance);//update customer balance
+                                    break;
+                            }
+
+                            // cach transfer model
+                            CashTransfer cashTrasnfer = new CashTransfer();
+                            cashTrasnfer.transType = "p"; //pull
+                            cashTrasnfer.posId = MainWindow.posID;
+                            cashTrasnfer.agentId = invoice.agentId;
+                            cashTrasnfer.invId = invoiceId;
+                            cashTrasnfer.transNum = SectionData.generateNumber('p', "c").ToString();
                             cashTrasnfer.cash = paid;
                             cashTrasnfer.side = "c"; // customer
                             cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
@@ -703,6 +764,8 @@ namespace POS.View
                 {
                     invoice = w.invoice;
                     _InvoiceType = invoice.invType;
+
+                    await fillInvoiceInputs(invoice);
                     // set title to bill
                     if (_InvoiceType == "sd")
                     {
@@ -719,7 +782,7 @@ namespace POS.View
                     // orange #FFA926 red #D22A17
                     brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
 
-                   await fillInvoiceInputs(invoice);
+                  
                 }
             }
             Window.GetWindow(this).Opacity = 1;
@@ -727,9 +790,9 @@ namespace POS.View
         private async Task getInvoiceCoupons(int invoiceId)
         {
             if (_InvoiceType != "sd")
-                selectedCoupons = await invoiceModel.GetInvoiceCoupons(invoiceId);
-            else
                 selectedCoupons = await invoiceModel.getOriginalCoupons(invoiceId);
+            else
+                selectedCoupons = await invoiceModel.GetInvoiceCoupons(invoiceId);
             foreach (CouponInvoice invCoupon in selectedCoupons)
             {
                 lst_coupons.Items.Add(invCoupon.couponCode);
@@ -759,31 +822,36 @@ namespace POS.View
                     // orange #FFA926 red #D22A17
                     brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                    await fillInvoiceInputs(invoice);
+                    mainInvoiceItems = invoiceItems;
                 }
             }
             Window.GetWindow(this).Opacity = 1;
         }
         private async Task fillInvoiceInputs(Invoice invoice)
         {
+            configurProcessType();
+
             _Sum = (decimal)invoice.total;
-            if(invoice.tax != null)
+            if (invoice.tax != null)
+            {
                 _Tax = (decimal)invoice.tax;
+                tb_taxValue.Text = invoice.tax.ToString();
+                tb_discount.Text = invoice.discountValue.ToString();
+            }
+            if (_InvoiceType == "sbd" || _InvoiceType == "sd")
+            {
+                _Tax = 0;
+                tb_taxValue.Text = _Tax.ToString() ;
+                tb_discount.Text = "0";
+            }
             cb_customer.SelectedValue = invoice.agentId;
             dp_desrvedDate.Text = invoice.deservedDate.ToString();
             if (invoice.totalNet != null)
                 tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
-            tb_taxValue.Text = invoice.tax.ToString();
+           
             tb_note.Text = invoice.notes;
             tb_sum.Text = invoice.total.ToString();
-            tb_discount.Text = invoice.discountValue.ToString();
-
-            //if (invoice.discountType == "1")
-            //    cb_typeDiscount.SelectedIndex = 1;
-            //else if (invoice.discountType == "2")
-            //    cb_typeDiscount.SelectedIndex = 2;
-            //else
-            //    cb_typeDiscount.SelectedIndex = 0;
-
+ 
             tb_barcode.Clear();
             tb_barcode.Focus();
 
@@ -811,7 +879,8 @@ namespace POS.View
             {
                // cb_paymentProcessType.SelectedValue = "cash";
             }
-            await getInvoiceCoupons(invoice.invoiceId);
+            if (_InvoiceType != "sbd" && _InvoiceType != "sd")
+                await getInvoiceCoupons(invoice.invoiceId); 
             // build invoice details grid
             await buildInvoiceDetails(invoice.invoiceId);
             inputEditable();
@@ -833,9 +902,9 @@ namespace POS.View
                     invoice = w.invoice;
 
                     this.DataContext = invoice;
- 
-                  await fillInvoiceInputs(invoice);
-                    
+                   
+                    await fillInvoiceInputs(invoice);
+                    mainInvoiceItems = invoiceItems;
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
                     // orange #FFA926 red #D22A17
                     brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
@@ -878,6 +947,7 @@ namespace POS.View
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
+                    dg_billDetails.Columns[5].IsReadOnly = false; //make price writable
                     cb_customer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
@@ -885,7 +955,7 @@ namespace POS.View
                     tb_discount.IsEnabled = false;
                     btn_save.IsEnabled = true;
                     btn_updateCustomer.IsEnabled = false;
-                    cb_paymentProcessType.IsEnabled = false;
+                    cb_paymentProcessType.IsEnabled = true;
                     cb_card.IsEnabled = false;
                     tb_processNum.IsEnabled = false;
                     tb_coupon.IsEnabled = false;
@@ -895,6 +965,7 @@ namespace POS.View
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                     dg_billDetails.Columns[3].IsReadOnly = false;
                     dg_billDetails.Columns[4].IsReadOnly = false;
+                    dg_billDetails.Columns[5].IsReadOnly = false; //make price writable
                     cb_customer.IsEnabled = true;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
@@ -912,6 +983,7 @@ namespace POS.View
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                    dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
                     cb_customer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
@@ -929,6 +1001,7 @@ namespace POS.View
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                    dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
                     cb_customer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
@@ -1253,7 +1326,7 @@ namespace POS.View
                             {
                                 CouponInvoice ci = new CouponInvoice();
                                 ci.couponId = couponModel.cId;
-                                ci.discountType = byte.Parse(couponModel.discountType);
+                                ci.discountType = couponModel.discountType;
                                 ci.discountValue = couponModel.discountValue;
 
                                 lst_coupons.Items.Add(couponModel.code);
@@ -1791,8 +1864,8 @@ namespace POS.View
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
                     // orange #FFA926 red #D22A17
                     brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-                    fillInvoiceInputs(invoice);
-
+                    await fillInvoiceInputs(invoice);
+                    mainInvoiceItems = invoiceItems;
                 }
             }
             Window.GetWindow(this).Opacity = 1;

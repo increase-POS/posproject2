@@ -119,9 +119,9 @@ namespace POS.View
             cb_area.DisplayMemberPath = "code";
 
 
-            //cb_area.SelectedIndex = 8;
-            //cb_areaPhone.SelectedIndex = 8;
-
+            //cb_areaMobile.SelectedIndex = 8;
+            cb_areaPhone.SelectedIndex = 8;
+            //cb_areaFax.SelectedIndex = 8;
 
         }
 
@@ -606,10 +606,10 @@ namespace POS.View
 
             if (banks is null)
                 await RefreshBanksList();
-            searchText = tb_search.Text;
+            searchText = tb_search.Text.ToLower();
             banksQuery = banks.Where(s => (s.phone.Contains(searchText) ||
-            s.name.Contains(searchText) ||
-            s.mobile.Contains(searchText)
+            s.name.ToLower().Contains(searchText) ||
+            s.mobile.ToLower().Contains(searchText)
             ) && s.isActive == tgl_bankState);
             RefreshBankView();
 

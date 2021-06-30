@@ -126,8 +126,9 @@ namespace POS.View
             cb_area.DisplayMemberPath = "code";
 
 
+            //cb_areaMobile.SelectedIndex = 8;
             cb_areaPhone.SelectedIndex = 8;
-            cb_area.SelectedIndex = 8;
+            //cb_areaFax.SelectedIndex = 8;
         }
 
         async Task<IEnumerable<City>> RefreshCity()
@@ -726,7 +727,7 @@ namespace POS.View
         SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
     }
 
-    private void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (firstchange == true)
         {
@@ -734,8 +735,9 @@ namespace POS.View
             {
                 if (cb_areaPhone.SelectedIndex >= 0)
                     countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
-
-                citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
+                    if (citynum is null)
+                        await RefreshCity();
+                    citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
 
                 cb_areaPhoneLocal.ItemsSource = citynumofcountry;
                 cb_areaPhoneLocal.SelectedValuePath = "cityId";

@@ -258,7 +258,7 @@ namespace POS.View.accounts
 
                 if (cashtrans != null)
                 {
-                    MessageBox.Show(cashtrans.cashTransId.ToString()+"-"+ cashtrans.bondId.ToString());
+             //       MessageBox.Show(cashtrans.cashTransId.ToString()+"-"+ cashtrans.bondId.ToString());
 
                     cb_depositTo.SelectedValue = cashtrans.side;
                     btn_add.IsEnabled = false;

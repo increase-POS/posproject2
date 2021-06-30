@@ -54,6 +54,7 @@ namespace POS_Server.Controllers
                         u.notes,
                         u.address,
                         u.isOnline,
+                        u.isActive,
                         u.image,
                     })
                     .ToList();

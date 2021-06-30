@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:POS.View.accounts"
              mc:Ignorable="d" 
+             xmlns:converters="clr-namespace:POS.converters"
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="675" d:DesignWidth="1100" Loaded="UserControl_Loaded" >
     <Grid x:Name="grid_ucposAccounts" >
@@ -157,12 +158,13 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
+                        <!--<converters:transTypeConverter x:Key="transTypeConverter"/>-->
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Transfer number" Binding="{Binding Path=transNum}"/>
                         <DataGridTextColumn Width="*"  Header="From pos"        Binding="{Binding Path=posName}"/>
                         <DataGridTextColumn Width="*"  Header="To pos"          Binding="{Binding Path=pos2Name}"/>
-                        <DataGridTextColumn Width="*"  Header="type"            Binding="{Binding Path=transType}"/>
+                        <!--<DataGridTextColumn Width="*"  Header="type"            Binding="{Binding processType,Converter={StaticResource transTypeConverter }}"/>-->
                         <DataGridTextColumn Width="*"  Header="Cash"            Binding="{Binding Path=cash}"/>
                     </DataGrid.Columns>
                 </DataGrid>

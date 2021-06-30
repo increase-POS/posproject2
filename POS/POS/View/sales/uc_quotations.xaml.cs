@@ -307,7 +307,7 @@ namespace POS.View.sales
                             {
                                 CouponInvoice ci = new CouponInvoice();
                                 ci.couponId = couponModel.cId;
-                                ci.discountType = byte.Parse(couponModel.discountType);
+                                ci.discountType = couponModel.discountType;
                                 ci.discountValue = couponModel.discountValue;
 
                                 lst_coupons.Items.Add(couponModel.code);

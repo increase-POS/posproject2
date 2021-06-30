@@ -230,7 +230,7 @@ namespace POS.View.accounts
                 this.DataContext = cashtrans;
                 if (cashtrans != null)
                 {
-                    MessageBox.Show(cashtrans.cashTransId.ToString() + "-" + cashtrans.bondId.ToString());
+                   // MessageBox.Show(cashtrans.cashTransId.ToString() + "-" + cashtrans.bondId.ToString());
 
                     btn_add.IsEnabled = false;
                     cb_depositFrom.SelectedValue = cashtrans.side;

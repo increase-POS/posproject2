@@ -394,6 +394,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Card Name....
+        /// </summary>
+        internal static string trCardNameHint {
+            get {
+                return ResourceManager.GetString("trCardNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Credit card.
         /// </summary>
         internal static string trCardTooltip {
@@ -2622,6 +2631,15 @@ namespace POS {
         internal static string trPopCanNotDeleteRequest {
             get {
                 return ResourceManager.GetString("trPopCanNotDeleteRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Card is already exist.
+        /// </summary>
+        internal static string trPopCardExist {
+            get {
+                return ResourceManager.GetString("trPopCardExist", resourceCulture);
             }
         }
         

@@ -133,6 +133,7 @@ namespace POS.View
 
             cb_areaMobile.SelectedIndex = 8;
             cb_areaPhone.SelectedIndex = 8;
+            //cb_areaFax.SelectedIndex = 8;
         }
 
         async Task<IEnumerable<City>> RefreshCity()
@@ -428,7 +429,6 @@ namespace POS.View
                     user.email = tb_email.Text;
                     user.address = tb_address.Text;
                     user.isActive = 1;
-                    user.isOnline = 1;
                     user.createUserId = MainWindow.userID.Value;
                     user.updateUserId = MainWindow.userID.Value;
                     user.notes = tb_details.Text;
@@ -785,7 +785,7 @@ namespace POS.View
             Tb_search_TextChanged(null, null);
         }
 
-        private void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (firstchange == true)
             {
@@ -793,7 +793,8 @@ namespace POS.View
                 {
                     if (cb_areaPhone.SelectedIndex >= 0)
                         countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
-
+                    if (citynum is null)
+                        await RefreshCity();
                     citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
 
                     cb_areaPhoneLocal.ItemsSource = citynumofcountry;
@@ -828,8 +829,8 @@ namespace POS.View
             }
             else
             {
-                brush.ImageSource = new BitmapImage(new Uri("pic/no-image-icon-125x125.png", UriKind.Relative));
-                img_user.Background = brush;
+                //brush.ImageSource = new BitmapImage(new Uri("pic/no-image-icon-125x125.png", UriKind.Relative));
+                //img_user.Background = brush;
             }
         }
 
@@ -1121,6 +1122,7 @@ namespace POS.View
         private void Btn_itemsInCards_Click(object sender, RoutedEventArgs e)
         {
             grid_datagrid.Visibility = Visibility.Collapsed;
+            grid_pagination.Visibility = Visibility.Visible;
             grid_cards.Visibility = Visibility.Visible;
             path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
@@ -1131,9 +1133,11 @@ namespace POS.View
         private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
         {
             grid_cards.Visibility = Visibility.Collapsed;
+            grid_pagination.Visibility = Visibility.Collapsed;
             grid_datagrid.Visibility = Visibility.Visible;
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+
+             path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
 
             Tb_search_TextChanged(null, null);
         }
@@ -1302,6 +1306,11 @@ namespace POS.View
             win_lvc win = new win_lvc(usersQuery, 3);
             win.ShowDialog();
             Window.GetWindow(this).Opacity = 1;
+        }
+
+        private void Btn_stores_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -210,6 +210,7 @@
     <Compile Include="Classes\Unit.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Classes\userSetValues.cs" />
+    <Compile Include="Classes\UsersLogs.cs" />
     <Compile Include="controlTemplate\UC_rectangleCard.xaml.cs">
       <DependentUpon>UC_rectangleCard.xaml</DependentUpon>
     </Compile>
@@ -421,6 +422,9 @@
     </Compile>
     <Compile Include="View\windows\wd_subscriptionFees.xaml.cs">
       <DependentUpon>wd_subscriptionFees.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_transItemsLocation.xaml.cs">
+      <DependentUpon>wd_transItemsLocation.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\wd_updateVendor.xaml.cs">
       <DependentUpon>wd_updateVendor.xaml</DependentUpon>
@@ -723,6 +727,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\windows\wd_transItemsLocation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\windows\wd_updateVendor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -824,6 +832,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="pic\increaseLogo.ico" />
+    <Resource Include="pic\increase-login-bg.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

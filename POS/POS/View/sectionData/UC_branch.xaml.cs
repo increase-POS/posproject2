@@ -122,8 +122,9 @@ namespace POS.View
             cb_area.DisplayMemberPath = "code";
 
 
-            //cb_areaPhone.SelectedIndex = 8;
-            //cb_area.SelectedIndex = 8;
+            //cb_areaMobile.SelectedIndex = 8;
+            cb_areaPhone.SelectedIndex = 8;
+            //cb_areaFax.SelectedIndex = 8;
         }
 
         async Task<IEnumerable<City>> RefreshCity()
@@ -226,7 +227,6 @@ namespace POS.View
             //if (cb_branch.Items.Count > 0)
             //    cb_branch.SelectedIndex = 0;
             fillCountries();
-
             fillCity();
             Keyboard.Focus(tb_code);
 

@@ -41,7 +41,7 @@
 	c0-1.4,0.2-2.8,0.6-4.2C68,27.3,58.3,36.5,57.9,48.2C57.5,60,66.7,69.7,78.5,70.1c11.7,0.4,21.5-8.8,21.9-20.6c0.1-2-0.2-4-0.7-5.9
 	C97.6,44.8,95.2,45.5,92.7,45.5z"/>
                     </Border>
-                    <TextBox  x:Name="tb_search" TabIndex="14"
+                    <TextBox  x:Name="tb_search" TabIndex="17"
                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                               Padding="10,0,5,0" BorderBrush="{x:Null}"
                               materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
@@ -195,7 +195,7 @@
                         </Grid.ColumnDefinitions>
 
 
-                        <Grid  Margin="15,0,0,0"  x:Name="grid_pagination">
+                        <Grid  Margin="15,0,0,0"  x:Name="grid_pagination" Visibility="Collapsed">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="32.5"/>
                                 <ColumnDefinition Width="30"/>
@@ -782,7 +782,7 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="The upper limit of the entitlement..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" MaxLength="100" PreviewTextInput="NumberValidationTextBox"
-                      TabIndex="11"
+                      TabIndex="12"
                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" PreviewKeyDown="tb_upperLimit_PreviewKeyDown" >
                                 <TextBox.ToolTip>
@@ -810,7 +810,7 @@
        
                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="auto" MinHeight="65" Margin="10,5,10,5" 
-                                     TabIndex="12">
+                                     TabIndex="13">
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_notes" Content="Notes"
                                               Placement="left" 
@@ -872,7 +872,7 @@
                     </Grid.ColumnDefinitions>
                     <Border>
 
-                        <Button x:Name="btn_add" TabIndex="10"
+                        <Button x:Name="btn_add" TabIndex="14"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1" Click="Btn_add_Click" >
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -894,7 +894,7 @@
                         </Border.ToolTip>
                     </Border>
                     <Border Grid.Column="1">
-                        <Button x:Name="btn_update"  TabIndex="11"
+                        <Button x:Name="btn_update"  TabIndex="15"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="1,1"  Click="Btn_update_Click" >
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -918,7 +918,7 @@
                         </Border.ToolTip>
                     </Border>
                     <Border Grid.Column="2">
-                        <Button x:Name="btn_delete"  TabIndex="12"
+                        <Button x:Name="btn_delete"  TabIndex="16"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1"  Click="Btn_delete_Click" >
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
