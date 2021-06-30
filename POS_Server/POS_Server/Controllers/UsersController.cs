@@ -53,9 +53,10 @@ namespace POS_Server.Controllers
                         u.email,
                         u.notes,
                         u.address,
-                        u.isOnline,
                         u.isActive,
+                        u.isOnline,
                         u.image,
+                      
                     })
                     .ToList();
 
@@ -187,6 +188,7 @@ namespace POS_Server.Controllers
                        u.address,
                        u.isOnline,
                        u.image,
+                       u.isActive,
                    })
                    .FirstOrDefault();
 
@@ -329,47 +331,65 @@ namespace POS_Server.Controllers
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete()
+        public IHttpActionResult Delete(int delUserId, int userId, bool final)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            int userId = 0;
-            int delUserId = 0;
+            
+           
+           
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
             }
-            if (headers.Contains("delUserId"))
-            {
-                delUserId = Convert.ToInt32(headers.GetValues("delUserId").First());
-            }
-            if (headers.Contains("userId"))
-            {
-                userId = Convert.ToInt32(headers.GetValues("userId").First());
-            }
+      
+       
+          
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
             if (valid)
             {
-                try
+                if (final)
                 {
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {                     
-                        users userDelete = entity.users.Find(delUserId);
-                        
-                        userDelete.isActive = 0;
-                        userDelete.updateDate = DateTime.Now;
-                        userDelete.updateUserId = userId;
-                        entity.SaveChanges();
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
 
-                        return Ok("User is Deleted Successfully");
+                            users usersDelete = entity.users.Find(delUserId);
+                            entity.users.Remove(usersDelete);
+                            entity.SaveChanges();
+                            return Ok("Deleted Successfully");
+                        }
+                    }
+                    catch
+                    {
+                        return NotFound();
                     }
                 }
-                catch
+                else
                 {
-                    return NotFound();
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            users userDelete = entity.users.Find(delUserId);
+
+                            userDelete.isActive = 0;
+                            userDelete.updateDate = DateTime.Now;
+                            userDelete.updateUserId = userId;
+                            entity.SaveChanges();
+
+                            return Ok("User is Deleted Successfully");
+                        }
+                    }
+                    catch
+                    {
+                        return NotFound();
+                    }
                 }
+              
             }
             else
                 return NotFound();

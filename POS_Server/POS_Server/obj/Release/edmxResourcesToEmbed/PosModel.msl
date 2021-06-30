@@ -927,5 +927,21 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="subscriptionFees">
+      <EntityTypeMapping TypeName="incposdbModel.subscriptionFees">
+        <MappingFragment StoreEntitySet="subscriptionFees">
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+          <ScalarProperty Name="createDate" ColumnName="createDate" />
+          <ScalarProperty Name="notes" ColumnName="notes" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="monthsCount" ColumnName="monthsCount" />
+          <ScalarProperty Name="membershipId" ColumnName="membershipId" />
+          <ScalarProperty Name="subscriptionFeesId" ColumnName="subscriptionFeesId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

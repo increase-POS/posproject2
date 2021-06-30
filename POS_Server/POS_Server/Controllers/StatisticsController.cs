@@ -968,38 +968,31 @@ else
                                     select new
                                     {
                                         branchId = g.Key,
-                                        name = g.Select(t => t.JBB.name).FirstOrDefault(),
-
-
+                                        branchName = g.Select(t => t.JBB.name).FirstOrDefault(),
+                                       
                                         countP = g.Where(t => t.I.invType == "p").Count(),
                                         countPb = g.Where(t => t.I.invType == "pb").Count(),
                                         //  countS = g.Where(t => t.I.invType == "s").Count(),
                                         countD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd").Count(),
                                       //  totalS = g.Where(t => t.I.invType == "s").Sum(S => S.I.total),
                                         //totalNetS = g.Where(t => t.I.invType == "s").Sum(S => S.I.totalNet),
+                                        /*
                                         totalP = g.Where(t => t.I.invType == "p").Sum(S => S.I.total),
                                         totalPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.total),
                                         totalD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd").Sum(S => S.I.total),
-
+                                       
                                         totalNetP = g.Where(t => t.I.invType == "p").Sum(S => S.I.totalNet),
                                         totalNetPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.totalNet),
                                         totalNetD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd").Sum(S => S.I.totalNet),
-
+                                      
                                         paid = g.Where(t => t.I.invType == "p").Sum(S => S.I.paid),
                                         deserved = g.Where(t => t.I.invType == "p").Sum(S => S.I.deserved),
                                         discountValue = g.Where(t => t.I.invType == "p").Sum(S => S.I.discountType == "1" ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
-
+                                      
                                         paidPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.paid),
                                         deservedPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.deserved),
                                         discountValuePb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.discountType == "1" ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
-
-                                        paidD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd").Sum(S => S.I.paid),
-                                        deservedD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd"),
-                                        discountValueD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd").Sum(S => S.I.discountType == "1" ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
-
-
-                                        //  I.invoiceId,
-                                        //    JBB.name
+                                           */                             
                                     }).ToList();
 
                     /*
@@ -1029,5 +1022,93 @@ else
             //else
             return NotFound();
         }
+
+
+        /*
+        //  فواتير المشتريات ومرتجع المشتريات ومسودات كل فرع
+        [HttpGet]
+        [Route("GetinvTypeByBranch")]
+        public IHttpActionResult GetinvTypeByBranch()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invListm = (from I in entity.invoices
+                                    join B in entity.branches on I.branchId equals B.branchId into JB
+                                    from JBB in JB.DefaultIfEmpty()
+                                    where (JBB.branchId != 1)
+                                 && (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
+
+                                    // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
+                                   
+                                    select new
+                                    {
+                                        branchId = g.Key,
+                                        branchName = g.Select(t => t.JBB.name).FirstOrDefault(),
+
+                                        countP = g.Where(t => t.I.invType == "p").Count(),
+                                        countPb = g.Where(t => t.I.invType == "pb").Count(),
+                                        //  countS = g.Where(t => t.I.invType == "s").Count(),
+                                        countD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd").Count(),
+                                        //  totalS = g.Where(t => t.I.invType == "s").Sum(S => S.I.total),
+                                        //totalNetS = g.Where(t => t.I.invType == "s").Sum(S => S.I.totalNet),
+                                      
+                                        totalP = g.Where(t => t.I.invType == "p").Sum(S => S.I.total),
+                                        totalPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.total),
+                                        totalD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd").Sum(S => S.I.total),
+                                       
+                                        totalNetP = g.Where(t => t.I.invType == "p").Sum(S => S.I.totalNet),
+                                        totalNetPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.totalNet),
+                                        totalNetD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd").Sum(S => S.I.totalNet),
+                                      
+                                        paid = g.Where(t => t.I.invType == "p").Sum(S => S.I.paid),
+                                        deserved = g.Where(t => t.I.invType == "p").Sum(S => S.I.deserved),
+                                        discountValue = g.Where(t => t.I.invType == "p").Sum(S => S.I.discountType == "1" ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
+                                       /*
+                                        paidPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.paid),
+                                        deservedPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.deserved),
+                                        discountValuePb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.discountType == "1" ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
+                                         
+                                    }).ToList();
+
+                    /*
+          if(S.I.discountType == "1")
+{
+    return S.I.discountValue;
+}else if(S.I.discountType == "2")
+{
+   return (S.I.discountValue / 100);
+}
+else
+{
+    return 0;
+}
+
+
+
+
+                    if (invListm == null)
+                        return NotFound();
+                    else
+                        return Ok(invListm);
+                }
+
+            }
+
+            //else
+            return NotFound();
+        }
+        */
     }
 }

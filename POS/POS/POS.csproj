@@ -155,6 +155,7 @@
     <Compile Include="Classes\Bank.cs" />
     <Compile Include="Classes\Bonds.cs" />
     <Compile Include="Classes\Branch.cs" />
+    <Compile Include="Classes\BranchesUsers.cs" />
     <Compile Include="Classes\BranchStore.cs" />
     <Compile Include="Classes\Card.cs" />
     <Compile Include="Classes\CashTransfer.cs" />

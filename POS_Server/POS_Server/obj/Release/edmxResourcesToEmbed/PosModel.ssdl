@@ -796,6 +796,21 @@
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
   </EntityType>
+  <EntityType Name="subscriptionFees">
+    <Key>
+      <PropertyRef Name="subscriptionFeesId" />
+    </Key>
+    <Property Name="subscriptionFeesId" Type="int" Nullable="false" />
+    <Property Name="membershipId" Type="int" />
+    <Property Name="monthsCount" Type="int" />
+    <Property Name="Amount" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="notes" Type="ntext" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
+    <Property Name="isActive" Type="tinyint" />
+  </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>
       <PropertyRef Name="diagram_id" />
@@ -904,6 +919,18 @@
       </Principal>
       <Dependent Role="agentMemberships">
         <PropertyRef Name="membershipId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_agentMemberships_subscriptionFees">
+    <End Role="subscriptionFees" Type="Self.subscriptionFees" Multiplicity="0..1" />
+    <End Role="agentMemberships" Type="Self.agentMemberships" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="subscriptionFees">
+        <PropertyRef Name="subscriptionFeesId" />
+      </Principal>
+      <Dependent Role="agentMemberships">
+        <PropertyRef Name="subscriptionFeesId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2779,6 +2806,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_subscriptionFees_memberships">
+    <End Role="memberships" Type="Self.memberships" Multiplicity="0..1" />
+    <End Role="subscriptionFees" Type="Self.subscriptionFees" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="memberships">
+        <PropertyRef Name="membershipId" />
+      </Principal>
+      <Dependent Role="subscriptionFees">
+        <PropertyRef Name="membershipId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_units_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="units" Type="Self.units" Multiplicity="*" />
@@ -2938,6 +2977,7 @@
     <EntitySet Name="setting" EntityType="Self.setting" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="setValues" EntityType="Self.setValues" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="shippingCompanies" EntityType="Self.shippingCompanies" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="subscriptionFees" EntityType="Self.subscriptionFees" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="units" EntityType="Self.units" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
@@ -2953,6 +2993,10 @@
     </AssociationSet>
     <AssociationSet Name="FK_agentMemberships_memberships2" Association="Self.FK_agentMemberships_memberships2">
       <End Role="memberships" EntitySet="memberships" />
+      <End Role="agentMemberships" EntitySet="agentMemberships" />
+    </AssociationSet>
+    <AssociationSet Name="FK_agentMemberships_subscriptionFees" Association="Self.FK_agentMemberships_subscriptionFees">
+      <End Role="subscriptionFees" EntitySet="subscriptionFees" />
       <End Role="agentMemberships" EntitySet="agentMemberships" />
     </AssociationSet>
     <AssociationSet Name="FK_agentMemberships_users1" Association="Self.FK_agentMemberships_users1">
@@ -3578,6 +3622,10 @@
     <AssociationSet Name="FK_shippingCompanies_users2" Association="Self.FK_shippingCompanies_users2">
       <End Role="users" EntitySet="users" />
       <End Role="shippingCompanies" EntitySet="shippingCompanies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_subscriptionFees_memberships" Association="Self.FK_subscriptionFees_memberships">
+      <End Role="memberships" EntitySet="memberships" />
+      <End Role="subscriptionFees" EntitySet="subscriptionFees" />
     </AssociationSet>
     <AssociationSet Name="FK_units_users" Association="Self.FK_units_users">
       <End Role="users" EntitySet="users" />

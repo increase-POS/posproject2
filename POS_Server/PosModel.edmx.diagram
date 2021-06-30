@@ -229,6 +229,9 @@
         <AssociationConnector Association="incposdbModel.FK_usersLogs_users" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_agentMemberships_cashTransfer" />
         <AssociationConnector Association="incposdbModel.FK_cashTransfer_agentMemberships" />
+        <EntityTypeShape EntityType="incposdbModel.subscriptionFees" Width="1.5" PointX="5.25" PointY="113.25" />
+        <AssociationConnector Association="incposdbModel.FK_agentMemberships_subscriptionFees" />
+        <AssociationConnector Association="incposdbModel.FK_subscriptionFees_memberships" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

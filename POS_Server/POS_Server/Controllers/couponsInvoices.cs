@@ -91,7 +91,7 @@ namespace POS_Server.Controllers
                          createUserId = c.createUserId,
                          updateUserId = c.updateUserId,
                          discountValue = x.discountValue, 
-                         //discountType = x.discountType,
+                         discountType = x.discountType,
                          couponCode = x.code,
                      }).ToList();
                    

@@ -269,6 +269,7 @@ namespace POS_Server.Controllers
             return Ok(1);
         }
 
+
         private void  increaseItemQuantity(int itemUnitId,int locationId, int quantity, int userId)
         {
             using (incposdbEntities entity = new incposdbEntities())
@@ -320,16 +321,17 @@ namespace POS_Server.Controllers
                 ItemLocationModel itemObject = JsonConvert.DeserializeObject<ItemLocationModel>(itemLocation, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    itemsLocations oldItemL = new itemsLocations();
-                    oldItemL = entity.itemsLocations.Find(itemLocId);
-                   
-                    oldItemL.quantity -= itemObject.quantity;
+                    var oldItemL = entity.itemsLocations.Find(itemLocId);
+                    int userId = (int)itemObject.updateUserId;
+                    long newQuantity =(long) oldItemL.quantity - (long) itemObject.quantity;
+                    oldItemL.quantity = (long)newQuantity;
                     oldItemL.updateDate = DateTime.Now;
-                    oldItemL.updateUserId = itemObject.updateUserId;
+                   oldItemL.updateUserId = userId;
+
                     if (oldItemL.quantity == 0)
                         entity.itemsLocations.Remove(oldItemL);
                  
-                    entity.SaveChanges();
+                   
                     var newtemLocation = (from il in entity.itemsLocations
                                           where il.itemUnitId == itemObject.itemUnitId && il.locationId == itemObject.locationId
                                           && il.startDate == itemObject.startDate && il.endDate == itemObject.endDate
@@ -341,30 +343,32 @@ namespace POS_Server.Controllers
                     {
                         newItemL = new itemsLocations();
                         newItemL.createDate = DateTime.Now;
-                        newItemL.createUserId = itemObject.createUserId;
-                        newItemL.endDate = itemObject.endDate;
-                        newItemL.startDate = itemObject.startDate;
-                        newItemL.storeCost = itemObject.storeCost;
+                        newItemL.createUserId = (int)itemObject.createUserId;
+                        if(itemObject.endDate != null)
+                            newItemL.endDate = itemObject.endDate;
+                        if (itemObject.startDate != null)
+                            newItemL.startDate = itemObject.startDate;
+                       // newItemL.storeCost = (int)itemObject.storeCost;
                         newItemL.updateDate = DateTime.Now;
-                        newItemL.updateUserId = itemObject.createUserId;
-                        newItemL.itemUnitId = itemObject.itemUnitId;
-                        newItemL.locationId = itemObject.locationId;
+                        newItemL.updateUserId = (int)itemObject.createUserId;
+                        newItemL.itemUnitId = (int)itemObject.itemUnitId;
+                        newItemL.locationId = (int)itemObject.locationId;
                         newItemL.note = itemObject.note;
-                        newItemL.quantity = itemObject.quantity;
+                        newItemL.quantity = (long) itemObject.quantity;
                         entity.itemsLocations.Add(newItemL);
                     }
                     else
                     {
                         newItemL = new itemsLocations();
                         newItemL = entity.itemsLocations.Find(newtemLocation.itemsLocId);
-
-                        oldItemL.quantity += itemObject.quantity;
-                        oldItemL.updateDate = DateTime.Now;
-                        oldItemL.updateUserId = itemObject.updateUserId;
-                        entity.SaveChanges();
+                        newQuantity = (long) newItemL.quantity + (long)itemObject.quantity;
+                        newItemL.quantity = (long) newQuantity;
+                        newItemL.updateDate = DateTime.Now;
+                        newItemL.updateUserId = (int)itemObject.updateUserId;
+                       
                     }
-                    
-                    return Ok("here");
+                    entity.SaveChanges();
+                    return Ok();
                 }
             }
             return NotFound();
@@ -378,7 +382,7 @@ namespace POS_Server.Controllers
             {
                 var itemInLocs = (from b in entity.branches
                                   where b.branchId == branchId
-                                  join s in entity.sections on b.branchId equals s.branchId
+                                  join s in entity.sections on b.branchId equals s.branchId where s.isFreeZone != 1
                                   join l in entity.locations on s.sectionId equals l.sectionId
                                   join il in entity.itemsLocations on l.locationId equals il.locationId
                                   where il.itemUnitId == itemUnitId && il.quantity > 0
@@ -449,7 +453,7 @@ namespace POS_Server.Controllers
                     newQuant = (decimal)(breakNum * upperUnit.unitValue);
                     var itemInLocs1 = (from b in entity.branches
                                        where b.branchId == branchId
-                                       join s in entity.sections on b.branchId equals s.branchId
+                                       join s in entity.sections on b.branchId equals s.branchId where s.isFreeZone != 1
                                        join l in entity.locations on s.sectionId equals l.sectionId
                                        join il in entity.itemsLocations on l.locationId equals il.locationId
                                        where il.itemUnitId == upperUnit.itemUnitId && il.quantity > 0
@@ -539,7 +543,7 @@ namespace POS_Server.Controllers
             {
                 var itemInLocs = (from b in entity.branches
                                   where b.branchId == branchId
-                                  join s in entity.sections on b.branchId equals s.branchId
+                                  join s in entity.sections on b.branchId equals s.branchId where s.isFreeZone != 1
                                   join l in entity.locations on s.sectionId equals l.sectionId
                                   join il in entity.itemsLocations on l.locationId equals il.locationId
                                   where il.itemUnitId == itemUnitId && il.quantity > 0
@@ -613,6 +617,37 @@ namespace POS_Server.Controllers
                 itemL.updateUserId = userId;
                 entity.SaveChanges();
             }
+        }
+        [HttpPost]
+        [Route("decraseAmounts")]
+        public Boolean decraseAmounts(string itemLocationObject, int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            itemLocationObject = itemLocationObject.Replace("\\", string.Empty);
+            itemLocationObject = itemLocationObject.Trim('"');
+
+            if (valid)
+            {
+                List<itemsTransfer> itemList = JsonConvert.DeserializeObject<List<itemsTransfer>>(itemLocationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    foreach (itemsTransfer item in itemList)
+                    {
+                        updateItemQuantity(item.itemUnitId.Value, branchId, (int)item.quantity);
+                    }
+                }
+            }
+            return false;
         }
         // DELETE api/<controller>/5
         public void Delete(int id)
