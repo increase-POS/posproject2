@@ -32,26 +32,64 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var bondsList = entity.bondes
-                  
-                   .Select(c => new BondsModel() {
-                    bondId=c.bondId,
-                    number=c.number,
-                    amount=c.amount ,
-                    deserveDate=c.deserveDate,
-                    type=c.type,
-                    isRecieved=c. isRecieved,
-                   notes = c.notes,
+                    var bondsList = (from B in entity.bondes
+                  join C in entity.cashTransfer on B.cashTransId equals C.cashTransId into JC
+                                    from JCC in JC.DefaultIfEmpty()
 
-                   createDate =c.createDate,
-                   updateDate = c.updateDate,
-                   createUserId = c.createUserId,
-                   updateUserId=  c.updateUserId,
-                    isActive=c.isActive,
-                       cashTransId= c.cashTransId,
-                   })
+                                    select new BondsModel{
+
+                 bondId= B.bondId,
+                                        number=  B.number,
+                                        amount= B.amount ,
+                                        deserveDate=B.deserveDate,
+                                        type=  B.type,
+                                        isRecieved=B. isRecieved,
+                                        notes = B.notes,
+
+                                        createDate = B.createDate,
+                                        updateDate = B.updateDate,
+                                        createUserId = B.createUserId,
+                                        updateUserId = B.updateUserId,
+                                        isActive = B.isActive,
+                                        cashTransId = B.cashTransId,
+                     
+                                        // cash trans
+                                        ctcashTransId=    JCC.cashTransId,
+cttransType= JCC.transType,
+ctposId= JCC.posId,
+ctuserId= JCC.userId,
+ctagentId= JCC.agentId,
+ctinvId= JCC.invId,
+cttransNum= JCC.transNum,
+ctcreateDate= JCC.createDate,
+ctupdateDate= JCC.updateDate,
+ctcash= JCC.cash,
+ctupdateUserId= JCC.updateUserId,
+ctcreateUserId= JCC.createUserId,
+ctnotes= JCC.notes,
+ctposIdCreator= JCC.posIdCreator,
+ctisConfirm= JCC.isConfirm,
+ctcashTransIdSource= JCC.cashTransIdSource,
+ctside= JCC.side,
+ctdocName= JCC.docName,
+ctdocNum= JCC.docNum,
+ctdocImage= JCC.docImage,
+ctbankId= JCC.bankId ,
+
+ctprocessType= JCC.processType,
+ctcardId= JCC.cardId,
+ctbondId= JCC.bondId,
+
+
+
+                                    })
                    .ToList();
 
+
+                    /*
+
+ 
+                     * */
                     // can delet or not
                     if (bondsList.Count > 0)
                     {

@@ -106,10 +106,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/18/2018 16:44:54</publishTime>
     </File>
     <File Include="bin/POS_Server.dll">
-      <publishTime>07/01/2021 01:29:01</publishTime>
+      <publishTime>07/01/2021 20:34:07</publishTime>
     </File>
     <File Include="bin/POS_Server.pdb">
-      <publishTime>07/01/2021 01:29:01</publishTime>
+      <publishTime>07/01/2021 20:34:07</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>05/24/2018 23:38:22</publishTime>

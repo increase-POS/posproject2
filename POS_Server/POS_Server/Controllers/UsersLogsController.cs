@@ -12,8 +12,6 @@ namespace POS_Server.Controllers
 
 
 
-
-
     [RoutePrefix("api/UsersLogs")]
     public class UsersLogsController : ApiController
     {
@@ -234,24 +232,26 @@ canDelete
                         var locationEntity = entity.Set<usersLogs>();
                         if (newObject.logId == 0)
                         {
-                        
+                            // signIn
+
+                            newObject.sInDate = DateTime.Now;
                          
-                      
+
                             locationEntity.Add(newObject);
                             entity.SaveChanges();
                             message = newObject.logId.ToString();
                         }
                         else
-                        {
+                        {//signOut
                             var tmpObject = entity.usersLogs.Where(p => p.logId == newObject.logId).FirstOrDefault();
 
                       
 
                             tmpObject.logId = newObject.logId;
-                             tmpObject.sInDate=newObject.sInDate;
-                             tmpObject.sOutDate=newObject.sOutDate;
-                             tmpObject.posId=newObject.posId;
-                            tmpObject.userId = newObject.userId;
+                           //  tmpObject.sInDate=newObject.sInDate;
+                             tmpObject.sOutDate= newObject.sOutDate;
+                         //    tmpObject.posId=newObject.posId;
+                          //  tmpObject.userId = newObject.userId;
 
 
                             entity.SaveChanges();
