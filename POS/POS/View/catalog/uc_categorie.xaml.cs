@@ -95,10 +95,15 @@ namespace POS.View
         private async void fillCategories()
         {
             if (categories is null)
-
             await RefrishCategories();
+            var listCa = categories.ToList();
 
-            cb_parentCategorie.ItemsSource = categories.ToList();
+                var cat = new Category();
+                cat.categoryId = 0;
+                cat.name = "-";
+                listCa.Insert(0, cat);
+
+            cb_parentCategorie.ItemsSource = listCa;
             cb_parentCategorie.SelectedValuePath = "categoryId";
             cb_parentCategorie.DisplayMemberPath = "name";
 
@@ -171,11 +176,13 @@ namespace POS.View
         }
         private void Cb_parentCategorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if (cb_parentCategorie.SelectedValue != null)
-            //    parentCategorieSelctedValue = int.Parse(cb_parentCategorie.SelectedValue.ToString());
-            //else
-            //    parentCategorieSelctedValue = 0;
-
+            if (cb_parentCategorie.Text.Equals("")) parentCategorieSelctedValue = 0;
+            else parentCategorieSelctedValue = Convert.ToInt32(cb_parentCategorie.SelectedValue);
+            if (parentCategorieSelctedValue != category.categoryId)
+            {
+                cb_parentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_errorParentCategory.Visibility = Visibility.Collapsed;
+            }
         }
       
         #region
@@ -230,7 +237,7 @@ namespace POS.View
 
             if (cb_parentCategorie.Text.Equals("")) parentCategorieSelctedValue = 0;
             else parentCategorieSelctedValue = Convert.ToInt32(cb_parentCategorie.SelectedValue);
-
+            
             if ((!tb_name.Text.Equals("")) && (!tb_categoryCode.Text.Equals("")))
             {
                 if (iscodeExist)
@@ -277,9 +284,7 @@ namespace POS.View
                     ///
 
                     await RefrishCategories();
-
                     Txb_searchcategories_TextChanged(null, null);
-
                     fillCategories();
                 }
             }
@@ -302,7 +307,9 @@ namespace POS.View
 
             if ((!tb_name.Text.Equals("")) && (!tb_categoryCode.Text.Equals("")))
             {
-                if (iscodeExist)
+                if(parentCategorieSelctedValue != category.categoryId)
+                {
+                    if (iscodeExist)
                     SectionData.validateDuplicateCode(tb_categoryCode, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
                 else
                 {
@@ -320,7 +327,7 @@ namespace POS.View
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    
+
 
                     if (isImgPressed)
                     {
@@ -343,6 +350,13 @@ namespace POS.View
 
                     Txb_searchcategories_TextChanged(null, null);
 
+                }
+            }
+                else
+                {
+                    p_errorParentCategory.Visibility = Visibility.Visible;
+                    tt_errorParentCategorie.Content = MainWindow.resourcemanager.GetString("trCategorieParentError");
+                    cb_parentCategorie.Background = (Brush)bc.ConvertFrom("#15FF0000");
                 }
             }
 
@@ -368,6 +382,7 @@ namespace POS.View
 
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
@@ -407,7 +422,7 @@ namespace POS.View
                         bool b = await categoryModel.deleteCategory(category.categoryId, MainWindow.userID.Value, category.canDelete);
 
                         if (b) //SectionData.popUpResponse("", popupContent);
-                            Toaster.ShowWarning(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                         else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
@@ -420,7 +435,6 @@ namespace POS.View
             Btn_clear_Click(sender, e);
 
         }
-
         private async void activate()
         {//activate
             category.isActive = 1;
@@ -437,7 +451,6 @@ namespace POS.View
             Txb_searchcategories_TextChanged(null, null);
 
         }
-
         #endregion
 
 
@@ -870,43 +883,7 @@ namespace POS.View
                 }
             }
             
-            /*
-            List<Button> listBtn = new List<Button>();
-
-
-            int count = 0;
-            foreach (var item in categoriesPath.Reverse())
-            {
-                if (categories.Where(x => x.parentId == item.categoryId).Count() != 0)
-                {
-                    Button b = new Button();
-                    b.Content = " > " + item.name + " ";
-                    b.Padding = new Thickness(0);
-                    b.Margin = new Thickness(0);
-                    b.Background = null;
-                    b.BorderThickness = new Thickness(0);
-                    //if (count + 1 == categoriesPath.Count())
-                    //    b.FontFamily = Application.Current.Resources["Font-cairo-bold"] as FontFamily;
-                    //else
-                    b.FontFamily = Application.Current.Resources["Font-cairo-light"] as FontFamily;
-                    b.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
-                    //b.FontWeight = FontWeights.Bold;
-                    b.FontSize = 14;
-                    Grid.SetColumn(b, count);
-                    b.DataContext = item;
-                    b.Name = "category" + item.categoryId;
-                    b.Tag = item.categoryId;
-                    b.Click += new RoutedEventHandler(getCategoryIdFromPath);
-                    count++;
-                    listBtn.Add(b);
-                }
-            }
-            grid_categoryControlPath.Children.Clear();
-            foreach (var item in listBtn)
-            {
-                grid_categoryControlPath.Children.Add(item);
-            }
-          */
+           
 
 
             

@@ -457,6 +457,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لا يمكن ربط الفئة بنفسها.
+        /// </summary>
+        internal static string trCategorieParentError {
+            get {
+                return ResourceManager.GetString("trCategorieParentError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الفئات.
         /// </summary>
         internal static string trCategories {
@@ -489,6 +498,15 @@ namespace POS {
         internal static string trClear {
             get {
                 return ResourceManager.GetString("trClear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إغلاق.
+        /// </summary>
+        internal static string trClose {
+            get {
+                return ResourceManager.GetString("trClose", resourceCulture);
             }
         }
         
@@ -2086,6 +2104,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تسجيل الدخول.
+        /// </summary>
+        internal static string trLogIn {
+            get {
+                return ResourceManager.GetString("trLogIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to معلومات التسجيل.
         /// </summary>
         internal static string trLoginInformation {
@@ -2635,6 +2662,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الوحدة موجودة سابقاً.
+        /// </summary>
+        internal static string trPopUnitExist {
+            get {
+                return ResourceManager.GetString("trPopUnitExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تم التعديل بنجاح.
         /// </summary>
         internal static string trPopUpdate {
@@ -2919,6 +2955,15 @@ namespace POS {
         internal static string trRemainQuantityHint {
             get {
                 return ResourceManager.GetString("trRemainQuantityHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تذكرني.
+        /// </summary>
+        internal static string trRememberMe {
+            get {
+                return ResourceManager.GetString("trRememberMe", resourceCulture);
             }
         }
         
@@ -3634,6 +3679,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to اسم المستخدم غير موجود.
+        /// </summary>
+        internal static string trUserNotFound {
+            get {
+                return ResourceManager.GetString("trUserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to المستخدمون.
         /// </summary>
         internal static string trUsers {
@@ -3783,6 +3837,15 @@ namespace POS {
         internal static string trWorkInformation {
             get {
                 return ResourceManager.GetString("trWorkInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to كلمة المرور خاطئة.
+        /// </summary>
+        internal static string trWrongPassword {
+            get {
+                return ResourceManager.GetString("trWrongPassword", resourceCulture);
             }
         }
         

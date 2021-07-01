@@ -72,6 +72,7 @@ namespace POS.View
         }
         string searchText = "";
         byte tgl_unitState;
+        BrushConverter bc = new BrushConverter();
 
         private void DG_unit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -151,7 +152,6 @@ namespace POS.View
 
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var bc = new BrushConverter();
 
             if (tb_name.Text.Equals(""))
             {
@@ -189,7 +189,8 @@ namespace POS.View
         {
             tb_name.Clear();
             tb_notes.Clear();
-
+            p_errorName.Visibility = Visibility.Collapsed;
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             unit = new Unit();
         }
 
@@ -246,6 +247,13 @@ namespace POS.View
                     Tb_search_TextChanged(null, null);
 
                     Btn_clear_Click(null, null);
+                }
+                else
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUnitExist"), animation: ToasterAnimation.FadeIn);
+                    p_errorName.Visibility = Visibility.Visible;
+                    tt_errorName.Content = MainWindow.resourcemanager.GetString("trPopUnitExist");
+                    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
                 }
             }
         }

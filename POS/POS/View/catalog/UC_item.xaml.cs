@@ -294,9 +294,9 @@ namespace POS.View
 
             // fill parent items
             //cb_parentItem.ItemsSource = items.ToList();
-            cb_parentItem.SelectedValuePath = "itemId";
-            cb_parentItem.DisplayMemberPath = "name";
-
+            //cb_parentItem.SelectedValuePath = "itemId";
+            //cb_parentItem.DisplayMemberPath = "name";
+            fillParentItemCombo();
             cb_parentItem.SelectedIndex = -1;
             cb_categorie.SelectedIndex = -1;
             cb_itemType.SelectedIndex = 0;
@@ -1829,6 +1829,7 @@ namespace POS.View
         {
             grid_itemsDatagrid.Visibility = Visibility.Collapsed;
             grid_itemCards.Visibility = Visibility.Visible;
+            grid_pagination.Visibility = Visibility.Visible;
             path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
 
@@ -1840,8 +1841,9 @@ namespace POS.View
         private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
         {
             grid_itemCards.Visibility = Visibility.Collapsed;
+            grid_pagination.Visibility = Visibility.Collapsed;
             grid_itemsDatagrid.Visibility = Visibility.Visible;
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
 
             tgl_itemIsActive.IsChecked = (tglItemState == 1) ? true : false;
@@ -2099,6 +2101,39 @@ namespace POS.View
                 if ((int)cb_selectUnit.SelectedValue == (int)cb_unit.SelectedValue)
                     tb_count.Text = "1";
             }
+        }
+
+        private void Cb_parentItem_KeyUp(object sender, KeyEventArgs e)
+        {
+            ComboBox cbm = sender as ComboBox;
+            SectionData.searchInComboBox(cbm);
+        }
+
+        private void Cb_categorie_KeyUp(object sender, KeyEventArgs e)
+        {
+            ComboBox cbm = sender as ComboBox;
+            SectionData.searchInComboBox(cbm);
+        }
+        private async void fillParentItemCombo()
+        {
+            if (items is null)
+                await RefrishItems();
+
+
+            var listCa = items.Where(x => x.isActive == 1).ToList();
+            var cat = new Item();
+            cat.itemId = 0;
+            cat.name = "-";
+            listCa.Insert(0, cat);
+            cb_parentItem.ItemsSource = listCa;
+            cb_parentItem.SelectedValuePath = "itemId";
+            cb_parentItem.DisplayMemberPath = "name";
+
+            //List<Item> itemsList = new List<Item>();
+            //itemsList.AddRange(items.Where(x => x.isActive == tglItemState).ToList());
+            //for (int i = 0; i < itemsList.Count(); i++)
+            //    if (!cb_parentItem.Items.Contains(itemsList[i].parentId))
+            //        cb_parentItem.Items.Add(itemsList[i].parentId);
         }
     }
 }

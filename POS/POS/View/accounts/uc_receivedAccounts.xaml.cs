@@ -169,10 +169,10 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
 
             dg_receivedAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            dg_receivedAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositTo");
-            dg_receivedAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trRecepient");
-            dg_receivedAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
-            //dg_receivedAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            //dg_receivedAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositTo");
+            dg_receivedAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecepient");
+            dg_receivedAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
+            dg_receivedAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
             tt_code.Content = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             tt_depositFrom.Content = MainWindow.resourcemanager.GetString("trDepositTo");
@@ -266,7 +266,7 @@ namespace POS.View.accounts
             {
                 searchText = tb_search.Text.ToLower();
                 cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
-                || s.cash.ToLower().ToString().Contains(searchText)
+                || s.cash.ToString().ToLower().Contains(searchText)
                 )
                 && (s.side == "v" || s.side == "c" || s.side == "u" ||  s.side == "m")
                 && s.transType == "d" 

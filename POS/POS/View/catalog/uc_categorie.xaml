@@ -635,13 +635,11 @@
                                 </DockPanel>
 
                                 <ComboBox x:Name="cb_parentCategorie"  Grid.Row="3"
-                                                                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-
+                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                               Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                               materialDesign:HintAssist.Hint="Select Parent category "  
                                               TextBlock.FontSize="12"   Background="#f8f8f8"  
                                               SelectionChanged="Cb_parentCategorie_SelectionChanged"
-                                          
                                               Height="40"    Margin="10,5,10,5"
                                               BorderBrush="#737373" BorderThickness="0"
                                               TabIndex="3" IsEditable="True">
@@ -654,7 +652,7 @@
                                     </ComboBox.ToolTip>
                                 </ComboBox>
                                 <Path Fill="#E81123" Grid.Row="3" Stretch="Fill" Margin="5,5,15,5"
-                                          HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                      x:Name="p_errorParentCategory"    HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                                           VerticalAlignment="Center" Width="15"  Height="15"
                                           Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52
                                           6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 

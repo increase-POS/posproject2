@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:POS.View.accounts"
              mc:Ignorable="d" 
+             xmlns:converters="clr-namespace:POS.converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="675" d:DesignWidth="1000" Loaded="UserControl_Loaded" >
     <Grid x:Name="grid_ucBonds" >
@@ -142,13 +143,27 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
+                        <converters:depositorTypeConverter x:Key="depositorTypeConverter"/>
+                        <converters:processTypeConverter   x:Key="processTypeConverter"/>
+                        <converters:depositorNameConverter x:Key="depositorNameConverter"/>
+                        <converters:transTypeConverter     x:Key="transTypeConverter"/>
+
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="*"  Header="Number" Binding="{Binding Path=number}"/>
+                        <!--Binding="{Binding Path=.,Converter={StaticResource depositorNameConverter }}"-->
+                        <!--<DataGridTextColumn Width="*"  Header="Number" Binding="{Binding Path=number}"/>
                         <DataGridTextColumn Width="*"  Header="Deposit From"   Binding="{Binding Path=agentId}"/>
                         <DataGridTextColumn Width="*"  Header="Depositor"     Binding="{Binding Path=agentName}"/>
                         <DataGridTextColumn Width="*"  Header="Amount" Binding="{Binding Path=Amount}"/>
-                        <DataGridTextColumn Width="*"  Header="Deserve Date" Binding="{Binding Path=deserveDate}"/>
+                        <DataGridTextColumn Width="*"  Header="Deserve Date" Binding="{Binding Path=deserveDate}"/>-->
+
+                        <DataGridTextColumn Width="*"  Header="Number" Binding="{Binding Path=number}"/>
+                        <!--<DataGridTextColumn Width="*"  Header="Deposit From"    Binding="{Binding side,Converter={StaticResource depositorTypeConverter }}"  Visibility="Collapsed" />-->
+                        <!--<DataGridTextColumn Width="*"  Header="Depositor"       Binding="{Binding Path=.,Converter={StaticResource depositorNameConverter }}" />-->
+                        <DataGridTextColumn Width="*"  Header="Depositor"       Binding="{Binding Path=side}" />
+                        <DataGridTextColumn Width="*"   Header="Process Type"   Binding="{Binding Path =type,Converter={StaticResource transTypeConverter }}"/>
+                        <DataGridTextColumn Width="*"  Header="Cash"            Binding="{Binding Path=amount}"/>
+                        <DataGridTextColumn Width="*"  Header="Deserve Date"    Binding="{Binding Path=deserveDate}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>

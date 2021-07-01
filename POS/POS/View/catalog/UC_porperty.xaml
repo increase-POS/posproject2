@@ -310,7 +310,8 @@
 
                     <DockPanel LastChildFill="True" Grid.Row="0">
                         <TextBlock x:Name="txt_property" Text="Property" Foreground="#737373" FontSize="10" VerticalAlignment="Center" Margin="5,5,5,5"/>
-                        <Button DockPanel.Dock="Right" x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click" Margin="5,1" ToolTip="clear" TabIndex="13">
+                        <Button DockPanel.Dock="Right" x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0" Background="{x:Null}"
+                                BorderBrush="{x:Null}" Click="Btn_clear_Click" Margin="5,1" ToolTip="clear" TabIndex="13">
                             <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle" HorizontalAlignment="Center" Grid.Column="0" VerticalAlignment="Center" Width="20" Height="20">
                                 <materialDesign:PackIcon.ToolTip>
                                     <ToolTip x:Name="tt_clear" Content="clear" Placement="left" HorizontalOffset="5" PlacementRectangle="50,0,0,0" VerticalOffset="20"/>
@@ -320,14 +321,11 @@
                         <Separator Background="#999999" VerticalAlignment="Center" Width="auto" />
                     </DockPanel>
 
-
-
                     <TextBox x:Name="tb_name" Grid.Row="1" Text="{Binding name, Mode=OneWay}" Padding="10,0,5,0" 
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Name..."  
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="20" LostFocus="Tb_propertyName_LostFocus" TextChanged="Tb_propertyName_TextChanged"
-                                     
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="40"  Margin="10,5,10,5" >
                     </TextBox>

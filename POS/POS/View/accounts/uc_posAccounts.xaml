@@ -158,13 +158,13 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
-                        <!--<converters:transTypeConverter x:Key="transTypeConverter"/>-->
+                        <converters:transTypeConverter x:Key="transTypeConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Transfer number" Binding="{Binding Path=transNum}"/>
                         <DataGridTextColumn Width="*"  Header="From pos"        Binding="{Binding Path=posName}"/>
                         <DataGridTextColumn Width="*"  Header="To pos"          Binding="{Binding Path=pos2Name}"/>
-                        <!--<DataGridTextColumn Width="*"  Header="type"            Binding="{Binding processType,Converter={StaticResource transTypeConverter }}"/>-->
+                        <DataGridTextColumn Width="*"  Header="type"            Binding="{Binding transType,Converter={StaticResource transTypeConverter }}"/>
                         <DataGridTextColumn Width="*"  Header="Cash"            Binding="{Binding Path=cash}"/>
                     </DataGrid.Columns>
                 </DataGrid>
@@ -185,7 +185,7 @@
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                 </materialDesign:PackIcon.ToolTip>
                             </materialDesign:PackIcon>
                         </Button>
@@ -200,7 +200,7 @@
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                 </materialDesign:PackIcon.ToolTip>
                             </materialDesign:PackIcon>
                         </Button>
@@ -244,7 +244,7 @@
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                     </Path.ToolTip>
                                 </Path>
                             </Grid>
@@ -262,7 +262,7 @@
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                 </Path.ToolTip>
                             </Path>
                         </Button>
@@ -273,7 +273,7 @@
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,25,0,0"
-                                              VerticalOffset="-20"/>
+                                              VerticalOffset="-45"/>
                             </TextBlock.ToolTip>
                         </TextBlock>
 
@@ -434,9 +434,9 @@
  
                         <TextBox x:Name="tb_cash" MaxLength="20" Grid.Row="4"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      Text="{Binding cash, Mode=OneWay}" 
-                                    Padding="10,0,5,0"
+                                     Padding="10,0,5,0"
                                      BorderThickness="1" 
                                      materialDesign:HintAssist.Hint="Cash..."  
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12"

@@ -18,12 +18,14 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Resources;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using POS.Classes;
 using POS.View;
 using POS.View.accounts;
 using POS.View.Settings;
+using POS.View.windows;
 using WPFTabTip;
 
 namespace POS
@@ -46,6 +48,7 @@ namespace POS
         public static string Address = "Aleppo";
         internal static int? userID ;
         internal static User userLogin;
+        internal static int? userLogInID;
         internal static int? posID = 53;
         internal static int? branchID = 18;
         bool isHome = false;
@@ -326,6 +329,27 @@ namespace POS
 
         }
 
+        User userModel = new User();
+        UsersLogs userLogsModel = new UsersLogs();
+     
+        private async void BTN_logOut_Click(object sender, RoutedEventArgs e)
+        {//log out
+            //update lognin record
+            UsersLogs userLog = new UsersLogs();
+            userLog = await userLogsModel.GetByID(userLogInID.Value);
+            await userLogsModel.Save(userLog);
+
+            //update user record
+            userLogin.isOnline = 0;
+            userLogin.isActive = 1;
+            await userModel.saveUser(userLogin);
+
+            //open login window and close this window
+            winLogIn log = new winLogIn();
+            log.Show();
+            this.Close();
+        }
+
         private void BTN_SectionData_Click(object sender, RoutedEventArgs e)
         {
             colorTextRefreash(txt_sectiondata);
@@ -352,8 +376,8 @@ namespace POS
             isHome = true;
 
         }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        ImageBrush myBrush = new ImageBrush();
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             //translate
             if (lang.Equals("en"))
@@ -364,9 +388,47 @@ namespace POS
             //user info
             txt_userName.Text = userLogin.name;
             txt_userJob.Text = userLogin.job;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(userLogin.image))
+                {
+                    byte[] imageBuffer = await userModel.downloadImage(userLogin.image); // read this as BLOB from your DB
+
+                    var bitmapImage = new BitmapImage();
+
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+
+                    img_userLogin.Fill = new ImageBrush(bitmapImage);
+                }
+                else
+                {
+                    clearImg();
+                }
+            }
+            catch
+            {
+                clearImg();
+            }
             BTN_Home_Click(null, null);
         }
 
+        private void clearImg()
+        {
+            Uri resourceUri = new Uri("pic/no-image-icon-90x90.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            myBrush.ImageSource = temp;
+            img_userLogin.Fill = myBrush;
+
+        }
 
         private void BTN_purchases_Click(object sender, RoutedEventArgs e)
         {

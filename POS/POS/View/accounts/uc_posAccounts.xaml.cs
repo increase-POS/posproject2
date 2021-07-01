@@ -158,8 +158,12 @@ namespace POS.View.accounts
             #endregion
 
             //dg_posAccounts.ItemsSource = await cashModel.GetCashTransferAsync("all", "p");
-            await RefreshCashesList();
-            Tb_search_TextChanged(null, null);
+            this.Dispatcher.Invoke(() =>
+            {
+                Tb_search_TextChanged(null, null);
+            });
+            //await RefreshCashesList();
+            //Tb_search_TextChanged(null, null);
 
         }
 

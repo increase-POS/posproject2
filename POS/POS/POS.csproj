@@ -235,6 +235,8 @@
     <Compile Include="converters\depositorTypeConverter.cs" />
     <Compile Include="converters\invoiceTypeConverter.cs" />
     <Compile Include="converters\levelGroupConverter.cs" />
+    <Compile Include="converters\processTypeConverter.cs" />
+    <Compile Include="converters\transTypeConverter.cs" />
     <Compile Include="converters\unitItemsListConverter.cs" />
     <Compile Include="Keyboard\AnimationHelper.cs" />
     <Compile Include="Keyboard\EnvironmentEx.cs" />

@@ -128,6 +128,7 @@ namespace POS.View
                 txt_header.Text = MainWindow.resourcemanager.GetString("trProperty");
             txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
             txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
+            btn_updateValue.Content = MainWindow.resourcemanager.GetString("trUpdate");
             txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
             tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
             tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
@@ -216,11 +217,15 @@ namespace POS.View
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
-            p_errorName.Visibility = Visibility.Collapsed;
             var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
             tb_name.Clear();
+            p_errorName.Visibility = Visibility.Collapsed;
+            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             dg_subProperty.ItemsSource = null;
+            tb_valueName.Clear();
+            p_errorNameSub.Visibility = Visibility.Collapsed;
+            tb_valueName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             property = new Property();
         }
         //************************************************
@@ -269,9 +274,6 @@ namespace POS.View
 
             await RefreshPropertiesList();
             Tb_search_TextChanged(null, null);
-
-            //var prop = await propertyModel.getProperty();
-            //dg_property.ItemsSource = prop;
             Btn_clear_Click(sender, e);
         }
         private async Task activateProperty()
@@ -416,37 +418,52 @@ namespace POS.View
             var propertiesitems = await propertiesItemsModel.GetPropertyItems(property.propertyId);
             dg_subProperty.ItemsSource = propertiesitems;       
         }
-
-        private async  void Btn_add_Click(object sender, RoutedEventArgs e)
+       
+        private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {
             //add
-            property = new Property
+            var bc = new BrushConverter();
+            if (tb_valueName.Text.Equals(""))
             {
-                name = tb_name.Text,                
-                createUserId = 2,
-                updateUserId = 2,
-                isActive = 1
-            };
+                p_errorNameSub.Visibility = Visibility.Visible;
+                tt_errorNameSub.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                tb_valueName.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                p_errorNameSub.Visibility = Visibility.Collapsed;
+                tb_valueName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            if (!tb_valueName.Text.Equals(""))
+            {
+                property = new Property
+                {
+                    name = tb_name.Text,
+                    createUserId = 2,
+                    updateUserId = 2,
+                    isActive = 1
+                };
 
-            Boolean res = await propertyModel.saveProperty(property);
+                Boolean res = await propertyModel.saveProperty(property);
 
-            if (res) 
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-            else 
-                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                if (res)
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                else
+                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-            tb_name.Text = null;
+                //tb_name.Text = null;
 
 
-            await RefreshPropertiesList();
-            Tb_search_TextChanged(null, null);
+                await RefreshPropertiesList();
+                Tb_search_TextChanged(null, null);
 
-            //var properties = await propertyModel.getProperty();
-            //dg_property.ItemsSource = properties;
+                //var properties = await propertyModel.getProperty();
+                //dg_property.ItemsSource = properties;
+            }
         }
-
         private async void Btn_updateValue_Click(object sender, RoutedEventArgs e)
         {
+
             //check mandatory values
             var bc = new BrushConverter();
             if (tb_valueName.Text.Equals(""))

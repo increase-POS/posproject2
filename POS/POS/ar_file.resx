@@ -1377,4 +1377,25 @@
   <data name="trCardNameHint" xml:space="preserve">
     <value>اسم البطاقة...</value>
   </data>
+  <data name="trPopUnitExist" xml:space="preserve">
+    <value>الوحدة موجودة سابقاً</value>
+  </data>
+  <data name="trCategorieParentError" xml:space="preserve">
+    <value>لا يمكن ربط الفئة بنفسها</value>
+  </data>
+  <data name="trClose" xml:space="preserve">
+    <value>إغلاق</value>
+  </data>
+  <data name="trLogIn" xml:space="preserve">
+    <value>تسجيل الدخول</value>
+  </data>
+  <data name="trRememberMe" xml:space="preserve">
+    <value>تذكرني</value>
+  </data>
+  <data name="trUserNotFound" xml:space="preserve">
+    <value>اسم المستخدم غير موجود</value>
+  </data>
+  <data name="trWrongPassword" xml:space="preserve">
+    <value>كلمة المرور خاطئة</value>
+  </data>
 </root>

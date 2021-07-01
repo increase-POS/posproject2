@@ -465,8 +465,9 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
 
             dg_bonds.Columns[0].Header = MainWindow.resourcemanager.GetString("trDocNumTooltip");
+            //dg_bonds.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
             dg_bonds.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            dg_bonds.Columns[2].Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
+            dg_bonds.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
             dg_bonds.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
             dg_bonds.Columns[4].Header = MainWindow.resourcemanager.GetString("trDocDateTooltip");
 

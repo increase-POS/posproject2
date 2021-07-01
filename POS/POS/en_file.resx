@@ -1398,4 +1398,25 @@
   <data name="trCardNameHint" xml:space="preserve">
     <value>Card Name...</value>
   </data>
+  <data name="trCategorieParentError" xml:space="preserve">
+    <value>A category cannot be associated with itself</value>
+  </data>
+  <data name="trClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="trLogIn" xml:space="preserve">
+    <value>Log In</value>
+  </data>
+  <data name="trPopUnitExist" xml:space="preserve">
+    <value>this Unit already exists</value>
+  </data>
+  <data name="trRememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="trUserNotFound" xml:space="preserve">
+    <value>Username not found</value>
+  </data>
+  <data name="trWrongPassword" xml:space="preserve">
+    <value>Wrong password</value>
+  </data>
 </root>

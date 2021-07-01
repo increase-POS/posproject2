@@ -685,7 +685,12 @@
                            TextBlock.FontSize="12"   Background="#f8f8f8"
               
               Height="40"   Margin="10,5,10,5"
-                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_parentItem_SelectionChanged">
+                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_parentItem_SelectionChanged"
+                                      
+                                       IsEditable="True"
+                                         IsTextSearchEnabled="False"
+                                  StaysOpenOnEdit="True"
+                                  KeyUp="Cb_parentItem_KeyUp">
 
                             </ComboBox>
                             <Path Fill="#E81123" Grid.Row="3" x:Name="p_errorParentItem" Stretch="Fill" Margin="5,5,15,5"
@@ -705,7 +710,12 @@
                            TextBlock.FontSize="12"   Background="#f8f8f8" 
             
                 Height="40"   Margin="10,5,10,5" LostFocus="input_LostFocus"
-                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_categorie_SelectionChanged">
+                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_categorie_SelectionChanged"
+                                       
+                                        IsEditable="True"
+                                          IsTextSearchEnabled="False"
+                                  StaysOpenOnEdit="True"
+                                  KeyUp="Cb_categorie_KeyUp">
 
                             </ComboBox>
                             <Path Fill="#E81123" Grid.Row="4" x:Name="p_errorCategorie" Stretch="Fill" Margin="5,5,15,5"
