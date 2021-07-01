@@ -409,10 +409,10 @@ namespace POS.View
         {//search
             if (locations is null)
                 await RefreshLocationsList();
-            searchText = tb_search.Text;
-            locationsQuery = locations.Where(s => (s.x.Contains(searchText) ||
-            s.y.Contains(searchText) ||
-            s.z.Contains(searchText)
+            searchText = tb_search.Text.ToLower();
+            locationsQuery = locations.Where(s => (s.x.ToLower().Contains(searchText) ||
+            s.y.ToLower().Contains(searchText) ||
+            s.z.ToLower().Contains(searchText)
             ) && s.isActive == tgl_locationState && s.isFreeZone != 1);
             RefreshLocationView();
         }

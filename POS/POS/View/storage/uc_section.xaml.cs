@@ -410,8 +410,8 @@ namespace POS.View
 
             if (sections is null)
                 await RefreshSectionsList();
-            searchText = tb_search.Text;
-            sectionsQuery = sections.Where(s => (s.name.Contains(searchText) 
+            searchText = tb_search.Text.ToLower();
+            sectionsQuery = sections.Where(s => (s.name.ToLower().Contains(searchText) 
             ) && s.isActive == tgl_sectionState && s.isFreeZone != 1);
             RefreshSectionView();
         }

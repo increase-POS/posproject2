@@ -703,10 +703,10 @@ namespace POS.View
         {//search
             if (coupons is null)
                 await RefreshCouponsList();
-            searchText = tb_search.Text;
-            couponsQuery = coupons.Where(s => (s.code.Contains(searchText) ||
-            s.name.Contains(searchText) ||
-            s.barcode.Contains(searchText) 
+            searchText = tb_search.Text.ToLower();
+            couponsQuery = coupons.Where(s => (s.code.ToLower().Contains(searchText) ||
+            s.name.ToLower().Contains(searchText) ||
+            s.barcode.ToLower().Contains(searchText) 
             ) && s.isActive == tgl_couponState);
             RefreshCouponView();
         }

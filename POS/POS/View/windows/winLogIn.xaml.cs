@@ -59,7 +59,7 @@ namespace POS.View.windows
               
                 //make user online
                 user.isOnline = 1;
-                //user.isActive = 1;
+                user.isActive = 1;
                 string s = await userModel.saveUser(user);
 
                 //create lognin record

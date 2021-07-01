@@ -219,13 +219,13 @@ namespace POS.View.accounts
                 await RefreshBondsList();
             //this.Dispatcher.Invoke(() =>
             //{
-                searchText = tb_search.Text;
+                searchText = tb_search.Text.ToLower();
 
                 bondsQuery = bonds.Where(s => (
-                s.number.Contains(searchText)
+                s.number.ToLower().Contains(searchText)
                 ||
-                s.amount.ToString().Contains(searchText)
-                || s.type.ToString().Contains(searchText)
+                s.amount.ToString().ToLower().Contains(searchText)
+                || s.type.ToString().ToLower().Contains(searchText)
                 )
                 && s.updateDate.Value.Date >= sDate
                 && s.updateDate.Value.Date <= eDate

@@ -253,10 +253,10 @@ namespace POS.View.accounts
                 await RefreshCashesList();
             this.Dispatcher.Invoke(() =>
             {
-                searchText = tb_search.Text;
-                cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                || s.cash.ToString().Contains(searchText)
-                || s.bankName.Contains(searchText)
+                searchText = tb_search.Text.ToLower();
+                cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
+                || s.cash.ToString().ToLower().Contains(searchText)
+                || s.bankName.ToLower().Contains(searchText)
                 //|| s.docNum.Contains(searchText)////?????because of empty values
                 )
                 && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date

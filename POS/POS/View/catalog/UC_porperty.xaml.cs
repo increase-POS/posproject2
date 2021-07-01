@@ -497,8 +497,8 @@ namespace POS.View
 
             if (properties is null)
                 await RefreshPropertiesList();
-            searchText = tb_search.Text;
-            propertiesQuery = properties.Where(s => s.name.Contains(searchText) && s.isActive == tgl_PropertyState);
+            searchText = tb_search.Text.ToLower();
+            propertiesQuery = properties.Where(s => s.name.ToLower().Contains(searchText) && s.isActive == tgl_PropertyState);
             refreshPropertiesGrid();
         }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)

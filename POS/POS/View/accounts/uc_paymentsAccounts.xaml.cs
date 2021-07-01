@@ -304,9 +304,9 @@ namespace POS.View.accounts
                 await RefreshCashesList();
             this.Dispatcher.Invoke(() =>
             {
-                searchText = tb_search.Text;
-                cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                || s.cash.ToString().Contains(searchText)
+                searchText = tb_search.Text.ToLower();
+                cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
+                || s.cash.ToString().ToLower().Contains(searchText)
                 )
                 && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m")
                 && s.transType == "p" 

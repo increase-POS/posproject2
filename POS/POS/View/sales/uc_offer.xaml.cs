@@ -417,9 +417,9 @@ namespace POS.View
         {//search
             if (offers is null)
                 await RefreshOffersList();
-            searchText = tb_search.Text;
-            offersQuery = offers.Where(s => (s.code.Contains(searchText) ||
-            s.name.Contains(searchText)
+            searchText = tb_search.Text.ToLower();
+            offersQuery = offers.Where(s => (s.code.ToLower().Contains(searchText) ||
+            s.name.ToLower().Contains(searchText)
             ) && s.isActive == tgl_offerState);
             RefreshOfferView();
         }

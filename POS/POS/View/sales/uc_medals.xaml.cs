@@ -168,8 +168,8 @@ namespace POS.View.sales
         {//search
             if (medals is null)
                 await RefreshMedalsList();
-            searchText = tb_search.Text;
-            medalsQuery = medals.Where(s => s.name.Contains(searchText)
+            searchText = tb_search.Text.ToLower();
+            medalsQuery = medals.Where(s => s.name.ToLower().Contains(searchText)
             && s.isActive == tgl_medalState);
 
             RefreshMedalView();

@@ -369,8 +369,8 @@ namespace POS.View
 
             if (units is null)
                 await RefreshUnitsList();
-            searchText = tb_search.Text;
-            unitsQuery = units.Where(s => s.name   .Contains(searchText) && s.isActive == tgl_unitState);
+            searchText = tb_search.Text.ToLower();
+            unitsQuery = units.Where(s => s.name.ToLower().Contains(searchText) && s.isActive == tgl_unitState);
             refreshUnitsGrid();
         }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
