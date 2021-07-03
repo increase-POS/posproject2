@@ -1489,7 +1489,9 @@ namespace POS.View
         }
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            ReportParameter[] paramarr = new ReportParameter[19];
+
+            ReportParameter[] paramarr = new ReportParameter[20];
+
             string addpath;
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
@@ -1498,29 +1500,18 @@ namespace POS.View
             }
             else addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
 
+            //
 
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
             if (invoice.invoiceId > 0)
             {
                 invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                paramarr[6] = new ReportParameter("invNumber", invoice.invNumber);
-                paramarr[7] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
-                paramarr[8] = new ReportParameter("invDate", reportclass.DateToString(invoice.invDate));
-                paramarr[9] = new ReportParameter("invTime", reportclass.TimeToString(invoice.invTime));
-                paramarr[10] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
-                paramarr[11] = new ReportParameter("total", reportclass.DecTostring(invoice.total));
-                paramarr[12] = new ReportParameter("discountValue", reportclass.DecTostring(invoice.discountValue));
-                paramarr[13] = new ReportParameter("totalNet", reportclass.DecTostring(invoice.totalNet));
-                paramarr[14] = new ReportParameter("paid", reportclass.DecTostring(invoice.paid));
-                paramarr[15] = new ReportParameter("deserved", reportclass.DecTostring(invoice.deserved));
-                paramarr[16] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
-                paramarr[17] = new ReportParameter("tax", "0");
-                paramarr[18] = new ReportParameter("barcodeimage", "file:\\" + reportclass.BarcodeToImage(invoice.invNumber.ToString(), "invnum"));
                 ReportCls.checkLang();
 
                 clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
+                paramarr = reportclass.fillPurInvReport(invoice, paramarr);
 
                 rep.SetParameters(paramarr);
                 rep.Refresh();
@@ -1534,7 +1525,6 @@ namespace POS.View
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
             }
-
 
 
 
@@ -1564,7 +1554,8 @@ namespace POS.View
 
         private async void btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
-            ReportParameter[] paramarr = new ReportParameter[19];
+            ReportParameter[] paramarr = new ReportParameter[20];
+
             string addpath;
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
@@ -1573,32 +1564,24 @@ namespace POS.View
             }
             else addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
 
+            //
 
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
             if (invoice.invoiceId > 0)
             {
                 invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                paramarr[6] = new ReportParameter("invNumber", invoice.invNumber);
-                paramarr[7] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
-                paramarr[8] = new ReportParameter("invDate", reportclass.DateToString(invoice.invDate));
-                paramarr[9] = new ReportParameter("invTime", reportclass.TimeToString(invoice.invTime));
-                paramarr[10] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
-                paramarr[11] = new ReportParameter("total", reportclass.DecTostring(invoice.total));
-                paramarr[12] = new ReportParameter("discountValue", reportclass.DecTostring(invoice.discountValue));
-                paramarr[13] = new ReportParameter("totalNet", reportclass.DecTostring(invoice.totalNet));
-                paramarr[14] = new ReportParameter("paid", reportclass.DecTostring(invoice.paid));
-                paramarr[15] = new ReportParameter("deserved", reportclass.DecTostring(invoice.deserved));
-                paramarr[16] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
-                paramarr[17] = new ReportParameter("tax", "0");
-                paramarr[18] = new ReportParameter("barcodeimage", "file:\\" + reportclass.BarcodeToImage(invoice.invNumber.ToString(), "invnum"));
                 ReportCls.checkLang();
 
                 clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
+                paramarr = reportclass.fillPurInvReport(invoice, paramarr);
 
                 rep.SetParameters(paramarr);
                 rep.Refresh();
+
+
+
                 LocalReportExtensions.PrintToPrinter(rep);
             }
         }

@@ -483,6 +483,7 @@
                                   <Style>
                                     <FontFamily>Montserrat</FontFamily>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>0.00;(0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -503,6 +504,7 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>

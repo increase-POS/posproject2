@@ -46,6 +46,7 @@ namespace POS
         public static string Fax = "0215232233";
         public static string Mobile = "+963967376542";
         public static string Address = "Aleppo";
+        public static string Currency = "KD";
         internal static int? userID ;
         internal static User userLogin;
         internal static int? userLogInID;

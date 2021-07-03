@@ -104,6 +104,43 @@ namespace POS.Classes
 
         }
 
+
+        public string BarcodeToImage28(string barcodeStr, string imagename)
+        {
+            // create encoding object
+            Zen.Barcode.Code128BarcodeDraw barcode = Zen.Barcode.BarcodeDrawFactory.Code128WithChecksum;
+            string addpath = @"\Thumb\" + imagename + ".png";
+            string imgpath = this.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            if (File.Exists(imgpath))
+            {
+                File.Delete(imgpath);
+            }
+            if (barcodeStr != "")
+            {
+                System.Drawing.Bitmap serial_bitmap = (System.Drawing.Bitmap)barcode.Draw(barcodeStr, 60);
+                // System.Drawing.ImageConverter ic = new System.Drawing.ImageConverter();
+
+                serial_bitmap.Save(imgpath);
+
+                //  generate bitmap
+                //  img_barcode.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(serial_bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            }
+            else
+            {
+
+                imgpath = "";
+            }
+            if (File.Exists(imgpath))
+            {
+                return imgpath;
+            }
+            else
+            {
+                return "";
+            }
+
+
+        }
         public static  bool checkLang()
         {
             bool isArabic;
@@ -310,6 +347,35 @@ namespace POS.Classes
             }
 
             return words;
+        }
+
+        //
+        public ReportParameter[] fillPurInvReport(Invoice invoice ,ReportParameter[] paramarr)
+        {
+            checkLang();
+
+
+           
+             //  rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
+
+           
+            paramarr[6] = new ReportParameter("invNumber", invoice.invNumber);
+            paramarr[7] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
+            paramarr[8] = new ReportParameter("invDate", DateToString(invoice.invDate));
+            paramarr[9] = new ReportParameter("invTime", TimeToString(invoice.invTime));
+            paramarr[10] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
+            paramarr[11] = new ReportParameter("total", DecTostring(invoice.total));
+            paramarr[12] = new ReportParameter("discountValue", DecTostring(invoice.discountValue));
+            paramarr[13] = new ReportParameter("totalNet", DecTostring(invoice.totalNet));
+            paramarr[14] = new ReportParameter("paid", DecTostring(invoice.paid));
+            paramarr[15] = new ReportParameter("deserved", DecTostring(invoice.deserved));
+            paramarr[16] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
+            paramarr[17] = new ReportParameter("tax", "0");
+            paramarr[18] = new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invoice.invNumber.ToString(), "invnum"));
+            paramarr[19] = new ReportParameter("Currency",MainWindow.Currency);
+
+
+            return paramarr;
         }
     }
 }
