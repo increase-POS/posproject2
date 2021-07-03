@@ -254,7 +254,7 @@ namespace POS.View.windows
                 generateLocationListX(location);
                 foreach (var item in locations)
                 {
-                    if (AllLocations.Where(x => x.name == item.name).Count() == 0)
+                    if (AllLocations.Where(x => x.name == item.name && x.branchId == MainWindow.branchID).Count() == 0)
                     {
                         item.createUserId = MainWindow.userID;
                         item.updateUserId = MainWindow.userID;
@@ -267,7 +267,7 @@ namespace POS.View.windows
                     }
                 }
 
-                if (s.Equals("Location Is Added Successfully"))
+                if (!s.Equals("-1"))
                 {
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     Btn_clear_Click(null, null);

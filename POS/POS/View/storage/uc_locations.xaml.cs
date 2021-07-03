@@ -136,7 +136,7 @@ namespace POS.View
 
             translate();
 
-            btn_addRange.IsEnabled = false;
+            //btn_addRange.IsEnabled = false;
 
             Keyboard.Focus(tb_x);
 
@@ -166,7 +166,7 @@ namespace POS.View
             p_errorY.Visibility = Visibility.Collapsed;
             p_errorZ.Visibility = Visibility.Collapsed;
 
-            btn_addRange.IsEnabled = false;
+            //btn_addRange.IsEnabled = false;
 
             tb_x.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_y.Background = (Brush)bc.ConvertFrom("#f8f8f8");
@@ -203,7 +203,7 @@ namespace POS.View
 
                 string s = await locationModel.saveLocation(location);
 
-                if (s.Equals("Location Is Added Successfully")) 
+                if (!s.Equals("-1")) 
                 {
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     Btn_clear_Click(null, null);
@@ -228,7 +228,7 @@ namespace POS.View
 
                 string s = await locationModel.saveLocation(location);
 
-                if (s.Equals("Location Is Updated Successfully")) 
+                if (!s.Equals("-1")) 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                 else 
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -320,7 +320,7 @@ namespace POS.View
 
             if (location != null)
             {
-                btn_addRange.IsEnabled = true;
+                //btn_addRange.IsEnabled = true;
 
                 #region delete
                 if (location.canDelete)

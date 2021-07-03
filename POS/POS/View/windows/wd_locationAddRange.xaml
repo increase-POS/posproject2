@@ -78,7 +78,7 @@
                     </Grid.RowDefinitions>
                     <TextBox x:Name="tb_fromX"  Grid.Row="1" Text="{Binding x, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="From X..."  PreviewKeyDown="validationControl_PreviewKeyDown" 
-                                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                      TabIndex="0"                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                 PreviewTextInput="validationControl_PreviewTextInput"
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue"  MaxLength="20" LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
@@ -102,7 +102,7 @@
                     </Path>
                     <TextBox x:Name="tb_fromY" Grid.Row="2" Text="{Binding y, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="From Y..."   PreviewKeyDown="validationControl_PreviewKeyDown"
-                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     TabIndex="2"    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                               PreviewTextInput="validationControl_PreviewTextInput"
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
@@ -126,7 +126,7 @@
                     </Path>
                     <TextBox x:Name="tb_fromZ" Grid.Row="3" Text="{Binding z, Mode=OneWay}" Padding="10,0,5,0"    PreviewKeyDown="validationControl_PreviewKeyDown"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="From Z..." 
-                                                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                 TabIndex="4"                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      PreviewTextInput="validationControl_PreviewTextInput"
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
@@ -161,7 +161,7 @@
                     </Grid.RowDefinitions>
                     <TextBox x:Name="tb_toX"  Grid.Row="1" Text="{Binding x, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="To X..."  PreviewKeyDown="validationControl_PreviewKeyDown"
-                                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                          TabIndex="1"                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                  PreviewTextInput="validationControl_PreviewTextInput"
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue"  MaxLength="20" LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
@@ -185,7 +185,7 @@
                     </Path>
                     <TextBox x:Name="tb_toY" Grid.Row="2" Text="{Binding y, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="To Y..."   PreviewKeyDown="validationControl_PreviewKeyDown"
-                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                  TabIndex="3"       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                               PreviewTextInput="validationControl_PreviewTextInput"
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
@@ -209,7 +209,7 @@
                     </Path>
                     <TextBox x:Name="tb_toZ" Grid.Row="3" Text="{Binding z, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="To Z..." PreviewKeyDown="validationControl_PreviewKeyDown"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 TabIndex="5"    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                     PreviewTextInput="validationControl_PreviewTextInput"
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
@@ -233,7 +233,7 @@
                     </Path>
                 </Grid>
                 <Button Content="Save" Grid.Row="5" Grid.ColumnSpan="5"
-                       Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"
+                   TabIndex="6"     Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"
                           Background="#178DD2" BorderBrush="{x:Null}"  />
             </Grid>
 

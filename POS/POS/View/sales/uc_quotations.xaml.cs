@@ -153,9 +153,11 @@ namespace POS.View.sales
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            var window = Window.GetWindow(this);
-            window.KeyDown -= HandleKeyPress;
-            window.KeyDown += HandleKeyPress;
+            MainWindow.mainWindow.KeyDown += HandleKeyPress;
+
+            //var window = Window.GetWindow(this);
+            //window.KeyDown -= HandleKeyPress;
+            //window.KeyDown += HandleKeyPress;
 
             if (MainWindow.lang.Equals("en"))
             {
@@ -278,7 +280,7 @@ namespace POS.View.sales
             switch (prefix)
             {
                 case "si":// this barcode for invoice
-                   
+
                     Btn_newDraft_Click(null, null);
                     invoice = await invoiceModel.GetInvoicesByNum(barcode);
                     _InvoiceType = invoice.invType;
@@ -454,8 +456,8 @@ namespace POS.View.sales
             {
                 await addInvoice(_InvoiceType);
             }
-            else if(billDetails.Count == 0)
-            { 
+            else if (billDetails.Count == 0)
+            {
                 clearInvoice();
                 _InvoiceType = "qd";
             }
@@ -500,7 +502,7 @@ namespace POS.View.sales
             tb_barcode.Focus();
             inputEditable();
         }
-      
+
         private void inputEditable()
         {
             switch (_InvoiceType)
@@ -565,7 +567,7 @@ namespace POS.View.sales
             // build invoice NUM like storCode_PI_sequence exp: 123_PI_2
             if (invoice.invNumber == null)
             {
-                invoice.invNumber = await generateInvNumber("si"); 
+                invoice.invNumber = await generateInvNumber("si");
             }
 
             // save invoice in DB
@@ -579,7 +581,7 @@ namespace POS.View.sales
                     ci.InvoiceId = invoiceId;
                     ci.createUserId = MainWindow.userID;
                 }
-                await invoiceModel.saveInvoiceCoupons(selectedCoupons, invoiceId,invoice.invType);
+                await invoiceModel.saveInvoiceCoupons(selectedCoupons, invoiceId, invoice.invType);
                 #endregion
                 // add invoice details
                 invoiceItems = new List<ItemTransfer>();
@@ -618,7 +620,7 @@ namespace POS.View.sales
         #region Get Id By Click  Y
         public async void ChangeItemIdEvent(int itemId)
         {
-           if(items != null) item = items.ToList().Find(c => c.itemId == itemId);
+            if (items != null) item = items.ToList().Find(c => c.itemId == itemId);
 
             if (item != null)
             {
@@ -657,15 +659,15 @@ namespace POS.View.sales
             #endregion
             decimal taxValue = _Tax;
             if (MainWindow.isInvTax == 1)
-            {                
-                taxValue = SectionData.calcPercentage(_Sum, (decimal) MainWindow.tax);
+            {
+                taxValue = SectionData.calcPercentage(_Sum, (decimal)MainWindow.tax);
             }
             else
                 tb_taxValue.Text = _Tax.ToString();
             decimal total = _Sum - _Discount + taxValue;
 
             tb_sum.Text = _Sum.ToString();
-            
+
 
             tb_total.Text = Math.Round(total, 2).ToString();
         }
@@ -748,7 +750,7 @@ namespace POS.View.sales
                         }
                     }
                 }
-                tb_barcode.Text = _BarcodeStr;               
+                tb_barcode.Text = _BarcodeStr;
                 e.Handled = true;
             }
             _Sender = null;
@@ -809,7 +811,7 @@ namespace POS.View.sales
                     // set title to bill
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
 
-                   await fillInvoiceInputs(invoice); 
+                    await fillInvoiceInputs(invoice);
                 }
             }
             //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
@@ -846,7 +848,7 @@ namespace POS.View.sales
             foreach (CouponInvoice invCoupon in selectedCoupons)
             {
                 lst_coupons.Items.Add(invCoupon.couponCode);
-            }       
+            }
         }
         private async Task buildInvoiceDetails(int invoiceId)
         {
@@ -907,7 +909,7 @@ namespace POS.View.sales
                     // set title to bill
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleInvoice");
 
-                   await fillInvoiceInputs(invoice);     
+                    await fillInvoiceInputs(invoice);
                 }
             }
             //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
@@ -1038,7 +1040,7 @@ namespace POS.View.sales
             }
         }
 
-        
+
 
         private void Btn_invoiceImages_Click(object sender, RoutedEventArgs e)
         {
@@ -1066,7 +1068,7 @@ namespace POS.View.sales
                 if (availableAmount < billDetails[i].Count)
                 {
                     available = false;
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableFromToolTip") +" " + billDetails[i].Product, animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableFromToolTip") + " " + billDetails[i].Product, animation: ToasterAnimation.FadeIn);
                     return available;
                 }
             }
@@ -1151,6 +1153,27 @@ namespace POS.View.sales
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+
+            MainWindow.mainWindow.KeyDown -= HandleKeyPress;
+            if (billDetails.Count > 0)
+            {
+                #region Accept
+                MainWindow.mainWindow.Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                w.contentText = "Do you want save the quotation in drafts?";
+                w.ShowDialog();
+                MainWindow.mainWindow.Opacity = 1;
+                #endregion
+                if (w.isOk)
+                    Btn_newDraft_Click(null, null);
+                else
+                    clearInvoice();
+            }
         }
     }
 }

@@ -91,50 +91,54 @@ namespace POS.View.windows
             txt_logIn.Text = resourcemanager.GetString("trLogIn");
             txt_close.Text = resourcemanager.GetString("trClose");
         }
-
-        //internal static User userLogin;
+        bool logInProcessing = true;
         private async void btnLogIn_Click(object sender, RoutedEventArgs e)
         {//login
-            clearValidate(txtUserName , p_errorUserName);
-            clearPasswordValidate(txtPassword, p_errorPassword);
 
-            users = await userModel.GetUsersActive();
-            string password = Md5Encription.MD5Hash("Inc-m" + txtPassword.Password);
-            string userName = txtUserName.Text;
-            //check if user is exist
-            if (users.Any(i => i.username.Equals(userName)))
+            if (logInProcessing)
             {
-                //get user info
-                user = users.Where(i => i.username == txtUserName.Text).FirstOrDefault<User>();
-                if (user.password.Equals(password))
+                logInProcessing = false;
+                clearValidate(txtUserName, p_errorUserName);
+                clearPasswordValidate(txtPassword, p_errorPassword);
+                users = await userModel.GetUsersActive();
+                string password = Md5Encription.MD5Hash("Inc-m" + txtPassword.Password);
+                string userName = txtUserName.Text;
+                //check if user is exist
+                if (users.Any(i => i.username.Equals(userName)))
                 {
-                    //send user info to main window
-                    MainWindow.userID = user.userId;
-                    MainWindow.userLogin = user;
-                    //make user online
-                    user.isOnline = 1;
-                    user.isActive = 1;
-                    string s = await userModel.saveUser(user);
-                   
-                    //create lognin record
-                    UsersLogs userLog = new UsersLogs();
-                    userLog.posId = 53;
-                    userLog.userId = user.userId;
-                    string str = await userLogsModel.Save(userLog);
-                    
-                    if(!str.Equals("0"))
-                        MainWindow.userLogInID = int.Parse(str);
+                    //get user info
+                    user = users.Where(i => i.username == txtUserName.Text).FirstOrDefault<User>();
+                    if (user.password.Equals(password))
+                    {
+                        //send user info to main window
+                        MainWindow.userID = user.userId;
+                        MainWindow.userLogin = user;
+                        //make user online
+                        user.isOnline = 1;
+                        user.isActive = 1;
+                        string s = await userModel.saveUser(user);
 
-                    ////open main window and close this window
-                    MainWindow main = new MainWindow();
-                    main.Show();
-                    this.Close();
+                        //create lognin record
+                        UsersLogs userLog = new UsersLogs();
+                        userLog.posId = 53;
+                        userLog.userId = user.userId;
+                        string str = await userLogsModel.Save(userLog);
+
+                        if (!str.Equals("0"))
+                            MainWindow.userLogInID = int.Parse(str);
+
+                        ////open main window and close this window
+                        MainWindow main = new MainWindow();
+                        main.Show();
+                        this.Close();
+                    }
+                    else
+                        showPasswordValidate(txtPassword, p_errorPassword, tt_errorPassword, "trWrongPassword");
                 }
                 else
-                    showPasswordValidate(txtPassword, p_errorPassword, tt_errorPassword, "trWrongPassword");
+                    showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trUserNotFound");
+                logInProcessing = true;
             }
-            else
-                showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trUserNotFound");
         }
 
         private  void HandleKeyPress(object sender, KeyEventArgs e)

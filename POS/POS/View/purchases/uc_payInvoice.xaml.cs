@@ -667,6 +667,7 @@ namespace POS.View
 
                 if (invoice.invoiceId == 0) clearInvoice();
             }
+
         }
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
@@ -758,7 +759,8 @@ namespace POS.View
 
             // purchase invoices
             w.invoiceType = "pw";
-
+            w.branchId = int.Parse(MainWindow.branchID.ToString());
+            
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
 
             if (w.ShowDialog() == true)
@@ -766,6 +768,7 @@ namespace POS.View
                 if (w.invoice != null)
                 {
                     invoice = w.invoice;
+                    
                     this.DataContext = invoice;
 
                     _InvoiceType = invoice.invType;
