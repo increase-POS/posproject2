@@ -508,7 +508,7 @@ namespace POS.View.accounts
         async Task<IEnumerable<Bonds>> RefreshBondsList()
         {
             bonds = await bondModel.GetAll();
-            MessageBox.Show(bonds.Count().ToString());
+          //  MessageBox.Show(bonds.Count().ToString());
             return bonds;
         }
 

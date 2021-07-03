@@ -130,3 +130,18 @@ D:\ملفات المشروع\دينا\POS8-6\POS\netoaster\obj\Debug\netoaster.d
 D:\ملفات المشروع\دينا\POS8-6\POS\netoaster\obj\Debug\netoaster.pdb
 E:\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
 D:\myproj\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
+D:\VSproject\POS\netoaster\bin\Debug\netoaster.dll
+D:\VSproject\POS\netoaster\bin\Debug\netoaster.pdb
+D:\VSproject\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
+D:\VSproject\POS\netoaster\obj\Debug\ToasterWindow.g.cs
+D:\VSproject\POS\netoaster\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\VSproject\POS\netoaster\obj\Debug\netoaster_MarkupCompile.cache
+D:\VSproject\POS\netoaster\obj\Debug\netoaster_MarkupCompile.lref
+D:\VSproject\POS\netoaster\obj\Debug\Themes\Generic.baml
+D:\VSproject\POS\netoaster\obj\Debug\ToasterWindow.baml
+D:\VSproject\POS\netoaster\obj\Debug\netoaster.g.resources
+D:\VSproject\POS\netoaster\obj\Debug\netoaster.Properties.Resources.resources
+D:\VSproject\POS\netoaster\obj\Debug\netoaster.csproj.GenerateResource.cache
+D:\VSproject\POS\netoaster\obj\Debug\netoaster.csproj.CoreCompileInputs.cache
+D:\VSproject\POS\netoaster\obj\Debug\netoaster.dll
+D:\VSproject\POS\netoaster\obj\Debug\netoaster.pdb
