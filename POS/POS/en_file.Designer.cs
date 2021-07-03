@@ -1438,6 +1438,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not all quantity is specified.
+        /// </summary>
+        internal static string trErrorAmountNotValidFromToolTip {
+            get {
+                return ResourceManager.GetString("trErrorAmountNotValidFromToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error barcode.
         /// </summary>
         internal static string trErrorBarcodeToolTip {
@@ -1479,6 +1488,15 @@ namespace POS {
         internal static string trErrorCouponQuantity {
             get {
                 return ResourceManager.GetString("trErrorCouponQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deserved date should be bigger than invoice date.
+        /// </summary>
+        internal static string trErrorDeservedDateSmalThanDateNow {
+            get {
+                return ResourceManager.GetString("trErrorDeservedDateSmalThanDateNow", resourceCulture);
             }
         }
         
@@ -1825,6 +1843,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        internal static string trExport {
+            get {
+                return ResourceManager.GetString("trExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fax.
         /// </summary>
         internal static string trFax {
@@ -1947,6 +1974,15 @@ namespace POS {
         internal static string trImage {
             get {
                 return ResourceManager.GetString("trImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import.
+        /// </summary>
+        internal static string trImport {
+            get {
+                return ResourceManager.GetString("trImport", resourceCulture);
             }
         }
         
@@ -2428,6 +2464,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Orders.
+        /// </summary>
+        internal static string trOrders {
+            get {
+                return ResourceManager.GetString("trOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Paid.
         /// </summary>
         internal static string trPaid {
@@ -2694,6 +2739,15 @@ namespace POS {
         internal static string trPopError {
             get {
                 return ResourceManager.GetString("trPopError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barcode length is less than 13 digit.
+        /// </summary>
+        internal static string trPopErrorBarcodeLength {
+            get {
+                return ResourceManager.GetString("trPopErrorBarcodeLength", resourceCulture);
             }
         }
         

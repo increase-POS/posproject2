@@ -288,7 +288,21 @@ namespace POS.Classes
                 p_error.Visibility = Visibility.Collapsed;
             }
         }
-
+        public static void validateSmalThanDateNowDatePicker(DatePicker dp, Path p_error, ToolTip tt_error, string tr)
+        {
+            TextBox tb = (TextBox)dp.Template.FindName("PART_TextBox", dp);
+            if (dp.SelectedDate < DateTime.Now)
+            {
+                p_error.Visibility = Visibility.Visible;
+                tt_error.Content = MainWindow.resourcemanager.GetString(tr);
+                tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            }
+            else
+            {
+                tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_error.Visibility = Visibility.Collapsed;
+            }
+        }
         public static void clearValidate(TextBox tb , Path p_error)
         {
             tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");

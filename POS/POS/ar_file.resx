@@ -1398,4 +1398,22 @@
   <data name="trWrongPassword" xml:space="preserve">
     <value>كلمة المرور خاطئة</value>
   </data>
+  <data name="trErrorAmountNotValidFromToolTip" xml:space="preserve">
+    <value>لم يتم تحديد كل الكمية من العنصر</value>
+  </data>
+  <data name="trErrorDeservedDateSmalThanDateNow" xml:space="preserve">
+    <value>تاريخ الاستحقاق يجب أن يكون أكبر من تاريخ الفاتورة</value>
+  </data>
+  <data name="trExport" xml:space="preserve">
+    <value>تصدير</value>
+  </data>
+  <data name="trImport" xml:space="preserve">
+    <value>استيراد</value>
+  </data>
+  <data name="trOrders" xml:space="preserve">
+    <value>الطلبات</value>
+  </data>
+  <data name="trPopErrorBarcodeLength" xml:space="preserve">
+    <value>طول الباركود أقل من 13 رقم</value>
+  </data>
 </root>

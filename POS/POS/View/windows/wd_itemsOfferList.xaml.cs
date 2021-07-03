@@ -121,14 +121,12 @@ namespace POS.View.windows
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-            for (int i = 0; i < selectedItems.Count; i++)
-            {
-                //DataRowView dataRow = (DataRowView)dg_selectedItems.SelectedItem;
-                //int index = dg_selectedItems.CurrentCell.Column.DisplayIndex;
-                //string cellValue = dataRow.Row.ItemArray[index].ToString();
+           
+            //DataRowView dataRow = (DataRowView)dg_selectedItems.SelectedItem;
+            //int index = dg_selectedItems.CurrentCell.Column.DisplayIndex;
+            //string cellValue = dataRow.Row.ItemArray[index].ToString();
 
-                string s = await itemUnitOfferModel.updategroup(offerId, selectedItems, MainWindow.userID.Value);
-            }
+            string s = await itemUnitOfferModel.updategroup(offerId, selectedItems, MainWindow.userID.Value);
 
             isActive = true;
             this.Close();
@@ -222,8 +220,8 @@ namespace POS.View.windows
         {//search
             txtItemSearch = txb_searchitems.Text.ToLower();
 
-            if (allItems is null)
-                allItems = allItemsSource;
+            //if (allItems is null)
+            //    allItems = allItemsSource;
             searchText = txb_searchitems.Text;
             itemUnitQuery = allItems.Where(s => s.itemName.Contains(searchText) || s.unitName.Contains(searchText));
             dg_allItems.ItemsSource = itemUnitQuery;

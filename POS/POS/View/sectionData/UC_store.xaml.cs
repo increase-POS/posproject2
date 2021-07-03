@@ -179,6 +179,8 @@ namespace POS.View
                     cb_branch.SelectedValue = -1;
                 }
 
+                btn_stores.IsEnabled = true ;
+
                 //delete
                 if (store.canDelete)
                 {
@@ -284,8 +286,10 @@ namespace POS.View
        
         tb_mobile.Clear();
         cb_areaPhone.SelectedIndex = 8;
-            cb_area.SelectedIndex = 8;
-            tb_phone.Clear();
+        cb_area.SelectedIndex = 8;
+        tb_phone.Clear();
+
+        btn_stores.IsEnabled = false;
 
         p_errorBranch.Visibility = Visibility.Collapsed;
         p_errorCode.Visibility = Visibility.Collapsed;
@@ -550,7 +554,7 @@ namespace POS.View
     }
 
     private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-    {
+    {//load
         if (MainWindow.lang.Equals("en"))
         { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_ucStore.FlowDirection = FlowDirection.LeftToRight; }
@@ -559,25 +563,27 @@ namespace POS.View
                 grid_ucStore.FlowDirection = FlowDirection.RightToLeft; }
 
         translate();
-            //fill combo
-            //var branches = await branchModel.GetBranchesAsync("b");
-            //cb_branch.ItemsSource = branches;
-            fillComboBranchParent();
+        //fill combo
+        //var branches = await branchModel.GetBranchesAsync("b");
+        //cb_branch.ItemsSource = branches;
+        fillComboBranchParent();
 
-
-            cb_area.SelectedIndex = 0;
+        cb_area.SelectedIndex = 0;
         cb_areaPhone.SelectedIndex = 0;
         cb_areaPhoneLocal.SelectedIndex = 0;
         //if(cb_branch.Items.Count > 0)
         //    cb_branch.SelectedIndex = 0;
         fillCountries();
         fillCity();
-        Keyboard.Focus(tb_code);
+
+            Keyboard.Focus(tb_code);
+
+            btn_stores.IsEnabled = false;
 
         //SectionData.genRandomCode("s", "Branch");
         //tb_code.Text = SectionData.code;
 
-        this.Dispatcher.Invoke(() =>
+            this.Dispatcher.Invoke(() =>
         {
             Tb_search_TextChanged(null, null);
         });
@@ -849,7 +855,25 @@ namespace POS.View
     }
 
         private void Btn_stores_Click(object sender, RoutedEventArgs e)
-        {
+        {//stores
+         //SectionData.clearValidate(tb_code, p_errorCode);
+
+            //itemUnits = await itemUnitsModel.Getall();
+            //itemUnitsQuery = itemUnits.Where(s => s.is == offer.offerId);
+
+            Window.GetWindow(this).Opacity = 0.2;
+
+            wd_branchesList w = new wd_branchesList();
+
+            w.Id = store.branchId;
+            w.userOrBranch = 's';
+            w.ShowDialog();
+            if (w.isActive)
+            {
+
+            }
+
+            Window.GetWindow(this).Opacity = 1;
 
         }
 

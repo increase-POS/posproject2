@@ -209,7 +209,7 @@ namespace POS.View
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucBranch.FlowDirection = FlowDirection.LeftToRight; }
             else
@@ -228,6 +228,8 @@ namespace POS.View
             fillCountries();
             fillCity();
             Keyboard.Focus(tb_code);
+
+            btn_stores.IsEnabled = false;
 
             //SectionData.genRandomCode("b", "Branch");
             //tb_code.Text = SectionData.code;
@@ -270,8 +272,10 @@ namespace POS.View
             {
                 SectionData.getMobile(branch.mobile, cb_area, tb_mobile);
 
-                SectionData.getPhone(branch.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);  
-                
+                SectionData.getPhone(branch.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
+                btn_stores.IsEnabled = true;
+
                 //parent branch
                 try
                 {
@@ -338,6 +342,8 @@ namespace POS.View
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+            btn_stores.IsEnabled = false;
 
             //SectionData.genRandomCode("b" ,"Branch");
             //tb_code.Text = SectionData.code;
@@ -868,7 +874,25 @@ namespace POS.View
         }
 
         private void Btn_stores_Click(object sender, RoutedEventArgs e)
-        {
+        {//stores
+         //SectionData.clearValidate(tb_code, p_errorCode);
+
+            //itemUnits = await itemUnitsModel.Getall();
+            //itemUnitsQuery = itemUnits.Where(s => s.is == offer.offerId);
+
+            Window.GetWindow(this).Opacity = 0.2;
+
+            wd_branchesList w = new wd_branchesList();
+
+            w.Id = branch.branchId;
+            w.userOrBranch = 'b';
+            w.ShowDialog();
+            if (w.isActive)
+            {
+
+            }
+
+            Window.GetWindow(this).Opacity = 1;
 
         }
 

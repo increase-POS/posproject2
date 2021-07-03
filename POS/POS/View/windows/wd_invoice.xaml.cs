@@ -38,6 +38,7 @@ namespace POS.View.windows
         /// </summary>
         public string invoiceType { get; set; }
         public string title { get; set; }
+        public string condition { get; set; }
         private void Btn_select_Click(object sender, RoutedEventArgs e)
         {
             invoice = dg_Invoice.SelectedItem as Invoice;
@@ -76,7 +77,10 @@ namespace POS.View.windows
         }
         private async Task refreshInvoices()
         {
-            invoices = await invoice.GetInvoicesByType(invoiceType,branchId);
+            if (condition == "")
+                invoices = await invoice.GetInvoicesByType(invoiceType, branchId);
+            else
+                invoices = await invoice.GetOrderByType(invoiceType, branchId);
 
             dg_Invoice.ItemsSource = invoices.ToList();
         }

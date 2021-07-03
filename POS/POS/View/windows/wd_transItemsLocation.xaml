@@ -61,10 +61,10 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="45"/>
                 </Grid.RowDefinitions>
-                <DataGrid  Margin="5,5,5,5"   IsReadOnly="True"  Background="White"
+                <DataGrid  Margin="5,5,5,5"   IsReadOnly="False"  Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
                        x:Name="dg_itemsStorage" SelectionChanged="Dg_itemsStorage_SelectionChanged"
-                        AutoGenerateColumns="False" 
+                        AutoGenerateColumns="False" CellEditEnding="Dg_itemsStorage_CellEditEnding"
                         ColumnWidth="SizeToHeader"    AlternatingRowBackground="#f3f3f3" AlternationCount="2">
                     <DataGrid.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
@@ -75,8 +75,26 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn  Binding="{Binding Path=isSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Width="*"  Header="Item"     Binding="{Binding Path=itemName}">
+                        <DataGridCheckBoxColumn  Binding="{Binding false, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False" IsThreeState="False">
+                            <DataGridCheckBoxColumn.ElementStyle>
+                                <Style
+                                        TargetType="CheckBox">
+                                    <EventSetter
+                                            Event="CheckBox.Checked"
+                                            Handler="FieldDataGridChecked" />
+                                    <EventSetter
+                                            Event="CheckBox.Unchecked"
+                                            Handler="FieldDataGridUnchecked" />
+                                </Style>
+                            </DataGridCheckBoxColumn.ElementStyle>
+                            <DataGridCheckBoxColumn.HeaderTemplate >
+                                <DataTemplate >
+                                    <CheckBox  Checked="FieldDataGridChecked" Unchecked="FieldDataGridUnchecked" Margin="2" />
+                                </DataTemplate>
+                            </DataGridCheckBoxColumn.HeaderTemplate>
+                        </DataGridCheckBoxColumn>
+                        <!--<DataGridCheckBoxColumn  Binding="{Binding Path=isSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
+                        <DataGridTextColumn Width="*"  Header="Item" IsReadOnly="True"    Binding="{Binding Path=itemName}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -87,7 +105,8 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Quantity"     Binding="{Binding Path=quantity}">
+                     
+                        <DataGridTextColumn Width="*"  Header="Quantity" IsReadOnly="False"    Binding="{Binding Path=quantity}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -98,7 +117,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Location"  Binding="{Binding Path=location}">
+                        <DataGridTextColumn Width="*"  Header="Location"  Binding="{Binding Path=location}" IsReadOnly="True">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -109,7 +128,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Start Date"  Binding="{Binding Path=startDate,StringFormat=d}">
+                        <DataGridTextColumn Width="*"  Header="Start Date"  Binding="{Binding Path=startDate,StringFormat=d}" IsReadOnly="True">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -120,7 +139,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="End Date"  Binding="{Binding Path=endDate,StringFormat=d}">
+                        <DataGridTextColumn Width="*"  Header="End Date"  Binding="{Binding Path=endDate,StringFormat=d}" IsReadOnly="True">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>

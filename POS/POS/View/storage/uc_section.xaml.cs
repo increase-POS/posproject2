@@ -125,6 +125,7 @@ namespace POS.View
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
+            btn_locations.IsEnabled = false;
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -163,6 +164,8 @@ namespace POS.View
 
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorSelectBranch.Visibility = Visibility.Collapsed;
+
+            btn_locations.IsEnabled = false;
 
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             cb_branch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
@@ -295,7 +298,7 @@ namespace POS.View
             Tb_search_TextChanged(null, null);
         }
         private async void Dg_section_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        {//selection
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorSelectBranch.Visibility = Visibility.Collapsed;
 
@@ -310,6 +313,8 @@ namespace POS.View
 
             if (section != null)
             {
+                btn_locations.IsEnabled = true;
+
                 if (section.branchId != 0)
                 {
                     //display branch by id

@@ -49,18 +49,21 @@ namespace POS.View.storage
         List<ItemUnit> barcodesList;
         List<ItemUnit> itemUnits;
 
+        ItemLocation itemLocationModel = new ItemLocation();
         Invoice invoice = new Invoice();
+        Invoice generatedInvoice = new Invoice();
         List<ItemTransfer> invoiceItems;
-        static private string _ProcessType = "im"; // import
+        static private string _ProcessType = "imd"; //draft import
 
         static private int _SequenceNum = 0;
         static private int _Count = 0;
         // for barcode
         DateTime _lastKeystroke = new DateTime(0);
         static private string _BarcodeStr = "";
-        static private object _Sender;
         static private string _SelectedProcess = "";
         static private int _SelectedBranch = -1;
+
+        Pos pos = new Pos();
 
         Category categoryModel = new Category();
         Category category = new Category();
@@ -116,7 +119,9 @@ namespace POS.View.storage
 
             translate();
             catigoriesAndItemsView.ucItemsExport = this;
+
             configureProcessType();
+            pos = await pos.getPosById(MainWindow.posID.Value);
             await RefrishBranches();
             await RefrishItems();
 
@@ -185,7 +190,6 @@ namespace POS.View.storage
                 await dealWithBarcode(_BarcodeStr);
                 e.Handled = true;
             }
-            _Sender = null;
             _BarcodeStr = "";
 
         }
@@ -236,6 +240,18 @@ namespace POS.View.storage
                 }
             tb_barcode.Clear();
         }
+        private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                string barcode = "";
+                if (_BarcodeStr.Length < 13)
+                {
+                    barcode = tb_barcode.Text;
+                    await dealWithBarcode(barcode);
+                }
+            }
+        }
         private void addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count)
         {
             // increase sequence for each read
@@ -250,6 +266,7 @@ namespace POS.View.storage
                 itemUnitId = itemUnitId,
                 Count = count,
             });
+
             refrishBillDetails();
         }
         void refrishBillDetails()
@@ -326,14 +343,61 @@ namespace POS.View.storage
 
         }
 
-        private void Btn_orders_Click(object sender, RoutedEventArgs e)
+        private async void Btn_orders_Click(object sender, RoutedEventArgs e)
         {
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_invoice w = new wd_invoice();
 
+            w.invoiceType = "im ,ex";
+            w.condition = "order";
+            w.title = MainWindow.resourcemanager.GetString("trOrders");
+            w.branchId = MainWindow.branchID.Value;
+
+            if (w.ShowDialog() == true)
+            {
+                if (w.invoice != null)
+                {
+                    invoice = w.invoice;
+                    //  mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
+                    _ProcessType = invoice.invType;
+
+                    await fillOrderInputs(invoice);
+                    if (_ProcessType == "im")// set title to bill
+                    {
+                        //  mainInvoiceItems = invoiceItems;
+
+                    }
+                    else if (_ProcessType == "ex")
+                    {
+                        //   mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
+
+                    }
+                }
+            }
+            Window.GetWindow(this).Opacity = 1;
         }
 
-        private void Btn_ordersWait_Click(object sender, RoutedEventArgs e)
+        private async void Btn_ordersWait_Click(object sender, RoutedEventArgs e)
         {
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_invoice w = new wd_invoice();
 
+            w.invoiceType = "exw";
+            w.title = MainWindow.resourcemanager.GetString("trOrders");
+            w.branchId = MainWindow.branchID.Value;
+
+            if (w.ShowDialog() == true)
+            {
+                if (w.invoice != null)
+                {
+                    invoice = w.invoice;
+                    //  mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
+                    _ProcessType = invoice.invType;
+
+                    await fillOrderInputs(invoice);
+                }
+            }
+            Window.GetWindow(this).Opacity = 1;
         }
         private void input_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -367,9 +431,6 @@ namespace POS.View.storage
             w.ShowDialog();
             if (w.isActive)
             {
-                ////// this is ItemId
-                //w.selectedItem
-                // MessageBox.Show(w.selectedItem.ToString());
                 ChangeItemIdEvent(w.selectedItem);
             }
 
@@ -453,54 +514,467 @@ namespace POS.View.storage
         }
         #endregion
 
-        private void Btn_newDraft_Click(object sender, RoutedEventArgs e)
+        private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
-
+            await saveDraft();
+           
         }
+        private void clearProcess()
+        {
+            _Count = 0;
+            _SequenceNum = 0;
+            _SelectedBranch = -1;
+            _SelectedProcess = "imd";
+            _ProcessType = "imd";
+            invoice = new Invoice();
+            generatedInvoice = new Invoice();
+            tb_barcode.Clear();
+            cb_branch.SelectedIndex = -1;
+            billDetails.Clear();
 
+            SectionData.clearComboBoxValidate(cb_branch, p_errorBranch);
+            refrishBillDetails();
+            inputEditable();
+        }
+        private async Task saveDraft()
+        {
+            int invoiceId;
+            invoiceItems = new List<ItemTransfer>();
+            ItemTransfer itemT;
+            for (int i = 0; i < billDetails.Count; i++)
+            {
+                itemT = new ItemTransfer();
+
+                itemT.quantity = billDetails[i].Count;
+                itemT.price = billDetails[i].Price;
+                itemT.itemUnitId = billDetails[i].itemUnitId;
+                itemT.createUserId = MainWindow.userID;
+
+                invoiceItems.Add(itemT);
+            }
+            switch (_ProcessType)
+            {
+                case "imd":// add or edit import order then add export order
+                           // import order
+                    invoice.invType = _ProcessType;
+                    invoice.branchId = MainWindow.branchID.Value;
+                    invoice.createUserId = MainWindow.userID;
+                    invoice.updateUserId = MainWindow.userID;
+                    if(invoice.invNumber == null)
+                        invoice.invNumber = await generateInvNumber("im");
+                    // save invoice in DB
+                    invoiceId = int.Parse(await invoice.saveInvoice(invoice));
+                    if (invoiceId != 0)
+                    {
+                        // expot order
+                        if (invoice.invoiceId == 0) // create new export order
+                        {
+                            invoice = new Invoice();
+                            invoice.invType = "exi";
+                            invoice.invoiceMainId = invoiceId;
+                            if (cb_branch.SelectedIndex != -1)
+                                invoice.branchId = (int)cb_branch.SelectedValue;
+                            invoice.invNumber = await generateInvNumber("ex");
+                            invoice.createUserId = MainWindow.userID;
+                        }
+                        else // edit exit export order
+                        {
+                            invoice = await invoice.getgeneratedInvoice(invoiceId);
+                            if (cb_branch.SelectedIndex != -1)
+                                invoice.branchId = (int)cb_branch.SelectedValue;
+                            invoice.updateUserId = MainWindow.userID;
+                        }
+                        int exportId = int.Parse(await invoice.saveInvoice(invoice));
+
+                        // add order details                      
+                        await invoice.saveInvoiceItems(invoiceItems, invoiceId);
+                        await invoice.saveInvoiceItems(invoiceItems, exportId);
+
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    }
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    break;
+                case "exd":// add or edit export order then add import order
+                           // import order
+                    invoice.invType = _ProcessType;
+                    invoice.branchId = MainWindow.branchID.Value;
+                    invoice.createUserId = MainWindow.userID;
+                    invoice.updateUserId = MainWindow.userID;
+                    if(invoice.invNumber == null)
+                        invoice.invNumber = await generateInvNumber("ex");
+                    // save invoice in DB
+                    invoiceId = int.Parse(await invoice.saveInvoice(invoice));
+
+                    if (invoiceId != 0)
+                    {
+                        // import order
+                        if (invoice.invoiceId == 0) // create new export order
+                        {
+                            invoice = new Invoice();
+                            invoice.invType = "imi";
+                            invoice.invoiceMainId = invoiceId;
+                            if (cb_branch.SelectedIndex != -1)
+                                invoice.branchId = (int)cb_branch.SelectedValue;
+                            invoice.invNumber = await generateInvNumber("im");
+                            invoice.createUserId = MainWindow.userID;
+                        }
+                        else // edit exit export order
+                        {
+                            invoice = await invoice.getgeneratedInvoice(invoiceId);
+                            if (cb_branch.SelectedIndex != -1)
+                                invoice.branchId = (int)cb_branch.SelectedValue;
+                            invoice.updateUserId = MainWindow.userID;
+                        }
+                        int importId = int.Parse(await invoice.saveInvoice(invoice));
+
+                        // add order details
+                        await invoice.saveInvoiceItems(invoiceItems, invoiceId);
+                        await invoice.saveInvoiceItems(invoiceItems, importId);
+
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    }
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    break;
+            }
+            clearProcess();
+        }
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void Btn_draft_Click(object sender, RoutedEventArgs e)
+        private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_invoice w = new wd_invoice();
 
+            w.invoiceType = "imd ,exd";
+            w.title = MainWindow.resourcemanager.GetString("trDrafts");
+            w.branchId = MainWindow.branchID.Value;
+
+            if (w.ShowDialog() == true)
+            {
+                if (w.invoice != null)
+                {
+                    invoice = w.invoice;
+                    //this.DataContext = invoice;
+                    //  mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
+                    _ProcessType = invoice.invType;
+
+                    await fillOrderInputs(invoice);
+                    if (_ProcessType == "imd")// set title to bill
+                    {
+                      //  mainInvoiceItems = invoiceItems;
+
+                    }
+                    else if (_ProcessType == "exd")
+                    {
+                     //   mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
+
+                    }
+                }
+            }
+            Window.GetWindow(this).Opacity = 1;
         }
+        private async Task fillOrderInputs(Invoice invoice)
+        {
+            if (invoice.invoiceMainId == null)
+                generatedInvoice = await invoice.getgeneratedInvoice(invoice.invoiceId);
+            else
+                generatedInvoice = await invoice.GetById((int)invoice.invoiceMainId);
+            _Count = invoice.itemsCount.Value;
+            tb_count.Text = _Count.ToString();
 
+            cb_branch.SelectedValue = generatedInvoice.branchId;
+            switch (_ProcessType)
+            {
+                case "imd":
+                case "im":
+                case "imw":
+                    cb_processType.SelectedIndex = 0;
+                    cb_processType.SelectedValue = "im";
+                    break;
+                case "exd":
+                case "ex":
+                case "exw":
+                    cb_processType.SelectedIndex = 1;
+                    cb_processType.SelectedValue = "ex";                   
+                    break;
+            }
+
+            // build invoice details grid
+            await buildInvoiceDetails();
+
+            inputEditable();
+        }
+        private async Task buildInvoiceDetails()
+        {
+            //get invoice items
+            invoiceItems = await invoice.GetInvoicesItems(invoice.invoiceId);
+            // build invoice details grid
+            _SequenceNum = 0;
+            billDetails.Clear();
+            foreach (ItemTransfer itemT in invoiceItems)
+            {
+                _SequenceNum++;
+                decimal total = (decimal)(itemT.price * itemT.quantity);
+                billDetails.Add(new BillDetails()
+                {
+                    ID = _SequenceNum,
+                    Product = itemT.itemName,
+                    itemId = (int)itemT.itemId,
+                    Unit = itemT.itemUnitId.ToString(),
+                    itemUnitId = (int)itemT.itemUnitId,
+                    Count = (int)itemT.quantity,
+                    Price = (decimal)itemT.price,
+                    Total = total,
+                });
+            }
+            tb_barcode.Focus();
+
+            refrishBillDetails();
+        }
+        private void inputEditable()
+        {
+            if (invoice.invoiceId == 0)
+                cb_processType.IsEnabled = true;
+            else
+                cb_processType.IsEnabled = false;
+
+            if (_ProcessType == "imd" || _ProcessType == "exd") // return invoice
+            {
+                dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete hidden
+                dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
+                cb_branch.IsEnabled = true;
+                tb_barcode.IsEnabled = true;
+                btn_save.IsEnabled = true;
+            }
+            else if (_ProcessType == "im" || _ProcessType =="ex")
+            {
+                dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete hidden
+                dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                cb_branch.IsEnabled = false;
+                tb_barcode.IsEnabled = false;
+                btn_save.IsEnabled = false;
+
+            }
+            else if (_ProcessType == "imw" )    
+            {
+                dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete hidden
+                dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                cb_branch.IsEnabled = false;
+                tb_barcode.IsEnabled = false;
+                btn_save.IsEnabled = true;
+            }
+            else if  (_ProcessType == "exw")
+            {
+                dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete hidden
+                dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
+                cb_branch.IsEnabled = false;
+                tb_barcode.IsEnabled = false;
+                btn_save.IsEnabled = true;
+            }
+        }
+        private async Task save()
+        {
+            int invoiceId;
+            invoiceItems = new List<ItemTransfer>();
+            ItemTransfer itemT;
+            for (int i = 0; i < billDetails.Count; i++)
+            {
+                itemT = new ItemTransfer();
+
+                itemT.quantity = billDetails[i].Count;
+                itemT.price = billDetails[i].Price;
+                itemT.itemUnitId = billDetails[i].itemUnitId;
+                itemT.createUserId = MainWindow.userID;
+
+                invoiceItems.Add(itemT);
+            }
+            switch (_ProcessType)
+            {
+                case "imd":// add or edit import order then add export order
+                           // import order
+                    invoice.invType = "im";
+                    invoice.branchId = MainWindow.branchID.Value;
+                    invoice.createUserId = MainWindow.userID;
+                    invoice.updateUserId = MainWindow.userID;
+                    if (invoice.invNumber == null)
+                        invoice.invNumber = await generateInvNumber("im");
+                    // save invoice in DB
+                    invoiceId = int.Parse(await invoice.saveInvoice(invoice));
+                    if (invoiceId != 0)
+                    {
+                        // expot order
+                        if (invoice.invoiceId == 0) // create new export order
+                        {
+                            invoice = new Invoice();
+                            invoice.invType = "exw";
+                            invoice.invoiceMainId = invoiceId;
+                            if (cb_branch.SelectedIndex != -1)
+                                invoice.branchId = (int)cb_branch.SelectedValue;
+                            invoice.invNumber = await generateInvNumber("ex");
+                            invoice.createUserId = MainWindow.userID;
+                        }
+                        else // edit exit export order
+                        {
+                            invoice = await invoice.getgeneratedInvoice(invoiceId);
+                            invoice.invType = "exw";
+                            if (cb_branch.SelectedIndex != -1)
+                                invoice.branchId = (int)cb_branch.SelectedValue;
+                            invoice.updateUserId = MainWindow.userID;
+                        }
+                        int exportId = int.Parse(await invoice.saveInvoice(invoice));
+
+                        // add order details                      
+                        await invoice.saveInvoiceItems(invoiceItems, invoiceId);
+                        await invoice.saveInvoiceItems(invoiceItems, exportId);
+
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    }
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    break;
+                case "exd":// add or edit export order then add import order
+                           // import order
+                    //Window.GetWindow(this).Opacity = 0.2;
+                    //wd_transItemsLocation w = new wd_transItemsLocation();
+                    //w.orderList = invoiceItems;
+                    //List<ItemTransfer> readyItemsLoc = new List<ItemTransfer>();
+                    
+                    //if (w.ShowDialog() == true)
+                    //{
+                    //    if (w.selectedItemsLocations != null)
+                    //    {
+                    //        List<ItemLocation> itemsLocations = w.selectedItemsLocations;
+                            
+                    //        // _ProcessType ="ex";
+                    //        for (int i = 0; i < itemsLocations.Count; i++)
+                    //        {
+                    //            if (itemsLocations[i].isSelected == true)
+                    //            {
+                    //                ItemTransfer itemTr = new ItemTransfer();
+                    //                itemTr.itemUnitId = itemsLocations[i].itemUnitId;
+                    //                itemTr.quantity = itemsLocations[i].quantity;
+                    //                itemTr.locationIdOld = itemsLocations[i].locationId;
+                    //                readyItemsLoc.Add(itemTr);
+                    //            }
+                    //        }
+                          
+                    //    }
+                        invoice.invType = "ex";
+                        invoice.branchId = MainWindow.branchID.Value;
+                        invoice.createUserId = MainWindow.userID;
+                        invoice.updateUserId = MainWindow.userID;
+                        if (invoice.invNumber == null)
+                            invoice.invNumber = await generateInvNumber("ex");
+                        // save invoice in DB
+                        invoiceId = int.Parse(await invoice.saveInvoice(invoice));
+
+                        if (invoiceId != 0)
+                        {
+                            // import order
+                            if (invoice.invoiceId == 0) // create new export order
+                            {
+                                invoice = new Invoice();
+                                invoice.invType = "im";
+                                invoice.invoiceMainId = invoiceId;
+                                if (cb_branch.SelectedIndex != -1)
+                                    invoice.branchId = (int)cb_branch.SelectedValue;
+                                invoice.invNumber = await generateInvNumber("im");
+                                invoice.createUserId = MainWindow.userID;
+                            }
+                            else // edit exit export order
+                            {
+                                invoice = await invoice.getgeneratedInvoice(invoiceId);
+                                invoice.invType = "im";
+                                if (cb_branch.SelectedIndex != -1)
+                                    invoice.branchId = (int)cb_branch.SelectedValue;
+                                invoice.updateUserId = MainWindow.userID;
+                            }
+                            int importId = int.Parse(await invoice.saveInvoice(invoice));
+
+                            // add order details
+                            await invoice.saveInvoiceItems(invoiceItems, invoiceId);
+                            await invoice.saveInvoiceItems(invoiceItems, importId);
+
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        }
+                        else
+                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                       // Window.GetWindow(this).Opacity = 1;                         
+                    //}  
+                    break;
+                case "exw":
+                    invoice.invType = "ex";
+                    invoice.updateUserId = MainWindow.userID;
+                    // save invoice in DB
+                    invoiceId = int.Parse(await invoice.saveInvoice(invoice));
+                    if (invoiceId != 0)
+                    {
+                        await invoice.saveInvoiceItems(invoiceItems, invoiceId);
+                        await invoice.saveInvoiceItems(invoiceItems, invoice.invoiceMainId.Value);
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    }
+                    else
+                    {
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
+                        break;
+            }
+            clearProcess();
+        }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            invoice.invType = cb_processType.SelectedValue.ToString();
-            if (cb_branch.SelectedIndex != -1)
-                invoice.branchId = (int)cb_branch.SelectedValue;
-            invoice.createUserId = MainWindow.userID;
-            invoice.updateUserId = MainWindow.userID;
-
-            // save invoice in DB
-            int invoiceId = int.Parse(await invoice.saveInvoice(invoice));
-            if (invoiceId != 0)
+            wd_transItemsLocation w;
+            switch (_ProcessType)
             {
-                invoiceItems = new List<ItemTransfer>();
-                ItemTransfer itemT;
-                for (int i = 0; i < billDetails.Count; i++)
-                {
-                    itemT = new ItemTransfer();
+                case "exw":
+                case "exd":
+                    Window.GetWindow(this).Opacity = 0.2;
+                     w = new wd_transItemsLocation();
+                    List<ItemTransfer> orderList = new List<ItemTransfer>();
+                    foreach (BillDetails d in billDetails)
+                    {
+                        orderList.Add(new ItemTransfer() {
+                        itemName = d.Product,
+                        itemId = d.itemId,
+                        unitName = d.Unit,
+                        itemUnitId = d.itemUnitId,
+                        quantity = d.Count,
+                    });
+                    }
+                    w.orderList = orderList;
+                    if (w.ShowDialog() == true)
+                    {
+                        if (w.selectedItemsLocations != null)
+                        {
+                            List<ItemLocation> itemsLocations = w.selectedItemsLocations;
+                            List<ItemLocation> readyItemsLoc = new List<ItemLocation>();
 
-                    itemT.invoiceId = invoiceId;
-                    itemT.quantity = billDetails[i].Count;
-                    itemT.price = billDetails[i].Price;
-                    itemT.itemUnitId = billDetails[i].itemUnitId;
-                    itemT.createUserId = MainWindow.userID;
-
-                    invoiceItems.Add(itemT);
-                }
-                await invoice.saveInvoiceItems(invoiceItems, invoiceId);
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                           // _ProcessType ="ex";
+                            for(int i = 0; i<itemsLocations.Count; i++)
+                            {
+                                if (itemsLocations[i].isSelected == true)
+                                    readyItemsLoc.Add(itemsLocations[i]);
+                            }
+                           await itemLocationModel.recieptOrder(readyItemsLoc,(int)cb_branch.SelectedValue,MainWindow.userID.Value) ;
+                            await save();
+                        }
+                    }
+                    Window.GetWindow(this).Opacity = 1;
+                    break;
+                case "emw":
+                    //process transfer items
+                    await save();
+                    break;              
+                default:
+                    await save();
+                    break;
             }
-            else
-            {
-                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-            }
+          
         }
 
         private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -552,6 +1026,7 @@ namespace POS.View.storage
 
                 // update item in billdetails           
                 billDetails[index].Count = (int)newCount;
+               if(invoiceItems != null) invoiceItems[index].quantity=(int)newCount;
             }
         }
 
@@ -561,11 +1036,35 @@ namespace POS.View.storage
             if (elapsed.TotalMilliseconds > 100 && cb_processType.SelectedIndex != -1)
             {
                 _SelectedProcess = (string)cb_processType.SelectedValue;
+                if(invoice.invoiceId == 0)
+                    _ProcessType = cb_processType.SelectedValue + "d";
+                if(cb_processType.SelectedValue.ToString() == "im")
+                    btn_save.Content = MainWindow.resourcemanager.GetString("trImport");
+                else if (cb_processType.SelectedValue.ToString() == "ex")
+                    btn_save.Content = MainWindow.resourcemanager.GetString("trExport");
             }
             else
             {
                 cb_processType.SelectedValue = _SelectedProcess;
             }
+        }
+        private async Task<string> generateInvNumber(string processCode)
+        {
+            Branch store = branches.ToList().Find(b => b.branchId == invoice.branchId);
+            string storeCode = "";
+            if (store != null)
+                storeCode = store.code;
+            string posCode = "";
+            if (pos != null)
+            {
+                //storeCode = pos.branchCode;
+                posCode = pos.code;
+            }
+            int sequence = await invoice.GetLastNumOfInv(processCode);
+            sequence++;
+
+            string invoiceNum = processCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
+            return invoiceNum;
         }
     }
 }

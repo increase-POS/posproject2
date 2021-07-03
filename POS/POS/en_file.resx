@@ -1419,4 +1419,22 @@
   <data name="trWrongPassword" xml:space="preserve">
     <value>Wrong password</value>
   </data>
+  <data name="trErrorAmountNotValidFromToolTip" xml:space="preserve">
+    <value>Not all quantity is specified</value>
+  </data>
+  <data name="trErrorDeservedDateSmalThanDateNow" xml:space="preserve">
+    <value>Deserved date should be bigger than invoice date</value>
+  </data>
+  <data name="trExport" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="trImport" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="trOrders" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="trPopErrorBarcodeLength" xml:space="preserve">
+    <value>Barcode length is less than 13 digit</value>
+  </data>
 </root>

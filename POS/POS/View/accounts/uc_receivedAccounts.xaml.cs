@@ -574,6 +574,7 @@ namespace POS.View.accounts
         async Task<IEnumerable<CashTransfer>> RefreshCashesList()
         {
             cashes = await cashModel.GetCashTransferAsync("d", "all");
+            cashes = cashes.Where(x => x.processType != "balance");
             return cashes;
         }
 

@@ -575,7 +575,7 @@ namespace POS.View.accounts
                 }
              
             }
-
+            cashes = cashes.Where(x => x.processType != "balance");
             return cashes;
             
         }
@@ -833,16 +833,12 @@ namespace POS.View.accounts
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void Btn_pdf1_Click(object sender, RoutedEventArgs e)
-        {
-      
-        }
-
+         
         private  void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {if(cashtrans.cashTransId > 0 )
             {
 
-            string addpath = @"\Reports\PayReport.rdlc";
+            string addpath = @"\Reports\Account\En\PayReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
                 int cashId = Int32.Parse(s);
                 //MessageBox.Show(s);

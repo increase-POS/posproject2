@@ -29,7 +29,7 @@ namespace POS.View.windows
         }
 
         ResourceManager resourcemanager;
-        string lang = "ar";
+        string lang = "en";
 
         User userModel = new User();
         User user = new User();
@@ -201,6 +201,19 @@ namespace POS.View.windows
         private void TxtPassword_PasswordChanged(object sender, RoutedEventArgs e)
         {
             clearPasswordValidate(txtPassword, p_errorPassword);
+        }
+
+        private void P_showPassword_MouseEnter(object sender, MouseEventArgs e)
+        {
+            txtShowPassword.Text = txtPassword.Password;
+            txtShowPassword.Visibility = Visibility.Visible;
+            txtPassword.Visibility = Visibility.Collapsed;
+        }
+
+        private void P_showPassword_MouseLeave(object sender, MouseEventArgs e)
+        {
+            txtShowPassword.Visibility = Visibility.Collapsed;
+            txtPassword.Visibility = Visibility.Visible;
         }
     }
 }

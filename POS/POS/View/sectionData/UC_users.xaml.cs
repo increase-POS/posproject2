@@ -265,6 +265,8 @@ namespace POS.View
             brush.ImageSource = temp;
             img_user.Background = brush;
 
+            btn_stores.IsEnabled = false;
+
             p_errorFirstName.Visibility = Visibility.Collapsed;
             p_errorLastName.Visibility = Visibility.Collapsed;
             p_errorUserName.Visibility = Visibility.Collapsed;
@@ -280,7 +282,7 @@ namespace POS.View
         }
         private  void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-
+            btn_stores.IsEnabled = false;
             // for pagination onTop Always
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             //CreateGridCardContainer();
@@ -1004,6 +1006,8 @@ namespace POS.View
             }
             if (user != null)
             {
+                btn_stores.IsEnabled = true;
+
                 if (user.userId != 0)
                 {
                     pb_password.Password = tb_password.Text.Trim();
@@ -1309,8 +1313,25 @@ namespace POS.View
         }
 
         private void Btn_stores_Click(object sender, RoutedEventArgs e)
-        {
+        {//stores
+            //SectionData.clearValidate(tb_code, p_errorCode);
 
+            //itemUnits = await itemUnitsModel.Getall();
+            //itemUnitsQuery = itemUnits.Where(s => s.is == offer.offerId);
+
+            Window.GetWindow(this).Opacity = 0.2;
+
+            wd_branchesList w = new wd_branchesList();
+
+            w.Id = user.userId;
+            w.userOrBranch = 'u';
+            w.ShowDialog();
+            if (w.isActive)
+            {
+               
+            }
+
+            Window.GetWindow(this).Opacity = 1;
         }
     }
 }

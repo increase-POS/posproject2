@@ -85,6 +85,7 @@ namespace POS.View.accounts
                 {
                     //MessageBox.Show(bond.bondId.ToString() +"-"+bond.cashTransId.ToString());
                     //MessageBox.Show(bond.deserveDate.ToString() +"-"+bond.updateDate.ToString());
+                    //MessageBox.Show(bond.ctside +"-"+bond.ctposName);
                     if (bond.isRecieved == 1)
                     {
                         btn_pay.Content = MainWindow.resourcemanager.GetString("trPaid");
@@ -507,6 +508,7 @@ namespace POS.View.accounts
         async Task<IEnumerable<Bonds>> RefreshBondsList()
         {
             bonds = await bondModel.GetAll();
+            MessageBox.Show(bonds.Count().ToString());
             return bonds;
         }
 

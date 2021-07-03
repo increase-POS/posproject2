@@ -12,7 +12,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class ItemLocation
+    public class ItemLocation
     {
         public int itemsLocId { get; set; }
         public Nullable<int> locationId { get; set; }
@@ -31,6 +31,7 @@ namespace POS.Classes
         public Nullable<decimal> storeCost { get; set; }
         public Nullable<byte> isFreeZone { get; set; }
         public string itemType { get; set; }
+        public Nullable<bool> isSelected { get; set; }
 
         //****************************************************
         public async Task<List<ItemLocation>> get(int branchId)
@@ -233,6 +234,37 @@ namespace POS.Classes
                 return false;
             }
         }
+        public async Task<Boolean> recieptOrder(List<ItemLocation> invoiceItems,int toBranch,int userId)
+        {
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            // 
+            var myContent = JsonConvert.SerializeObject(invoiceItems);
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/receiptOrder?itemLocationObject=" + myContent +"&toBranch=" + toBranch + "&userId=" + userId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         public async Task<Boolean> returnInvoice(List<ItemTransfer> invoiceItems, int branchId, int userId)
         {
             // ... Use HttpClient.
@@ -262,6 +294,47 @@ namespace POS.Classes
                     return true;
                 }
                 return false;
+            }
+        }
+        public async Task<List<ItemLocation>> getSpecificItemLocation(string itemUnitsIds, int branchId)
+        {
+            List<ItemLocation> items = null;
+            var myContent = JsonConvert.SerializeObject(itemUnitsIds);
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/getSpecificItemLocation?itemUnitsIds=" + myContent+"&branchId= " + branchId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    items = JsonConvert.DeserializeObject<List<ItemLocation>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return items;
+                }
+                else //web api sent error response 
+                {
+                    items = new List<ItemLocation>();
+                }
+                return items;
             }
         }
     }

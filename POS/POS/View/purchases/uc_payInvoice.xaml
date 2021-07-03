@@ -403,7 +403,7 @@
                                         TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0"  
                                         materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                         materialDesign:HintAssist.Hint="Deserved Date..."  
-                                        PreviewKeyUp="Dp_date_PreviewKeyUp"
+                                        PreviewKeyUp="Dp_date_PreviewKeyUp"  SelectedDateChanged="dp_SelectedDateChanged"
                                         Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"  Height="40"    />
                                 <Path x:Name="p_errorDesrvedDate" Fill="#E81123" Stretch="Fill" Margin="5,5,30,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -672,10 +672,18 @@
                         <TextBlock Text="TAX" x:Name="txt_tax" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
-                        <TextBlock Grid.Row="1"   x:Name="tb_taxValue" Grid.Column="1" Margin="10,5,5,5" 
+                        <TextBox />
+                        <TextBox Grid.Row="1"   x:Name="tb_taxValue" Grid.Column="1" 
                        Foreground="#4E4E4E" Text="{Binding tax, Mode=OneWay}"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                                  FontWeight="Bold"  FontSize="12"/>
+                                  FontWeight="Bold"  FontSize="12"
+                              Padding="10,0,5,0" Margin="5"
+                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                            BorderThickness="1"  materialDesign:HintAssist.Hint="Tax..."  
+                                           TextBlock.FontSize="12" Background="#f8f8f8"
+                                            BorderBrush="#f8f8f8"
+                                            PreviewTextInput="DecimalValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
+                                               Height="40"  
+                                             TextChanged="tb_discount_TextChanged"/>
 
                     </Grid>
                 </Border>

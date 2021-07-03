@@ -204,7 +204,7 @@ namespace POS.View
             SectionData.defaultDatePickerStyle(dp_invoiceDate);
             #endregion
 
-            tb_taxValue.Text = MainWindow.tax.ToString();
+            //tb_taxValue.Text = MainWindow.tax.ToString();
             tb_barcode.Focus();
             #region datagridChange
             CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
@@ -424,13 +424,7 @@ namespace POS.View
         {
             e.Handled = e.Key == Key.Space;
         }
-        private void validateInvoiceValues()
-        {
-            SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
-            SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
-            SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip");
-            SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
-        }
+        
 
         private void input_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -512,13 +506,10 @@ namespace POS.View
 
                 if (invType == "pw")
                 {
-                    deserved = 0;
+                    //deserved = 0;
+                    //paid = (decimal)invoice.totalNet;
+                    //balance = (decimal)(balance + invoice.totalNet);
 
-                    paid = (decimal)invoice.totalNet;
-                    balance = (decimal)(balance + invoice.totalNet);
-                }
-                else if (invType == "pb")
-                {
                     if (balance >= invoice.totalNet)
                     {
                         paid = (decimal)invoice.totalNet;
@@ -531,6 +522,24 @@ namespace POS.View
                         deserved = (decimal)(invoice.totalNet - balance);
                         balance = 0;
                     }
+                }
+                else if (invType == "pb")
+                {
+                    deserved = 0;
+                    paid = (decimal)invoice.totalNet;
+                    balance = (decimal)(balance + invoice.totalNet);
+                    //if (balance >= invoice.totalNet)
+                    //{
+                    //    paid = (decimal)invoice.totalNet;
+                    //    deserved = 0;
+                    //    balance = (decimal)(balance - invoice.totalNet);
+                    //}
+                    //else
+                    //{
+                    //    paid = balance;
+                    //    deserved = (decimal)(invoice.totalNet - balance);
+                    //    balance = 0;
+                    //}
                 }
                 invoice.paid = paid;
                 invoice.deserved = deserved;
@@ -550,6 +559,12 @@ namespace POS.View
                         cashTrasnfer.cash = paid;
                         cashTrasnfer.side = "v"; // vendor
                         cashTrasnfer.createUserId = MainWindow.userID;
+                        ///processType 
+                        cashTrasnfer.processType = "balance";
+
+                        ///
+
+
                         if (invType == "pw")// purchase wait
                         {
                             cashTrasnfer.transType = "p"; //pull
@@ -614,23 +629,34 @@ namespace POS.View
         {
             DateTime invoiceDate;
             DateTime desrveDate;
-            if (dp_invoiceDate.SelectedDate != null && dp_desrvedDate.SelectedDate != null)
+            if ( dp_desrvedDate.SelectedDate != null)
             {
-                invoiceDate = (DateTime)dp_invoiceDate.SelectedDate.Value.Date;
+                //invoiceDate = (DateTime)dp_invoiceDate.SelectedDate.Value.Date;
                 desrveDate = (DateTime)dp_desrvedDate.SelectedDate.Value.Date;
-                if (desrveDate < invoiceDate)
+                if (desrveDate.Date < DateTime.Now.Date)
                 {
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorInvDateAfterDeserveToolTip"), animation: ToasterAnimation.FadeIn);
                     dp_desrvedDate.Text = "";
                 }
             }
         }
+        private void validateInvoiceValues()
+        {
+            //bool isValid = true;
+            SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+            SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
+            SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip");
+            SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
+            //SectionData.validateSmalThanDateNowDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
+            //return isValid;
+        }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
             //check mandatory inputs
             validateInvoiceValues();
-
-            if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0)
+            TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
+                if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0
+                    && !tb.Text.Trim().Equals("")   )
             {
                 if (_InvoiceType == "pbd") //pbd means purchase bounse draft
                     await addInvoice("pb", "pb"); // pb means purchase bounce
@@ -1036,7 +1062,7 @@ namespace POS.View
                 taxValue = SectionData.calcPercentage(total, taxInputVal);
 
             tb_sum.Text = _Sum.ToString();
-            total = total - taxValue;
+            total = total + taxValue;
             tb_total.Text = Math.Round(total, 2).ToString();
         }
         //private void refreshTotalValue(decimal discountVal)

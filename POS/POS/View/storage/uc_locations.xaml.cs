@@ -136,6 +136,8 @@ namespace POS.View
 
             translate();
 
+            btn_addRange.IsEnabled = false;
+
             Keyboard.Focus(tb_x);
 
             SectionData.clearValidate(tb_x, p_errorX);
@@ -163,6 +165,8 @@ namespace POS.View
             p_errorX.Visibility = Visibility.Collapsed;
             p_errorY.Visibility = Visibility.Collapsed;
             p_errorZ.Visibility = Visibility.Collapsed;
+
+            btn_addRange.IsEnabled = false;
 
             tb_x.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_y.Background = (Brush)bc.ConvertFrom("#f8f8f8");
@@ -299,7 +303,7 @@ namespace POS.View
             Tb_search_TextChanged(null, null);
         }
         private void Dg_location_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        {//selection
             p_errorX.Visibility = Visibility.Collapsed;
             p_errorY.Visibility = Visibility.Collapsed;
             p_errorX.Visibility = Visibility.Collapsed;
@@ -316,6 +320,7 @@ namespace POS.View
 
             if (location != null)
             {
+                btn_addRange.IsEnabled = true;
 
                 #region delete
                 if (location.canDelete)

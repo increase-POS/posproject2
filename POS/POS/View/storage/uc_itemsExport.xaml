@@ -160,7 +160,7 @@
                     </Button>
 
                     <Border Grid.Column="6"  Background="White" Margin="5"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" DockPanel.Dock="Right"/>
-                    <Button Grid.Column="5" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
+                    <!--<Button Grid.Column="5" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_invoiceImages" Click="Btn_invoiceImage_Click"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
                          Height="30" Width="30"
@@ -178,7 +178,7 @@
                             </Path.ToolTip>
                         </Path>
                     </Button>
-                    <Border Grid.Column="4" DockPanel.Dock="Right" Background="White" Margin="5"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />
+                    <Border Grid.Column="4" DockPanel.Dock="Right" Background="White" Margin="5"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />-->
                     <Button DockPanel.Dock="Right" Grid.Column="3" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_preview"   >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -375,7 +375,7 @@
                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              Grid.Row="2" Padding="10,0,5,0"
                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                     MaxLength="20" 
+                                     MaxLength="20" KeyDown="Tb_barcode_KeyDown"
                                             BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..."  
                                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                             BorderBrush="#f8f8f8"

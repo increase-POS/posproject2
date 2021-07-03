@@ -59,22 +59,27 @@ namespace POS.View.windows
             section = await sectionModel.GetSectionByID(sectionId);
             //MessageBox.Show(section.name);
             allLocationsSource = await locationModel.Get();
-            var query = allLocationsSource.Where(i => i.sectionId == sectionId && i.isFreeZone != 1);
+            var query = allLocationsSource.Where(i => i.sectionId == sectionId && i.isFreeZone != 1 && i.isActive == 1);
             selectedLocationsSource = query.ToList();
 
             allLocations.AddRange(allLocationsSource);
+            selectedLocations.AddRange(selectedLocationsSource);
+
+            //remove selected locations from all locations
+            foreach (var i in selectedLocations)
+            {
+                allLocations.Remove(i);
+            }
+            /////////////////////////////////////////////////
             foreach (var i in allLocations)
             {
                 i.x = i.x.Trim() + "-" + i.y.Trim() + "-" + i.z.Trim();
             }
 
-            selectedLocations.AddRange(selectedLocationsSource);
             foreach (var i in selectedLocations)
             {
                 i.x = i.x.Trim() + "-" + i.y.Trim() + "-" + i.z.Trim();
             }
-
-            //MessageBox.Show(allLocations[0].x.ToString());
 
             lst_allLocations.ItemsSource = allLocations;
             lst_allLocations.SelectedValuePath = "x";
@@ -117,12 +122,8 @@ namespace POS.View.windows
             }
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
-        {
-            for (int i = 0; i < selectedLocations.Count; i++)
-            {
-                string s = await location.saveLocationsSection(selectedLocations , sectionId, MainWindow.userID.Value);
-               // MessageBox.Show(s);
-            }
+        {//save
+            string s = await location.saveLocationsSection(selectedLocations , sectionId, MainWindow.userID.Value);
 
             isActive = true;
             this.Close();
