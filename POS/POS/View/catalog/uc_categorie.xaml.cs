@@ -1000,5 +1000,10 @@ namespace POS.View
             win.ShowDialog();
             Window.GetWindow(this).Opacity = 1;
         }
+
+        private void Cb_parentCategorie_KeyUp(object sender, KeyEventArgs e)
+        {
+            cb_parentCategorie.ItemsSource = categories.Where(x => x.name.Contains(cb_parentCategorie.Text));
+        }
     }
 }

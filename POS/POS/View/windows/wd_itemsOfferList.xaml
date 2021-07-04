@@ -10,7 +10,7 @@
         ResizeMode="NoResize" Margin="0"
         Title="wd_itemsList" Height="400" Width="550" Background="Transparent" AllowsTransparency="True" 
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
-    <Grid Grid.Column="1" Grid.Row="1"  >
+    <Grid Grid.Column="1" Grid.Row="1"  x:Name="grid_offerList">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>

@@ -8,17 +8,13 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="675" d:DesignWidth="985"
              Loaded="UserControl_Loaded">
-
     <!--Main grid-->
-   
             <Grid x:Name="grid_ucCategorie">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2.54*"/>
                     <ColumnDefinition Width="*" MinWidth="225"/>
                 </Grid.ColumnDefinitions>
-
-
                 <!--left grid-->
                 <Grid Grid.Column="0" Margin="0,15,10,15" >
                     <Grid.RowDefinitions >
@@ -26,7 +22,6 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="45"/>
                     </Grid.RowDefinitions>
-
                     <!--search-->
                     <!--#region -->
                     <Border Background="White" CornerRadius="7" Margin="5,0,5,0">
@@ -642,7 +637,10 @@
                                               SelectionChanged="Cb_parentCategorie_SelectionChanged"
                                               Height="40"    Margin="10,5,10,5"
                                               BorderBrush="#737373" BorderThickness="0"
-                                              TabIndex="3" IsEditable="True">
+                                              TabIndex="3" IsEditable="True"
+                                              IsTextSearchEnabled="False"
+                                              StaysOpenOnEdit="True"
+                                             KeyUp="Cb_parentCategorie_KeyUp">
                                     <ComboBox.ToolTip>
                                         <ToolTip x:Name="tt_parentCategory" Content="Parent Category"
                                               Placement="left" 

@@ -3,6 +3,8 @@ using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -369,6 +371,11 @@ namespace POS.View.windows
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
+            if (MainWindow.lang.Equals("en"))
+            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_locationRange.FlowDirection = FlowDirection.LeftToRight; }
+            else
+            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_locationRange.FlowDirection = FlowDirection.RightToLeft; }
+
             AllLocations = await location.Get();
 
             translate();

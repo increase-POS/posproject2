@@ -246,9 +246,6 @@ namespace POS.Classes
                 return message;
             }
         }
-
-
-
         public async Task<List<Location>> GetLocsByBranchId(int branchId)
         {
             List<Location> Locations = null;

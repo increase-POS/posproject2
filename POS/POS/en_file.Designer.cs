@@ -385,6 +385,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Branchs/Stores.
+        /// </summary>
+        internal static string trBranchs_Stores {
+            get {
+                return ResourceManager.GetString("trBranchs/Stores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Credit card....
         /// </summary>
         internal static string trCardHint {
@@ -1020,6 +1029,15 @@ namespace POS {
         internal static string trDrafts {
             get {
                 return ResourceManager.GetString("trDrafts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location is already exist.
+        /// </summary>
+        internal static string trDublicateLocation {
+            get {
+                return ResourceManager.GetString("trDublicateLocation", resourceCulture);
             }
         }
         
@@ -3216,6 +3234,15 @@ namespace POS {
         internal static string trSelectCategorieHint {
             get {
                 return ResourceManager.GetString("trSelectCategorieHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Branchs/Stores.
+        /// </summary>
+        internal static string trSelectedBranchs_Stores {
+            get {
+                return ResourceManager.GetString("trSelectedBranchs/Stores", resourceCulture);
             }
         }
         

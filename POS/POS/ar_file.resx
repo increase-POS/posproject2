@@ -1416,4 +1416,13 @@
   <data name="trPopErrorBarcodeLength" xml:space="preserve">
     <value>طول الباركود أقل من 13 رقم</value>
   </data>
+  <data name="trBranchs/Stores" xml:space="preserve">
+    <value>الفروع/المخازن</value>
+  </data>
+  <data name="trSelectedBranchs/Stores" xml:space="preserve">
+    <value>الفروع/المخازن المختارة</value>
+  </data>
+  <data name="trDublicateLocation" xml:space="preserve">
+    <value>مكان التخزين موجود سابقاً</value>
+  </data>
 </root>

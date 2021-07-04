@@ -21,13 +21,50 @@ namespace POS.Classes
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
+
+        // branch
+        public int bbranchId { get; set; }
+        public string bcode { get; set; }
+        public string bname { get; set; }
+        public string baddress { get; set; }
+        public string bemail { get; set; }
+        public string bphone { get; set; }
+        public string bmobile { get; set; }
+        public Nullable<System.DateTime> bcreateDate { get; set; }
+        public Nullable<System.DateTime> bupdateDate { get; set; }
+        public Nullable<int> bcreateUserId { get; set; }
+        public Nullable<int> bupdateUserId { get; set; }
+        public string bnotes { get; set; }
+        public Nullable<int> bparentId { get; set; }
+        public Nullable<byte> bisActive { get; set; }
+        public string btype { get; set; }
+
+        // user
+        public int uuserId { get; set; }
+        public string uusername { get; set; }
+        public string upassword { get; set; }
+        public string uname { get; set; }
+        public string ulastname { get; set; }
+        public string ujob { get; set; }
+        public string uworkHours { get; set; }
+        public DateTime? ucreateDate { get; set; }
+        public DateTime? uupdateDate { get; set; }
+        public int? ucreateUserId { get; set; }
+        public int? uupdateUserId { get; set; }
+        public string uphone { get; set; }
+        public string umobile { get; set; }
+        public string uemail { get; set; }
+        public string unotes { get; set; }
+        public string uaddress { get; set; }
+        public short? uisActive { get; set; }
+        public byte? uisOnline { get; set; }
+        public Boolean ucanDelete { get; set; }
+        public string uimage { get; set; }
         /// <summary>
         /// ///////////////////////////////////////
         /// </summary>
         /// <returns></returns>
         /// 
-
-
 
         public async Task<List<BranchesUsers>> Get()
         {
@@ -115,7 +152,7 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "BranchesUsers/GetByID?branchsUsersId=" + branchsUsersId);
                 request.Headers.Add("APIKey", Global.APIKey);
-              
+
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var response = await client.SendAsync(request);
@@ -135,7 +172,7 @@ namespace POS.Classes
 
         public async Task<string> Delete(int branchsUsersId)
         {
-        
+
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
@@ -147,7 +184,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "BranchesUsers/Delete?branchsUsersId=" + branchsUsersId );
+                request.RequestUri = new Uri(Global.APIUri + "BranchesUsers/Delete?branchsUsersId=" + branchsUsersId);
                 request.Headers.Add("APIKey", Global.APIKey);
 
                 request.Method = HttpMethod.Post;
@@ -181,7 +218,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "BranchesUsers/GetBranchesByUserId?userId="+ userId);
+                request.RequestUri = new Uri(Global.APIUri + "BranchesUsers/GetBranchesByUserId?userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

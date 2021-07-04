@@ -39,7 +39,7 @@ namespace POS
         public static ResourceManager resourcemanager;
         bool menuState = false;
 
-        public static string lang = "ar";
+        public static string lang;
         public static string Reportlang = "ar";
         public static string companyName = "Increse";
         public static string Email = "m7mdbonni@gmail.com";
@@ -54,9 +54,9 @@ namespace POS
         internal static int? posID = 1;
         //internal static int? branchID = 18;
         //مخزن الجميلية الفرقان
-        //internal static int? branchID = 12;
+        internal static int? branchID = 12;
         //مخزن الجميلية الرئيسي
-        internal static int? branchID = 2;
+        //internal static int? branchID = 2;
         bool isHome = false;
         internal static int? isInvTax = 1;
         internal static decimal? tax = 2;
@@ -354,6 +354,7 @@ namespace POS
             winLogIn log = new winLogIn();
             log.Show();
             this.Close();
+            //BTN_Close_Click(null , null);
         }
 
         private void BTN_SectionData_Click(object sender, RoutedEventArgs e)
@@ -382,6 +383,13 @@ namespace POS
             isHome = true;
 
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Visibility = Visibility.Hidden;
+        }
+
         ImageBrush myBrush = new ImageBrush();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
@@ -390,6 +398,7 @@ namespace POS
             { resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_mainWindow.FlowDirection = FlowDirection.LeftToRight; }
             else
             { resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_mainWindow.FlowDirection = FlowDirection.RightToLeft; }
+
             translate();
             //user info
             txt_userName.Text = userLogin.name;

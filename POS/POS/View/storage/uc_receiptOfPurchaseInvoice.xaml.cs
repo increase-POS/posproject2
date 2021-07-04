@@ -4,6 +4,7 @@ using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -111,7 +112,10 @@ namespace POS.View.storage
             await RefrishVendors();
             await RefrishBranches();
             pos = await pos.getPosById(MainWindow.posID.Value);
-            
+            #region datagridChange
+            CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
+            ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+            #endregion
         }
         async Task RefrishBranches()
         {
@@ -503,10 +507,44 @@ namespace POS.View.storage
         }
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //var cmb = sender as ComboBox;
+            var cmb = sender as ComboBox;
 
-            //if (dg_billDetails.SelectedIndex != -1)
-            //    billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+            if (dg_billDetails.SelectedIndex != -1)
+                billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+        }
+        private void Cbm_unitItemDetails_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            //billDetails
+            if (billDetails.Count == 1)
+            {
+                var cmb = sender as ComboBox;
+                cmb.SelectedValue = (int)billDetails[0].itemUnitId;
+            }
+        }
+        private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            //billDetails
+            int count = 0;
+            foreach (var item in billDetails)
+            {
+                if (dg_billDetails.Items.Count != 0)
+                {
+                    if (dg_billDetails.Items.Count > 1)
+                    {
+                        var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                        if (cell != null)
+                        {
+                            var cp = (ContentPresenter)cell.Content;
+                            var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
+                            //var combo = (combo)cell.Content;
+                            combo.SelectedValue = (int)item.itemUnitId;
+                            count++;
+                        }
+                    }
+
+                }
+            }
+
         }
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
         {

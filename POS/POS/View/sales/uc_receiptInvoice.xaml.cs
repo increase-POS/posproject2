@@ -1066,9 +1066,12 @@ namespace POS.View
 
         private void Cb_customer_KeyUp(object sender, KeyEventArgs e)
         {
-            ComboBox cbm = sender as ComboBox;
+            //ComboBox cbm = sender as ComboBox;
             //SectionData.searchInComboBox(cbm);
+            cb_customer.ItemsSource = customers.Where(x => x.name.Contains(cb_customer.Text));
         }
+
+
         private void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);

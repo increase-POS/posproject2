@@ -10,7 +10,7 @@
         ResizeMode="NoResize" Margin="0"
         Title="wd_itemsList" Height="400" Width="550" Background="Transparent" AllowsTransparency="True"
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
-    <Grid Grid.Column="1" Grid.Row="1"   >
+    <Grid Grid.Column="1" Grid.Row="1" x:Name="grid_locations"  >
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
@@ -81,8 +81,8 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="txt_HeaderTitle" Text="Section" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"
-                           Foreground="#686868" FontWeight="SemiBold"  FontSize="16" />
+                    <!--<TextBlock x:Name="txt_HeaderTitle" Text="Section" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"
+                           Foreground="#686868" FontWeight="SemiBold"  FontSize="16" />-->
                     <TextBox Grid.Column="2"  Width="65"  x:Name="txb_searchX"  TextChanged="Txb_searchlocations_TextChanged"
                         Padding="10,0,5,0" BorderBrush="{x:Null}"
                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -147,7 +147,7 @@
                 <TextBlock Text="Locations" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"
                            Foreground="#999999" FontWeight="SemiBold"  FontSize="16" x:Name="txt_location"/>
                 <Border Grid.Row="3"  Margin="10"   BorderBrush="#999999" BorderThickness="1">
-                    <DataGrid x:Name="lst_allLocations" Background="White" Visibility="Visible"
+                    <DataGrid HeadersVisibility="None" x:Name="lst_allLocations" Background="White" Visibility="Visible"
                               IsReadOnly="False" CanUserAddRows="False"
                               AutoGenerateColumns="False" ColumnWidth="SizeToHeader"
                               MouseDoubleClick="Lst_allLocations_MouseDoubleClick" >
@@ -237,7 +237,7 @@
                 <TextBlock Text="Selcted locations" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"
                            Foreground="#999999" FontWeight="SemiBold"  FontSize="16" x:Name="txt_selectedLocations"/>
                 <Border  Margin="10" Grid.Row="3"  Grid.Column="4"  BorderBrush="#999999" BorderThickness="1"  >
-                    <DataGrid  x:Name="lst_selectedLocations"  Background="White" Visibility="Visible"
+                    <DataGrid  HeadersVisibility="Row"  x:Name="lst_selectedLocations"  Background="White" Visibility="Visible"
                                IsReadOnly="False" CanUserAddRows="False"
                                AutoGenerateColumns="False"  ColumnWidth="SizeToHeader"
                                MouseDoubleClick="Lst_selectedLocations_MouseDoubleClick">

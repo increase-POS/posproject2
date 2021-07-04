@@ -1437,4 +1437,13 @@
   <data name="trPopErrorBarcodeLength" xml:space="preserve">
     <value>Barcode length is less than 13 digit</value>
   </data>
+  <data name="trBranchs/Stores" xml:space="preserve">
+    <value>Branchs/Stores</value>
+  </data>
+  <data name="trSelectedBranchs/Stores" xml:space="preserve">
+    <value>Selected Branchs/Stores</value>
+  </data>
+  <data name="trDublicateLocation" xml:space="preserve">
+    <value>Location is already exist</value>
+  </data>
 </root>

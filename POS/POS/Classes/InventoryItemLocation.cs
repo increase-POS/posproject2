@@ -29,7 +29,7 @@ namespace POS.Classes
         public Nullable<byte> isActive { get; set; }
         public string notes { get; set; }
         public Boolean canDelete { get; set; }
-        public async Task<List<InventoryItemLocation>> GetAll()
+        public async Task<List<InventoryItemLocation>> GetAll(int branchId, int inventoryId)
         {
             List<InventoryItemLocation> list = null;
             // ... Use HttpClient.
@@ -42,7 +42,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "InventoryItemLocation/Get");
+                request.RequestUri = new Uri(Global.APIUri + "InventoryItemLocation/Get?branchId="+ branchId+ "&inventoryId="+ inventoryId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

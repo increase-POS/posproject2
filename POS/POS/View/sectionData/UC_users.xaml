@@ -594,6 +594,7 @@
                                          BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."  
                                          Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                          PreviewTextInput="NumberValidationTextBox"
+                                         LostFocus="tb_mobile_LostFocus" TextChanged="tb_mobile_TextChanged"
                                          TabIndex="4"
                              BorderBrush="AliceBlue" MaxLength="9"
                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
@@ -607,12 +608,12 @@
                                               VerticalOffset="20"/>
                                     </TextBox.ToolTip>
                                 </TextBox>
-                                <Path Fill="#E81123" Stretch="Fill" 
+                                <Path Fill="#E81123" Stretch="Fill" x:Name="p_errorMobile"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                              VerticalAlignment="Center" Width="15"  Height="15" Margin="5,5,15,5"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                     <Path.ToolTip>
-                                        <ToolTip x:Name="tt_error_mobile" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        <ToolTip x:Name="tt_errorMobile" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                     </Path.ToolTip>
                                 </Path>
                             </Grid>
@@ -901,7 +902,8 @@
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                        
                                  Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" 
-                                 LostFocus="Tb_password_LostFocus" >
+                                 LostFocus="Tb_password_LostFocus" 
+                                         PasswordChanged="Pb_password_PasswordChanged" >
                                 <PasswordBox.ToolTip>
                                     <ToolTip x:Name="tt_password" Content="Password"
                                               Placement="left" 

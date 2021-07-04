@@ -199,7 +199,7 @@ namespace POS.View
 
                 string s = await sectionModel.saveSection(section);
 
-                if (s.Equals("Section Is Added Successfully"))
+                if (!s.Equals("-1"))
                 {
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     Btn_clear_Click(null, null);
@@ -223,7 +223,7 @@ namespace POS.View
 
                 string s = await sectionModel.saveSection(section);
 
-                if (s.Equals("Section Is Updated Successfully"))
+                if (!s.Equals("-1"))
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -289,7 +289,7 @@ namespace POS.View
 
             string s = await sectionModel.saveSection(section);
 
-            if (s.Equals("Section Is Updated Successfully"))  
+            if (!s.Equals("-1"))  
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else  
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -455,26 +455,31 @@ namespace POS.View
 
         private async void fillBranches()
         {
-            var branches = await branchModel.GetBranchesAsync("b");
+
+            var branchesWithMain = await branchModel.GetAll();
+            cb_branch.ItemsSource = branchesWithMain.Where(b => b.type != "bs");
+            //var branches = await branchModel.GetBranchesAsync("b");
             //var branches = await branchModel.Get();
-            cb_branch.ItemsSource = branches;
+            //cb_branch.ItemsSource = branches;
             cb_branch.SelectedValuePath = "branchId";
             cb_branch.DisplayMemberPath = "name";
+            cb_branch.SelectedIndex = -1;
         }
 
-      
+
         private async void Btn_locations_Click(object sender, RoutedEventArgs e)
         {//locations
             SectionData.clearValidate(tb_name, p_errorName);
-
-            location = await locationModel.Get();
+            //location = await locationModel.getLocsBySectionId(section.sectionId);
             Window.GetWindow(this).Opacity = 0.2;
-
             wd_locationsList w = new wd_locationsList();
+            //Pre Locations
+            //w.selectedLocations = await locationModel.getLocsBySectionId(section.sectionId);
             w.sectionId = section.sectionId;
             w.ShowDialog();
             if (w.isActive)
             {
+              await  locationModel.saveLocationsSection(w.selectedLocations, section.sectionId, MainWindow.userLogin.userId);
                 //foreach (var location in w.selectedLocations)
                 //{
                 //    MessageBox.Show(location.name + "\t");

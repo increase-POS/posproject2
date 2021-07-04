@@ -367,6 +367,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الفروع/المخازن.
+        /// </summary>
+        internal static string trBranchs_Stores {
+            get {
+                return ResourceManager.GetString("trBranchs/Stores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to بطاقة الائتمان....
         /// </summary>
         internal static string trCardHint {
@@ -1002,6 +1011,15 @@ namespace POS {
         internal static string trDrafts {
             get {
                 return ResourceManager.GetString("trDrafts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مكان التخزين موجود سابقاً.
+        /// </summary>
+        internal static string trDublicateLocation {
+            get {
+                return ResourceManager.GetString("trDublicateLocation", resourceCulture);
             }
         }
         
@@ -3162,6 +3180,15 @@ namespace POS {
         internal static string trSelectCategorieHint {
             get {
                 return ResourceManager.GetString("trSelectCategorieHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الفروع/المخازن المختارة.
+        /// </summary>
+        internal static string trSelectedBranchs_Stores {
+            get {
+                return ResourceManager.GetString("trSelectedBranchs/Stores", resourceCulture);
             }
         }
         

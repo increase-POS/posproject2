@@ -630,6 +630,7 @@
                                                               DisplayMemberPath="mainUnit" 
                                                               SelectedValuePath="itemUnitId"
                                                               SelectedItem="{Binding Unit}"
+                                                      IsEnabled="{Binding Path=IsEnabled, ElementName=cb_customer}"
                                                 />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>

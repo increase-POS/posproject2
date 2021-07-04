@@ -29,7 +29,7 @@ namespace POS.View.windows
         }
 
         ResourceManager resourcemanager;
-        string lang = "en";
+        string lang = "ar";
 
         User userModel = new User();
         User user = new User();
@@ -66,16 +66,19 @@ namespace POS.View.windows
             if (Properties.Settings.Default.userName != string.Empty)
             {
                 txtUserName.Text = Properties.Settings.Default.userName;
+                txtPassword.Password = Properties.Settings.Default.password;
                 cbxRemmemberMe.IsChecked = true;
 
             }
             else
             {
                 txtUserName.Clear();
+                txtPassword.Clear();
                 cbxRemmemberMe.IsChecked = false;
 
             }
-            if(txtUserName.Text.Equals(""))
+          
+            if (txtUserName.Text.Equals(""))
                 Keyboard.Focus(txtUserName);
             else
                 Keyboard.Focus(txtPassword);
@@ -113,6 +116,7 @@ namespace POS.View.windows
                         //send user info to main window
                         MainWindow.userID = user.userId;
                         MainWindow.userLogin = user;
+                        MainWindow.lang = lang;
                         //make user online
                         user.isOnline = 1;
                         user.isActive = 1;
@@ -152,12 +156,15 @@ namespace POS.View.windows
         private void CbxRemmemberMe_Checked(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.userName = txtUserName.Text;
+            Properties.Settings.Default.password = txtPassword.Password;
             Properties.Settings.Default.Save();
         }
 
         private void CbxRemmemberMe_Unchecked(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.userName = "";
+            Properties.Settings.Default.password = "";
+
             Properties.Settings.Default.Save();
         }
 

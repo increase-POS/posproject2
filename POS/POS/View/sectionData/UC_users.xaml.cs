@@ -161,13 +161,17 @@ namespace POS.View
         private async Task<bool> chkIfUserNameIsExists(string username , int uId)
         {
             if (users == null) users = await userModel.GetUsersAsync();
-            List<User> userList = new List<User>();
             bool b = false;
-            userList.AddRange(users.ToList());
-           
-            for (int i = 0; i < userList.Count(); i++)
-                if ((userList[i].username.Equals(username)) && (userList[i].userId != uId))
-                { b = true; break; }
+
+            //List<User> userList = new List<User>();
+            //userList.AddRange(users.ToList());
+
+            //for (int i = 0; i < userList.Count(); i++)
+            //    if ((userList[i].username.Equals(username)) && (userList[i].userId != uId))
+            //    { b = true; break; }
+            if (users.Any(i => i.username == username && i.userId != uId))
+                b = true;
+            else b = false;
 
             return b;
         }
@@ -278,7 +282,9 @@ namespace POS.View
             tb_userName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             cb_job.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
+            SectionData.clearValidate(tb_mobile , p_errorMobile);
+            SectionData.clearPasswordValidate(pb_password, p_errorPassword);
+            p_showPassword.Visibility = Visibility.Visible;
         }
         private  void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
@@ -370,12 +376,16 @@ namespace POS.View
             SectionData.validateEmptyTextBox(tb_lastName, p_errorLastName, tt_errorLastName, "trEmptyLastNameToolTip");
             //chk empty job
             SectionData.validateEmptyComboBox(cb_job, p_errorJob, tt_errorJob, "trEmptyJobToolTip");
+            //chk empty mobile
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             //chk empty username
             SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
             //chk empty password
-            SectionData.validateEmptyTextBox(tb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
-            if (tb_password.Text.Equals(""))
-            { p_showPassword.Visibility = Visibility.Collapsed; pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000"); }
+            //SectionData.validateEmptyTextBox(tb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
+            //if (tb_password.Text.Equals(""))
+            //{ p_showPassword.Visibility = Visibility.Collapsed; pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000"); }
+            if (pb_password.Password.Equals(""))
+            { SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip"); p_showPassword.Visibility = Visibility.Collapsed; }
             //validate email
             SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
             //chk duplicate userName
@@ -393,7 +403,8 @@ namespace POS.View
                 if (!SectionData.IsValid(tb_email.Text))
                     emailError = true;
 
-            if ((!tb_firstName.Text.Equals("")) && (!tb_lastName.Text.Equals("")) && (!tb_userName.Text.Equals("")) && 
+            if ((!tb_firstName.Text.Equals("")) && (!tb_lastName.Text.Equals("")) && (!tb_userName.Text.Equals("")) &&
+                                                   (!tb_mobile.Text.Equals("")) &&
                                                    (!pb_password.Password.Equals("")) && (!cb_job.Text.Equals("")))
             {
                 if ((emailError) || (duplicateUserName) || (passLength))
@@ -412,6 +423,7 @@ namespace POS.View
                         p_showPassword.Visibility = Visibility.Collapsed;
                         tt_errorPassword.Content = MainWindow.resourcemanager.GetString("trErrorPasswordLengthToolTip");
                         tb_password.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                        pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000");
                     }
                 }
                 else
@@ -483,6 +495,8 @@ namespace POS.View
             SectionData.validateEmptyTextBox(tb_firstName, p_errorFirstName, tt_errorFirstName, "trEmptyNameToolTip");
             //chk empty last name
             SectionData.validateEmptyTextBox(tb_lastName, p_errorLastName, tt_errorLastName, "trEmptyLastNameToolTip");
+            //chk empty mobile
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             //chk empty job
             SectionData.validateEmptyComboBox(cb_job, p_errorJob, tt_errorJob, "trEmptyJobToolTip");
             //chk empty username
@@ -491,6 +505,8 @@ namespace POS.View
             //SectionData.validateEmptyTextBox(tb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
             //if (tb_password.Text.Equals(""))
             //{ p_showPassword.Visibility = Visibility.Collapsed; pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000"); }
+            if (pb_password.Password.Equals(""))
+            { SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip"); p_showPassword.Visibility = Visibility.Collapsed; }
             //validate email
             SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
             //chk duplicate userName
@@ -506,7 +522,7 @@ namespace POS.View
                 if (!SectionData.IsValid(tb_email.Text))
                     emailError = true;
 
-            if ((!tb_firstName.Text.Equals("")) && (!tb_lastName.Text.Equals("")) && (!tb_userName.Text.Equals("")) && (!cb_job.Text.Equals("")))
+            if ((!tb_firstName.Text.Equals("")) && (!tb_lastName.Text.Equals("")) && (!tb_userName.Text.Equals("")) && (!cb_job.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
             {
                 if ((emailError) || (duplicateUserName))
                 {
@@ -983,7 +999,7 @@ namespace POS.View
         #endregion
         #region Get Id By Click  Y
         private async void DG_users_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        {//selection
             p_errorFirstName.Visibility = Visibility.Collapsed;
             p_errorLastName.Visibility = Visibility.Collapsed;
             p_errorUserName.Visibility = Visibility.Collapsed;
@@ -997,7 +1013,10 @@ namespace POS.View
             tb_userName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            p_showPassword.Visibility = Visibility.Visible;
             cb_job.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+            SectionData.clearValidate(tb_mobile, p_errorMobile);
 
             if (dg_users.SelectedIndex != -1)
             {
@@ -1332,6 +1351,30 @@ namespace POS.View
             }
 
             Window.GetWindow(this).Opacity = 1;
+        }
+
+        private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+        }
+
+        private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+        }
+
+        private void Pb_password_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (pb_password.Password.Equals(""))
+            {
+                SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
+                p_showPassword.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                SectionData.clearPasswordValidate(pb_password, p_errorPassword);
+                p_showPassword.Visibility = Visibility.Visible;
+            }
         }
     }
 }

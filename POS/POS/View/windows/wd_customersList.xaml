@@ -10,7 +10,7 @@
         ResizeMode="NoResize" Margin="0"
         Title="wd_agentsList" Height="400" Width="550" Background="#333333" 
         Loaded="Window_Loaded">
-    <Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  >
+    <Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  x:Name="grid_customerList">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>

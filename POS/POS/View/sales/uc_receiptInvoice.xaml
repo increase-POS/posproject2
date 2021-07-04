@@ -492,7 +492,7 @@
                                   TextBlock.FontSize="12"   Background="#f8f8f8" 
                                   Grid.Column="1" Height="40"   Margin="5,5"
                                   BorderBrush="#737373" BorderThickness="0"
-                                  KeyUp="Cb_customer_KeyUp" IsEditable="True"
+                                  KeyUp="Cb_customer_KeyUp" IsEditable="True" 
                                   LostFocus="input_LostFocus" SelectionChanged="Cb_customer_SelectionChanged"/>
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,45,5"
                                           Name="p_errorCustomer"
@@ -782,6 +782,7 @@
                                                               DisplayMemberPath="mainUnit" 
                                                               SelectedValuePath="itemUnitId"
                                                               SelectedItem="{Binding Unit}"
+                                                      IsEnabled="{Binding Path=IsEnabled, ElementName=cb_customer}"
                                                 />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>

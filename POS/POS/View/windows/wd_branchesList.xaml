@@ -10,7 +10,7 @@
         ResizeMode="NoResize" Margin="0"
         Title="wd_itemsList" Height="400" Width="550" Background="Transparent" AllowsTransparency="True" 
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
-    <Grid Grid.Column="1" Grid.Row="1"  >
+    <Grid Grid.Column="1" Grid.Row="1"  x:Name="grid_branchList">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
@@ -198,11 +198,11 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader" MouseDoubleClick="Dg_selectedStores_MouseDoubleClick" >
                         <DataGrid.Columns >
-                            <DataGridTextColumn Width="*" IsReadOnly="True"  Header="Branches/Stores" Binding="{Binding Path=name}"/>
+                            <DataGridTextColumn Width="*" IsReadOnly="True"  Header="Branches/Stores" />
+                            <!--Binding="{Binding Path=bname}"-->
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
-
 
                 <Button Content="Save" Grid.Row="5" Grid.ColumnSpan="5"
                        Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"

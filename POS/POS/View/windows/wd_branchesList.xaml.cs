@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,12 +28,15 @@ namespace POS.View.windows
 
         Branch branchModel = new Branch();
         BranchesUsers branchUserModel = new BranchesUsers();
+        BranchStore branchStoreModel = new BranchStore();
 
         List<Branch> allStoresSource = new List<Branch>();
         List<BranchesUsers> selectedStoresByUserSource = new List<BranchesUsers>();
+        List<BranchStore> selectedStoresByBranchSource = new List<BranchStore>();
 
         List<Branch> allStores = new List<Branch>();
         List<BranchesUsers> selectedStoresByUser = new List<BranchesUsers>();
+        List<BranchStore> selectedStoresByBranch = new List<BranchStore>();
 
         Branch branch = new Branch();
         BranchesUsers branchUser = new BranchesUsers();
@@ -48,10 +53,17 @@ namespace POS.View.windows
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
+            if (MainWindow.lang.Equals("en"))
+            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_branchList.FlowDirection = FlowDirection.LeftToRight; }
+            else
+            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_branchList.FlowDirection = FlowDirection.RightToLeft; }
+
             translat();
             //MessageBox.Show(Id.ToString());
             allStoresSource = await branchModel.GetAll();////active branch and store 
             //chk user or branch
+            var dgtc = dg_selectedStores.Columns[0] as DataGridTextColumn;
+
             if (userOrBranch == 'u')
             {
                 selectedStoresByUserSource = await branchUserModel.GetBranchesByUserId(Id);
@@ -62,14 +74,29 @@ namespace POS.View.windows
                     branch = allStoresSource.Where(s => s.branchId == i.branchId).FirstOrDefault<Branch>();
                     allStores.Remove(branch);
                 }
+                dgtc.Binding = new System.Windows.Data.Binding("bname");
+
                 dg_selectedStores.ItemsSource = selectedStoresByUser;
                 dg_selectedStores.SelectedValuePath = "branchId";
-                dg_selectedStores.DisplayMemberPath = "name";
+                dg_selectedStores.DisplayMemberPath = "bname";
             }
-            else if (userOrBranch == 'b')
-            { }
-            else if (userOrBranch == 's')
-            { }
+            else
+            {
+                selectedStoresByBranchSource = await branchStoreModel.GetAll();
+                selectedStoresByBranchSource = selectedStoresByBranchSource.Where(s => s.branchId == Id).ToList();
+                selectedStoresByBranch.AddRange(selectedStoresByBranchSource);
+                //remove selected items from all items
+                foreach (var i in selectedStoresByBranch)
+                {
+                    branch = allStoresSource.Where(s => s.branchId == i.branchId).FirstOrDefault<Branch>();
+                    allStores.Remove(branch);
+                }
+                dgtc.Binding = new System.Windows.Data.Binding("sname");
+
+                dg_selectedStores.ItemsSource = selectedStoresByBranch;
+                dg_selectedStores.SelectedValuePath = "branchId";
+                dg_selectedStores.DisplayMemberPath = "sname";
+            }
 
             allStores.AddRange(allStoresSource);
 
@@ -82,7 +109,22 @@ namespace POS.View.windows
 
         private void translat()
         {
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
 
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+
+            dg_allStores.Columns[0].Header = MainWindow.resourcemanager.GetString("trBranch/Store");
+            dg_selectedStores.Columns[0].Header = MainWindow.resourcemanager.GetString("trBranch/Store");
+
+            txt_title.Text = MainWindow.resourcemanager.GetString("trBranchs/Stores");
+            txt_stores.Text = MainWindow.resourcemanager.GetString("trBranchs/Stores");
+            txt_selectedStores.Text = MainWindow.resourcemanager.GetString("trSelectedBranchs/Stores");
+
+            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+            tt_selectAllItem.Content = MainWindow.resourcemanager.GetString("trSelectAllItems");
+            tt_unselectAllItem.Content = MainWindow.resourcemanager.GetString("trUnSelectAllItems");
+            tt_selectItem.Content = MainWindow.resourcemanager.GetString("trSelectOneItem");
+            tt_unselectItem.Content = MainWindow.resourcemanager.GetString("trUnSelectOneItem");
         }
         private void Dg_selectedStores_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -116,10 +158,24 @@ namespace POS.View.windows
                     bu.branchsUsersId = 0;
                     bu.branchId = branch.branchId;
                     bu.userId = Id;
+                    bu.bname = branch.name;
                     bu.createUserId = MainWindow.userID;
+
                     selectedStoresByUser.Add(bu);
                     dg_selectedStores.ItemsSource = selectedStoresByUser;
 
+                }
+                else
+                {
+                    BranchStore bs = new BranchStore();
+                    bs.id = 0;
+                    bs.branchId = Id;
+                    bs.storeId = branch.branchId;
+                    bs.createUserId = MainWindow.userID;
+                    bs.sname = branch.name;
+                    bs.isActive = 1;
+                    selectedStoresByBranch.Add(bs);
+                    dg_selectedStores.ItemsSource = selectedStoresByBranch;
                 }
 
                 dg_allStores.ItemsSource = allStores;
@@ -134,6 +190,8 @@ namespace POS.View.windows
             int x = 0;
             if (userOrBranch == 'u')
                 x = selectedStoresByUser.Count;
+            else
+                x = selectedStoresByBranch.Count;
 
             for (int i = 0; i < x; i++)
             {
@@ -165,9 +223,19 @@ namespace POS.View.windows
 
         }
 
-        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
+            string s = "";
+            if (userOrBranch == 'u')
+            {
+                s = await branchUserModel.UpdatebranchesByuserId(Id, selectedStoresByUser, MainWindow.userID.Value);
+            }
+            else
+                s = await branchStoreModel.UpdateStoresById(selectedStoresByBranch, Id, MainWindow.userID.Value);
 
+            MessageBox.Show(s);
+            isActive = true;
+            this.Close();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

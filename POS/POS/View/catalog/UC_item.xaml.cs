@@ -918,9 +918,9 @@ namespace POS.View
                             if (tbtn_isDefaultSales.IsChecked == true)
                                 defaultSale = 1;
 
-                            decimal unitValue = 0;
+                            int unitValue = 0;
                             if (tb_count.Text != "")
-                                unitValue = decimal.Parse(tb_count.Text);
+                                unitValue = int.Parse(tb_count.Text);
 
                             Nullable<int> smallUnitId = null;
                             if (cb_unit.SelectedIndex != -1)
@@ -1014,9 +1014,9 @@ namespace POS.View
                             if (tbtn_isDefaultSales.IsChecked == true)
                                 defaultSale = 1;
 
-                            decimal unitValue = 0;
+                            int unitValue = 0;
                             if (tb_count.Text != "")
-                                unitValue = decimal.Parse(tb_count.Text);
+                                unitValue = int.Parse(tb_count.Text);
 
                             Nullable<int> smallUnitId = null;
                             if (cb_unit.SelectedIndex != -1)
@@ -1276,14 +1276,10 @@ namespace POS.View
             cb_selectUnit.ItemsSource = units.ToList();
             cb_selectUnit.SelectedValuePath = "unitId";
             cb_selectUnit.DisplayMemberPath = "name";
-
-            cb_unit.ItemsSource = units.ToList();
-            cb_unit.SelectedValuePath = "unitId";
-            cb_unit.DisplayMemberPath = "name";
         }
-        private async void fillSmallUnits(int unitId)
+        private async Task fillSmallUnits(int itemId, int unitId)
         {
-            List<Unit> units = await unitModel.GetUnitsAsync();
+            List<Unit> units = await unitModel.getSmallUnits(itemId,unitId);
             cb_unit.ItemsSource = units.ToList();
             cb_unit.SelectedValuePath = "unitId";
             cb_unit.DisplayMemberPath = "name";
@@ -1326,7 +1322,7 @@ namespace POS.View
             BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
             brush.ImageSource = temp;
             img_item.Background = brush;
-
+            fillCategories();
             //create new  object of item
             item = new Item();
         }
@@ -1354,8 +1350,15 @@ namespace POS.View
             tb_barcode.Focus();
 
             itemUnit = new ItemUnit();
+            dg_unit.SelectedIndex = -1;
             // set random barcode on image
             generateBarcode("", true);
+
+            SectionData.clearComboBoxValidate(cb_selectUnit, p_errorSelectUnit);
+            SectionData.clearComboBoxValidate(cb_unit, p_errorUnit);
+            SectionData.clearValidate(tb_count,p_errorCount);
+            SectionData.clearValidate(tb_price,p_errorPrice);
+            SectionData.clearValidate(tb_barcode,p_errorBarcode);
         }
         async void refreshSerials(int itemId)
         {
@@ -1383,12 +1386,6 @@ namespace POS.View
         #region SelectionChanged
         private void dg_unit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorCode.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
             if (dg_unit.SelectedIndex != -1)
             {
                 itemUnit = dg_unit.SelectedItem as ItemUnit;
@@ -2151,13 +2148,18 @@ namespace POS.View
             Window.GetWindow(this).Opacity = 1;
         }
 
-        private void Cb_selectUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Cb_selectUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_selectUnit.SelectedIndex != -1 && cb_unit.SelectedIndex != -1)
+            if (cb_selectUnit.SelectedIndex != -1)
             {
-                if ((int)cb_selectUnit.SelectedValue == (int)cb_unit.SelectedValue)
-                    tb_count.Text = "1";
+                if ( cb_unit.SelectedIndex != -1 && (int)cb_selectUnit.SelectedValue == (int)cb_unit.SelectedValue)
+                {
+                   tb_count.Text = "1";
+                }
+                await fillSmallUnits(item.itemId,(int)cb_selectUnit.SelectedValue);
+                cb_unit.SelectedValue = itemUnit.subUnitId;
             }
+          
         }
 
         private void Cb_unit_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2171,14 +2173,17 @@ namespace POS.View
 
         private void Cb_parentItem_KeyUp(object sender, KeyEventArgs e)
         {
-            ComboBox cbm = sender as ComboBox;
-            SectionData.searchInComboBox(cbm);
+            //ComboBox cbm = sender as ComboBox;
+            //SectionData.searchInComboBox(cbm);
+            cb_parentItem.ItemsSource = items.Where(x => x.name.Contains(cb_parentItem.Text));
         }
 
         private void Cb_categorie_KeyUp(object sender, KeyEventArgs e)
         {
-            ComboBox cbm = sender as ComboBox;
-            SectionData.searchInComboBox(cbm);
+            //ComboBox cbm = sender as ComboBox;
+            //SectionData.searchInComboBox(cbm);
+            cb_categorie.ItemsSource = categories.Where(x => x.name.Contains(cb_categorie.Text));
+
         }
         private async void fillParentItemCombo()
         {

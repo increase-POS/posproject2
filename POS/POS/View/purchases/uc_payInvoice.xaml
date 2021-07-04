@@ -672,7 +672,6 @@
                         <TextBlock Text="TAX" x:Name="txt_tax" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
-                        <TextBox />
                         <TextBox Grid.Row="1"   x:Name="tb_taxValue" Grid.Column="1" 
                        Foreground="#4E4E4E" Text="{Binding tax, Mode=OneWay}"
                                   FontWeight="Bold"  FontSize="12"
@@ -758,7 +757,7 @@
                                 <DataGridTemplateColumn Header="Unit"  Width="*" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ComboBox DataContextChanged="Cbm_unitItemDetails_DataContextChanged" 
+                                            <ComboBox  DataContextChanged="Cbm_unitItemDetails_DataContextChanged" 
                                                 SelectionChanged="Cbm_unitItemDetails_SelectionChanged" 
                                                               Tag="cbm_unitItemDetails" 
                                                               x:Name="cbm_unitItemDetails"
@@ -766,6 +765,7 @@
                                                               DisplayMemberPath="mainUnit" 
                                                               SelectedValuePath="itemUnitId"
                                                               SelectedItem="{Binding Unit}"
+                                                       IsEnabled="{Binding Path=IsEnabled, ElementName=cb_branch}"
                                                 />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>

@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -64,6 +66,11 @@ namespace POS.View.windows
             dg_selectedAgents.DisplayMemberPath = "agentName";
 
             //////////////////////////////
+            if (MainWindow.lang.Equals("en"))
+            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_customerList.FlowDirection = FlowDirection.LeftToRight; }
+            else
+            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_customerList.FlowDirection = FlowDirection.RightToLeft; }
+
             translat();
 
         }

@@ -191,28 +191,33 @@ namespace POS.View
             location.locationId = 0;
             if (validate(location))
             {
-                location.x = tb_x.Text;
-                location.y = tb_y.Text;
-                location.z = tb_z.Text;
-                location.note = tb_notes.Text;
-                location.createUserId = MainWindow.userID;
-                location.updateUserId = MainWindow.userID;
-                location.isActive = 1;
-                location.sectionId = null;
-                location.branchId = MainWindow.branchID;
-
-                string s = await locationModel.saveLocation(location);
-
-                if (!s.Equals("-1")) 
+                if (locations.Where(x => x.name == location.name && x.branchId == MainWindow.branchID).Count() == 0)
                 {
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                    Btn_clear_Click(null, null);
+                    location.x = tb_x.Text;
+                    location.y = tb_y.Text;
+                    location.z = tb_z.Text;
+                    location.note = tb_notes.Text;
+                    location.createUserId = MainWindow.userID;
+                    location.updateUserId = MainWindow.userID;
+                    location.isActive = 1;
+                    location.sectionId = null;
+                    location.branchId = MainWindow.branchID;
+
+                    string s = await locationModel.saveLocation(location);
+
+                    if (!s.Equals("-1"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                    await RefreshLocationsList();
+                    Tb_search_TextChanged(null, null);
                 }
                 else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                await RefreshLocationsList();
-                Tb_search_TextChanged(null, null);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trDublicateLocation"), animation: ToasterAnimation.FadeIn);
             }
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)

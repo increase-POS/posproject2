@@ -588,7 +588,8 @@
                             </Grid.RowDefinitions>
                             <DockPanel LastChildFill="True" Grid.Row="0">
                                 <TextBlock x:Name="txt_baseInformation" Text="Base Infomation" Foreground="#737373" FontSize="10" VerticalAlignment="Center" Margin="5,5,5,5"/>
-                                <Button DockPanel.Dock="Right" x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="btn_clear_Click" Margin="5,1" ToolTip="clear" TabIndex="13">
+                                <Button DockPanel.Dock="Right" x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0" Background="{x:Null}" 
+                                        BorderBrush="{x:Null}" Click="btn_clear_Click" Margin="5,1" ToolTip="clear" TabIndex="13">
                                     <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle" HorizontalAlignment="Center" Grid.Column="0" VerticalAlignment="Center" Width="20" Height="20">
                                         <materialDesign:PackIcon.ToolTip>
                                             <ToolTip x:Name="tt_clear" Content="clear" Placement="left" HorizontalOffset="5" PlacementRectangle="50,0,0,0" VerticalOffset="20"/>
@@ -683,15 +684,12 @@
                                             Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                              materialDesign:HintAssist.Hint="Select Parent Item "  
                            TextBlock.FontSize="12"   Background="#f8f8f8"
-              
               Height="40"   Margin="10,5,10,5"
                            BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_parentItem_SelectionChanged"
-                                      
                                        IsEditable="True"
                                          IsTextSearchEnabled="False"
                                   StaysOpenOnEdit="True"
                                   KeyUp="Cb_parentItem_KeyUp">
-
                             </ComboBox>
                             <Path Fill="#E81123" Grid.Row="3" x:Name="p_errorParentItem" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -706,12 +704,9 @@
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                             Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                              materialDesign:HintAssist.Hint="Select Categorie "  
-                                             
                            TextBlock.FontSize="12"   Background="#f8f8f8" 
-            
                 Height="40"   Margin="10,5,10,5" LostFocus="input_LostFocus"
                            BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_categorie_SelectionChanged"
-                                       
                                         IsEditable="True"
                                           IsTextSearchEnabled="False"
                                   StaysOpenOnEdit="True"
@@ -1593,6 +1588,7 @@
                                 <TextBox x:Name="tb_barcode"  Grid.Row="4" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0" 
                                         BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..." 
                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                         materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                         Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                         BorderBrush="AliceBlue"  PreviewKeyDown="space_PreviewKeyDown"
                                         MaxLength="13" Height="40"  Margin="10,5,10,5" LostFocus="cb_barcode_LostFocus"

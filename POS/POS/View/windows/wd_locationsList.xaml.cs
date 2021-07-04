@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data;
+using System.Resources;
+using System.Reflection;
 
 namespace POS.View.windows
 {
@@ -51,9 +53,13 @@ namespace POS.View.windows
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             //MessageBox.Show(sectionId.ToString());
-           
+            if (MainWindow.lang.Equals("en"))
+            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_locations.FlowDirection = FlowDirection.LeftToRight; }
+            else
+            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_locations.FlowDirection = FlowDirection.RightToLeft; }
+
             translat();
 
             section = await sectionModel.GetSectionByID(sectionId);
@@ -102,7 +108,7 @@ namespace POS.View.windows
             txt_locations.Text = MainWindow.resourcemanager.GetString("trLocation");
             txt_location.Text = MainWindow.resourcemanager.GetString("trLocation");
             txt_selectedLocations.Text = MainWindow.resourcemanager.GetString("trSelectedLocations");
-            txt_HeaderTitle.Text = MainWindow.resourcemanager.GetString("trSection");
+            //txt_HeaderTitle.Text = MainWindow.resourcemanager.GetString("trSection");
             tt_searchX.Content = MainWindow.resourcemanager.GetString("trX");
             tt_searchY.Content = MainWindow.resourcemanager.GetString("trY");
             tt_searchZ.Content = MainWindow.resourcemanager.GetString("trZ");

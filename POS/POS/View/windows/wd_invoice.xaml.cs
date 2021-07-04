@@ -33,6 +33,7 @@ namespace POS.View.windows
         IEnumerable<Invoice> invoices;
         public int posId { get; set; }
         public int branchId { get; set; }
+        public int userId { get; set; }
         /// <summary>
         /// for filtering invoice type
         /// </summary>
@@ -82,7 +83,12 @@ namespace POS.View.windows
             else
                 invoices = await invoice.GetOrderByType(invoiceType, branchId);
 
-            dg_Invoice.ItemsSource = invoices.ToList();
+            //if (invoiceType == "pd ,pbd")
+            //{
+            //    dg_Invoice.ItemsSource = invoices.ToList().Where(x => x.createUserId == userId);
+            //}
+            //else
+                dg_Invoice.ItemsSource = invoices.ToList();
         }
         private void Dg_Invoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

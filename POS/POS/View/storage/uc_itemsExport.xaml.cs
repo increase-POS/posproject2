@@ -402,16 +402,12 @@ namespace POS.View.storage
         private void input_LostFocus(object sender, RoutedEventArgs e)
         {
             string name = sender.GetType().Name;
-            if (name == "TextBox")
+            if (name == "ComboBox")
             {
+                if ((sender as ComboBox).Name == "cb_branch")
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
             }
-            else if (name == "ComboBox")
-            {
-            }
-            else
-            {
-
-            }
+           
         }
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -926,53 +922,69 @@ namespace POS.View.storage
             }
             clearProcess();
         }
+        private bool validateOrder()
+        {
+            bool valid = true;
+            if (cb_branch.SelectedIndex == -1 || billDetails.Count == 0)
+                valid = false;
+            if (billDetails.Count == 0)
+                clearProcess();
+            else
+                SectionData.validateEmptyComboBox(cb_branch,p_errorBranch,tt_errorBranch, MainWindow.resourcemanager.GetString("trEmptyBranchToolTip"));
+            return valid;
+        }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            wd_transItemsLocation w;
-            switch (_ProcessType)
+           bool valid =  validateOrder();
+            if (valid)
             {
-                case "exw":
-                case "exd":
-                    Window.GetWindow(this).Opacity = 0.2;
-                     w = new wd_transItemsLocation();
-                    List<ItemTransfer> orderList = new List<ItemTransfer>();
-                    foreach (BillDetails d in billDetails)
-                    {
-                        orderList.Add(new ItemTransfer() {
-                        itemName = d.Product,
-                        itemId = d.itemId,
-                        unitName = d.Unit,
-                        itemUnitId = d.itemUnitId,
-                        quantity = d.Count,
-                    });
-                    }
-                    w.orderList = orderList;
-                    if (w.ShowDialog() == true)
-                    {
-                        if (w.selectedItemsLocations != null)
+                wd_transItemsLocation w;
+                switch (_ProcessType)
+                {
+                    case "exw":
+                    case "exd":
+                        Window.GetWindow(this).Opacity = 0.2;
+                        w = new wd_transItemsLocation();
+                        List<ItemTransfer> orderList = new List<ItemTransfer>();
+                        foreach (BillDetails d in billDetails)
                         {
-                            List<ItemLocation> itemsLocations = w.selectedItemsLocations;
-                            List<ItemLocation> readyItemsLoc = new List<ItemLocation>();
-
-                           // _ProcessType ="ex";
-                            for(int i = 0; i<itemsLocations.Count; i++)
+                            orderList.Add(new ItemTransfer()
                             {
-                                if (itemsLocations[i].isSelected == true)
-                                    readyItemsLoc.Add(itemsLocations[i]);
-                            }
-                           await itemLocationModel.recieptOrder(readyItemsLoc,(int)cb_branch.SelectedValue,MainWindow.userID.Value) ;
-                            await save();
+                                itemName = d.Product,
+                                itemId = d.itemId,
+                                unitName = d.Unit,
+                                itemUnitId = d.itemUnitId,
+                                quantity = d.Count,
+                            });
                         }
-                    }
-                    Window.GetWindow(this).Opacity = 1;
-                    break;
-                case "emw":
-                    //process transfer items
-                    await save();
-                    break;              
-                default:
-                    await save();
-                    break;
+                        w.orderList = orderList;
+                        if (w.ShowDialog() == true)
+                        {
+                            if (w.selectedItemsLocations != null)
+                            {
+                                List<ItemLocation> itemsLocations = w.selectedItemsLocations;
+                                List<ItemLocation> readyItemsLoc = new List<ItemLocation>();
+
+                                // _ProcessType ="ex";
+                                for (int i = 0; i < itemsLocations.Count; i++)
+                                {
+                                    if (itemsLocations[i].isSelected == true)
+                                        readyItemsLoc.Add(itemsLocations[i]);
+                                }
+                                await itemLocationModel.recieptOrder(readyItemsLoc, (int)cb_branch.SelectedValue, MainWindow.userID.Value);
+                                await save();
+                            }
+                        }
+                        Window.GetWindow(this).Opacity = 1;
+                        break;
+                    case "emw":
+                        //process transfer items
+                        await save();
+                        break;
+                    default:
+                        await save();
+                        break;
+                }
             }
           
         }

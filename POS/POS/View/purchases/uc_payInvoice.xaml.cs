@@ -627,7 +627,7 @@ namespace POS.View
         }
         private void dp_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            DateTime invoiceDate;
+            //DateTime invoiceDate;
             DateTime desrveDate;
             if ( dp_desrvedDate.SelectedDate != null)
             {
@@ -718,10 +718,12 @@ namespace POS.View
         {
             Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
+
             // purchase drafts and purchase bounce drafts
             // string[] typeArr = { "pd","pdbd" };
             w.invoiceType = "pd ,pbd";
-
+            //w.branchId = int.Parse(MainWindow.branchID.ToString());
+            //w.userId = MainWindow.userLogin.userId;
 
             w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
@@ -759,7 +761,8 @@ namespace POS.View
 
             // purchase invoices
             w.invoiceType = "pw";
-            w.branchId = int.Parse(MainWindow.branchID.ToString());
+            //w.branchId = int.Parse(MainWindow.branchID.ToString());
+            //w.userId = MainWindow.userLogin.userId;
             
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
 
@@ -817,6 +820,8 @@ namespace POS.View
 
             // purchase invoices
             w.invoiceType = "pw"; // invoice type to view in grid
+            //w.branchId = int.Parse(MainWindow.branchID.ToString());
+            //w.userId = MainWindow.userLogin.userId;
             if (w.ShowDialog() == true)
             {
                 if (w.invoice != null)
@@ -840,7 +845,8 @@ namespace POS.View
             wd_invoice w = new wd_invoice();
 
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
-
+            //w.branchId = int.Parse(MainWindow.branchID.ToString());
+            //w.userId = MainWindow.userLogin.userId;
             // purchase invoices
             w.invoiceType = "pbw"; // invoice type to view in grid
             if (w.ShowDialog() == true)
@@ -907,6 +913,8 @@ namespace POS.View
                 cb_typeDiscount.IsEnabled = false;
                 btn_save.IsEnabled = true;
                 btn_updateVendor.IsEnabled = false;
+                tb_invoiceNumber.IsEnabled = false;
+                tb_taxValue.IsEnabled = false;
             }
             else if (_InvoiceType == "pd")
             {
@@ -924,6 +932,8 @@ namespace POS.View
                 cb_typeDiscount.IsEnabled = true;
                 btn_save.IsEnabled = true;
                 btn_updateVendor.IsEnabled = true;
+                tb_invoiceNumber.IsEnabled = true;
+                tb_taxValue.IsEnabled = true;
             }
             else if (_InvoiceType == "pw")
             {
@@ -941,6 +951,8 @@ namespace POS.View
                 cb_typeDiscount.IsEnabled = false;
                 btn_save.IsEnabled = false;
                 btn_updateVendor.IsEnabled = false;
+                tb_invoiceNumber.IsEnabled = false;
+                tb_taxValue.IsEnabled = false;
             }
         }
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
@@ -1004,8 +1016,7 @@ namespace POS.View
         }
         private void Cb_vendor_KeyUp(object sender, KeyEventArgs e)
         {
-            ComboBox cbm = sender as ComboBox;
-            SectionData.searchInComboBox(cbm);
+            cb_vendor.ItemsSource = vendors.Where(x => x.name.Contains( cb_vendor.Text));
         }
         private void Cb_vendor_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

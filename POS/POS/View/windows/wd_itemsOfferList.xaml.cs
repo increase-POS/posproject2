@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -55,6 +57,11 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
+            if (MainWindow.lang.Equals("en"))
+            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_offerList.FlowDirection = FlowDirection.LeftToRight; }
+            else
+            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_offerList.FlowDirection = FlowDirection.RightToLeft; }
+
             translat();
 
             offer = await offerModel.getOfferById(offerId);
