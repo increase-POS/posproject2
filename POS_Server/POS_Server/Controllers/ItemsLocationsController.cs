@@ -269,7 +269,48 @@ namespace POS_Server.Controllers
             return Ok(1);
         }
 
+        [HttpPost]
+        [Route("receiptOrder")]
+        public IHttpActionResult receiptOrder(string itemLocationObject, int toBranch, int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
 
+            itemLocationObject = itemLocationObject.Replace("\\", string.Empty);
+            itemLocationObject = itemLocationObject.Trim('"');
+
+            if (valid)
+            {
+                List<itemsLocations> itemList = JsonConvert.DeserializeObject<List<itemsLocations>>(itemLocationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var freeZoneLocation = (from s in entity.sections.Where(x => x.branchId == toBranch && x.isFreeZone == 1)
+                                            join l in entity.locations on s.sectionId equals l.sectionId
+                                            select l.locationId).SingleOrDefault();
+                    foreach (itemsLocations item in itemList)
+                    {
+                        itemsLocations itemL = new itemsLocations();
+
+                        itemL = entity.itemsLocations.Find(item.itemsLocId);
+                        itemL.quantity -= item.quantity;
+                        itemL.updateDate = DateTime.Now;
+                        itemL.updateUserId = userId;
+                        entity.SaveChanges();
+                       // decreaseItemQuantity(item.itemUnitId.Value,item.itemsLocId,(int)item.quantity,userId);
+                        //decreaseItemQuantity(item.itemUnitId.Value, fromBranch, (int)item.quantity, userId);
+                        increaseItemQuantity(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity, userId);
+                    }
+                }
+            }
+            return Ok(1);
+        }
         private void  increaseItemQuantity(int itemUnitId,int locationId, int quantity, int userId)
         {
             using (incposdbEntities entity = new incposdbEntities())
@@ -648,6 +689,72 @@ namespace POS_Server.Controllers
                 }
             }
             return false;
+        }
+        [HttpGet]
+        [Route("getSpecificItemLocation")]
+        public IHttpActionResult getSpecificItemLocation(string itemUnitsIds, int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                itemUnitsIds = JsonConvert.DeserializeObject<string>(itemUnitsIds, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                List<int> ids = new List<int>();
+                List<string> strIds =itemUnitsIds.Split(',').ToList();
+                for (int i = 0; i < strIds.Count; i++)
+                {
+                    if(!strIds[i].Equals(""))
+                         ids.Add(int.Parse(strIds[i]));
+                }
+                   
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var docImageList = (from b in entity.itemsLocations
+                                        where b.quantity > 0 && ids.Contains(b.itemUnitId??0)
+                                        join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
+                                        join i in entity.items on u.itemId equals i.itemId
+                                        join l in entity.locations on b.locationId equals l.locationId
+                                        join s in entity.sections on l.sectionId equals s.sectionId
+                                        where s.branchId == branchId && s.isFreeZone != 1
+
+                                        select new ItemLocationModel
+                                        {
+                                            createDate = b.createDate,
+                                            createUserId = b.createUserId,
+                                            endDate = b.endDate,
+                                            itemsLocId = b.itemsLocId,
+                                            itemUnitId = b.itemUnitId,
+                                            locationId = b.locationId,
+                                            note = b.note,
+                                            quantity = b.quantity,
+                                            startDate = b.startDate,
+                                            storeCost = b.storeCost,
+                                            updateDate = b.updateDate,
+                                            updateUserId = b.updateUserId,
+                                            itemName = i.name,
+                                            sectionId = s.sectionId,
+                                            isFreeZone = s.isFreeZone,
+                                            itemType = i.type,
+                                            location = l.x+l.y+l.z,
+                                        })
+                                    .ToList();
+
+                    if (docImageList == null)
+                        return NotFound();
+                    else
+                        return Ok(docImageList);
+                }
+            }
+            //else
+            return NotFound();
         }
         // DELETE api/<controller>/5
         public void Delete(int id)

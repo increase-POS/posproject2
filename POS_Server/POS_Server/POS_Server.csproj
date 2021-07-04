@@ -315,6 +315,9 @@
     <Compile Include="invoicesOrders.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="invoiceStatus.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="items.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>

@@ -68,6 +68,7 @@ namespace POS_Server.Controllers
             else
                 return NotFound();
         }
+       
         // add or update item transfer
         [HttpPost]
         [Route("Save")]
@@ -116,6 +117,7 @@ namespace POS_Server.Controllers
                         }
                         var transferEntity = entity.Set<itemsTransfer>();
 
+                        transferObj[i].invoiceId = invoiceId;
                         transferObj[i].createDate = DateTime.Now;
                         transferObj[i].updateDate = DateTime.Now;
                         transferObj[i].updateUserId = transferObj[i].createUserId;

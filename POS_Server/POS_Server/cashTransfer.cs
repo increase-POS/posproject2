@@ -17,12 +17,13 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public cashTransfer()
         {
+            this.agentMemberships = new HashSet<agentMemberships>();
             this.bondes = new HashSet<bondes>();
             this.cashTransfer1 = new HashSet<cashTransfer>();
-            this.agentMemberships = new HashSet<agentMemberships>();
         }
     
         public int cashTransId { get; set; }
+        public Nullable<int> agentMembershipsId { get; set; }
         public string transType { get; set; }
         public Nullable<int> posId { get; set; }
         public Nullable<int> userId { get; set; }
@@ -46,8 +47,10 @@ namespace POS_Server
         public string processType { get; set; }
         public Nullable<int> cardId { get; set; }
         public Nullable<int> bondId { get; set; }
-        public Nullable<int> agentMembershipsId { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<agentMemberships> agentMemberships { get; set; }
+        public virtual agentMemberships agentMemberships1 { get; set; }
         public virtual agents agents { get; set; }
         public virtual banks banks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -63,8 +66,5 @@ namespace POS_Server
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
         public virtual users users2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<agentMemberships> agentMemberships { get; set; }
-        public virtual agentMemberships agentMemberships1 { get; set; }
     }
 }

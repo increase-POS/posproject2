@@ -34,7 +34,7 @@
     <Property Name="image" Type="ntext" />
     <Property Name="type" Type="nvarchar" MaxLength="50" />
     <Property Name="accType" Type="nvarchar" MaxLength="50" />
-    <Property Name="balance" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="balance" Type="decimal" Precision="20" Scale="2" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
@@ -42,7 +42,7 @@
     <Property Name="notes" Type="ntext" />
     <Property Name="isActive" Type="tinyint" />
     <Property Name="fax" Type="nvarchar" MaxLength="100" />
-    <Property Name="maxDeserve" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="maxDeserve" Type="decimal" Precision="20" Scale="2" />
   </EntityType>
   <EntityType Name="banks">
     <Key>
@@ -67,7 +67,7 @@
     </Key>
     <Property Name="bondId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="number" Type="nvarchar" MaxLength="200" />
-    <Property Name="amount" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="amount" Type="decimal" Precision="20" Scale="2" />
     <Property Name="deserveDate" Type="datetime2" Precision="7" />
     <Property Name="type" Type="nvarchar" MaxLength="50" />
     <Property Name="isRecieved" Type="tinyint" />
@@ -152,7 +152,7 @@
     <Property Name="transNum" Type="nvarchar" MaxLength="50" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
-    <Property Name="cash" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="cash" Type="decimal" Precision="20" Scale="2" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="createUserId" Type="int" />
     <Property Name="notes" Type="ntext" />
@@ -178,7 +178,7 @@
     <Property Name="details" Type="ntext" />
     <Property Name="image" Type="ntext" />
     <Property Name="isActive" Type="smallint" />
-    <Property Name="taxes" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="taxes" Type="decimal" Precision="20" Scale="2" />
     <Property Name="parentId" Type="int" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -223,14 +223,14 @@
     <Property Name="code" Type="nvarchar" MaxLength="100" />
     <Property Name="isActive" Type="tinyint" />
     <Property Name="discountType" Type="tinyint" />
-    <Property Name="discountValue" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="discountValue" Type="decimal" Precision="20" Scale="2" />
     <Property Name="startDate" Type="datetime2" Precision="7" />
     <Property Name="endDate" Type="datetime2" Precision="7" />
     <Property Name="notes" Type="ntext" />
     <Property Name="quantity" Type="int" />
     <Property Name="remainQ" Type="int" />
-    <Property Name="invMin" Type="decimal" Precision="20" Scale="4" />
-    <Property Name="invMax" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="invMin" Type="decimal" Precision="20" Scale="2" />
+    <Property Name="invMax" Type="decimal" Precision="20" Scale="2" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
@@ -248,7 +248,7 @@
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
-    <Property Name="discountValue" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="discountValue" Type="decimal" Precision="20" Scale="2" />
     <Property Name="discountType" Type="tinyint" />
   </EntityType>
   <EntityType Name="docImages">
@@ -355,10 +355,10 @@
     <Property Name="invType" Type="nvarchar" MaxLength="50" />
     <Property Name="discountType" Type="nvarchar" MaxLength="10" />
     <Property Name="discountValue" Type="decimal" Precision="20" Scale="4" />
-    <Property Name="total" Type="decimal" Precision="20" Scale="4" />
-    <Property Name="totalNet" Type="decimal" Precision="20" Scale="4" />
-    <Property Name="paid" Type="decimal" Precision="20" Scale="4" />
-    <Property Name="deserved" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="total" Type="decimal" Precision="20" Scale="2" />
+    <Property Name="totalNet" Type="decimal" Precision="20" Scale="2" />
+    <Property Name="paid" Type="decimal" Precision="20" Scale="2" />
+    <Property Name="deserved" Type="decimal" Precision="20" Scale="2" />
     <Property Name="deservedDate" Type="date" />
     <Property Name="invDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -371,7 +371,7 @@
     <Property Name="vendorInvDate" Type="datetime2" Precision="7" />
     <Property Name="branchId" Type="int" />
     <Property Name="posId" Type="int" />
-    <Property Name="tax" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="tax" Type="decimal" Precision="20" Scale="2" />
     <Property Name="taxtype" Type="int" />
     <Property Name="name" Type="nvarchar" MaxLength="200" />
     <Property Name="isApproved" Type="tinyint" />
@@ -391,6 +391,22 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
   </EntityType>
+  <EntityType Name="invoiceStatus">
+    <Key>
+      <PropertyRef Name="invStatusId" />
+    </Key>
+    <Property Name="invStatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="invoiceId" Type="int" />
+    <Property Name="date" Type="datetime2" Precision="7" />
+    <Property Name="userId" Type="int" />
+    <Property Name="status" Type="nvarchar" MaxLength="50" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
+    <Property Name="notes" Type="ntext" />
+    <Property Name="isActive" Type="tinyint" />
+  </EntityType>
   <EntityType Name="items">
     <Key>
       <PropertyRef Name="itemId" />
@@ -401,7 +417,7 @@
     <Property Name="details" Type="ntext" />
     <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="image" Type="ntext" />
-    <Property Name="taxes" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="taxes" Type="decimal" Precision="20" Scale="2" />
     <Property Name="isActive" Type="tinyint" />
     <Property Name="min" Type="int" />
     <Property Name="max" Type="int" />
@@ -429,7 +445,7 @@
     <Property Name="endDate" Type="date" />
     <Property Name="itemUnitId" Type="int" />
     <Property Name="note" Type="ntext" />
-    <Property Name="storeCost" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="storeCost" Type="decimal" Precision="20" Scale="2" />
   </EntityType>
   <EntityType Name="itemsMaterials">
     <Key>
@@ -438,9 +454,9 @@
     <Property Name="itemMatId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="itemId" Type="int" />
     <Property Name="materialId" Type="int" />
-    <Property Name="quantity" Type="decimal" Precision="18" Scale="4" />
+    <Property Name="quantity" Type="decimal" Precision="20" Scale="2" />
     <Property Name="unitId" Type="int" />
-    <Property Name="price" Type="decimal" Precision="18" Scale="18" />
+    <Property Name="price" Type="decimal" Precision="20" Scale="2" />
   </EntityType>
   <EntityType Name="itemsOffers">
     <Key>
@@ -481,7 +497,7 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="notes" Type="ntext" />
-    <Property Name="price" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="price" Type="decimal" Precision="20" Scale="2" />
     <Property Name="itemUnitId" Type="int" />
   </EntityType>
   <EntityType Name="itemsUnits">
@@ -491,17 +507,17 @@
     <Property Name="itemUnitId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="itemId" Type="int" />
     <Property Name="unitId" Type="int" />
-    <Property Name="unitValue" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="unitValue" Type="int" />
     <Property Name="defaultSale" Type="smallint" />
     <Property Name="defaultPurchase" Type="smallint" />
-    <Property Name="price" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="price" Type="decimal" Precision="20" Scale="2" />
     <Property Name="barcode" Type="nvarchar" MaxLength="200" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="subUnitId" Type="int" />
-    <Property Name="purchasePrice" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="purchasePrice" Type="decimal" Precision="20" Scale="2" />
   </EntityType>
   <EntityType Name="itemTransferOffer">
     <Key>
@@ -511,7 +527,7 @@
     <Property Name="itemTransId" Type="int" />
     <Property Name="offerId" Type="int" />
     <Property Name="discountType" Type="nvarchar" MaxLength="100" />
-    <Property Name="discountValue" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="discountValue" Type="decimal" Precision="20" Scale="2" />
     <Property Name="notes" Type="ntext" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -572,9 +588,9 @@
     </Key>
     <Property Name="membershipId" Type="int" Nullable="false" />
     <Property Name="name" Type="nvarchar" MaxLength="100" />
-    <Property Name="deliveryDiscount" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="deliveryDiscount" Type="decimal" Precision="20" Scale="2" />
     <Property Name="deliveryDiscountType" Type="nvarchar" MaxLength="100" />
-    <Property Name="invoiceDiscount" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="invoiceDiscount" Type="decimal" Precision="20" Scale="2" />
     <Property Name="invoiceDiscountType" Type="nvarchar" MaxLength="100" />
     <Property Name="notes" Type="ntext" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
@@ -606,7 +622,7 @@
     <Property Name="code" Type="nvarchar" MaxLength="100" />
     <Property Name="isActive" Type="tinyint" />
     <Property Name="discountType" Type="nvarchar" MaxLength="100" />
-    <Property Name="discountValue" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="discountValue" Type="decimal" Precision="20" Scale="2" />
     <Property Name="startDate" Type="datetime2" Precision="7" />
     <Property Name="endDate" Type="datetime2" Precision="7" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
@@ -637,7 +653,7 @@
     <Property Name="contentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="orderId" Type="int" />
     <Property Name="itemId" Type="int" />
-    <Property Name="quantity" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="quantity" Type="decimal" Precision="20" Scale="2" />
     <Property Name="invoiceId" Type="int" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -649,11 +665,11 @@
       <PropertyRef Name="pointId" />
     </Key>
     <Property Name="pointId" Type="int" Nullable="false" />
-    <Property Name="Cash" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="Cash" Type="decimal" Precision="20" Scale="2" />
     <Property Name="CashPoints" Type="int" />
     <Property Name="invoiceCount" Type="int" />
     <Property Name="invoiceCountPoints" Type="int" />
-    <Property Name="CashArchive" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="CashArchive" Type="decimal" Precision="20" Scale="2" />
     <Property Name="CashPointsArchive" Type="int" />
     <Property Name="invoiceCountArchive" Type="int" />
     <Property Name="invoiceCountPoinstArchive" Type="int" />
@@ -672,7 +688,7 @@
     <Property Name="posId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="code" Type="nvarchar" MaxLength="100" />
     <Property Name="name" Type="nvarchar" MaxLength="100" />
-    <Property Name="balance" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="balance" Type="decimal" Precision="20" Scale="2" />
     <Property Name="branchId" Type="int" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -680,7 +696,7 @@
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
     <Property Name="note" Type="ntext" />
-    <Property Name="balanceAll" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="balanceAll" Type="decimal" Precision="20" Scale="2" />
   </EntityType>
   <EntityType Name="posUsers">
     <Key>
@@ -754,7 +770,7 @@
     </Key>
     <Property Name="costId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="name" Type="nvarchar" MaxLength="200" />
-    <Property Name="costVal" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="costVal" Type="decimal" Precision="20" Scale="2" />
     <Property Name="itemId" Type="int" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -786,8 +802,8 @@
     </Key>
     <Property Name="shippingCompanyId" Type="int" Nullable="false" />
     <Property Name="name" Type="nchar" MaxLength="10" />
-    <Property Name="RealDeliveryCost" Type="decimal" Precision="20" Scale="4" />
-    <Property Name="deliveryCost" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="RealDeliveryCost" Type="decimal" Precision="20" Scale="2" />
+    <Property Name="deliveryCost" Type="decimal" Precision="20" Scale="2" />
     <Property Name="deliveryType" Type="nvarchar" MaxLength="100" />
     <Property Name="notes" Type="ntext" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
@@ -803,7 +819,7 @@
     <Property Name="subscriptionFeesId" Type="int" Nullable="false" />
     <Property Name="membershipId" Type="int" />
     <Property Name="monthsCount" Type="int" />
-    <Property Name="Amount" Type="decimal" Precision="20" Scale="4" />
+    <Property Name="Amount" Type="decimal" Precision="20" Scale="2" />
     <Property Name="notes" Type="ntext" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -1783,6 +1799,54 @@
       </Principal>
       <Dependent Role="invoicesOrders">
         <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoiceStatus_invoices">
+    <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
+    <End Role="invoiceStatus" Type="Self.invoiceStatus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="invoices">
+        <PropertyRef Name="invoiceId" />
+      </Principal>
+      <Dependent Role="invoiceStatus">
+        <PropertyRef Name="invoiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoiceStatus_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="invoiceStatus" Type="Self.invoiceStatus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="invoiceStatus">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoiceStatus_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="invoiceStatus" Type="Self.invoiceStatus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="invoiceStatus">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoiceStatus_users2">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="invoiceStatus" Type="Self.invoiceStatus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="invoiceStatus">
+        <PropertyRef Name="userId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2950,6 +3014,7 @@
     <EntitySet Name="inventoryItemLocation" EntityType="Self.inventoryItemLocation" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="invoices" EntityType="Self.invoices" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="invoicesOrders" EntityType="Self.invoicesOrders" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="invoiceStatus" EntityType="Self.invoiceStatus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="items" EntityType="Self.items" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="itemsLocations" EntityType="Self.itemsLocations" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="itemsMaterials" EntityType="Self.itemsMaterials" Schema="dbo" store:Type="Tables" />
@@ -3282,6 +3347,22 @@
     <AssociationSet Name="FK_invoicesOrders_users1" Association="Self.FK_invoicesOrders_users1">
       <End Role="users" EntitySet="users" />
       <End Role="invoicesOrders" EntitySet="invoicesOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoiceStatus_invoices" Association="Self.FK_invoiceStatus_invoices">
+      <End Role="invoices" EntitySet="invoices" />
+      <End Role="invoiceStatus" EntitySet="invoiceStatus" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoiceStatus_users" Association="Self.FK_invoiceStatus_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="invoiceStatus" EntitySet="invoiceStatus" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoiceStatus_users1" Association="Self.FK_invoiceStatus_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="invoiceStatus" EntitySet="invoiceStatus" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoiceStatus_users2" Association="Self.FK_invoiceStatus_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="invoiceStatus" EntitySet="invoiceStatus" />
     </AssociationSet>
     <AssociationSet Name="FK_items_categories" Association="Self.FK_items_categories">
       <End Role="categories" EntitySet="categories" />

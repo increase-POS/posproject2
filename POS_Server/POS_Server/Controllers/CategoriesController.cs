@@ -8,13 +8,14 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
-
+using System.Data.Entity.Migrations;
 namespace POS_Server.Controllers
 {
     [RoutePrefix("api/Categories")]
     public class CategoriesController : ApiController
     {
         // GET api/category
+        List<int> categoriesId = new List<int>();
 
         [HttpGet]
         [Route("GetAllCategories")]
@@ -38,20 +39,20 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var categoriesList = entity.categories
-                    .Select(p => new CategoryModel{
-                      categoryId=  p.categoryId,
-                        name= p.name,
-                        categoryCode= p.categoryCode,
-                        createDate=  p.createDate,
-                        createUserId=p.createUserId,
-                        details= p.details,
-                        image=p.image,
-                        notes= p.notes,
-                        parentId=p.parentId,
-                        taxes= p.taxes,
-                        updateDate=p.updateDate,
-                        updateUserId= p.updateUserId,
-                        isActive= p.isActive,
+                    .Select(p => new CategoryModel {
+                        categoryId = p.categoryId,
+                        name = p.name,
+                        categoryCode = p.categoryCode,
+                        createDate = p.createDate,
+                        createUserId = p.createUserId,
+                        details = p.details,
+                        image = p.image,
+                        notes = p.notes,
+                        parentId = p.parentId,
+                        taxes = p.taxes,
+                        updateDate = p.updateDate,
+                        updateUserId = p.updateUserId,
+                        isActive = p.isActive,
                     })
                     .ToList();
 
@@ -90,7 +91,7 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
-      
+
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -103,7 +104,7 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    if (categoryId !=  0)
+                    if (categoryId != 0)
                     {
                         var categoriesList = entity.categories
                        .Where(c => c.parentId == categoryId && c.isActive == 1)
@@ -120,7 +121,8 @@ namespace POS_Server.Controllers
                            p.taxes,
                            p.updateDate,
                            p.updateUserId,
-                           })
+                           p.isActive,
+                       })
                        .ToList();
                         if (categoriesList == null)
                             return NotFound();
@@ -150,7 +152,7 @@ namespace POS_Server.Controllers
                             return NotFound();
                         else
                             return Ok(categoriesList);
-                    }                  
+                    }
                 }
             }
             else
@@ -241,14 +243,15 @@ namespace POS_Server.Controllers
                     categories tmpCategory;
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-                        var categoryEntity = entity.Set<categories>();                      
+                        var categoryEntity = entity.Set<categories>();
                         if (newObject.categoryId == 0)
                         {
                             newObject.createDate = DateTime.Now;
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
 
-                            tmpCategory= categoryEntity.Add(newObject); 
+                            tmpCategory = categoryEntity.Add(newObject);
+                            entity.SaveChanges();
                         }
                         else
                         {
@@ -262,9 +265,87 @@ namespace POS_Server.Controllers
                             tmpCategory.updateDate = DateTime.Now;
                             tmpCategory.updateUserId = newObject.updateUserId;
                             tmpCategory.isActive = newObject.isActive;
+                            entity.SaveChanges();
+                            int categoryId = tmpCategory.categoryId;
+                            short? isActivecat = tmpCategory.isActive;
+                            int? updateuser = tmpCategory.updateUserId;
+                            //update is active sons and items sons
+                            // get all sub categories of categoryId
+
+                            List<categories> categoriesList = entity.categories
+                             .ToList()
+                              .Select(p => new categories
+                              {
+                                  categoryId = p.categoryId,
+                                  name = p.name,
+                                  parentId = p.parentId,
+                              })
+                             .ToList();
+
+                            categoriesId = new List<int>();
+                            List<int> catIdlist = new List<int>();
+                            categoriesId.Add(categoryId);
+                            ItemsController icls = new ItemsController();
+
+                            var result = Recursive(categoriesList, categoryId).ToList();
+
+
+                            foreach (var r in result)
+                            {
+                                catIdlist.Add(r.categoryId);
+
+                            }
+
+                            // end sub cat
+                            // disactive selected category
+                       
+                            // disactive subs categories
+
+                            List<categories> sonList = entity.categories.Where(U => catIdlist.Contains(U.categoryId)).ToList();
+
+                            if (sonList.Count > 0)
+                            {
+                                for (int i = 0; i < sonList.Count; i++)
+                                {
+
+                                    sonList[i].isActive = isActivecat;
+                                    sonList[i].updateUserId = updateuser;
+                                    sonList[i].updateDate = DateTime.Now;
+
+
+                                    entity.categories.AddOrUpdate(sonList[i]);
+
+                                }
+                                entity.SaveChanges();
+                            }
+                            // disactive items related to selected category and subs
+                            catIdlist.Add(categoryId);
+                            var catitems = entity.items.Where(U => catIdlist.Contains((int)U.categoryId)).ToList();
+                            if (catitems.Count > 0)
+                            {
+                                for (int i = 0; i < catitems.Count; i++)
+                                {
+                                    
+                                    catitems[i].isActive = (byte)isActivecat;
+                                    catitems[i].updateUserId = updateuser;
+                                    catitems[i].updateDate = DateTime.Now;
+                                    entity.items.AddOrUpdate(catitems[i]);
+
+                                }
+                                entity.SaveChanges();
+
+                            }
+
+
+
+
+                        //
 
                         }
-                        entity.SaveChanges();                       
+
+                        
+
+
                     }
                     return tmpCategory.categoryId;
                 }
@@ -277,7 +358,7 @@ namespace POS_Server.Controllers
         }
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int categoryId , int userId , Boolean final)
+        public IHttpActionResult Delete(int categoryId, int userId, Boolean final)
         {
             var re = Request;
             var headers = re.Headers;
@@ -322,30 +403,92 @@ namespace POS_Server.Controllers
                     try
                     {
                         using (incposdbEntities entity = new incposdbEntities())
-                        {
-                            var childCategories = entity.categories.Where(u => u.parentId == categoryId && u.isActive == 1).FirstOrDefault();
+                        {  // get all sub categories of categoryId
+                            List<categories> categoriesList = entity.categories
+                             .ToList()
+                              .Select(p => new categories
+                              {
+                                  categoryId = p.categoryId,
+                                  name = p.name,
+                                  parentId = p.parentId,
+                              })
+                             .ToList();
 
-                            if (childCategories == null)
+                            categoriesId = new List<int>();
+                            List<int>  catIdlist = new List<int>();
+                            categoriesId.Add(categoryId);
+                            ItemsController icls = new ItemsController();
+                           
+                            var result =Recursive(categoriesList, categoryId).ToList();
+                           
+                            
+                            foreach (var r in result)
                             {
-                                var tmpCategory = entity.categories.Where(p => p.categoryId == categoryId).First();
-                                tmpCategory.isActive = 0;
-                                tmpCategory.updateDate = DateTime.Now;
-                                tmpCategory.updateUserId = userId;
-
-                                entity.SaveChanges();
-                                return Ok("Category is Deleted Successfully");
+                                catIdlist.Add(r.categoryId);
+                             
                             }
-                            else
-                                return Ok("Can't Delete This Category");
+                            
+                            // end sub cat
+                            // disactive selected category
+                            var tmpCategory = entity.categories.Where(p => p.categoryId == categoryId).First();
+                            tmpCategory.isActive = 0;
+                            tmpCategory.updateDate = DateTime.Now;
+                            tmpCategory.updateUserId = userId;
+                            entity.categories.AddOrUpdate(tmpCategory);
+                            entity.SaveChanges();
+
+                       // disactive subs categories
+
+                           List<categories> sonList = entity.categories.Where(U => catIdlist.Contains(U.categoryId)).ToList();
+
+                            if (sonList.Count > 0)
+                            {
+                                for (int i = 0; i < sonList.Count; i++)
+                                {
+                                    sonList[i].isActive = 0;
+                                    sonList[i].updateDate = DateTime.Now;
+                                    sonList[i].updateUserId = userId;
+                                    entity.categories.AddOrUpdate(sonList[i]);
+
+                                }
+                                entity.SaveChanges();
+                            }
+                            // disactive items related to selected category and subs
+                            catIdlist.Add(categoryId);
+                              var catitems = entity.items.Where(U => catIdlist.Contains((int)U.categoryId)).ToList();
+                                if (catitems.Count > 0)
+                                {
+                                    for (int i = 0; i < catitems.Count; i++)
+                                    {
+                                    catitems[i].isActive = 0;
+                                    catitems[i].updateDate = DateTime.Now;
+                                    catitems[i].updateUserId = userId;
+                                    entity.items.AddOrUpdate(catitems[i]);
+                                   
+                                    }
+                                   entity.SaveChanges();
+
+                                }
+
+
+
+                            return Ok("OK");
+                       
                         }
                     }
                     catch
                     {
-                        return NotFound();
+
+                        //Exception ex
+                        //  ErrorDTO.TrackError(ex);
+                        // return Ok(ex.ToString());
+                      return NotFound();
                     }
+
                 }
             }
             return NotFound();
+          
         }
 
         [HttpGet]
@@ -377,7 +520,7 @@ namespace POS_Server.Controllers
                     int parentid = (int)category1.parentId;
                     */
                     int parentid = categoryID; // if want to show the last category 
-                    while (parentid > 0 )
+                    while (parentid > 0)
                     {
                         categories tempcate = new categories();
                         var category = entity.categories.Where(c => c.categoryId == parentid)
@@ -669,6 +812,27 @@ namespace POS_Server.Controllers
             else
                 return NotFound();
         }
+    
 
-    }
+  
+
+        public IEnumerable<categories> Recursive(List<categories> categoriesList, int toplevelid)
+        {
+            List<categories> inner = new List<categories>();
+
+            foreach (var t in categoriesList.Where(item => item.parentId == toplevelid))
+            {
+                categoriesId.Add(t.categoryId);
+                inner.Add(t);
+                inner = inner.Union(Recursive(categoriesList, t.categoryId)).ToList();
+            }
+
+            return inner;
+        }
+
+    
+
+      
+
+        }
 }

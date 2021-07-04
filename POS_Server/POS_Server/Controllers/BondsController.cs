@@ -32,64 +32,93 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var bondsList = (from B in entity.bondes
-                  join C in entity.cashTransfer on B.cashTransId equals C.cashTransId into JC
-                                    from JCC in JC.DefaultIfEmpty()
-
-                                    select new BondsModel{
-
-                 bondId= B.bondId,
-                                        number=  B.number,
-                                        amount= B.amount ,
-                                        deserveDate=B.deserveDate,
-                                        type=  B.type,
-                                        isRecieved=B. isRecieved,
-                                        notes = B.notes,
-
-                                        createDate = B.createDate,
-                                        updateDate = B.updateDate,
-                                        createUserId = B.createUserId,
-                                        updateUserId = B.updateUserId,
-                                        isActive = B.isActive,
-                                        cashTransId = B.cashTransId,
+                    var bondsList = (// from C in entity.cashTransfer
+                       from bo in entity.bondes
+                       from C in entity.cashTransfer.Where(c=> c.bondId==bo.bondId)
+                      // join C in entity.cashTransfer on bo.bondId equals C.bondId into jc
+                           join b in entity.banks on C.bankId equals b.bankId into jb
+                           join a in entity.agents on C.agentId equals a.agentId into ja
+                           join p in entity.pos on C.posId equals p.posId into jp
+                           join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+                           join u in entity.users on C.userId equals u.userId into ju
+                           join uc in entity.users on C.createUserId equals uc.userId into juc
+                           join cr in entity.cards on C.cardId equals cr.cardId into jcr
+                        
+                           //  join b in entity.bondes on C.bondId  equals b.bondId  into jb
+                      
                      
-                                        // cash trans
-                                        ctcashTransId=    JCC.cashTransId,
-cttransType= JCC.transType,
-ctposId= JCC.posId,
-ctuserId= JCC.userId,
-ctagentId= JCC.agentId,
-ctinvId= JCC.invId,
-cttransNum= JCC.transNum,
-ctcreateDate= JCC.createDate,
-ctupdateDate= JCC.updateDate,
-ctcash= JCC.cash,
-ctupdateUserId= JCC.updateUserId,
-ctcreateUserId= JCC.createUserId,
-ctnotes= JCC.notes,
-ctposIdCreator= JCC.posIdCreator,
-ctisConfirm= JCC.isConfirm,
-ctcashTransIdSource= JCC.cashTransIdSource,
-ctside= JCC.side,
-ctdocName= JCC.docName,
-ctdocNum= JCC.docNum,
-ctdocImage= JCC.docImage,
-ctbankId= JCC.bankId ,
+                       from jbb in jb.DefaultIfEmpty()
+                       from jaa in ja.DefaultIfEmpty()
+                       from jpp in jp.DefaultIfEmpty()
+                       from juu in ju.DefaultIfEmpty()
+                       from jpcc in jpcr.DefaultIfEmpty()
+                       from jucc in juc.DefaultIfEmpty()
+                       from jcrd in jcr.DefaultIfEmpty()
+                    
+                      // from jc in C.DefaultIfEmpty()
+                                  //   where C.bondId==jbbo.bondId 
+                                     orderby bo.bondId  
+                                     select new BondsModel{
+                                      
+                                         bondId = bo.bondId,
+                                         number = bo.number,
+                                         amount = bo.amount,
+                                         deserveDate = bo.deserveDate,
+                                         type = bo.type,
+                                         isRecieved = bo.isRecieved,
+                                         notes = bo.notes,
 
-ctprocessType= JCC.processType,
-ctcardId= JCC.cardId,
-ctbondId= JCC.bondId,
+                                         createDate = bo.createDate,
+                                         updateDate = bo.updateDate,
+                                         createUserId = bo.createUserId,
+                                         updateUserId = bo.updateUserId,
+                                         isActive = bo.isActive,
+                                         cashTransId = bo.cashTransId,
+                                         // cash trans
+                                        
+                                         ctcashTransId=    C.cashTransId,
+                                         cttransType= C.transType,
+                                         ctposId= C.posId,
+                                         ctuserId= C.userId,
+                                         ctagentId= C.agentId,
+                                         ctinvId= C.invId,
+                                         cttransNum= C.transNum,
+                                         ctcreateDate= C.createDate,
+                                         ctupdateDate= C.updateDate,
+                                         ctcash= C.cash,
+                                         ctupdateUserId= C.updateUserId,
+                                         ctcreateUserId= C.createUserId,
+                                         ctnotes= C.notes,
+                                         ctposIdCreator= C.posIdCreator,
+                                         ctisConfirm= C.isConfirm,
+                                         ctcashTransIdSource= C.cashTransIdSource,
+                                         ctside= C.side,
+                                         ctdocName= C.docName,
+                                         ctdocNum= C.docNum,
+                                         ctdocImage= C.docImage,
+                                         ctbankId= C.bankId ,
+
+                                         ctprocessType= C.processType,
+                                         ctcardId= C.cardId,
+                                         ctbondId= C.bondId,
+                                          // other tables
+
+                                          ctbankName= jbb.name,
+                                          ctagentName= jaa.name,
+                                          ctusersName= juu.name,
+                                          ctusersLName= jpp.name,
+                                          ctposName= jpp.name,
+                                          ctposCreatorName = jpcc.name,
+
+                                          ctcreateUserName= jucc.name,
+                                          ctcreateUserJob= jucc.job,
+                                          ctcreateUserLName= jucc.lastname,
+                                          ctcardName= jcrd.name,
+                                         
+
+                                     }).ToList();
 
 
-
-                                    })
-                   .ToList();
-
-
-                    /*
-
- 
-                     * */
                     // can delet or not
                     if (bondsList.Count > 0)
                     {
@@ -121,6 +150,31 @@ updateUserId
 updateDate 
 createDate 
 canDelete 
+
+          
+ctbankName
+ctagentName
+ctusersName
+ctusersLName
+ctposName
+ctposCreatorName
+
+ctcreateUserName
+ctcreateUserJob
+ctcreateUserLName
+ctcardName
+
+jbb.name
+jaa.name
+ juu.name
+jpp.name
+jpcc.name
+juu.lastname
+jucc.name
+jucc.lastname
+jucc.job
+jcrd.name
+
        * */
                     if (bondsList == null)
                         return NotFound();

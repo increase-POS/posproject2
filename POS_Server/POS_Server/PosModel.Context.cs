@@ -48,6 +48,7 @@ namespace POS_Server
         public virtual DbSet<inventoryItemLocation> inventoryItemLocation { get; set; }
         public virtual DbSet<invoices> invoices { get; set; }
         public virtual DbSet<invoicesOrders> invoicesOrders { get; set; }
+        public virtual DbSet<invoiceStatus> invoiceStatus { get; set; }
         public virtual DbSet<items> items { get; set; }
         public virtual DbSet<itemsLocations> itemsLocations { get; set; }
         public virtual DbSet<itemsMaterials> itemsMaterials { get; set; }
@@ -75,11 +76,11 @@ namespace POS_Server
         public virtual DbSet<setting> setting { get; set; }
         public virtual DbSet<setValues> setValues { get; set; }
         public virtual DbSet<shippingCompanies> shippingCompanies { get; set; }
+        public virtual DbSet<subscriptionFees> subscriptionFees { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<units> units { get; set; }
         public virtual DbSet<users> users { get; set; }
         public virtual DbSet<userSetValues> userSetValues { get; set; }
         public virtual DbSet<usersLogs> usersLogs { get; set; }
-        public virtual DbSet<subscriptionFees> subscriptionFees { get; set; }
     }
 }
