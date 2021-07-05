@@ -377,6 +377,7 @@
     <Property Name="name" Type="nvarchar" MaxLength="200" />
     <Property Name="isApproved" Type="tinyint" />
     <Property Name="shippingCompanyId" Type="int" />
+    <Property Name="branchCreatorId" Type="int" />
   </EntityType>
   <EntityType Name="invoicesOrders">
     <Key>
@@ -1668,6 +1669,18 @@
       </Principal>
       <Dependent Role="invoices">
         <PropertyRef Name="branchId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoices_branches1">
+    <End Role="branches" Type="Self.branches" Multiplicity="0..1" />
+    <End Role="invoices" Type="Self.invoices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="branches">
+        <PropertyRef Name="branchId" />
+      </Principal>
+      <Dependent Role="invoices">
+        <PropertyRef Name="branchCreatorId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3302,6 +3315,10 @@
       <End Role="invoices" EntitySet="invoices" />
     </AssociationSet>
     <AssociationSet Name="FK_invoices_branches" Association="Self.FK_invoices_branches">
+      <End Role="branches" EntitySet="branches" />
+      <End Role="invoices" EntitySet="invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoices_branches1" Association="Self.FK_invoices_branches1">
       <End Role="branches" EntitySet="branches" />
       <End Role="invoices" EntitySet="invoices" />
     </AssociationSet>

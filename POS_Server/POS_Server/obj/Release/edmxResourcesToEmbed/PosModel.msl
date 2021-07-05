@@ -336,7 +336,6 @@
     <EntitySetMapping Name="Inventory">
       <EntityTypeMapping TypeName="incposdbModel.Inventory">
         <MappingFragment StoreEntitySet="Inventory">
-          <ScalarProperty Name="inventoryType" ColumnName="inventoryType" />
           <ScalarProperty Name="inventoryId" ColumnName="inventoryId" />
           <ScalarProperty Name="num" ColumnName="num" />
           <ScalarProperty Name="createDate" ColumnName="createDate" />
@@ -345,6 +344,7 @@
           <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="notes" ColumnName="notes" />
+          <ScalarProperty Name="inventoryType" ColumnName="inventoryType" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -398,6 +398,7 @@
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="isApproved" ColumnName="isApproved" />
           <ScalarProperty Name="shippingCompanyId" ColumnName="shippingCompanyId" />
+          <ScalarProperty Name="branchCreatorId" ColumnName="branchCreatorId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

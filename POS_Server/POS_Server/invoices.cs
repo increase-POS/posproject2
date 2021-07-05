@@ -55,9 +55,11 @@ namespace POS_Server
         public string name { get; set; }
         public Nullable<byte> isApproved { get; set; }
         public Nullable<int> shippingCompanyId { get; set; }
+        public Nullable<int> branchCreatorId { get; set; }
     
         public virtual agents agents { get; set; }
         public virtual branches branches { get; set; }
+        public virtual branches branches1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cashTransfer> cashTransfer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

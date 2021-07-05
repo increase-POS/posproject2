@@ -345,6 +345,7 @@ var items = from item in query.AsEnumerable()
                 {
                     var invListm = (from I in entity.invoices
                                     join B in entity.branches on I.branchId equals B.branchId into JB
+                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
                                     join A in entity.agents on I.agentId equals A.agentId into JA
                                     join U in entity.users on I.createUserId equals U.userId into JU
                                     join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
@@ -356,6 +357,7 @@ var items = from item in query.AsEnumerable()
                                     from JUPUS in JUPUSR.DefaultIfEmpty()
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
+                                    from JBCC in JBC.DefaultIfEmpty()
                                     where (I.invType == "p"|| I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
                                     // (branchType == "all" ? true : JBB.type == branchType)
                                     //   && System.DateTime.Compare((DateTime)startDate, (DateTime)I.invDate) <= 0
@@ -394,7 +396,9 @@ var items = from item in query.AsEnumerable()
                                            I.tax,
                                            I.name,
                                            I.isApproved,
+                                           I.branchCreatorId,
                                         branchName = JBB.name,
+                                        branchCreatorName=JBCC.name,
                                         branchType=JBB.type,
                                         posName=JPP.name,
                                         posCode= JPP.code,
@@ -468,6 +472,7 @@ else
                 {
                     var invListm = (from I in entity.invoices
                                     join B in entity.branches on I.branchId equals B.branchId into JB
+                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
                                     join A in entity.agents on I.agentId equals A.agentId into JA
                                     join U in entity.users on I.createUserId equals U.userId into JU
                                     join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
@@ -713,6 +718,7 @@ else
                 {
                     var invListm = (from I in entity.invoices
                                     join B in entity.branches on I.branchId equals B.branchId into JB
+                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
                                     join A in entity.agents on I.agentId equals A.agentId into JA
                                     join U in entity.users on I.createUserId equals U.userId into JU
                                     join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
@@ -833,6 +839,7 @@ else
                 {
                     var invListm = (from I in entity.invoices
                                     join B in entity.branches on I.branchId equals B.branchId into JB
+                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
                                     join A in entity.agents on I.agentId equals A.agentId into JA
                                     join U in entity.users on I.createUserId equals U.userId into JU
                                     join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
@@ -845,7 +852,7 @@ else
                                     from JUPUS in JUPUSR.DefaultIfEmpty()
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
-
+                                    from JBCC in JBC.DefaultIfEmpty()
 
                                     where (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
                                     // (branchType == "all" ? true : JBB.type == branchType)
@@ -885,11 +892,12 @@ else
                                                         I.tax,
                                                         I.name,
                                                         I.isApproved,
+                                                        I.branchCreatorId,
 
 
-                                
-                                    
 
+    
+                                                        brancCreatorhName=JBCC.name,
                                                         branchName =JBB.name,
                                                         branchType =JBB.type,
                                                        posName  =JPP.name,
@@ -962,6 +970,7 @@ else
                 {
                     var invListm = (from I in entity.invoices
                                     join B in entity.branches on I.branchId equals B.branchId into JB
+                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
                                     from JBB in JB.DefaultIfEmpty()
                                     where (JBB.branchId != 1)
                                  && (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")

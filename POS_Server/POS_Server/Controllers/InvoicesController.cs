@@ -57,7 +57,8 @@ namespace POS_Server.Controllers
                         b.taxtype,
                         b.name,
                         b.isApproved,
-                })
+                        b.branchCreatorId,
+                    })
                     .ToList();
 
                     if (banksList == null)
@@ -114,6 +115,7 @@ namespace POS_Server.Controllers
                         b.taxtype,
                         b.name,
                         b.isApproved,
+                        b.branchCreatorId,
                     })
                     .FirstOrDefault();
 
@@ -171,6 +173,7 @@ namespace POS_Server.Controllers
                         b.taxtype,
                         b.name,
                         b.isApproved,
+                        b.branchCreatorId,
                     })
                     .FirstOrDefault();
 
@@ -227,6 +230,7 @@ namespace POS_Server.Controllers
                         b.taxtype,
                         b.name,
                         b.isApproved,
+                        b.branchCreatorId,
                     })
                     .FirstOrDefault();
 
@@ -290,6 +294,7 @@ namespace POS_Server.Controllers
                                             name = b.name,
                                             isApproved = b.isApproved,
                                             branchName = x.name,
+                                            branchCreatorId=b.branchCreatorId,
                                         })
 
                                .FirstOrDefault();
@@ -333,6 +338,7 @@ namespace POS_Server.Controllers
                                              name = b.name,
                                              isApproved = b.isApproved,
                                              branchName = x.name,
+                                             branchCreatorId=b.branchCreatorId,
                                          })
 
                                .FirstOrDefault();
@@ -403,6 +409,7 @@ namespace POS_Server.Controllers
                                      name = b.name,
                                 isApproved = b.isApproved,
                                 branchName = x.name,
+                                branchCreatorId=b.branchCreatorId,
                             })
                         .ToList();
                         if (invoicesList != null)
@@ -453,6 +460,7 @@ namespace POS_Server.Controllers
                                                 name = b.name,
                                                 isApproved = b.isApproved,
                                                 branchName = x.name,
+                                                branchCreatorId=b.branchCreatorId,
                                             })
                         .ToList();
                         if (invoicesList != null)
@@ -530,7 +538,8 @@ namespace POS_Server.Controllers
                                      name = b.name,
                                 isApproved = b.isApproved,
                                 branchName = x.name,
-                            })
+                                     branchCreatorId=b.branchCreatorId,
+                                 })
                         .ToList();
                         if (invoicesList != null)
                         {
@@ -580,6 +589,7 @@ namespace POS_Server.Controllers
                                                 name = b.name,
                                                 isApproved = b.isApproved,
                                                 branchName = x.name,
+                                                branchCreatorId=b.branchCreatorId,
                                             })
                         .ToList();
                         if (invoicesList != null)
@@ -670,6 +680,7 @@ namespace POS_Server.Controllers
                             tmpInvoice.taxtype = newObject.taxtype;
                             tmpInvoice.name = newObject.name;
                             tmpInvoice.isApproved = newObject.isApproved;
+                            tmpInvoice.branchCreatorId = newObject.branchCreatorId;
                         }
                         entity.SaveChanges();
                         return tmpInvoice.invoiceId;
