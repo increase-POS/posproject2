@@ -25,6 +25,7 @@ using System.Windows.Shapes;
 using Microsoft.Reporting.WinForms;
 using POS.View.windows;
 using POS.View.sectionData.Charts;
+using System.Windows.Interop;
 
 namespace POS.View
 {
@@ -268,6 +269,7 @@ namespace POS.View
             BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
             brush.ImageSource = temp;
             img_user.Background = brush;
+            //img_user.Source = new BitmapImage(new Uri("pic/no-image-icon-125x125.png"));
 
             btn_stores.IsEnabled = false;
 
@@ -576,8 +578,11 @@ namespace POS.View
                         isImgPressed = false;
                         if (b)
                         {
-                            brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                            img_user.Background = brush;
+                            //MessageBox.Show("uploaded");
+                            //dg_users.Items.Refresh();
+                            //brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                            //img_user.Background = brush;
+                            getImg();
                         }
                         else
                         {
@@ -880,7 +885,22 @@ namespace POS.View
                         bitmapImage.EndInit();
                     }
 
+                    ////////ImageSourceConverter c = new ImageSourceConverter();
+                    ////////img_user.Source = (ImageSource)c.ConvertFrom(bitmapImage);
+                    
+                    ////////////////using (MemoryStream memory = new MemoryStream())
+                    ////////////////{
+                    ////////////////    //bitmapImage.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                    ////////////////    memory.Position = 0;
+                    ////////////////    BitmapImage bitmapimage = new BitmapImage();
+                    ////////////////    bitmapimage.BeginInit();
+                    ////////////////    bitmapimage.StreamSource = memory;
+                    ////////////////    bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                    ////////////////    bitmapimage.EndInit();
+                    ////////////////    img_user.Source = new Uri bitmapimage;
+                    ////////////////}
                     img_user.Background = new ImageBrush(bitmapImage);
+
                 }
             }
             catch { }
@@ -1075,6 +1095,7 @@ namespace POS.View
         }
         public void ChangeItemIdEvent(int userId)
         {
+            btn_stores.IsEnabled = true;
             #region
             p_errorFirstName.Visibility = Visibility.Collapsed;
             p_errorLastName.Visibility = Visibility.Collapsed;
@@ -1333,11 +1354,6 @@ namespace POS.View
 
         private void Btn_stores_Click(object sender, RoutedEventArgs e)
         {//stores
-            //SectionData.clearValidate(tb_code, p_errorCode);
-
-            //itemUnits = await itemUnitsModel.Getall();
-            //itemUnitsQuery = itemUnits.Where(s => s.is == offer.offerId);
-
             Window.GetWindow(this).Opacity = 0.2;
 
             wd_branchesList w = new wd_branchesList();
@@ -1376,6 +1392,21 @@ namespace POS.View
                 p_showPassword.Visibility = Visibility.Visible;
             }
         }
+
+        //private void Img_user_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    isImgPressed = false;
+        //    if (e.ClickCount >= 1)
+        //    {
+        //        openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
+        //        if (openFileDialog.ShowDialog() == true)
+        //        {
+        //            //brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+        //            img_user.Source = new BitmapImage(new Uri(openFileDialog.FileName));
+        //            isImgPressed = true;
+        //        }
+        //    }
+        //}
     }
 }
 

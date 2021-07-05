@@ -1446,4 +1446,37 @@
   <data name="trDublicateLocation" xml:space="preserve">
     <value>Location is already exist</value>
   </data>
+  <data name="trEmptyDeliveryCostToolTip" xml:space="preserve">
+    <value>Delivery cost cann't be empty</value>
+  </data>
+  <data name="trEmptyRealDeliveryCostToolTip" xml:space="preserve">
+    <value>Real delivery cost cann't be empty</value>
+  </data>
+  <data name="trErrorEmptyDeliveryTypeToolTip" xml:space="preserve">
+    <value>Delivery type cann't be empty</value>
+  </data>
+  <data name="trLocaly" xml:space="preserve">
+    <value>Localy</value>
+  </data>
+  <data name="trEmptyDeliveryTypeToolTip" xml:space="preserve">
+    <value>Delivery type cann't be empty</value>
+  </data>
+  <data name="trPurchaseReturnDraft" xml:space="preserve">
+    <value>Purchase Return Draft</value>
+  </data>
+  <data name="trPurchaseReturnInvoice" xml:space="preserve">
+    <value>Purchase Return</value>
+  </data>
+  <data name="trQuotations" xml:space="preserve">
+    <value>Quotations</value>
+  </data>
+  <data name="trSalesDraft" xml:space="preserve">
+    <value>Sales Draft</value>
+  </data>
+  <data name="trSalesReturnDraft" xml:space="preserve">
+    <value>Sales Return Draft</value>
+  </data>
+  <data name="trSalesReturnInvoice" xml:space="preserve">
+    <value>Sales ReturnI</value>
+  </data>
 </root>

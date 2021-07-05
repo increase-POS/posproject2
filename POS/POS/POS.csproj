@@ -234,6 +234,7 @@
     <Compile Include="converters\depositorBondeConverter.cs" />
     <Compile Include="converters\depositorNameConverter.cs" />
     <Compile Include="converters\depositorTypeConverter.cs" />
+    <Compile Include="converters\inventoryTypeConverter.cs" />
     <Compile Include="converters\invoiceTypeConverter.cs" />
     <Compile Include="converters\levelGroupConverter.cs" />
     <Compile Include="converters\processTypeConverter.cs" />

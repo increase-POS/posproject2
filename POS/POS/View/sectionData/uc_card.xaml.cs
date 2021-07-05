@@ -157,9 +157,6 @@ namespace POS.View.sectionData
         {
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
         }
-
-       
-
        
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {

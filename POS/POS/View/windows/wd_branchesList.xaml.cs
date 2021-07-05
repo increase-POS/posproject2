@@ -32,14 +32,19 @@ namespace POS.View.windows
 
         List<Branch> allStoresSource = new List<Branch>();
         List<BranchesUsers> selectedStoresByUserSource = new List<BranchesUsers>();
+        //List<BranchesUserstable> selectedStoresByUserSource = new List<BranchesUserstable>();
         List<BranchStore> selectedStoresByBranchSource = new List<BranchStore>();
 
         List<Branch> allStores = new List<Branch>();
         List<BranchesUsers> selectedStoresByUser = new List<BranchesUsers>();
+        List<BranchesUserstable> selectedStoresByUserTable = new List<BranchesUserstable>();
         List<BranchStore> selectedStoresByBranch = new List<BranchStore>();
+        List<BranchStoretable> selectedStoresByBranchTable = new List<BranchStoretable>();
 
         Branch branch = new Branch();
         BranchesUsers branchUser = new BranchesUsers();
+        BranchesUserstable branchUserTable = new BranchesUserstable();
+        BranchStore branchStore = new BranchStore();
 
         IEnumerable<Branch> storeQuery;
 
@@ -91,6 +96,9 @@ namespace POS.View.windows
                     branch = allStoresSource.Where(s => s.branchId == i.branchId).FirstOrDefault<Branch>();
                     allStores.Remove(branch);
                 }
+                //remove selected branch/store?????????????????????????????????????????????
+                branch = allStoresSource.Where(s => s.branchId == Id).FirstOrDefault<Branch>();
+                allStores.Remove(branch);
                 dgtc.Binding = new System.Windows.Data.Binding("sname");
 
                 dg_selectedStores.ItemsSource = selectedStoresByBranch;
@@ -103,7 +111,6 @@ namespace POS.View.windows
             dg_allStores.ItemsSource = allStores;
             dg_allStores.SelectedValuePath = "branchId";
             dg_allStores.DisplayMemberPath = "name";
-
           
         }
 
@@ -162,6 +169,15 @@ namespace POS.View.windows
                     bu.createUserId = MainWindow.userID;
 
                     selectedStoresByUser.Add(bu);
+
+                    //BranchesUserstable but = new BranchesUserstable();
+                    //but.branchsUsersId = 0;
+                    //but.branchId = branch.branchId;
+                    //but.userId = Id;
+                    ////but.bname = branch.name;
+                    //but.createUserId = MainWindow.userID;
+
+                    //selectedStoresByUser.Add(but);
                     dg_selectedStores.ItemsSource = selectedStoresByUser;
 
                 }
@@ -205,21 +221,35 @@ namespace POS.View.windows
             if (userOrBranch == 'u')
             {
                 branchUser = dg_selectedStores.SelectedItem as BranchesUsers;
+                //branchUserTable = dg_selectedStores.SelectedItem as BranchesUserstable;
+
                 if (branchUser != null)
                 {
                     branch = allStoresSource.Where(s => s.branchId == branchUser.branchId.Value).FirstOrDefault();
-
-                    allStores.Add(branch);
 
                     selectedStoresByUser.Remove(branchUser);
 
                     dg_selectedStores.ItemsSource = selectedStoresByUser;
                 }
-                dg_allStores.ItemsSource = allStores;
-                dg_allStores.Items.Refresh();
-                dg_selectedStores.Items.Refresh();
+            }
+            else
+            {
+                branchStore = dg_selectedStores.SelectedItem as BranchStore;
+                if(branchStore != null)
+                {
+                    branch = allStoresSource.Where(s => s.branchId == branchStore.branchId.Value).FirstOrDefault();
+
+                    selectedStoresByBranch.Remove(branchStore);
+
+                    dg_selectedStores.ItemsSource = selectedStoresByBranch;
+                }
 
             }
+
+            allStores.Add(branch);
+            dg_allStores.ItemsSource = allStores;
+            dg_allStores.Items.Refresh();
+            dg_selectedStores.Items.Refresh();
 
         }
 
@@ -228,12 +258,42 @@ namespace POS.View.windows
             string s = "";
             if (userOrBranch == 'u')
             {
-                s = await branchUserModel.UpdatebranchesByuserId(Id, selectedStoresByUser, MainWindow.userID.Value);
+                //MessageBox.Show(selectedStoresByUser.Count.ToString());
+                //s = await branchUserModel.UpdatebranchesByuserId(Id, selectedStoresByUser, MainWindow.userID.Value);
+                foreach(var v in selectedStoresByUser)
+                {
+                    BranchesUserstable but = new BranchesUserstable();
+                    but.branchsUsersId = v.branchsUsersId;
+                    but.branchId = v.branchId;
+                    but.userId = v.userId;
+                    but.createUserId = v.createUserId;
+                    but.userId = v.updateUserId;
+                    but.createDate = v.createDate;
+                    but.updateDate = v.updateDate;
+                    selectedStoresByUserTable.Add(but);
+                }
+                s = await branchUserModel.UpdateBranchByUserId(selectedStoresByUserTable, Id,MainWindow.userID.Value);
             }
             else
-                s = await branchStoreModel.UpdateStoresById(selectedStoresByBranch, Id, MainWindow.userID.Value);
+            {
+                //MessageBox.Show(selectedStoresByBranch.Count.ToString());
+                //s = await branchStoreModel.UpdateStoresById(selectedStoresByBranch, Id, MainWindow.userID.Value);
+                foreach(var v in selectedStoresByBranch)
+                {
+                    BranchStoretable bst = new BranchStoretable();
+                    bst.id = v.id;
+                    bst.branchId = v.branchId;
+                    bst.storeId = v.storeId;
+                    bst.createDate = v.createDate;
+                    bst.updateDate = v.updateDate;
+                    bst.createUserId = v.createUserId;
+                    bst.updateUserId = v.updateUserId;
+                    bst.isActive = 1;
+                    selectedStoresByBranchTable.Add(bst);
+                }
+                s = await branchStoreModel.UpdateStoresById(selectedStoresByBranchTable, Id, MainWindow.userID.Value);
 
-            MessageBox.Show(s);
+            }
             isActive = true;
             this.Close();
         }

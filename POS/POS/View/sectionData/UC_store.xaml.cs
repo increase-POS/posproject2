@@ -856,11 +856,7 @@ namespace POS.View
 
         private void Btn_stores_Click(object sender, RoutedEventArgs e)
         {//stores
-         //SectionData.clearValidate(tb_code, p_errorCode);
-
-            //itemUnits = await itemUnitsModel.Getall();
-            //itemUnitsQuery = itemUnits.Where(s => s.is == offer.offerId);
-
+       
             Window.GetWindow(this).Opacity = 0.2;
 
             wd_branchesList w = new wd_branchesList();

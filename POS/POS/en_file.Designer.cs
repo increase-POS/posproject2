@@ -1177,6 +1177,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delivery cost cann&apos;t be empty.
+        /// </summary>
+        internal static string trEmptyDeliveryCostToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyDeliveryCostToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delivery type cann&apos;t be empty.
+        /// </summary>
+        internal static string trEmptyDeliveryTypeToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyDeliveryTypeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deposit/pull number can not be empty.
         /// </summary>
         internal static string trEmptyDepositNumberToolTip {
@@ -1353,6 +1371,15 @@ namespace POS {
         internal static string trEmptyQuantityToolTip {
             get {
                 return ResourceManager.GetString("trEmptyQuantityToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Real delivery cost cann&apos;t be empty.
+        /// </summary>
+        internal static string trEmptyRealDeliveryCostToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyRealDeliveryCostToolTip", resourceCulture);
             }
         }
         
@@ -1587,6 +1614,15 @@ namespace POS {
         internal static string trErrorEmptyCountToolTip {
             get {
                 return ResourceManager.GetString("trErrorEmptyCountToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delivery type cann&apos;t be empty.
+        /// </summary>
+        internal static string trErrorEmptyDeliveryTypeToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyDeliveryTypeToolTip", resourceCulture);
             }
         }
         
@@ -2181,6 +2217,15 @@ namespace POS {
         internal static string trLastNameHint {
             get {
                 return ResourceManager.GetString("trLastNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Localy.
+        /// </summary>
+        internal static string trLocaly {
+            get {
+                return ResourceManager.GetString("trLocaly", resourceCulture);
             }
         }
         
@@ -2968,6 +3013,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Purchase Return Draft.
+        /// </summary>
+        internal static string trPurchaseReturnDraft {
+            get {
+                return ResourceManager.GetString("trPurchaseReturnDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchase Return.
+        /// </summary>
+        internal static string trPurchaseReturnInvoice {
+            get {
+                return ResourceManager.GetString("trPurchaseReturnInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Purchases.
         /// </summary>
         internal static string trPurchases {
@@ -2991,6 +3054,15 @@ namespace POS {
         internal static string trQuantityHint {
             get {
                 return ResourceManager.GetString("trQuantityHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quotations.
+        /// </summary>
+        internal static string trQuotations {
+            get {
+                return ResourceManager.GetString("trQuotations", resourceCulture);
             }
         }
         
@@ -3130,11 +3202,38 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sales Draft.
+        /// </summary>
+        internal static string trSalesDraft {
+            get {
+                return ResourceManager.GetString("trSalesDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sales Invoice.
         /// </summary>
         internal static string trSalesInvoice {
             get {
                 return ResourceManager.GetString("trSalesInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sales Return Draft.
+        /// </summary>
+        internal static string trSalesReturnDraft {
+            get {
+                return ResourceManager.GetString("trSalesReturnDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sales ReturnI.
+        /// </summary>
+        internal static string trSalesReturnInvoice {
+            get {
+                return ResourceManager.GetString("trSalesReturnInvoice", resourceCulture);
             }
         }
         

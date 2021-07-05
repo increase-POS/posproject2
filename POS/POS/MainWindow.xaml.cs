@@ -51,10 +51,10 @@ namespace POS
         internal static User userLogin;
         internal static int? userLogInID;
         //internal static int? posID = 54;
-        internal static int? posID = 1;
+        internal static int? posID = 2;
         //internal static int? branchID = 18;
         //مخزن الجميلية الفرقان
-        internal static int? branchID = 12;
+        internal static int? branchID = 2;
         //مخزن الجميلية الرئيسي
         //internal static int? branchID = 2;
         bool isHome = false;

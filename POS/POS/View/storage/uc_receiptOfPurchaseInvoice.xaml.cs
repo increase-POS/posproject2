@@ -387,6 +387,11 @@ namespace POS.View.storage
                 await returnInvoice("pbd");
             }
             clearInvoice();
+
+            // set title to bill
+            txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+            // orange #FFA926 red #D22A17
+            brd_count.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
         }
 
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
@@ -620,6 +625,7 @@ namespace POS.View.storage
                     this.DataContext = invoice;
 
                     _InvoiceType = invoice.invType;
+
                     // set title to bill
                     txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
                     // orange #FFA926 red #D22A17

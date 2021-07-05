@@ -16,7 +16,7 @@
 
         <!--Left Section Grid-->
         <!--#region -->
-        <Grid Margin="0,15,10,15" Grid.Column="0">
+        <Grid Margin="0,15,10,15" Grid.Column="0" x:Name="grid_shipping">
             <Grid.RowDefinitions >
                 <RowDefinition Height="45"/>
                 <RowDefinition Height="*"/>
@@ -376,10 +376,13 @@
                             </Path.ToolTip>
                         </Path>
                         <TextBox x:Name="tb_realDeliveryCost" Grid.Row="2" Text="{Binding realDeliveryCost, Mode=OneWay}" Padding="10,0,5,0"   
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Real Delivery Cost..."  
-                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                 BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
+                                 BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Real Delivery Cost..."  
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
+                                 BorderBrush="AliceBlue"   
+                                 LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
+                                 PreviewKeyDown="Tb_PreventSpaces" 
+                                 PreviewTextInput="Tb_Numbers_PreviewTextInput" 
            MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"    Margin="10,5,10,5" Grid.ColumnSpan="2" >
                             <TextBox.ToolTip>
@@ -399,10 +402,13 @@
                             </Path.ToolTip>
                         </Path>
                         <TextBox x:Name="tb_deliveryCost" Grid.Row="3" Text="{Binding deliveryCost, Mode=OneWay}" Padding="10,0,5,0"   
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Delivery Cost..." 
-                                                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                 BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
+                                 BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Delivery Cost..." 
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
+                                 BorderBrush="AliceBlue"   
+                                 LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
+                                 PreviewKeyDown="Tb_PreventSpaces" 
+                                 PreviewTextInput="Tb_Numbers_PreviewTextInput"  
                       MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"    Margin="10,5,10,5" >
                             <TextBox.ToolTip>

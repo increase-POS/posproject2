@@ -2100,7 +2100,7 @@ namespace POS.View
             categoryParentId = 0;
             RefrishCategoriesCard();
             grid_categoryControlPath.Children.Clear();
-            category.categoryId = 0;
+            //category.categoryId = 0;
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
             tb_barcode.Focus();

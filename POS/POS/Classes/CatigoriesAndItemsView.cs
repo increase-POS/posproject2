@@ -260,85 +260,7 @@ namespace POS.Classes
         }
         #region Catalog
         public int pastCatalogCard = -1;
-
-
-
-        /*
-        public void FN_refrishCatalogCard(List<Category> categories)
-        {
-            gridCatigories.Children.Clear();
-            int column = 0;
-            foreach (var item in categories)
-            {
-                FN_createCatalogCard(item.categoryId, item.name, item.image, column, 1);
-                column++;
-            }
-        }
         
-        public void FN_refrishCatalogCard(List<Category> categories)
-        {
-            gridCatigories.Children.Clear();
-            int row = 0;
-            int column = 0;
-            foreach (var item in categories)
-            {
-                FN_createCatalogCard(item.categoryId, item.name, item.image, column, row);
-
-                row++;
-                if (row == 3)
-                {
-                    row = 0;
-                    column++;
-                }
-            }
-        }
-        */
-        /*
-       static   public  int[] categoriesRowColumnCount(int rowCount , int columnCount )
-        {
-            //MainWindow.ucControlViewSectionWidth
-            //MainWindow.ucControlViewSectionHeight
-
-            //600
-            //    700
-            //    700
-
-
-
-            // row
-            if (MainWindow.windowHeight < 650)
-                rowCount = 3;
-            else
-            if (MainWindow.windowHeight < 750)
-                rowCount = 4;
-            else if(MainWindow.windowHeight >= 750 || MainWindow.windowHeight.ToString() == "NaN" || MainWindow.windowWidth.ToString() == "ليس رقمًا")
-                rowCount = 5;
-            else
-                rowCount = 3;
-
-
-            // column
-            
-            if ( MainWindow.windowWidth < 920)
-                columnCount = 4;
-            else if (MainWindow.windowWidth < 1140)
-                columnCount = 5;
-            else if (MainWindow.windowWidth < 1500)
-                columnCount = 6;
-            //else if(MainWindow.windowWidth >= 1500 || MainWindow.windowWidth.ToString() ==  "NaN" || MainWindow.windowWidth.ToString() == "ليس رقمًا" )
-            else if(MainWindow.windowWidth >= 1500 || MainWindow.windowWidth.Equals(double.NaN))
-                columnCount = 7;
-            else
-                columnCount = 4;
-
-            //MainWindow.windowWidth =  NaN double
-
-
-        //int[] count = { rowCount, columnCount , rowCount * columnCount };
-        int[] count = { 3, 5 , 3 * 5 };
-            return count;
-        }
-        */
         public void FN_refrishCatalogCard(List<Category> categories ,int columnCount)
         {
             gridCatigories.Children.Clear();
@@ -444,7 +366,6 @@ namespace POS.Classes
             pastCatalogCard = uc.categoryCardView.category.categoryId;
             idCatigories = uc.categoryCardView.category.categoryId;
         }
-         
 
         #endregion
         #region Catalog Items

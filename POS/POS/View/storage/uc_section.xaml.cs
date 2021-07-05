@@ -455,7 +455,6 @@ namespace POS.View
 
         private async void fillBranches()
         {
-
             var branchesWithMain = await branchModel.GetAll();
             cb_branch.ItemsSource = branchesWithMain.Where(b => b.type != "bs");
             //var branches = await branchModel.GetBranchesAsync("b");
@@ -465,7 +464,6 @@ namespace POS.View
             cb_branch.DisplayMemberPath = "name";
             cb_branch.SelectedIndex = -1;
         }
-
 
         private async void Btn_locations_Click(object sender, RoutedEventArgs e)
         {//locations
@@ -486,9 +484,6 @@ namespace POS.View
                 //}
             }
             Window.GetWindow(this).Opacity = 1;
-
         }
-
-       
     }
 }

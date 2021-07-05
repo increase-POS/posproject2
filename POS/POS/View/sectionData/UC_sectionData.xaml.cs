@@ -189,6 +189,13 @@ namespace POS.View
 
         }
 
+        private void Btn_shippingCompany_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_shippingCompany);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_shippingCompany.Instance);
+        }
+
         //private void Btn_shippingCompany_Click(object sender, RoutedEventArgs e)
         //{
         //    refreashBachgroundClick(btn_shippingCompany);
