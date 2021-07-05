@@ -336,6 +336,7 @@
     <EntitySetMapping Name="Inventory">
       <EntityTypeMapping TypeName="incposdbModel.Inventory">
         <MappingFragment StoreEntitySet="Inventory">
+          <ScalarProperty Name="inventoryType" ColumnName="inventoryType" />
           <ScalarProperty Name="inventoryId" ColumnName="inventoryId" />
           <ScalarProperty Name="num" ColumnName="num" />
           <ScalarProperty Name="createDate" ColumnName="createDate" />

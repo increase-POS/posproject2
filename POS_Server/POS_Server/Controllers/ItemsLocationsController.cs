@@ -53,6 +53,7 @@ namespace POS_Server.Controllers
                                             updateUserId = b.updateUserId,
                                             itemName = i.name,
                                             location = l.x+l.y+l.z,
+                                            section = s.name,
                                             sectionId = s.sectionId,
                                             itemType = i.type,
                                         }).ToList();
@@ -61,6 +62,68 @@ namespace POS_Server.Controllers
                         return NotFound();
                     else
                         return Ok(docImageList);
+                }
+            }
+            //else
+            return NotFound();
+        }
+        [HttpGet]
+        [Route("getWithSequence")]
+        public IHttpActionResult getWithSequence(int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var itemLocList = (from b in entity.itemsLocations where b.quantity > 0
+                                        join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
+                                        join un in entity.units on u.unitId equals un.unitId
+                                        join i in entity.items on u.itemId equals i.itemId
+                                        join l in entity.locations on b.locationId equals l.locationId
+                                       join s in entity.sections on l.sectionId equals s.sectionId where s.branchId == branchId && s.isFreeZone != 1
+
+                                        select new ItemLocationModel
+                                        {
+                                            createDate = b.createDate,
+                                            createUserId = b.createUserId,
+                                            endDate = b.endDate,
+                                            itemsLocId = b.itemsLocId,
+                                            itemUnitId = b.itemUnitId,
+                                            locationId = b.locationId,
+                                            note = b.note,
+                                            quantity = b.quantity,
+                                            startDate = b.startDate,
+                                            storeCost = b.storeCost,
+                                            updateDate = b.updateDate,
+                                            updateUserId = b.updateUserId,
+                                            itemName = i.name,
+                                            location = l.x+l.y+l.z,
+                                            section = s.name,
+                                            unitName = un.name,
+                                            sectionId = s.sectionId,
+                                            itemType = i.type,
+                                        }).ToList();
+                    int sequence = 1;
+                    foreach(ItemLocationModel i in itemLocList)
+                    {
+                        i.sequence = sequence;
+                        sequence++;
+                    }
+
+                    if (itemLocList == null)
+                        return NotFound();
+                    else
+                        return Ok(itemLocList);
                 }
             }
             //else

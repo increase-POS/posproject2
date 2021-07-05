@@ -409,6 +409,7 @@
     <NavigationProperty Name="users" Relationship="Self.FK_Inventory_users" FromRole="Inventory" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_Inventory_users1" FromRole="Inventory" ToRole="users" />
     <NavigationProperty Name="inventoryItemLocation" Relationship="Self.FK_inventoryItemLocation_Inventory" FromRole="Inventory" ToRole="inventoryItemLocation" />
+    <Property Name="inventoryType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="inventoryItemLocation">
     <Key>

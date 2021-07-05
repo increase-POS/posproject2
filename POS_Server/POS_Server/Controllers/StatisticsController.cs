@@ -371,7 +371,7 @@ var items = from item in query.AsEnumerable()
                                            I.invoiceId,
                                            I.invNumber,
                                            I.agentId,
-
+                                           I.posId,
                                            I.invType,
                                            I.total,
                                            I.totalNet,
@@ -534,6 +534,7 @@ else
                                         uuserLast = g.Select(S => S.JUPUS.lastname).FirstOrDefault(),
                                         uUserAccName = g.Select(S => S.JUPUS.lastname).FirstOrDefault(),
                                         agentCompany = g.Select(S => S.JAA.company).FirstOrDefault(),
+                                        posId= g.Select(S => S.JPP.posId).FirstOrDefault(),
                                         /*
                                         I.invoiceId,
                                         I.invNumber,
@@ -772,6 +773,7 @@ else
                                         uuserLast = g.Select(S => S.JUPUS.lastname).FirstOrDefault(),
                                         uUserAccName = g.Select(S => S.JUPUS.username).FirstOrDefault(),
                                         agentCompany = g.Select(S => S.JAA.company).FirstOrDefault(),
+                                        posId = g.Select(S => S.JPP.posId).FirstOrDefault(),
                                         /*
                                 
                                         */
@@ -901,6 +903,7 @@ else
                                                          uuserLast=JUPUS.lastname,
                                                         uUserAccName =JUPUS.username,
                                                       agentCompany   =JAA.company,
+                                                      posId=JPP.posId,
 
                                       
                                         //username

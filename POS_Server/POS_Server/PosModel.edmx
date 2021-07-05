@@ -330,6 +330,7 @@
           <Property Name="updateUserId" Type="int" />
           <Property Name="isActive" Type="tinyint" />
           <Property Name="notes" Type="ntext" />
+          <Property Name="inventoryType" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="inventoryItemLocation">
           <Key>
@@ -4163,6 +4164,7 @@
           <NavigationProperty Name="users" Relationship="Self.FK_Inventory_users" FromRole="Inventory" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_Inventory_users1" FromRole="Inventory" ToRole="users" />
           <NavigationProperty Name="inventoryItemLocation" Relationship="Self.FK_inventoryItemLocation_Inventory" FromRole="Inventory" ToRole="inventoryItemLocation" />
+          <Property Name="inventoryType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="inventoryItemLocation">
           <Key>
@@ -8188,6 +8190,7 @@
           <EntitySetMapping Name="Inventory">
             <EntityTypeMapping TypeName="incposdbModel.Inventory">
               <MappingFragment StoreEntitySet="Inventory">
+                <ScalarProperty Name="inventoryType" ColumnName="inventoryType" />
                 <ScalarProperty Name="inventoryId" ColumnName="inventoryId" />
                 <ScalarProperty Name="num" ColumnName="num" />
                 <ScalarProperty Name="createDate" ColumnName="createDate" />

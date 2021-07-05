@@ -15,12 +15,12 @@ namespace POS_Server.Controllers
         // GET api/<controller> get all InventoryItemLocation
         [HttpGet]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get( int inventoryId)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            bool canDelete = false;
+
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -32,70 +32,31 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var List = entity.inventoryItemLocation
-                  
-                   .Select(c => new InventoryItemLocationModel()
-                   {
-                             id=  c.id,
-                    
-                        isDestroyed = c.isDestroyed,
+                        var List =(from c in entity.inventoryItemLocation.Where(c => c.inventoryId == inventoryId)
+                                   join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
+                                   join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
+                                   join i in entity.items on u.itemId equals i.itemId
+                       select new InventoryItemLocationModel()
+                       {
+                           id = c.id,
+
+                           isDestroyed = c.isDestroyed,
                            amount = c.amount,
-                         amountDestroyed = c.amountDestroyed,
-                          realAmount = c.realAmount,
-                          itemLocationId = c.itemLocationId,
-                         inventoryId = c.inventoryId,
-                         isActive = c.isActive,
-                         notes = c.notes,
-                       createDate = c.createDate,
-                       updateDate = c.updateDate,
-                       createUserId = c.createUserId,
-                       updateUserId = c.updateUserId,
-                       canDelete = true,
+                           amountDestroyed = c.amountDestroyed,
+                           quantity = c.realAmount,
+                           itemLocationId = c.itemLocationId,
+                           inventoryId = c.inventoryId,
+                           isActive = c.isActive,
+                           notes = c.notes,
+                           createDate = c.createDate,
+                           updateDate = c.updateDate,
+                           createUserId = c.createUserId,
+                           updateUserId = c.updateUserId,
+                           canDelete = true,
 
-                })
-                   .ToList();
-                    /*
-                    if (List.Count > 0)
-                    {
-                        for (int i = 0; i < List.Count; i++)
-                        {
-                            canDelete = false;
-                            if (List[i].isActive == 1)
-                            {
-                                int inventoryId = (int)List[i].id;
-                                var operationsL = entity.inventoryItemLocation.Where(x => x.id == inventoryId).Select(b => new { b.id }).FirstOrDefault();
+                       })
+                       .ToList();
 
-                                if (operationsL is null)
-                                    canDelete = true;
-                            }
-                            List[i].canDelete = canDelete;
-                        }
-                    }
-                    */
-                    /*
-                     * 
-
-   
-id
-isDestroyed
-amount
-amountDestroyed
-realAmount
-itemLocationId
-inventoryId
-isActive
-notes
-
-createDate
-updateDate
-createUserId
-updateUserId
-
-canDelete
-    
-
-
-                     * */
 
                     if (List == null)
                         return NotFound();

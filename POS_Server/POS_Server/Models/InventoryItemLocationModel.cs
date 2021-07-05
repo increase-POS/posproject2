@@ -11,7 +11,7 @@ namespace POS_Server.Models
         public Nullable<bool> isDestroyed { get; set; }
         public Nullable<int> amount { get; set; }
         public Nullable<int> amountDestroyed { get; set; }
-        public Nullable<int> realAmount { get; set; }
+        public Nullable<int> quantity { get; set; }  //realAmount
         public Nullable<int> itemLocationId { get; set; }
         public Nullable<int> inventoryId { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }

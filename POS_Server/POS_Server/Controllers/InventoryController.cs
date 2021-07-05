@@ -15,7 +15,7 @@ namespace POS_Server.Controllers
         // GET api/<controller> get all Inventory
         [HttpGet]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(string type)
         {
             var re = Request;
             var headers = re.Headers;
@@ -33,7 +33,7 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var List = entity.Inventory
-                  
+                  .Where(c => c.inventoryType == type)
                    .Select(c => new InventoryModel {
                        inventoryId=  c.inventoryId,                  
                        num=c.num,
@@ -43,6 +43,7 @@ namespace POS_Server.Controllers
                        createUserId = c.createUserId,
                        updateUserId = c.updateUserId,
                        isActive = c.isActive,
+                       inventoryType = c.inventoryType,
                        
                    })
                    .ToList();
@@ -62,26 +63,6 @@ namespace POS_Server.Controllers
                             List[i].canDelete = canDelete;
                         }
                     }
-                    /*
-                     * 
-
-                       public int inventoryId { get; set; }
-        public string num { get; set; }
-        public Nullable<System.DateTime> createDate { get; set; }
-        public Nullable<System.DateTime> updateDate { get; set; }
-        public Nullable<int> createUserId { get; set; }
-        public Nullable<int> updateUserId { get; set; }
-        public Nullable<byte> isActive { get; set; }
-        public string notes { get; set; }
-        public Boolean canDelete { get; set; }
-
-                    inventoryId
-                    num
-                    isActive
-                    notes
-
-    
-                     * */
 
                     if (List == null)
                         return NotFound();
@@ -89,8 +70,7 @@ namespace POS_Server.Controllers
                         return Ok(List);
                 }
             }
-            //else
-                return NotFound();
+            return NotFound();
         }
 
 

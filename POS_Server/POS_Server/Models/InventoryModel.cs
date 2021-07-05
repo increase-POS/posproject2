@@ -16,5 +16,6 @@ namespace POS_Server.Models
         public Nullable<byte> isActive { get; set; }
         public string notes { get; set; }
         public Boolean canDelete { get; set; }
+        public string inventoryType { get; set; }
     }
 }

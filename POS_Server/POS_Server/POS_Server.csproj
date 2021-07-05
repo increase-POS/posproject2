@@ -240,6 +240,7 @@
     <Compile Include="Controllers\BanksController.cs" />
     <Compile Include="Controllers\BondsController.cs" />
     <Compile Include="Controllers\BranchesController.cs" />
+    <Compile Include="Controllers\BranchStoreController.cs" />
     <Compile Include="Controllers\CashTransferController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\cityController.cs" />
@@ -360,6 +361,7 @@
     <Compile Include="Models\BankModel.cs" />
     <Compile Include="Models\BondsModel.cs" />
     <Compile Include="Models\BranchModel.cs" />
+    <Compile Include="Models\BranchStoreModel.cs" />
     <Compile Include="Models\CashTransferModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CardModel.cs" />

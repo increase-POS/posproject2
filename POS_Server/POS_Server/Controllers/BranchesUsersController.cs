@@ -34,8 +34,12 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var List = (from S in  entity.branchesUsers                                         
-                                         select new BranchesUsersModel()
+                    var List = (from S in  entity.branchesUsers  
+                                join B in entity.branches on S.branchId equals B.branchId  into JB
+                                join U in entity.users on S.userId equals U.userId into JU
+                                from JBB in JB.DefaultIfEmpty()
+                                from JUU in JU.DefaultIfEmpty()
+                                select new BranchesUsersModel()
                                          {
                                             branchsUsersId=S.branchsUsersId,
                                          
@@ -45,13 +49,112 @@ namespace POS_Server.Controllers
                                             updateDate = S.updateDate,
                                             createUserId = S.createUserId,
                                             updateUserId=S.updateUserId,
-                                        
-                                           
-                                         }).ToList();
-                 
+                                            // branch
+                                              bbranchId=JBB.branchId,
+                                              bcode=JBB.code,
+                                              bname=JBB.name,
+                                              baddress=JBB.address,
+                                              bemail=JBB.email,
+                                              bphone=JBB.phone,
+                                              bmobile=JBB.mobile,
+                                              bcreateDate=JBB.createDate,
+                                              bupdateDate=JBB.updateDate,
+                                              bcreateUserId=JBB.createUserId,
+                                              bupdateUserId=JBB.updateUserId,
+                                              bnotes=JBB.notes,
+                                              bparentId=JBB.parentId,
+                                              bisActive= JBB.isActive,
+                                              btype=JBB.type,
+                                    // user
+                                              uuserId=JUU.userId,
+                                              uusername=JUU.username,
+                                              upassword=JUU.password,
+                                              uname=JUU.name,
+                                              ulastname=JUU.lastname,
+                                              ujob=JUU.job,
+                                              uworkHours=JUU.workHours,
+                                              ucreateDate=JUU.createDate,
+                                              uupdateDate=JUU.updateDate,
+                                              ucreateUserId=JUU.createUserId,
+                                              uupdateUserId=JUU.updateUserId,
+                                              uphone=JUU.phone,
+                                              umobile=JUU.mobile,
+                                              uemail=JUU.email,
+                                              unotes=JUU.notes,
+                                              uaddress=JUU.address,
+                                              uisActive=JUU.isActive,
+                                              uisOnline=JUU.isOnline,
 
+                                              uimage=JUU.image ,
+
+
+                                }).ToList();
+
+                    /*
+                     * 
+bbranchId
+bcode
+bname
+baddress
+bemail
+bphone
+bmobile
+bcreateDate
+bupdateDate
+bcreateUserId
+bupdateUserId
+bnotes
+bparentId
+bisActive
+btype
 
            
+
+                      public int userId { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+        public string name { get; set; }
+        public string lastname { get; set; }
+        public string job { get; set; }
+        public string workHours { get; set; }
+        public DateTime? createDate { get; set; }
+        public DateTime? updateDate { get; set; }
+        public int? createUserId { get; set; }
+        public int? updateUserId { get; set; }
+        public string phone { get; set; }
+        public string mobile { get; set; }
+        public string email { get; set; }
+        public string notes { get; set; }
+        public string address { get; set; }
+        public short? isActive { get; set; }
+        public byte? isOnline { get; set; }
+        public Boolean canDelete { get; set; }
+        public string image { get; set; }
+
+userId
+username
+password
+name
+lastname
+job
+workHours
+createDate
+updateDate
+createUserId
+updateUserId
+phone
+mobile
+email
+notes
+address
+isActive
+isOnline
+
+image
+
+                     * */
+
+
 
                     if (List == null)
                         return NotFound();
@@ -84,7 +187,11 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var List = (from S in entity.branchesUsers
-                                where S.userId==userId
+                                join B in entity.branches on S.branchId equals B.branchId into JB
+                                join U in entity.users on S.userId equals U.userId into JU
+                                from JBB in JB.DefaultIfEmpty()
+                                from JUU in JU.DefaultIfEmpty()
+                                where S.userId == userId
                                 select new BranchesUsersModel()
                                 {
                                     branchsUsersId = S.branchsUsersId,
@@ -95,12 +202,51 @@ namespace POS_Server.Controllers
                                     updateDate = S.updateDate,
                                     createUserId = S.createUserId,
                                     updateUserId = S.updateUserId,
+                                    // branch
+                                    bbranchId = JBB.branchId,
+                                    bcode = JBB.code,
+                                    bname = JBB.name,
+                                    baddress = JBB.address,
+                                    bemail = JBB.email,
+                                    bphone = JBB.phone,
+                                    bmobile = JBB.mobile,
+                                    bcreateDate = JBB.createDate,
+                                    bupdateDate = JBB.updateDate,
+                                    bcreateUserId = JBB.createUserId,
+                                    bupdateUserId = JBB.updateUserId,
+                                    bnotes = JBB.notes,
+                                    bparentId = JBB.parentId,
+                                    bisActive = JBB.isActive,
+                                    btype = JBB.type,
+                                    // user
+                                    uuserId = JUU.userId,
+                                    uusername = JUU.username,
+                                    upassword = JUU.password,
+                                    uname = JUU.name,
+                                    ulastname = JUU.lastname,
+                                    ujob = JUU.job,
+                                    uworkHours = JUU.workHours,
+                                    ucreateDate = JUU.createDate,
+                                    uupdateDate = JUU.updateDate,
+                                    ucreateUserId = JUU.createUserId,
+                                    uupdateUserId = JUU.updateUserId,
+                                    uphone = JUU.phone,
+                                    umobile = JUU.mobile,
+                                    uemail = JUU.email,
+                                    unotes = JUU.notes,
+                                    uaddress = JUU.address,
+                                    uisActive = JUU.isActive,
+                                    uisOnline = JUU.isOnline,
+
+                                    uimage = JUU.image,
 
 
                                 }).ToList();
 
 
-
+                    /*
+                     
+                     * */
 
 
                     if (List == null)
@@ -295,80 +441,94 @@ namespace POS_Server.Controllers
         //update branches list by userId
 
         #region
+        //
         [HttpPost]
-        [Route("UpdatebranchesByuserId")]
-        public int UpdateItemsByOfferId(string newBranchlist)
+        [Route("UpdateBranchByUserId")]
+        public string UpdateBranchByUserId(string newList, int userId, int updateUserId)
         {
-            int userId = 0;
-           
             var re = Request;
             var headers = re.Headers;
-            int res = 0;
             string token = "";
-            int updateuserId = 0;
+           
+          
+
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
             }
-            if (headers.Contains("userId"))
-            {
-                userId = Convert.ToInt32(headers.GetValues("userId").First());
-            }
-            if (headers.Contains("updateuserId"))
-            {
-                updateuserId = Convert.ToInt32(headers.GetValues("updateuserId").First());
-            }
+          
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-            newBranchlist = newBranchlist.Replace("\\", string.Empty);
-            newBranchlist = newBranchlist.Trim('"');
-            List<branchesUsers> newObj = JsonConvert.DeserializeObject<List<branchesUsers>>(newBranchlist, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+
+            newList = newList.Replace("\\", string.Empty);
+            newList = newList.Trim('"');
+
+            List<branchesUsers> newListObj = JsonConvert.DeserializeObject<List<branchesUsers>>(newList, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+
             if (valid)
             {
+                // delete old invoice items
+               
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var oldlist = entity.branchesUsers.Where(p => p.userId == userId);
-                    if (oldlist.Count() > 0)
-                    {
-                        entity.branchesUsers.RemoveRange(oldlist);
-                    }
-                    if (newObj.Count() > 0)
-                    {
-                        foreach (branchesUsers row in newObj)
-                        {
-                           row.userId = userId;
-
-                            if (row.createUserId == null ||row.createUserId == 0)
-                            {
-                               row.createDate = DateTime.Now;
-                               row.updateDate = DateTime.Now;
-
-                               row.createUserId = userId;
-                               row.updateUserId = userId;
-                            }
-                            else
-                            {
-                               row.updateDate = DateTime.Now;
-                               row.updateUserId = userId;
-
-                            }
-
-                        }
-                        entity.branchesUsers.AddRange(newObj);
-                    }
-                    res = entity.SaveChanges();
-
-                    return res;
+                    List<branchesUsers> items = entity.branchesUsers.Where(x => x.userId == userId).ToList();
+                    entity.branchesUsers.RemoveRange(items);
+                    try { entity.SaveChanges(); }
+                    catch (Exception ex) { return ex.ToString(); }
 
                 }
+               
+               
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    for (int i = 0; i < newListObj.Count; i++)
+                    {
+                        if (newListObj[i].updateUserId == 0 || newListObj[i].updateUserId == null)
+                        {
+                            Nullable<int> id = null;
+                            newListObj[i].updateUserId = id;
+                        }
+                        if (newListObj[i].createUserId == 0 || newListObj[i].createUserId == null)
+                        {
+                            Nullable<int> id = null;
+                            newListObj[i].createUserId = id;
+                        }
+                        if (newListObj[i].branchId == 0 || newListObj[i].branchId == null)
+                        {
+                            Nullable<int> id = null;
+                            newListObj[i].branchId = id;
+                        }
+                        if (newListObj[i].userId == 0 || newListObj[i].userId == null)
+                        {
+                            Nullable<int> id = null;
+                            newListObj[i].userId = id;
+                        }
+                        var branchEntity = entity.Set<branchesUsers>();
 
-            }
-            else
-            {
-                return -1;
+                        newListObj[i].createDate = DateTime.Now;
+                        newListObj[i].updateDate = DateTime.Now;
+                        newListObj[i].updateUserId = updateUserId;
+                        newListObj[i].userId = userId;
+                        branchEntity.Add(newListObj[i]);
+
+                    }
+                    try
+                    {
+                        entity.SaveChanges();
+                    }
+
+                    catch
+                    {
+                        return "false";
+                    }
+                }
+               
             }
 
+            return "true";
         }
+
+        //
         #endregion
 
     }

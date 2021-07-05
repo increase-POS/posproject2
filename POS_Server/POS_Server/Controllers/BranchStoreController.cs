@@ -32,46 +32,58 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var List = entity.branchStore
-                  
-                   .Select(c => new BranchStoreModel {
-                      id = c.id,
-                       branchId = c.branchId,
-                       storeId = c.storeId,
-                       note = c.note,
+                    var List = (from S in entity.branchStore
+                                 join B in entity.branches on S.branchId equals B.branchId into JBB 
+                                 join BB in entity.branches on S.storeId equals BB.branchId into JSB
+                                from JBBR in JBB.DefaultIfEmpty()
+                                from JSBB in JSB.DefaultIfEmpty()
+                                select new BranchStoreModel {
+                      id = S.id,
+                       branchId = S.branchId,
+                       storeId = S.storeId,
+                       note = S.note,
                     
-                       createDate = c.createDate,
-                       updateDate = c.updateDate,
-                       createUserId = c.createUserId,
-                       updateUserId = c.updateUserId,
-                       isActive=c.isActive,
+                       createDate = S.createDate,
+                       updateDate = S.updateDate,
+                       createUserId = S.createUserId,
+                       updateUserId = S.updateUserId,
+                       isActive=S.isActive,
                        canDelete = true,
+                                    // branch
+                                    bbranchId = JSBB.branchId,
+                                    bcode = JBBR.code,
+                                    bname = JBBR.name,
+                                    baddress = JBBR.address,
+                                    bemail = JBBR.email,
+                                    bphone = JBBR.phone,
+                                    bmobile = JBBR.mobile,
+                                    bcreateDate = JBBR.createDate,
+                                    bupdateDate = JBBR.updateDate,
+                                    bcreateUserId = JBBR.createUserId,
+                                    bupdateUserId = JBBR.updateUserId,
+                                    bnotes = JBBR.notes,
+                                    bparentId = JBBR.parentId,
+                                    bisActive = JBBR.isActive,
+                                    btype = JBBR.type,
+                                    //store
+                                    sbranchId = JSBB.branchId,
+                                    scode = JSBB.code,
+                                    sname = JSBB.name,
+                                    saddress = JSBB.address,
+                                    semail = JSBB.email,
+                                    sphone = JSBB.phone,
+                                    smobile = JSBB.mobile,
+                                    screateDate = JSBB.createDate,
+                                    supdateDate = JSBB.updateDate,
+                                    screateUserId = JSBB.createUserId,
+                                    supdateUserId = JSBB.updateUserId,
+                                    snotes = JSBB.notes,
+                                    sparentId = JSBB.parentId,
+                                    sisActive = JSBB.isActive,
+                                    stype = JSBB.type,
 
-                   })
-                   .ToList();
-                  
-                    /*
-                     * 
-    public int id { get; set; }
-        public Nullable<int> branchId { get; set; }
-        public Nullable<int> storeId { get; set; }
-        public string note { get; set; }
-        public Nullable<System.DateTime> createDate { get; set; }
-        public Nullable<System.DateTime> updateDate { get; set; }
-        public Nullable<int> createUserId { get; set; }
-        public Nullable<int> updateUserId { get; set; }
+                                }).ToList();
 
-                        id
-                        branchId
-                        storeId
-                        note
-                        createDate
-                        updateDate
-                        createUserId
-                        updateUserId
-
-    
-                     * */
 
                     if (List == null)
                         return NotFound();
@@ -83,6 +95,90 @@ namespace POS_Server.Controllers
                 return NotFound();
         }
 
+        [HttpGet]
+        [Route("GetByBranchId")]
+        public IHttpActionResult GetByBranchId(int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            bool canDelete = false;
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var List = (from S in entity.branchStore
+                                join B in entity.branches on S.branchId equals B.branchId into JBB
+                                join BB in entity.branches on S.storeId equals BB.branchId into JSB
+                                from JBBR in JBB.DefaultIfEmpty()
+                                from JSBB in JSB.DefaultIfEmpty()
+                                where S.branchId == branchId
+
+                                select new BranchStoreModel
+                                {
+                                    id = S.id,
+                                    branchId = S.branchId,
+                                    storeId = S.storeId,
+                                    note = S.note,
+
+                                    createDate = S.createDate,
+                                    updateDate = S.updateDate,
+                                    createUserId = S.createUserId,
+                                    updateUserId = S.updateUserId,
+                                    isActive = S.isActive,
+                                    canDelete = true,
+                                    // branch
+                                    bbranchId = JSBB.branchId,
+                                    bcode = JBBR.code,
+                                    bname = JBBR.name,
+                                    baddress = JBBR.address,
+                                    bemail = JBBR.email,
+                                    bphone = JBBR.phone,
+                                    bmobile = JBBR.mobile,
+                                    bcreateDate = JBBR.createDate,
+                                    bupdateDate = JBBR.updateDate,
+                                    bcreateUserId = JBBR.createUserId,
+                                    bupdateUserId = JBBR.updateUserId,
+                                    bnotes = JBBR.notes,
+                                    bparentId = JBBR.parentId,
+                                    bisActive = JBBR.isActive,
+                                    btype = JBBR.type,
+                                    //store
+                                    sbranchId = JSBB.branchId,
+                                    scode = JSBB.code,
+                                    sname = JSBB.name,
+                                    saddress = JSBB.address,
+                                    semail = JSBB.email,
+                                    sphone = JSBB.phone,
+                                    smobile = JSBB.mobile,
+                                    screateDate = JSBB.createDate,
+                                    supdateDate = JSBB.updateDate,
+                                    screateUserId = JSBB.createUserId,
+                                    supdateUserId = JSBB.updateUserId,
+                                    snotes = JSBB.notes,
+                                    sparentId = JSBB.parentId,
+                                    sisActive = JSBB.isActive,
+                                    stype = JSBB.type,
+
+                                }).ToList();
+
+
+                    if (List == null)
+                        return NotFound();
+                    else
+                        return Ok(List);
+                }
+            }
+            //else
+            return NotFound();
+        }
 
 
         // GET api/<controller>  Get medal By ID 

@@ -7,6 +7,7 @@ namespace POS_Server.Models
 {
     public class ItemLocationModel
     {
+        public int sequence { get; set; }
         public int itemsLocId { get; set; }
         public Nullable<int> locationId { get; set; }
         public Nullable<int> sectionId { get; set; }
@@ -21,6 +22,8 @@ namespace POS_Server.Models
         public string note { get; set; }
         public string itemName { get; set; }
         public string location { get; set; }
+        public string section { get; set; }
+        public string unitName { get; set; }
         public string itemType { get; set; }
         public Nullable<decimal> storeCost { get; set; }
         public Nullable<byte> isFreeZone { get; set; }

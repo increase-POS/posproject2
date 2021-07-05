@@ -28,6 +28,7 @@ namespace POS_Server
         public Nullable<int> updateUserId { get; set; }
         public Nullable<byte> isActive { get; set; }
         public string notes { get; set; }
+        public string inventoryType { get; set; }
     
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }

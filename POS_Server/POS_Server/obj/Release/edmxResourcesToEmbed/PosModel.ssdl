@@ -325,6 +325,7 @@
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
     <Property Name="notes" Type="ntext" />
+    <Property Name="inventoryType" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="inventoryItemLocation">
     <Key>
