@@ -370,16 +370,20 @@ namespace POS_Server.Controllers
                             if (isExist == null)// unlink location to section
                             {
                                 loc.sectionId = null;
-                               
+                                loc.updateDate = DateTime.Now;
+                                loc.updateUserId = userId;
                             }
                             else// edit location info
                             {
                               
                             }
                         }
-                        loc.updateDate = DateTime.Now;
-                        loc.updateUserId = userId;
-                        entity.SaveChanges();
+                        else // clear section from location
+                        {
+                            loc.sectionId = null;
+                            loc.updateDate = DateTime.Now;
+                            loc.updateUserId = userId;
+                        }
                     }
                     foreach (locations loc in Object)// loop to add new locations
                     {
@@ -408,10 +412,8 @@ namespace POS_Server.Controllers
                                 }
                                 loc1.updateDate = DateTime.Now;
                                 loc1.sectionId = sectionId;
-                                loc.createUserId = userId;
                                 loc.updateUserId = userId;
-
-                                entity.SaveChanges();
+                                //entity.SaveChanges();
                             }
                         }
                         try
@@ -420,6 +422,7 @@ namespace POS_Server.Controllers
                         }
                         catch { return 0; }
                     }
+                    entity.SaveChanges();
                 }
             }
             return 1;

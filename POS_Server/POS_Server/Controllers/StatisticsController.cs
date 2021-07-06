@@ -351,7 +351,8 @@ var items = from item in query.AsEnumerable()
                                     join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
                                     join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
                                     join P in entity.pos on I.posId equals P.posId into JP
-                                    from JBB in JB.DefaultIfEmpty()
+
+                                    from JBB in JB
                                     from JPP in JP.DefaultIfEmpty()
                                     from JUU in JU.DefaultIfEmpty()
                                     from JUPUS in JUPUSR.DefaultIfEmpty()
@@ -396,9 +397,12 @@ var items = from item in query.AsEnumerable()
                                            I.tax,
                                            I.name,
                                            I.isApproved,
+                                           //
                                            I.branchCreatorId,
+                                        branchCreatorName = JBCC.name,
+                                        //
                                         branchName = JBB.name,
-                                        branchCreatorName=JBCC.name,
+                                       
                                         branchType=JBB.type,
                                         posName=JPP.name,
                                         posCode= JPP.code,
@@ -486,6 +490,7 @@ else
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JITT in JIT.DefaultIfEmpty()
+                                    from JBCC in JBC.DefaultIfEmpty()
 
                                     where (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
                                     // (branchType == "all" ? true : JBB.type == branchType)
@@ -635,7 +640,7 @@ else
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from B in entity.branches.Distinct()
-                                    from I in entity.invoices.Where(x => x.branchId == B.branchId).Distinct()
+                                    from I in entity.invoices.Where(x => x.branchCreatorId == B.branchId).Distinct()
                                         // from P in entity.pos.Where(x => x.posId == I.posId)
 
 
@@ -660,8 +665,10 @@ else
                                         totalNet = g.Sum(S => S.I.totalNet),
                                         paid = g.Sum(S => S.I.paid),
                                         deserved = g.Sum(S => S.I.deserved),
-                                        
-                                        branchId = g.Select(S => S.I.branchId).FirstOrDefault(),
+                                        //
+                                        branchCreatorId = g.Select(S => S.I.branchCreatorId).FirstOrDefault(),
+                                        branchCreatorName = g.Select(S => S.B.name).FirstOrDefault(),
+                                        //
                                         discountValue = g.Select(S => S.I.discountValue).FirstOrDefault(),
                                         discountType = g.Select(S => S.I.discountType).FirstOrDefault(),
                                         tax = g.Select(S => S.I.tax).FirstOrDefault(),
@@ -731,19 +738,22 @@ else
                                     from JUPUS in JUPUSR.DefaultIfEmpty()
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
-                                   
+                                    from JBCC in JBC.DefaultIfEmpty()
 
                                     where (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
                                   
                                     // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
-                                    group new { I, JBB, JPP, JUU, JUPUS, JIMM, JAA } by (JPP.posId) into g
+                                    group new { I, JBB, JPP, JUU, JUPUS, JIMM, JAA, JBCC } by (JPP.posId) into g
                                     select new
                                     {
                                         countP = g.Select(S => S.I.invoiceId).Count(),
                                         invoiceId = g.Select(S => S.I.invoiceId).FirstOrDefault(),
                                         invNumber = g.Select(S => S.I.invNumber).FirstOrDefault(),
                                         agentId = g.Select(S => S.I.agentId).FirstOrDefault(),
-
+                                        //
+                                        branchCreatorId= g.Select(S => S.I.branchCreatorId).FirstOrDefault(),
+                                        branchCreatorName = g.Select(S => S.JBCC.name).FirstOrDefault(),
+                                        //
                                         invType = g.Select(S => S.I.invType).FirstOrDefault(),
                                         total = g.Select(S => S.I.total).FirstOrDefault(),
                                         totalNet = g.Select(S => S.I.totalNet).FirstOrDefault(),
@@ -892,12 +902,10 @@ else
                                                         I.tax,
                                                         I.name,
                                                         I.isApproved,
+                                                        //
                                                         I.branchCreatorId,
-
-
-
-    
                                                         brancCreatorhName=JBCC.name,
+                                                        //
                                                         branchName =JBB.name,
                                                         branchType =JBB.type,
                                                        posName  =JPP.name,
@@ -911,7 +919,7 @@ else
                                                          uuserLast=JUPUS.lastname,
                                                         uUserAccName =JUPUS.username,
                                                       agentCompany   =JAA.company,
-                                                      posId=JPP.posId,
+                                                      JPP.posId,
 
                                       
                                         //username
@@ -972,15 +980,16 @@ else
                                     join B in entity.branches on I.branchId equals B.branchId into JB
                                     join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
                                     from JBB in JB.DefaultIfEmpty()
+                                    from JBCC in JBC.DefaultIfEmpty()
                                     where (JBB.branchId != 1)
                                  && (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
                                  
                                     // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
-                                    group new { I, JBB } by (I.branchId) into g
+                                    group new { I, JBB, JBCC } by (I.branchCreatorId) into g
                                     select new
                                     {
-                                        branchId = g.Key,
-                                        branchName = g.Select(t => t.JBB.name).FirstOrDefault(),
+                                        branchCreatorId = g.Key,
+                                        branchCreatorName = g.Select(t => t.JBCC.name).FirstOrDefault(),
                                        
                                         countP = g.Where(t => t.I.invType == "p").Count(),
                                         countPb = g.Where(t => t.I.invType == "pb").Count(),
