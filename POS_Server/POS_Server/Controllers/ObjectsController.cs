@@ -43,6 +43,7 @@ namespace POS_Server.Controllers
                        createUserId = c.createUserId,
                        updateUserId = c.updateUserId,
                        parentObjectId=c.parentObjectId,
+                       objectType=c.objectType,
                    })
                    .ToList();
                     if (List.Count > 0)
@@ -130,6 +131,7 @@ namespace POS_Server.Controllers
                        c.createUserId,
                        c.updateUserId,
                 c.parentObjectId,
+                c.objectType,
                    })
                    .FirstOrDefault();
 
@@ -204,6 +206,7 @@ namespace POS_Server.Controllers
                             tmps.createDate=Object.createDate;
                             tmps.updateDate = DateTime.Now;// server current date
                             tmps.parentObjectId = Object.parentObjectId;
+                            tmps.objectType = Object.objectType;
                             tmps.updateUserId = Object.updateUserId;
                             entity.SaveChanges();
                             message = tmps.objectId.ToString();
