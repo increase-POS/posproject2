@@ -61,6 +61,8 @@ namespace POS
         bool isHome = false;
         internal static int? isInvTax = 1;
         internal static decimal? tax = 2;
+        public static int Idletime = 5;
+
         /// <summary>
         /// //////// relative screen test
         /// </summary>
@@ -92,6 +94,7 @@ namespace POS
         /// </summary>
 
         DispatcherTimer timer;
+        DispatcherTimer idletimer;//  logout timer
         static public MainWindow mainWindow;
         public MainWindow()
         {
@@ -114,8 +117,24 @@ namespace POS
             timer.Tick += timer_Tick;
             timer.Start();
 
+            // idle timer
+            idletimer = new DispatcherTimer();
+            idletimer.Interval = TimeSpan.FromMinutes(Idletime);
+            idletimer.Tick += timer_Idle;
+            idletimer.Start();
 
             mainWindow = this;
+        }
+
+        void timer_Idle(object sender, EventArgs e)
+        {
+            if (IdleClass.IdleTime.Minutes >= Idletime)
+            {
+
+                BTN_logOut_Click(null, null);
+                idletimer.Stop();
+            }
+
         }
         public void StartAwait()
         {

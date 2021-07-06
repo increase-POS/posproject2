@@ -129,7 +129,6 @@ D:\ملفات المشروع\دينا\POS8-6\POS\netoaster\obj\Debug\netoaster.c
 D:\ملفات المشروع\دينا\POS8-6\POS\netoaster\obj\Debug\netoaster.dll
 D:\ملفات المشروع\دينا\POS8-6\POS\netoaster\obj\Debug\netoaster.pdb
 E:\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
-D:\myproj\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
 D:\VSproject\POS\netoaster\bin\Debug\netoaster.dll
 D:\VSproject\POS\netoaster\bin\Debug\netoaster.pdb
 D:\VSproject\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache

@@ -2268,3 +2268,13 @@ C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\winContr
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_branchesList.baml
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_transItemsLocation.baml
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\winControlPanel.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_purchaseReport.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_reports.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_branchesList.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_inventory.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\winControlPanel.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_purchaseReport.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_reports.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_branchesList.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_inventory.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\winControlPanel.baml
