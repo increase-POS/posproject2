@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="incposdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="incposdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="agentMemberships">
           <Key>
             <PropertyRef Name="agentMembershipsId" />
@@ -293,12 +293,12 @@
           <Property Name="groupId" Type="int" />
           <Property Name="objectId" Type="int" />
           <Property Name="notes" Type="ntext" />
-          <Property Name="addOb" Type="bit" Nullable="false" />
-          <Property Name="updateOb" Type="bit" Nullable="false" />
-          <Property Name="deleteOb" Type="bit" Nullable="false" />
-          <Property Name="showOb" Type="bit" Nullable="false" />
-          <Property Name="reportOb" Type="bit" />
-          <Property Name="levelOb" Type="tinyint" />
+          <Property Name="addOb" Type="tinyint" Nullable="false" />
+          <Property Name="updateOb" Type="tinyint" Nullable="false" />
+          <Property Name="deleteOb" Type="tinyint" Nullable="false" />
+          <Property Name="showOb" Type="tinyint" Nullable="false" />
+          <Property Name="reportOb" Type="tinyint" Nullable="false" />
+          <Property Name="levelOb" Type="tinyint" Nullable="false" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
@@ -331,6 +331,7 @@
           <Property Name="isActive" Type="tinyint" />
           <Property Name="notes" Type="ntext" />
           <Property Name="inventoryType" Type="nvarchar" MaxLength="10" />
+          <Property Name="branchId" Type="int" />
         </EntityType>
         <EntityType Name="inventoryItemLocation">
           <Key>
@@ -619,6 +620,7 @@
           <Property Name="updateUserId" Type="int" />
           <Property Name="isActive" Type="int" />
           <Property Name="parentObjectId" Type="int" />
+          <Property Name="objectType" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="offers">
           <Key>
@@ -1578,6 +1580,18 @@
             </Principal>
             <Dependent Role="groups">
               <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventory_branches">
+          <End Role="branches" Type="Self.branches" Multiplicity="0..1" />
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="branches">
+              <PropertyRef Name="branchId" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="branchId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3291,6 +3305,10 @@
             <End Role="users" EntitySet="users" />
             <End Role="groups" EntitySet="groups" />
           </AssociationSet>
+          <AssociationSet Name="FK_Inventory_branches" Association="Self.FK_Inventory_branches">
+            <End Role="branches" EntitySet="branches" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
           <AssociationSet Name="FK_Inventory_users" Association="Self.FK_Inventory_users">
             <End Role="users" EntitySet="users" />
             <End Role="Inventory" EntitySet="Inventory" />
@@ -3768,8 +3786,7 @@
             <End Role="usersLogs" EntitySet="usersLogs" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="incposdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3901,6 +3918,7 @@
           <NavigationProperty Name="locations" Relationship="Self.FK_locations_branches1" FromRole="branches" ToRole="locations" />
           <NavigationProperty Name="pos" Relationship="Self.FK_pos_branches" FromRole="branches" ToRole="pos" />
           <NavigationProperty Name="sections" Relationship="Self.FK_sections_branches" FromRole="branches" ToRole="sections" />
+          <NavigationProperty Name="Inventory" Relationship="incposdbModel.FK_Inventory_branches" FromRole="branches" ToRole="Inventory" />
         </EntityType>
         <EntityType Name="branchesUsers">
           <Key>
@@ -4135,12 +4153,12 @@
           <Property Name="groupId" Type="Int32" />
           <Property Name="objectId" Type="Int32" />
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="addOb" Type="Boolean" Nullable="false" />
-          <Property Name="updateOb" Type="Boolean" Nullable="false" />
-          <Property Name="deleteOb" Type="Boolean" Nullable="false" />
-          <Property Name="showOb" Type="Boolean" Nullable="false" />
-          <Property Name="reportOb" Type="Boolean" />
-          <Property Name="levelOb" Type="Byte" />
+          <Property Name="addOb" Type="Byte" Nullable="false" />
+          <Property Name="updateOb" Type="Byte" Nullable="false" />
+          <Property Name="deleteOb" Type="Byte" Nullable="false" />
+          <Property Name="showOb" Type="Byte" Nullable="false" />
+          <Property Name="reportOb" Type="Byte" Nullable="false" />
+          <Property Name="levelOb" Type="Byte" Nullable="false" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
@@ -4184,6 +4202,8 @@
           <NavigationProperty Name="users" Relationship="Self.FK_Inventory_users" FromRole="Inventory" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_Inventory_users1" FromRole="Inventory" ToRole="users" />
           <NavigationProperty Name="inventoryItemLocation" Relationship="Self.FK_inventoryItemLocation_Inventory" FromRole="Inventory" ToRole="inventoryItemLocation" />
+          <Property Name="branchId" Type="Int32" />
+          <NavigationProperty Name="branches" Relationship="incposdbModel.FK_Inventory_branches" FromRole="Inventory" ToRole="branches" />
         </EntityType>
         <EntityType Name="inventoryItemLocation">
           <Key>
@@ -4573,6 +4593,7 @@
           <NavigationProperty Name="objects2" Relationship="Self.FK_objects_objects" FromRole="objects1" ToRole="objects" />
           <NavigationProperty Name="users" Relationship="Self.FK_objects_users" FromRole="objects" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_objects_users1" FromRole="objects" ToRole="users" />
+          <Property Name="objectType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="offers">
           <Key>
@@ -7885,7 +7906,23 @@
             <End Role="users" EntitySet="users" />
             <End Role="usersLogs" EntitySet="usersLogs" />
           </AssociationSet>
+          <AssociationSet Name="FK_Inventory_branches" Association="incposdbModel.FK_Inventory_branches">
+            <End Role="branches" EntitySet="branches" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Inventory_branches">
+          <End Type="incposdbModel.branches" Role="branches" Multiplicity="0..1" />
+          <End Type="incposdbModel.Inventory" Role="Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="branches">
+              <PropertyRef Name="branchId" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="branchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8227,6 +8264,7 @@
           <EntitySetMapping Name="Inventory">
             <EntityTypeMapping TypeName="incposdbModel.Inventory">
               <MappingFragment StoreEntitySet="Inventory">
+                <ScalarProperty Name="branchId" ColumnName="branchId" />
                 <ScalarProperty Name="inventoryId" ColumnName="inventoryId" />
                 <ScalarProperty Name="num" ColumnName="num" />
                 <ScalarProperty Name="createDate" ColumnName="createDate" />
@@ -8532,6 +8570,7 @@
           <EntitySetMapping Name="objects">
             <EntityTypeMapping TypeName="incposdbModel.objects">
               <MappingFragment StoreEntitySet="objects">
+                <ScalarProperty Name="objectType" ColumnName="objectType" />
                 <ScalarProperty Name="objectId" ColumnName="objectId" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="note" ColumnName="note" />

@@ -128,6 +128,7 @@
     <NavigationProperty Name="locations" Relationship="Self.FK_locations_branches1" FromRole="branches" ToRole="locations" />
     <NavigationProperty Name="pos" Relationship="Self.FK_pos_branches" FromRole="branches" ToRole="pos" />
     <NavigationProperty Name="sections" Relationship="Self.FK_sections_branches" FromRole="branches" ToRole="sections" />
+    <NavigationProperty Name="Inventory" Relationship="incposdbModel.FK_Inventory_branches" FromRole="branches" ToRole="Inventory" />
   </EntityType>
   <EntityType Name="branchesUsers">
     <Key>
@@ -362,12 +363,12 @@
     <Property Name="groupId" Type="Int32" />
     <Property Name="objectId" Type="Int32" />
     <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="addOb" Type="Boolean" Nullable="false" />
-    <Property Name="updateOb" Type="Boolean" Nullable="false" />
-    <Property Name="deleteOb" Type="Boolean" Nullable="false" />
-    <Property Name="showOb" Type="Boolean" Nullable="false" />
-    <Property Name="reportOb" Type="Boolean" />
-    <Property Name="levelOb" Type="Byte" />
+    <Property Name="addOb" Type="Byte" Nullable="false" />
+    <Property Name="updateOb" Type="Byte" Nullable="false" />
+    <Property Name="deleteOb" Type="Byte" Nullable="false" />
+    <Property Name="showOb" Type="Byte" Nullable="false" />
+    <Property Name="reportOb" Type="Byte" Nullable="false" />
+    <Property Name="levelOb" Type="Byte" Nullable="false" />
     <Property Name="createDate" Type="DateTime" Precision="7" />
     <Property Name="updateDate" Type="DateTime" Precision="7" />
     <Property Name="createUserId" Type="Int32" />
@@ -411,6 +412,8 @@
     <NavigationProperty Name="users" Relationship="Self.FK_Inventory_users" FromRole="Inventory" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_Inventory_users1" FromRole="Inventory" ToRole="users" />
     <NavigationProperty Name="inventoryItemLocation" Relationship="Self.FK_inventoryItemLocation_Inventory" FromRole="Inventory" ToRole="inventoryItemLocation" />
+    <Property Name="branchId" Type="Int32" />
+    <NavigationProperty Name="branches" Relationship="incposdbModel.FK_Inventory_branches" FromRole="Inventory" ToRole="branches" />
   </EntityType>
   <EntityType Name="inventoryItemLocation">
     <Key>
@@ -800,6 +803,7 @@
     <NavigationProperty Name="objects2" Relationship="Self.FK_objects_objects" FromRole="objects1" ToRole="objects" />
     <NavigationProperty Name="users" Relationship="Self.FK_objects_users" FromRole="objects" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_objects_users1" FromRole="objects" ToRole="users" />
+    <Property Name="objectType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="offers">
     <Key>
@@ -4112,5 +4116,21 @@
       <End Role="users" EntitySet="users" />
       <End Role="usersLogs" EntitySet="usersLogs" />
     </AssociationSet>
+    <AssociationSet Name="FK_Inventory_branches" Association="incposdbModel.FK_Inventory_branches">
+      <End Role="branches" EntitySet="branches" />
+      <End Role="Inventory" EntitySet="Inventory" />
+    </AssociationSet>
   </EntityContainer>
+  <Association Name="FK_Inventory_branches">
+    <End Type="incposdbModel.branches" Role="branches" Multiplicity="0..1" />
+    <End Type="incposdbModel.Inventory" Role="Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="branches">
+        <PropertyRef Name="branchId" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="branchId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

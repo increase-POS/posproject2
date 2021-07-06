@@ -30,6 +30,7 @@ namespace POS_Server
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> isActive { get; set; }
         public Nullable<int> parentObjectId { get; set; }
+        public string objectType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<groupObject> groupObject { get; set; }

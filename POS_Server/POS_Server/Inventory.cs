@@ -29,10 +29,12 @@ namespace POS_Server
         public Nullable<byte> isActive { get; set; }
         public string notes { get; set; }
         public string inventoryType { get; set; }
+        public Nullable<int> branchId { get; set; }
     
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<inventoryItemLocation> inventoryItemLocation { get; set; }
+        public virtual branches branches { get; set; }
     }
 }

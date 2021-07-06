@@ -288,12 +288,12 @@
     <Property Name="groupId" Type="int" />
     <Property Name="objectId" Type="int" />
     <Property Name="notes" Type="ntext" />
-    <Property Name="addOb" Type="bit" Nullable="false" />
-    <Property Name="updateOb" Type="bit" Nullable="false" />
-    <Property Name="deleteOb" Type="bit" Nullable="false" />
-    <Property Name="showOb" Type="bit" Nullable="false" />
-    <Property Name="reportOb" Type="bit" />
-    <Property Name="levelOb" Type="tinyint" />
+    <Property Name="addOb" Type="tinyint" Nullable="false" />
+    <Property Name="updateOb" Type="tinyint" Nullable="false" />
+    <Property Name="deleteOb" Type="tinyint" Nullable="false" />
+    <Property Name="showOb" Type="tinyint" Nullable="false" />
+    <Property Name="reportOb" Type="tinyint" Nullable="false" />
+    <Property Name="levelOb" Type="tinyint" Nullable="false" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
@@ -326,6 +326,7 @@
     <Property Name="isActive" Type="tinyint" />
     <Property Name="notes" Type="ntext" />
     <Property Name="inventoryType" Type="nvarchar" MaxLength="10" />
+    <Property Name="branchId" Type="int" />
   </EntityType>
   <EntityType Name="inventoryItemLocation">
     <Key>
@@ -614,6 +615,7 @@
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="int" />
     <Property Name="parentObjectId" Type="int" />
+    <Property Name="objectType" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="offers">
     <Key>
@@ -1573,6 +1575,18 @@
       </Principal>
       <Dependent Role="groups">
         <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Inventory_branches">
+    <End Role="branches" Type="Self.branches" Multiplicity="0..1" />
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="branches">
+        <PropertyRef Name="branchId" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="branchId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3285,6 +3299,10 @@
     <AssociationSet Name="FK_groups_users2" Association="Self.FK_groups_users2">
       <End Role="users" EntitySet="users" />
       <End Role="groups" EntitySet="groups" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Inventory_branches" Association="Self.FK_Inventory_branches">
+      <End Role="branches" EntitySet="branches" />
+      <End Role="Inventory" EntitySet="Inventory" />
     </AssociationSet>
     <AssociationSet Name="FK_Inventory_users" Association="Self.FK_Inventory_users">
       <End Role="users" EntitySet="users" />
