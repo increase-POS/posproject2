@@ -804,7 +804,7 @@
     <Key>
       <PropertyRef Name="shippingCompanyId" />
     </Key>
-    <Property Name="shippingCompanyId" Type="int" Nullable="false" />
+    <Property Name="shippingCompanyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="name" Type="nchar" MaxLength="10" />
     <Property Name="RealDeliveryCost" Type="decimal" Precision="20" Scale="2" />
     <Property Name="deliveryCost" Type="decimal" Precision="20" Scale="2" />

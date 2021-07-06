@@ -56,7 +56,6 @@ namespace POS_Server.Controllers
                                    reportOb = c.reportOb,
                                    levelOb = c.levelOb,
                                    parentObjectId = o.parentObjectId,
-                                   objectType = o.objectType,
              
                    })
                                .ToList();
@@ -310,5 +309,56 @@ updateUserId
             else
                 return NotFound();
         }
+
+        //
+        [HttpPost]
+        [Route("AddGroupObjectList")]
+        public bool AddGroupObjectList(string newList)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            newList = newList.Replace("\\", string.Empty);
+            newList = newList.Trim('"');
+
+            List<groupObject> newListObj = JsonConvert.DeserializeObject<List<groupObject>>(newList, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+
+            if (valid)
+            {
+                // delete old invoice items
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    if (newListObj.Count > 0)
+                    {
+                        for(int i=0;i< newListObj.Count; i++)
+                        {
+                            newListObj[i].createDate = DateTime.Now;
+                            newListObj[i].updateDate = DateTime.Now;
+entity.groupObject.Add(newListObj[i]);
+     try { entity.SaveChanges(); }
+                    catch { return false; }
+                        }
+                     
+
+                    }
+                    //entity.groupObject.AddRange(newListObj);
+                  
+
+                }
+
+               
+            }
+
+            return true;
+        }
+
+        //
     }
 }
