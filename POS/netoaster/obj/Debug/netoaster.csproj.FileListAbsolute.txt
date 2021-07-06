@@ -145,3 +145,4 @@ D:\VSproject\POS\netoaster\obj\Debug\netoaster.csproj.GenerateResource.cache
 D:\VSproject\POS\netoaster\obj\Debug\netoaster.csproj.CoreCompileInputs.cache
 D:\VSproject\POS\netoaster\obj\Debug\netoaster.dll
 D:\VSproject\POS\netoaster\obj\Debug\netoaster.pdb
+C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache

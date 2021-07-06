@@ -2262,3 +2262,9 @@ D:\VSproject\POS\POS\obj\Debug\View\windows\winControlPanel.baml
 D:\VSproject\POS\POS\obj\Debug\View\windows\winLogIn.baml
 D:\VSproject\POS\POS\obj\Debug\RdlCompile.cache
 D:\VSproject\POS\POS\obj\Debug\RdlCompile.compiled
+C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_branchesList.g.cs
+C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_transItemsLocation.g.cs
+C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\winControlPanel.g.cs
+C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_branchesList.baml
+C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_transItemsLocation.baml
+C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\winControlPanel.baml
