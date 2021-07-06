@@ -541,6 +541,11 @@ namespace POS.View.sales
         }
         private async Task addInvoice(string invType)
         {
+            if (invoice.branchCreatorId == 0)
+            {
+                invoice.branchCreatorId = MainWindow.branchID.Value;
+                invoice.posId = MainWindow.posID.Value;
+            }
             invoice.invType = invType;
             invoice.name = tb_name.Text;
             invoice.posId = MainWindow.posID;
@@ -796,7 +801,7 @@ namespace POS.View.sales
             wd_invoice w = new wd_invoice();
 
             w.invoiceType = "qd"; //quontations draft invoices
-
+            w.userId = MainWindow.userLogin.userId;
 
             w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
@@ -895,7 +900,7 @@ namespace POS.View.sales
 
             // quontations invoices
             w.invoiceType = "q";
-
+            w.branchCreatorId = MainWindow.branchID.Value;
             w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
 
             if (w.ShowDialog() == true)

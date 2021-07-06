@@ -1458,4 +1458,40 @@
   <data name="trSalesReturnInvoice" xml:space="preserve">
     <value>مرتجع مبيعات</value>
   </data>
+  <data name="trComInfo" xml:space="preserve">
+    <value>معلومات الشركة</value>
+  </data>
+  <data name="trDeliveryCost" xml:space="preserve">
+    <value>كلفة التسليم</value>
+  </data>
+  <data name="trDeliveryCostHint" xml:space="preserve">
+    <value>كلفة التسليم...</value>
+  </data>
+  <data name="trDeliveryType" xml:space="preserve">
+    <value>طريقة التسليم</value>
+  </data>
+  <data name="trDeliveryTypeHint" xml:space="preserve">
+    <value>طريقة التسليم...</value>
+  </data>
+  <data name="trEmptyAddressToolTip" xml:space="preserve">
+    <value>العنوان لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyEmailToolTip" xml:space="preserve">
+    <value>البريد الالكتروني لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyFaxToolTip" xml:space="preserve">
+    <value>الفاكس لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trRealDeliveryCost" xml:space="preserve">
+    <value>كلفة التسليم الحقيقية</value>
+  </data>
+  <data name="trRealDeliveryCostHint" xml:space="preserve">
+    <value>كلفة التسليم الحقيقية...</value>
+  </data>
+  <data name="trShippingCompanies" xml:space="preserve">
+    <value>شركات الشحن</value>
+  </data>
+  <data name="trShippingCompany" xml:space="preserve">
+    <value>شركة شحن</value>
+  </data>
 </root>

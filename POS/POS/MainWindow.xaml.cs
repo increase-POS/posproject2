@@ -24,6 +24,7 @@ using System.Windows.Threading;
 using POS.Classes;
 using POS.View;
 using POS.View.accounts;
+using POS.View.reports;
 using POS.View.Settings;
 using POS.View.windows;
 using WPFTabTip;
@@ -390,6 +391,16 @@ namespace POS
             this.Visibility = Visibility.Hidden;
         }
 
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Mi_changePassword_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Are you want to Change Password?");
+        }
+
         ImageBrush myBrush = new ImageBrush();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
@@ -492,7 +503,8 @@ namespace POS
             FN_pathVisible(path_openReports);
             fn_ColorIconRefreash(path_iconReports);
             isHome = true;
-
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_reports.Instance);
         }
 
         private void BTN_settings_Click(object sender, RoutedEventArgs e)

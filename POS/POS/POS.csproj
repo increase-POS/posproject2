@@ -170,6 +170,7 @@
     <Compile Include="Classes\DataGridHelper.cs" />
     <Compile Include="Classes\DocImage.cs" />
     <Compile Include="Classes\ExportToExcel.cs" />
+    <Compile Include="Classes\fillPurchaseStatistic.cs" />
     <Compile Include="Classes\FindVisualChildren.cs" />
     <Compile Include="Classes\Group.cs" />
     <Compile Include="Classes\GroupObject.cs" />
@@ -234,9 +235,10 @@
     <Compile Include="converters\depositorBondeConverter.cs" />
     <Compile Include="converters\depositorNameConverter.cs" />
     <Compile Include="converters\depositorTypeConverter.cs" />
-    <Compile Include="converters\inventoryTypeConverter.cs" />
     <Compile Include="converters\invoiceTypeConverter.cs" />
+    <Compile Include="converters\invoiceTypeVisibilityConverter.cs" />
     <Compile Include="converters\levelGroupConverter.cs" />
+    <Compile Include="converters\permissionsNameConverter.cs" />
     <Compile Include="converters\processTypeConverter.cs" />
     <Compile Include="converters\transTypeConverter.cs" />
     <Compile Include="converters\unitItemsListConverter.cs" />
@@ -275,6 +277,12 @@
     </Compile>
     <Compile Include="View\purchases\uc_statistic.xaml.cs">
       <DependentUpon>uc_statistic.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\uc_purchaseReport.xaml.cs">
+      <DependentUpon>uc_purchaseReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\uc_reports.xaml.cs">
+      <DependentUpon>uc_reports.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\sales\uc_medals.xaml.cs">
       <DependentUpon>uc_medals.xaml</DependentUpon>
@@ -410,6 +418,9 @@
     <Compile Include="View\windows\wd_deliveryReceiptInvoice.xaml.cs">
       <DependentUpon>wd_deliveryReceiptInvoice.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_inventory.xaml.cs">
+      <DependentUpon>wd_inventory.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_invoice.xaml.cs">
       <DependentUpon>wd_invoice.xaml</DependentUpon>
     </Compile>
@@ -527,6 +538,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\purchases\uc_statistic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_purchaseReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_reports.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -711,6 +730,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_deliveryReceiptInvoice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_inventory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

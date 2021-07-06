@@ -128,7 +128,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Real Delivery Cost"  Binding="{Binding Path=realDeliveryCost}">
+                        <DataGridTextColumn Width="*"  Header="Real Delivery Cost"  Binding="{Binding Path=RealDeliveryCost}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -375,7 +375,7 @@
                                 <ToolTip  x:Name="tt_errorName"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
-                        <TextBox x:Name="tb_realDeliveryCost" Grid.Row="2" Text="{Binding realDeliveryCost, Mode=OneWay}" Padding="10,0,5,0"   
+                        <TextBox x:Name="tb_realDeliveryCost" Grid.Row="2" Text="{Binding RealDeliveryCost, Mode=OneWay}" Padding="10,0,5,0"   
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Real Delivery Cost..."  
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
@@ -438,7 +438,7 @@
                                                   FontFamily="Segoe UI"   
                                                   LostFocus="Tb_validateEmptyLostFocus">
                             <ComboBox.ToolTip>
-                                <ToolTip x:Name="tt_discountType" Content="Discount Type"
+                                <ToolTip x:Name="tt_deliveryType" Content="Discount Type"
                                                          Placement="left" 
                                                          HorizontalOffset="35"
                                                          PlacementRectangle="50,0,0,0"
@@ -455,7 +455,7 @@
                         </Path>
 
 
-                        <TextBox x:Name="tb_notes"  Grid.Row="5" Text="{Binding note, Mode=OneWay}" 
+                        <TextBox x:Name="tb_notes"  Grid.Row="5" Text="{Binding notes, Mode=OneWay}" 
                                  Padding="10,0,5,0"  
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Notes..."    

@@ -458,7 +458,11 @@ namespace POS.View
                 invoice.invoiceId = 0;
                 invoice.invNumber = await generateInvNumber("pb");
             }
-
+            if(invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
+            {
+                invoice.branchCreatorId = MainWindow.branchID.Value;
+                invoice.posId = MainWindow.posID.Value;
+            }
             if (invoice.invType != "pw" || invoice.invoiceId == 0)
             {
                 invoice.invType = invType;
@@ -723,7 +727,7 @@ namespace POS.View
             // string[] typeArr = { "pd","pdbd" };
             w.invoiceType = "pd ,pbd";
             //w.branchId = int.Parse(MainWindow.branchID.ToString());
-            //w.userId = MainWindow.userLogin.userId;
+            w.userId = MainWindow.userLogin.userId;
 
             w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
@@ -761,8 +765,8 @@ namespace POS.View
 
             // purchase invoices
             w.invoiceType = "pw";
-            //w.branchId = int.Parse(MainWindow.branchID.ToString());
-            //w.userId = MainWindow.userLogin.userId;
+            //w.invoiceType = "p";
+            w.branchCreatorId = MainWindow.branchID.Value;
             
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
 
@@ -816,12 +820,11 @@ namespace POS.View
             Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
 
-            w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
-
+            w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");         
             // purchase invoices
             w.invoiceType = "pw"; // invoice type to view in grid
-            //w.branchId = int.Parse(MainWindow.branchID.ToString());
-            //w.userId = MainWindow.userLogin.userId;
+            w.branchCreatorId = MainWindow.branchID.Value;
+
             if (w.ShowDialog() == true)
             {
                 if (w.invoice != null)
@@ -845,8 +848,7 @@ namespace POS.View
             wd_invoice w = new wd_invoice();
 
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
-            //w.branchId = int.Parse(MainWindow.branchID.ToString());
-            //w.userId = MainWindow.userLogin.userId;
+            w.branchCreatorId = MainWindow.branchID.Value;
             // purchase invoices
             w.invoiceType = "pbw"; // invoice type to view in grid
             if (w.ShowDialog() == true)

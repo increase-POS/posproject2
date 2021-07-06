@@ -538,6 +538,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to معلومات الشركة.
+        /// </summary>
+        internal static string trComInfo {
+            get {
+                return ResourceManager.GetString("trComInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الشركة.
         /// </summary>
         internal static string trCompany {
@@ -736,11 +745,47 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to كلفة التسليم.
+        /// </summary>
+        internal static string trDeliveryCost {
+            get {
+                return ResourceManager.GetString("trDeliveryCost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to كلفة التسليم....
+        /// </summary>
+        internal static string trDeliveryCostHint {
+            get {
+                return ResourceManager.GetString("trDeliveryCostHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to التوصيل....
         /// </summary>
         internal static string trDeliveryHint {
             get {
                 return ResourceManager.GetString("trDeliveryHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to طريقة التسليم.
+        /// </summary>
+        internal static string trDeliveryType {
+            get {
+                return ResourceManager.GetString("trDeliveryType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to طريقة التسليم....
+        /// </summary>
+        internal static string trDeliveryTypeHint {
+            get {
+                return ResourceManager.GetString("trDeliveryTypeHint", resourceCulture);
             }
         }
         
@@ -1087,6 +1132,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to العنوان لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyAddressToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyAddressToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اختر منطقة.
         /// </summary>
         internal static string trEmptyAreaToolTip {
@@ -1222,6 +1276,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to البريد الالكتروني لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyEmailToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyEmailToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تاريخ الانتهاء لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyEndDateToolTip {
@@ -1245,6 +1308,15 @@ namespace POS {
         internal static string trEmptyError {
             get {
                 return ResourceManager.GetString("trEmptyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الفاكس لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyFaxToolTip {
+            get {
+                return ResourceManager.GetString("trEmptyFaxToolTip", resourceCulture);
             }
         }
         
@@ -3013,6 +3085,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to كلفة التسليم الحقيقية.
+        /// </summary>
+        internal static string trRealDeliveryCost {
+            get {
+                return ResourceManager.GetString("trRealDeliveryCost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to كلفة التسليم الحقيقية....
+        /// </summary>
+        internal static string trRealDeliveryCostHint {
+            get {
+                return ResourceManager.GetString("trRealDeliveryCostHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to استلام.
         /// </summary>
         internal static string trReceiptOperation {
@@ -3423,6 +3513,24 @@ namespace POS {
         internal static string trSettings {
             get {
                 return ResourceManager.GetString("trSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to شركات الشحن.
+        /// </summary>
+        internal static string trShippingCompanies {
+            get {
+                return ResourceManager.GetString("trShippingCompanies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to شركة شحن.
+        /// </summary>
+        internal static string trShippingCompany {
+            get {
+                return ResourceManager.GetString("trShippingCompany", resourceCulture);
             }
         }
         

@@ -13,9 +13,11 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class Inventory
+    public class Inventory
     {
         public int inventoryId { get; set; }
+        public int branchId { get; set; }
+        public int posId { get; set; }
         public string num { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
@@ -24,7 +26,13 @@ namespace POS.Classes
         public Nullable<byte> isActive { get; set; }
         public string notes { get; set; }
         public Boolean canDelete { get; set; }
-        public async Task<List<Inventory>> GetAll()
+        public string inventoryType { get; set; }
+        //*******************************************************
+        /// <summary>
+        /// ////////////////////////////////////////
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Inventory>> GetByCreator(string inventoryType,int userId)
         {
             List<Inventory> list = null;
             // ... Use HttpClient.
@@ -37,7 +45,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Inventory/Get");
+                request.RequestUri = new Uri(Global.APIUri + "Inventory/GetByCreator?inventoryType="+ inventoryType+ "&userId="+ userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -64,7 +72,47 @@ namespace POS.Classes
                 return list;
             }
         }
-        public async Task<string> Save(Inventory newObject)
+        public async Task<List<Inventory>> getByBranch(string inventoryType,int branchId)
+        {
+            List<Inventory> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Inventory/getByBranch?inventoryType=" + inventoryType+ "&branchId="+ branchId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<Inventory>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<Inventory>();
+                }
+                return list;
+            }
+        }
+        public async Task<int> Save(Inventory newObject)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -94,9 +142,9 @@ namespace POS.Classes
                 {
                     var message = await response.Content.ReadAsStringAsync();
                     message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
+                    return int.Parse(message);
                 }
-                return "";
+                return 0;
             }
         }
         public async Task<Inventory> GetByID(int valId)
@@ -159,7 +207,42 @@ namespace POS.Classes
                 return false;
             }
         }
+        public async Task<int> GetLastNumOfInv()
+        {
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Inventory/GetLastNumOfInv");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
 
+                if (response.IsSuccessStatusCode)
+                {
+                    string message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
+                    return int.Parse(message);
+                }
+
+                return 0;
+            }
+        }
+        public async Task<string> generateInvNumber(string invCode,int posId)
+        {         
+            int sequence = await GetLastNumOfInv();
+            sequence++;
+
+            string inventoryNum = invCode + "-" + sequence.ToString();
+            return inventoryNum;
+        }
 
         // get is exist
 

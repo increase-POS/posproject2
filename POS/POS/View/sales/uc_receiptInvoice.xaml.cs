@@ -451,6 +451,11 @@ namespace POS.View
                 invoice.invoiceId = 0;
                 invoice.invNumber = await generateInvNumber("sb");
             }
+            if (invoice.branchCreatorId == 0)
+            {
+                invoice.branchCreatorId = MainWindow.branchID.Value;
+                invoice.posId = MainWindow.posID.Value;
+            }
             if (invoice.invType != "s" || invoice.invoiceId == 0)
             {              
                 invoice.posId = MainWindow.posID;
@@ -754,7 +759,7 @@ namespace POS.View
             wd_invoice w = new wd_invoice();
 
             w.invoiceType = "sd ,sbd"; //sales draft invoices , sales bounce drafts
-
+            w.userId = MainWindow.userLogin.userId;
 
             w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
@@ -806,7 +811,7 @@ namespace POS.View
 
             // sale invoices
             w.invoiceType = "s";
-
+            w.branchCreatorId = MainWindow.branchID.Value;
             w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
 
             if (w.ShowDialog() == true)
@@ -891,7 +896,7 @@ namespace POS.View
             Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
-
+            w.branchCreatorId = MainWindow.branchID.Value;
             // sales invoices
             w.invoiceType = "s"; // invoice type to view in grid
             if (w.ShowDialog() == true)

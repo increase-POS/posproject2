@@ -66,7 +66,8 @@ namespace POS.View.windows
             translat();
             //MessageBox.Show(Id.ToString());
             allStoresSource = await branchModel.GetAll();////active branch and store 
-            //chk user or branch
+            allStores.AddRange(allStoresSource);
+             //chk user or branch
             var dgtc = dg_selectedStores.Columns[0] as DataGridTextColumn;
 
             if (userOrBranch == 'u')
@@ -76,7 +77,7 @@ namespace POS.View.windows
                 //remove selected items from all items
                 foreach (var i in selectedStoresByUser)
                 {
-                    branch = allStoresSource.Where(s => s.branchId == i.branchId).FirstOrDefault<Branch>();
+                    branch = allStores.Where(s => s.branchId == i.branchId).FirstOrDefault<Branch>();
                     allStores.Remove(branch);
                 }
                 dgtc.Binding = new System.Windows.Data.Binding("bname");
@@ -93,20 +94,20 @@ namespace POS.View.windows
                 //remove selected items from all items
                 foreach (var i in selectedStoresByBranch)
                 {
-                    branch = allStoresSource.Where(s => s.branchId == i.branchId).FirstOrDefault<Branch>();
+                    branch = allStores.Where(s => s.branchId == i.storeId).FirstOrDefault<Branch>();
                     allStores.Remove(branch);
                 }
-                //remove selected branch/store?????????????????????????????????????????????
-                branch = allStoresSource.Where(s => s.branchId == Id).FirstOrDefault<Branch>();
-                allStores.Remove(branch);
+               
                 dgtc.Binding = new System.Windows.Data.Binding("sname");
 
                 dg_selectedStores.ItemsSource = selectedStoresByBranch;
                 dg_selectedStores.SelectedValuePath = "branchId";
                 dg_selectedStores.DisplayMemberPath = "sname";
-            }
 
-            allStores.AddRange(allStoresSource);
+                //remove selected branch/store from previous window
+                branch = allStores.Where(s => s.branchId == Id).FirstOrDefault<Branch>();
+                allStores.Remove(branch);
+            }
 
             dg_allStores.ItemsSource = allStores;
             dg_allStores.SelectedValuePath = "branchId";

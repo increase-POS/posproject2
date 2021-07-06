@@ -22,6 +22,7 @@ namespace POS.Classes
         public Nullable<int> parentObjectId { get; set; }
         public string name { get; set; }
         public string notes { get; set; }
+        public string objectType { get; set; }
         //public Nullable<byte> addOb { get; set; }
         //public Nullable<byte> updateOb { get; set; }
         //public Nullable<byte> deleteOb { get; set; }

@@ -69,7 +69,7 @@ namespace POS.View.windows
         }
         private void translate()
         {
-            //  MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trPamentMethodHint"));
+            txt_companyInfo.Text = MainWindow.resourcemanager.GetString("trComInfo");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_address, MainWindow.resourcemanager.GetString("trAdressHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_mobile, MainWindow.resourcemanager.GetString("trMobileHint"));
@@ -82,6 +82,7 @@ namespace POS.View.windows
             tt_fax.Content = MainWindow.resourcemanager.GetString("trFax");
             tt_email.Content = MainWindow.resourcemanager.GetString("trEmail");
             tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
         }
         private void tb_name_LostFocus(object sender, RoutedEventArgs e)
@@ -303,8 +304,104 @@ namespace POS.View.windows
                 Btn_save_Click(null, null);
             }
         }
-        private void Btn_save_Click(object sender, RoutedEventArgs e)
-        {
+        SettingCls setModel = new SettingCls();
+        SetValues valueModel = new SetValues();
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
+        {//save
+            //List<SetValues> sv = await valueModel.GetAll();
+            //MessageBox.Show(sv.Count.ToString());
+            #region get swttings Ids
+            List<SettingCls> settingsCls = await setModel.GetAll();
+            SettingCls set = new SettingCls();
+            //get company name
+            set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
+            int nameId = set.settingId;
+            //get company address
+            set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
+            int addressId = set.settingId;
+            //get company email
+            set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
+            int emailId = set.settingId;
+            //get company mobile
+            set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
+            int mobileId = set.settingId;
+            //get company phone
+            set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
+            int phoneId = set.settingId;
+            //get company fax
+            set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
+            int faxId = set.settingId;
+            #endregion
+
+            #region validate
+            //chk empty name
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk empty address
+            SectionData.validateEmptyTextBox(tb_address, p_errorAddress, tt_errorAddress, "trEmptyAddressToolTip");
+            //chk empty email
+            SectionData.validateEmptyTextBox(tb_email, p_errorEmail, tt_errorEmail, "trEmptyEmailToolTip");
+            //chk empty mobile
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            //chk empty phone
+            SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
+            //chk empty fax
+            SectionData.validateEmptyTextBox(tb_fax, p_errorFax, tt_errorFax, "trEmptyFaxToolTip");
+            #endregion
+
+            #region save
+            if ((!tb_name.Text.Equals("")) && (!tb_address.Text.Equals("")) &&
+               (!tb_email.Text.Equals("")) && (!tb_mobile.Text.Equals("")) &&
+               (!tb_phone.Text.Equals("")) && (!tb_fax.Text.Equals("")))
+            {
+                //save name
+                SetValues valName = new SetValues();
+                valName.value = tb_name.Text;
+                valName.isSystem = 1;
+                valName.settingId = nameId;
+                //string sName = await valueModel.Save(valName);
+                //MessageBox.Show("name : " + sName);
+
+                //save address
+                SetValues valAddress = new SetValues();
+                valAddress.value = tb_address.Text;
+                valAddress.isSystem = 1;
+                valAddress.settingId = addressId;
+                //string sAddress = await valueModel.Save(valAddress);
+                //MessageBox.Show("address : " + sAddress);
+
+                //save email
+                SetValues valEmail = new SetValues();
+                valEmail.value = tb_email.Text;
+                valEmail.isSystem = 1;
+                valEmail.settingId = emailId;
+                //string sEmail = await valueModel.Save(valEmail);
+                //MessageBox.Show("email : " + sEmail);
+
+                //save mobile
+                SetValues valMobile = new SetValues();
+                valMobile.value = cb_areaMobile.Text + "-" + tb_mobile.Text;
+                valMobile.isSystem = 1;
+                valMobile.settingId = mobileId;
+                //string sMobile = await valueModel.Save(valMobile);
+                //MessageBox.Show("mobile : " + sMobile);
+
+                //save mobile
+                SetValues valPhone = new SetValues();
+                valPhone.value = cb_areaPhone.Text + "-" + tb_name.Text;
+                valPhone.isSystem = 1;
+                valPhone.settingId = phoneId;
+                //string sPhone = await valueModel.Save(valPhone);
+                //MessageBox.Show("phone : " + sPhone);
+
+                //save fax
+                SetValues valFax = new SetValues();
+                valFax.value = cb_areaFax.Text + "-" + tb_fax.Text;
+                valFax.isSystem = 1;
+                valFax.settingId = faxId;
+                //string sFax = await valueModel.Save(valFax);
+                //MessageBox.Show("fax : " + sFax);
+            }
+            #endregion
 
         }
     }

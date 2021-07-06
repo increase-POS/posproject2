@@ -84,7 +84,7 @@
                             </Button>
                         </Border>
                         <Border x:Name="bdr_catalog" Grid.Column="1" Background="White" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="10,5,0,-1">
-                            <Button x:Name="btn_catalog" Click="btn_catalog_Click" Background="Transparent"  
+                            <Button x:Name="btn_catalog" Click="btn_catalog_Click" Background="Transparent"   Tag="1"
                                     materialDesign:RippleAssist.Feedback="Transparent" BorderBrush="Transparent" Height="auto" Width="60">
                                 <Button.Triggers>
                                     <EventTrigger x:Name="trig" RoutedEvent="Button.Click">
@@ -125,7 +125,7 @@
                         </Border>
                         <Border x:Name="bdr_store" Grid.Column="2" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
                             <Button x:Name="btn_store" Click="btn_store_Click" Background="Transparent"  
-                                    materialDesign:RippleAssist.Feedback="Transparent"
+                                    materialDesign:RippleAssist.Feedback="Transparent"  Tag="2"
                                     BorderBrush="Transparent" Height="auto" Width="60">
                                 <Button.Triggers>
                                     <EventTrigger RoutedEvent="Button.Click">
@@ -170,7 +170,7 @@
                         </Border>
                         <Border x:Name="bdr_purchase" Grid.Column="3" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
                             <Button x:Name="btn_purchase" Click="btn_purchase_Click" Background="Transparent" 
-                                    materialDesign:RippleAssist.Feedback="Transparent"
+                                    materialDesign:RippleAssist.Feedback="Transparent" Tag="3"
                                     BorderBrush="Transparent" Height="auto" Width="60">
                                 <Button.Triggers>
                                     <EventTrigger RoutedEvent="Button.Click">
@@ -249,7 +249,7 @@
                         </Border>
                         <Border Name="bdr_sale" Grid.Column="4" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
                             <Button x:Name="btn_sale" Click="btn_sale_Click" Background="Transparent"  
-                                    materialDesign:RippleAssist.Feedback="Transparent"
+                                    materialDesign:RippleAssist.Feedback="Transparent" Tag="4"
                                     BorderBrush="Transparent" Height="auto" Width="60">
                                 <Button.Triggers>
                                     <EventTrigger RoutedEvent="Button.Click">
@@ -288,7 +288,7 @@
                         </Border>
                         <Border x:Name="bdr_accounts" Grid.Column="5" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
                             <Button x:Name="btn_account" Click="btn_account_Click" Background="Transparent"  
-                                    materialDesign:RippleAssist.Feedback="Transparent"
+                                    materialDesign:RippleAssist.Feedback="Transparent" Tag="5"
                                     BorderBrush="Transparent" Height="auto" Width="60">
                                 <Button.Triggers>
                                     <EventTrigger RoutedEvent="Button.Click">
@@ -318,7 +318,7 @@
                         </Border>
                         <Border x:Name="bdr_charts" Grid.Column="6" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
                             <Button x:Name="btn_charts" Click="btn_charts_Click" Background="Transparent"  
-                                    materialDesign:RippleAssist.Feedback="Transparent"
+                                    materialDesign:RippleAssist.Feedback="Transparent" Tag="63"
                                     BorderBrush="Transparent" Height="auto" Width="60">
                                 <Button.Triggers>
                                     <EventTrigger RoutedEvent="Button.Click">
@@ -352,7 +352,7 @@
                         </Border>
                         <Border x:Name="bdr_data" Grid.Column="7" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
                             <Button x:Name="btn_data" Click="btn_data_Click" Background="Transparent"  
-                                    materialDesign:RippleAssist.Feedback="Transparent"
+                                    materialDesign:RippleAssist.Feedback="Transparent" Tag="6"
                                     BorderBrush="Transparent" Height="auto" Width="60">
                                 <Button.Triggers>
                                     <EventTrigger RoutedEvent="Button.Click">
@@ -400,7 +400,7 @@
                         </Border>
                         <Border x:Name="bdr_settings" Background="#4E4E4E" Grid.Column="8" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
                             <Button x:Name="btn_settings" Click="btn_settings_Click" Background="Transparent"  
-                                    materialDesign:RippleAssist.Feedback="Transparent"
+                                    materialDesign:RippleAssist.Feedback="Transparent" Tag="7"
                                     BorderBrush="Transparent" Height="auto" Width="60">
                                 <Button.Triggers>
                                     <EventTrigger RoutedEvent="Button.Click">
@@ -1569,7 +1569,7 @@
                             <!--***********************************************************-->
                             <!--grid data-->
                             
-                            <Grid Name="grid_data" Margin="10,10,10,10" MinHeight="80" Visibility="Collapsed">
+                            <Grid Name="grid_data" Margin="10,10,10,10" MinHeight="80" Visibility="Visible">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -1595,9 +1595,8 @@
                                 BorderThickness="1" Margin="0,10"></Border>
 
                                 <Button  x:Name="btn_suppliers" Grid.Column="0" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}" HorizontalContentAlignment="Stretch" Click="btn_suppliers_Click">
+                    Background="{x:Null}" HorizontalContentAlignment="Stretch" Click="btn_suppliers_Click" Tag="37">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
-
                                         <Path x:Name="path_suppliers" Fill="{StaticResource MainColorBlue}" Stretch="Fill"   DockPanel.Dock="Left"
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M127,120.6h-22.8l-3.1-21.2l3.3-4.4h1c0,0,12,4,17.4,6.7c1.6,0.8,2.8,2.4,3.1,4.2
@@ -1616,7 +1615,7 @@
                                    
                                 </Button>
                                 <Button x:Name="btn_customers"  Grid.Column="2" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_customers_Click">
+                    Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_customers_Click" Tag="38">
                                     <DockPanel LastChildFill="True" >
 
                                         <Path x:Name="path_customers" Fill="#67686d" Stretch="Fill"  
@@ -1640,7 +1639,7 @@
                                   
                                 </Button>
                                 <Button  x:Name="btn_sd_users" Grid.Column="4" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}" HorizontalContentAlignment="Stretch" Click="btn_sd_users_Click">
+                    Background="{x:Null}" HorizontalContentAlignment="Stretch" Click="btn_sd_users_Click" Tag="39">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
 
                                         <Path x:Name="path_sd_users" Fill="#67686d" Stretch="Fill"   DockPanel.Dock="Left"
@@ -1666,7 +1665,7 @@
                                    
                                 </Button>
                                 <Button x:Name="btn_branches" Grid.Column="6" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_branches_Click">
+                    Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_branches_Click" Tag="40">
                                     <DockPanel LastChildFill="True" >
 
                                         <Path x:Name="path_branches" Fill="#67686d" Stretch="Fill"  
@@ -1687,7 +1686,7 @@
                                     
                                 </Button>
                                 <Button x:Name="btn_stores" Grid.Column="0" Grid.Row="1" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}" HorizontalContentAlignment="Stretch" Click="btn_stores_Click">
+                    Background="{x:Null}" HorizontalContentAlignment="Stretch" Click="btn_stores_Click" Tag="41">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
 
                                         <Path x:Name="path_stores" Fill="#67686d" Stretch="Fill"   DockPanel.Dock="Left"
@@ -1717,7 +1716,7 @@
                           
                                 </Button>
                                 <Button Grid.Column="2" Grid.Row="1" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}" x:Name="btn_sd_pos"  HorizontalContentAlignment="Stretch" Click="btn_sd_pos_Click">
+                    Background="{x:Null}" x:Name="btn_sd_pos"  HorizontalContentAlignment="Stretch" Click="btn_sd_pos_Click" Tag="42">
                                     <DockPanel LastChildFill="True" >
 
                                         <Path Name="path_sd_pos" Fill="#67686d" Stretch="Fill"  
@@ -1750,7 +1749,7 @@
                                    
                                 </Button>
                                 <Button  x:Name="btn_sd_banks" Grid.Column="4" Grid.Row="1" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}" HorizontalContentAlignment="Stretch" Click="btn_sd_banks_Click">
+                    Background="{x:Null}" HorizontalContentAlignment="Stretch" Click="btn_sd_banks_Click" Tag="43">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
 
                                         <Path x:Name="path_sd_banks" Fill="#67686d" Stretch="Fill"   DockPanel.Dock="Left"
@@ -1765,7 +1764,7 @@
                                   
                                 </Button>
                                 <Button x:Name="btn_cards" Grid.Column="6" Grid.Row="1" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_cards_Click">
+                    Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_cards_Click" Tag="44">
                                     <DockPanel LastChildFill="True" >
 
                                         <Path x:Name="path_cards" Fill="#67686d" Stretch="Fill"  
@@ -1856,7 +1855,7 @@
                                   
                                 </Button>
                                 <Button x:Name="btn_shippingCompany" Grid.Column="0" Grid.Row="2" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_shippingCompany_Click">
+                    Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_shippingCompany_Click" Tag="45">
                                     <DockPanel LastChildFill="True" >
 
                                         <Path x:Name="path_shippingCompany" Fill="#67686d" Stretch="Fill"  
@@ -1897,7 +1896,7 @@
                             <!--***********************************************************-->
                             <!--grid settings-->
                             
-                            <Grid Name="grid_settings" Margin="10,10,10,10" MinHeight="80" Visibility="Visible">
+                            <Grid Name="grid_settings" Margin="10,10,10,10" MinHeight="80" Visibility="Collapsed">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -2055,10 +2054,12 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
-                        <converters:levelGroupConverter x:Key="levelGroupConverter"/>
+                        <!--<converters:levelGroupConverter x:Key="levelGroupConverter"/>-->
+                        <converters:permissionsNameConverter x:Key="permissionsNameConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="*"  Header="Permission" IsReadOnly="True"   Binding="{Binding Path=objectName}">
+                        <DataGridTextColumn Width="*"  Header="Permission" IsReadOnly="True"  
+                                            Binding="{Binding Path=objectName,Converter={StaticResource permissionsNameConverter }}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -2072,61 +2073,106 @@
                         <DataGridTemplateColumn Header="Show" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox x:Name="chb_showOb" IsChecked="{Binding showOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox x:Name="chb_showOb" 
+                                              IsChecked="{Binding showOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <CheckBox.Style>
+                                            <Style TargetType="CheckBox">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding showOb}" Value="2">
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </CheckBox.Style>
+                                    </CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="Add" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsEnabled="{Binding showOb}" IsChecked="{Binding addOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox IsChecked="{Binding addOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                        <CheckBox.Style>
+                                            <Style TargetType="CheckBox">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding addOb}" Value="2">
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </CheckBox.Style>
+                                    </CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="Update" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsEnabled="{Binding showOb}" IsChecked="{Binding updateOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox  IsChecked="{Binding updateOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                        <CheckBox.Style>
+                                            <Style TargetType="CheckBox">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding updateOb}" Value="2">
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </CheckBox.Style>
+                                    </CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="Delete" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsEnabled="{Binding showOb}" IsChecked="{Binding deleteOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox IsChecked="{Binding deleteOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                        <CheckBox.Style>
+                                            <Style TargetType="CheckBox">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding deleteOb}" Value="2">
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </CheckBox.Style>
+                                    </CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="Report"  >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsEnabled="{Binding showOb}"  IsChecked="{Binding reportOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox  IsChecked="{Binding reportOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                        <CheckBox.Style>
+                                            <Style TargetType="CheckBox">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding reportOb}" Value="2">
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </CheckBox.Style>
+                                    </CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <!--<DataGridTemplateColumn Header="Level"  Width="*" >
+                        <!--<DataGridTemplateColumn Header="Report2"  >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ComboBox    SelectionChanged="Cbm_levelGroup_SelectionChanged" 
-                                                              x:Name="cbm_levelGroup"
-                                                              ItemsSource="{Binding levelOb,Converter={StaticResource levelGroupConverter}}"
-                                                              DisplayMemberPath="Text" 
-                                                              SelectedValuePath="Value"/>
+                                    <CheckBox   IsChecked="{Binding levelOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                        <CheckBox.Style>
+                                            <Style TargetType="CheckBox">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding levelOb}" Value="2">
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </CheckBox.Style>
+                                    </CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>-->
-                        <DataGridTextColumn Width="*"  Header="Describe"    IsReadOnly="True" 
-                                                        Binding="{Binding Path=desc}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding isActive}" Value="0">
-                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
                     </DataGrid.Columns>
 
                 </DataGrid>

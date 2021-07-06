@@ -18,16 +18,17 @@ namespace POS.Classes
         public int id { get; set; }
         public Nullable<int> groupId { get; set; }
         public Nullable<int> objectId { get; set; }
+        public Nullable<int> parentObjectId { get; set; }
         public string notes { get; set; }
-        public Nullable<bool> addOb { get; set; }
-        public Nullable<bool> updateOb { get; set; }
-        public Nullable<bool> deleteOb { get; set; }
-        public Nullable<bool> showOb { get; set; }
-        public Nullable<bool> reportOb { get; set; }
+        public Nullable<byte> addOb { get; set; }
+        public Nullable<byte> updateOb { get; set; }
+        public Nullable<byte> deleteOb { get; set; }
+        public Nullable<byte> showOb { get; set; }
+        public Nullable<byte> reportOb { get; set; }
         public Nullable<byte> levelOb { get; set; }
         public string objectName { get; set; }
+        public string objectType { get; set; }
         public string desc { get; set; }
-
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
@@ -182,6 +183,39 @@ namespace POS.Classes
             }
         }
 
+        public async Task<string> AddGroupObjectList(List<GroupObject> newList)
+        {
+            string message = "";
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            // 
+            var myContent = JsonConvert.SerializeObject(newList);
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+                request.RequestUri = new Uri(Global.APIUri + "GroupObject/AddGroupObjectList?newList=" + myContent);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
+                }
+                return message;
+            }
+        }
 
         // get is exist
 

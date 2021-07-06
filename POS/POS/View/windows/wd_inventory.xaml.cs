@@ -18,32 +18,27 @@ using System.Windows.Shapes;
 namespace POS.View.windows
 {
     /// <summary>
-    /// Interaction logic for wd_invoice.xaml
+    /// Interaction logic for wd_inventory.xaml
     /// </summary>
-    public partial class wd_invoice : Window
+    public partial class wd_inventory : Window
     {
-        public wd_invoice()
+        public wd_inventory()
         {
             InitializeComponent();
         }
-        /// <summary>
-        /// for filtering store
-        /// </summary>
-        public Invoice invoice = new Invoice();
-        IEnumerable<Invoice> invoices;
-        public int posId { get; set; }
+        public Inventory inventory = new Inventory();
+        IEnumerable<Inventory> inventories;
         public int branchId { get; set; }
-        public int branchCreatorId { get; set; }
         public int userId { get; set; }
+        public string inventoryType { get; set; }
         /// <summary>
-        /// for filtering invoice type
+        /// for filtering inventory type
         /// </summary>
-        public string invoiceType { get; set; }
         public string title { get; set; }
-        public string condition { get; set; }
         private void Btn_select_Click(object sender, RoutedEventArgs e)
         {
-            invoice = dg_Invoice.SelectedItem as Invoice;
+
+            inventory = dg_Inventory.SelectedItem as Inventory;
             DialogResult = true;
             this.Close();
 
@@ -64,48 +59,45 @@ namespace POS.View.windows
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucInvoice.FlowDirection = FlowDirection.LeftToRight;
+                grid_ucInventory.FlowDirection = FlowDirection.LeftToRight;
             }
             else
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucInvoice.FlowDirection = FlowDirection.RightToLeft;
+                grid_ucInventory.FlowDirection = FlowDirection.RightToLeft;
             }
-            txt_Invoices.Text = title;
+            txt_title.Text = title;
+            await refreshInventories();
 
-            await refreshInvoices();
         }
-        private async Task refreshInvoices()
+        private async Task refreshInventories()
         {
             if (userId != 0)/// to display draft invoices
-                invoices = await invoice.GetInvoicesByCreator(invoiceType, userId);
-            else if (branchCreatorId != 0)
-                invoices = await invoice.getBranchInvoices(invoiceType, branchCreatorId);
-            else if (condition == "" || condition == null)
-                invoices = await invoice.GetInvoicesByType(invoiceType, branchId);
-            else // get export/ import orders
-                invoices = await invoice.GetOrderByType(invoiceType, branchId);
+                inventories = await inventory.GetByCreator(inventoryType, userId);
+            else if (branchId != 0)
+                inventories = await inventory.getByBranch(inventoryType, branchId);
+            //else if (condition == "" || condition == null)
+            //    invoices = await invoice.GetInvoicesByType(invoiceType, branchId);
+            //else // get export/ import orders
+            //    invoices = await invoice.GetOrderByType(invoiceType, branchId);
 
-            //if (invoiceType == "pd ,pbd")
-            //{
-            //    dg_Invoice.ItemsSource = invoices.ToList().Where(x => x.createUserId == userId);
-            //}
-            //else
-                dg_Invoice.ItemsSource = invoices.ToList();
+
+            dg_Inventory.ItemsSource = inventories.ToList();
         }
-        private void Dg_Invoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void Dg_Inventory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            invoice = dg_Invoice.SelectedItem as Invoice;
+            inventory = dg_Inventory.SelectedItem as Inventory;
         }
-        private void Dg_Invoice_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void Dg_Inventory_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Btn_select_Click(null,null);
+            Btn_select_Click(null, null);
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-           
-           // DialogResult = true;
+
+            // DialogResult = true;
             this.Close();
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -119,6 +111,5 @@ namespace POS.View.windows
 
             }
         }
-
     }
 }

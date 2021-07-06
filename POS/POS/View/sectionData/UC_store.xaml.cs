@@ -267,6 +267,7 @@ namespace POS.View
         tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
         tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
         tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+        btn_stores.Content = MainWindow.resourcemanager.GetString("trBranchs/Stores");
 
         tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
         tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");

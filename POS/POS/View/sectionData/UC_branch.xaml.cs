@@ -206,6 +206,8 @@ namespace POS.View
             tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
             tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
             tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+            btn_stores.Content = MainWindow.resourcemanager.GetString("trBranchs/Stores");
+
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)

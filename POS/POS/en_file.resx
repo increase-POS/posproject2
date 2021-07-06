@@ -283,7 +283,7 @@
     <value>Name...</value>
   </data>
   <data name="trNoteHint" xml:space="preserve">
-    <value>Note...</value>
+    <value>Notes...</value>
   </data>
   <data name="trPamentMethodHint" xml:space="preserve">
     <value>Select Payment method...</value>
@@ -1478,5 +1478,41 @@
   </data>
   <data name="trSalesReturnInvoice" xml:space="preserve">
     <value>Sales ReturnI</value>
+  </data>
+  <data name="trComInfo" xml:space="preserve">
+    <value>Company Informations</value>
+  </data>
+  <data name="trDeliveryCost" xml:space="preserve">
+    <value>Delivery cost</value>
+  </data>
+  <data name="trDeliveryCostHint" xml:space="preserve">
+    <value>Delivery cost...</value>
+  </data>
+  <data name="trDeliveryType" xml:space="preserve">
+    <value>Delivery type</value>
+  </data>
+  <data name="trDeliveryTypeHint" xml:space="preserve">
+    <value>Delivery type...</value>
+  </data>
+  <data name="trEmptyAddressToolTip" xml:space="preserve">
+    <value>Address cann't be empty</value>
+  </data>
+  <data name="trEmptyEmailToolTip" xml:space="preserve">
+    <value>Email cann't be empty</value>
+  </data>
+  <data name="trEmptyFaxToolTip" xml:space="preserve">
+    <value>Fax cann't be empty</value>
+  </data>
+  <data name="trRealDeliveryCost" xml:space="preserve">
+    <value>Real delivery cost</value>
+  </data>
+  <data name="trRealDeliveryCostHint" xml:space="preserve">
+    <value>Real delivery cost...</value>
+  </data>
+  <data name="trShippingCompanies" xml:space="preserve">
+    <value>Shipping Companies</value>
+  </data>
+  <data name="trShippingCompany" xml:space="preserve">
+    <value>Shipping Company</value>
   </data>
 </root>

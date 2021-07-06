@@ -15,11 +15,12 @@ namespace POS.Classes
 {
     class InventoryItemLocation
     {
+        public int sequence { get; set; }
         public int id { get; set; }
         public Nullable<bool> isDestroyed { get; set; }
         public Nullable<int> amount { get; set; }
         public Nullable<int> amountDestroyed { get; set; }
-        public Nullable<int> realAmount { get; set; }
+        public Nullable<int> quantity { get; set; }
         public Nullable<int> itemLocationId { get; set; }
         public Nullable<int> inventoryId { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
@@ -29,7 +30,11 @@ namespace POS.Classes
         public Nullable<byte> isActive { get; set; }
         public string notes { get; set; }
         public Boolean canDelete { get; set; }
-        public async Task<List<InventoryItemLocation>> GetAll(int branchId, int inventoryId)
+        public string itemName { get; set; }
+        public string location { get; set; }
+        public string section { get; set; }
+        public string unitName { get; set; }
+        public async Task<List<InventoryItemLocation>> GetAll( int inventoryId)
         {
             List<InventoryItemLocation> list = null;
             // ... Use HttpClient.
@@ -42,7 +47,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "InventoryItemLocation/Get?branchId="+ branchId+ "&inventoryId="+ inventoryId);
+                request.RequestUri = new Uri(Global.APIUri + "InventoryItemLocation/Get?inventoryId="+ inventoryId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -69,7 +74,7 @@ namespace POS.Classes
                 return list;
             }
         }
-        public async Task<string> Save(InventoryItemLocation newObject)
+        public async Task<string> Save(List<InventoryItemLocation> newObject, int inventoryId)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -88,7 +93,8 @@ namespace POS.Classes
                 myContent = HttpUtility.UrlEncode(myContent);
                 request.RequestUri = new Uri(Global.APIUri
                                              + "InventoryItemLocation/Save?newObject="
-                                             + myContent);
+                                             + myContent
+                                             + "&inventoryId=" + inventoryId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

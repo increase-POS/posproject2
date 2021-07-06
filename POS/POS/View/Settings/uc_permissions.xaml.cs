@@ -45,16 +45,15 @@ namespace POS.View.Settings
         IEnumerable<Group> groups;
         byte tgl_groupState;
         string searchGroupText = "";
-
-
-
-
-
+        //int firstLevelId;
+        //int secondLevelId;
+        int _parentObjectId;
         GroupObject groupObject = new GroupObject();
         //ObservableCollection<GroupObject> groupObjectsQuery = new ObservableCollection<GroupObject>();
         //ObservableCollection<GroupObject> groupObjects = new ObservableCollection<GroupObject>();
         IEnumerable<GroupObject> groupObjectsQuery;
         IEnumerable<GroupObject> groupObjects;
+        List<GroupObject> groupObjectsList;
         string searchText = "";
 
         Object objectModel = new Object();
@@ -135,8 +134,8 @@ namespace POS.View.Settings
             });
 
             #region datagridChange
-            CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_permissions.Items);
-            ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+            //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_permissions.Items);
+            //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
             #endregion
             await RefreshGroupObjectList();
             //dg_permissions.ItemsSource = groupObjectsQuery;
@@ -190,8 +189,8 @@ namespace POS.View.Settings
                 if (!s.Equals("-1"))
                 {
                     addObjects(int.Parse(s));
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                    Btn_clear_Click(null, null);
+                    //Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    //Btn_clear_Click(null, null);
                     group.groupId = int.Parse(s);
                 }
                 else
@@ -210,31 +209,50 @@ namespace POS.View.Settings
         {
             if (objects is null)
                 await RefreshObjectList();
+            //groupObjectsList = new GroupObject[] { }; 
+            groupObjectsList = new List<GroupObject>() ;
             foreach (var item in objects)
             {
+
                 groupObject.id = 0;
                 groupObject.groupId = groupId;
                 groupObject.objectId = item.objectId;
-                groupObject.showOb = false;
-                groupObject.addOb = false;
-                groupObject.updateOb = false;
-                groupObject.deleteOb = false;
-                groupObject.reportOb = false;
+                if (item.objectType == "add")
+                {
+                    groupObject.showOb = 0;
+                    groupObject.addOb = 2;
+                    groupObject.updateOb = 2;
+                    groupObject.deleteOb = 2;
+                    groupObject.reportOb = 2;
+
+                } else
+                {
+                    groupObject.showOb = 0;
+                    groupObject.addOb = 0;
+                    groupObject.updateOb = 0;
+                    groupObject.deleteOb = 0;
+                    groupObject.reportOb = 0;
+                }
+                
+
                 groupObject.levelOb = 0;
                 groupObject.notes = "";
                 groupObject.createUserId = MainWindow.userID;
                 groupObject.updateUserId = MainWindow.userID;
                 groupObject.isActive = 1;
-                string s = await groupObject.Save(groupObject);
-                //if (!s.Equals("-1"))
-                //{
-                //    addObjects(int.Parse(s));
-                //    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                //    Btn_clear_Click(null, null);
-                //}
-                //else
-                //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                groupObjectsList.Add(groupObject);
+                //string s = await groupObject.AddGroupObjectList(groupObjectsList);
+
             }
+            string s = await groupObject.AddGroupObjectList(groupObjectsList);
+            if (!s.Equals("true"))
+            {
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                Btn_clear_Click(null, null);
+            }
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
         }
 
 
@@ -249,15 +267,16 @@ namespace POS.View.Settings
                 await RefreshGroupObjectList();
             searchText = tb_searchGroup.Text;
             //groupObjectsQuery = groupObjects.Where(s => (s.name.Contains(searchText)));
-           groupObjectsQuery = groupObjects.Where(s => s.groupId == group.groupId);
-            
-            if (objects!= null)
-            if(groupObjectsQuery.Count() != objects.Count())
-            {
-                await RefreshGroupObjectList();
-                Tb_search_TextChanged(null, null);
-                return;
-            }
+            groupObjectsQuery = groupObjects.Where(s => s.groupId == group.groupId && s.objectType != "basic" && s.parentObjectId == _parentObjectId);
+            //groupObjectsQuery = groupObjects.Where(s => s.groupId == group.groupId && s.parentObjectId == _parentObjectId);
+
+            //if (objects!= null)
+            //if(groupObjectsQuery.Where(s =>  s.objectType != "basic").Count() != objects.Count())
+            //{
+            //    await RefreshGroupObjectList();
+            //    Tb_search_TextChanged(null, null);
+            //    return;
+            //}
             RefreshGroupObjectsView();
         }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -748,6 +767,8 @@ namespace POS.View.Settings
             paintSectionData();
             path_suppliers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_suppliers.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            _parentObjectId = int.Parse(btn_suppliers.Tag.ToString());
+            Tb_search_TextChanged(null, null);
         }
 
         private void btn_customers_Click(object sender, RoutedEventArgs e)
@@ -755,6 +776,8 @@ namespace POS.View.Settings
             paintSectionData();
             path_customers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_customers.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            _parentObjectId = int.Parse(btn_customers.Tag.ToString());
+            Tb_search_TextChanged(null, null);
         }
 
         private void btn_sd_users_Click(object sender, RoutedEventArgs e)
@@ -762,6 +785,8 @@ namespace POS.View.Settings
             paintSectionData();
             path_sd_users.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_sd_users.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            _parentObjectId = int.Parse(btn_sd_users.Tag.ToString());
+            Tb_search_TextChanged(null, null);
         }
 
         private void btn_branches_Click(object sender, RoutedEventArgs e)
@@ -769,6 +794,8 @@ namespace POS.View.Settings
             paintSectionData();
             path_branches.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_branches.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            _parentObjectId = int.Parse(btn_branches.Tag.ToString());
+            Tb_search_TextChanged(null, null);
         }
 
         private void btn_stores_Click(object sender, RoutedEventArgs e)
@@ -776,6 +803,8 @@ namespace POS.View.Settings
             paintSectionData();
             path_stores.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_stores.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            _parentObjectId = int.Parse(btn_stores.Tag.ToString());
+        Tb_search_TextChanged(null, null);
         }
 
         private void btn_sd_pos_Click(object sender, RoutedEventArgs e)
@@ -783,6 +812,8 @@ namespace POS.View.Settings
             paintSectionData();
             path_sd_pos.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_sd_pos.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            _parentObjectId = int.Parse(btn_sd_pos.Tag.ToString());
+        Tb_search_TextChanged(null, null);
         }
 
         private void btn_sd_banks_Click(object sender, RoutedEventArgs e)
@@ -790,6 +821,8 @@ namespace POS.View.Settings
             paintSectionData();
             path_sd_banks.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_sd_banks.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            _parentObjectId = int.Parse(btn_sd_banks.Tag.ToString());
+        Tb_search_TextChanged(null, null);
         }
 
         private void btn_cards_Click(object sender, RoutedEventArgs e)
@@ -797,8 +830,18 @@ namespace POS.View.Settings
             paintSectionData();
             path_cards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_cards.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            _parentObjectId = int.Parse(btn_cards.Tag.ToString());
+        Tb_search_TextChanged(null, null);
         }
 
+        private void btn_shippingCompany_Click(object sender, RoutedEventArgs e)
+        {
+            paintSectionData();
+            path_shippingCompany.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            txt_shippingCompany.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            _parentObjectId = int.Parse(btn_shippingCompany.Tag.ToString());
+        Tb_search_TextChanged(null, null);
+        }
 
 
         public void paintCatalog()
@@ -1141,12 +1184,7 @@ namespace POS.View.Settings
             txt_permissions.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
 
-        private void btn_shippingCompany_Click(object sender, RoutedEventArgs e)
-        {
-            paintSectionData();
-            path_shippingCompany.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            txt_shippingCompany.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-        }
+      
 
         private void btn_membership_Click(object sender, RoutedEventArgs e)
         {
@@ -1156,59 +1194,59 @@ namespace POS.View.Settings
         }
 
 
-        private void Cbm_levelGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var cmb = sender as ComboBox;
-            if (dg_permissions.SelectedIndex != -1)
-            {
+        //private void Cbm_levelGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    var cmb = sender as ComboBox;
+        //    if (dg_permissions.SelectedIndex != -1)
+        //    {
 
-                byte level = byte.Parse(cmb.SelectedValue.ToString());
+        //        byte level = byte.Parse(cmb.SelectedValue.ToString());
 
-                if (dg_permissions.SelectedIndex != -1)
-                {
-                    groupObject = dg_permissions.SelectedItem as GroupObject;
-                    groupObject.levelOb = level;
-                }
+        //        if (dg_permissions.SelectedIndex != -1)
+        //        {
+        //            groupObject = dg_permissions.SelectedItem as GroupObject;
+        //            groupObject.levelOb = level;
+        //        }
 
 
-                //refrishBillDetails();
-            }
-        }
+        //        //refrishBillDetails();
+        //    }
+        //}
         //void refrishBillDetails()
         //{
         //    dg_permissions.ItemsSource = null;
         //        dg_permissions.ItemsSource = groupObjectsQuery;
         //}
 
-        private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            //billDetails
-            int count = 0;
-            foreach (var item in groupObjectsQuery)
-            {
-                if (dg_permissions.Items.Count != 0)
-                {
-                    if (dg_permissions.Items.Count > 1)
-                    {
-                        var cell = DataGridHelper.GetCell(dg_permissions, count, 6);
-                        if (cell != null)
-                        {
-                            var cp = (ContentPresenter)cell.Content;
-                            var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_levelGroup", cp);
-                            combo.SelectedValue = (int)item.levelOb;
-                            count++;
-                        }
-                    }
+        //private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        //{
+        //    //billDetails
+        //    int count = 0;
+        //    foreach (var item in groupObjectsQuery)
+        //    {
+        //        if (dg_permissions.Items.Count != 0)
+        //        {
+        //            if (dg_permissions.Items.Count > 1)
+        //            {
+        //                var cell = DataGridHelper.GetCell(dg_permissions, count, 6);
+        //                if (cell != null)
+        //                {
+        //                    var cp = (ContentPresenter)cell.Content;
+        //                    var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_levelGroup", cp);
+        //                    combo.SelectedValue = (int)item.levelOb;
+        //                    count++;
+        //                }
+        //            }
 
-                }
-            }
-            //int Repait = 0;
-            //if (Repait==0)
-            //{
-            //    DataGrid_CollectionChanged(sender, e);
-            //}
-            //Repait++;
-        }
+        //        }
+        //    }
+        //    //int Repait = 0;
+        //    //if (Repait==0)
+        //    //{
+        //    //    DataGrid_CollectionChanged(sender, e);
+        //    //}
+        //    //Repait++;
+        //}
 
        
     }
