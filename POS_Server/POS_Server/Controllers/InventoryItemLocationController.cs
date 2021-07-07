@@ -32,31 +32,40 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                        var List =(from c in entity.inventoryItemLocation.Where(c => c.inventoryId == inventoryId)
-                                   join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
-                                   join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
-                                   join i in entity.items on u.itemId equals i.itemId
-                       select new InventoryItemLocationModel()
-                       {
-                           id = c.id,
+                    var List = (from c in entity.inventoryItemLocation.Where(c => c.inventoryId == inventoryId)
+                                join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
+                                join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
+                                join un in entity.units on u.unitId equals un.unitId
+                                join lo in entity.locations on l.locationId equals lo.locationId
+                                select new InventoryItemLocationModel()
+                                {
+                                    id = c.id,
+                                    isDestroyed = c.isDestroyed,
+                                    amount = c.amount,
+                                    amountDestroyed = c.amountDestroyed,
+                                    quantity = c.realAmount,
+                                    itemLocationId = c.itemLocationId,
+                                    inventoryId = c.inventoryId,
+                                    isActive = c.isActive,
+                                    notes = c.notes,
+                                    createDate = c.createDate,
+                                    updateDate = c.updateDate,
+                                    createUserId = c.createUserId,
+                                    updateUserId = c.updateUserId,
+                                    canDelete = true,
+                                    itemName = u.items.name,
+                                    section = lo.sections.name,
+                                    location = lo.x + "-" + lo.y + "-" + lo.z,
+                                    unitName = un.name,
 
-                           isDestroyed = c.isDestroyed,
-                           amount = c.amount,
-                           amountDestroyed = c.amountDestroyed,
-                           quantity = c.realAmount,
-                           itemLocationId = c.itemLocationId,
-                           inventoryId = c.inventoryId,
-                           isActive = c.isActive,
-                           notes = c.notes,
-                           createDate = c.createDate,
-                           updateDate = c.updateDate,
-                           createUserId = c.createUserId,
-                           updateUserId = c.updateUserId,
-                           canDelete = true,
-
-                       })
+                                })
                        .ToList();
-
+                    int sequence = 0;
+                    for(int i = 0; i< List.Count; i++)
+                    {
+                        sequence++;
+                        List[i].sequence = sequence;
+                    }
 
                     if (List == null)
                         return NotFound();
@@ -65,6 +74,63 @@ namespace POS_Server.Controllers
                 }
             }
             //else
+                return NotFound();
+        }
+        [HttpGet]
+        [Route("GetItemToDestroy")]
+        public IHttpActionResult GetItemToDestroy( int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var List = (from c in entity.inventoryItemLocation.Where(c => c.amountDestroyed > 0 && c.isDestroyed == false && c.Inventory.branchId == branchId)
+                                join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
+                                join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
+                                join un in entity.units on u.unitId equals un.unitId
+                                join lo in entity.locations on l.locationId equals lo.locationId
+                                select new InventoryItemLocationModel()
+                                {
+                                    id = c.id,
+                                    isDestroyed = c.isDestroyed,
+                                    amount = c.amount,
+                                    amountDestroyed = c.amountDestroyed,
+                                    quantity = c.realAmount,
+                                    itemLocationId = c.itemLocationId,
+                                    inventoryId = c.inventoryId,
+                                    isActive = c.isActive,
+                                    notes = c.notes,
+                                    createDate = c.createDate,
+                                    updateDate = c.updateDate,
+                                    createUserId = c.createUserId,
+                                    updateUserId = c.updateUserId,
+                                    canDelete = true,
+                                    itemName = u.items.name,
+                                    section = lo.sections.name,
+                                    location = lo.x + "-" + lo.y + "-" + lo.z,
+                                    unitName = un.name,
+                                    inventoryDate = c.Inventory.createDate,
+                                    inventoryNum = c.Inventory.num,
+                                })
+                       .ToList();
+
+                    if (List == null)
+                        return NotFound();
+                    else
+                        return Ok(List);
+                }
+            }
                 return NotFound();
         }
 
@@ -129,12 +195,12 @@ namespace POS_Server.Controllers
         // add or update 
         [HttpPost]
         [Route("Save")]
-        public String Save(string newObject)
+        public IHttpActionResult Save(string newObject,int inventoryId)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            string message ="";
+
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -146,72 +212,104 @@ namespace POS_Server.Controllers
             {
                 newObject = newObject.Replace("\\", string.Empty);
                 newObject = newObject.Trim('"');
-               inventoryItemLocation Object = JsonConvert.DeserializeObject<inventoryItemLocation>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+              List<InventoryItemLocationModel> Object = JsonConvert.DeserializeObject<List<InventoryItemLocationModel>>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    List<inventoryItemLocation> items = entity.inventoryItemLocation.Where(x => x.inventoryId == inventoryId).ToList();
+ 
+                    if (items == null || items.Count == 0)// add first time
+                    {
+                        foreach (InventoryItemLocationModel il in Object)
+                        {
+                            inventoryItemLocation tmp = new inventoryItemLocation();
+                            if (il.createUserId == 0 || il.createUserId == null)
+                            {
+                                Nullable<int> id = null;
+                                tmp.createUserId = id;
+                            }
+                            if (il.amountDestroyed == 0 || il.amountDestroyed == null)
+                            {
+                                Nullable<int> id = 0;
+                                tmp.amountDestroyed = id;
+                            }
+                            tmp.inventoryId = inventoryId;
+                            tmp.amount = il.amount;
+                            tmp.amountDestroyed = il.amountDestroyed;
+                            tmp.isDestroyed = il.isDestroyed;
+                            tmp.realAmount = il.quantity;
+                            tmp.itemLocationId = il.itemLocationId;
+                            tmp.createDate = DateTime.Now;
+                            tmp.updateDate = DateTime.Now;
+                            tmp.updateUserId = il.createUserId;
+                            entity.inventoryItemLocation.Add(tmp);
+                        }
+                       
+                    }
+                    else // edit saved inventory details
+                    {
+                        foreach (InventoryItemLocationModel il in Object)
+                        {
+                            inventoryItemLocation invItem = entity.inventoryItemLocation.Find(il.id);
+
+                            invItem.amount = il.amount;
+                            invItem.isDestroyed = il.isDestroyed;
+                            invItem.amountDestroyed = il.amountDestroyed;
+                            invItem.updateDate = DateTime.Now;
+                            invItem.updateUserId = il.updateUserId;
+                        }
+                    }
+
+                    entity.SaveChanges();
+                    return Ok("true");
+                }                      
+            }
+            return Ok("false");
+        }
+        [HttpPost]
+        [Route("distroyItem")]
+        public string distroyItem(string newObject)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            string message = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                newObject = newObject.Replace("\\", string.Empty);
+                newObject = newObject.Trim('"');
+                inventoryItemLocation Object = JsonConvert.DeserializeObject<inventoryItemLocation>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+              
                 try
                 {
-                    
-                    if (Object.updateUserId == 0 || Object.updateUserId == null)
-                    {
-                        Nullable<int> id = null;
-                        Object.updateUserId = id;
-                    }
-                    if (Object.createUserId == 0 || Object.createUserId == null)
-                    {
-                        Nullable<int> id = null;
-                        Object.createUserId = id;
-                    }
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-                        var sEntity = entity.Set<inventoryItemLocation>();
-                        if (Object.id == 0 || Object.id == null)
-                        {
-                            Object.createDate = DateTime.Now;
-                            Object.updateDate = DateTime.Now;
-                            Object.updateUserId = Object.createUserId;
-                    
-
-
-                            entity.inventoryItemLocation.Add(Object);
-                             
-                            entity.SaveChanges();
-message = Object.id.ToString();
-                        }
-                        else
-                        {
-
-                            var tmps = entity.inventoryItemLocation.Where(p => p.id == Object.id).FirstOrDefault();
-                            tmps.id = Object.id;
-
-                            tmps.isDestroyed = Object.isDestroyed;
-                       tmps.amount=Object.amount;
-                       tmps.amountDestroyed=Object.amountDestroyed;
-                       tmps.realAmount=Object.realAmount;
-                       tmps.itemLocationId=Object.itemLocationId;
-                       tmps.inventoryId=Object.inventoryId;
-                         
-                            tmps.notes = Object.notes;
-                            tmps.isActive = Object.isActive;
-                            tmps.createDate=Object.createDate;
-                            tmps.updateDate = DateTime.Now;// server current date
-                            tmps.updateUserId = Object.updateUserId;
-                            entity.SaveChanges();
-                            message = tmps.id.ToString();
-                        }
-                       
-                       
+                        var unitEntity = entity.Set<pos>();
+                        
+                        var tmpItem = entity.inventoryItemLocation.Where(p => p.id == Object.id).FirstOrDefault();
+                        tmpItem.notes = Object.notes;
+                        tmpItem.isDestroyed = true;
+                        tmpItem.updateDate = DateTime.Now;
+                        tmpItem.updateUserId = Object.updateUserId;
+                        tmpItem.cause = Object.cause;
+                        message = "Pos Is Updated Successfully";
+                      
+                        entity.SaveChanges();
                     }
-                    return message; ;
                 }
-
                 catch
                 {
-                    return "-1";
+                    message = "an error ocurred";
                 }
             }
-            else
-                return "-1";
+            return message;
         }
-
         [HttpPost]
         [Route("Delete")]
         public IHttpActionResult Delete(int id, int userId, Boolean final)

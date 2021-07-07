@@ -36,6 +36,8 @@ namespace POS_Server.Controllers
                          .Select(c => new {
                              c.countryId,
                              c.code,
+                             c.isDefault,
+                             
                          }).ToList();
                         
                     

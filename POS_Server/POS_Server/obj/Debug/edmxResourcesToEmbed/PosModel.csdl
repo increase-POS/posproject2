@@ -123,12 +123,12 @@
     <NavigationProperty Name="branchesUsers" Relationship="Self.FK_branchesUsers_branches" FromRole="branches" ToRole="branchesUsers" />
     <NavigationProperty Name="branchStore" Relationship="Self.FK_branchStore_branches" FromRole="branches" ToRole="branchStore" />
     <NavigationProperty Name="branchStore1" Relationship="Self.FK_branchStore_branches2" FromRole="branches" ToRole="branchStore" />
+    <NavigationProperty Name="Inventory" Relationship="Self.FK_Inventory_branches" FromRole="branches" ToRole="Inventory" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_branches" FromRole="branches" ToRole="invoices" />
     <NavigationProperty Name="invoices1" Relationship="Self.FK_invoices_branches1" FromRole="branches" ToRole="invoices" />
     <NavigationProperty Name="locations" Relationship="Self.FK_locations_branches1" FromRole="branches" ToRole="locations" />
     <NavigationProperty Name="pos" Relationship="Self.FK_pos_branches" FromRole="branches" ToRole="pos" />
     <NavigationProperty Name="sections" Relationship="Self.FK_sections_branches" FromRole="branches" ToRole="sections" />
-    <NavigationProperty Name="Inventory" Relationship="incposdbModel.FK_Inventory_branches" FromRole="branches" ToRole="Inventory" />
   </EntityType>
   <EntityType Name="branchesUsers">
     <Key>
@@ -277,6 +277,9 @@
     </Key>
     <Property Name="countryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="currency" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="isDefault" Type="Byte" Nullable="false" />
     <NavigationProperty Name="cities" Relationship="Self.FK_cities_countriesCodes" FromRole="countriesCodes" ToRole="cities" />
   </EntityType>
   <EntityType Name="coupons">
@@ -409,13 +412,13 @@
     <Property Name="isActive" Type="Byte" />
     <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="inventoryType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="branchId" Type="Int32" />
+    <Property Name="posId" Type="Int32" />
+    <NavigationProperty Name="branches" Relationship="Self.FK_Inventory_branches" FromRole="Inventory" ToRole="branches" />
+    <NavigationProperty Name="pos" Relationship="Self.FK_Inventory_pos" FromRole="Inventory" ToRole="pos" />
     <NavigationProperty Name="users" Relationship="Self.FK_Inventory_users" FromRole="Inventory" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_Inventory_users1" FromRole="Inventory" ToRole="users" />
     <NavigationProperty Name="inventoryItemLocation" Relationship="Self.FK_inventoryItemLocation_Inventory" FromRole="Inventory" ToRole="inventoryItemLocation" />
-    <Property Name="branchId" Type="Int32" />
-    <NavigationProperty Name="branches" Relationship="incposdbModel.FK_Inventory_branches" FromRole="Inventory" ToRole="branches" />
-    <Property Name="posId" Type="Int32" />
-    <NavigationProperty Name="pos" Relationship="incposdbModel.FK_Inventory_pos" FromRole="Inventory" ToRole="pos" />
   </EntityType>
   <EntityType Name="inventoryItemLocation">
     <Key>
@@ -434,11 +437,11 @@
     <Property Name="updateUserId" Type="Int32" />
     <Property Name="isActive" Type="Byte" />
     <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cause" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Inventory" Relationship="Self.FK_inventoryItemLocation_Inventory" FromRole="inventoryItemLocation" ToRole="Inventory" />
     <NavigationProperty Name="itemsLocations" Relationship="Self.FK_inventoryItemLocation_itemsLocations" FromRole="inventoryItemLocation" ToRole="itemsLocations" />
     <NavigationProperty Name="users" Relationship="Self.FK_inventoryItemLocation_users" FromRole="inventoryItemLocation" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_inventoryItemLocation_users1" FromRole="inventoryItemLocation" ToRole="users" />
-    <Property Name="cause" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="invoices">
     <Key>
@@ -473,6 +476,7 @@
     <Property Name="isApproved" Type="Byte" />
     <Property Name="shippingCompanyId" Type="Int32" />
     <Property Name="branchCreatorId" Type="Int32" />
+    <Property Name="shipUserId" Type="Int32" />
     <NavigationProperty Name="agents" Relationship="Self.FK_invoices_agents" FromRole="invoices" ToRole="agents" />
     <NavigationProperty Name="branches" Relationship="Self.FK_invoices_branches" FromRole="invoices" ToRole="branches" />
     <NavigationProperty Name="branches1" Relationship="Self.FK_invoices_branches1" FromRole="invoices" ToRole="branches" />
@@ -486,6 +490,7 @@
     <NavigationProperty Name="users1" Relationship="Self.FK_invoices_users1" FromRole="invoices" ToRole="users" />
     <NavigationProperty Name="users2" Relationship="Self.FK_invoices_users2" FromRole="invoices" ToRole="users" />
     <NavigationProperty Name="users3" Relationship="Self.FK_invoices_users3" FromRole="invoices" ToRole="users" />
+    <NavigationProperty Name="users4" Relationship="Self.FK_invoices_users4" FromRole="invoices" ToRole="users" />
     <NavigationProperty Name="invoicesOrders" Relationship="Self.FK_invoicesOrders_invoices" FromRole="invoices" ToRole="invoicesOrders" />
     <NavigationProperty Name="invoiceStatus" Relationship="Self.FK_invoiceStatus_invoices" FromRole="invoices" ToRole="invoiceStatus" />
     <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_invoices" FromRole="invoices" ToRole="itemsTransfer" />
@@ -801,12 +806,12 @@
     <Property Name="updateUserId" Type="Int32" />
     <Property Name="isActive" Type="Int32" />
     <Property Name="parentObjectId" Type="Int32" />
+    <Property Name="objectType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="groupObject" Relationship="Self.FK_groupObject_objects" FromRole="objects" ToRole="groupObject" />
     <NavigationProperty Name="objects1" Relationship="Self.FK_objects_objects" FromRole="objects" ToRole="objects1" />
     <NavigationProperty Name="objects2" Relationship="Self.FK_objects_objects" FromRole="objects1" ToRole="objects" />
     <NavigationProperty Name="users" Relationship="Self.FK_objects_users" FromRole="objects" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_objects_users1" FromRole="objects" ToRole="users" />
-    <Property Name="objectType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="offers">
     <Key>
@@ -912,12 +917,12 @@
     <NavigationProperty Name="branches" Relationship="Self.FK_pos_branches" FromRole="pos" ToRole="branches" />
     <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_pos" FromRole="pos" ToRole="cashTransfer" />
     <NavigationProperty Name="cashTransfer1" Relationship="Self.FK_cashTransfer_pos1" FromRole="pos" ToRole="cashTransfer" />
+    <NavigationProperty Name="Inventory" Relationship="Self.FK_Inventory_pos" FromRole="pos" ToRole="Inventory" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_pos" FromRole="pos" ToRole="invoices" />
     <NavigationProperty Name="users" Relationship="Self.FK_pos_users" FromRole="pos" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_pos_users1" FromRole="pos" ToRole="users" />
     <NavigationProperty Name="posUsers" Relationship="Self.FK_posUsers_pos" FromRole="pos" ToRole="posUsers" />
     <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_pos" FromRole="pos" ToRole="usersLogs" />
-    <NavigationProperty Name="Inventory" Relationship="incposdbModel.FK_Inventory_pos" FromRole="pos" ToRole="Inventory" />
   </EntityType>
   <EntityType Name="posUsers">
     <Key>
@@ -1043,7 +1048,7 @@
     <Key>
       <PropertyRef Name="shippingCompanyId" />
     </Key>
-    <Property Name="shippingCompanyId" Type="Int32" Nullable="false" />
+    <Property Name="shippingCompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="RealDeliveryCost" Type="Decimal" Precision="20" Scale="2" />
     <Property Name="deliveryCost" Type="Decimal" Precision="20" Scale="2" />
@@ -1173,6 +1178,7 @@
     <NavigationProperty Name="invoices1" Relationship="Self.FK_invoices_users1" FromRole="users" ToRole="invoices" />
     <NavigationProperty Name="invoices2" Relationship="Self.FK_invoices_users2" FromRole="users" ToRole="invoices" />
     <NavigationProperty Name="invoices3" Relationship="Self.FK_invoices_users3" FromRole="users" ToRole="invoices" />
+    <NavigationProperty Name="invoices4" Relationship="Self.FK_invoices_users4" FromRole="users" ToRole="invoices" />
     <NavigationProperty Name="invoicesOrders" Relationship="Self.FK_invoicesOrders_users" FromRole="users" ToRole="invoicesOrders" />
     <NavigationProperty Name="invoicesOrders1" Relationship="Self.FK_invoicesOrders_users1" FromRole="users" ToRole="invoicesOrders" />
     <NavigationProperty Name="invoiceStatus" Relationship="Self.FK_invoiceStatus_users" FromRole="users" ToRole="invoiceStatus" />
@@ -1546,6 +1552,18 @@
         <PropertyRef Name="branchId" />
       </Principal>
       <Dependent Role="branchStore">
+        <PropertyRef Name="branchId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Inventory_branches">
+    <End Role="branches" Type="Self.branches" Multiplicity="0..1" />
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="branches">
+        <PropertyRef Name="branchId" />
+      </Principal>
+      <Dependent Role="Inventory">
         <PropertyRef Name="branchId" />
       </Dependent>
     </ReferentialConstraint>
@@ -2054,6 +2072,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Inventory_pos">
+    <End Role="pos" Type="Self.pos" Multiplicity="0..1" />
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pos">
+        <PropertyRef Name="posId" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="posId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Inventory_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
@@ -2207,6 +2237,18 @@
       </Principal>
       <Dependent Role="invoices">
         <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoices_users4">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="invoices" Type="Self.invoices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="invoices">
+        <PropertyRef Name="shipUserId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3516,6 +3558,10 @@
       <End Role="branches" EntitySet="branches" />
       <End Role="branchStore" EntitySet="branchStore" />
     </AssociationSet>
+    <AssociationSet Name="FK_Inventory_branches" Association="Self.FK_Inventory_branches">
+      <End Role="branches" EntitySet="branches" />
+      <End Role="Inventory" EntitySet="Inventory" />
+    </AssociationSet>
     <AssociationSet Name="FK_invoices_branches" Association="Self.FK_invoices_branches">
       <End Role="branches" EntitySet="branches" />
       <End Role="invoices" EntitySet="invoices" />
@@ -3684,6 +3730,10 @@
       <End Role="groups" EntitySet="groups" />
       <End Role="users" EntitySet="users" />
     </AssociationSet>
+    <AssociationSet Name="FK_Inventory_pos" Association="Self.FK_Inventory_pos">
+      <End Role="pos" EntitySet="pos" />
+      <End Role="Inventory" EntitySet="Inventory" />
+    </AssociationSet>
     <AssociationSet Name="FK_Inventory_users" Association="Self.FK_Inventory_users">
       <End Role="users" EntitySet="users" />
       <End Role="Inventory" EntitySet="Inventory" />
@@ -3733,6 +3783,10 @@
       <End Role="invoices" EntitySet="invoices" />
     </AssociationSet>
     <AssociationSet Name="FK_invoices_users3" Association="Self.FK_invoices_users3">
+      <End Role="users" EntitySet="users" />
+      <End Role="invoices" EntitySet="invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoices_users4" Association="Self.FK_invoices_users4">
       <End Role="users" EntitySet="users" />
       <End Role="invoices" EntitySet="invoices" />
     </AssociationSet>
@@ -4120,37 +4174,5 @@
       <End Role="users" EntitySet="users" />
       <End Role="usersLogs" EntitySet="usersLogs" />
     </AssociationSet>
-    <AssociationSet Name="FK_Inventory_branches" Association="incposdbModel.FK_Inventory_branches">
-      <End Role="branches" EntitySet="branches" />
-      <End Role="Inventory" EntitySet="Inventory" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Inventory_pos" Association="incposdbModel.FK_Inventory_pos">
-      <End Role="pos" EntitySet="pos" />
-      <End Role="Inventory" EntitySet="Inventory" />
-    </AssociationSet>
   </EntityContainer>
-  <Association Name="FK_Inventory_branches">
-    <End Type="incposdbModel.branches" Role="branches" Multiplicity="0..1" />
-    <End Type="incposdbModel.Inventory" Role="Inventory" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="branches">
-        <PropertyRef Name="branchId" />
-      </Principal>
-      <Dependent Role="Inventory">
-        <PropertyRef Name="branchId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Inventory_pos">
-    <End Type="incposdbModel.pos" Role="pos" Multiplicity="0..1" />
-    <End Type="incposdbModel.Inventory" Role="Inventory" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="pos">
-        <PropertyRef Name="posId" />
-      </Principal>
-      <Dependent Role="Inventory">
-        <PropertyRef Name="posId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

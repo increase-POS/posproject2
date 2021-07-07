@@ -58,6 +58,8 @@ namespace POS_Server.Controllers
                         b.name,
                         b.isApproved,
                         b.branchCreatorId,
+                        b.shippingCompanyId,
+                        b.shipUserId,
                     })
                     .ToList();
 
@@ -116,6 +118,8 @@ namespace POS_Server.Controllers
                         b.name,
                         b.isApproved,
                         b.branchCreatorId,
+                        b.shippingCompanyId,
+                        b.shipUserId,
                     })
                     .FirstOrDefault();
 
@@ -174,6 +178,8 @@ namespace POS_Server.Controllers
                         b.name,
                         b.isApproved,
                         b.branchCreatorId,
+                        b.shippingCompanyId,
+                        b.shipUserId,
                     })
                     .FirstOrDefault();
 
@@ -231,6 +237,8 @@ namespace POS_Server.Controllers
                         b.name,
                         b.isApproved,
                         b.branchCreatorId,
+                        b.shippingCompanyId,
+                        b.shipUserId,
                     })
                     .FirstOrDefault();
 
@@ -295,6 +303,8 @@ namespace POS_Server.Controllers
                                             isApproved = b.isApproved,
                                             branchName = x.name,
                                             branchCreatorId=b.branchCreatorId,
+                                           shippingCompanyId = b.shippingCompanyId,
+                                           shipUserId = b.shipUserId,
                                         })
 
                                .FirstOrDefault();
@@ -339,6 +349,8 @@ namespace POS_Server.Controllers
                                              isApproved = b.isApproved,
                                              branchName = x.name,
                                              branchCreatorId=b.branchCreatorId,
+                                            shippingCompanyId = b.shippingCompanyId,
+                                            shipUserId =  b.shipUserId,
                                          })
 
                                .FirstOrDefault();
@@ -410,7 +422,9 @@ namespace POS_Server.Controllers
                                 isApproved = b.isApproved,
                                 branchName = x.name,
                                 branchCreatorId=b.branchCreatorId,
-                            })
+                                  shippingCompanyId =   b.shippingCompanyId,
+                                   shipUserId =  b.shipUserId,
+                                 })
                         .ToList();
                         if (invoicesList != null)
                         {
@@ -461,6 +475,8 @@ namespace POS_Server.Controllers
                                                 isApproved = b.isApproved,
                                                 branchName = x.name,
                                                 branchCreatorId=b.branchCreatorId,
+                                               shippingCompanyId = b.shippingCompanyId,
+                                               shipUserId = b.shipUserId,
                                             })
                         .ToList();
                         if (invoicesList != null)
@@ -537,8 +553,17 @@ namespace POS_Server.Controllers
                                             isApproved = b.isApproved,
                                             branchName = x.name,
                                             branchCreatorId=b.branchCreatorId,
+                                           shippingCompanyId =  b.shippingCompanyId,
+                                           shipUserId =  b.shipUserId,
                                         })
                     .ToList();
+
+                    int sequence = 0;
+                    for(int i=0;i<invoicesList.Count; i++)
+                    {
+                        sequence++;
+                        invoicesList[i].invNumber = sequence.ToString();
+                    }
                     if (invoicesList != null)
                     {
                         for (int i = 0; i < invoicesList.Count; i++)
@@ -612,6 +637,8 @@ namespace POS_Server.Controllers
                                             isApproved = b.isApproved,
                                             branchName = x.name,
                                             branchCreatorId=b.branchCreatorId,
+                                           shippingCompanyId =  b.shippingCompanyId,
+                                           shipUserId = b.shipUserId,
                                         })
                     .ToList();
                     if (invoicesList != null)
@@ -831,6 +858,8 @@ namespace POS_Server.Controllers
                             tmpInvoice.name = newObject.name;
                             tmpInvoice.isApproved = newObject.isApproved;
                             tmpInvoice.branchCreatorId = newObject.branchCreatorId;
+                            tmpInvoice.shippingCompanyId = newObject.shippingCompanyId;
+                            tmpInvoice.shipUserId = newObject.shipUserId;
                         }
                         entity.SaveChanges();
                         return tmpInvoice.invoiceId;

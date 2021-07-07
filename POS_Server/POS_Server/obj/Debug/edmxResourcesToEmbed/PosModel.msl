@@ -225,6 +225,9 @@
         <MappingFragment StoreEntitySet="countriesCodes">
           <ScalarProperty Name="countryId" ColumnName="countryId" />
           <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="currency" ColumnName="currency" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="isDefault" ColumnName="isDefault" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -336,8 +339,6 @@
     <EntitySetMapping Name="Inventory">
       <EntityTypeMapping TypeName="incposdbModel.Inventory">
         <MappingFragment StoreEntitySet="Inventory">
-          <ScalarProperty Name="posId" ColumnName="posId" />
-          <ScalarProperty Name="branchId" ColumnName="branchId" />
           <ScalarProperty Name="inventoryId" ColumnName="inventoryId" />
           <ScalarProperty Name="num" ColumnName="num" />
           <ScalarProperty Name="createDate" ColumnName="createDate" />
@@ -347,13 +348,14 @@
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="notes" ColumnName="notes" />
           <ScalarProperty Name="inventoryType" ColumnName="inventoryType" />
+          <ScalarProperty Name="branchId" ColumnName="branchId" />
+          <ScalarProperty Name="posId" ColumnName="posId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="inventoryItemLocation">
       <EntityTypeMapping TypeName="incposdbModel.inventoryItemLocation">
         <MappingFragment StoreEntitySet="inventoryItemLocation">
-          <ScalarProperty Name="cause" ColumnName="cause" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="isDestroyed" ColumnName="isDestroyed" />
           <ScalarProperty Name="amount" ColumnName="amount" />
@@ -367,6 +369,7 @@
           <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="notes" ColumnName="notes" />
+          <ScalarProperty Name="cause" ColumnName="cause" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -402,6 +405,7 @@
           <ScalarProperty Name="isApproved" ColumnName="isApproved" />
           <ScalarProperty Name="shippingCompanyId" ColumnName="shippingCompanyId" />
           <ScalarProperty Name="branchCreatorId" ColumnName="branchCreatorId" />
+          <ScalarProperty Name="shipUserId" ColumnName="shipUserId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -644,7 +648,6 @@
     <EntitySetMapping Name="objects">
       <EntityTypeMapping TypeName="incposdbModel.objects">
         <MappingFragment StoreEntitySet="objects">
-          <ScalarProperty Name="objectType" ColumnName="objectType" />
           <ScalarProperty Name="objectId" ColumnName="objectId" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="note" ColumnName="note" />
@@ -654,6 +657,7 @@
           <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="parentObjectId" ColumnName="parentObjectId" />
+          <ScalarProperty Name="objectType" ColumnName="objectType" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

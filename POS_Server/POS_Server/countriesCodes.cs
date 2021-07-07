@@ -22,6 +22,9 @@ namespace POS_Server
     
         public int countryId { get; set; }
         public string code { get; set; }
+        public string currency { get; set; }
+        public string name { get; set; }
+        public byte isDefault { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cities> cities { get; set; }

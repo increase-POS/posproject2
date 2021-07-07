@@ -213,6 +213,9 @@
     </Key>
     <Property Name="countryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="code" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="currency" Type="nvarchar" MaxLength="50" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" />
+    <Property Name="isDefault" Type="tinyint" Nullable="false" />
   </EntityType>
   <EntityType Name="coupons">
     <Key>
@@ -381,6 +384,7 @@
     <Property Name="isApproved" Type="tinyint" />
     <Property Name="shippingCompanyId" Type="int" />
     <Property Name="branchCreatorId" Type="int" />
+    <Property Name="shipUserId" Type="int" />
   </EntityType>
   <EntityType Name="invoicesOrders">
     <Key>
@@ -1793,6 +1797,18 @@
       </Principal>
       <Dependent Role="invoices">
         <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoices_users4">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="invoices" Type="Self.invoices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="invoices">
+        <PropertyRef Name="shipUserId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3383,6 +3399,10 @@
       <End Role="invoices" EntitySet="invoices" />
     </AssociationSet>
     <AssociationSet Name="FK_invoices_users3" Association="Self.FK_invoices_users3">
+      <End Role="users" EntitySet="users" />
+      <End Role="invoices" EntitySet="invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoices_users4" Association="Self.FK_invoices_users4">
       <End Role="users" EntitySet="users" />
       <End Role="invoices" EntitySet="invoices" />
     </AssociationSet>

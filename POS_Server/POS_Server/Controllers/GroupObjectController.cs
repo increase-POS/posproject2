@@ -359,6 +359,69 @@ entity.groupObject.Add(newListObj[i]);
             return true;
         }
 
-        //
+
+
+        [HttpGet]
+        [Route("GetByGroupId")]
+        public IHttpActionResult GetByGroupId(int groupId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var List = (from c in entity.groupObject
+                                join o in entity.objects on c.objectId equals o.objectId
+                                join p in entity.objects on o.objectId equals p.parentObjectId
+                                where c.groupId == groupId
+                                select new GroupObjectModel
+                                {
+                                    id = c.id,
+                                    groupId = c.groupId,
+                                    objectId = c.objectId,
+                                    notes = c.notes,
+                                    addOb = c.addOb,
+                                    updateOb = c.updateOb,
+                                    deleteOb = c.deleteOb,
+                                    showOb = c.showOb,
+
+                                    objectName = c.objects.name,
+                                    desc = c.objects.note,
+
+                                    createDate = c.createDate,
+                                    updateDate = c.updateDate,
+                                    createUserId = c.createUserId,
+                                    updateUserId = c.updateUserId,
+                                    canDelete = true,
+                                    reportOb = c.reportOb,
+                                    levelOb = c.levelOb,
+                                    parentObjectId = o.parentObjectId,
+
+                                })
+                               .ToList();
+
+
+                    if (List == null)
+                        return NotFound();
+                    else
+                        return Ok(List);
+                }
+            }
+            //else
+            return NotFound();
+        }
+
+
+
     }
 }

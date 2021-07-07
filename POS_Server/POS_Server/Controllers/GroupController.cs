@@ -272,5 +272,79 @@ message = Object.groupId.ToString();
             else
                 return NotFound();
         }
+
+        [HttpPost]
+        [Route("UpdateGroupIdInUsers")]
+        public String UpdateGroupIdInUsers(int groupId, string newList, int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            string message = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                newList = newList.Replace("\\", string.Empty);
+                newList = newList.Trim('"');
+
+                List<int> newListObj = JsonConvert.DeserializeObject<List<int>>(newList, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                try
+                {
+
+
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        // reset old list
+                        List<users> oldList = entity.users.Where(x => x.groupId == groupId).ToList();
+                        if (oldList.Count > 0)
+                        {
+                            for (int i = 0; i < oldList.Count; i++)
+                            {
+                                oldList[i].groupId = null;
+                                oldList[i].updateUserId = userId;
+                                oldList[i].updateDate = DateTime.Now;
+
+
+                            }
+                            entity.SaveChanges();
+                        }
+
+                        //save new list
+                        if (newListObj.Count > 0)
+                        {
+                            foreach (int rowId in newListObj)
+                            {
+                                users userRow = entity.users.Find(rowId);
+                                userRow.updateUserId = userId;
+                                userRow.updateDate = DateTime.Now;
+                                userRow.groupId = groupId;
+                                entity.SaveChanges();
+                            }
+                        }
+                        else
+                        {
+                            message = "-1";
+                        }
+
+
+                    }
+                    return message; ;
+                }
+
+                catch
+                {
+                    return "-1";
+                }
+            }
+            else
+                return "-1";
+        }
+
     }
 }

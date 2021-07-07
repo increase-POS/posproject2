@@ -8,6 +8,7 @@ namespace POS_Server.Models
     public class InventoryItemLocationModel
     {
         public int id { get; set; }
+        public int sequence { get; set; }
         public Nullable<bool> isDestroyed { get; set; }
         public Nullable<int> amount { get; set; }
         public Nullable<int> amountDestroyed { get; set; }
@@ -25,5 +26,7 @@ namespace POS_Server.Models
         public string location { get; set; }
         public string section { get; set; }
         public string unitName { get; set; }
+        public string inventoryNum { get; set; }
+        public Nullable<System.DateTime> inventoryDate { get; set; }
     }
 }

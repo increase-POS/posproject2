@@ -20,12 +20,12 @@ namespace POS_Server
             this.branchesUsers = new HashSet<branchesUsers>();
             this.branchStore = new HashSet<branchStore>();
             this.branchStore1 = new HashSet<branchStore>();
+            this.Inventory = new HashSet<Inventory>();
             this.invoices = new HashSet<invoices>();
             this.invoices1 = new HashSet<invoices>();
             this.locations = new HashSet<locations>();
             this.pos = new HashSet<pos>();
             this.sections = new HashSet<sections>();
-            this.Inventory = new HashSet<Inventory>();
         }
     
         public int branchId { get; set; }
@@ -53,6 +53,8 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<branchStore> branchStore1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Inventory> Inventory { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<invoices> invoices { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<invoices> invoices1 { get; set; }
@@ -62,7 +64,5 @@ namespace POS_Server
         public virtual ICollection<pos> pos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sections> sections { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Inventory> Inventory { get; set; }
     }
 }

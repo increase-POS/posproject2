@@ -37,6 +37,8 @@ namespace POS_Server.Models
         public Nullable<int> taxtype { get; set; }
         public Nullable<byte> isApproved { get; set; }
         public Nullable<int> branchCreatorId { get; set; }
+        public Nullable<int> shippingCompanyId { get; set; }
+        public Nullable<int> shipUserId { get; set; }
     }
 
     public class CouponInvoiceModel
