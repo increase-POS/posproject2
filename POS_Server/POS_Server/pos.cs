@@ -22,6 +22,7 @@ namespace POS_Server
             this.invoices = new HashSet<invoices>();
             this.posUsers = new HashSet<posUsers>();
             this.usersLogs = new HashSet<usersLogs>();
+            this.Inventory = new HashSet<Inventory>();
         }
     
         public int posId { get; set; }
@@ -50,5 +51,7 @@ namespace POS_Server
         public virtual ICollection<posUsers> posUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<usersLogs> usersLogs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Inventory> Inventory { get; set; }
     }
 }

@@ -106,10 +106,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/18/2018 16:44:54</publishTime>
     </File>
     <File Include="bin/POS_Server.dll">
-      <publishTime>07/06/2021 14:59:41</publishTime>
+      <publishTime>07/07/2021 14:23:31</publishTime>
     </File>
     <File Include="bin/POS_Server.pdb">
-      <publishTime>07/06/2021 14:59:41</publishTime>
+      <publishTime>07/07/2021 14:23:31</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>05/24/2018 23:38:22</publishTime>
@@ -355,7 +355,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/14/2021 23:46:47</publishTime>
     </File>
     <File Include="PosModel.edmx.diagram">
-      <publishTime>06/07/2021 12:23:21</publishTime>
+      <publishTime>06/07/2021 19:14:30</publishTime>
     </File>
     <File Include="POS_Model.edmx.diagram">
       <publishTime>01/01/0001 00:00:00</publishTime>

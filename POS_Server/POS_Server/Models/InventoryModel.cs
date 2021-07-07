@@ -8,6 +8,8 @@ namespace POS_Server.Models
     public class InventoryModel
     {
         public int inventoryId { get; set; }
+        public int branchId { get; set; }
+        public int posId { get; set; }
         public string num { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }

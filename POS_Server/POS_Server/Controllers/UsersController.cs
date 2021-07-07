@@ -35,27 +35,28 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var usersList = entity.users.Where( u => u.isActive == 1)
-                    .Select(u => new
+                    .Select(u => new UserModel
                     {
-                        u.userId,
-                        u.username,
-                        u.password,
-                        u.name,
-                        u.lastname,
-                        u.job,
-                        u.workHours,
-                        u.createDate,
-                        u.updateDate,
-                        u.createUserId,
-                        u.updateUserId,
-                        u.phone,
-                        u.mobile,
-                        u.email,
-                        u.notes,
-                        u.address,
-                        u.isActive,
-                        u.isOnline,
-                        u.image,
+                        userId=  u.userId,
+                        username =  u.username,
+                        password =  u.password,
+                        name =  u.name,
+                        lastname =  u.lastname,
+                        fullName = u.name +" "+ u.lastname,
+                        job =  u.job,
+                        workHours =  u.workHours,
+                        createDate =  u.createDate,
+                        updateDate =  u.updateDate,
+                        createUserId =  u.createUserId,
+                        updateUserId =  u.updateUserId,
+                        phone =  u.phone,
+                        mobile =  u.mobile,
+                        email =  u.email,
+                        notes =  u.notes,
+                        address =  u.address,
+                        isActive =  u.isActive,
+                        isOnline =  u.isOnline,
+                        image = u.image,
                       
                     })
                     .ToList();

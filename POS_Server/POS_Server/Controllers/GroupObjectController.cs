@@ -32,32 +32,32 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var List =(from c in entity.groupObject
-                               join o in entity.objects on c.objectId equals o.objectId
+                    var List = (from c in entity.groupObject
+                                join o in entity.objects on c.objectId equals o.objectId
+                                join p in entity.objects on o.objectId equals p.parentObjectId
+                                select new GroupObjectModel {
+                                    id = c.id,
+                                    groupId = c.groupId,
+                                    objectId = c.objectId,
+                                    notes = c.notes,
+                                    addOb = c.addOb,
+                                    updateOb = c.updateOb,
+                                    deleteOb = c.deleteOb,
+                                    showOb = c.showOb,
 
-                               select new GroupObjectModel {
-                                   id = c.id,
-                                   groupId = c.groupId,
-                                   objectId = c.objectId,
-                                   notes = c.notes,
-                                   addOb = c.addOb,
-                                   updateOb = c.updateOb,
-                                   deleteOb = c.deleteOb,
-                                   showOb = c.showOb,
+                                    objectName = c.objects.name,
+                                    desc = c.objects.note,
 
-                                   objectName = c.objects.name,
-                                   desc = c.objects.note,
+                                    createDate = c.createDate,
+                                    updateDate = c.updateDate,
+                                    createUserId = c.createUserId,
+                                    updateUserId = c.updateUserId,
+                                    canDelete = true,
+                                    reportOb = c.reportOb,
+                                    levelOb = c.levelOb,
+                                    parentObjectId = o.parentObjectId,
 
-                                   createDate = c.createDate,
-                                   updateDate = c.updateDate,
-                                   createUserId = c.createUserId,
-                                   updateUserId = c.updateUserId,
-                                   canDelete = true,
-                                   reportOb = c.reportOb,
-                                   levelOb = c.levelOb,
-                                   parentObjectId = o.parentObjectId,
-             
-                   })
+                                })
                                .ToList();
                   
                     /*

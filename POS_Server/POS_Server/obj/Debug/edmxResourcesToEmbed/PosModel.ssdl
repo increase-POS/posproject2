@@ -327,6 +327,7 @@
     <Property Name="notes" Type="ntext" />
     <Property Name="inventoryType" Type="nvarchar" MaxLength="10" />
     <Property Name="branchId" Type="int" />
+    <Property Name="posId" Type="int" />
   </EntityType>
   <EntityType Name="inventoryItemLocation">
     <Key>
@@ -345,6 +346,7 @@
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
     <Property Name="notes" Type="ntext" />
+    <Property Name="cause" Type="ntext" />
   </EntityType>
   <EntityType Name="invoices">
     <Key>
@@ -1587,6 +1589,18 @@
       </Principal>
       <Dependent Role="Inventory">
         <PropertyRef Name="branchId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Inventory_pos">
+    <End Role="pos" Type="Self.pos" Multiplicity="0..1" />
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pos">
+        <PropertyRef Name="posId" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="posId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3302,6 +3316,10 @@
     </AssociationSet>
     <AssociationSet Name="FK_Inventory_branches" Association="Self.FK_Inventory_branches">
       <End Role="branches" EntitySet="branches" />
+      <End Role="Inventory" EntitySet="Inventory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Inventory_pos" Association="Self.FK_Inventory_pos">
+      <End Role="pos" EntitySet="pos" />
       <End Role="Inventory" EntitySet="Inventory" />
     </AssociationSet>
     <AssociationSet Name="FK_Inventory_users" Association="Self.FK_Inventory_users">

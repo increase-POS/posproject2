@@ -21,5 +21,9 @@ namespace POS_Server.Models
         public Nullable<byte> isActive { get; set; }
         public string notes { get; set; }
         public Boolean canDelete { get; set; }
+        public string itemName { get; set; }
+        public string location { get; set; }
+        public string section { get; set; }
+        public string unitName { get; set; }
     }
 }

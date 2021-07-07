@@ -1131,5 +1131,111 @@ else
             return NotFound();
         }
         */
+       // getinv in branch
+        // المشتريات
+        #region sales
+        //  فواتير المبيعات بكل انواعها بكل فرع
+        [HttpGet]
+        [Route("GetSaleinv")]
+        public IHttpActionResult GetSaleinv()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invListm = (from I in entity.invoices
+                                 //   join B in entity.branches on I.branchId equals B.branchId into JB
+                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                    join A in entity.agents on I.agentId equals A.agentId into JA
+                                    join U in entity.users on I.createUserId equals U.userId into JU
+                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                    join P in entity.pos on I.posId equals P.posId into JP
+
+                                 //   from JBB in JB
+                                    from JPP in JP.DefaultIfEmpty()
+                                    from JUU in JU.DefaultIfEmpty()
+                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+                                    from JIMM in JIM.DefaultIfEmpty()
+                                    from JAA in JA.DefaultIfEmpty()
+                                    from JBCC in JBC.DefaultIfEmpty()
+                                    where (I.invType == "s" || I.invType == "sb" || I.invType == "sd" || I.invType == "sbd")
+                               
+                                    select new
+                                    {
+                                        I.invoiceId,
+                                        I.invNumber,
+                                        I.agentId,
+                                        I.posId,
+                                        I.invType,
+                                        I.total,
+                                        I.totalNet,
+                                        I.paid,
+                                        I.deserved,
+                                        I.deservedDate,
+                                        I.invDate,
+                                        I.invoiceMainId,
+                                        I.invCase,
+                                        I.invTime,
+                                        I.notes,
+                                        I.vendorInvNum,
+                                        I.vendorInvDate,
+                                        I.createUserId,
+                                        I.updateDate,
+                                        I.updateUserId,
+                                        I.branchId,
+                                        I.discountValue,
+                                        I.discountType,
+                                        I.tax,
+                                        I.name,
+                                        I.isApproved,
+                                        //
+                                        I.branchCreatorId,
+                                        branchCreatorName = JBCC.name,
+                                        //
+                                       // branchName = JBB.name,
+
+                                      //  branchType = JBB.type,
+                                        posName = JPP.name,
+                                        posCode = JPP.code,
+                                        agentName = JAA.name,
+                                        agentCode = JAA.code,
+                                        cuserName = JUU.name,
+                                        cuserLast = JUU.lastname,
+                                        cUserAccName = JUU.lastname,
+                                        uuserName = JUPUS.name,
+                                        uuserLast = JUPUS.lastname,
+                                        uUserAccName = JUPUS.lastname,
+                                        agentCompany = JAA.company,
+
+                                    }).ToList();
+
+
+
+                    if (invListm == null)
+                        return NotFound();
+                    else
+                        return Ok(invListm);
+                }
+
+            }
+
+            //else
+            return NotFound();
+        }
+
+ 
+
+        #endregion
     }
 }

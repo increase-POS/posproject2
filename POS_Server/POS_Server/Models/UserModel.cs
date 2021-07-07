@@ -9,6 +9,7 @@ namespace POS_Server.Models
         public string password { get; set; }
         public string name { get; set; }
         public string lastname { get; set; }
+        public string fullName { get; set; }
         public string job { get; set; }
         public string workHours { get; set; }
         public DateTime? createDate { get; set; }

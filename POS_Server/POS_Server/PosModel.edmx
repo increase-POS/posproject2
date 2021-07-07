@@ -332,6 +332,7 @@
           <Property Name="notes" Type="ntext" />
           <Property Name="inventoryType" Type="nvarchar" MaxLength="10" />
           <Property Name="branchId" Type="int" />
+          <Property Name="posId" Type="int" />
         </EntityType>
         <EntityType Name="inventoryItemLocation">
           <Key>
@@ -350,6 +351,7 @@
           <Property Name="updateUserId" Type="int" />
           <Property Name="isActive" Type="tinyint" />
           <Property Name="notes" Type="ntext" />
+          <Property Name="cause" Type="ntext" />
         </EntityType>
         <EntityType Name="invoices">
           <Key>
@@ -1592,6 +1594,18 @@
             </Principal>
             <Dependent Role="Inventory">
               <PropertyRef Name="branchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventory_pos">
+          <End Role="pos" Type="Self.pos" Multiplicity="0..1" />
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pos">
+              <PropertyRef Name="posId" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="posId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3309,6 +3323,10 @@
             <End Role="branches" EntitySet="branches" />
             <End Role="Inventory" EntitySet="Inventory" />
           </AssociationSet>
+          <AssociationSet Name="FK_Inventory_pos" Association="Self.FK_Inventory_pos">
+            <End Role="pos" EntitySet="pos" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
           <AssociationSet Name="FK_Inventory_users" Association="Self.FK_Inventory_users">
             <End Role="users" EntitySet="users" />
             <End Role="Inventory" EntitySet="Inventory" />
@@ -4204,6 +4222,8 @@
           <NavigationProperty Name="inventoryItemLocation" Relationship="Self.FK_inventoryItemLocation_Inventory" FromRole="Inventory" ToRole="inventoryItemLocation" />
           <Property Name="branchId" Type="Int32" />
           <NavigationProperty Name="branches" Relationship="incposdbModel.FK_Inventory_branches" FromRole="Inventory" ToRole="branches" />
+          <Property Name="posId" Type="Int32" />
+          <NavigationProperty Name="pos" Relationship="incposdbModel.FK_Inventory_pos" FromRole="Inventory" ToRole="pos" />
         </EntityType>
         <EntityType Name="inventoryItemLocation">
           <Key>
@@ -4226,6 +4246,7 @@
           <NavigationProperty Name="itemsLocations" Relationship="Self.FK_inventoryItemLocation_itemsLocations" FromRole="inventoryItemLocation" ToRole="itemsLocations" />
           <NavigationProperty Name="users" Relationship="Self.FK_inventoryItemLocation_users" FromRole="inventoryItemLocation" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_inventoryItemLocation_users1" FromRole="inventoryItemLocation" ToRole="users" />
+          <Property Name="cause" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="invoices">
           <Key>
@@ -4704,6 +4725,7 @@
           <NavigationProperty Name="users1" Relationship="Self.FK_pos_users1" FromRole="pos" ToRole="users" />
           <NavigationProperty Name="posUsers" Relationship="Self.FK_posUsers_pos" FromRole="pos" ToRole="posUsers" />
           <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_pos" FromRole="pos" ToRole="usersLogs" />
+          <NavigationProperty Name="Inventory" Relationship="incposdbModel.FK_Inventory_pos" FromRole="pos" ToRole="Inventory" />
         </EntityType>
         <EntityType Name="posUsers">
           <Key>
@@ -7910,6 +7932,10 @@
             <End Role="branches" EntitySet="branches" />
             <End Role="Inventory" EntitySet="Inventory" />
           </AssociationSet>
+          <AssociationSet Name="FK_Inventory_pos" Association="incposdbModel.FK_Inventory_pos">
+            <End Role="pos" EntitySet="pos" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_Inventory_branches">
           <End Type="incposdbModel.branches" Role="branches" Multiplicity="0..1" />
@@ -7920,6 +7946,18 @@
             </Principal>
             <Dependent Role="Inventory">
               <PropertyRef Name="branchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventory_pos">
+          <End Type="incposdbModel.pos" Role="pos" Multiplicity="0..1" />
+          <End Type="incposdbModel.Inventory" Role="Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pos">
+              <PropertyRef Name="posId" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="posId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8264,6 +8302,7 @@
           <EntitySetMapping Name="Inventory">
             <EntityTypeMapping TypeName="incposdbModel.Inventory">
               <MappingFragment StoreEntitySet="Inventory">
+                <ScalarProperty Name="posId" ColumnName="posId" />
                 <ScalarProperty Name="branchId" ColumnName="branchId" />
                 <ScalarProperty Name="inventoryId" ColumnName="inventoryId" />
                 <ScalarProperty Name="num" ColumnName="num" />
@@ -8280,6 +8319,7 @@
           <EntitySetMapping Name="inventoryItemLocation">
             <EntityTypeMapping TypeName="incposdbModel.inventoryItemLocation">
               <MappingFragment StoreEntitySet="inventoryItemLocation">
+                <ScalarProperty Name="cause" ColumnName="cause" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="isDestroyed" ColumnName="isDestroyed" />
                 <ScalarProperty Name="amount" ColumnName="amount" />
