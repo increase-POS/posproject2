@@ -123,7 +123,6 @@ namespace POS.View.windows
         {
             SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
         }
-
         private void Tb_userName_TextChanged(object sender, TextChangedEventArgs e)
         {
             SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
@@ -144,12 +143,10 @@ namespace POS.View.windows
                 p_showPassword.Visibility = Visibility.Visible;
             }
         }
-
         private void Tb_password_TextChanged(object sender, TextChangedEventArgs e)
         {
             SectionData.clearValidate(tb_password, p_errorPassword);
         }
-
         private void Pb_password_PasswordChanged(object sender, RoutedEventArgs e)
         {
             SectionData.clearPasswordValidate(pb_password, p_errorPassword);

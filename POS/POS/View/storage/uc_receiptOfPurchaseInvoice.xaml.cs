@@ -61,7 +61,6 @@ namespace POS.View.storage
 
         Branch branchModel = new Branch();
         IEnumerable<Branch> branches;
-        Pos pos = new Pos();
         // for barcode
         DateTime _lastKeystroke = new DateTime(0);
         static private string _BarcodeStr = "";
@@ -110,17 +109,16 @@ namespace POS.View.storage
             translate();
             tb_barcode.Focus();
             await RefrishVendors();
-            await RefrishBranches();
-            pos = await pos.getPosById(MainWindow.posID.Value);
+            //await RefrishBranches();
             #region datagridChange
             CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
             ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
             #endregion
         }
-        async Task RefrishBranches()
-        {
-            branches = await branchModel.GetBranchesActive("all");
-        }
+        //async Task RefrishBranches()
+        //{
+        //    branches = await branchModel.GetBranchesActive("all");
+        //}
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             MainWindow.mainWindow.KeyDown -= HandleKeyPress;
@@ -779,21 +777,10 @@ namespace POS.View.storage
                 invoice.invoiceMainId = invoice.invoiceId;
                 invoice.invoiceId = 0;
 
-                branchModel = branches.ToList().Find(b => b.branchId == invoice.branchId);
-                string storeCode = "";
-                if (branchModel != null)
-                    storeCode = branchModel.code;
-                string posCode = "";
-                if (pos != null)
-                {
-                    //storeCode = pos.branchCode;
-                    posCode = pos.code;
-                }
-                string invoiceCode = "pb";
-                int sequence = await invoiceModel.GetLastNumOfInv("pb");
-                sequence++;
+                invoice.branchCreatorId = MainWindow.branchID.Value;
+                invoice.posId = MainWindow.posID.Value;
 
-                string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
+                string invoiceNum = await invoice.generateInvNumber("pb");
                 invoice.invNumber = invoiceNum;
             }
             invoice.invType = type;

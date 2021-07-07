@@ -27,9 +27,6 @@ namespace POS.View.windows
     /// </summary>
     public partial class wd_companyInfo : Window
     {
-
-
-
         //phone variabels
         IEnumerable<CountryCode> countrynum;
         IEnumerable<City> citynum;
@@ -46,14 +43,15 @@ namespace POS.View.windows
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         ImageBrush brush = new ImageBrush();
         BrushConverter bc = new BrushConverter();
-
+        int nameId, addressId, emailId, mobileId, phoneId, faxId , logoId;
         public wd_companyInfo()
         {
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {//load
+            #region translate
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -66,6 +64,50 @@ namespace POS.View.windows
             }
 
             translate();
+            #endregion
+
+            #region get settings Ids
+            List<SettingCls> settingsCls = await setModel.GetAll();
+            List<SetValues> settingsValues = await valueModel.GetAll();
+
+            SettingCls set = new SettingCls();
+            SetValues setV = new SetValues();
+            //get company name
+            set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
+            nameId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
+            tb_name.Text = setV.value;
+            //get company address
+            set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
+            addressId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
+            tb_address.Text = setV.value;
+            //get company email
+            set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
+            emailId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
+            tb_email.Text = setV.value;
+            //get company mobile
+            set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
+            mobileId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
+            tb_mobile.Text = setV.value;
+            //get company phone
+            set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
+            phoneId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
+            tb_phone.Text = setV.value;
+            //get company fax
+            set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
+            faxId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
+            tb_fax.Text = setV.value;
+            //get company logo
+            set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
+            logoId = set.settingId;
+            //setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
+            //tb_fax.Text = setV.value;//getLogo();
+            #endregion
         }
         private void translate()
         {
@@ -308,30 +350,6 @@ namespace POS.View.windows
         SetValues valueModel = new SetValues();
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-            //List<SetValues> sv = await valueModel.GetAll();
-            //MessageBox.Show(sv.Count.ToString());
-            #region get swttings Ids
-            List<SettingCls> settingsCls = await setModel.GetAll();
-            SettingCls set = new SettingCls();
-            //get company name
-            set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
-            int nameId = set.settingId;
-            //get company address
-            set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
-            int addressId = set.settingId;
-            //get company email
-            set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
-            int emailId = set.settingId;
-            //get company mobile
-            set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
-            int mobileId = set.settingId;
-            //get company phone
-            set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
-            int phoneId = set.settingId;
-            //get company fax
-            set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
-            int faxId = set.settingId;
-            #endregion
 
             #region validate
             //chk empty name
@@ -400,6 +418,14 @@ namespace POS.View.windows
                 valFax.settingId = faxId;
                 //string sFax = await valueModel.Save(valFax);
                 //MessageBox.Show("fax : " + sFax);
+
+                //save logo
+                SetValues valLogo = new SetValues();
+                valLogo.value = cb_areaFax.Text + "-" + tb_fax.Text;
+                valLogo.isSystem = 1;
+                valLogo.settingId = logoId;
+                string sLogo = await valueModel.Save(valLogo);
+                MessageBox.Show("logo : " + sLogo);
             }
             #endregion
 

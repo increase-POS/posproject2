@@ -145,6 +145,10 @@
                                     <!--<Setter Property="Background" Value="PaleVioletRed"></Setter>-->
                                     <Setter Property="Background" Value="#FFA07A"></Setter>
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding invType}" Value="pw">
+                                    <!--<Setter Property="Background" Value="PaleVioletRed"></Setter>-->
+                                    <Setter Property="Background" Value="#FFA07A"></Setter>
+                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </DataGrid.RowStyle>

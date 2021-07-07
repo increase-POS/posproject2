@@ -73,8 +73,6 @@ namespace POS.View
         Invoice invoiceModel = new Invoice();
         Invoice invoice = new Invoice();
 
-        Pos pos = new Pos();
-
         List<ItemTransfer> invoiceItems;
         List<ItemTransfer> mainInvoiceItems;
         //  Bill bill;
@@ -189,7 +187,6 @@ namespace POS.View
 
             translate();
             catigoriesAndItemsView.ucPayInvoice = this;
-            pos = await pos.getPosById(MainWindow.posID.Value);
             await RefrishItems();
             //await RefrishCategories();
             //RefrishCategoriesCard();
@@ -456,7 +453,7 @@ namespace POS.View
             {
                 invoice.invoiceMainId = invoice.invoiceId;
                 invoice.invoiceId = 0;
-                invoice.invNumber = await generateInvNumber("pb");
+                invoice.invNumber = await invoice.generateInvNumber("pb");
             }
             if(invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
@@ -497,7 +494,7 @@ namespace POS.View
                 // build invoice NUM like pi-storCode-posCode-sequence exp: 123_PI_2
                 if (invoice.invNumber == null)
                 {
-                    invoice.invNumber = await generateInvNumber(invCode);
+                    invoice.invNumber = await invoice.generateInvNumber(invCode);
                 }
 
                 // calculate deserved and paid (compare vendor balance with totalNet)  
@@ -580,7 +577,7 @@ namespace POS.View
                             cashTrasnfer.transNum = SectionData.generateNumber('d', "v").ToString();
 
                             //pull items from free zone
-                            await itemLocationModel.returnInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value); // increase item quantity in DB
+                            await itemLocationModel.returnInvoice(invoiceItems, invoice.branchId.Value, MainWindow.userID.Value); // increase item quantity in DB
                         }
                         await cashTrasnfer.Save(cashTrasnfer); //add cash transfer
                         await agentModel.updateBalance((int)invoice.agentId, balance);//update balance
@@ -611,24 +608,24 @@ namespace POS.View
             }
             clearInvoice();
         }
-        private async Task<string> generateInvNumber(string invoiceCode)
-        {
-            Branch store = branches.ToList().Find(b => b.branchId == invoice.branchId);
-            string storeCode = "";
-            if (store != null)
-                storeCode = store.code;
-            string posCode = "";
-            if (pos != null)
-            {
-                storeCode = pos.branchCode;
-                posCode = pos.code;
-            }
-            int sequence = await invoiceModel.GetLastNumOfInv(invoiceCode);
-            sequence++;
+        //private async Task<string> generateInvNumber(string invoiceCode)
+        //{
+        //    Branch store = branches.ToList().Find(b => b.branchId == invoice.branchId);
+        //    string storeCode = "";
+        //    if (store != null)
+        //        storeCode = store.code;
+        //    string posCode = "";
+        //    if (pos != null)
+        //    {
+        //        storeCode = pos.branchCode;
+        //        posCode = pos.code;
+        //    }
+        //    int sequence = await invoiceModel.GetLastNumOfInv(invoiceCode);
+        //    sequence++;
 
-            string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
-            return invoiceNum;
-        }
+        //    string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
+        //    return invoiceNum;
+        //}
         private void dp_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             //DateTime invoiceDate;
@@ -764,8 +761,8 @@ namespace POS.View
             wd_invoice w = new wd_invoice();
 
             // purchase invoices
-            w.invoiceType = "pw";
-            //w.invoiceType = "p";
+            //w.invoiceType = "pw";
+            w.invoiceType = "p , pw";
             w.branchCreatorId = MainWindow.branchID.Value;
             
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
@@ -822,7 +819,8 @@ namespace POS.View
 
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");         
             // purchase invoices
-            w.invoiceType = "pw"; // invoice type to view in grid
+            //w.invoiceType = "pw"; // invoice type to view in grid
+            w.invoiceType = "p , pw"; // invoice type to view in grid
             w.branchCreatorId = MainWindow.branchID.Value;
 
             if (w.ShowDialog() == true)
@@ -937,7 +935,7 @@ namespace POS.View
                 tb_invoiceNumber.IsEnabled = true;
                 tb_taxValue.IsEnabled = true;
             }
-            else if (_InvoiceType == "pw")
+            else if (_InvoiceType == "pw" || _InvoiceType == "p")
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
@@ -1242,7 +1240,7 @@ namespace POS.View
                     Btn_newDraft_Click(null, null);
                     invoice = await invoiceModel.GetInvoicesByNum(barcode);
                     _InvoiceType = invoice.invType;
-                    if (_InvoiceType.Equals("pd") || _InvoiceType.Equals("pw") || _InvoiceType.Equals("pbd") || _InvoiceType.Equals("pb"))
+                    if (_InvoiceType.Equals("pd") || _InvoiceType.Equals("p") || _InvoiceType.Equals("pbd") || _InvoiceType.Equals("pb"))
                     {
                         // set title to bill
                         if (_InvoiceType == "pd")
@@ -1250,7 +1248,7 @@ namespace POS.View
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
                             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         }
-                        else if (_InvoiceType == "pw")
+                        else if (_InvoiceType == "p")
                         {
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
                             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));

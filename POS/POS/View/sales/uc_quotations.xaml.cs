@@ -541,7 +541,7 @@ namespace POS.View.sales
         }
         private async Task addInvoice(string invType)
         {
-            if (invoice.branchCreatorId == 0)
+            if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
@@ -572,7 +572,7 @@ namespace POS.View.sales
             // build invoice NUM like storCode_PI_sequence exp: 123_PI_2
             if (invoice.invNumber == null)
             {
-                invoice.invNumber = await generateInvNumber("si");
+                invoice.invNumber = await invoice.generateInvNumber("si");
             }
 
             // save invoice in DB
@@ -607,21 +607,21 @@ namespace POS.View.sales
             }
             clearInvoice();
         }
-        private async Task<string> generateInvNumber(string invoiceCode)
-        {
-            string storeCode = "";
-            string posCode = "";
-            if (pos != null)
-            {
-                storeCode = pos.branchCode;
-                posCode = pos.code;
-            }
-            int sequence = await invoiceModel.GetLastNumOfInv(invoiceCode);
-            sequence++;
+        //private async Task<string> generateInvNumber(string invoiceCode)
+        //{
+        //    string storeCode = "";
+        //    string posCode = "";
+        //    if (pos != null)
+        //    {
+        //        storeCode = pos.branchCode;
+        //        posCode = pos.code;
+        //    }
+        //    int sequence = await invoiceModel.GetLastNumOfInv(invoiceCode);
+        //    sequence++;
 
-            string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
-            return invoiceNum;
-        }
+        //    string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
+        //    return invoiceNum;
+        //}
         #region Get Id By Click  Y
         public async void ChangeItemIdEvent(int itemId)
         {

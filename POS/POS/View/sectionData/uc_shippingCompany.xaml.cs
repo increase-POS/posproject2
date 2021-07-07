@@ -186,8 +186,8 @@ namespace POS.View.sectionData
                 shCom.isActive = 1;
 
                 string s = await shCompaniesModel.Save(shCom);
-                MessageBox.Show(s);
-                if (s.Equals("Offer Is Added Successfully"))
+                //MessageBox.Show(s);
+                if (!s.Equals("0"))
                 {
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     Btn_clear_Click(null, null);
@@ -222,12 +222,11 @@ namespace POS.View.sectionData
                 shCompany.isActive = 1;
 
                 string s = await shCompaniesModel.Save(shCompany);
-                MessageBox.Show(s);
-                if (s.Equals("Offer Is Added Successfully"))
+                //MessageBox.Show(s);
+                if (!s.Equals("0"))
                 {
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                    Btn_clear_Click(null, null);
-
+                    
                     await RefreshShComList();
                     Tb_search_TextChanged(null, null);
                 }
@@ -249,6 +248,7 @@ namespace POS.View.sectionData
                     w.ShowDialog();
                     Window.GetWindow(this).Opacity = 1;
                     #endregion
+
                     if (w.isOk)
                         activate();
                 }
@@ -264,15 +264,16 @@ namespace POS.View.sectionData
                     w.ShowDialog();
                     Window.GetWindow(this).Opacity = 1;
                     #endregion
+
                     if (w.isOk)
                     {
                         string popupContent = "";
                         if (shCompany.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                         if ((!shCompany.canDelete) && (shCompany.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                        string b = await shCompaniesModel.Delete(shCompaniesModel.shippingCompanyId, MainWindow.userID.Value, shCompany.canDelete);
-                        MessageBox.Show(b);
-                        if (b.Equals("true"))
+                        string b = await shCompaniesModel.Delete(shCompany.shippingCompanyId, MainWindow.userID.Value, shCompany.canDelete);
+
+                        if (!b.Equals("0"))
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
                         else
@@ -282,10 +283,10 @@ namespace POS.View.sectionData
 
                 await RefreshShComList();
                 Tb_search_TextChanged(null, null);
-            }
-            //clear textBoxs
-            Btn_clear_Click(sender, e);
 
+                //clear textBoxs
+                Btn_clear_Click(sender, e);
+            }
         }
 
         private async void activate()
@@ -319,6 +320,7 @@ namespace POS.View.sectionData
 
                 if (shCompany != null)
                 {
+                    //MessageBox.Show(shCompany.shippingCompanyId.ToString());
                     cb_deliveryType.SelectedValue = shCompany.deliveryType;
                     
                     #region delete

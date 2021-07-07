@@ -6,12 +6,12 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:POS.View.Settings"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1300">
+             d:DesignHeight="800" d:DesignWidth="1300" Loaded="UserControl_Loaded">
     <ScrollViewer >
         <WrapPanel Margin="0,15,0,15" HorizontalAlignment="Center" >
 
             <Border Background="White" CornerRadius="7"  Height="140"  Width="260" BorderThickness="1" BorderBrush="#178DD2" Margin="10,0,10,20">
-                <Grid>
+                <Grid x:Name="grid_general">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"></ColumnDefinition>
                         <ColumnDefinition Width="3*"></ColumnDefinition>
@@ -28,8 +28,8 @@
 	v6h-5V14z M44,21h5v6h-5V21z M44,28h5v6h-5V28z M44,35h5v6h-5V35z M38,14h5v6h-5V14z M38,21h5v6h-5V21z M38,28h5v6h-5V28z M38,35h5
 	v6h-5V35z M16.4,33.2v20 M17,32.9h-1.1v20.2H17V32.9z M26.6,32.8h-1.1V53h1.1V32.8z"/>
                     <StackPanel Grid.Column="1" VerticalAlignment="Top"  Grid.ColumnSpan="2" Margin="5,20,0,0" HorizontalAlignment="Left">
-                        <TextBlock HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" FontWeight="SemiBold" Text="Company Info" FontSize="18"></TextBlock>
-                        <TextBlock Text="Name,Logo,Adress ..." FontSize="10" Margin="5,2,0,0"   Foreground="#949494"></TextBlock>
+                        <TextBlock x:Name="txt_comInfo" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" FontWeight="SemiBold" Text="Company Info" FontSize="18"></TextBlock>
+                        <TextBlock x:Name="txt_comHint" Text="Name,Logo,Address ..." FontSize="10" Margin="5,2,0,0"   Foreground="#949494"></TextBlock>
                     </StackPanel>
                     <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
@@ -62,7 +62,7 @@
                          VerticalAlignment="Center" Height="60" Width="60"
                               Data="M277.2,177c-0.6-3.6-2.7-6.6-6-8.4l-57.9-28.8c-7.8,15.9-18,35.7-31.8,59.7c-6.6,11.4-18.3,18.3-31.5,18.3  c-13.2,0-25.2-6.9-31.8-18.3c-12.6-21.6-22.2-39.6-29.4-54.6l-32.4,5.4c-3.6,0.6-6.6,3-8.1,6l-24.6,55.5c-2.4,5.1-0.3,11.4,4.5,13.8  L147.3,291c1.5,0.9,3.3,1.2,5.1,1.2c0.6,0,1.5,0,2.1-0.3l101.7-21c3.3-0.6,6-2.7,7.5-5.7s1.5-6.3,0.3-9.3l-19.8-44.4l29.7-25.5  C276.6,184.2,277.8,180.6,277.2,177z M162.9,189c18.6-32.4,51-92.1,51-117.3c0-35.4-28.8-63.9-63.9-63.9S86.1,36.6,86.1,71.7  c0,25.2,32.4,84.9,51,117.3C142.8,198.9,157.2,198.9,162.9,189z M120.3,71.4c0-16.5,13.5-29.7,29.7-29.7s29.7,13.5,29.7,29.7  c0,16.5-13.5,29.7-29.7,29.7S120.3,87.9,120.3,71.4z"/>
                     <StackPanel Grid.Column="1"  Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="5,20,0,0" HorizontalAlignment="Left" >
-                        <TextBlock HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Region" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock x:Name="txt_region" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Region" FontSize="18" FontWeight="SemiBold"></TextBlock>
                         <!--#region  Edit-->
                         <ComboBox Grid.Column="0" x:Name="cb_region" Padding="10,5,5,5"  SelectedIndex="0"   TextBlock.Foreground="#4E4E4E"
                                   TabIndex="3"  TextBlock.FontSize="12" Margin="10,10,0,0" VerticalAlignment="Center"   
@@ -119,7 +119,7 @@
                          VerticalAlignment="Center" Height="60" Width="60"
                               Data="M39,18.67H35.42l-4.2,11.12A29,29,0,0,1,20.6,24.91a28.76,28.76,0,0,0,7.11-14.49h5.21a2,2,0,0,0,0-4H19.67V2a2,2,0,1,0-4,0V6.42H2.41a2,2,0,0,0,0,4H7.63a28.73,28.73,0,0,0,7.1,14.49A29.51,29.51,0,0,1,3.27,30a2,2,0,0,0,.43,4,1.61,1.61,0,0,0,.44-.05,32.56,32.56,0,0,0,13.53-6.25,32,32,0,0,0,12.13,5.9L22.83,52H28l2.7-7.76H43.64L46.37,52h5.22Zm-15.3-8.25a23.76,23.76,0,0,1-6,11.86,23.71,23.71,0,0,1-6-11.86Zm8.68,29.15,4.83-13.83L42,39.57Z"/>
                     <StackPanel Grid.Column="1"  Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="5,20,0,0" HorizontalAlignment="Left" >
-                        <TextBlock HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Language" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock x:Name="txt_language" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Language" FontSize="18" FontWeight="SemiBold"></TextBlock>
                         <!--#language  Edit-->
                         <ComboBox Grid.Column="0" x:Name="cb_language" Padding="10,5,5,5"  SelectedIndex="0"   TextBlock.Foreground="#4E4E4E"
                                   TabIndex="3"  TextBlock.FontSize="12" Margin="10,10,0,0" VerticalAlignment="Center"   
@@ -175,7 +175,7 @@
                          VerticalAlignment="Center" Height="60" Width="60"
                               Data="M225,0c-30.3,0.1-57.6,18.4-69.3,46.3c6.6,18.5,6.6,38.8,0,57.3c14.4,34.8,52.3,53.5,88.7,43.8c36.4-9.7,59.9-44.9,55-82.2  C294.4,27.9,262.6,0,225,0z M230.4,58.9c3,0,5.4,2.4,5.4,5.4s-2.4,5.4-5.4,5.4h-32.3c-0.6,3.5-0.6,7.2,0,10.7h32.3  c3,0,5.4,2.4,5.4,5.4s-2.4,5.4-5.4,5.4h-29.1c3.9,8.3,10.8,14.9,19.2,18.5c4.6,1.9,9.6,2.9,14.6,2.9c3,0,5.4,2.4,5.4,5.4  c0,3-2.4,5.4-5.4,5.4c-12.8,0-25.1-5.1-34.1-14.1c-4.4-4.4-7.9-9.6-10.3-15.3c-0.4-0.9-0.6-1.8-1-2.7h-7.6c-3,0-5.4-2.4-5.4-5.4  s2.4-5.4,5.4-5.4h5.1c-0.4-3.6-0.4-7.2,0-10.7h-5.1c-3,0-5.4-2.4-5.4-5.4s2.4-5.4,5.4-5.4h7.6c0.3-0.9,0.6-1.8,1-2.7  c2.4-5.7,6-10.9,10.3-15.3c9-9.1,21.3-14.2,34.1-14.1c3,0,5.4,2.4,5.4,5.4s-2.4,5.4-5.4,5.4c-5,0-10,1-14.6,2.9  c-8.5,3.6-15.3,10.2-19.2,18.5H230.4z M145,48.1C132.8,16.1,100.5-3.4,66.5,0.4S5.5,30.7,0.7,64.6s14,66.6,45.6,79.7  c18.5-6.5,38.7-6.5,57.3,0c19-7.8,34-23.1,41.4-42.3C151.7,84.6,151.7,65.4,145,48.1z M96.4,117.9H42.9c-3,0-5.4-2.4-5.4-5.4  s2.4-5.4,5.4-5.4c-0.1,0,10.4-1.3,13.4-26.8h-8c-3,0-5.4-2.4-5.4-5.4s2.4-5.4,5.4-5.4h8.7c0.1-1,0.1-1.8,0.1-2.8  c0.1-17.2,4.7-29,13.8-35.4c8.3-5,18.4-6,27.5-2.8c2.8,1,4.2,4.1,3.2,6.8c-1,2.8-4.1,4.2-6.8,3.2c-5.9-2-12.4-1.4-17.8,1.6  c-5.9,4.1-9.1,13.3-9.1,26.6c0,1-0.1,1.8-0.1,2.7h23.5c3,0,5.4,2.4,5.4,5.4s-2.4,5.4-5.4,5.4H67c-0.6,9.4-3.3,18.6-8,26.8h37.4  c3,0,5.4,2.4,5.4,5.4S99.4,117.9,96.4,117.9z M144.3,196.4c-13.7-33.1-48.8-51.9-83.9-44.9S0,189.2,0,225s25.3,66.6,60.4,73.5  s70.2-11.8,83.9-44.9C137.6,235.1,137.6,214.9,144.3,196.4z M75,219.6c10.8,0,19.9,8,21.3,18.7c1.4,10.7-5.5,20.7-15.9,23.4v6.1  c0,3-2.4,5.4-5.4,5.4s-5.4-2.4-5.4-5.4v-5.4H58.9c-3,0-5.4-2.4-5.4-5.4c0-3,2.4-5.4,5.4-5.4H75c5.9,0,10.7-4.8,10.7-10.7  c0-5.9-4.8-10.7-10.7-10.7c-10.8,0-19.9-8-21.3-18.7c-1.4-10.7,5.5-20.7,15.9-23.4v-6.1c0-3,2.4-5.4,5.4-5.4s5.4,2.4,5.4,5.4v5.4  h10.7c3,0,5.4,2.4,5.4,5.4s-2.4,5.4-5.4,5.4H75c-5.9,0-10.7,4.8-10.7,10.7S69.1,219.6,75,219.6z M253.7,155.7  c-18.5,6.6-38.8,6.6-57.3,0c-19,7.8-34,23.1-41.4,42.3c-6.6,17.4-6.6,36.5,0,53.9c12.3,31.9,44.6,51.5,78.5,47.6  c34-3.9,61-30.3,65.8-64.1C304,201.6,285.3,168.8,253.7,155.7z M250.6,185.5l-20.2,25.3v8.8h10.7c3,0,5.4,2.4,5.4,5.4  s-2.4,5.4-5.4,5.4h-10.7v10.7h10.7c3,0,5.4,2.4,5.4,5.4s-2.4,5.4-5.4,5.4h-10.7v16.1c0,3-2.4,5.4-5.4,5.4s-5.4-2.4-5.4-5.4v-16.1  h-10.7c-3,0-5.4-2.4-5.4-5.4s2.4-5.4,5.4-5.4h10.7v-10.7h-10.7c-3,0-5.4-2.4-5.4-5.4s2.4-5.4,5.4-5.4h10.7v-8.8l-20.2-25.3  c-1.8-2.3-1.4-5.6,0.9-7.5c2.3-1.8,5.6-1.5,7.5,0.8l17.3,21.5l17.3-21.5c1.2-1.5,3.1-2.3,5-2c1.9,0.3,3.5,1.6,4.2,3.3  C252.1,182,251.8,184,250.6,185.5z"/>
                     <StackPanel Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="top" Margin="5,20,0,0" HorizontalAlignment="Left">
-                        <TextBlock HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" FontWeight="SemiBold" Text="Currency" FontSize="18"></TextBlock>
+                        <TextBlock x:Name="txt_currency" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" FontWeight="SemiBold" Text="Currency" FontSize="18"></TextBlock>
                         <!--#region  Edit-->
                         <ComboBox Grid.Column="0" x:Name="cb_currency" Padding="10,5,5,5"  SelectedIndex="0"   TextBlock.Foreground="#4E4E4E"
                                   TabIndex="3"  TextBlock.FontSize="12" Margin="10,10,0,0" VerticalAlignment="Center"   
@@ -249,7 +249,7 @@
 	l-21.4-49.5h-10.7l-21.4,49.5h11.8l4.6-10.7h20.8l4.6,10.7H236.2z M253.2,273.9l-16.6,25.4h13.3l10.5-16.3l10.6,16.3h13.5
 	l-16.7-25.6l15.4-23.9h-13.3l-9.4,14.7l-9.4-14.7h-13.2L253.2,273.9z"/>
                     <StackPanel Grid.Column="1"   Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="5,20,0,0" HorizontalAlignment="Left"  >
-                        <TextBlock HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Tax" FontSize="18" FontWeight="SemiBold" ></TextBlock>
+                        <TextBlock x:Name="txt_tax" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Tax" FontSize="18" FontWeight="SemiBold" ></TextBlock>
                         <!--#region  Edit-->
                         <TextBox x:Name="tb_tax"  Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0" 
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -385,8 +385,8 @@
 	c0-0.8,0.7-1.5,1.5-1.5s1.5,0.7,1.5,1.5v0.7C21.6,9.4,23.3,11.9,23.3,15L23.3,15z M25.2,14.5c-0.1-2.7-1.5-5-3.5-6.4l1.4-1.4
 	c2.4,1.8,4,4.6,4.1,7.8H25.2L25.2,14.5z M12.8,8.1c-2.1,1.5-3.4,3.8-3.6,6.4h-2c0.1-3.2,1.7-6,4.1-7.8L12.8,8.1z"/>
                     <StackPanel Grid.Column="1" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="5,20,0,0" HorizontalAlignment="Left">
-                        <TextBlock HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Notification" FontSize="18" FontWeight="SemiBold"></TextBlock>
-                        <TextBlock Text="Name,Logo,Adress ..." Foreground="#949494" FontSize="10" Margin="5,2,0,0"></TextBlock>
+                        <TextBlock x:Name="txt_notification" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Notification" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock x:Name="txt_notifhint" Text="Name,Logo,Adress ..." Foreground="#949494" FontSize="10" Margin="5,2,0,0"></TextBlock>
                     </StackPanel>
                     <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
@@ -470,8 +470,8 @@
 	C278.2,282.3,276.5,281.1,274.4,281.1z M357.9,318.8c-0.6-0.5-1.3-0.7-2-0.7s-1.4,0.2-2,0.7c-0.5,0.4-0.8,1.1-0.8,1.8
 	c0,0.7,0.3,1.4,0.8,1.8c0.6,0.5,1.3,0.7,2,0.7s1.5-0.2,2-0.7l0,0c0.5-0.5,0.8-1.1,0.8-1.8C358.7,319.9,358.4,319.2,357.9,318.8z"/>
                     <StackPanel Grid.Column="1" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="5,20,0,0" HorizontalAlignment="Left">
-                        <TextBlock HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Offers" FontSize="18" FontWeight="SemiBold"></TextBlock>
-                        <TextBlock Text="Name,Logo,Adress ..." FontSize="10" Margin="5,2,0,0" Foreground="#949494"></TextBlock>
+                        <TextBlock x:Name="txtOffers" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Offers" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock x:Name="txt_offerHint" Text="Name,Logo,Adress ..." FontSize="10" Margin="5,2,0,0" Foreground="#949494"></TextBlock>
                     </StackPanel>
                     <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
@@ -518,8 +518,8 @@
 	c-0.1-2.6-0.6-5.5-1.6-8.5c-1-3-2.2-6.2-3.6-9.6c-1.4-3.4-2.4-6.8-3.1-10.1c-0.7-3.3-0.7-6.6-0.2-9.9c0.6-3.3,2.3-6.4,5.2-9.3
 	c3.8-3.8,8.4-5.6,14-5.6c5.6,0,11.1,2.1,16.5,6.3l8.7-8.7l7,7L422.1,373.7z" />
                     <StackPanel Grid.Column="1" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="5,20,0,0" HorizontalAlignment="Left">
-                        <TextBlock HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Copon" FontSize="18" FontWeight="SemiBold"></TextBlock>
-                        <TextBlock Text="Name,Logo,Adress ..." Foreground="#949494" FontSize="10" Margin="5,2,0,0"></TextBlock>
+                        <TextBlock x:Name="txt_coupon" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Copon" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock x:Name="txt_couponHint" Text="Name,Logo,Adress ..." Foreground="#949494" FontSize="10" Margin="5,2,0,0"></TextBlock>
                     </StackPanel>
                     <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
@@ -552,8 +552,8 @@
                          VerticalAlignment="Center" Height="60" Width="60"
                               Data="M1.7,61c3.6,0.6,8.7,0.4,13.4-3.3c3.7,2.2,8,3.5,12.5,3.5h19.1C60.1,61.3,71,50.4,71,37.1c0-13.3-10.9-24.2-24.2-24.2H27.7  c-13.3,0-24.2,10.9-24.2,24.2c0,5.2,1.7,10,4.5,14c-1.1,2.6-3.2,6-6.6,7.7C0.3,59.3,0.5,60.8,1.7,61z M51,33.1  c0.3-0.1,0.6-0.2,0.9-0.3c0.3-0.1,0.7-0.1,1-0.1c2.8,0,5,2.3,5,5c0,2.8-2.3,5-5,5c-0.3,0-0.7,0-1-0.1c-0.3-0.1-0.6-0.2-0.9-0.3  c-1.8-0.8-3.1-2.5-3.1-4.6C47.9,35.7,49.2,33.9,51,33.1z M37.5,32.4c2.8,0,5,2.3,5,5c0,2.8-2.2,5-5,5c-2.8,0-5-2.3-5-5  C32.5,34.6,34.7,32.4,37.5,32.4z M17.1,36.5c0.2-1.7,1.2-3.1,2.6-3.8c0.7-0.4,1.5-0.6,2.4-0.6c2.8,0,5,2.3,5,5c0,2.8-2.3,5-5,5  c-0.9,0-1.7-0.2-2.4-0.6c-1.4-0.8-2.4-2.2-2.6-3.8V36.5z M84.9,83.6c-3.7,2.2-8,3.5-12.5,3.5H53.2c-12.4,0-22.6-9.4-24-21.4h17.6  c3.9,0,7.6-0.8,11.2-2.3c3.4-1.5,6.5-3.5,9.1-6.2c2.6-2.6,4.7-5.7,6.2-9.1c1.3-3,2-6.1,2.2-9.3c11.9,1.5,21.1,11.7,21.1,24  c0,5.2-1.7,10-4.5,14c1.1,2.6,3.2,6,6.6,7.7c1.1,0.5,0.8,2.1-0.3,2.3C94.7,87.5,89.6,87.3,84.9,83.6z"/>
                     <StackPanel Grid.Column="1" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="5,20,0,0" HorizontalAlignment="Left">
-                        <TextBlock HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="SMS" FontSize="18" FontWeight="SemiBold"></TextBlock>
-                        <TextBlock Text="Name,Logo,Adress ..." Foreground="#949494" FontSize="10" Margin="5,2,0,0"></TextBlock>
+                        <TextBlock x:Name="txt_sms" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="SMS" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock x:Name="txt_smsHint" Text="Name,Logo,Adress ..." Foreground="#949494" FontSize="10" Margin="5,2,0,0"></TextBlock>
                     </StackPanel>
                     <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
@@ -586,8 +586,8 @@
                          VerticalAlignment="Center" Height="60" Width="60"
                               Data="M150,168.8c5.2,0,9.4-4.2,9.4-9.4s-4.2-9.4-9.4-9.4c-31.1,0-56.3-25.2-56.3-56.3s25.2-56.3,56.3-56.3s56.3,25.2,56.3,56.3  v18.8c0,5.2-4.2,9.4-9.4,9.4s-9.4-4.2-9.4-9.4V93.8c0-20.7-16.8-37.5-37.5-37.5S112.5,73,112.5,93.8s16.8,37.5,37.5,37.5  c7.7,0,15.2-2.4,21.5-6.8c6.7,14,23.4,20,37.5,13.3c9.8-4.6,16-14.4,16.1-25.2V93.8c0-41.4-33.6-75-75-75s-75,33.6-75,75  S108.6,168.8,150,168.8z M150,112.5c-10.4,0-18.8-8.4-18.8-18.8S139.6,75,150,75c10.4,0,18.8,8.4,18.8,18.8S160.4,112.5,150,112.5z   M281.3,131.3v121.9c0,15.5-12.6,28.1-28.1,28.1H46.9c-15.5,0-28.1-12.6-28.1-28.1V131.3c0-2.9,1.4-5.6,3.7-7.4l33.8-26.1v24.1  l-12.8,9.4L150,213.2l106.5-81.9l-12.8-9.4V97.8l33.8,26.1C279.9,125.6,281.2,128.3,281.3,131.3z"/>
                     <StackPanel Grid.Column="1" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="5,20,0,0" HorizontalAlignment="Left">
-                        <TextBlock HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Emails" FontWeight="SemiBold" FontSize="18"></TextBlock>
-                        <TextBlock Text="Name,Logo,Adress ..." Margin="5,2,0,0" FontSize="10" Foreground="#949494"></TextBlock>
+                        <TextBlock x:Name="txt_emails" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Emails" FontWeight="SemiBold" FontSize="18"></TextBlock>
+                        <TextBlock x:Name="txt_emailHint" Text="Name,Logo,Adress ..." Margin="5,2,0,0" FontSize="10" Foreground="#949494"></TextBlock>
                     </StackPanel>
                     <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
@@ -620,8 +620,8 @@
                        Height="60" Width="60"  FlowDirection="LeftToRight"
                               Data="M172.2,5H25.4v15.4h3.1c0,2.7,0,5.4,0.2,8.1c0,0,0,10.1,0,10.2c0,8.7-9.4,10.6-13.4,16.8c-3,4.6-1.4,13.3-1.4,18.6v44.7  c0,33.1,0,66.3,0,99.5v53.4H7.2V295H170v-12.6c-10.6-5.3-20.1-12.6-27.9-21.3H98.7v-63.8h19.7c0.1-9.5,1.6-18.6,4.4-27.2h-3.7v-35.6  h22.2v2.8c8-9.1,17.6-16.7,28.6-22.2l0-94.8h2.3L172.2,5L172.2,5z M49.1,30.7h22.2V31h0.1v35.6H49.3v-0.2h-0.1V30.7z M49.1,82.8  h22.2v0h0.1v1.4c0,0.7,0.1,1.4,0.1,2.1c0,9.6,0,19.2,0,28.9c0,0.7,0,1.2-0.1,1.7v1.5h-1.1c-0.5,0.2-1.2,0.3-2.1,0.3  c-6.3-0.2-12.6-0.1-19.2-0.1L49.1,82.8L49.1,82.8z M71.5,134.6v35.6H49.3v-35.6H71.5z M91.3,261.2H47.6v-63.9h43.7V261.2z   M106.3,170.2H84.2v-35.6h22.2V170.2z M106.3,118.4L106.3,118.4l-0.1,0.2c-7,0-13.9,0-20.8-0.1c-0.1,0-0.3,0-0.4-0.1h-0.9v-0.9  c-0.2-0.2-0.3-0.5-0.3-0.6c-0.1-11.2-0.1-22.5-0.1-34h0.4v0h22.2L106.3,118.4L106.3,118.4z M106.3,66.6H84.2v-0.3h0V30.7h22V31h0.2  V66.6z M141.4,118.4h-22.2v0h0V82.8h0v0h22.2V118.4z M141.4,66.4L141.4,66.4l0,0.2h-22.2V31h0.1v-0.2h22.2V66.4z M212,117.8  c-44.5-0.1-81.3,36.7-81,81.1c0.2,44.7,36.4,80.8,81,80.8c44.7,0,80.9-36.2,80.8-80.9S256.6,117.9,212,117.8z M211.6,141.7  c8.8-0.2,16.2,7.2,16.2,16.1c0,8.7-7.3,15.9-15.9,15.9c-8.8,0-15.8-7.1-15.9-15.9C195.9,148.9,202.7,141.8,211.6,141.7z M234,254.7  c-1.8,0.8-3.8,1.2-5.8,1.2c-14.8,0-17.9,0-32.7,0c-6.9,0-12.1-4.9-12.2-11.3c-0.1-6.5,5-11.4,11.9-11.6c3.6-0.1,1.3,0,5.4,0v-8.6  c0-4.1,0.1-8.2-0.1-12.3c0-0.9-1.1-2.2-1.9-2.4c-6.4-1.7-10.2-6.5-9.6-12.2c0.7-6.4,5.4-10.5,12.3-10.6c3.4,0,6.8,0,10.1,0  c7.2,0.1,12,4.9,12,12.2c0,11.1,0,22.2,0,33.9c4.2,0,2.1-0.1,5.8,0c5.9,0.2,10.1,3.9,11.1,9.3C241.2,247.5,238.8,252.6,234,254.7z"/>
                     <StackPanel Grid.Column="1" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="5,20,0,0" HorizontalAlignment="Left">
-                        <TextBlock HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Backup/Restore" FontSize="18" FontWeight="SemiBold"></TextBlock>
-                        <TextBlock Text="Name,Logo,Adress ..." Foreground="#949494" FontSize="10" Margin="5,2,0,0"></TextBlock>
+                        <TextBlock x:Name="txt_backUp" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Backup/Restore" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock x:Name="txt_backUpHint" Text="Name,Logo,Adress ..." Foreground="#949494" FontSize="10" Margin="5,2,0,0"></TextBlock>
                     </StackPanel>
                     <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
@@ -654,8 +654,8 @@
                        Height="60" Width="60"  FlowDirection="LeftToRight"
                               Data= "M140.73,111.52H28.32c-5.36,0-6.75,1.37-6.75,6.66V273.57c0,5.16,1.38,6.51,6.62,6.51h87c5.17,0,6.69,1.46,6.64,6.54a88.42,88.42,0,0,1-.4,10.81,27.81,27.81,0,0,1-27.29,24.1c-2.44,0-3.1.77-2.87,3a39,39,0,0,1,0,5.07c0,1.15.37,1.75,1.6,1.66.46,0,.92,0,1.39,0h93.44c3,0,3,0,3-3,0-2,.66-4.54-.32-5.81-.85-1.11-3.59-.8-5.5-1.07a28.2,28.2,0,0,1-24.71-28.27q0-3.57,0-7.15c0-4.16,1.71-5.86,5.92-5.86h88.58c4,0,5.67-1.61,5.67-5.58q0-78.62,0-157.24c0-4.15-1.69-5.73-6-5.73ZM115.2,196c-8,13.05-26.43,18.48-41.29,12.39a34.43,34.43,0,0,1-20.4-40c3.5-14.35,18.29-26.89,30.76-25.82v2.44c0,10.14.07,20.27-.06,30.41a4,4,0,0,0,2.44,4.12c4.87,2.64,9.63,5.48,14.43,8.25S110.38,193.21,115.2,196ZM89.75,142.22c12.8,1.63,22.13,7.68,27.85,18.72,5.12,9.86,5.05,20,.55,30.28-.59-.28-.94-.4-1.26-.58-8.6-4.95-17.23-9.87-25.77-14.92A3.73,3.73,0,0,1,89.8,173c-.09-9.14,0-18.28,0-27.42ZM190.23,175.6l-.13-.56c-1,.44-2.31.63-3,1.37-2.82,2.82-5.53,5.78-8.16,8.79a4,4,0,0,0-.77,2.61c.14,2.82-1.5,5.16-4.11,5.52a4.85,4.85,0,0,1-5.66-4.42c-.22-1.53-3.95-5.26-5.35-4.91-2.79.69-6.16-.25-8.18,2.91a15.08,15.08,0,0,1-3.38,3.12,3.81,3.81,0,0,0-1.72,3.65,4.63,4.63,0,0,1-4.88,4.74,5,5,0,0,1-4.88-4.89c0-2.52,2.15-5.07,4.64-4.74s3.85-.91,5.37-2.32,3.14-2.73,4.6-4.2a3.14,3.14,0,0,0,.86-1.93c.12-3.3,1.6-5.28,4.31-5.54,2.95-.28,4.9,1.46,5.49,4.91.21,1.3,4.34,4.65,5.62,4.45,2.81-.44,5.55-.79,7.41-3.58a46.76,46.76,0,0,1,5.6-6.12,4.75,4.75,0,0,0,1.67-4,4.63,4.63,0,0,1,4.59-4.8c2.6-.11,5.28,2,5,4.62-.22,2.12.84,3.08,2.06,4.23.73.68,1.45,1.37,2.19,2.05a5.38,5.38,0,0,0,6.78-.16c5.12-5.11,10.25-10.21,15.3-15.38a4.25,4.25,0,0,0,1.05-2.55c.11-3.26,2.09-5.44,5.06-5.33a5,5,0,0,1,4.75,5.19c-.17,2.81-2.52,4.61-5.59,4.59a4.62,4.62,0,0,0-2.95,1.09c-5,4.88-9.92,9.89-14.89,14.82a3.31,3.31,0,0,0-1.21,3.18,4.78,4.78,0,0,1-4.63,5.25c-2.68.13-5.23-1.92-5-4.59s-1.37-3.55-2.76-4.88S192.81,174.44,190.23,175.6Zm2.82,18.27c3.75,0,7.2.09,10.65,0,1.8-.07,2.2.61,2.19,2.26-.08,6.3,0,12.59,0,18.88,0,8,0,16-.06,23.95,0,.75-.71,2.13-1.15,2.15-3.81.17-7.64.1-11.6.1Zm28.12,23.89c0-7.22,0-14.43,0-21.65,0-1.62.34-2.37,2.16-2.28,2.92.14,5.86.1,8.78,0,1.45,0,2.06.36,2,1.92q-.06,21.75,0,43.52c0,1.56-.58,2-2,1.93-2.85-.08-5.7-.15-8.54,0-2,.11-2.44-.68-2.41-2.52C221.23,231.73,221.17,224.74,221.17,217.76Zm-56.45-14.93c4.08,0,7.84-.06,11.59.09.47,0,1.28,1.16,1.28,1.79.08,11.52,0,23,.09,34.56,0,1.56-.59,2-2.05,1.94-2.84-.09-5.7-.15-8.55,0-2,.11-2.42-.69-2.39-2.52.09-7,0-14,0-21Zm-27.25,23.45c0-4.45,0-8.9,0-13.35,0-1.46.39-2.08,1.95-2,3,.1,6,.08,9,0,1.45,0,2.06.36,2.05,1.93q-.09,13.23,0,26.46c0,1.6-.65,1.94-2.07,1.91-2.92-.08-5.85-.13-8.77,0-1.82.08-2.2-.65-2.16-2.29C137.53,234.72,137.47,230.5,137.47,226.28ZM87,241.75q-12,0-24,0c-1.85,0-3.23-.58-3.44-2.59-.17-1.67,1.2-2.69,3.48-2.75.39,0,.77,0,1.16,0h45.77a11.84,11.84,0,0,1,2.53.17c1.55.38,2.62,2.2,1.71,3.36a4.92,4.92,0,0,1-3.36,1.73C102.86,241.82,94.92,241.75,87,241.75Zm92.13-91.84c-2.08-.42-4.31,1.09-6-1.53-.79-1.24-2.39-1-3.39.16a2,2,0,0,0,.61,3.33c1.51.91,3.17,1.58,4.7,2.46,4.34,2.5,5.3,8,1.85,11.35-1.51,1.5-3.45,2.57-2.71,5.1h-5.56c.76-2.31-.58-3.16-2.12-4.12a6.25,6.25,0,0,1-3.06-5.71c3.68-.51,3.67-.47,6.12,1.45a2.27,2.27,0,0,0,3.47-.35,2,2,0,0,0-.6-3.16c-1.58-1-3.31-1.65-4.91-2.58-4.44-2.58-5.22-8.53-1.34-11.68,1.61-1.32,3.08-2.41,2.65-4.71h5.41c-.43,2.22.65,3.32,2.27,4.4A5.7,5.7,0,0,1,179.11,149.91ZM87.09,225H110.2c.77,0,1.75-.18,2.25.21.81.63,1.81,1.69,1.78,2.53s-1.11,1.79-1.94,2.42c-.45.34-1.34.14-2,.14H63.58c-.62,0-1.43.21-1.81-.1-.87-.69-2.11-1.65-2.12-2.51s1.18-1.9,2.07-2.55c.52-.37,1.49-.14,2.26-.15Z"/>
                     <StackPanel Grid.Column="1" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="5,20,0,0" HorizontalAlignment="Left">
-                        <TextBlock HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Dashboard" FontSize="18" FontWeight="SemiBold"></TextBlock>
-                        <TextBlock Text="Daily, weekly..." Foreground="#949494" FontSize="10" Margin="5,2,0,0"></TextBlock>
+                        <TextBlock x:Name="txt_dashBoard" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Dashboard" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                        <TextBlock x:Name="txt_dashHint" Text="Daily, weekly..." Foreground="#949494" FontSize="10" Margin="5,2,0,0"></TextBlock>
                     </StackPanel>
                     <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">

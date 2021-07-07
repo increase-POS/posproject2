@@ -2278,3 +2278,13 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_reports.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_branchesList.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_inventory.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\winControlPanel.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_purchaseReport.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_reports.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_inventory.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_purchaseReport.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_reports.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_inventory.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_changePassword.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_changePassword.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_usersList.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_usersList.baml

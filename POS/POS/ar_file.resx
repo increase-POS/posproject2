@@ -1494,4 +1494,55 @@
   <data name="trShippingCompany" xml:space="preserve">
     <value>شركة شحن</value>
   </data>
+  <data name="trDestoryCount" xml:space="preserve">
+    <value>عدد التالف</value>
+  </data>
+  <data name="trErrorDistroyMoreQuanToolTip" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز التالف الكمية الموجودة</value>
+  </data>
+  <data name="trInventoryAmount" xml:space="preserve">
+    <value>كمية الجرد</value>
+  </data>
+  <data name="trItemUnit" xml:space="preserve">
+    <value>العنصر - الوحدة</value>
+  </data>
+  <data name="trRealAmount" xml:space="preserve">
+    <value>الكمية الموجودة</value>
+  </data>
+  <data name="trSectionLocation" xml:space="preserve">
+    <value>القسم - مكان التخزين</value>
+  </data>
+  <data name="trBackUp/Restore" xml:space="preserve">
+    <value>نسخ احتياطي/استعادة</value>
+  </data>
+  <data name="trCurrency" xml:space="preserve">
+    <value>العملة</value>
+  </data>
+  <data name="trDashBoard" xml:space="preserve">
+    <value>لوحة التحكم</value>
+  </data>
+  <data name="trDashHint" xml:space="preserve">
+    <value>يومي,أسبوعي,...</value>
+  </data>
+  <data name="trEmails" xml:space="preserve">
+    <value>البريد الالكتروني</value>
+  </data>
+  <data name="trLanguage" xml:space="preserve">
+    <value>اللغة</value>
+  </data>
+  <data name="trNotification" xml:space="preserve">
+    <value>الإشعارات</value>
+  </data>
+  <data name="trPermissionsBasics" xml:space="preserve">
+    <value>الأساسيات</value>
+  </data>
+  <data name="trRegion" xml:space="preserve">
+    <value>المنطقة</value>
+  </data>
+  <data name="trSettingHint" xml:space="preserve">
+    <value>الاسم,الشعار,العنوان...</value>
+  </data>
+  <data name="trSms" xml:space="preserve">
+    <value>الرسائل النصية</value>
+  </data>
 </root>

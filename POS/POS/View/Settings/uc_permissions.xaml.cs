@@ -47,7 +47,7 @@ namespace POS.View.Settings
         string searchGroupText = "";
         //int firstLevelId;
         //int secondLevelId;
-        int _parentObjectId;
+        string _parentObjectName;
         GroupObject groupObject = new GroupObject();
         //ObservableCollection<GroupObject> groupObjectsQuery = new ObservableCollection<GroupObject>();
         //ObservableCollection<GroupObject> groupObjects = new ObservableCollection<GroupObject>();
@@ -213,8 +213,8 @@ namespace POS.View.Settings
             groupObjectsList = new List<GroupObject>() ;
             foreach (var item in objects)
             {
-
-                groupObject.id = 0;
+                groupObject = new GroupObject();
+                //groupObject.id = 0;
                 groupObject.groupId = groupId;
                 groupObject.objectId = item.objectId;
                 if (item.objectType == "add")
@@ -225,7 +225,8 @@ namespace POS.View.Settings
                     groupObject.deleteOb = 2;
                     groupObject.reportOb = 2;
 
-                } else
+                }
+                else
                 {
                     groupObject.showOb = 0;
                     groupObject.addOb = 0;
@@ -233,7 +234,7 @@ namespace POS.View.Settings
                     groupObject.deleteOb = 0;
                     groupObject.reportOb = 0;
                 }
-                
+
 
                 groupObject.levelOb = 0;
                 groupObject.notes = "";
@@ -244,8 +245,24 @@ namespace POS.View.Settings
                 //string s = await groupObject.AddGroupObjectList(groupObjectsList);
 
             }
-            string s = await groupObject.AddGroupObjectList(groupObjectsList);
-            if (!s.Equals("true"))
+            string s="";
+            for (int i = 0; i <= (groupObjectsList.Count / 15); i++)
+            {
+                //GetRange (int index, int count);
+                if (i < (groupObjectsList.Count / 15))
+                {
+                    List<GroupObject> list = groupObjectsList.GetRange(i * 15, 15).ToList();
+                    s = await groupObject.AddGroupObjectList(list);
+                }
+                else
+                {
+                    List<GroupObject> list = groupObjectsList.Skip(i * 15).ToList();
+                    s = await groupObject.AddGroupObjectList(list);
+                }
+                
+            }
+
+            if (s.Equals("true"))
             {
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                 Btn_clear_Click(null, null);
@@ -267,7 +284,8 @@ namespace POS.View.Settings
                 await RefreshGroupObjectList();
             searchText = tb_searchGroup.Text;
             //groupObjectsQuery = groupObjects.Where(s => (s.name.Contains(searchText)));
-            groupObjectsQuery = groupObjects.Where(s => s.groupId == group.groupId && s.objectType != "basic" && s.parentObjectId == _parentObjectId);
+            groupObjectsQuery = groupObjects.Where(s => s.groupId == group.groupId 
+            && s.objectType != "basic" && s.parentObjectName == _parentObjectName);
             //groupObjectsQuery = groupObjects.Where(s => s.groupId == group.groupId && s.parentObjectId == _parentObjectId);
 
             //if (objects!= null)
@@ -551,6 +569,30 @@ namespace POS.View.Settings
 
         private void Btn_users_Click(object sender, RoutedEventArgs e)
         {
+            //users
+            //group
+            if (group.groupId >0)
+            {
+
+            //SectionData.clearValidate(tb_name, p_errorName);
+            //location = await locationModel.getLocsBySectionId(section.sectionId);
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_usersList w = new wd_usersList();
+            //Pre users
+            //w.selectedUsers = await locationModel.getLocsBySectionId(section.sectionId);
+            //w.sectionId = section.sectionId;
+            w.ShowDialog();
+            if (w.isActive)
+            {
+                //await locationModel.saveUsersSection(w.selectedUsers, section.sectionId, MainWindow.userLogin.userId);
+                foreach (var user in w.selectedUsers)
+                {
+                    MessageBox.Show(user.name + "\t");
+                }
+            }
+            Window.GetWindow(this).Opacity = 1;
+            }
+
         }
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
@@ -571,11 +613,41 @@ namespace POS.View.Settings
 
         }
 
+        private void btn_secondLevelClick(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            paintSecondLevel();
+            //path_suppliers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            foreach (Path path in FindControls.FindVisualChildren<Path>(this))
+            {
+                // do something with tb here
+                if (path.Name == "path_" + button.Tag)
+                {
+                    //MessageBox.Show("Hey i'm in " + "path_" + button.Tag);
+                    path.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                    break;
+                }
+            }
+            //txt_suppliers.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            foreach (TextBlock textBlock in FindControls.FindVisualChildren<TextBlock>(this))
+            {
+                if (textBlock.Name == "txt_" + button.Tag)
+                {
+                    textBlock.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                    break;
+                }
+            }
+
+            _parentObjectName = button.Tag.ToString();
+            Tb_search_TextChanged(null, null);
+        }
+
+        /*
         private void Btn_categories_Click(object sender, RoutedEventArgs e)
         {
             paintCatalog();
             path_categories.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            txt_categoires.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            txt_categories.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
 
         private void Btn_item_Click(object sender, RoutedEventArgs e)
@@ -654,8 +726,6 @@ namespace POS.View.Settings
             path_statistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_statistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
-
-
 
         private void btn_payInvoice_Click(object sender, RoutedEventArgs e)
         {
@@ -761,13 +831,13 @@ namespace POS.View.Settings
             path_accounts_statistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_accounts_statistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
-
+        
         private void btn_suppliers_Click(object sender, RoutedEventArgs e)
         {
             paintSectionData();
             path_suppliers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_suppliers.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            _parentObjectId = int.Parse(btn_suppliers.Tag.ToString());
+            //_parentObjectId = int.Parse(btn_suppliers.Tag.ToString());
             Tb_search_TextChanged(null, null);
         }
 
@@ -776,7 +846,7 @@ namespace POS.View.Settings
             paintSectionData();
             path_customers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_customers.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            _parentObjectId = int.Parse(btn_customers.Tag.ToString());
+            //_parentObjectId = int.Parse(btn_customers.Tag.ToString());
             Tb_search_TextChanged(null, null);
         }
 
@@ -785,7 +855,7 @@ namespace POS.View.Settings
             paintSectionData();
             path_sd_users.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_sd_users.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            _parentObjectId = int.Parse(btn_sd_users.Tag.ToString());
+            //_parentObjectId = int.Parse(btn_sd_users.Tag.ToString());
             Tb_search_TextChanged(null, null);
         }
 
@@ -794,7 +864,7 @@ namespace POS.View.Settings
             paintSectionData();
             path_branches.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_branches.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            _parentObjectId = int.Parse(btn_branches.Tag.ToString());
+            // _parentObjectId = int.Parse(btn_branches.Tag.ToString());
             Tb_search_TextChanged(null, null);
         }
 
@@ -803,8 +873,8 @@ namespace POS.View.Settings
             paintSectionData();
             path_stores.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_stores.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            _parentObjectId = int.Parse(btn_stores.Tag.ToString());
-        Tb_search_TextChanged(null, null);
+            //_parentObjectId = int.Parse(btn_stores.Tag.ToString());
+            Tb_search_TextChanged(null, null);
         }
 
         private void btn_sd_pos_Click(object sender, RoutedEventArgs e)
@@ -812,8 +882,8 @@ namespace POS.View.Settings
             paintSectionData();
             path_sd_pos.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_sd_pos.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            _parentObjectId = int.Parse(btn_sd_pos.Tag.ToString());
-        Tb_search_TextChanged(null, null);
+            //_parentObjectId = int.Parse(btn_sd_pos.Tag.ToString());
+            Tb_search_TextChanged(null, null);
         }
 
         private void btn_sd_banks_Click(object sender, RoutedEventArgs e)
@@ -821,8 +891,8 @@ namespace POS.View.Settings
             paintSectionData();
             path_sd_banks.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_sd_banks.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            _parentObjectId = int.Parse(btn_sd_banks.Tag.ToString());
-        Tb_search_TextChanged(null, null);
+            //_parentObjectId = int.Parse(btn_sd_banks.Tag.ToString());
+            Tb_search_TextChanged(null, null);
         }
 
         private void btn_cards_Click(object sender, RoutedEventArgs e)
@@ -830,8 +900,8 @@ namespace POS.View.Settings
             paintSectionData();
             path_cards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_cards.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            _parentObjectId = int.Parse(btn_cards.Tag.ToString());
-        Tb_search_TextChanged(null, null);
+            //_parentObjectId = int.Parse(btn_cards.Tag.ToString());
+            Tb_search_TextChanged(null, null);
         }
 
         private void btn_shippingCompany_Click(object sender, RoutedEventArgs e)
@@ -839,11 +909,21 @@ namespace POS.View.Settings
             paintSectionData();
             path_shippingCompany.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             txt_shippingCompany.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            _parentObjectId = int.Parse(btn_shippingCompany.Tag.ToString());
-        Tb_search_TextChanged(null, null);
+            //_parentObjectId = int.Parse(btn_shippingCompany.Tag.ToString());
+            Tb_search_TextChanged(null, null);
         }
+        */
 
-
+        public void paintSecondLevel()
+        {
+            paintCatalog();
+            paintStore();
+            paintPurchase();
+            paintSale();
+            paintAccounts();
+            paintSectionData();
+            paintSettings();
+        }
         public void paintCatalog()
         {
             path_categories.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
@@ -851,7 +931,7 @@ namespace POS.View.Settings
             path_properties.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_units.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
-            txt_categoires.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_categories.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_item.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_properties.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_units.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
@@ -876,7 +956,6 @@ namespace POS.View.Settings
             txt_inventory.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_statistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
         }
-
         public void paintPurchase()
         {
             path_payInvoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
@@ -885,8 +964,6 @@ namespace POS.View.Settings
             txt_payInvoice.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_purchase_statistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
         }
-
-
         public void paintSale()
         {
             path_reciptInvoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
@@ -923,7 +1000,6 @@ namespace POS.View.Settings
             txt_banks.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_accounts_statistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
         }
-
         public void paintSectionData()
         {
             path_suppliers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
@@ -947,7 +1023,6 @@ namespace POS.View.Settings
             txt_cards.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_shippingCompany.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
         }
-
         public void paintSettings()
         {
             path_permissions.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
@@ -958,13 +1033,16 @@ namespace POS.View.Settings
             txt_settings_reports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_general.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
         }
+
+
+
         private void translate()
         {
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_searchGroup, MainWindow.resourcemanager.GetString("trSearchHint"));
             //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             btn_refreshGroup.ToolTip = MainWindow.resourcemanager.GetString("trRefresh");
-            btn_refresh.ToolTip = MainWindow.resourcemanager.GetString("trRefresh");
+            //btn_refresh.ToolTip = MainWindow.resourcemanager.GetString("trRefresh");
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
             txt_addGroupButton.Text = MainWindow.resourcemanager.GetString("trAdd");
@@ -983,7 +1061,7 @@ namespace POS.View.Settings
             dg_group.Columns[1].Header = MainWindow.resourcemanager.GetString("trNote");
 
 
-            txt_categoires.Text = MainWindow.resourcemanager.GetString("trCategories");
+            txt_categories.Text = MainWindow.resourcemanager.GetString("trCategories");
             txt_properties.Text = MainWindow.resourcemanager.GetString("trProperties");
             txt_item.Text = MainWindow.resourcemanager.GetString("trItems");
             txt_units.Text = MainWindow.resourcemanager.GetString("trUnits");
@@ -1023,7 +1101,6 @@ namespace POS.View.Settings
             btn_settings.IsEnabled = true;
             btn_account.IsEnabled = true;
         }
-
         private void btn_home_Click(object sender, RoutedEventArgs e)
         {
             paint();

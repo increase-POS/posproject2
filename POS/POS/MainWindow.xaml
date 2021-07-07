@@ -156,20 +156,36 @@
                 <materialDesign:PackIcon Foreground="White" Kind="MenuDown" 
                                          Width="25" Height="25"/>
             </Button>-->
-            <Menu VerticalAlignment="Center" Background="{x:Null}"  Grid.Column="6"
+            <StackPanel  Grid.Column="6" VerticalAlignment="Center">
+                <Menu Background="Black"   Padding="0">
+                    <MenuItem Padding="0"  >
+                        <MenuItem.Header>
+                            <materialDesign:PackIcon Foreground="White" Kind="MenuDown" 
+                                         Width="25" Height="25"/>
+                        </MenuItem.Header>
+                        <MenuItem x:Name="mi_changePassword"  Foreground="White"
+                              Header="Change Password" Click="Mi_changePassword_Click"
+                              Icon="{materialDesign:PackIcon Kind=Password}"></MenuItem>
+                        <Separator />
+                        <MenuItem Header="Logout"  Foreground="White"  x:Name="BTN_logOut" Click="BTN_logOut_Click" 
+                         Icon="{materialDesign:PackIcon Kind=ExitToApp}" />
+                    </MenuItem>
+                </Menu>
+            </StackPanel>
+            <!--<Menu VerticalAlignment="Center" Background="{x:Null}"  Grid.Column="6"
                 IsMainMenu="True" Foreground="White" >
                 <MenuItem  Foreground="White" Icon="{materialDesign:PackIcon Kind=MenuDown}">
                     <MenuItem x:Name="mi_changePassword"
       Header="Change Password" Click="Mi_changePassword_Click"
       Icon="{materialDesign:PackIcon Kind=Password}"></MenuItem>
-                    <!--<MenuItem
-      Header="Save As.." />-->
+                    --><!--<MenuItem
+      Header="Save As.." />--><!--
                     <Separator />
                     <MenuItem
       Header="Logout"
       Icon="{materialDesign:PackIcon Kind=ExitToApp}" />
                     
-                    <!--<MenuItem
+                    --><!--<MenuItem
       Header="Excellent"
       IsCheckable="True"
       IsChecked="True" />
@@ -193,9 +209,9 @@
         Header="Plain" />
                         <MenuItem
         Header="Ice Cream" />
-                    </MenuItem>-->
+                    </MenuItem>--><!--
                 </MenuItem>
-            </Menu>
+            </Menu>-->
             <Ellipse Grid.Column="7" Margin="5,5,5,5" x:Name="img_userLogin"
                 HorizontalAlignment="Center" VerticalAlignment="Center"   
                      Height="40" Width="40">
@@ -207,13 +223,6 @@
                 <TextBlock x:Name="txt_userName"  Text="Mohamad" FontSize="12" Foreground="White" HorizontalAlignment="Center" />
                 <TextBlock x:Name="txt_userJob"  Text="admin"   FontSize="12" FontWeight="Light" Foreground="#E8E8E8" HorizontalAlignment="Left" />
             </StackPanel>
-            <Button Grid.Column="9" x:Name="BTN_logOut"
-                Margin="5,10,5,10" ToolTip="Log Out" 
-                    Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
-                    Padding="0" Click="BTN_logOut_Click" >
-                <materialDesign:PackIcon Foreground="White" Kind="Bell" 
-                                         Width="25" Height="25"/>
-            </Button>
             <Button Grid.Column="10" x:Name="BTN_Minimize" Click="BTN_Minimize_Click"
                 Margin="5,10,5,10" ToolTip="Minimize" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 

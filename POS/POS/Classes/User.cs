@@ -21,6 +21,17 @@ namespace POS.Classes
         public string password { get; set; }
         public string name { get; set; }
         public string lastname { get; set; }
+        public string fullName
+        {
+            get
+            {
+                return $"{name} {lastname}";
+            }
+            set
+            {
+                fullName = value;
+            }
+        }
         public string job { get; set; }
         public string workHours { get; set; }
         public string details { get; set; }

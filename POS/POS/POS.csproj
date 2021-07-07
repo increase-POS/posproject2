@@ -233,6 +233,7 @@
       <DependentUpon>UC_squareCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\ValidatorExtensions.cs" />
+    <Compile Include="converters\deliveryTypeConverter.cs" />
     <Compile Include="converters\depositorBondeConverter.cs" />
     <Compile Include="converters\depositorNameConverter.cs" />
     <Compile Include="converters\depositorTypeConverter.cs" />
@@ -410,6 +411,9 @@
     <Compile Include="View\windows\wd_branchesList.xaml.cs">
       <DependentUpon>wd_branchesList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_changePassword.xaml.cs">
+      <DependentUpon>wd_changePassword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_companyInfo.xaml.cs">
       <DependentUpon>wd_companyInfo.xaml</DependentUpon>
     </Compile>
@@ -451,6 +455,9 @@
     </Compile>
     <Compile Include="View\windows\wd_uploadImage.xaml.cs">
       <DependentUpon>wd_uploadImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_usersList.xaml.cs">
+      <DependentUpon>wd_usersList.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\winControlPanel.xaml.cs">
       <DependentUpon>winControlPanel.xaml</DependentUpon>
@@ -722,6 +729,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\windows\wd_changePassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\windows\wd_companyInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -775,6 +786,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_uploadImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_usersList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

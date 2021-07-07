@@ -449,9 +449,9 @@ namespace POS.View
             {
                 invoice.invoiceMainId = invoice.invoiceId;
                 invoice.invoiceId = 0;
-                invoice.invNumber = await generateInvNumber("sb");
+                invoice.invNumber = await invoice.generateInvNumber("sb");
             }
-            if (invoice.branchCreatorId == 0)
+            if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
@@ -483,7 +483,7 @@ namespace POS.View
                 // build invoice NUM like si-storCode-posCode-sequence exp: 123_PI_2
                 if (invoice.invNumber == null)
                 {
-                    invoice.invNumber = await generateInvNumber("si");
+                    invoice.invNumber = await invoice.generateInvNumber("si");
                 }
               
                 decimal balance = 0;
@@ -658,21 +658,21 @@ namespace POS.View
             }
             clearInvoice();
         }
-        private async Task<string> generateInvNumber(string invoiceCode)
-        {
-            string storeCode = "";
-            string posCode = "";
-            if (pos != null)
-            {
-                storeCode = pos.branchCode;
-                posCode = pos.code;
-            }
-            int sequence = await invoiceModel.GetLastNumOfInv(invoiceCode);
-            sequence++;
+        //private async Task<string> generateInvNumber(string invoiceCode)
+        //{
+        //    string storeCode = "";
+        //    string posCode = "";
+        //    if (pos != null)
+        //    {
+        //        storeCode = pos.branchCode;
+        //        posCode = pos.code;
+        //    }
+        //    int sequence = await invoiceModel.GetLastNumOfInv(invoiceCode);
+        //    sequence++;
 
-            string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
-            return invoiceNum;
-        }
+        //    string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
+        //    return invoiceNum;
+        //}
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
             //check mandatory inputs

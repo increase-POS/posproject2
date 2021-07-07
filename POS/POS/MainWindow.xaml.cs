@@ -48,7 +48,7 @@ namespace POS
         public static string Mobile = "+963967376542";
         public static string Address = "Aleppo";
         public static string Currency = "KD";
-        internal static int? userID ;
+        internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
         //internal static int? posID = 54;
@@ -102,14 +102,14 @@ namespace POS
             //MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             //MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
             generateResponsiveVariables();
-            #pragma warning disable CS0436 // Type conflicts with imported type
+#pragma warning disable CS0436 // Type conflicts with imported type
             TabTipAutomation.IgnoreHardwareKeyboard = HardwareKeyboardIgnoreOptions.IgnoreAll;
-            #pragma warning restore CS0436 // Type conflicts with imported type
-            #pragma warning disable CS0436 // Type conflicts with imported type
-            #pragma warning restore CS0436 // Type conflicts with imported type
-            #pragma warning disable CS0436 // Type conflicts with imported type
+#pragma warning restore CS0436 // Type conflicts with imported type
+#pragma warning disable CS0436 // Type conflicts with imported type
+#pragma warning restore CS0436 // Type conflicts with imported type
+#pragma warning disable CS0436 // Type conflicts with imported type
             TabTipAutomation.ExceptionCatched += TabTipAutomationOnTest;
-            #pragma warning restore CS0436 // Type conflicts with imported type
+#pragma warning restore CS0436 // Type conflicts with imported type
             this.Height = SystemParameters.MaximizedPrimaryScreenHeight;
             //this.Width = SystemParameters.MaximizedPrimaryScreenHeight;
             timer = new DispatcherTimer();
@@ -182,9 +182,15 @@ namespace POS
 
         private void BTN_Close_Click(object sender, RoutedEventArgs e)
         {
+            updateLogninRecord();
             timer.Stop();
             System.Windows.Application.Current.Shutdown();
         }
+        //protected override void OnClosed(EventArgs e)
+        //{
+        //    base.OnClosed(e);
+        //    this.RemoveLogicalChild(this.Content);    // since protected method
+        //}
 
         private void BTN_Minimize_Click(object sender, RoutedEventArgs e)
         {
@@ -326,7 +332,7 @@ namespace POS
             }
             //else
             //    grid_main.Children.Add(uc_home.Instance);
-           
+
             //uc_home uc = new uc_home();
             //grid_main.Children.Add(uc);
 
@@ -357,9 +363,9 @@ namespace POS
 
         User userModel = new User();
         UsersLogs userLogsModel = new UsersLogs();
-     
-        private async void BTN_logOut_Click(object sender, RoutedEventArgs e)
-        {//log out
+
+        async void updateLogninRecord()
+        {
             //update lognin record
             UsersLogs userLog = new UsersLogs();
             userLog = await userLogsModel.GetByID(userLogInID.Value);
@@ -369,6 +375,11 @@ namespace POS
             userLogin.isOnline = 0;
             userLogin.isActive = 1;
             await userModel.saveUser(userLogin);
+        }
+        private async void BTN_logOut_Click(object sender, RoutedEventArgs e)
+        {//log out
+         //update lognin record
+            updateLogninRecord();
 
             //open login window and close this window
             winLogIn log = new winLogIn();

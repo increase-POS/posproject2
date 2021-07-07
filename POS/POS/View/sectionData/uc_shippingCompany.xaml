@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:POS.View.sectionData"
              mc:Ignorable="d" 
+             xmlns:converters="clr-namespace:POS.converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-              d:DesignHeight="675" d:DesignWidth="985" Loaded="UserControl_Loaded" >
+             d:DesignHeight="675" d:DesignWidth="985" Loaded="UserControl_Loaded" >
     <Grid x:Name="grid_ucShippingCompany" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.54*"/>
@@ -115,6 +116,7 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
+                        <converters:deliveryTypeConverter   x:Key="deliveryTypeConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Name"     Binding="{Binding Path=name}">
@@ -150,7 +152,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Delivery Type"  Binding="{Binding Path=deliveryType}">
+                        <DataGridTextColumn Width="*"  Header="Delivery Type"  Binding="{Binding deliveryType,Converter={StaticResource deliveryTypeConverter }}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>

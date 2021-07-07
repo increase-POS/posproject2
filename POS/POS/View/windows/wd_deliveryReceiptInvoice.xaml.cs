@@ -48,5 +48,36 @@ namespace POS.View.windows
         {
 
         }
+
+        private void Cb_company_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Cb_company_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+        }
+        private void validateEmpty(string name, object sender)
+        {
+            if (name == "TextBox")
+            {
+
+            }
+            else if (name == "ComboBox")
+            {
+               
+            }
+            else if (name == "DatePicker")
+            {
+               
+            }
+
+        }
     }
 }

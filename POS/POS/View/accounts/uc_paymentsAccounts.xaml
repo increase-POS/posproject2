@@ -387,7 +387,6 @@
                                 <ToolTip x:Name="tt_errorDepositTo" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
-
                         <ComboBox x:Name="cb_recipientV"  Grid.Row="3"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="Recipient..."  

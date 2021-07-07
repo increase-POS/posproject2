@@ -693,5 +693,13 @@ namespace POS.Classes
                 return invoice;
             }
         }
+        public async Task<string> generateInvNumber(string invoiceCode)
+        {
+            int sequence = await GetLastNumOfInv(invoiceCode);
+            sequence++;
+
+            string invoiceNum = invoiceCode + "-"  + sequence.ToString();
+            return invoiceNum;
+        }
     }
 }
