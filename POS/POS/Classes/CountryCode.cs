@@ -19,6 +19,9 @@ namespace POS.Classes
         public string code { get; set; }
 
 
+        public string currency { get; set; }
+        public string name { get; set; }
+        public byte isDefault { get; set; }
 
         public async Task<List<CountryCode>> GetAllCountries()
         {
@@ -106,17 +109,9 @@ namespace POS.Classes
 
 
 
-
-
-
-
-
-
-
-
-        public async Task<List<Branch>> SearchBranches(string type, string searchWord)
+        public async Task<List<CountryCode>> GetAllRegion()
         {
-            List<Branch> branches = null;
+            List<CountryCode> CountryCodes = null;
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -127,9 +122,8 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Branches/Search?type=" + type + "&Searchwords=" + searchWord);
+                request.RequestUri = new Uri(Global.APIUri + "Countries/GetAllRegion");
                 request.Headers.Add("APIKey", Global.APIKey);
-                //request.Headers.Add("type", type);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = await client.SendAsync(request);
@@ -145,23 +139,59 @@ namespace POS.Classes
                         Converters = new List<JsonConverter> { new BadDateFixingConverter() },
                         DateParseHandling = DateParseHandling.None
                     };
-                    branches = JsonConvert.DeserializeObject<List<Branch>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return branches;
+                    CountryCodes = JsonConvert.DeserializeObject<List<CountryCode>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return CountryCodes;
                 }
                 else //web api sent error response 
                 {
-                    branches = new List<Branch>();
+                    CountryCodes = new List<CountryCode>();
                 }
-                return branches;
+                return CountryCodes;
             }
 
         }
 
-        // Get Category Tree By ID
-       
 
 
-        // get Get All branches or stores Without Main branch which has id=1;
+        public async Task<string> UpdateIsdefault(int countryId)
+        {
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            // 
+
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                // encoding parameter to get special characters
+
+                request.RequestUri = new Uri(Global.APIUri + "Countries/UpdateIsdefault?countryId=" + countryId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
+                    return message;
+                }
+                return "";
+            }
+        }
+
+
+
+
+
+
 
 
 
