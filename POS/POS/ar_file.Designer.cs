@@ -178,6 +178,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to العربية.
+        /// </summary>
+        internal static string trArabic {
+            get {
+                return ResourceManager.GetString("trArabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 963+.
         /// </summary>
         internal static string trAreaHint {
@@ -1551,6 +1560,15 @@ namespace POS {
         internal static string trEndTime {
             get {
                 return ResourceManager.GetString("trEndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الانكليزية.
+        /// </summary>
+        internal static string trEnglish {
+            get {
+                return ResourceManager.GetString("trEnglish", resourceCulture);
             }
         }
         

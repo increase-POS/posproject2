@@ -21,20 +21,12 @@ namespace POS.Classes
         public string password { get; set; }
         public string name { get; set; }
         public string lastname { get; set; }
-        public string fullName
-        {
-            get
-            {
-                return $"{name} {lastname}";
-            }
-            set
-            {
-                fullName = value;
-            }
-        }
+        public string fullName { get; set; }
         public string job { get; set; }
         public string workHours { get; set; }
         public string details { get; set; }
+        public float balance { get; set; }
+        public int balanceType { get; set; }
         public DateTime createDate { get; set; }
         public DateTime updateDate { get; set; }
         public int createUserId { get; set; }
@@ -49,6 +41,7 @@ namespace POS.Classes
         public string role { get; set; }
         public Boolean canDelete { get; set; }
         public string image { get; set; }
+
         public async Task<List<User>> GetUsersAsync()
         {
             List<User> users = null;

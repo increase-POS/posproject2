@@ -1566,4 +1566,10 @@
   <data name="trSms" xml:space="preserve">
     <value>SMS</value>
   </data>
+  <data name="trArabic" xml:space="preserve">
+    <value>Arabic</value>
+  </data>
+  <data name="trEnglish" xml:space="preserve">
+    <value>English</value>
+  </data>
 </root>

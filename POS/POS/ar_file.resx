@@ -1545,4 +1545,10 @@
   <data name="trSms" xml:space="preserve">
     <value>الرسائل النصية</value>
   </data>
+  <data name="trArabic" xml:space="preserve">
+    <value>العربية</value>
+  </data>
+  <data name="trEnglish" xml:space="preserve">
+    <value>الانكليزية</value>
+  </data>
 </root>

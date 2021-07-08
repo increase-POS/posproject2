@@ -32,6 +32,7 @@ namespace POS.Classes
         public string type { get; set; }
         public string accType { get; set; }
         public float balance { get; set; }
+        public int balanceType { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }

@@ -702,31 +702,50 @@ namespace POS.View.accounts
             {
                 case 0:
                     cb_recipientV.Visibility = Visibility.Visible;
+                    btn_invoices.Visibility = Visibility.Visible;
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Collapsed;
+                    btn_salaries.Visibility = Visibility.Collapsed;
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
                     break;
                 case 1:
                     cb_recipientV.Visibility = Visibility.Collapsed;
+                    btn_invoices.Visibility = Visibility.Collapsed;
                     cb_recipientC.Visibility = Visibility.Visible;
                     cb_recipientU.Visibility = Visibility.Collapsed;
+                    btn_salaries.Visibility = Visibility.Collapsed;
                     SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
                     break;
-                case 2:  
-                case 3:
+                case 2:
                     cb_recipientV.Visibility = Visibility.Collapsed;
+                    btn_invoices.Visibility = Visibility.Collapsed;
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Visible;
+                    cb_recipientU.Margin = new Thickness(10, 5, 10, 5);
+                    //Margin = "10,5,10,5" 
+                    SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
+                    SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
+                    break;
+                case 3:
+                    cb_recipientV.Visibility = Visibility.Collapsed;
+                    btn_invoices.Visibility = Visibility.Collapsed;
+                    cb_recipientC.Visibility = Visibility.Collapsed;
+                    cb_recipientU.Visibility = Visibility.Visible;
+                    cb_recipientU.Margin = new Thickness(10, 5, 35, 5);
+                    //Margin = "10,5,35,5"
+                    btn_salaries.Visibility = Visibility.Visible;
                     SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                     break;
                 case 4: 
                 case 5:
                     cb_recipientV.Visibility = Visibility.Collapsed;
+                    btn_invoices.Visibility = Visibility.Collapsed;
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Collapsed;
+                    btn_salaries.Visibility = Visibility.Collapsed;
                     cb_recipientV.Text = ""; cb_recipientC.Text = ""; cb_recipientU.Text = "";
                     SectionData.clearComboBoxValidate(cb_recipientV , p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
@@ -900,6 +919,16 @@ namespace POS.View.accounts
             string s = await bondModel.Save(bond);
             MessageBox.Show(s.ToString());
             //saveBond("xxx", 1000 , dp_docDate.SelectedDate.Value, "p", 127);
+
+        }
+
+        private void Btn_invoices_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_salaries_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

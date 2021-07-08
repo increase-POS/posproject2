@@ -731,7 +731,7 @@
                     Background="{x:Null}" x:Name="btn_locations" Click="btn_secondLevelClick"  HorizontalContentAlignment="Stretch">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
 
-                                        <Path Fill="{StaticResource MainColorBlue}" Stretch="Fill"   DockPanel.Dock="Left"
+                                        <Path Fill="#67686d" Stretch="Fill"   DockPanel.Dock="Left"
                                        Width="25" Height="25"  Margin="10,0,15,0" x:Name="path_locations"
                                          Data="M259.8,181h145.9v-70.6c0-9.2-3-12.2-12.3-12.2c-40.6,0-81.2-0.1-121.8,0c-8.9,0-11.8,3-11.8,11.9c-0.1,22.4,0,44.7,0,67.1
 	V181z M373.5,113H394v61.2l0,0l-10.4-11.3l-10.1,11.3l0,0V113z M248.1,181v-4.2c0-22.4,0.1-44.7,0-67.1c0-8.2-3.3-11.5-11.5-11.5
@@ -749,7 +749,7 @@
                                         </Path>
 
                                         <TextBlock Name="txt_locations" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
-                                            VerticalAlignment="Bottom" FontSize="14" Foreground="{StaticResource MainColorBlue}" Text="Locations" />
+                                            VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="Locations" />
                                     </DockPanel>
                                    
                                 </Button>
@@ -847,9 +847,9 @@
                                 </Button>
                                 <Button Grid.Column="0" Grid.Row="1" BorderBrush="{x:Null}" Tag="importExport"
                                         Padding="0" Margin="5,0"  Height="auto" HorizontalContentAlignment="Stretch"
-                    Background="{x:Null}" x:Name="btn_itemsExport" Click="btn_secondLevelClick"  Width="auto">
+                    Background="{x:Null}" x:Name="btn_importExport" Click="btn_secondLevelClick"  Width="auto">
                                     <DockPanel LastChildFill="True" HorizontalAlignment="Stretch">
-                                        <Path x:Name="path_itemsExport" DockPanel.Dock="Left"  Fill="#67686d" Stretch="Fill"  
+                                        <Path x:Name="path_importExport" DockPanel.Dock="Left"  Fill="#67686d" Stretch="Fill"  
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M238.2,174.2c-1.5,0.9-2.6,1-4.2,0.1c-23.8-13.8-47.6-27.5-71.4-41.3c-4.1-2.3-8.1-4.7-12.4-7.2c5.3-3,10.2-5.9,15.1-8.8
 	c5.6-3.3,11.1-6.6,16.7-9.8h0.7c0.6,0.4,1.1,0.9,1.8,1.3c20.8,12,41.6,24,62.3,36c7.1,4.1,14.1,8.1,21.4,12.3
@@ -867,7 +867,7 @@
                                         </Path>
 
 
-                                        <TextBlock Name="txt_itemsExport" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
+                                        <TextBlock Name="txt_importExport" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d"  Text="Import/Export" />
                                     </DockPanel>
                                    
@@ -913,11 +913,11 @@
                                 </Button>
                                 <Button Grid.Column="6" HorizontalContentAlignment="Stretch" Tag="storageStatistic"
                                         Grid.Row="1" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}" x:Name="btn_statistic" Click="btn_secondLevelClick"  >
+                    Background="{x:Null}" x:Name="btn_storageStatistic" Click="btn_secondLevelClick"  >
 
                                     <DockPanel LastChildFill="True" >
 
-                                        <Path x:Name="path_statistic" Fill="#67686d" Stretch="Fill"  
+                                        <Path x:Name="path_storageStatistic" Fill="#67686d" Stretch="Fill"  
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M28.6,72.1c-4.4,7.8-13.7,11.2-22,8v38.5c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5V72.2
 	c0-0.1-0.1-0.1-0.1-0.1C28.7,72.1,28.6,72.1,28.6,72.1z M46.2,42.2l-8.8,8.9v67.6c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5
@@ -930,7 +930,7 @@
                                            
                                         </Path>
 
-                                        <TextBlock Name="txt_statistic" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
+                                        <TextBlock Name="txt_storageStatistic" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d"  Text="Statistic" />
                                     </DockPanel>
                                  
@@ -972,7 +972,7 @@
                     Background="{x:Null}" x:Name="btn_payInvoice" Click="btn_secondLevelClick"  HorizontalContentAlignment="Stretch">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
 
-                                        <Path x:Name="path_payInvoice" Fill="{StaticResource MainColorBlue}" Stretch="Fill"   DockPanel.Dock="Left"
+                                        <Path x:Name="path_payInvoice" Fill="#67686d" Stretch="Fill"   DockPanel.Dock="Left"
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3c0,0,0,0,0,0v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2.2-0.5,3.1-1.3
 	l8.5-8.5l8.5,8.5c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5l8.5,8.5c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5l8.5,8.5c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5
@@ -994,16 +994,16 @@
                                         </Path>
 
                                         <TextBlock x:Name="txt_payInvoice" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
-                                            VerticalAlignment="Bottom" FontSize="14" Foreground="{StaticResource MainColorBlue}" Text="Pay Invoice" />
+                                            VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="Pay Invoice" />
                                     </DockPanel>
                                  
                                 </Button>
                                 <Button Grid.Column="2" BorderBrush="{x:Null}" Padding="0" Tag="purchaseStatistic"
                                         Margin="5,0"  Height="auto"
-                    Background="{x:Null}" x:Name="btn_purchase_statistic" Click="btn_secondLevelClick"  HorizontalContentAlignment="Stretch">
+                    Background="{x:Null}" x:Name="btn_purchaseStatistic" Click="btn_secondLevelClick"  HorizontalContentAlignment="Stretch">
                                     <DockPanel LastChildFill="True" >
 
-                                        <Path Name="path_purchase_statistic" Fill="#67686d" Stretch="Fill"  
+                                        <Path Name="path_purchaseStatistic" Fill="#67686d" Stretch="Fill"  
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M28.6,72.1c-4.4,7.8-13.7,11.2-22,8v38.5c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5V72.2
 	c0-0.1-0.1-0.1-0.1-0.1C28.7,72.1,28.6,72.1,28.6,72.1z M46.2,42.2l-8.8,8.9v67.6c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5
@@ -1022,7 +1022,7 @@
                                             </Path.ToolTip>
                                         </Path>
 
-                                        <TextBlock x:Name="txt_purchase_statistic" Text="Statistic" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
+                                        <TextBlock x:Name="txt_purchaseStatistic" Text="Statistic" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d"   />
                                     </DockPanel>
 
@@ -1063,7 +1063,7 @@
                     Background="{x:Null}" HorizontalContentAlignment="Stretch">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
 
-                                        <Path x:Name="path_reciptInvoice" Fill="{StaticResource MainColorBlue}" Stretch="Fill"   DockPanel.Dock="Left"
+                                        <Path x:Name="path_reciptInvoice" Fill="#67686d" Stretch="Fill"   DockPanel.Dock="Left"
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2.2-0.5,3.1-1.3l8.5-8.5l8.5,8.5
 	c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5l8.5,8.5c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5l8.5,8.5c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5l8.5,8.5
@@ -1083,7 +1083,7 @@
                                         </Path>
 
                                         <TextBlock x:Name="txt_reciptInvoice" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
-                                            VerticalAlignment="Bottom" FontSize="14" Foreground="{StaticResource MainColorBlue}" Text="Invoice" />
+                                            VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="Invoice" />
                                     </DockPanel>
                                    
                                 </Button>
@@ -1308,12 +1308,12 @@
                                     </DockPanel>
 
                                 </Button>
-                                <Button x:Name="btn_sale_statistic" Grid.Column="6" Grid.Row="1" Tag="salesStatistic"
+                                <Button x:Name="btn_salesStatistic" Grid.Column="6" Grid.Row="1" Tag="salesStatistic"
                                         BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick">
                                     <DockPanel LastChildFill="True" >
 
-                                        <Path x:Name="path_sale_statistic" Fill="#67686d" Stretch="Fill"  
+                                        <Path x:Name="path_salesStatistic" Fill="#67686d" Stretch="Fill"  
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M28.6,72.1c-4.4,7.8-13.7,11.2-22,8v38.5c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5V72.2
 	c0-0.1-0.1-0.1-0.1-0.1C28.7,72.1,28.6,72.1,28.6,72.1z M46.2,42.2l-8.8,8.9v67.6c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5
@@ -1326,7 +1326,7 @@
                                            
                                         </Path>
 
-                                        <TextBlock x:Name="txt_sale_statistic" Text="Statistic" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
+                                        <TextBlock x:Name="txt_salesStatistic" Text="Statistic" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d"   />
                                     </DockPanel>
                                    
@@ -1362,12 +1362,13 @@
                                 <Border Grid.Column="5" BorderBrush="#E8E8E8" Grid.RowSpan="3"
                                 BorderThickness="1" Margin="0,10"></Border>
 
-                                <Button x:Name="btn_pos" Grid.Column="0" BorderBrush="{x:Null}" Tag="posAccounting"
+                                <Button x:Name="btn_posAccounting" Grid.Column="0" BorderBrush="{x:Null}" Tag="posAccounting"
                                         Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
 
-                                        <Path x:Name="path_pos" Fill="{StaticResource MainColorBlue}" Stretch="Fill"   DockPanel.Dock="Left"
+                                        <Path x:Name="path_posAccounting" Fill="#67686d" Stretch="Fill"
+                                              DockPanel.Dock="Left"
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M33,12c0-0.6,0.4-1,1-1h5c0.6,0,1,0.4,1,1c0,0.6-0.4,1-1,1h-5C33.4,13,33,12.6,33,12z M34,17h5c0.6,0,1-0.4,1-1
 	c0-0.6-0.4-1-1-1h-5c-0.6,0-1,0.4-1,1C33,16.6,33.4,17,34,17z M58,50v8H0v-8H58z M20,54c0-0.6-0.4-1-1-1H5c-0.6,0-1,0.4-1,1
@@ -1391,8 +1392,8 @@
                                           
                                         </Path>
 
-                                        <TextBlock Name="txt_pos" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
-                                            VerticalAlignment="Bottom" FontSize="14" Foreground="{StaticResource MainColorBlue}" Text="POS" />
+                                        <TextBlock Name="txt_posAccounting" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
+                                            VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="POS" />
                                     </DockPanel>
                                     <Button.ToolTip>
                                         <ToolTip Name="tt_pos" Content="Pos"
@@ -1499,12 +1500,12 @@
                                               VerticalOffset="-10"/>
                                     </Button.ToolTip>
                                 </Button>
-                                <Button x:Name="btn_banks" Grid.Column="0" Grid.Row="1" Tag="banksAccounting"
+                                <Button x:Name="btn_banksAccounting" Grid.Column="0" Grid.Row="1" Tag="banksAccounting"
                                         BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
 
-                                        <Path x:Name="path_banks" Fill="#67686d" Stretch="Fill"   DockPanel.Dock="Left"
+                                        <Path x:Name="path_banksAccounting" Fill="#67686d" Stretch="Fill"   DockPanel.Dock="Left"
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M4,10h3v7H4V10z M10.5,10h3v7h-3V10z M2,19h20v3H2V19z M17,10h3v7h-3V10z M12,1L2,6v2h20V6L12,1z"  >
                                             <Path.ToolTip>
@@ -1516,17 +1517,17 @@
                                             </Path.ToolTip>
                                         </Path>
 
-                                        <TextBlock Name="txt_banks" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
+                                        <TextBlock Name="txt_banksAccounting" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="Banks" />
                                     </DockPanel>
 
                                 </Button>
-                                <Button x:Name="btn_accounts_statistic" Grid.Column="2" Tag="accountsStatistic"
+                                <Button x:Name="btn_accountsStatistic" Grid.Column="2" Tag="accountsStatistic"
                                         Grid.Row="1" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick">
                                     <DockPanel LastChildFill="True" >
 
-                                        <Path x:Name="path_accounts_statistic" Fill="#67686d" Stretch="Fill"  
+                                        <Path x:Name="path_accountsStatistic" Fill="#67686d" Stretch="Fill"  
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M118.9,25l-24.3,2.1c-0.4,0-0.6,0.3-0.6,0.7c0,0.2,0.1,0.3,0.2,0.4l6.1,5.8L99,35.4l-0.9,0.9l-4.6,4.8
 	c-1.8,1.9-3.5,3.7-5.3,5.6c-1.3,1.4-2.5,2.7-3.8,4.1c-3,3.3-5.9,6.6-8.8,9.9c-1.4,1.7-2.9,3.4-4.3,5.1c-0.4,0.5-0.8,0.9-1.1,1.4
@@ -1547,7 +1548,7 @@
                                          
                                         </Path>
 
-                                        <TextBlock x:Name="txt_accounts_statistic" Text="Statistic" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
+                                        <TextBlock x:Name="txt_accountsStatistic" Text="Statistic" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d"   />
                                     </DockPanel>
                                     <Button.ToolTip>
@@ -1624,7 +1625,7 @@
                                 <Button  x:Name="btn_suppliers" Grid.Column="0" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick" Tag="suppliers">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
-                                        <Path x:Name="path_suppliers" Fill="{StaticResource MainColorBlue}" Stretch="Fill"   DockPanel.Dock="Left"
+                                        <Path x:Name="path_suppliers" Fill="#67686d" Stretch="Fill"   DockPanel.Dock="Left"
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M127,120.6h-22.8l-3.1-21.2l3.3-4.4h1c0,0,12,4,17.4,6.7c1.6,0.8,2.8,2.4,3.1,4.2
 	C126.6,110.7,126.9,115.6,127,120.6z M109.3,82.3l1.6-8.5c0.8-6.2-3.5-11.9-9.7-12.8c-0.5-0.1-1-0.1-1.5-0.1h-2
@@ -1637,7 +1638,7 @@
                                         </Path>
 
                                         <TextBlock Name="txt_suppliers" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
-                                            VerticalAlignment="Bottom" FontSize="14" Foreground="{StaticResource MainColorBlue}" Text="Supplierse" />
+                                            VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="Supplierse" />
                                     </DockPanel>
                                    
                                 </Button>
@@ -1665,11 +1666,11 @@
                                     </DockPanel>
                                   
                                 </Button>
-                                <Button  x:Name="btn_sd_users" Grid.Column="4" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
+                                <Button  x:Name="btn_users" Grid.Column="4" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick" Tag="users">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
 
-                                        <Path x:Name="path_sd_users" Fill="#67686d" Stretch="Fill"   DockPanel.Dock="Left"
+                                        <Path x:Name="path_users" Fill="#67686d" Stretch="Fill"   DockPanel.Dock="Left"
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M260.6,40.6c107.9-0.1,196.3,87.9,196.2,196.5c-0.1,108-87.9,195.7-195.7,196C152.5,433.4,63.8,344.9,64.3,236
 	C64.7,128.6,152.2,40.6,260.6,40.6z M327.2,183.3c1.3,1.5,2.5,2.5,3.1,3.8c0.7,1.5,1.1,3.3,1.1,5c0.3,8.6-2.1,16.6-6.5,23.9
@@ -1686,7 +1687,7 @@
                                          
                                         </Path>
 
-                                        <TextBlock Name="txt_sd_users" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
+                                        <TextBlock Name="txt_users" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="Users" />
                                     </DockPanel>
                                    
@@ -1743,10 +1744,10 @@
                           
                                 </Button>
                                 <Button Grid.Column="2" Grid.Row="1" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}" x:Name="btn_sd_pos"  HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick" Tag="pos">
+                    Background="{x:Null}" x:Name="btn_pos"  HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick" Tag="pos">
                                     <DockPanel LastChildFill="True" >
 
-                                        <Path Name="path_sd_pos" Fill="#67686d" Stretch="Fill"  
+                                        <Path Name="path_pos" Fill="#67686d" Stretch="Fill"  
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M33,12c0-0.6,0.4-1,1-1h5c0.6,0,1,0.4,1,1c0,0.6-0.4,1-1,1h-5C33.4,13,33,12.6,33,12z M34,17h5c0.6,0,1-0.4,1-1
 	c0-0.6-0.4-1-1-1h-5c-0.6,0-1,0.4-1,1C33,16.6,33.4,17,34,17z M58,50v8H0v-8H58z M20,54c0-0.6-0.4-1-1-1H5c-0.6,0-1,0.4-1,1
@@ -1770,22 +1771,22 @@
                                            
                                         </Path>
 
-                                        <TextBlock x:Name="txt_sd_pos" Text="POS" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
+                                        <TextBlock x:Name="txt_pos" Text="POS" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d"   />
                                     </DockPanel>
                                    
                                 </Button>
-                                <Button  x:Name="btn_sd_banks" Grid.Column="4" Grid.Row="1" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
+                                <Button  x:Name="btn_banks" Grid.Column="4" Grid.Row="1" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick" Tag="banks">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
 
-                                        <Path x:Name="path_sd_banks" Fill="#67686d" Stretch="Fill"   DockPanel.Dock="Left"
+                                        <Path x:Name="path_banks" Fill="#67686d" Stretch="Fill"   DockPanel.Dock="Left"
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M4,10h3v7H4V10z M10.5,10h3v7h-3V10z M2,19h20v3H2V19z M17,10h3v7h-3V10z M12,1L2,6v2h20V6L12,1z"  >
                                        
                                         </Path>
 
-                                        <TextBlock Name="txt_sd_banks" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
+                                        <TextBlock Name="txt_banks" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="Banks" />
                                     </DockPanel>
                                   
@@ -1922,7 +1923,6 @@
 
                             <!--***********************************************************-->
                             <!--grid settings-->
-                            
                             <Grid Name="grid_settings" Margin="10,10,10,10" MinHeight="80" Visibility="Collapsed">
 
                                 <Grid.ColumnDefinitions>
@@ -1952,7 +1952,7 @@
                     Background="{x:Null}" HorizontalContentAlignment="Stretch">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
 
-                                        <Path x:Name="path_general" Fill="{StaticResource MainColorBlue}" Stretch="Fill"   DockPanel.Dock="Left"
+                                        <Path x:Name="path_general" Fill="#67686d" Stretch="Fill"   DockPanel.Dock="Left"
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M22,31v38h56V31H22z M48,52.5h-3l2.1,2.1l-3.5,3.5L41.5,56v3h-5v-3l-2.1,2.1l-3.5-3.5l2.1-2.1h-3v-5h3l-2.1-2.1l3.5-3.5  l2.1,2.1v-3h5v3l2.1-2.1l3.5,3.5L45,47.5h3V52.5z M70,57H53v-2h17V57z M70,51H53v-2h17V51z M70,45H53v-2h17V45z M43,50  c0,2.2-1.8,4-4,4s-4-1.8-4-4c0-2.2,1.8-4,4-4S43,47.8,43,50z"  >
                                             <Path.ToolTip>
@@ -1965,16 +1965,16 @@
                                         </Path>
 
                                         <TextBlock x:Name="txt_general" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
-                                            VerticalAlignment="Bottom" FontSize="14" Foreground="{StaticResource MainColorBlue}" Text="General" />
+                                            VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="General" />
                                     </DockPanel>
 
                                 </Button>
-                                <Button x:Name="btn_reports" Click="btn_reports_Click" Tag="btn_secondLevelClick"
+                                <Button x:Name="btn_reportsSettings" Click="btn_secondLevelClick" Tag="reportsSettings"
                                         Grid.Column="2" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}"   HorizontalContentAlignment="Stretch">
                                     <DockPanel LastChildFill="True" >
 
-                                        <Path x:Name="path_settings_reports" Fill="#67686d" Stretch="Fill"  
+                                        <Path x:Name="path_reportsSettings" Fill="#67686d" Stretch="Fill"  
                                        Width="25" Height="25"  Margin="10,0,15,0"
                                          Data="M226.2,198.1V84.3c0,0,0-0.1,0-0.1c0-0.2-0.1-0.4-0.1-0.6c0-0.1,0-0.1-0.1-0.2c-0.1-0.2-0.3-0.5-0.5-0.7l-31.6-31.5  c-0.5-0.5-1-0.7-1.7-0.7H192L39.9,50.6c-1.3,0-2.4,1.1-2.4,2.4v215.3c0,1.3,1.1,2.4,2.4,2.4h165.4c5.5,3,11.8,4.8,18.6,4.8  c21.3,0,38.7-17.4,38.7-38.7C262.5,216.2,246.4,199.4,226.2,198.1z M198.5,265.9H42.3V55.4l147.6-0.2v29.1c0,1.3,1,2.4,2.4,2.4h29.2  v111.4c-20.2,1.2-36.3,18-36.3,38.6C185.1,248.3,190.3,258.8,198.5,265.9z M223.8,234.3c6.7,0,12.2,5.5,12.2,12.2  c0,5.7-3.9,10.4-9.2,11.8v6.1c0,1.3-1,2.4-2.4,2.4c-1.3,0-2.4-1.1-2.4-2.4v-5.8c-5.9-0.9-10.5-5.9-10.5-12c0-1.3,1.1-2.4,2.4-2.4  s2.4,1.1,2.4,2.4c0,4.1,3.3,7.5,7.5,7.5c4.1,0,7.4-3.3,7.4-7.5c0-4.1-3.3-7.4-7.4-7.4c-6.7,0-12.2-5.5-12.2-12.2  c0-6.1,4.6-11.2,10.5-12V209c0-1.3,1.1-2.4,2.4-2.4c1.3,0,2.4,1,2.4,2.4v6.1c5.3,1.4,9.2,6.1,9.2,11.8c0,1.3-1.1,2.4-2.4,2.4  c-1.3,0-2.4-1.1-2.4-2.4c0-4.1-3.3-7.5-7.4-7.5c-4.1,0-7.5,3.3-7.5,7.5C216.4,231,219.7,234.3,223.8,234.3z M171.1,193.3H53.5  c-1.3,0-2.4,1.1-2.4,2.4s1.1,2.4,2.4,2.4h117.6c1.3,0,2.4-1.1,2.4-2.4S172.4,193.3,171.1,193.3z M147.6,209H53.5  c-1.3,0-2.4,1.1-2.4,2.4c0,1.3,1.1,2.4,2.4,2.4h94.1c1.3,0,2.4-1.1,2.4-2.4C150,210.1,148.9,209,147.6,209z M130.7,224.7H53.5  c-1.3,0-2.4,1.1-2.4,2.4c0,1.3,1.1,2.4,2.4,2.4h77.1c1.3,0,2.4-1.1,2.4-2.4C133,225.8,132,224.7,130.7,224.7z M112.3,240.4H53.5  c-1.3,0-2.4,1.1-2.4,2.4c0,1.3,1.1,2.4,2.4,2.4h58.8c1.3,0,2.4-1.1,2.4-2.4C114.7,241.4,113.6,240.4,112.3,240.4z M174.4,125.7  c0,30.2-24.5,54.7-54.7,54.7s-54.7-24.5-54.7-54.7s24.5-54.8,54.7-54.8c1.3,0,2.4,1.1,2.4,2.4v50h50  C173.3,123.3,174.4,124.4,174.4,125.7z M183.9,116.2c0,1.3-1.1,2.4-2.4,2.4h-52.4c-1.3,0-2.4-1.1-2.4-2.4V63.8  c0-1.3,1.1-2.4,2.4-2.4C159.4,61.4,183.9,86,183.9,116.2z M257.7,55.3c0-0.2,0-0.5-0.1-0.7c0-0.1,0-0.2-0.1-0.2  c-0.1-0.2-0.2-0.3-0.3-0.5c-0.1-0.1-0.1-0.1-0.2-0.2c0,0,0,0,0,0l-31.5-28.4c-0.5-0.4-1-0.6-1.6-0.6v-0.1L71.4,24.8  c-1.3,0-2.4,1.1-2.4,2.4v16.3c0,0.6,0.3,1.2,0.7,1.7c0.5,0.5,1.1,0.7,1.7,0.7l120.8-0.1c2,0,3.7,0.7,5.1,2.1l31.5,31.5  c1.3,1.3,2.1,3.2,2.1,5v107.5c0,1.1,0.8,2.1,1.9,2.3c7.9,1.7,15.1,5.5,20.9,11c0.5,0.4,1,0.7,1.6,0.7c0.3,0,0.6-0.1,0.9-0.2  c0.9-0.4,1.5-1.2,1.5-2.2L257.7,55.3C257.7,55.4,257.7,55.4,257.7,55.3z M226.2,53V32.4l23,20.7H226.2z"  >
                                             <Path.ToolTip>
@@ -1986,7 +1986,7 @@
                                             </Path.ToolTip>
                                         </Path>
 
-                                        <TextBlock x:Name="txt_settings_reports" Text="Reports" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
+                                        <TextBlock x:Name="txt_reportsSettings" Text="Reports" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d"   />
                                     </DockPanel>
 
@@ -2015,9 +2015,6 @@
                                 </Button>
                             </Grid>
                         </Grid>
-
-
-
                     </Border>
                 </Border>
             </Grid>
@@ -2600,8 +2597,8 @@
 
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button x:Name="btn_users"   Grid.Row="7" Margin="5,5,5,10" TabIndex="6"
-                              Background="#4E4E4E" BorderBrush="{x:Null}" Click="Btn_users_Click" >
+                    <Button x:Name="btn_usersList"   Grid.Row="7" Margin="5,5,5,10" TabIndex="6"
+                              Background="#4E4E4E" BorderBrush="{x:Null}" Click="Btn_usersList_Click" >
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Path Fill="#E8E8E8" Stretch="Fill"  
                               HorizontalAlignment="Right" Grid.Column="0"   Margin="0,1,2,0"
@@ -2618,7 +2615,7 @@
 	c-0.7-4.5-1.5-9-2.1-13.4c-1.7-12-2.7-24-1.4-36.2c0.6-5.8,1.6-11.6,4.1-17c4.9-10.6,13.2-18.1,23.2-23.8
 	c12.2-6.9,25.5-10.2,39.4-10.6c19.5-0.5,37.6,3.8,53.6,15.5c11.1,8.2,17.8,19.2,19.6,33c1.6,12.3,0.9,24.5-0.9,36.7
 	C328.6,173.4,327.8,178.6,327.2,183.3z"/>
-                                <TextBlock  Name="txt_users" Text="Users" VerticalAlignment="Center">
+                            <TextBlock  Name="txt_usersList" Text="Users" VerticalAlignment="Center">
                                 </TextBlock>
                             </StackPanel>
                         </Button>

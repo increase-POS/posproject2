@@ -729,21 +729,25 @@ namespace POS.View.accounts
                 case 0:
                     cb_depositorV.Visibility = Visibility.Visible;
                     cb_depositorC.Visibility = Visibility.Collapsed;
+                    btn_invoices.Visibility = Visibility.Collapsed;
                     cb_depositorU.Visibility = Visibility.Collapsed;
                     break;
                 case 1:
                     cb_depositorV.Visibility = Visibility.Collapsed;
                     cb_depositorC.Visibility = Visibility.Visible;
+                    btn_invoices.Visibility = Visibility.Visible;
                     cb_depositorU.Visibility = Visibility.Collapsed;
                     break;
                 case 2:
                     cb_depositorV.Visibility = Visibility.Collapsed;
                     cb_depositorC.Visibility = Visibility.Collapsed;
+                    btn_invoices.Visibility = Visibility.Collapsed;
                     cb_depositorU.Visibility = Visibility.Visible;
                     break;
                 case 3:
                     cb_depositorV.Visibility = Visibility.Collapsed;
                     cb_depositorC.Visibility = Visibility.Collapsed;
+                    btn_invoices.Visibility = Visibility.Collapsed;
                     cb_depositorU.Visibility = Visibility.Collapsed;
                     SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
                     SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
@@ -795,6 +799,11 @@ namespace POS.View.accounts
             string msg = await ag.saveAgent(ag);
             MessageBox.Show(ag.balance.ToString() + " " + ag.address);
             MessageBox.Show(msg);
+        }
+
+        private void Btn_invoices_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

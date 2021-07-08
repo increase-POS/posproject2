@@ -43,7 +43,12 @@ namespace POS.View.windows
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         ImageBrush brush = new ImageBrush();
         BrushConverter bc = new BrushConverter();
-        int nameId, addressId, emailId, mobileId, phoneId, faxId , logoId;
+        int nameId = 0, addressId = 0, emailId = 0, mobileId = 0, phoneId = 0, faxId = 0, logoId = 0;
+        //int nameValueId = 0, addressValueId = 0, emailValueId = 0, mobileValueId = 0, phoneValueId = 0, faxValueId = 0, logoValueId = 0;
+        SettingCls set = new SettingCls();
+        SetValues setVName = new SetValues(); SetValues setVAddress = new SetValues(); SetValues setVEmail = new SetValues();
+        SetValues setVMobile = new SetValues(); SetValues setVPhone= new SetValues(); SetValues setVFax = new SetValues();
+        SetValues setVLogo = new SetValues();
         public wd_companyInfo()
         {
             InitializeComponent();
@@ -66,47 +71,50 @@ namespace POS.View.windows
             translate();
             #endregion
 
+            fillCountries();
+
+            fillCity();
+
             #region get settings Ids
             List<SettingCls> settingsCls = await setModel.GetAll();
             List<SetValues> settingsValues = await valueModel.GetAll();
 
-            SettingCls set = new SettingCls();
-            SetValues setV = new SetValues();
             //get company name
             set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
             nameId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
-            tb_name.Text = setV.value;
+            setVName = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
+            tb_name.Text = setVName.value;
             //get company address
             set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
             addressId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
-            tb_address.Text = setV.value;
+            setVAddress = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
+            tb_address.Text = setVAddress.value;
             //get company email
             set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
             emailId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
-            tb_email.Text = setV.value;
+            setVEmail = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
+            tb_email.Text = setVEmail.value;
             //get company mobile
             set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
             mobileId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
-            tb_mobile.Text = setV.value;
+            setVMobile = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
+            SectionData.getMobile(setVMobile.value, cb_areaMobile, tb_mobile);
             //get company phone
             set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
             phoneId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
-            tb_phone.Text = setV.value;
+            setVPhone = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
+            SectionData.getPhone(setVPhone.value, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
             //get company fax
             set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
             faxId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
-            tb_fax.Text = setV.value;
+            setVFax = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
+            SectionData.getPhone(setVFax.value, cb_areaFax, cb_areaFaxLocal, tb_fax);
             //get company logo
             set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
             logoId = set.settingId;
-            //setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
+            setVLogo = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
             //tb_fax.Text = setV.value;//getLogo();
+
             #endregion
         }
         private void translate()
@@ -372,59 +380,59 @@ namespace POS.View.windows
                (!tb_phone.Text.Equals("")) && (!tb_fax.Text.Equals("")))
             {
                 //save name
-                SetValues valName = new SetValues();
-                valName.value = tb_name.Text;
-                valName.isSystem = 1;
-                valName.settingId = nameId;
-                //string sName = await valueModel.Save(valName);
-                //MessageBox.Show("name : " + sName);
+                setVName.value = tb_name.Text;
+                setVName.isSystem = 1;
+                setVName.isDefault = 1;
+                setVName.settingId = nameId;
+                string sName = await valueModel.Save(setVName);
+                MessageBox.Show("name : " + sName);
 
                 //save address
-                SetValues valAddress = new SetValues();
-                valAddress.value = tb_address.Text;
-                valAddress.isSystem = 1;
-                valAddress.settingId = addressId;
-                //string sAddress = await valueModel.Save(valAddress);
-                //MessageBox.Show("address : " + sAddress);
+                setVAddress.value = tb_address.Text;
+                setVAddress.isSystem = 1;
+                setVAddress.isDefault = 1;
+                setVAddress.settingId = addressId;
+                string sAddress = await valueModel.Save(setVAddress);
+                MessageBox.Show("address : " + sAddress);
 
                 //save email
-                SetValues valEmail = new SetValues();
-                valEmail.value = tb_email.Text;
-                valEmail.isSystem = 1;
-                valEmail.settingId = emailId;
-                //string sEmail = await valueModel.Save(valEmail);
-                //MessageBox.Show("email : " + sEmail);
+                setVEmail.value = tb_email.Text;
+                setVEmail.isSystem = 1;
+                setVEmail.settingId = emailId;
+                setVEmail.isDefault = 1;
+                string sEmail = await valueModel.Save(setVEmail);
+                MessageBox.Show("email : " + sEmail);
 
                 //save mobile
-                SetValues valMobile = new SetValues();
-                valMobile.value = cb_areaMobile.Text + "-" + tb_mobile.Text;
-                valMobile.isSystem = 1;
-                valMobile.settingId = mobileId;
-                //string sMobile = await valueModel.Save(valMobile);
-                //MessageBox.Show("mobile : " + sMobile);
+                setVMobile.value = cb_areaMobile.Text + "-" + tb_mobile.Text;
+                setVMobile.isSystem = 1;
+                setVMobile.isDefault = 1;
+                setVMobile.settingId = mobileId;
+                string sMobile = await valueModel.Save(setVMobile);
+                MessageBox.Show("mobile : " + sMobile);
 
-                //save mobile
-                SetValues valPhone = new SetValues();
-                valPhone.value = cb_areaPhone.Text + "-" + tb_name.Text;
-                valPhone.isSystem = 1;
-                valPhone.settingId = phoneId;
-                //string sPhone = await valueModel.Save(valPhone);
-                //MessageBox.Show("phone : " + sPhone);
+                //save phone
+                setVPhone.value = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+                setVPhone.isSystem = 1;
+                setVPhone.isDefault = 1;
+                setVPhone.settingId = phoneId;
+                string sPhone = await valueModel.Save(setVPhone);
+                MessageBox.Show("phone : " + sPhone);
 
                 //save fax
-                SetValues valFax = new SetValues();
-                valFax.value = cb_areaFax.Text + "-" + tb_fax.Text;
-                valFax.isSystem = 1;
-                valFax.settingId = faxId;
-                //string sFax = await valueModel.Save(valFax);
-                //MessageBox.Show("fax : " + sFax);
+                setVFax.value = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
+                setVFax.isSystem = 1;
+                setVFax.isDefault = 1;
+                setVFax.settingId = faxId;
+                string sFax = await valueModel.Save(setVFax);
+                MessageBox.Show("fax : " + sFax);
 
                 //save logo
-                SetValues valLogo = new SetValues();
-                valLogo.value = cb_areaFax.Text + "-" + tb_fax.Text;
-                valLogo.isSystem = 1;
-                valLogo.settingId = logoId;
-                string sLogo = await valueModel.Save(valLogo);
+                setVLogo.value = "";
+                setVLogo.isSystem = 1;
+                setVLogo.isDefault = 1;
+                setVLogo.settingId = logoId;
+                string sLogo = await valueModel.Save(setVLogo);
                 MessageBox.Show("logo : " + sLogo);
             }
             #endregion
