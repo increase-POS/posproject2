@@ -56,6 +56,7 @@ namespace POS_Server.Controllers
                                     reportOb = c.reportOb,
                                     levelOb = c.levelOb,
                                     parentObjectId = o.parentObjectId,
+                                    parentObjectName=p.name,
 
                                 })
                                .ToList();
