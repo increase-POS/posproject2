@@ -2293,3 +2293,4 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_invoicesList.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_orders.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_orders.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_orderAccounts.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_orderAccounts.baml

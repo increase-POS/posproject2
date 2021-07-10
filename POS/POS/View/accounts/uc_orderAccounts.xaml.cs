@@ -65,13 +65,13 @@ namespace POS.View.accounts
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucReceivedAccounts.FlowDirection = FlowDirection.LeftToRight;
+                grid_ucOrderAccounts.FlowDirection = FlowDirection.LeftToRight;
 
             }
             else
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucReceivedAccounts.FlowDirection = FlowDirection.RightToLeft;
+                grid_ucOrderAccounts.FlowDirection = FlowDirection.RightToLeft;
 
             }
 
@@ -88,23 +88,7 @@ namespace POS.View.accounts
             dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
             dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
 
-            #region fill deposit from combo
-            var depositlist = new[] {
-            new { Text = MainWindow.resourcemanager.GetString("trVendor")     , Value = "v" },
-            new { Text = MainWindow.resourcemanager.GetString("trCustomer")   , Value = "c" },
-            new { Text = MainWindow.resourcemanager.GetString("trUser")       , Value = "u" },
-            new { Text = MainWindow.resourcemanager.GetString("trAdministrativeDeposit")  , Value = "m" }
-             };
-            cb_depositFrom.DisplayMemberPath = "Text";
-            cb_depositFrom.SelectedValuePath = "Value";
-            cb_depositFrom.ItemsSource = depositlist;
-            #endregion
 
-            fillVendors();
-
-            fillCustomers();
-
-            fillUsers();
 
             #region fill process type
             var typelist = new[] {
@@ -144,12 +128,8 @@ namespace POS.View.accounts
         private void translate()
         {
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trTransaferDetails");
-            txt_received.Text = MainWindow.resourcemanager.GetString("trReceived");
+            //txt_received.Text = MainWindow.resourcemanager.GetString("trReceived");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_depositFrom, MainWindow.resourcemanager.GetString("trDepositFromHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_depositorV, MainWindow.resourcemanager.GetString("trDepositorHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_depositorC, MainWindow.resourcemanager.GetString("trDepositorHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_depositorU, MainWindow.resourcemanager.GetString("trDepositorHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentProcessType, MainWindow.resourcemanager.GetString("trPaymentTypeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_docNum, MainWindow.resourcemanager.GetString("trDocNumHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_docDate, MainWindow.resourcemanager.GetString("trDocDateHint"));
@@ -159,17 +139,14 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
 
-            dg_receivedAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            //dg_receivedAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositTo");
-            dg_receivedAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecepient");
-            dg_receivedAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
-            dg_receivedAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            //dg_orderAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
+            ////dg_orderAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositTo");
+            //dg_orderAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecepient");
+            //dg_orderAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
+            //dg_orderAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
             tt_code.Content = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            tt_depositFrom.Content = MainWindow.resourcemanager.GetString("trDepositTo");
-            tt_depositorV.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            tt_depositorC.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            tt_depositorU.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
+            
             tt_paymentType.Content = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
             tt_docNum.Content = MainWindow.resourcemanager.GetString("trDocNumTooltip");
             tt_docDate.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
@@ -191,7 +168,7 @@ namespace POS.View.accounts
             tt_startDate.Content = MainWindow.resourcemanager.GetString("trStartDate");
             tt_endDate.Content = MainWindow.resourcemanager.GetString("trEndDate");
 
-            btn_add.Content = MainWindow.resourcemanager.GetString("trSave");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
             //btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
             //btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
             btn_image.Content = MainWindow.resourcemanager.GetString("trImage");
@@ -200,12 +177,9 @@ namespace POS.View.accounts
             btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdf");
 
         }
-        private void Dg_receivedAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Dg_orderAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
-            SectionData.clearComboBoxValidate(cb_depositFrom, p_errorDepositFrom);
-            SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
-            SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
-            SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+            
 
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
             SectionData.clearComboBoxValidate(cb_card, p_errorpaymentProcessType);
@@ -214,32 +188,17 @@ namespace POS.View.accounts
             SectionData.clearValidate(tb_docNum, p_errorDocNum);
             SectionData.clearValidate(tb_cash, p_errorCash);
 
-            if (dg_receivedAccounts.SelectedIndex != -1)
+            if (dg_orderAccounts.SelectedIndex != -1)
             {
-                cashtrans = dg_receivedAccounts.SelectedItem as CashTransfer;
+                cashtrans = dg_orderAccounts.SelectedItem as CashTransfer;
                 this.DataContext = cashtrans;
                 if (cashtrans != null)
                 {
                     // MessageBox.Show(cashtrans.cashTransId.ToString() + "-" + cashtrans.bondId.ToString());
 
-                    btn_add.IsEnabled = false;
-                    cb_depositFrom.SelectedValue = cashtrans.side;
+                    btn_save.IsEnabled = false;
 
-                    switch (cb_depositFrom.SelectedValue.ToString())
-                    {
-                        case "v":
-                            cb_depositorV.SelectedValue = cashtrans.agentId.Value;
-                            break;
-                        case "c":
-                            cb_depositorC.SelectedValue = cashtrans.agentId.Value;
-                            break;
-                        case "u":
-                            cb_depositorU.SelectedValue = cashtrans.userId.Value;
-                            break;
-                        case "m":
-                            break;
-                    }
-
+                   
                     cb_paymentProcessType.SelectedValue = cashtrans.processType;
 
                     cb_card.SelectedValue = cashtrans.cardId;
@@ -267,136 +226,6 @@ namespace POS.View.accounts
 
             cashesQueryExcel = cashesQuery;
             RefreshCashView();
-        }
-        private async void Btn_add_Click(object sender, RoutedEventArgs e)
-        {//save
-         //chk empty cash
-            SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
-
-            //chk empty doc num
-            if (grid_doc.IsVisible)
-            {
-                TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
-
-                SectionData.validateEmptyTextBox(tb_docNum, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");
-                SectionData.validateEmptyTextBox(dpDate, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
-            }
-            else
-            {
-                //TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
-
-                //SectionData.clearValidate(tb_docNum, p_errorDocNum);
-                //SectionData.clearValidate(dpDate, p_errorDocNum);
-            }
-
-            //chk empty cheque num
-            if (grid_cheque.IsVisible)
-            {
-                //TextBox dpDateCheque = (TextBox)dp_docDateCheque.Template.FindName("PART_TextBox", dp_docDateCheque);
-
-                SectionData.validateEmptyTextBox(tb_docNumCheque, p_errorDocNumCheque, tt_errorDocNumCheque, "trEmptyDocNumToolTip");
-                //SectionData.validateEmptyTextBox(dpDateCheque, p_errorDocDateCheque, tt_errorDocDateCheque, "trEmptyDocDateToolTip");
-            }
-            else
-            {
-                //TextBox dpDateCheque = (TextBox)dp_docDateCheque.Template.FindName("PART_TextBox", dp_docDateCheque);
-
-                //SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
-                //SectionData.clearValidate(dpDateCheque, p_errorDocNum);
-            }
-
-            //chk empty deposit from
-            SectionData.validateEmptyComboBox(cb_depositFrom, p_errorDepositFrom, tt_errorDepositFrom, "trErrorEmptyDepositFromToolTip");
-
-            //chk empty depositor
-            if (cb_depositorV.IsVisible)
-                SectionData.validateEmptyComboBox(cb_depositorV, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
-            else
-                SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
-            if (cb_depositorC.IsVisible)
-                SectionData.validateEmptyComboBox(cb_depositorC, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
-            else
-                SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
-            if (cb_depositorU.IsVisible)
-                SectionData.validateEmptyComboBox(cb_depositorU, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
-            else
-                SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
-
-            //chk empty payment type
-            SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
-
-            //chk empty card 
-            if (cb_card.IsVisible)
-                SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
-            else
-                SectionData.clearComboBoxValidate(cb_card, p_errorCard);
-
-            if ((!tb_cash.Text.Equals("")) && (!cb_depositFrom.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
-                 (((cb_depositorV.IsVisible) && (!cb_depositorV.Text.Equals(""))) || (!cb_depositorV.IsVisible)) &&
-                 (((cb_depositorC.IsVisible) && (!cb_depositorC.Text.Equals(""))) || (!cb_depositorC.IsVisible)) &&
-                 (((cb_depositorU.IsVisible) && (!cb_depositorU.Text.Equals(""))) || (!cb_depositorU.IsVisible)) &&
-
-                  (((grid_cheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!grid_cheque.IsVisible)) &&
-
-                 (((grid_doc.IsVisible) && (!dp_docDate.Text.Equals("")) && (!tb_docNum.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
-
-                 (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible))
-                 )
-            {
-                string depositor = cb_depositFrom.SelectedValue.ToString();
-                int agentid = 0;
-
-                CashTransfer cash = new CashTransfer();
-
-                cash.transType = "d";
-                cash.posId = MainWindow.posID.Value;
-                cash.transNum = await SectionData.generateNumber('d', cb_depositFrom.SelectedValue.ToString());
-                cash.cash = decimal.Parse(tb_cash.Text);
-                cash.notes = tb_note.Text;
-                cash.createUserId = MainWindow.userID;
-                cash.side = cb_depositFrom.SelectedValue.ToString();
-                //cash.docNum = tb_docNum.Text;
-                cash.processType = cb_paymentProcessType.SelectedValue.ToString();
-
-                if (cb_depositorV.IsVisible)
-                { cash.agentId = Convert.ToInt32(cb_depositorV.SelectedValue); agentid = Convert.ToInt32(cb_depositorV.SelectedValue); }
-
-                if (cb_depositorC.IsVisible)
-                { cash.agentId = Convert.ToInt32(cb_depositorC.SelectedValue); agentid = Convert.ToInt32(cb_depositorC.SelectedValue); }
-
-                if (cb_depositorU.IsVisible)
-                    cash.userId = Convert.ToInt32(cb_depositorU.SelectedValue);
-
-                if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                    cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
-
-                if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-                    cash.docNum = tb_docNum.Text;
-
-                if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
-                    cash.docNum = tb_docNumCheque.Text;
-
-                string s = await cashModel.Save(cash);
-                //MessageBox.Show(s);
-
-                if (!s.Equals("0"))
-                {
-                    calcBalance(cash.cash.Value, depositor, agentid);
-
-                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-                        saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d", int.Parse(s));
-
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                    Btn_clear_Click(null, null);
-
-
-                    await RefreshCashesList();
-                    Tb_search_TextChanged(null, null);
-                }
-                else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-            }
-
         }
         private async void saveBond(string num, decimal ammount, Nullable<DateTime> date, string type, int? cashId)
         {
@@ -461,22 +290,12 @@ namespace POS.View.accounts
         }
         private async void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            tb_transNum.Text = await SectionData.generateNumber('d', cb_depositFrom.SelectedValue.ToString());
-            btn_add.IsEnabled = true;
-            cb_depositFrom.SelectedIndex = -1;
-            cb_depositorV.SelectedIndex = -1;
-            cb_depositorC.SelectedIndex = -1;
-            cb_depositorU.SelectedIndex = -1;
+            btn_save.IsEnabled = true;
             cb_card.SelectedIndex = -1;
             cb_paymentProcessType.SelectedIndex = -1;
             tb_cash.Clear();
             tb_note.Clear();
-            tb_transNum.Text = "";
             SectionData.clearValidate(tb_cash, p_errorCash);
-            SectionData.clearComboBoxValidate(cb_depositFrom, p_errorDepositFrom);
-            SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
-            SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
-            SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
             SectionData.clearComboBoxValidate(cb_card, p_errorCard);
 
@@ -556,7 +375,7 @@ namespace POS.View.accounts
         }
         void RefreshCashView()
         {
-            dg_receivedAccounts.ItemsSource = cashesQuery;
+            dg_orderAccounts.ItemsSource = cashesQuery;
             txt_count.Text = cashesQuery.Count().ToString();
         }
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
@@ -577,15 +396,7 @@ namespace POS.View.accounts
             }
             else if (name == "ComboBox")
             {
-                if ((sender as ComboBox).Name == "cb_depositFrom")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorDepositFrom, tt_errorDepositFrom, "trErrorEmptyDepositFromToolTip");
-                else if ((sender as ComboBox).Name == "cb_depositorV")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
-                else if ((sender as ComboBox).Name == "cb_depositorC")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
-                else if ((sender as ComboBox).Name == "cb_depositorU")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
-                else if ((sender as ComboBox).Name == "cb_paymentProcessType")
+               if ((sender as ComboBox).Name == "cb_paymentProcessType")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
                 else if ((sender as ComboBox).Name == "cb_card")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCard, tt_errorCard, "trErrorEmptyCardToolTip");
@@ -690,68 +501,23 @@ namespace POS.View.accounts
             }
 
         }
-        private void Cb_depositFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {//deposit selection
-            switch (cb_depositFrom.SelectedIndex)
-            {
-                case 0:
-                    cb_depositorV.Visibility = Visibility.Visible;
-                    cb_depositorC.Visibility = Visibility.Collapsed;
-                    btn_invoices.Visibility = Visibility.Collapsed;
-                    cb_depositorU.Visibility = Visibility.Collapsed;
-                    break;
-                case 1:
-                    cb_depositorV.Visibility = Visibility.Collapsed;
-                    cb_depositorC.Visibility = Visibility.Visible;
-                    btn_invoices.Visibility = Visibility.Visible;
-                    cb_depositorU.Visibility = Visibility.Collapsed;
-                    break;
-                case 2:
-                    cb_depositorV.Visibility = Visibility.Collapsed;
-                    cb_depositorC.Visibility = Visibility.Collapsed;
-                    btn_invoices.Visibility = Visibility.Collapsed;
-                    cb_depositorU.Visibility = Visibility.Visible;
-                    break;
-                case 3:
-                    cb_depositorV.Visibility = Visibility.Collapsed;
-                    cb_depositorC.Visibility = Visibility.Collapsed;
-                    btn_invoices.Visibility = Visibility.Collapsed;
-                    cb_depositorU.Visibility = Visibility.Collapsed;
-                    SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
-                    SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
-                    SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
-                    cb_depositorV.Text = "";
-                    cb_depositorC.Text = "";
-                    cb_depositorU.Text = "";
-                    break;
-            }
-        }
-        private async void fillVendors()
-        {
-            agents = await agentModel.GetAgentsActive("v");
-
-            cb_depositorV.ItemsSource = agents;
-            cb_depositorV.DisplayMemberPath = "name";
-            cb_depositorV.SelectedValuePath = "agentId";
-            //cb_recipient.SelectedIndex = -1;
-        }
+       
         private async void fillCustomers()
         {
             agents = await agentModel.GetAgentsActive("c");
-
-            cb_depositorC.ItemsSource = agents;
-            cb_depositorC.DisplayMemberPath = "name";
-            cb_depositorC.SelectedValuePath = "agentId";
-            //cb_recipient.SelectedIndex = -1;
+            cb_customer.ItemsSource = agents;
+            cb_customer.DisplayMemberPath = "name";
+            cb_customer.SelectedValuePath = "agentId";
+            cb_salesMan.SelectedIndex = -1;
         }
         private async void fillUsers()
         {
             users = await userModel.GetUsersActive();
 
-            cb_depositorU.ItemsSource = users;
-            cb_depositorU.DisplayMemberPath = "username";
-            cb_depositorU.SelectedValuePath = "userId";
-            //cb_recipient.SelectedIndex = -1;
+            cb_salesMan.ItemsSource = users;
+            cb_salesMan.DisplayMemberPath = "username";
+            cb_salesMan.SelectedValuePath = "userId";
+            cb_salesMan.SelectedIndex = -1;
         }
         private async void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
@@ -765,6 +531,26 @@ namespace POS.View.accounts
             MessageBox.Show(msg);
         }
         private void Btn_invoices_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Cb_salesMan_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Cb_state_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
 
         }
