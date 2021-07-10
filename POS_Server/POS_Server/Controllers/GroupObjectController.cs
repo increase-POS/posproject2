@@ -34,8 +34,9 @@ namespace POS_Server.Controllers
                 {
                     var List = (from c in entity.groupObject
                                 join o in entity.objects on c.objectId equals o.objectId
-                                join p in entity.objects on o.objectId equals p.parentObjectId
-                                select new GroupObjectModel {
+                                join p in entity.objects on o.parentObjectId equals p.objectId
+                                select new
+                                {
                                     id = c.id,
                                     groupId = c.groupId,
                                     objectId = c.objectId,
@@ -45,7 +46,6 @@ namespace POS_Server.Controllers
                                     deleteOb = c.deleteOb,
                                     showOb = c.showOb,
 
-                                    objectName = c.objects.name,
                                     desc = c.objects.note,
 
                                     createDate = c.createDate,
@@ -56,6 +56,7 @@ namespace POS_Server.Controllers
                                     reportOb = c.reportOb,
                                     levelOb = c.levelOb,
                                     parentObjectId = o.parentObjectId,
+                                    objectName = o.name,
                                     parentObjectName=p.name,
 
                                 })

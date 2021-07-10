@@ -9,6 +9,7 @@ using System.Data.Entity;
 using POS_Server.Models;
 using System.Web;
 using System.IO;
+using LinqKit;
 
 namespace POS_Server.Controllers
 {
@@ -105,6 +106,74 @@ namespace POS_Server.Controllers
                             
                         }
                     }
+
+                    if (itemsList == null)
+                        return NotFound();
+                    else
+                        return Ok(itemsList);
+                }
+            }
+            else
+                return NotFound();
+        }
+        [HttpGet]
+        [Route("GetSaleOrPurItems")]
+        public IHttpActionResult GetSaleOrPurItems(int categoryId, short defaultSale, short defaultPurchase)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var searchPredicate = PredicateBuilder.New<items>();
+                    searchPredicate = searchPredicate.Or(item => true);
+                    var unitPredicate = PredicateBuilder.New<itemsUnits>();
+                    searchPredicate = searchPredicate.Or(item => false);
+
+                    if (categoryId != 0)
+                        searchPredicate = searchPredicate.Or(item => item.categoryId == categoryId);
+                    if (defaultSale != 0)
+                        unitPredicate = unitPredicate.Or(unit => unit.defaultSale == 1);
+                    if (defaultPurchase != 0)
+                        unitPredicate = unitPredicate.Or(unit => unit.defaultPurchase == 1);
+                    var itemsList = (from I in entity.items.Where(searchPredicate)
+                                     join u in entity.itemsUnits.Where(unitPredicate) on I.itemId equals u.itemId 
+                                     select new ItemModel()
+                                     {
+                                         itemId = I.itemId,
+                                         name = I.name,
+                                         code = I.code,
+                                         categoryId = I.categoryId,
+                                         categoryName = I.categories.name,
+                                         max = I.max,
+                                         maxUnitId = I.maxUnitId,
+                                         minUnitId = I.minUnitId,
+                                         min = I.min,
+
+                                         parentId = I.parentId,
+                                         isActive = I.isActive,
+                                         image = I.image,
+                                         type = I.type,
+                                         details = I.details,
+                                         taxes = I.taxes,
+                                         createDate = I.createDate,
+                                         updateDate = I.updateDate,
+                                         createUserId = I.createUserId,
+                                         updateUserId = I.updateUserId,
+                                         isNew = 0,
+
+                                     })
+                                   .ToList();
 
                     if (itemsList == null)
                         return NotFound();
@@ -707,14 +776,14 @@ namespace POS_Server.Controllers
 
                         int MaxContentLength = 1024 * 1024 * 1; //Size = 1 MB
 
-                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png", ".bmp", ".jpeg", ".tiff" };
+                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png", ".bmp", ".jpeg", ".tiff",".jfif" };
                         var ext = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf('.'));
                         var extension = ext.ToLower();
 
                         if (!AllowedFileExtensions.Contains(extension))
                         {
 
-                            var message = string.Format("Please Upload image of type .jpg,.gif,.png.");
+                            var message = string.Format("Please Upload image of type .jpg,.gif,.png, .jfif, .bmp , .jpeg ,.tiff");
                             return Ok(message);
                         }
                         else if (postedFile.ContentLength > MaxContentLength)

@@ -36,8 +36,6 @@ namespace POS_Server.Controllers
                          .Select(c => new {
                              c.countryId,
                              c.code,
-                             c.isDefault,
-                             
                          }).ToList();
                         
                     
@@ -75,6 +73,7 @@ namespace POS_Server.Controllers
                          .Select(c => new {
                              c.countryId,
                              c.code,
+                             c.isDefault,
                          }).ToList();
 
 
@@ -93,7 +92,104 @@ namespace POS_Server.Controllers
 
 
 
+        [HttpGet]
+        [Route("GetAllRegion")]
+        public IHttpActionResult GetAllRegion()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
 
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var countrylist = entity.countriesCodes
+                         .Select(c => new {
+                             c.countryId,
+                             c.code,
+                             c.currency,
+                             c.name,
+                             c.isDefault,
+
+                         }).ToList();
+
+
+                    if (countrylist == null)
+                        return NotFound();
+                    else
+                        return Ok(countrylist);
+                }
+            }
+            else
+                return NotFound();
+        }
+
+        [HttpPost]
+        [Route("UpdateIsdefault")]
+        public string UpdateIsdefault(int countryId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            string message = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+               
+
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        // reset all to 0
+                        List<countriesCodes> objectlist = entity.countriesCodes.Where(x=>x.isDefault==1).ToList();
+                        if (objectlist.Count > 0)
+                        {
+                            for(int i=0;i< objectlist.Count; i++)
+                            {
+                                objectlist[i].isDefault = 0;
+
+                            }
+                            entity.SaveChanges();
+                        }
+                        // set is selected to isdefault=1
+                        countriesCodes objectrow = entity.countriesCodes.Find(countryId);
+
+                        if (objectrow != null)
+                        {
+                            objectrow.isDefault = 1;
+
+                            message = objectrow.countryId.ToString();
+                            entity.SaveChanges();
+                        }
+                        else
+                        {
+                            message = "-1";
+                        }
+                        //  entity.SaveChanges();
+                    }
+                }
+                catch
+                {
+                    message = "-1";
+                }
+            }
+            return message;
+        }
 
 
 

@@ -6,11 +6,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using System.Data.Entity.Migrations;
 namespace POS_Server.Controllers
 {
     [RoutePrefix("api/userSetValues")]
-    public class categoryuserController : ApiController
+    public class userSetValuesController : ApiController
     {
         // GET api/<controller> get all userSetValues
         [HttpGet]
@@ -124,91 +124,82 @@ namespace POS_Server.Controllers
         }
 
 
-        // add or update 
+
         [HttpPost]
-        [Route("Save")]
-        public String Save(string newObject)
+        [Route("Saveu")]
+        public string Save(string Object)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            string message ="";
+            string message = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-            
+
             if (valid)
             {
-                newObject = newObject.Replace("\\", string.Empty);
-                newObject = newObject.Trim('"');
-                userSetValues Object = JsonConvert.DeserializeObject<userSetValues>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+               // return Object.ToString();
+                Object = Object.Replace("\\", string.Empty);
+                Object = Object.Trim('"');
+                userSetValues newObject = JsonConvert.DeserializeObject<userSetValues>(Object, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                if (newObject.updateUserId == 0 || newObject.updateUserId == null)
+                {
+                    Nullable<int> id = null;
+                    newObject.updateUserId = id;
+                }
+                if (newObject.createUserId == 0 || newObject.createUserId == null)
+                {
+                    Nullable<int> id = null;
+                    newObject.createUserId = id;
+                }
+
                 try
                 {
-                    if (Object.userId == 0 || Object.userId == null)
-                    {
-                        Nullable<int> id = null;
-                        Object.userId = id;
-                    }
-                    if (Object.valId == 0 || Object.valId == null)
-                    {
-                        Nullable<int> id = null;
-                        Object.valId = id;
-                    }
-                    if (Object.updateUserId == 0 || Object.updateUserId == null)
-                    {
-                        Nullable<int> id = null;
-                        Object.updateUserId = id;
-                    }
-                    if (Object.createUserId == 0 || Object.createUserId == null)
-                    {
-                        Nullable<int> id = null;
-                        Object.createUserId = id;
-                    }
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-                        var sEntity = entity.Set<userSetValues>();
-                        if (Object.valId == 0)
+                        var locationEntity = entity.Set<userSetValues>();
+                        if (newObject.id == 0)
                         {
-                            Object.createDate = DateTime.Now;
-                            Object.updateDate = DateTime.Now;
-                            Object.updateUserId = Object.createUserId;
-                            sEntity.Add(Object);
-                             message = Object.valId.ToString();
+                            newObject.createDate = DateTime.Now;
+                            newObject.updateDate = DateTime.Now;
+                            newObject.updateUserId = newObject.createUserId;
+
+
+                            locationEntity.Add(newObject);
                             entity.SaveChanges();
+                            message = newObject.id.ToString();
                         }
                         else
                         {
+                            var tmpObject = entity.userSetValues.Where(p => p.id == newObject.id).FirstOrDefault();
 
-                            var tmps = entity.userSetValues.Where(p => p.id == Object.id).FirstOrDefault();
-                           
-                            tmps.id=Object.id;
-                       tmps.userId=Object.userId;
-                       tmps.valId=Object.valId;
-                       tmps.note=Object.note;
-                       tmps.createDate=Object.createDate;
-                            tmps.updateDate = DateTime.Now;// server current date
-                            
-                            tmps.updateUserId = Object.updateUserId;
+                            tmpObject.updateDate = DateTime.Now;
+                            tmpObject.updateUserId = newObject.updateUserId;
+
+                            tmpObject.valId = newObject.valId;
+                            tmpObject.userId = newObject.userId;
+                            tmpObject.note = newObject.note;
+                       
                             entity.SaveChanges();
-                            message = tmps.valId.ToString();
-                        }
-                       
-                       
-                    }
-                    return message; ;
-                }
 
+                            message = tmpObject.id.ToString();
+                        }
+                        //  entity.SaveChanges();
+                    }
+                }
                 catch
                 {
-                    return "-1";
+                    message = "-1";
                 }
             }
-            else
-                return "-1";
+            return message;
         }
+
+
 
         [HttpPost]
         [Route("Delete")]

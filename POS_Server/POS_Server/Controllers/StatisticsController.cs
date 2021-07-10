@@ -451,6 +451,178 @@ else
         }
 
 
+        [HttpGet]
+        [Route("GetPuritem")]
+        public IHttpActionResult GetPuritem()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invListm = (from IT in entity.itemsTransfer
+                                    from I in entity.invoices.Where(I=>I.invoiceId==IT.invoiceId)
+
+                                   from IU in entity.itemsUnits.Where(IU=> IU.itemUnitId==IT.itemUnitId)
+                                  join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                                    join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                    join B in entity.branches on I.branchId equals B.branchId into JB
+                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                    join A in entity.agents on I.agentId equals A.agentId into JA
+                                    join U in entity.users on I.createUserId equals U.userId into JU
+                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                    join P in entity.pos on I.posId equals P.posId into JP
+
+                                    from JBB in JB
+                                    from JPP in JP.DefaultIfEmpty()
+                                    from JUU in JU.DefaultIfEmpty()
+                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+                                    from JIMM in JIM.DefaultIfEmpty()
+                                    from JAA in JA.DefaultIfEmpty()
+                                    from JBCC in JBC.DefaultIfEmpty()                                 
+                                    where (I.invType == "p" || I.invType == "pb" )
+                                
+                                    select new
+                                    {
+                                       ITitemName= ITEM.name,
+                                       ITuniteName= UNIT.name,
+                                        ITitemsTransId= IT.itemsTransId,
+                                        ITitemUnitId = IT.itemUnitId,
+                                       
+ITitemId= IU.itemId,
+                                        ITunitId = IU.unitId,
+                                        ITquantity =IT.quantity,
+
+ITcreateDate=IT.createDate,
+ITupdateDate=IT.updateDate,
+ITcreateUserId=IT.createUserId,
+ITupdateUserId=IT.updateUserId,
+ITnotes=IT.notes,
+ITprice=IT.price,
+ITbarcode=IU.barcode,
+                                        ITCreateuserName=ITCUSER.name,
+                                        ITCreateuserLName = ITCUSER.lastname,                                    
+                                        ITCreateuserAccName = ITCUSER.username,
+
+                                        ITUpdateuserName = ITUPUSER.name,
+                                        ITUpdateuserLName = ITUPUSER.lastname,
+                                        ITUpdateuserAccName = ITUPUSER.username,
+                                        I.invoiceId,
+                                        I.invNumber,
+                                        I.agentId,
+                                        I.posId,
+                                        I.invType,
+                                        I.total,
+                                        I.totalNet,
+                                        I.paid,
+                                        I.deserved,
+                                        I.deservedDate,
+                                        I.invDate,
+                                        I.invoiceMainId,
+                                        I.invCase,
+                                        I.invTime,
+                                        I.notes,
+                                        I.vendorInvNum,
+                                        I.vendorInvDate,
+                                        I.createUserId,
+                                        I.updateDate,
+                                        I.updateUserId,
+                                        I.branchId,
+                                        I.discountValue,
+                                        I.discountType,
+                                        I.tax,
+                                        I.name,
+                                        I.isApproved,
+                                        //
+                                        I.branchCreatorId,
+                                        branchCreatorName = JBCC.name,
+                                        //
+                                        branchName = JBB.name,
+
+                                        branchType = JBB.type,
+                                        posName = JPP.name,
+                                        posCode = JPP.code,
+                                        agentName = JAA.name,
+                                        agentCode = JAA.code,
+                                        cuserName = JUU.name,
+                                        cuserLast = JUU.lastname,
+                                        cUserAccName = JUU.lastname,
+                                        uuserName = JUPUS.name,
+                                        uuserLast = JUPUS.lastname,
+                                        uUserAccName = JUPUS.lastname,
+                                        agentCompany = JAA.company,
+
+                                        //username
+
+                                        //  I.invoiceId,
+                                        //    JBB.name
+                                    }).ToList();
+
+                    /*
+   public int ITitemsTransId { get; set; }
+        public Nullable<int> ITitemId { get; set; }
+        public string ITitemName { get; set; }
+        public Nullable<long> ITquantity { get; set; }
+        public Nullable<int> ITinvoiceId { get; set; }
+        public string ITinvNumber { get; set; }
+        public Nullable<int> ITlocationIdNew { get; set; }
+        public Nullable<int> ITlocationIdOld { get; set; }
+        public Nullable<System.DateTime> ITcreateDate { get; set; }
+        public Nullable<System.DateTime> ITupdateDate { get; set; }
+        public Nullable<int> ITcreateUserId { get; set; }
+        public Nullable<int> ITupdateUserId { get; set; }
+        public string ITnotes { get; set; }
+        public Nullable<decimal> ITprice { get; set; }
+        public Nullable<int> ITitemUnitId { get; set; }
+
+        public string ITunitName { get; set; }
+        public string ITbarcode { get; set; }
+
+ITitemsTransId
+ITitemId
+ITitemName
+ITquantity
+ITinvoiceId
+ITinvNumber
+ITcreateDate
+ITupdateDate
+ITcreateUserId
+ITupdateUserId
+ITnotes
+ITprice
+ITitemUnitId
+ITunitName
+ITbarcode
+
+
+*/
+
+
+
+                    if (invListm == null)
+                        return NotFound();
+                    else
+                        return Ok(invListm);
+                }
+
+            }
+
+            //else
+            return NotFound();
+        }
+
 
 
         // عدد العناصر في كل فاتورة

@@ -410,3 +410,5 @@ D:\Project\ser\POS_Server\POS_Server\obj\Debug\POS_Server.csproj.CopyComplete
 D:\Project\ser\POS_Server\POS_Server\obj\Debug\POS_Server.dll
 D:\Project\ser\POS_Server\POS_Server\obj\Debug\POS_Server.pdb
 D:\Project\ser\POS_Server\POS_Server\obj\Debug\POS_Server.csprojAssemblyReference.cache
+D:\Project\ser\POS_Server\POS_Server\bin\LinqKit.dll
+D:\Project\ser\POS_Server\POS_Server\bin\LinqKit.xml

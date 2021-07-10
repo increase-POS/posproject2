@@ -520,3 +520,5 @@ F:\increase\sales\POS_Server\POS_Server\obj\Release\POS_Server.csproj.CoreCompil
 F:\increase\sales\POS_Server\POS_Server\obj\Release\POS_Server.csproj.CopyComplete
 F:\increase\sales\POS_Server\POS_Server\obj\Release\POS_Server.dll
 F:\increase\sales\POS_Server\POS_Server\obj\Release\POS_Server.pdb
+D:\Project\ser\POS_Server\POS_Server\bin\LinqKit.dll
+D:\Project\ser\POS_Server\POS_Server\bin\LinqKit.xml

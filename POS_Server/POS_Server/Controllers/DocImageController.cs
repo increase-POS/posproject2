@@ -84,7 +84,7 @@ namespace POS_Server.Controllers
                         if (!AllowedFileExtensions.Contains(extension))
                         {
 
-                            var message = string.Format("Please Upload image of type .jpg,.gif,.png.,.jfif,.tiff,.bmp");
+                            var message = string.Format("Please Upload image of type .jpg,.gif,.png,.jfif,.bmp,.jpeg,.tiff");
                             return Ok(message);
                         }
                         else if (postedFile.ContentLength > MaxContentLength)

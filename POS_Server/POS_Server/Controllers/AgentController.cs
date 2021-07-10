@@ -409,14 +409,14 @@ namespace POS_Server.Controllers
 
                         int MaxContentLength = 1024 * 1024 * 1; //Size = 1 MB
 
-                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png" ,".bmp", ".jpeg", ".tiff" };
+                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png", ".bmp", ".jpeg", ".tiff", ".jfif" };
                         var ext = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf('.'));
                         var extension = ext.ToLower();
 
                         if (!AllowedFileExtensions.Contains(extension))
                         {
 
-                            var message = string.Format("Please Upload image of type .jpg,.gif,.png.");
+                            var message = string.Format("Please Upload image of type .jpg,.gif,.png, .jfif, .bmp , .jpeg ,.tiff");
                             return Ok(message);
                         }
                         else if (postedFile.ContentLength > MaxContentLength)
