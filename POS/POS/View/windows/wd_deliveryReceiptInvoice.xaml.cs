@@ -1,6 +1,9 @@
-﻿using System;
+﻿using POS.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,6 +22,13 @@ namespace POS.View.windows
     /// </summary>
     public partial class wd_deliveryReceiptInvoice : Window
     {
+        public decimal deliveryCost { get; set; }
+        public int shippingCompanyId { get; set; }
+        public int shipUserId { get; set; }
+        User userModel = new User();
+        ShippingCompanies companyModel = new ShippingCompanies();
+        List<ShippingCompanies> companies;
+        List<User> users;
         public wd_deliveryReceiptInvoice()
         {
             InitializeComponent();
@@ -31,14 +41,65 @@ namespace POS.View.windows
 
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-
+            deliveryCost = (decimal) companyModel.deliveryCost;
+            shippingCompanyId = (int)cb_company.SelectedValue;
+            if (cb_user.SelectedIndex != -1)
+                shipUserId = (int)cb_user.SelectedValue;
+            DialogResult = true;
+            this.Close();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+            }
 
+            translate();
+            await fillShippingCompanies();
+            await fillUsers();
         }
+        private void translate()
+        {
+        }
+        private async Task fillShippingCompanies()
+        {
+            companies = await companyModel.Get();
+            cb_company.ItemsSource = companies;
+            cb_company.DisplayMemberPath = "name";
+            cb_company.SelectedValuePath = "shippingCompanyId";
 
+            if (shippingCompanyId != 0)
+            {
+                cb_company.SelectedValue = shippingCompanyId;
+                companyModel = companies.Find(c => c.shippingCompanyId == (int)cb_company.SelectedValue);
+                if (companyModel.deliveryType == "local")
+                {
+                    cb_user.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    cb_user.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+        private async Task fillUsers()
+        {
+            users = await userModel.GetUsersActive();
+            cb_user.ItemsSource = users;
+            cb_user.DisplayMemberPath = "name";
+            cb_user.SelectedValuePath = "userId";
+
+            if (shipUserId  != 0)
+            {
+                cb_user.SelectedValue = shipUserId;
+            }
+        }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
 
@@ -51,32 +112,29 @@ namespace POS.View.windows
 
         private void Cb_company_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (cb_company.SelectedIndex != -1)
+            {
+                companyModel = companies.Find(c => c.shippingCompanyId == (int)cb_company.SelectedValue);
+               
+                if(companyModel.deliveryType == "local")
+                {
+                    cb_user.Visibility = Visibility.Visible;                   
+                }
+                else
+                {
+                    cb_user.SelectedIndex = -1;
+                    cb_user.Visibility = Visibility.Collapsed;
+                }
+            }
         }
 
         private void Cb_company_LostFocus(object sender, RoutedEventArgs e)
         {
 
         }
+
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
-        }
-        private void validateEmpty(string name, object sender)
-        {
-            if (name == "TextBox")
-            {
-
-            }
-            else if (name == "ComboBox")
-            {
-               
-            }
-            else if (name == "DatePicker")
-            {
-               
-            }
 
         }
     }

@@ -105,7 +105,7 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="*"   Header="inventory Num"     Binding="{Binding Path=address}">
+                        <DataGridTextColumn Width="*"   Header="inventory Num"     Binding="{Binding Path=inventoryNum}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -116,7 +116,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"   Header="Date" Binding="{Binding Path=mobile}">
+                        <DataGridTextColumn Width="*"   Header="Date" Binding="{Binding Path=inventoryDate,StringFormat=d}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -127,7 +127,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*" Header="Section-Location" Binding="{Binding Path=test}">
+                        <DataGridTextColumn Width="*" Header="Section-Location" Binding="{Binding Path=section}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -138,7 +138,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"   Header="Item Unit"   Binding="{Binding Path=test}">
+                        <DataGridTextColumn Width="*"   Header="Item Unit"   Binding="{Binding Path=itemName}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -149,7 +149,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"   Header="Amount"   Binding="{Binding Path=test}">
+                        <DataGridTextColumn Width="*"   Header="Amount"   Binding="{Binding Path=amountDestroyed}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -339,8 +339,8 @@
                                       Grid.Column="1" VerticalAlignment="Center" />
                             </DockPanel>
                                    
-                            <TextBlock  x:Name="tb_itemUnit"  Grid.Row="1" Text="{Binding transNum, Mode=OneWay}" Padding="10,0,5,0"
-                                     Background="#f8f8f8"
+                            <TextBlock  x:Name="tb_itemUnit"  Grid.Row="1" Text="{Binding itemName, Mode=OneWay}" Padding="10,0,5,0"
+                                     Background="#f8f8f8" IsEnabled="False"
                                     materialDesign:HintAssist.Hint="Item..." 
                                     KeyboardNavigation.IsTabStop="False" 
                                     TextBlock.FontSize="12" Foreground="#4E4E4E"  FontWeight="SemiBold"
@@ -356,8 +356,8 @@
                                 </TextBlock.ToolTip>
                             </TextBlock>
 
-                            <TextBlock  x:Name="tb_amount"  Grid.Row="2" Text="{Binding transNum, Mode=OneWay}" Padding="10,0,5,0"
-                                     Background="#f8f8f8"
+                            <TextBlock  x:Name="tb_amount"  Grid.Row="2" Text="{Binding amountDestroyed, Mode=OneWay}" Padding="10,0,5,0"
+                                     Background="#f8f8f8" IsEnabled="False"
                                     materialDesign:HintAssist.Hint="Amount..." 
                                     KeyboardNavigation.IsTabStop="False" 
                                     TextBlock.FontSize="12" Foreground="#4E4E4E"  FontWeight="SemiBold"

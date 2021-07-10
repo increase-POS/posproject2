@@ -118,10 +118,6 @@
                                                           VerticalOffset="25"/>
                         </DatePicker.ToolTip>
                     </DatePicker>
-              
-
-           
-                        
                         <ComboBox  x:Name="cb_state"   DockPanel.Dock="Right"
                                      BorderBrush="#737373"  BorderThickness="0" 
                                                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
@@ -140,9 +136,6 @@
                                                           VerticalOffset="25"/>
                             </ComboBox.ToolTip>
                         </ComboBox>
-
-           
-
                 </DockPanel>
             </Border>
             <Border Margin="5,5,5,0" Grid.Row="1"  Background="White" CornerRadius="7,7,0,0">

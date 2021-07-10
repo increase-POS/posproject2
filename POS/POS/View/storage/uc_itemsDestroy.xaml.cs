@@ -43,13 +43,11 @@ namespace POS.View.storage
         Category categoryModel = new Category();
         Category category = new Category();
         IEnumerable<Category> categories;
-        IEnumerable<Category> categoriesQuery;
+        InventoryItemLocation invItemLoc = new InventoryItemLocation();
+        IEnumerable<InventoryItemLocation> inventoriesItems;
         int? categoryParentId = 0;
-        Item itemModel = new Item();
-        Item item = new Item();
-        IEnumerable<Item> items;
-        IEnumerable<Item> itemsQuery;
-        CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
+
+
         public byte tglCategoryState = 1;
         public byte tglItemState = 1;
         public string txtItemSearch;
@@ -58,12 +56,6 @@ namespace POS.View.storage
         private async  void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
            
-
-            // for pagination
-            //btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            //catigoriesAndItemsView.ucItemsDestroy = this;
-
-
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -76,14 +68,8 @@ namespace POS.View.storage
             }
            
             translate();
-
-
-         
-            //await RefrishItems();
-            //await RefrishCategories();
-            //RefrishCategoriesCard();
+            await refreshDestroyDetails();       
             //Txb_searchitems_TextChanged(null, null);
-
         }
 
         private void translate()
@@ -91,10 +77,6 @@ namespace POS.View.storage
 
 
         }
-
-
-
-
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -110,14 +92,31 @@ namespace POS.View.storage
         }
         #endregion
 
-        private void Btn_destroy_Click(object sender, RoutedEventArgs e)
+        private bool validateDistroy()
         {
-
+            bool valid = true;
+            if (tb_reasonOfDestroy.Text.Equals(""))
+                valid = false;
+            return valid;
+        }
+        private async void Btn_destroy_Click(object sender, RoutedEventArgs e)
+        {
+           bool valid = validateDistroy();
+            if(invItemLoc.id != 0 && valid)
+            {
+                await invItemLoc.distroyItem(invItemLoc);
+                await refreshDestroyDetails();
+            }
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+        private async Task refreshDestroyDetails()
+        {
+            inventoriesItems = await invItemLoc.GetItemToDestroy(MainWindow.branchID.Value);
+            dg_itemDestroy.ItemsSource = inventoriesItems;
         }
         private void input_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -141,7 +140,8 @@ namespace POS.View.storage
 
         private void Dg_itemDestroy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            invItemLoc = dg_itemDestroy.SelectedItem as InventoryItemLocation;
+            this.DataContext = invItemLoc;
         }
 
         private void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)

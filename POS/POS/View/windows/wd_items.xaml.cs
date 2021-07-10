@@ -142,9 +142,20 @@ namespace POS.View.windows
 
         async Task<IEnumerable<Item>> RefrishItems()
         {
-            if (category.categoryId == 0)
-                items = await itemModel.GetAllItems();
-            else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
+            short defaultSale = 0;
+            short defaultPurchase = 0;
+            if (CardType.Equals("sales"))
+            {
+                defaultSale = 1;
+                //if (category.categoryId == 0)
+                //    items = await itemModel.GetAllItems();
+                //else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
+            }
+            else if (CardType.Equals("purchase"))
+            {
+                defaultPurchase = 1;
+            }
+            items = await itemModel.GetSaleOrPurItems(category.categoryId,defaultSale,defaultPurchase);
             return items;
         }
 

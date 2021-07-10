@@ -239,8 +239,10 @@ namespace POS.Classes
         {         
             int sequence = await GetLastNumOfInv();
             sequence++;
-
-            string inventoryNum = invCode + "-" + sequence.ToString();
+            string strSeq = sequence.ToString();
+            if (sequence <= 999999)
+                strSeq = sequence.ToString().PadLeft(6, '0');
+            string inventoryNum = invCode + "-" + strSeq;
             return inventoryNum;
         }
 

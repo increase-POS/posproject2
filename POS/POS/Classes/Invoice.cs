@@ -697,8 +697,10 @@ namespace POS.Classes
         {
             int sequence = await GetLastNumOfInv(invoiceCode);
             sequence++;
-
-            string invoiceNum = invoiceCode + "-"  + sequence.ToString();
+            string strSeq = sequence.ToString();
+            if (sequence <= 999999)
+                strSeq = sequence.ToString().PadLeft(6, '0');
+            string invoiceNum = invoiceCode + "-" + strSeq;
             return invoiceNum;
         }
     }

@@ -918,18 +918,9 @@ namespace POS.View
                             if (tbtn_isDefaultSales.IsChecked == true)
                                 defaultSale = 1;
 
-                            int unitValue = 0;
-                            if (tb_count.Text != "")
-                                unitValue = int.Parse(tb_count.Text);
-
-                            Nullable<int> smallUnitId = null;
-                            if (cb_unit.SelectedIndex != -1)
-                                smallUnitId = units[cb_unit.SelectedIndex].unitId;
-
-                            decimal price = 0;
-                            if (tb_price.Text != "")
-                                price = decimal.Parse(tb_price.Text);
-
+                            int unitValue = int.Parse(tb_count.Text);
+                            Nullable<int> smallUnitId = (int)cb_unit.SelectedValue;
+                            decimal price = decimal.Parse(tb_price.Text);
                             string barcode = tb_barcode.Text;
 
                             itemUnit.itemUnitId = 0;
@@ -1014,18 +1005,9 @@ namespace POS.View
                             if (tbtn_isDefaultSales.IsChecked == true)
                                 defaultSale = 1;
 
-                            int unitValue = 0;
-                            if (tb_count.Text != "")
-                                unitValue = int.Parse(tb_count.Text);
-
-                            Nullable<int> smallUnitId = null;
-                            if (cb_unit.SelectedIndex != -1)
-                                smallUnitId = units[cb_unit.SelectedIndex].unitId;
-
-                            decimal price = 0;
-                            if (tb_price.Text != "")
-                                price = decimal.Parse(tb_price.Text);
-
+                            int  unitValue = int.Parse(tb_count.Text);
+                            Nullable<int> smallUnitId = (int)cb_unit.SelectedValue;
+                            decimal  price = decimal.Parse(tb_price.Text);
                             string barcode = tb_barcode.Text;
 
                             itemUnit.itemId = item.itemId;
@@ -1061,9 +1043,9 @@ namespace POS.View
             {
                 Boolean res = await itemUnit.Delete(itemUnit.itemUnitId);
 
-                if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
+                if (res) 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                else 
                     Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 refreshItemUnitsGrid(item.itemId);

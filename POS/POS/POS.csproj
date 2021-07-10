@@ -262,6 +262,9 @@
     <Compile Include="View\accounts\uc_bonds.xaml.cs">
       <DependentUpon>uc_bonds.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\accounts\uc_orderAccounts.xaml.cs">
+      <DependentUpon>uc_orderAccounts.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\accounts\uc_paymentsAccounts.xaml.cs">
       <DependentUpon>uc_paymentsAccounts.xaml</DependentUpon>
     </Compile>
@@ -291,6 +294,9 @@
     </Compile>
     <Compile Include="View\sales\uc_membership.xaml.cs">
       <DependentUpon>uc_membership.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\sales\uc_orders.xaml.cs">
+      <DependentUpon>uc_orders.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\sales\uc_quotations.xaml.cs">
       <DependentUpon>uc_quotations.xaml</DependentUpon>
@@ -528,6 +534,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\accounts\uc_orderAccounts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\accounts\uc_paymentsAccounts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -565,6 +575,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\sales\uc_membership.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\sales\uc_orders.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -335,8 +335,8 @@
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
-                                <!--<DataGridCheckBoxColumn Width="*"   Header="Contains Destroyed"   Binding="{Binding Path=isDestroyed,  NotifyOnTargetUpdated=True , UpdateSourceTrigger=PropertyChanged }"/>-->
-                                <DataGridCheckBoxColumn Width="*"   Header="Contains Destroyed"   Binding="{Binding Path=isDestroyed}" IsThreeState="False"/>
+                               
+                                <!--<DataGridCheckBoxColumn Width="*"   Header="Contains Destroyed"   Binding="{Binding Path=isDestroyed}" IsThreeState="False"/>-->
                                 <DataGridTextColumn Width="*"   Header="Destory Count"   Binding="{Binding Path=amountDestroyed}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="{x:Type TextBlock}">

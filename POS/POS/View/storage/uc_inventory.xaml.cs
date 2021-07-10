@@ -68,11 +68,12 @@ namespace POS.View.storage
         private void translate()
         {
             ////////////////////////////////----Order----/////////////////////////////////
-            //dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
-            //dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
-            //dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
-            //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
-
+            dg_items.Columns[0].Header = MainWindow.resourcemanager.GetString("trNum");
+            dg_items.Columns[1].Header = MainWindow.resourcemanager.GetString("trSectionLocation");
+            dg_items.Columns[2].Header = MainWindow.resourcemanager.GetString("trItemUnit");
+            dg_items.Columns[3].Header = MainWindow.resourcemanager.GetString("trRealAmount");
+            dg_items.Columns[4].Header = MainWindow.resourcemanager.GetString("trInventoryAmount");
+            dg_items.Columns[5].Header = MainWindow.resourcemanager.GetString("trDestoryCount");
         }
         private async Task fillInventoryDetails()
         {
@@ -107,8 +108,7 @@ namespace POS.View.storage
             {
                 txt_inventoryNum.Text = inventory.num;
                 txt_inventoryDate.Text = inventory.createDate.ToString();
-                invItemsLocations = await invItemModel.GetAll(inventory.inventoryId);
-               
+                invItemsLocations = await invItemModel.GetAll(inventory.inventoryId);              
             }
             inputEditable();
             dg_items.ItemsSource = invItemsLocations.ToList();
@@ -118,44 +118,34 @@ namespace POS.View.storage
             if (_InventoryType == "d") // draft
             {
                 dg_items.Columns[4].IsReadOnly = false; 
-                dg_items.Columns[5].IsReadOnly = false; 
-                dg_items.Columns[6].IsReadOnly = false;
+                dg_items.Columns[5].IsReadOnly = false;            
                 btn_save.IsEnabled = true;
             }
             else if (_InventoryType == "n") // normal saved
             {
                 dg_items.Columns[4].IsReadOnly = true; 
                 dg_items.Columns[5].IsReadOnly = true; 
-                dg_items.Columns[6].IsReadOnly = true;
                 btn_save.IsEnabled = false;
             }
         }
             private void Dg_items_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             TextBox t = new TextBox();
-            CheckBox cb = new CheckBox();
             ItemLocation row = e.Row.Item as ItemLocation;
             var index = e.Row.GetIndex();
             if (dg_items.SelectedIndex != -1 && index < itemsLocations.Count)
             {
+                var columnName = e.Column.Header.ToString();
                 t = e.EditingElement as TextBox;
-                cb = e.EditingElement as CheckBox;
-                if (cb != null)
+                if (t != null &&  columnName == MainWindow.resourcemanager.GetString("trDestoryCount"))
                 {
-                    if (cb.IsChecked == true)
-                        dg_items.Columns[6].IsReadOnly = false;
-                    else
+                    int destroyCount = int.Parse(t.Text);
+                    if (destroyCount > itemsLocations[index].quantity)
                     {
-
-                        //dg_items.Columns[6].IsReadOnly = true;
-                        TextBlock tb = dg_items.Columns[6].GetCellContent(dg_items.Items[index]) as TextBlock;
-                        tb.Text = "";
-                        invItemsLocations[index].amountDestroyed = 0;
+                        t.Text = "0";
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorDistroyMoreQuanToolTip"), animation: ToasterAnimation.FadeIn);
                     }
-                }
-                else if (t != null)
-                {
-                    //int destroyCount = int.Parse(t.Text);       
+
                 }
             }
         }

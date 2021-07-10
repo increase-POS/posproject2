@@ -150,7 +150,6 @@ namespace POS.View.sales
 
 
         }
-
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             MainWindow.mainWindow.KeyDown += HandleKeyPress;
@@ -218,7 +217,6 @@ namespace POS.View.sales
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
         #region Button In DataGrid
         void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
         {
@@ -253,7 +251,6 @@ namespace POS.View.sales
             refrishBillDetails();
         }
         #endregion
-
         #region coupon
         private async void Tb_coupon_KeyDown(object sender, KeyEventArgs e)
         {
@@ -435,7 +432,6 @@ namespace POS.View.sales
         #endregion
 
         #endregion
-
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
 
@@ -502,7 +498,6 @@ namespace POS.View.sales
             tb_barcode.Focus();
             inputEditable();
         }
-
         private void inputEditable()
         {
             switch (_InvoiceType)
@@ -887,12 +882,10 @@ namespace POS.View.sales
         {
 
         }
-
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
 
         }
-
         private async void Btn_quotations_Click(object sender, RoutedEventArgs e)
         {
             // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
@@ -919,7 +912,6 @@ namespace POS.View.sales
             }
             //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
         }
-
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cmb = sender as ComboBox;
@@ -963,7 +955,6 @@ namespace POS.View.sales
             }
 
         }
-
         private async void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             TextBlock tb;
@@ -1044,9 +1035,6 @@ namespace POS.View.sales
                 billDetails[index].Total = total;
             }
         }
-
-
-
         private void Btn_invoiceImages_Click(object sender, RoutedEventArgs e)
         {
             if (invoice != null && invoice.invoiceId != 0)
@@ -1093,52 +1081,42 @@ namespace POS.View.sales
                 if (invoice.invoiceId == 0) clearInvoice();
             }
         }
-
         private void Btn_updateCustomer_Click(object sender, RoutedEventArgs e)
         {
 
         }
-
         private void Tb_discount_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
-
         private void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
-
         private void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
-
         private void Tb_discount_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
 
         }
-
         private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
         {
 
         }
-
         private void Dp_desrvedDate_KeyDown(object sender, KeyEventArgs e)
         {
 
         }
-
         private void input_LostFocus(object sender, RoutedEventArgs e)
         {
 
         }
-
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
         }
-
         private void Btn_items_Click(object sender, RoutedEventArgs e)
         {
             //items
@@ -1159,7 +1137,6 @@ namespace POS.View.sales
         {
 
         }
-
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
 

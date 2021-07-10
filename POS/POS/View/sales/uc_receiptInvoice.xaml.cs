@@ -1977,5 +1977,25 @@ namespace POS.View
         {
 
         }
+
+        private void Btn_orders_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Cb_company_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Cb_company_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

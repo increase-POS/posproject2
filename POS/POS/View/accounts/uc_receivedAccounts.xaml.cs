@@ -28,24 +28,19 @@ namespace POS.View.accounts
     public partial class uc_receivedAccounts : UserControl
     {
         private static uc_receivedAccounts _instance;
-
         CashTransfer cashModel = new CashTransfer();
         CashTransfer cashtrans = new CashTransfer();
         Bonds bondModel = new Bonds();
         Card cardModel = new Card();
-
         Agent agentModel = new Agent();
         User userModel = new User();
         Pos posModel = new Pos();
-
         IEnumerable<Agent> agents;
         IEnumerable<User> users;
-
         IEnumerable<Card> cards;
         IEnumerable<CashTransfer> cashesQuery;
         IEnumerable<CashTransfer> cashesQueryExcel;
         IEnumerable<CashTransfer> cashes;
-
         string searchText = "";
         public static uc_receivedAccounts Instance
         {
@@ -64,7 +59,6 @@ namespace POS.View.accounts
         {//confirm
 
         }
-
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
 
@@ -137,19 +131,16 @@ namespace POS.View.accounts
             await RefreshCashesList();
             Tb_search_TextChanged(null, null);
         }
-
         private async void dp_SelectedEndDateChanged(object sender, SelectionChangedEventArgs e)
         {
             await RefreshCashesList();
             Tb_search_TextChanged(null, null);
         }
-
         private async void dp_SelectedStartDateChanged(object sender, SelectionChangedEventArgs e)
         {
             await RefreshCashesList();
             Tb_search_TextChanged(null, null);
         }
-
         private void translate()
         {
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trTransaferDetails");
@@ -209,7 +200,6 @@ namespace POS.View.accounts
             btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdf");
 
         }
-
         private void Dg_receivedAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
             SectionData.clearComboBoxValidate(cb_depositFrom, p_errorDepositFrom);
@@ -257,7 +247,6 @@ namespace POS.View.accounts
                 }
             }
         }
-
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
             if (cashes is null)
@@ -279,7 +268,6 @@ namespace POS.View.accounts
             cashesQueryExcel = cashesQuery;
             RefreshCashView();
         }
-
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//save
          //chk empty cash
@@ -410,7 +398,6 @@ namespace POS.View.accounts
             }
 
         }
-
         private async void saveBond(string num, decimal ammount, Nullable<DateTime> date, string type, int? cashId)
         {
             Bonds bond = new Bonds();

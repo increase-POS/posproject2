@@ -83,6 +83,9 @@ namespace POS.View
             btn_quotations.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_quotations.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
+            btn_orders.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_orders.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
             btn_medals.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_medals.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
@@ -144,8 +147,13 @@ namespace POS.View
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_quotations.Instance);
         }
+        private void Btn_orders_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_orders);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_orders.Instance);
+        }
 
-        
         private void Btn_medals_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_medals);
@@ -159,5 +167,7 @@ namespace POS.View
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_membership.Instance);
         }
+
+        
     }
 }

@@ -491,12 +491,6 @@ namespace POS.View
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
 
-                // build invoice NUM like pi-storCode-posCode-sequence exp: 123_PI_2
-                if (invoice.invNumber == null)
-                {
-                    invoice.invNumber = await invoice.generateInvNumber(invCode);
-                }
-
                 // calculate deserved and paid (compare vendor balance with totalNet)  
                 Agent vendor = vendors.ToList().Find(b => b.agentId == invoice.agentId);
                 decimal balance = 0;
@@ -507,6 +501,7 @@ namespace POS.View
 
                 if (invType == "pw")
                 {
+                    invoice.invNumber = await invoice.generateInvNumber(invCode);
                     //deserved = 0;
                     //paid = (decimal)invoice.totalNet;
                     //balance = (decimal)(balance + invoice.totalNet);
@@ -526,6 +521,7 @@ namespace POS.View
                 }
                 else if (invType == "pb")
                 {
+                    invoice.invNumber = await invoice.generateInvNumber(invCode);
                     deserved = 0;
                     paid = (decimal)invoice.totalNet;
                     balance = (decimal)(balance + invoice.totalNet);
