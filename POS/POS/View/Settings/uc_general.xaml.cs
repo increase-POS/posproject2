@@ -63,7 +63,6 @@ namespace POS.View.Settings
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-
             #region translate
             if (MainWindow.lang.Equals("en"))
             {
@@ -84,32 +83,47 @@ namespace POS.View.Settings
             #region get default region
             List<CountryCode> regions = new List<CountryCode>();
             regions = await countryModel.GetAllRegion();
-            //MessageBox.Show(regions.Count.ToString());
             region = regions.Where(r => r.isDefault == 1).FirstOrDefault<CountryCode>();
-            //MessageBox.Show(region.code);
             if (region != null)
-            { cb_region.SelectedValue = region.countryId; MessageBox.Show(region.countryId.ToString()); }
+            {
+                //MessageBox.Show(region.countryId.ToString());
+                //int index = cb_region.Items.IndexOf(region.name.Trim());
+                cb_region.SelectedValue = region.countryId;
+                cb_region.Text = region.name;
+            }
             #endregion
 
             fillLanguages();
 
             #region get default language
-            //List<SettingCls> settings = new List<SettingCls>();//all settings
-            //settings = await setModel.GetAll();
-            //set = settings.Where(s => s.name=="language").FirstOrDefault();
-            //List<UserSetValues> usValues = new List<UserSetValues>();//all values
-            //usValues = await usValueModel.GetAll();
-            //usValue = usValues.Where(s => s.userId == MainWindow.userID).FirstOrDefault();
-            //List<SetValues> setValues = new List<SetValues>();
-            //setValues = await valueModel.GetAll();
-            //language = setValues.Where(l => l.settingId == set.settingId).ToList<SetValues>();
-            //if (language != null)
-            //    cb_language.SelectedValue = language.valId;
-            #endregion////////////////???????????????
+            var lanSettings = await setModel.GetAll();
+            set = lanSettings.Where(l => l.name == "language").FirstOrDefault<SettingCls>();
+            var lanValues = await valueModel.GetAll();
+            languages = lanValues.Where(vl => vl.settingId == set.settingId).ToList<SetValues>();
+            List<UserSetValues> usValues = new List<UserSetValues>();
+            usValues = await usValueModel.GetAll();
+            var curUserValues = usValues.Where(c => c.userId == MainWindow.userID);
+            //MessageBox.Show(languages.Count.ToString());
+            foreach (var l in curUserValues)
+                if (languages.Any(c => c.valId == l.valId))
+                {
+                    cb_language.SelectedValue = l.valId;
+                    usLanguage = l;
+                }
+            #endregion
 
             fillCurrencies();
 
             #region get default currency
+            if (region != null)
+            {
+                //cb_currency.SelectedValue = region.name;
+                //int index = cb_currency.Items.IndexOf(region.currency.Trim());
+                //cb_currency.SelectedIndex = 0;
+                //MessageBox.Show(region.currency);
+                //cb_currency.Text = region.currency;
+                tb_currency.Text = region.currency;
+            }
             #endregion
 
             #region get default tax
@@ -123,23 +137,23 @@ namespace POS.View.Settings
             #endregion
 
         }
-
-        private async void fillCurrencies()////////////////???????????????
+        int usValueId = 0;
+        private async void fillCurrencies()
         {
             cb_currency.ItemsSource = await countryModel.GetAllRegion();
             cb_currency.DisplayMemberPath = "currency";
             cb_currency.SelectedValuePath = "countryId";
+
         }
+        List<SetValues> languages = new List<SetValues>();
 
         private async void fillLanguages()
         {
             var lanSettings = await setModel.GetAll();
             set = lanSettings.Where(l => l.name == "language").FirstOrDefault<SettingCls>();
             var lanValues = await valueModel.GetAll();
-            List<SetValues> languages = new List<SetValues>();
             languages = lanValues.Where(vl => vl.settingId == set.settingId).ToList<SetValues>();
-
-            foreach(var v in languages)
+            foreach (var v in languages)
             {
                 if (v.value.ToString().Equals("en"))      v.value = MainWindow.resourcemanager.GetString("trEnglish"); 
                 else if (v.value.ToString().Equals("ar")) v.value = MainWindow.resourcemanager.GetString("trArabic");
@@ -148,6 +162,7 @@ namespace POS.View.Settings
             cb_language.ItemsSource = languages;
             cb_language.DisplayMemberPath = "value";
             cb_language.SelectedValuePath = "valId";
+
         }
 
         private async void fillRegions()
@@ -183,30 +198,44 @@ namespace POS.View.Settings
 
         private async void Btn_saveRegion_Click(object sender, RoutedEventArgs e)
         {//save region
-            string s = await countryModel.UpdateIsdefault(Convert.ToInt32(cb_region.SelectedValue));
+            string s = "";
+            int regionId = Convert.ToInt32(cb_region.SelectedValue);
+            if(regionId != 0)
+                s = await countryModel.UpdateIsdefault(regionId);
         }
 
         private async void Btn_saveLanguage_Click(object sender, RoutedEventArgs e)
-        {//save language/////////////////////////////????????????????????????????
-            //List<UserSetValues> userSetValues = new List<UserSetValues>();
-            //userSetValues = await usValueModel.GetAll();
-            //usLanguage = userSetValues.Where(l => l.valId == Convert.ToInt32(cb_language.SelectedValue)).FirstOrDefault();
-            //usLanguage.id = 0;
-            usLanguage.userId = MainWindow.userID;
-            usLanguage.valId = Convert.ToInt32(cb_language.SelectedValue);
-            usLanguage.createUserId = MainWindow.userID;
-            string s = await usValueModel.Save(usLanguage);
-            MessageBox.Show(s);
+        {//save language
+            if (usLanguage == null)
+                usLanguage = new UserSetValues();
+            if (Convert.ToInt32(cb_language.SelectedValue) != 0)
+            {
+                usLanguage.userId = MainWindow.userID;
+                usLanguage.valId = Convert.ToInt32(cb_language.SelectedValue);
+                usLanguage.createUserId = MainWindow.userID;
+                string s = await usValueModel.Save(usLanguage);
+                //MessageBox.Show(s);
+            }
         
         }
         private async void Btn_saveTax_Click(object sender, RoutedEventArgs e)
         {//save Tax
-            tax.valId = 0;
+            if (tax == null)
+                tax = new SetValues();
             tax.value = tb_tax.Text;
             tax.isSystem = 1;
-            tax.settingId = 0;
+            tax.settingId = taxId;
             string s = await valueModel.Save(tax);
-            MessageBox.Show(s);
+        }
+
+        private async void Btn_saveCurrency_Click(object sender, RoutedEventArgs e)
+        {//save currency
+        }
+
+        private void Cb_region_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            region = cb_region.SelectedItem as CountryCode;
+            tb_currency.Text = region.currency;
         }
     }
 }

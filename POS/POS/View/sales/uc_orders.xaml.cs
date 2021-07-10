@@ -69,8 +69,14 @@ namespace POS.View.sales
         Pos pos;
         List<ItemTransfer> invoiceItems;
         ItemLocation itemLocationModel = new ItemLocation();
+        ShippingCompanies companyModel = new ShippingCompanies();
+        List<ShippingCompanies> companies;
+        User userModel = new User();
+        List<User> users;
         #region//to handle barcode characters
         static private int _SelectedCustomer = -1;
+        static private int _SelectedCompany = -1;
+        static private int _SelectedUser = -1;
         // for barcode
         DateTime _lastKeystroke = new DateTime(0);
         static private string _BarcodeStr = "";
@@ -85,7 +91,8 @@ namespace POS.View.sales
         static private decimal _Sum = 0;
         static private decimal _Tax = 0;
         static private decimal _Discount = 0;
-        static private string _InvoiceType = ""; // order draft
+        static private decimal _DeliveryCost = 0;
+        static private string _InvoiceType = "ord"; // order draft
 
         // for report
         ReportCls reportclass = new ReportCls();
@@ -160,6 +167,8 @@ namespace POS.View.sales
             await RefrishCustomers();
             await fillBarcodeList();
             await fillCouponsList();
+            await fillShippingCompanies();
+            await fillUsers();
 
             pos = await posModel.getPosById(MainWindow.posID.Value);
             branch = await branchModel.getBranchById((int)pos.branchId);
@@ -196,6 +205,20 @@ namespace POS.View.sales
         async Task fillCouponsList()
         {
             coupons = await couponModel.GetCouponsAsync();
+        }
+        private async Task fillShippingCompanies()
+        {
+            companies = await companyModel.Get();
+            cb_company.ItemsSource = companies;
+            cb_company.DisplayMemberPath = "name";
+            cb_company.SelectedValuePath = "shippingCompanyId";
+        }
+        private async Task fillUsers()
+        {
+            users = await userModel.GetUsersActive();
+            cb_user.ItemsSource = users;
+            cb_user.DisplayMemberPath = "name";
+            cb_user.SelectedValuePath = "userId";
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -253,7 +276,6 @@ namespace POS.View.sales
         }
         private async Task dealWithBarcode(string barcode)
         {
-            /*
             int codeindex = barcode.IndexOf("-");
             string prefix = "";
             if (codeindex >= 0)
@@ -372,7 +394,6 @@ namespace POS.View.sales
             }
 
             tb_barcode.Clear();
-            */
         }
         private void Btn_clearCoupon_Click(object sender, RoutedEventArgs e)
         {
@@ -425,27 +446,21 @@ namespace POS.View.sales
         }
         private void validateInvoiceValues()
         {
-            //SectionData.showTextBoxValidate(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
         }
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            //check mandatory inputs
-            validateInvoiceValues();
             Boolean available = true;
-            if (_InvoiceType == "qd")
+            if (_InvoiceType == "ord")
                 available = await checkItemsAmounts();
-            if (billDetails.Count > 0 && available && !tb_name.Equals(""))
+            if (billDetails.Count > 0 && available)
             {
                 await addInvoice(_InvoiceType);
             }
             else if (billDetails.Count == 0)
             {
                 clearInvoice();
-                _InvoiceType = "qd";
             }
-            */
         }
         private void clearInvoice()
         {
@@ -458,12 +473,12 @@ namespace POS.View.sales
             else _Tax = 0;
             _Discount = 0;
             _SequenceNum = 0;
+            _DeliveryCost = 0;
             _SelectedCustomer = -1;
-            _InvoiceType = "qd";
+            _InvoiceType = "ord";
             invoice = new Invoice();
             selectedCoupons.Clear();
             tb_barcode.Clear();
-            //tb_name.Clear();
             cb_customer.SelectedIndex = -1;
             cb_customer.SelectedItem = "";
             dp_desrvedDate.Text = "";
@@ -472,6 +487,8 @@ namespace POS.View.sales
             billDetails.Clear();
             tb_total.Text = "";
             tb_sum.Text = null;
+            cb_company.SelectedIndex = -1;
+            cb_user.SelectedIndex = -1;
             if (MainWindow.isInvTax == 1)
                 tb_taxValue.Text = MainWindow.tax.ToString();
             else
@@ -482,22 +499,21 @@ namespace POS.View.sales
             btn_updateCustomer.IsEnabled = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleInvoice");
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
-            //SectionData.clearValidate(tb_name, p_errorName);
             refrishBillDetails();
             tb_barcode.Focus();
             inputEditable();
         }
         private void inputEditable()
         {
-            /*
             switch (_InvoiceType)
             {
-                case "qd": // quotation draft invoice
+                case "ord": // quotation draft invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
                     cb_customer.IsEnabled = true;
-                    tb_name.IsEnabled = true;
+                    cb_company.IsEnabled = true;
+                    cb_user.IsEnabled = true;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
                     tb_barcode.IsEnabled = true;
@@ -507,12 +523,13 @@ namespace POS.View.sales
                     tb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
                     break;
-                case "q": //quotation invoice
+                case "or": //quotation invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
                     cb_customer.IsEnabled = false;
-                    tb_name.IsEnabled = false;
+                    cb_company.IsEnabled = false;
+                    cb_user.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
@@ -523,19 +540,16 @@ namespace POS.View.sales
                     btn_clearCoupon.IsEnabled = false;
                     break;
             }
-            */
         }
         private async Task addInvoice(string invType)
         {
-            /*
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
             }
             invoice.invType = invType;
-            invoice.name = tb_name.Text;
-            invoice.posId = MainWindow.posID;
+           // invoice.posId = MainWindow.posID;
             if (!tb_discount.Text.Equals(""))
                 invoice.discountValue = decimal.Parse(tb_discount.Text);
 
@@ -552,14 +566,17 @@ namespace POS.View.sales
                 invoice.tax = decimal.Parse(tb_taxValue.Text);
             else
                 invoice.tax = 0;
-
+            if (cb_company.SelectedIndex != -1)
+                invoice.shippingCompanyId = (int)cb_company.SelectedValue;
+            if (cb_user.SelectedIndex != -1)
+                invoice.shipUserId = (int)cb_user.SelectedValue;
             invoice.createUserId = MainWindow.userID;
             invoice.updateUserId = MainWindow.userID;
 
             // build invoice NUM like storCode_PI_sequence exp: 123_PI_2
-            if (invoice.invNumber == null)
+            if (invType == "or")
             {
-                invoice.invNumber = await invoice.generateInvNumber("si");
+                invoice.invNumber = await invoice.generateInvNumber("or");
             }
 
             // save invoice in DB
@@ -592,24 +609,9 @@ namespace POS.View.sales
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
             }
-            clearInvoice();
-            */
+            clearInvoice();    
         }
-        //private async Task<string> generateInvNumber(string invoiceCode)
-        //{
-        //    string storeCode = "";
-        //    string posCode = "";
-        //    if (pos != null)
-        //    {
-        //        storeCode = pos.branchCode;
-        //        posCode = pos.code;
-        //    }
-        //    int sequence = await invoiceModel.GetLastNumOfInv(invoiceCode);
-        //    sequence++;
 
-        //    string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
-        //    return invoiceNum;
-        //}
         #region Get Id By Click  Y
         public async void ChangeItemIdEvent(int itemId)
         {
@@ -657,7 +659,7 @@ namespace POS.View.sales
             }
             else
                 tb_taxValue.Text = _Tax.ToString();
-            decimal total = _Sum - _Discount + taxValue;
+            decimal total = _Sum - _Discount + taxValue + _DeliveryCost;
 
             tb_sum.Text = _Sum.ToString();
 
@@ -731,7 +733,7 @@ namespace POS.View.sales
                     }
                     else if (tb != null)
                     {
-                        if (tb.Name == "tb_name" || tb.Name == "tb_note")// remove barcode from text box
+                        if (tb.Name == "tb_note")// remove barcode from text box
                         {
                             string tbString = tb.Text;
                             string newStr = "";
@@ -785,11 +787,11 @@ namespace POS.View.sales
         #endregion billdetails
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
-            /*
+
             // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
 
-            w.invoiceType = "qd"; //quontations draft invoices
+            w.invoiceType = "ord"; //draft order
             w.userId = MainWindow.userLogin.userId;
 
             w.title = MainWindow.resourcemanager.GetString("trDrafts");
@@ -809,14 +811,12 @@ namespace POS.View.sales
                 }
             }
             //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
-*/
         }
         private async Task fillInvoiceInputs(Invoice invoice)
         {
             _Sum = (decimal)invoice.total;
             if (invoice.tax != null)
                 _Tax = (decimal)invoice.tax;
-            //tb_name.Text = invoice.name;
             cb_customer.SelectedValue = invoice.agentId;
             dp_desrvedDate.Text = invoice.deservedDate.ToString();
             if (invoice.totalNet != null)
@@ -825,13 +825,15 @@ namespace POS.View.sales
             tb_note.Text = invoice.notes;
             tb_sum.Text = invoice.total.ToString();
             tb_discount.Text = invoice.discountValue.ToString();
-
+            cb_company.SelectedValue = invoice.shippingCompanyId;
+            cb_user.SelectedValue = invoice.shipUserId;
             tb_barcode.Clear();
             tb_barcode.Focus();
 
             await getInvoiceCoupons(invoice.invoiceId);
             // build invoice details grid
             await buildInvoiceDetails(invoice.invoiceId);
+           // refreshTotalValue()
             inputEditable();
         }
         private async Task getInvoiceCoupons(int invoiceId)
@@ -883,13 +885,12 @@ namespace POS.View.sales
         }
         private async void Btn_orders_Click(object sender, RoutedEventArgs e)
         {
-            /*
             // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
 
             // quontations invoices
-            w.invoiceType = "q";
-            w.branchCreatorId = MainWindow.branchID.Value;
+            w.invoiceType = "or";
+            w.userId = MainWindow.userLogin.userId;
             w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
 
             if (w.ShowDialog() == true)
@@ -907,7 +908,6 @@ namespace POS.View.sales
                 }
             }
             //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
-       */
             }
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -1066,19 +1066,17 @@ namespace POS.View.sales
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            /*
             //check mandatory inputs
             validateInvoiceValues();
             Boolean available = true;
-            if (_InvoiceType == "qd")
+            if (_InvoiceType == "ord") // draft order
                 available = await checkItemsAmounts();
-            if (billDetails.Count > 0 && available && !tb_name.Equals(""))
+            if (billDetails.Count > 0 && available)
             {
-                await addInvoice("q");//quontation invoice
+                await addInvoice("or");//quontation invoice
 
                 if (invoice.invoiceId == 0) clearInvoice();
             }
-            */
         }
         private void Btn_updateCustomer_Click(object sender, RoutedEventArgs e)
         {
@@ -1090,7 +1088,17 @@ namespace POS.View.sales
         }
         private void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+            if (elapsed.TotalMilliseconds > 100 && cb_customer.SelectedIndex != -1)
+            {
+                _SelectedCustomer = (int)cb_customer.SelectedValue;
+            }
+            else
+            {
+                cb_customer.SelectedValue = _SelectedCustomer;
+            }
+            if (cb_customer.SelectedIndex != -1)
+                btn_updateCustomer.IsEnabled = true;
         }
         private void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -1106,7 +1114,7 @@ namespace POS.View.sales
         }
         private void Dp_desrvedDate_KeyDown(object sender, KeyEventArgs e)
         {
-
+            _Sender = sender;
         }
         private void input_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -1159,7 +1167,28 @@ namespace POS.View.sales
 
         private void Cb_company_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+            if (elapsed.TotalMilliseconds > 100 && cb_company.SelectedIndex != -1)
+            {
+                _SelectedCompany = (int)cb_company.SelectedValue;
+                companyModel = companies.Find(c => c.shippingCompanyId == (int)cb_company.SelectedValue);
+                _DeliveryCost = (decimal)companyModel.deliveryCost;
+                refreshTotalValue();
 
+                if (companyModel.deliveryType == "local")
+                {
+                    cb_user.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    cb_user.SelectedIndex = -1;
+                    cb_user.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
+            {
+                cb_company.SelectedValue = _SelectedCompany;
+            }      
         }
 
         private void Cb_company_LostFocus(object sender, RoutedEventArgs e)
@@ -1170,6 +1199,24 @@ namespace POS.View.sales
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Tb_note_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _Sender = sender;
+        }
+
+        private void Cb_user_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+            if (elapsed.TotalMilliseconds > 100 && cb_customer.SelectedIndex != -1)
+            {
+                _SelectedUser = (int)cb_user.SelectedValue;
+            }
+            else
+            {
+                cb_user.SelectedValue = _SelectedUser;
+            }
         }
     }
 }

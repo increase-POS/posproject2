@@ -48,6 +48,7 @@ namespace POS
         public static string Mobile = "+963967376542";
         public static string Address = "Aleppo";
         public static string Currency = "KD";
+        public static string Phone = "+963967376542";
         internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
@@ -63,11 +64,13 @@ namespace POS
         internal static decimal? tax = 2;
         public static int Idletime = 5;
 
+        static SettingCls setModel = new SettingCls();
+        static SetValues valueModel = new SetValues();
+        static int nameId, addressId, emailId, mobileId, phoneId, faxId, logoId , taxId;
+
         /// <summary>
         /// //////// relative screen test
         /// </summary>
-
-
 
         public static double mainUcWidth, mainUcHeight, gridFormWidth, gridFormHeight,
             windowHeight, windowWidth, ucControlFormSectionWidth, ucControlFormSectionHeight,
@@ -445,6 +448,10 @@ namespace POS
             txt_userName.Text = userLogin.name;
             txt_userJob.Text = userLogin.job;
 
+            getMainInfo();
+
+            //MessageBox.Show(MainWindow.companyName);
+            //MessageBox.ShowcompanyName+"-"+Address+"-"+Phone+"-"+Mobile+"-"+Fax+"-"+Currency+"-"+Email + "-" + tax.ToString());
             try
             {
                 if (!string.IsNullOrEmpty(userLogin.image))
@@ -474,6 +481,58 @@ namespace POS
             }
             BTN_Home_Click(null, null);
         }
+
+        private async static void getMainInfo()
+        {
+            List<SettingCls> settingsCls = await setModel.GetAll();
+            List<SetValues> settingsValues = await valueModel.GetAll();
+
+            SettingCls set = new SettingCls();
+            SetValues setV = new SetValues();
+            //get company name
+            set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
+            nameId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
+            companyName = setV.value;
+            //get company address
+            set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
+            addressId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
+            Address = setV.value;
+            //get company email
+            set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
+            emailId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
+            Email = setV.value;
+            //get company mobile
+            set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
+            mobileId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
+            Mobile = setV.value;
+            //get company phone
+            set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
+            phoneId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
+            Phone = setV.value;
+            //get company fax
+            set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
+            faxId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
+            Fax = setV.value;
+            //get company logo
+            set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
+            logoId = set.settingId;
+            //setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
+            //tb_fax.Text = setV.value;//getLogo();
+            //get tax
+            set = settingsCls.Where(s => s.name == "tax").FirstOrDefault<SettingCls>();
+            taxId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == taxId).FirstOrDefault();
+            tax = decimal.Parse(setV.value);
+            MessageBox.Show(tax.ToString());
+            //get user default language
+        }
+
 
         private void clearImg()
         {

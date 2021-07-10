@@ -80,6 +80,8 @@ namespace POS.Classes
         public Nullable<byte> isApproved { get; set; }
         public Nullable<int> branchCreatorId { get; set; }
         public string branchCreatorName { get; set; }
+        public Nullable<int> shippingCompanyId { get; set; }
+        public Nullable<int> shipUserId { get; set; }
         // for report
         public int countP { get; set; }
         public int countS { get; set; }

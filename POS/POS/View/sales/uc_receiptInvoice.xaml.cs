@@ -81,6 +81,11 @@ namespace POS.View
 
         ItemLocation itemLocationModel = new ItemLocation();
 
+        ShippingCompanies companyModel = new ShippingCompanies();
+        List<ShippingCompanies> companies;
+        User userModel = new User();
+        List<User> users;
+
         #region//to handle barcode characters
         static private int _SelectedCustomer = -1;
         static private string _SelectedPaymentType = "cash";
@@ -101,6 +106,7 @@ namespace POS.View
         static private decimal _Sum = 0;
         static private decimal _Tax = 0;
         static private decimal _Discount = 0;
+        static private decimal _DeliveryCost = 0;
         static private string _InvoiceType = "sd"; // sale draft
 
         // for report
@@ -206,7 +212,8 @@ namespace POS.View
             await RefrishCustomers();
             await fillBarcodeList();
             await fillCouponsList();
-                      
+            await fillShippingCompanies();
+            await fillUsers();
 
             #region fill card combo
             cards = await cardModel.GetAll();
@@ -270,6 +277,30 @@ namespace POS.View
 
                 cb_paymentProcessType.ItemsSource = typelist;
             }
+        }
+        private async Task fillShippingCompanies()
+        {
+            companies = await companyModel.Get();
+            cb_company.ItemsSource = companies;
+            cb_company.DisplayMemberPath = "name";
+            cb_company.SelectedValuePath = "shippingCompanyId";
+
+            //companyModel = companies.Find(c => c.shippingCompanyId == (int)cb_company.SelectedValue);
+            //if (companyModel.deliveryType == "local")
+            //{
+            //    cb_user.Visibility = Visibility.Visible;
+            //}
+            //else
+            //{
+            //    cb_user.Visibility = Visibility.Collapsed;
+            //}
+        }
+        private async Task fillUsers()
+        {
+            users = await userModel.GetUsersActive();
+            cb_user.ItemsSource = users;
+            cb_user.DisplayMemberPath = "name";
+            cb_user.SelectedValuePath = "userId";
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -477,11 +508,15 @@ namespace POS.View
                 else
                     invoice.tax = 0;
 
+                if (cb_company.SelectedIndex != -1)
+                    invoice.shippingCompanyId = (int)cb_company.SelectedValue;
+                if (cb_user.SelectedIndex != -1)
+                    invoice.shipUserId = (int)cb_user.SelectedValue;
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
 
                 // build invoice NUM like si-storCode-posCode-sequence exp: 123_PI_2
-                if (invoice.invNumber == null)
+                if (invoice.invNumber == null || invoice.invType == "or")
                 {
                     invoice.invNumber = await invoice.generateInvNumber("si");
                 }
@@ -715,6 +750,7 @@ namespace POS.View
             _Sum = 0;
             _Tax = 0;
             _Discount = 0;
+            _DeliveryCost = 0;
             _SequenceNum = 0;
             _SelectedCustomer = -1;
             _SelectedPaymentType = "cash";
@@ -737,6 +773,8 @@ namespace POS.View
             else
                 tb_taxValue.Text = "0";
             cb_card.SelectedIndex = -1;
+            cb_company.SelectedIndex = -1;
+            cb_user.SelectedIndex = -1;
             tb_processNum.Clear();
             cb_paymentProcessType.SelectedIndex = 0;
             lst_coupons.Items.Clear();
@@ -853,7 +891,9 @@ namespace POS.View
             dp_desrvedDate.Text = invoice.deservedDate.ToString();
             if (invoice.totalNet != null)
                 tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
-           
+
+            cb_company.SelectedValue = invoice.shippingCompanyId;
+            cb_user.SelectedValue = invoice.shipUserId;
             tb_note.Text = invoice.notes;
             tb_sum.Text = invoice.total.ToString();
  
@@ -880,9 +920,9 @@ namespace POS.View
                         break;
                 }
             }
-            else
+            else if(invoice.invType == "or")
             {
-               // cb_paymentProcessType.SelectedValue = "cash";
+               cb_paymentProcessType.SelectedValue = "balance";
             }
             if (_InvoiceType != "sbd" && _InvoiceType != "sd")
                 await getInvoiceCoupons(invoice.invoiceId); 
@@ -962,11 +1002,14 @@ namespace POS.View
                     btn_updateCustomer.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = true;
                     cb_card.IsEnabled = false;
+                    cb_company.IsEnabled = false;
+                    cb_user.IsEnabled = false;
                     tb_processNum.IsEnabled = false;
                     tb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     break;
                 case "sd": // sales draft invoice
+                case "or": //sales order
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                     dg_billDetails.Columns[3].IsReadOnly = false;
                     dg_billDetails.Columns[4].IsReadOnly = false;
@@ -980,6 +1023,8 @@ namespace POS.View
                     btn_updateCustomer.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = true;
                     cb_card.IsEnabled = true;
+                    cb_company.IsEnabled = true;
+                    cb_user.IsEnabled = true;
                     tb_processNum.IsEnabled = true;
                     tb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
@@ -998,25 +1043,9 @@ namespace POS.View
                     btn_updateCustomer.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
                     cb_card.IsEnabled = false;
+                    cb_company.IsEnabled = false;
+                    cb_user.IsEnabled = false;
                     tb_processNum.IsEnabled = false;
-                    tb_coupon.IsEnabled = false;
-                    btn_clearCoupon.IsEnabled = false;
-                    break;
-                case "q": //quontation invoice
-                    dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
-                    dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
-                    dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
-                    dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
-                    cb_customer.IsEnabled = false;
-                    dp_desrvedDate.IsEnabled = false;
-                    tb_note.IsEnabled = false;
-                    tb_barcode.IsEnabled = false;
-                    tb_discount.IsEnabled = false;
-                    btn_save.IsEnabled = false;
-                    btn_updateCustomer.IsEnabled = false;
-                    cb_paymentProcessType.IsEnabled = true;
-                    cb_card.IsEnabled = true;
-                    tb_processNum.IsEnabled = true;
                     tb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     break;
@@ -1122,7 +1151,7 @@ namespace POS.View
             }
             else
                 tb_taxValue.Text = _Tax.ToString();
-            decimal total = _Sum - _Discount + taxValue;
+            decimal total = _Sum - _Discount + taxValue + _DeliveryCost;
 
             tb_sum.Text = _Sum.ToString();
 
@@ -1857,8 +1886,8 @@ namespace POS.View
 
             // sale invoices
             w.invoiceType = "q";
-
-            w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
+            w.branchCreatorId = MainWindow.branchID.Value;
+            w.title = MainWindow.resourcemanager.GetString("trQuotations");
 
             if (w.ShowDialog() == true)
             {
@@ -1878,7 +1907,34 @@ namespace POS.View
             }
             Window.GetWindow(this).Opacity = 1;
         }
+        private async void Btn_orders_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_invoice w = new wd_invoice();
 
+            // sale orders
+            w.invoiceType = "or";
+            w.branchCreatorId = MainWindow.branchID.Value;
+            w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
+
+            if (w.ShowDialog() == true)
+            {
+                if (w.invoice != null)
+                {
+                    invoice = w.invoice;
+                    this.DataContext = invoice;
+
+                    _InvoiceType = invoice.invType;
+                    // set title to bill
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trOrders");
+                    // orange #FFA926 red #D22A17
+                    brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                    await fillInvoiceInputs(invoice);
+                    mainInvoiceItems = invoiceItems;
+                }
+            }
+            Window.GetWindow(this).Opacity = 1;
+        }
         private void Cb_paymentProcessType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
@@ -1976,16 +2032,28 @@ namespace POS.View
         private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        private void Btn_orders_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        } 
 
         private void Cb_company_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (cb_company.SelectedIndex != -1)
+            {
+                companyModel = companies.Find(c => c.shippingCompanyId == (int)cb_company.SelectedValue);
+                _DeliveryCost = (decimal)companyModel.deliveryCost;
+                refreshTotalValue();
 
+                if (companyModel.deliveryType == "local")
+                {
+                    cb_user.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    cb_user.SelectedIndex = -1;
+                    cb_user.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
+                cb_user.Visibility = Visibility.Collapsed;
         }
 
         private void Cb_company_LostFocus(object sender, RoutedEventArgs e)

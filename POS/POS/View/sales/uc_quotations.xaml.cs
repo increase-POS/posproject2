@@ -543,7 +543,7 @@ namespace POS.View.sales
             }
             invoice.invType = invType;
             invoice.name = tb_name.Text;
-            invoice.posId = MainWindow.posID;
+            //invoice.posId = MainWindow.posID;
             if (!tb_discount.Text.Equals(""))
                 invoice.discountValue = decimal.Parse(tb_discount.Text);
 
@@ -565,7 +565,7 @@ namespace POS.View.sales
             invoice.updateUserId = MainWindow.userID;
 
             // build invoice NUM like storCode_PI_sequence exp: 123_PI_2
-            if (invoice.invNumber == null)
+            if (invType =="q")
             {
                 invoice.invNumber = await invoice.generateInvNumber("si");
             }

@@ -593,10 +593,10 @@
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="Company..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
-                                  Grid.Column="0" Height="40"   Margin="10,5,10,5"
+                                  Grid.Column="0" Height="40"   Margin="10,5,10,0"
                                   BorderBrush="#737373" BorderThickness="0" 
                                   SelectionChanged="Cb_company_SelectionChanged" 
-                                  LostFocus="Cb_company_LostFocus">
+                                  LostFocus="Cb_company_LostFocus" VerticalAlignment="Top">
                                 <ComboBox.ToolTip>
                                     <ToolTip x:Name="tt_company" Content="Company"
                                                           Placement="left" 
@@ -617,7 +617,7 @@
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="User..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
-                                 Visibility="Visible"
+                                 Visibility="Collapsed"
                                   Grid.Column="0" Height="40"  Margin="10,5,10,5"
                                   BorderBrush="#737373" BorderThickness="0" 
                                   LostFocus="Tb_validateEmptyLostFocus">

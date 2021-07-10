@@ -180,7 +180,7 @@ namespace POS.View.windows
         {
             e.Handled = e.Key == Key.Space;
         }
-        private void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // MessageBox.Show(cb_areaPhone.SelectedValue.ToString());
             if (firstchange == true)
@@ -191,19 +191,22 @@ namespace POS.View.windows
                         countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
                     // MessageBox.Show(cb_areaPhone.SelectedIndex.ToString());
                     // MessageBox.Show(countryid.ToString());
-                    citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
-                    //MessageBox.Show(citynumofcountry.Count().ToString());
-                    cb_areaPhoneLocal.ItemsSource = citynumofcountry;
-                    cb_areaPhoneLocal.SelectedValuePath = "cityId";
-                    cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
-                    if (citynumofcountry.Count() > 0)
+                    if (citynum != null)
                     {
+                        citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
+                        //MessageBox.Show(citynumofcountry.Count().ToString());
+                        cb_areaPhoneLocal.ItemsSource = citynumofcountry;
+                        cb_areaPhoneLocal.SelectedValuePath = "cityId";
+                        cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
+                        if (citynumofcountry.Count() > 0)
+                        {
 
-                        cb_areaPhoneLocal.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        cb_areaPhoneLocal.Visibility = Visibility.Collapsed;
+                            cb_areaPhoneLocal.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            cb_areaPhoneLocal.Visibility = Visibility.Collapsed;
+                        }
                     }
 
                 }
@@ -212,19 +215,6 @@ namespace POS.View.windows
             {
                 firstchange = true;
             }
-
-            /*
-           if (cb_areaPhone.SelectedValue > 0)
-            {
-                int countryid = (int)cb_areaPhone.SelectedValue;
-
-        //    this.UserControl_Loaded.
-                cb_areaPhoneLocal.ItemsSource = citylist.Where(b => b.countryId == countryid).ToList();
-            cb_areaPhoneLocal.SelectedValuePath = "cityId";
-            cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
-            }
-            */
-            // int countid = (int)cb_areaPhone.SelectedValue;
 
         }
 
@@ -237,22 +227,23 @@ namespace POS.View.windows
                 {
                     if (cb_areaFax.SelectedIndex >= 0)
                         countryid = int.Parse(cb_areaFax.SelectedValue.ToString());
-
-                    citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
-
-                    cb_areaFaxLocal.ItemsSource = citynumofcountry;
-                    cb_areaFaxLocal.SelectedValuePath = "cityId";
-                    cb_areaFaxLocal.DisplayMemberPath = "cityCode";
-                    if (citynumofcountry.Count() > 0)
+                    if (citynum != null)
                     {
+                        citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
 
-                        cb_areaFaxLocal.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        cb_areaFaxLocal.Visibility = Visibility.Collapsed;
-                    }
+                        cb_areaFaxLocal.ItemsSource = citynumofcountry;
+                        cb_areaFaxLocal.SelectedValuePath = "cityId";
+                        cb_areaFaxLocal.DisplayMemberPath = "cityCode";
+                        if (citynumofcountry.Count() > 0)
+                        {
 
+                            cb_areaFaxLocal.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            cb_areaFaxLocal.Visibility = Visibility.Collapsed;
+                        }
+                    }
                 }
             }
             else
@@ -428,12 +419,12 @@ namespace POS.View.windows
                 MessageBox.Show("fax : " + sFax);
 
                 //save logo
-                setVLogo.value = "";
-                setVLogo.isSystem = 1;
-                setVLogo.isDefault = 1;
-                setVLogo.settingId = logoId;
-                string sLogo = await valueModel.Save(setVLogo);
-                MessageBox.Show("logo : " + sLogo);
+                //setVLogo.value = "";
+                //setVLogo.isSystem = 1;
+                //setVLogo.isDefault = 1;
+                //setVLogo.settingId = logoId;
+                //string sLogo = await valueModel.Save(setVLogo);
+                //MessageBox.Show("logo : " + sLogo);
             }
             #endregion
 
