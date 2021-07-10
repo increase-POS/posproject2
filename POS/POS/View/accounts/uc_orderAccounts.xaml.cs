@@ -139,11 +139,11 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
 
-            dg_orderAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            //dg_orderAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositTo");
-            dg_orderAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecepient");
-            dg_orderAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
-            dg_orderAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            //dg_orderAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
+            ////dg_orderAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositTo");
+            //dg_orderAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecepient");
+            //dg_orderAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
+            //dg_orderAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
             tt_code.Content = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             
