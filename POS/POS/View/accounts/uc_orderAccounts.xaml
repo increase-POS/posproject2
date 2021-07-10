@@ -8,21 +8,29 @@
              xmlns:converters="clr-namespace:POS.converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="675" d:DesignWidth="1000" Loaded="UserControl_Loaded" >
-    <Grid x:Name="grid_ucReceivedAccounts" >
+    <Grid x:Name="grid_ucOrderAccounts" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.54*"/>
             <ColumnDefinition x:Name="gridWidth" Width="*" MinWidth="225"/>
         </Grid.ColumnDefinitions>
         <Grid Margin="0,15,10,15" Grid.Column="0">
             <Grid.RowDefinitions >
-                <RowDefinition Height="45"/>
+                <RowDefinition Height="95"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="45"/>
             </Grid.RowDefinitions>
             <Border Background="White" CornerRadius="7" Margin="5,0,5,0">
-                <DockPanel LastChildFill="False"  >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
                     <Border Width="50" CornerRadius="5,0,0,5"  
-                           Background="#178DD2" >
+                           Background="#178DD2" Grid.RowSpan="2" >
 
                         <Path Fill="#E8E8E8" Stretch="Fill"
                               HorizontalAlignment="Center" Grid.Column="0"  
@@ -34,111 +42,59 @@
 	c0-1.4,0.2-2.8,0.6-4.2C68,27.3,58.3,36.5,57.9,48.2C57.5,60,66.7,69.7,78.5,70.1c11.7,0.4,21.5-8.8,21.9-20.6c0.1-2-0.2-4-0.7-5.9
 	C97.6,44.8,95.2,45.5,92.7,45.5z"/>
                     </Border>
-                    <TextBox  x:Name="tb_search" TabIndex="14"
+                    <DockPanel LastChildFill="False" Grid.Row="0" Grid.Column="1" >
+                        <TextBox  x:Name="tb_search" TabIndex="14"
                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                               Padding="10,0,5,0" BorderBrush="{x:Null}"
                               materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                               Foreground="#4e4e4e" TextBlock.FontSize="14"
-                                 VerticalAlignment="top" 
-                              Height="40"   Width="auto" Margin="10,0" 
+                              Height="40"   Width="auto" Margin="5,0" 
                               TextChanged="Tb_search_TextChanged">
-                        <TextBox.ToolTip>
-                            <ToolTip x:Name="tt_search" Content="Search"
+                            <TextBox.ToolTip>
+                                <ToolTip x:Name="tt_search" Content="Search"
                                     Placement="left" 
                                     HorizontalOffset="15"
                                     PlacementRectangle="50,0,0,0"
                                     VerticalOffset="30"/>
-                        </TextBox.ToolTip>
-                    </TextBox>
-                    <ComboBox  x:Name="cb_salesMan"   
+                            </TextBox.ToolTip>
+                        </TextBox>
+                        <ComboBox  x:Name="cb_salesMan"   
                                      BorderBrush="#737373"  BorderThickness="0" 
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-
                                      TextBlock.Foreground="#4E4E4E"
                                      Grid.Row="2" Padding="10,0,5,0"  
                                      materialDesign:HintAssist.Hint="salesMan..."  
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
                                    VerticalAlignment="Center" 
-                                     Grid.Column="2"  Height="40" Width="125"  Margin="5,5" SelectionChanged="Cb_salesMan_SelectionChanged" >
-                        <ComboBox.ToolTip>
-                            <ToolTip x:Name="tt_salesMan" Content="salesMan"
+                                     Grid.Column="2"  Height="40" Width="125"  Margin="5,5" 
+                                   SelectionChanged="Cb_salesMan_SelectionChanged" >
+                            <ComboBox.ToolTip>
+                                <ToolTip x:Name="tt_salesMan" Content="salesMan"
                                                           Placement="left" 
                                                           HorizontalOffset="25"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="25"/>
-                        </ComboBox.ToolTip>
-                    </ComboBox>
-                    <ComboBox  x:Name="cb_customer"   
+                            </ComboBox.ToolTip>
+                        </ComboBox>
+                        <ComboBox  x:Name="cb_customer"   
                                      BorderBrush="#737373"  BorderThickness="0" 
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-
                                      TextBlock.Foreground="#4E4E4E"
                                      Grid.Row="2" Padding="10,0,5,0"  
                                      materialDesign:HintAssist.Hint="customer..."  
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
                                    VerticalAlignment="Center" 
-                                     Grid.Column="2"  Height="40" Width="125"  Margin="5,5" SelectionChanged="Cb_customer_SelectionChanged" >
-                        <ComboBox.ToolTip>
-                            <ToolTip x:Name="tt_customer" Content="customer"
+                                     Grid.Column="2"  Height="40" Width="125"  Margin="5,5" 
+                                   SelectionChanged="Cb_customer_SelectionChanged" >
+                            <ComboBox.ToolTip>
+                                <ToolTip x:Name="tt_customer" Content="customer"
                                                           Placement="left" 
                                                           HorizontalOffset="25"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="25"/>
-                        </ComboBox.ToolTip>
-                    </ComboBox>
-                    <DatePicker  x:Name="dp_startSearchDate"  
-                               BorderBrush="#737373"  BorderThickness="0" 
-                                TextBlock.Foreground="#4E4E4E" 
-                                 Padding="10,5,5,5"  
-                                materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Start date..."  
-                                Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
-                                
-                            Grid.Column="1"  Height="40" Width="125"  Margin="5,5" >
-                        <DatePicker.ToolTip>
-                            <ToolTip x:Name="tt_startDate" Content="Start Date"
-                                                          Placement="left" 
-                                                          HorizontalOffset="25"
-                                                          PlacementRectangle="50,0,0,0"
-                                                          VerticalOffset="25"/>
-                        </DatePicker.ToolTip>
-                    </DatePicker>
-                    <DatePicker  x:Name="dp_endSearchDate"  
-                               BorderBrush="#737373"  BorderThickness="0" 
-                                    TextBlock.Foreground="#4E4E4E"
-                                 Grid.Row="2" Padding="10,5,5,5"  
-                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                 materialDesign:HintAssist.Hint="End date..."  
-                               Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
-                                 HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            Grid.Column="2"  Height="40" Width="125"  Margin="5,5" >
-                        <DatePicker.ToolTip>
-                            <ToolTip x:Name="tt_endDate" Content="End Date"
-                                                          Placement="left" 
-                                                          HorizontalOffset="25"
-                                                          PlacementRectangle="50,0,0,0"
-                                                          VerticalOffset="25"/>
-                        </DatePicker.ToolTip>
-                    </DatePicker>
-                    <ComboBox  x:Name="cb_state"   
-                                     BorderBrush="#737373"  BorderThickness="0" 
-                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-
-                                     TextBlock.Foreground="#4E4E4E"
-                                     Grid.Row="2" Padding="10,0,5,0"  
-                                     materialDesign:HintAssist.Hint="State..."  
-                                     Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
-                                   VerticalAlignment="Center" 
-                                     Grid.Column="2"  Height="40" Width="125"  Margin="5,5" SelectionChanged="Cb_state_SelectionChanged" >
-                        <ComboBox.ToolTip>
-                            <ToolTip x:Name="tt_state" Content="State"
-                                                          Placement="left" 
-                                                          HorizontalOffset="25"
-                                                          PlacementRectangle="50,0,0,0"
-                                                          VerticalOffset="25"/>
-                        </ComboBox.ToolTip>
-                    </ComboBox>
-                    <Button DockPanel.Dock="Right" FlowDirection="LeftToRight"  Width="40" Height="40" x:Name="btn_refresh" Grid.Row="0" Grid.Column="4" Padding="0" 
+                            </ComboBox.ToolTip>
+                        </ComboBox>
+                        <Button DockPanel.Dock="Right" FlowDirection="LeftToRight"  Width="40" Height="40" x:Name="btn_refresh" Grid.Row="0" Grid.Column="4" Padding="0" 
                             materialDesign:ButtonAssist.CornerRadius="15" Cursor="Hand"
                           Background="{x:Null}" BorderBrush="{x:Null}" 
                             Click="Btn_refresh_Click"  Style="{StaticResource SmallButtonCircleRotate}"
@@ -155,34 +111,88 @@
 	c-4,11.5-11.5,17.2-22.5,17.2H358.7c-6.5,0-12.1-2.4-16.8-7.1c-4.7-4.7-7.1-10.4-7.1-16.8V771c32.4-133.7,99.8-242.1,202-325.2
 	c102.3-83.1,222-124.6,359.2-124.6c72.8,0,143.7,13.8,212.5,41.5s130,66.7,183.3,117.1l97.3-96.5c9.5-9.5,20.7-14.2,33.7-14.2
 	s24.2,4.7,33.7,14.2c9.5,9.5,14.2,20.7,14.2,33.7V752.3z">
-                        <Button.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform/>
-                                <RotateTransform Angle="0"/>
-                                <TranslateTransform/>
-                            </TransformGroup>
-                        </Button.RenderTransform>
-                        <Button.ToolTip>
-                            <ToolTip x:Name="tt_refresh" Content="Refresh"
+                            <Button.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="0"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Button.RenderTransform>
+                            <Button.ToolTip>
+                                <ToolTip x:Name="tt_refresh" Content="Refresh"
                                               Placement="left" 
                                               HorizontalOffset="15"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="25"/>
-                        </Button.ToolTip>
-                    </Button>
-                </DockPanel>
+                            </Button.ToolTip>
+                        </Button>
+
+                    </DockPanel>
+                    <DockPanel LastChildFill="False" Grid.Row="1" Grid.Column="1" >
+                        <DatePicker  x:Name="dp_startSearchDate"  
+                               BorderBrush="#737373"  BorderThickness="0" 
+                                TextBlock.Foreground="#4E4E4E" 
+                                 Padding="10,5,5,5"  
+                                materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                materialDesign:HintAssist.Hint="Start date..."  
+                                Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
+                                
+                            Grid.Column="1"  Height="40" Width="125"  Margin="5,5" >
+                            <DatePicker.ToolTip>
+                                <ToolTip x:Name="tt_startDate" Content="Start Date"
+                                                          Placement="left" 
+                                                          HorizontalOffset="25"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="25"/>
+                            </DatePicker.ToolTip>
+                        </DatePicker>
+                        <DatePicker  x:Name="dp_endSearchDate"  
+                               BorderBrush="#737373"  BorderThickness="0" 
+                                    TextBlock.Foreground="#4E4E4E"
+                                 Grid.Row="2" Padding="10,5,5,5"  
+                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                 materialDesign:HintAssist.Hint="End date..."  
+                               Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
+                                 HorizontalAlignment="Left" VerticalAlignment="Center" 
+                            Grid.Column="2"  Height="40" Width="125"  Margin="5,5" >
+                            <DatePicker.ToolTip>
+                                <ToolTip x:Name="tt_endDate" Content="End Date"
+                                                          Placement="left" 
+                                                          HorizontalOffset="25"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="25"/>
+                            </DatePicker.ToolTip>
+                        </DatePicker>
+                        <ComboBox  x:Name="cb_state"   
+                                     BorderBrush="#737373"  BorderThickness="0" 
+                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                     TextBlock.Foreground="#4E4E4E"
+                                     Grid.Row="2" Padding="10,0,5,0"  
+                                     materialDesign:HintAssist.Hint="Status..."  
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
+                                   VerticalAlignment="Center" 
+                                     Grid.Column="2"  Height="40" Width="125"  Margin="5,5" 
+                                   SelectionChanged="Cb_state_SelectionChanged" >
+                            <ComboBox.ToolTip>
+                                <ToolTip x:Name="tt_state" Content="State"
+                                                          Placement="left" 
+                                                          HorizontalOffset="25"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="25"/>
+                            </ComboBox.ToolTip>
+                        </ComboBox>
+                    </DockPanel>
+                </Grid>
             </Border>
-
-
             <Border Margin="5,5,5,0" Grid.Row="1"  Background="White" CornerRadius="7,7,0,0">
                 <DataGrid  Margin="5,5,0,17.5"  Grid.Row="1"  IsReadOnly="True"  Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
                      
-                       x:Name="dg_receivedAccounts"
+                       x:Name="dg_orderAccounts"
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader" 
-                           SelectionChanged="Dg_receivedAccounts_SelectionChanged"    
+                           SelectionChanged="Dg_orderAccounts_SelectionChanged"    
                            AlternatingRowBackground="#f3f3f3" AlternationCount="2">
                     <DataGrid.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
@@ -196,11 +206,12 @@
                         <converters:depositorNameConverter x:Key="depositorNameConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="*"  Header="Transfer number" Binding="{Binding Path=transNum}"/>
-                        <!--<DataGridTextColumn Width="*"  Header="Deposit From" Binding="{Binding side,Converter={StaticResource depositorTypeConverter }}"  Visibility="Collapsed" />-->
-                        <DataGridTextColumn Width="*"  Header="Depositor" Binding="{Binding Path=.,Converter={StaticResource depositorNameConverter }}"     />
-                        <DataGridTextColumn Width="*"   Header="Process Type"   Binding="{Binding processType,Converter={StaticResource processTypeConverter }}"/>
-                        <DataGridTextColumn Width="*"  Header="Cash" Binding="{Binding Path=cash}"/>
+                        <DataGridCheckBoxColumn Width="50" Binding="{Binding Path=isChecked}" IsThreeState="False"/>
+                        <DataGridTextColumn Width="*"   Header="Invoice Number" Binding="{Binding Path=test}"/>
+                        <DataGridTextColumn Width="*"   Header="sales man" Binding="{Binding Path=test}"/>
+                        <DataGridTextColumn Width="*"   Header="customer" Binding="{Binding Path=test}"/>
+                        <DataGridTextColumn Width="*"  Header="Cash" Binding="{Binding Path=test}"/>
+                        <DataGridTextColumn Width="*"  Header="Status" Binding="{Binding Path=test}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
@@ -333,18 +344,19 @@
                         Background="#4E4E4E">
                     <Button Height="52" Background="{x:Null}" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Height="52" HorizontalAlignment="Center" >
-                            <Path Fill="#E8E8E8" Stretch="Fill" x:Name="path_received" FlowDirection="LeftToRight"
+                            <Path Fill="#E8E8E8" Stretch="Fill" x:Name="path_order" FlowDirection="LeftToRight"
                               HorizontalAlignment="Right" Grid.Column="0"  Visibility="Visible"
                          VerticalAlignment="Center" Width="20" Height="20"
-                              Data="M43,28.6l-5.1-5.1H26.2L21,28.6c-2.6,2.6-4,6-4,9.7C17,45.8,23.2,52,30.7,52h2.5C40.8,52,47,45.8,47,38.3
-	C47,34.6,45.6,31.2,43,28.6z M23.9,31.4l1.1-1.1l1.4,1.4l-1.1,1.1c-0.2,0.2-0.5,0.5-0.7,0.8L23,32.4C23.3,32,23.5,31.7,23.9,31.4z
-	 M28.8,47.8c-4.5-0.9-7.8-4.9-7.8-9.5c0-1.3,0.2-2.5,0.7-3.6l1.9,0.8c-0.4,0.9-0.6,1.9-0.6,2.9c0,3.7,2.6,6.9,6.2,7.6L28.8,47.8z
-	 M32,36c2.2,0,4,1.8,4,4c0,1.9-1.3,3.4-3,3.9V46h-2v-2.1c-1.7-0.4-3-2-3-3.9h2c0,1.1,0.9,2,2,2c1.1,0,2-0.9,2-2s-0.9-2-2-2
-	c-2.2,0-4-1.8-4-4c0-1.9,1.3-3.4,3-3.9V28h2v2.1c1.7,0.4,3,2,3,3.9h-2c0-1.1-0.9-2-2-2c-1.1,0-2,0.9-2,2S30.9,36,32,36z M22.6,17.1
-	C22.2,16.6,22,16,22,15.4V15c0-1.7,1.3-3,3-3c1.3,0,2,0.8,2.5,1.3c0.4,0.5,0.6,0.7,1,0.7s0.6-0.2,1-0.7C30,12.8,30.7,12,32,12
-	s2,0.8,2.5,1.3c0.4,0.5,0.6,0.7,1,0.7s0.6-0.2,1-0.7C37,12.8,37.7,12,39,12c1.7,0,3,1.3,3,3v0.4c0,0.6-0.2,1.2-0.5,1.7l-3.8,5.3
-	H26.3L22.6,17.1z"/>
-                            <TextBlock Text="Received" x:Name="txt_received" Foreground="#E8E8E8" VerticalAlignment="Center" Grid.Column="1"  Margin="5"/>
+                              Data="M9.9,22.6c0,0.1-0.1,0.2-0.2,0.2H4c-0.1,0-0.2-0.1-0.2-0.2s0.1-0.2,0.2-0.2h5.7C9.8,22.3,9.9,22.4,9.9,22.6z
+	 M9.1,23.7H3.4c-0.1,0-0.2,0.1-0.2,0.2s0.1,0.2,0.2,0.2h5.7c0.1,0,0.2-0.1,0.2-0.2S9.2,23.7,9.1,23.7z M8.3,25H2.6
+	c-0.1,0-0.2,0.1-0.2,0.2s0.1,0.2,0.2,0.2h5.7c0.1,0,0.2-0.1,0.2-0.2S8.4,25,8.3,25z M39.8,28.1h-1.5c-0.3,2.1-2.1,3.8-4.3,3.8
+	c-2.2,0-4-1.7-4.3-3.8c0,0,0,0,0,0H28V10.2h0.9c0,0,1.7,0,3.1,0.3c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.2,0,0.3,0.1
+	c1.4,0.4,2.9,1.1,4.1,2.5c2.3,2.6,2.9,5.4,3,7.8h0V28.1z M30.2,20.1h7.3c-0.3-8.2-7.3-7.2-7.3-7.2V20.1z M36,27.6
+	c0-1.2-0.9-2.1-2.1-2.1s-2.1,0.9-2.1,2.1c0,1.2,0.9,2.1,2.1,2.1S36,28.8,36,27.6z M16.9,6.6h9.1V28h-5.5c-0.2,2.2-2,3.9-4.3,3.9
+	c-2.2,0-4.1-1.7-4.3-3.9h-1.7V12.6c0-4.1,2.9-5.4,4.2-5.9C14.5,6.7,15.2,6.6,16.9,6.6z M18.2,27.8c0-1.2-0.9-2.1-2.1-2.1
+	S14,26.6,14,27.8c0,1.2,0.9,2.1,2.1,2.1S18.2,28.9,18.2,27.8z M23.1,13.5H12.8v0.4h10.3V13.5z M23.1,12.7H12.8V13h10.3V12.7z
+	 M23.1,11.7H12.8v0.4h10.3V11.7z"/>
+                            <TextBlock Text="Orders" x:Name="txt_order" Foreground="#E8E8E8" VerticalAlignment="Center" Grid.Column="1"  Margin="5"/>
                         </StackPanel>
                     </Button>
                 </Border>
@@ -363,17 +375,13 @@
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="auto"></RowDefinition>
                         </Grid.RowDefinitions>
-
                         <DockPanel Grid.Row="0">
-
                             <TextBlock Text="Transafer Details" VerticalAlignment="Center" Foreground="#737373"
                                  FontSize="10"   x:Name="txt_baseInformation"
                                    Margin="5,5,0,5"/>
-
                             <Button DockPanel.Dock="Right" x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
                                     Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click"
                                     Margin="5,1"   ToolTip="clear" TabIndex="13">
-
                                 <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
                                                          HorizontalAlignment="Center" Grid.Column="0"  
                                                          VerticalAlignment="Center" Width="20" Height="20">
@@ -664,17 +672,10 @@
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="1,1"    Content="Print" Click="Btn_printInvoice_Click" />
 
-                    <!--<Border Grid.Row="2">-->
-
-                    <Button x:Name="btn_add"  TabIndex="10" Content="Save" Grid.Row="2"
+                    <Button x:Name="btn_save"  TabIndex="10" Content="Save" Grid.Row="2"
                                 Background="#4E4E4E" BorderBrush="{x:Null}" Grid.ColumnSpan="3"
-                                Margin="1,1" Click="Btn_add_Click" >
-                        <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <materialDesign:PackIcon Name="txt_add_Icon" Kind="PlusThick" VerticalAlignment="Center" Width="15"  Height="15" Margin="0,1,2,0">
-                                    </materialDesign:PackIcon>
-                                    <TextBlock Visibility="Collapsed" Name="txt_addButton" Text="Add" VerticalAlignment="Center">
-                                    </TextBlock>
-                                </StackPanel>-->
+                                Margin="1,1" Click="Btn_save_Click" >
+                     
                         <Button.ToolTip>
                             <ToolTip x:Name="tt_add_Button" Content="Add"
                                     Placement="left" 
@@ -683,68 +684,8 @@
                                     VerticalOffset="30"/>
                         </Button.ToolTip>
                     </Button>
-                    <!--<Border.ToolTip>
-                                <ToolTip x:Name="tt_add_Button" Content="Add"
-                                    Placement="left" 
-                                    HorizontalOffset="15"
-                                    PlacementRectangle="50,0,0,0"
-                                    VerticalOffset="30"/>
-                            </Border.ToolTip>-->
-                    <!--</Border>-->
-                    <!--<Border Grid.Column="1" Grid.Row="2">
-                            <Button x:Name="btn_update"  TabIndex="11"
-                        Background="#4E4E4E" BorderBrush="{x:Null}"
-                   Margin="1,1"  Click="Btn_update_Click" >
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <materialDesign:PackIcon Name="txt_update_Icon" Kind="Edit" VerticalAlignment="Center" Width="15" Height="15" Margin="0,1,2,0">
-
-                                    </materialDesign:PackIcon>
-                                    <TextBlock Visibility="Collapsed" Name="txt_updateButton" Text="Update" VerticalAlignment="Center">
-
-                                    </TextBlock>
-
-                                </StackPanel>
-                            </Button>
-                            <Border.ToolTip>
-
-                                <ToolTip x:Name="tt_update_Button" Content="Update"
-                                    Placement="left" 
-                                    HorizontalOffset="15"
-                                    PlacementRectangle="50,0,0,0"
-                                    VerticalOffset="30"/>
-
-                            </Border.ToolTip>
-                        </Border>-->
-                    <!--<Border Grid.Column="2" Grid.Row="2">
-                            <Button x:Name="btn_delete"  TabIndex="12"
-                        Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,1"  Click="Btn_delete_Click" >
-                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
-                                    <materialDesign:PackIcon Name="txt_delete_Icon" Kind="Delete" VerticalAlignment="Center" Width="15" Height="15" Margin="0,1,2,0">
-
-                                    </materialDesign:PackIcon>
-                                    <TextBlock Visibility="Collapsed" Name="txt_deleteButton" Width="auto" Text="Delete" VerticalAlignment="Center">
-
-                                    </TextBlock>
-                                </StackPanel>
-                            </Button>
-                            <Border.ToolTip>
-                                <ToolTip x:Name="tt_delete_Button" Content="delete"
-                                    Placement="left" 
-                                    HorizontalOffset="15"
-                                    PlacementRectangle="50,0,0,0"
-                                    VerticalOffset="30"/>
-                            </Border.ToolTip>
-                        </Border>-->
                 </Grid>
-
-
-
             </Grid>
-
         </Border>
-
-
-
     </Grid>
 </UserControl>

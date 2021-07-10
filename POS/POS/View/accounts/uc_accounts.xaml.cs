@@ -81,6 +81,9 @@ namespace POS.View.accounts
             btn_banks.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_banks.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
+            btn_orders.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_orders.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
 
             btn_subscriptions.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_subscriptions.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -138,7 +141,12 @@ namespace POS.View.accounts
             //uc_banksAccounts uc = new uc_banksAccounts();
             //grid_main.Children.Add(uc);
         }
-
+        private void Btn_orders_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_orders);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_orderAccounts.Instance);
+        }
         private void Btn_subscriptions_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_subscriptions);
@@ -151,6 +159,6 @@ namespace POS.View.accounts
 
         }
 
-        
+       
     }
 }
