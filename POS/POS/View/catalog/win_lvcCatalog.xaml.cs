@@ -27,10 +27,14 @@ namespace POS.View.catalog
         IEnumerable<Category> categoriesQuery;
         IEnumerable<Item> itemsQuery;
         List<double> chartList;
+        List<double> PiechartList;
+        List<double> ColumnchartList;
         int catalog;
         string label;
 
         public SeriesCollection SeriesCollection { get; set; }
+        Func<ChartPoint, string> labelPoint = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
+
         public win_lvcCatalog(IEnumerable<Category> _categoriesQuery, int _catalog)
         {
             InitializeComponent();
@@ -46,8 +50,10 @@ namespace POS.View.catalog
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             chartList = new List<double>();
+            PiechartList = new List<double>();
+            ColumnchartList = new List<double>();
             fillDates();
-            fillChart();
+            cb_cmbChartType.SelectedIndex = 0;
         }
 
         public void fillDates()
@@ -123,11 +129,11 @@ namespace POS.View.catalog
                         chartList.Add(Draw);
                         label = "Items count";
                     }
-                        MyAxis.Separator.Step = 1;
-                        MyAxis.Labels.Add(year.ToString());
-                    }
+                    MyAxis.Separator.Step = 1;
+                    MyAxis.Labels.Add(year.ToString());
                 }
-                SeriesCollection = new SeriesCollection
+            }
+            SeriesCollection = new SeriesCollection
            {
                  new LineSeries
                {
@@ -135,53 +141,267 @@ namespace POS.View.catalog
                    Values = chartList.AsChartValues()
                },
            };
-                grid1.Children.Clear();
-                grid1.Children.Add(charts);
-                DataContext = this;
+            grid1.Children.Clear();
+            grid1.Children.Add(charts);
+            DataContext = this;
 
-            }
+        }
 
-            private void dpStrtDate_CalendarClosed(object sender, RoutedEventArgs e)
+        public void fillPieChart()
+        {
+            PiechartList.Clear();
+            SeriesCollection piechartData = new SeriesCollection();
+            List<string> titles = new List<string>();
+            int startYear = dpStrtDate.SelectedDate.Value.Year;
+            int endYear = dpEndDate.SelectedDate.Value.Year;
+            int startMonth = dpStrtDate.SelectedDate.Value.Month;
+            int endMonth = dpEndDate.SelectedDate.Value.Month;
+            if (rdoMonth.IsChecked == true)
             {
-                if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+                for (int year = startYear; year <= endYear; year++)
                 {
-                    rdoYear.IsChecked = true;
-                    fillChart();
+                    for (int month = startMonth; month <= 12; month++)
+                    {
+                        var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
+                        if (catalog == 1)
+                        {
+                            var Draw = categoriesQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            PiechartList.Add(Draw);
+                            label = "Categories count";
+                        }
+                        else
+                        {
+                            var Draw = itemsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            PiechartList.Add(Draw);
+                            label = "Items count";
+                        }
+                        titles.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
+                        if (year == dpEndDate.SelectedDate.Value.Year && month == dpEndDate.SelectedDate.Value.Month)
+                        {
+                            break;
+                        }
+                        if (month == 12)
+                        {
+                            startMonth = 1;
+                            break;
+                        }
+                    }
                 }
-                else fillChart();
             }
-
-            private void dpEndDate_CalendarClosed(object sender, RoutedEventArgs e)
+            else
             {
-                if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+                for (int year = startYear; year <= endYear; year++)
                 {
-                    rdoYear.IsChecked = true;
-                    fillChart();
+                    var firstOfThisYear = new DateTime(year, 1, dpStrtDate.SelectedDate.Value.Month);
+                    var firstOfNextMYear = firstOfThisYear.AddYears(1);
+                    if (catalog == 1)
+                    {
+                        var Draw = categoriesQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        PiechartList.Add(Draw);
+                        label = "Categories count";
+                    }
+                    else
+                    {
+                        var Draw = itemsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        PiechartList.Add(Draw);
+                        label = "Items count";
+                    }
+                    titles.Add(year.ToString());
                 }
-                else fillChart();
             }
-
-            private void btn_refresh_Click(object sender, RoutedEventArgs e) { rdoMonth.IsChecked = true; fillDates(); fillChart(); }
-
-            private void rdoYear_Click(object sender, RoutedEventArgs e)
+            for (int i = 0; i < PiechartList.Count(); i++)
             {
-                if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
-                {
-                    rdoYear.IsChecked = true;
-                    fillChart();
-                }
-                else fillChart();
+                List<double> final = new List<double>();
+                List<string> lable = new List<string>();
+                final.Add(PiechartList.ToList().Skip(i).FirstOrDefault());
+                piechartData.Add(
+                  new PieSeries
+                  {
+                      Values = final.AsChartValues(),
+                      Title = titles.ToList().Skip(i).FirstOrDefault().ToString(),
+                      DataLabels = true,
+                  }
+              );
             }
+            pieChart.Series = piechartData;
+        }
 
-            private void rdoMonth_Click(object sender, RoutedEventArgs e)
+        public void fillColumnChart()
+        {
+            ColumnchartList.Clear();
+            SeriesCollection columnchartData = new SeriesCollection();
+            List<string> titles = new List<string>();
+            int startYear = dpStrtDate.SelectedDate.Value.Year;
+            int endYear = dpEndDate.SelectedDate.Value.Year;
+            int startMonth = dpStrtDate.SelectedDate.Value.Month;
+            int endMonth = dpEndDate.SelectedDate.Value.Month;
+            if (rdoMonth.IsChecked == true)
             {
-                if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+                for (int year = startYear; year <= endYear; year++)
                 {
-                    rdoYear.IsChecked = true;
-                    fillChart();
+                    for (int month = startMonth; month <= 12; month++)
+                    {
+                        var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
+                        if (catalog == 1)
+                        {
+                            var Draw = categoriesQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            ColumnchartList.Add(Draw);
+                            label = "Categories count";
+                        }
+                        else
+                        {
+                            var Draw = itemsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            ColumnchartList.Add(Draw);
+                            label = "Items count";
+                        }
+                        titles.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
+                        if (year == dpEndDate.SelectedDate.Value.Year && month == dpEndDate.SelectedDate.Value.Month)
+                        {
+                            break;
+                        }
+                        if (month == 12)
+                        {
+                            startMonth = 1;
+                            break;
+                        }
+                    }
                 }
-                else fillChart();
+            }
+            else
+            {
+                for (int year = startYear; year <= endYear; year++)
+                {
+                    var firstOfThisYear = new DateTime(year, 1, dpStrtDate.SelectedDate.Value.Month);
+                    var firstOfNextMYear = firstOfThisYear.AddYears(1);
+                    if (catalog == 1)
+                    {
+                        var Draw = categoriesQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        ColumnchartList.Add(Draw);
+                        label = "Categories count";
+                    }
+                    else
+                    {
+                        var Draw = itemsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        ColumnchartList.Add(Draw);
+                        label = "Items count";
+                    }
+                    titles.Add(year.ToString());
+                }
+            }
+            for (int i = 0; i < ColumnchartList.Count(); i++)
+            {
+                List<double> final = new List<double>();
+                List<string> lable = new List<string>();
+                final.Add(ColumnchartList.ToList().Skip(i).FirstOrDefault());
+                columnchartData.Add(
+                  new ColumnSeries
+                  {
+                      Values = final.AsChartValues(),
+                      Title = titles.ToList().Skip(i).FirstOrDefault().ToString(),
+                      DataLabels = true,
+                  }
+              );
+            }
+            columnChart.Series = columnchartData;
+        }
+
+        private void dpStrtDate_CalendarClosed(object sender, RoutedEventArgs e)
+        {
+            if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+            {
+                rdoYear.IsChecked = true;
+                fillSelectedChart();
+            }
+            else
+            {
+                fillSelectedChart();
+            }
+        }
+
+        private void dpEndDate_CalendarClosed(object sender, RoutedEventArgs e)
+        {
+            if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+            {
+                rdoYear.IsChecked = true;
+                fillSelectedChart();
+            }
+            else
+            {
+                fillSelectedChart();
+            }
+        }
+
+        private void btn_refresh_Click(object sender, RoutedEventArgs e) { cb_cmbChartType.SelectedIndex = 0; rdoMonth.IsChecked = true; fillDates(); fillSelectedChart(); }
+
+        private void rdoYear_Click(object sender, RoutedEventArgs e)
+        {
+            if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+            {
+                rdoYear.IsChecked = true;
+                fillSelectedChart();
+            }
+            else
+            {
+                fillSelectedChart();
+            }
+        }
+
+        private void rdoMonth_Click(object sender, RoutedEventArgs e)
+        {
+            if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+            {
+                rdoYear.IsChecked = true;
+                fillSelectedChart();
+            }
+            else
+            {
+                fillSelectedChart();
+            }
+        }
+
+        private void cb_cmbChartType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cb_cmbChartType.SelectedIndex == 0)
+            {
+                grid1.Visibility = Visibility.Visible;
+                grd_pieChart.Visibility = Visibility.Hidden;
+                grd_columnChart.Visibility = Visibility.Hidden;
+                fillSelectedChart();
+            }
+            else if (cb_cmbChartType.SelectedIndex == 1)
+            {
+                grid1.Visibility = Visibility.Hidden;
+                grd_pieChart.Visibility = Visibility.Visible;
+                grd_columnChart.Visibility = Visibility.Hidden;
+                fillSelectedChart();
+            }
+            else if (cb_cmbChartType.SelectedIndex == 2)
+            {
+                grid1.Visibility = Visibility.Hidden;
+                grd_pieChart.Visibility = Visibility.Hidden;
+                grd_columnChart.Visibility = Visibility.Visible;
+                fillSelectedChart();
             }
 
         }
+
+        private void fillSelectedChart()
+        {
+            if (cb_cmbChartType.SelectedIndex == 0)
+            {
+                fillChart();
+            }
+            else if (cb_cmbChartType.SelectedIndex == 1)
+            {
+                fillPieChart();
+            }
+            else if (cb_cmbChartType.SelectedIndex == 2)
+            {
+                fillColumnChart();
+            }
+        }
+
     }
+}

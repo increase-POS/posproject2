@@ -134,9 +134,9 @@ namespace POS.View
             cb_areaFax.SelectedValuePath = "countryId";
             cb_areaFax.DisplayMemberPath = "code";
 
-            cb_areaMobile.SelectedIndex = 8;
-            cb_areaPhone.SelectedIndex = 8;
-            cb_areaFax.SelectedIndex = 8;
+            cb_areaMobile.SelectedIndex = MainWindow.Region.countryId;
+            cb_areaPhone.SelectedIndex = MainWindow.Region.countryId;
+            cb_areaFax.SelectedIndex = MainWindow.Region.countryId;
 
         }
 
@@ -245,7 +245,7 @@ namespace POS.View
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             // for pagination onTop Always
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             //CreateGridCardContainer();

@@ -13,7 +13,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class SetValues
+    public class SetValues
     {
         public int valId { get; set; }
         public string value { get; set; }

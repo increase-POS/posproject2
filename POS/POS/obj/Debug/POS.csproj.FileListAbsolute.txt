@@ -2294,3 +2294,7 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_orders.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_orders.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_orderAccounts.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_orderAccounts.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_saleReport.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_usersReport.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_saleReport.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_usersReport.baml

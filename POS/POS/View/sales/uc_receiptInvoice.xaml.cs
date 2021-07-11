@@ -2065,5 +2065,10 @@ namespace POS.View
         {
 
         }
+
+        private void Btn_ordersWait_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

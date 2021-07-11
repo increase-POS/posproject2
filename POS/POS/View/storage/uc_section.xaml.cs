@@ -400,7 +400,8 @@ namespace POS.View
         async Task<IEnumerable<Section>> RefreshSectionsList()
         {
             MainWindow.mainWindow.StartAwait();
-            sections = await sectionModel.Get();
+            //sections = await sectionModel.Get();
+            sections = await sectionModel.getBranchSections(MainWindow.branchID.Value);
             MainWindow.mainWindow.EndAwait();
             return sections;
         }

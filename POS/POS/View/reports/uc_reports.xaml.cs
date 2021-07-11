@@ -99,6 +99,7 @@ namespace POS.View.reports
             btn_usersReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
         }
+
         void refreashBachgroundClick(Button btn)
         {
             refreashBackground();
@@ -110,7 +111,7 @@ namespace POS.View.reports
         {
             refreashBachgroundClick(btn_salesReports);
             grid_main.Children.Clear();
-         //   grid_main.Children.Add(uc_.Instance);
+            grid_main.Children.Add(uc_saleReport.Instance);
         }
 
         private void btn_purchaseReport_Click(object sender, RoutedEventArgs e)
@@ -138,9 +139,7 @@ namespace POS.View.reports
         {
             refreashBachgroundClick(btn_usersReports);
             grid_main.Children.Clear();
-            //   grid_main.Children.Add(uc_.Instance);
+               grid_main.Children.Add(uc_usersReport.Instance);
         }
-
-
     }
 }

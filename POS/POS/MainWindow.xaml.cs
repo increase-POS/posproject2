@@ -40,13 +40,14 @@ namespace POS
         public static ResourceManager resourcemanager;
         bool menuState = false;
 
-        public static string lang;
+        public static string lang ;
         public static string Reportlang = "ar";
         public static string companyName = "Increse";
         public static string Email = "m7mdbonni@gmail.com";
         public static string Fax = "0215232233";
         public static string Mobile = "+963967376542";
         public static string Address = "Aleppo";
+        public static CountryCode Region ;
         public static string Currency = "KD";
         public static string Phone = "+963967376542";
         internal static int? userID;
@@ -67,6 +68,8 @@ namespace POS
         static SettingCls setModel = new SettingCls();
         static SetValues valueModel = new SetValues();
         static int nameId, addressId, emailId, mobileId, phoneId, faxId, logoId , taxId;
+
+        ImageBrush myBrush = new ImageBrush();
 
         /// <summary>
         /// //////// relative screen test
@@ -434,56 +437,19 @@ namespace POS
             MessageBox.Show("Are you want to Change Password?");
         }
 
-        ImageBrush myBrush = new ImageBrush();
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        public async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //translate
-            if (lang.Equals("en"))
-            { resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_mainWindow.FlowDirection = FlowDirection.LeftToRight; }
-            else
-            { resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_mainWindow.FlowDirection = FlowDirection.RightToLeft; }
+           
+            #region get default System info
+            lang = await getDefaultLanguage();
 
-            translate();
-            //user info
-            txt_userName.Text = userLogin.name;
-            txt_userJob.Text = userLogin.job;
+            tax = decimal.Parse(await getDefaultTax());
 
-            getMainInfo();
+            CountryCode c = await getDefaultRegion();
+            Region = c;
 
-            //MessageBox.Show(MainWindow.companyName);
-            //MessageBox.ShowcompanyName+"-"+Address+"-"+Phone+"-"+Mobile+"-"+Fax+"-"+Currency+"-"+Email + "-" + tax.ToString());
-            try
-            {
-                if (!string.IsNullOrEmpty(userLogin.image))
-                {
-                    byte[] imageBuffer = await userModel.downloadImage(userLogin.image); // read this as BLOB from your DB
+            Currency = c.currency;
 
-                    var bitmapImage = new BitmapImage();
-
-                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
-                    {
-                        bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                    }
-
-                    img_userLogin.Fill = new ImageBrush(bitmapImage);
-                }
-                else
-                {
-                    clearImg();
-                }
-            }
-            catch
-            {
-                clearImg();
-            }
-            BTN_Home_Click(null, null);
-        }
-
-        private async static void getMainInfo()
-        {
             List<SettingCls> settingsCls = await setModel.GetAll();
             List<SetValues> settingsValues = await valueModel.GetAll();
 
@@ -522,15 +488,82 @@ namespace POS
             //get company logo
             set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
             logoId = set.settingId;
-            //setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
-            //tb_fax.Text = setV.value;//getLogo();
-            //get tax
-            set = settingsCls.Where(s => s.name == "tax").FirstOrDefault<SettingCls>();
-            taxId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == taxId).FirstOrDefault();
-            tax = decimal.Parse(setV.value);
-            MessageBox.Show(tax.ToString());
-            //get user default language
+            #endregion
+         
+            //translate
+            if (lang.Equals("en"))
+            { resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_mainWindow.FlowDirection = FlowDirection.LeftToRight; }
+            else
+            { resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_mainWindow.FlowDirection = FlowDirection.RightToLeft; }
+
+            translate();
+
+            #region user personal info
+            txt_userName.Text = userLogin.name;
+            txt_userJob.Text = userLogin.job;
+
+           
+            try
+            {
+                if (!string.IsNullOrEmpty(userLogin.image))
+                {
+                    byte[] imageBuffer = await userModel.downloadImage(userLogin.image); // read this as BLOB from your DB
+
+                    var bitmapImage = new BitmapImage();
+
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+
+                    img_userLogin.Fill = new ImageBrush(bitmapImage);
+                }
+                else
+                {
+                    clearImg();
+                }
+            }
+            catch
+            {
+                clearImg();
+            }
+            #endregion
+
+            BTN_Home_Click(null, null);
+        }
+     
+        async Task<string> getDefaultLanguage()
+        {
+            UserSetValues v = await uc_general.getDefaultLanguage();
+            SetValues sVModel = new SetValues();
+            SetValues sValue = new SetValues();
+            sValue = await sVModel.GetByID(v.valId.Value);
+            if (sValue != null)
+                return sValue.value;
+            else
+                return "";
+        }
+
+        async Task<string> getDefaultTax()
+        {
+            SetValues v = await uc_general.getDefaultTax();
+            if (v != null)
+                return v.value;
+            else
+                return "";
+        }
+
+        async Task<CountryCode> getDefaultRegion()
+        {
+            CountryCode c = await uc_general.getDefaultRegion();
+            if (c != null)
+                return c;
+            else
+                return null;
         }
 
 
@@ -596,7 +629,7 @@ namespace POS
             grid_main.Children.Add(uc_reports.Instance);
         }
 
-        private void BTN_settings_Click(object sender, RoutedEventArgs e)
+        public void BTN_settings_Click(object sender, RoutedEventArgs e)
         {
             colorTextRefreash(txt_settings);
             FN_pathVisible(path_openSettings);

@@ -289,6 +289,12 @@
     <Compile Include="View\reports\uc_reports.xaml.cs">
       <DependentUpon>uc_reports.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\reports\uc_saleReport.xaml.cs">
+      <DependentUpon>uc_saleReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\uc_usersReport.xaml.cs">
+      <DependentUpon>uc_usersReport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\sales\uc_medals.xaml.cs">
       <DependentUpon>uc_medals.xaml</DependentUpon>
     </Compile>
@@ -567,6 +573,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\reports\uc_reports.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_saleReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_usersReport.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -24,19 +24,20 @@ namespace POS.View.Settings
     /// </summary>
     public partial class uc_general : UserControl
     {
-        SettingCls setModel = new SettingCls();
-        SetValues valueModel = new SetValues();
-        UserSetValues usValueModel = new UserSetValues();
-        CountryCode countryModel = new CountryCode();
+        static SettingCls setModel = new SettingCls();
+        static SetValues valueModel = new SetValues();
+        static UserSetValues usValueModel = new UserSetValues();
+        static CountryCode countryModel = new CountryCode();
 
-        SettingCls set = new SettingCls();
-        SetValues language= new SetValues();
-        SetValues tax = new SetValues();
-        UserSetValues usLanguage = new UserSetValues();
-        UserSetValues usValue = new UserSetValues();
-        CountryCode region = new CountryCode();
+        static SettingCls set = new SettingCls();
+        static SetValues language= new SetValues();
+        static SetValues tax = new SetValues();
+        static public UserSetValues usLanguage = new UserSetValues();
+        static UserSetValues usValue = new UserSetValues();
+        static CountryCode region = new CountryCode();
+        static List<SetValues> languages = new List<SetValues>();
 
-        int taxId = 0;
+        static int taxId = 0;
 
         private static uc_general _instance;
         public static uc_general Instance
@@ -81,9 +82,7 @@ namespace POS.View.Settings
             fillRegions();
 
             #region get default region
-            List<CountryCode> regions = new List<CountryCode>();
-            regions = await countryModel.GetAllRegion();
-            region = regions.Where(r => r.isDefault == 1).FirstOrDefault<CountryCode>();
+            await getDefaultRegion();
             if (region != null)
             {
                 //MessageBox.Show(region.countryId.ToString());
@@ -96,20 +95,9 @@ namespace POS.View.Settings
             fillLanguages();
 
             #region get default language
-            var lanSettings = await setModel.GetAll();
-            set = lanSettings.Where(l => l.name == "language").FirstOrDefault<SettingCls>();
-            var lanValues = await valueModel.GetAll();
-            languages = lanValues.Where(vl => vl.settingId == set.settingId).ToList<SetValues>();
-            List<UserSetValues> usValues = new List<UserSetValues>();
-            usValues = await usValueModel.GetAll();
-            var curUserValues = usValues.Where(c => c.userId == MainWindow.userID);
-            //MessageBox.Show(languages.Count.ToString());
-            foreach (var l in curUserValues)
-                if (languages.Any(c => c.valId == l.valId))
-                {
-                    cb_language.SelectedValue = l.valId;
-                    usLanguage = l;
-                }
+            await getDefaultLanguage();
+            if(usLanguage != null)
+                cb_language.SelectedValue = usLanguage.valId;
             #endregion
 
             fillCurrencies();
@@ -127,25 +115,53 @@ namespace POS.View.Settings
             #endregion
 
             #region get default tax
-            List<SettingCls> settingsCls = await setModel.GetAll();
-            List<SetValues> settingsValues = await valueModel.GetAll();
-            set = settingsCls.Where(s => s.name == "tax").FirstOrDefault<SettingCls>();
-            taxId = set.settingId;
-            tax = settingsValues.Where(i => i.settingId == taxId).FirstOrDefault();
+            await getDefaultTax();
             if(tax != null)
             tb_tax.Text = tax.value;
             #endregion
 
         }
+
+        public static async Task<CountryCode> getDefaultRegion()
+        {
+            List<CountryCode> regions = new List<CountryCode>();
+            regions = await countryModel.GetAllRegion();
+            region = regions.Where(r => r.isDefault == 1).FirstOrDefault<CountryCode>();
+            return region;
+        }
+        public static async Task<SetValues> getDefaultTax()
+        {
+            List<SettingCls> settingsCls = await setModel.GetAll();
+            List<SetValues> settingsValues = await valueModel.GetAll();
+            set = settingsCls.Where(s => s.name == "tax").FirstOrDefault<SettingCls>();
+            taxId = set.settingId;
+            tax = settingsValues.Where(i => i.settingId == taxId).FirstOrDefault();
+            return tax;
+        }
+        public static async Task<UserSetValues> getDefaultLanguage()
+        {
+            var lanSettings = await setModel.GetAll();
+            set = lanSettings.Where(l => l.name == "language").FirstOrDefault<SettingCls>();
+            var lanValues = await valueModel.GetAll();
+            languages = lanValues.Where(vl => vl.settingId == set.settingId).ToList<SetValues>();
+            List<UserSetValues> usValues = new List<UserSetValues>();
+            usValues = await usValueModel.GetAll();
+            var curUserValues = usValues.Where(c => c.userId == MainWindow.userID);
+            foreach (var l in curUserValues)
+                if (languages.Any(c => c.valId == l.valId))
+                {
+                    usLanguage = l;
+                }
+            return usLanguage;
+        }
+
         int usValueId = 0;
         private async void fillCurrencies()
         {
             cb_currency.ItemsSource = await countryModel.GetAllRegion();
             cb_currency.DisplayMemberPath = "currency";
             cb_currency.SelectedValuePath = "countryId";
-
         }
-        List<SetValues> languages = new List<SetValues>();
 
         private async void fillLanguages()
         {
@@ -215,6 +231,10 @@ namespace POS.View.Settings
                 usLanguage.createUserId = MainWindow.userID;
                 string s = await usValueModel.Save(usLanguage);
                 //MessageBox.Show(s);
+               ///////////////?????????????????????
+                //////MainWindow main = new MainWindow();
+                //////main.Window_Loaded(null , null);
+                
             }
         
         }

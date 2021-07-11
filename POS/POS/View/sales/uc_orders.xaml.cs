@@ -1218,5 +1218,10 @@ namespace POS.View.sales
                 cb_user.SelectedValue = _SelectedUser;
             }
         }
+
+        private void Btn_waitConfirmUser_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

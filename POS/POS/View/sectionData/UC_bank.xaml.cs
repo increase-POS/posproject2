@@ -119,9 +119,8 @@ namespace POS.View
             cb_area.DisplayMemberPath = "code";
 
 
-            //cb_areaMobile.SelectedIndex = 8;
-            cb_areaPhone.SelectedIndex = 8;
-            //cb_areaFax.SelectedIndex = 8;
+            cb_area.SelectedIndex = MainWindow.Region.countryId;
+            cb_areaPhone.SelectedIndex = MainWindow.Region.countryId;
 
         }
 
@@ -623,22 +622,24 @@ namespace POS.View
                 {
                     if (cb_areaPhone.SelectedIndex >= 0)
                         countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
-
-                    citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
-
-                    cb_areaPhoneLocal.ItemsSource = citynumofcountry;
-                    cb_areaPhoneLocal.SelectedValuePath = "cityId";
-                    cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
-                    cb_area.Text = "+963";
-                    cb_areaPhone.Text = "+963";
-                    if (citynumofcountry.Count() > 0)
+                    if (citynum != null)
                     {
+                        citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
 
-                        cb_areaPhoneLocal.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        cb_areaPhoneLocal.Visibility = Visibility.Collapsed;
+                        cb_areaPhoneLocal.ItemsSource = citynumofcountry;
+                        cb_areaPhoneLocal.SelectedValuePath = "cityId";
+                        cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
+                        //cb_area.Text = "+963";
+                        //cb_areaPhone.Text = "+963";
+                        if (citynumofcountry.Count() > 0)
+                        {
+
+                            cb_areaPhoneLocal.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            cb_areaPhoneLocal.Visibility = Visibility.Collapsed;
+                        }
                     }
 
                 }

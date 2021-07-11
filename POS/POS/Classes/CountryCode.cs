@@ -13,7 +13,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class CountryCode
+    public class CountryCode
     {
         public int countryId { get; set; }
         public string code { get; set; }

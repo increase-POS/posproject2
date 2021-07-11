@@ -126,8 +126,8 @@ namespace POS.View
             cb_area.DisplayMemberPath = "code";
 
 
-            cb_area.SelectedIndex = 8;
-            cb_areaPhone.SelectedIndex = 8;
+            cb_area.SelectedIndex = MainWindow.Region.countryId;
+            cb_areaPhone.SelectedIndex = MainWindow.Region.countryId;
         }
 
         async Task<IEnumerable<City>> RefreshCity()

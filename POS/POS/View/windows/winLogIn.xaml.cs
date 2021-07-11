@@ -1,4 +1,5 @@
 ﻿using POS.Classes;
+using POS.View.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +27,11 @@ namespace POS.View.windows
         public winLogIn()
         {
             InitializeComponent();
+           
         }
 
         ResourceManager resourcemanager;
-        string lang = "ar";
+        string lang ;
 
         User userModel = new User();
         User user = new User();
@@ -38,8 +40,6 @@ namespace POS.View.windows
 
         UsersLogs userLogsModel = new UsersLogs();
         UsersLogs userLog = new UsersLogs();
-        IEnumerable<UsersLogs> userLogsQuery;
-        IEnumerable<UsersLogs> usersLogs;
 
         public BrushConverter bc = new BrushConverter();
         private void Window_MouseDown(object sender, MouseButtonEventArgs e) { try { DragMove(); } catch (Exception) { } }
@@ -48,10 +48,55 @@ namespace POS.View.windows
         {
             this.Close();
         }
+        UserSetValues usLanguage = new UserSetValues();
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {//load
+         //bdrLogIn.RenderTransform = Animations.borderAnimation(-100, bdrLogIn, true);
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            //bdrLogIn.RenderTransform = Animations.borderAnimation(-100, bdrLogIn, true);
+            //get user default language
+            //var person = (from p in db.People
+            //              join e in db.EmailAddresses
+            //              on p.BusinessEntityID equals e.BusinessEntityID
+            //              where p.FirstName == "KEN"
+            //              select new
+            //              {
+            //                  ID = p.BusinessEntityID,
+            //                  FirstName = p.FirstName,
+            //                  MiddleName = p.MiddleName,
+            //                  LastName = p.LastName,
+            //                  EmailID = e.EmailAddress1
+            //              }).ToList();
+
+            if (!Properties.Settings.Default.userName.Equals(""))
+            {
+                users = await userModel.GetUsersActive();
+                if (users.Any(i => i.username.Equals(Properties.Settings.Default.userName)))
+                    user = users.Where(i => i.username == Properties.Settings.Default.userName).FirstOrDefault<User>();
+                SettingCls setModel = new SettingCls();
+                SettingCls set = new SettingCls();
+                SetValues valueModel = new SetValues();
+                List<SetValues> languages = new List<SetValues>();
+                UserSetValues usValueModel = new UserSetValues();
+                var lanSettings = await setModel.GetAll();
+                set = lanSettings.Where(l => l.name == "language").FirstOrDefault<SettingCls>();
+
+                var lanValues = await valueModel.GetAll();
+                languages = lanValues.Where(vl => vl.settingId == set.settingId).ToList<SetValues>();
+
+                List<UserSetValues> usValues = new List<UserSetValues>();
+                usValues = await usValueModel.GetAll();
+                var curUserValues = usValues.Where(c => c.userId == user.userId);
+
+                foreach (var l in curUserValues)
+                    if (languages.Any(c => c.valId == l.valId))
+                    {
+                        usLanguage = l;
+                    }
+
+                var lan = await valueModel.GetByID(usLanguage.valId.Value);
+                lang = lan.value;
+            }
+            else lang = "en";
 
             if (lang.Equals("en"))
             {
@@ -97,16 +142,16 @@ namespace POS.View.windows
         bool logInProcessing = true;
         private async void btnLogIn_Click(object sender, RoutedEventArgs e)
         {//login
-
             if (logInProcessing)
             {
                 logInProcessing = false;
                 clearValidate(txtUserName, p_errorUserName);
                 clearPasswordValidate(txtPassword, p_errorPassword);
-                users = await userModel.GetUsersActive();
                 string password = Md5Encription.MD5Hash("Inc-m" + txtPassword.Password);
                 string userName = txtUserName.Text;
                 //check if user is exist
+                users = await userModel.GetUsersActive();
+
                 if (users.Any(i => i.username.Equals(userName)))
                 {
                     //get user info
@@ -131,7 +176,20 @@ namespace POS.View.windows
                         if (!str.Equals("0"))
                             MainWindow.userLogInID = int.Parse(str);
 
-                        ////open main window and close this window
+                        //remember me
+                        if (cbxRemmemberMe.IsChecked.Value)
+                        {
+                            Properties.Settings.Default.userName = txtUserName.Text;
+                            Properties.Settings.Default.password = txtPassword.Password;
+                        }
+                        else
+                        {
+                            Properties.Settings.Default.userName = "";
+                            Properties.Settings.Default.password = "";
+                        }
+                        Properties.Settings.Default.Save();
+                        
+                        //open main window and close this window
                         MainWindow main = new MainWindow();
                         main.Show();
                         this.Close();
@@ -155,17 +213,12 @@ namespace POS.View.windows
 
         private void CbxRemmemberMe_Checked(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.userName = txtUserName.Text;
-            Properties.Settings.Default.password = txtPassword.Password;
-            Properties.Settings.Default.Save();
+           
         }
 
         private void CbxRemmemberMe_Unchecked(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.userName = "";
-            Properties.Settings.Default.password = "";
-
-            Properties.Settings.Default.Save();
+           
         }
 
         public void showTextBoxValidate(TextBox tb, Path p_error, ToolTip tt_error, string tr)

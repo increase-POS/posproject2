@@ -65,6 +65,8 @@ namespace POS.View.windows
             section = await sectionModel.GetSectionByID(sectionId);
             //MessageBox.Show(section.name);
             allLocationsSource = await locationModel.Get();
+            allLocationsSource = allLocationsSource.Where(x => x.branchId == MainWindow.branchID && x.isFreeZone != 1).ToList();
+
             var query = allLocationsSource.Where(i => i.sectionId == sectionId && i.isFreeZone != 1 && i.isActive == 1);
             selectedLocationsSource = query.ToList();
 

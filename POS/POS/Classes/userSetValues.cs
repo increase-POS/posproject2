@@ -13,7 +13,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class UserSetValues
+    public class UserSetValues
     {
         public int id { get; set; }
         public Nullable<int> userId { get; set; }

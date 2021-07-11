@@ -324,10 +324,6 @@
 
 
                                 </Grid>
-
-
-
-
                                 <Grid Grid.Row="1" x:Name="grid_pos" Margin="10,0,10,10" Visibility="Hidden">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"></RowDefinition>
@@ -390,7 +386,7 @@
                                     <DockPanel Grid.ColumnSpan="3" LastChildFill="False">
                                         <CheckBox x:Name="chk_vendorsInvoice" Content="Invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_vendorsInvoice_Checked" Unchecked="chk_vendorsInvoice_Unchecked"></CheckBox>
                                         <CheckBox x:Name="chk_vendorsReturn" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_vendorsReturn_Checked" Unchecked="chk_vendorsReturn_Unchecked"></CheckBox>
-                                        <CheckBox x:Name="chk_vendorsDraft"  Content="Drafts" Checked="chk_vendorsDraft_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="chk_vendorsDraft_Unchecked"></CheckBox>
+                                        <CheckBox x:Name="chk_vendorsDraft" IsEnabled="False" Content="Drafts" Checked="chk_vendorsDraft_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="chk_vendorsDraft_Unchecked"></CheckBox>
                                         <DatePicker SelectedDateFormat="Short"  Name="dp_vendorsEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="dp_vendorsStartDate_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End Date..."></DatePicker>
@@ -470,7 +466,51 @@
 
 
                                 </Grid>
-                                <Grid Grid.Row="1" x:Name="grid_items" Margin="10,0,10,10"  Visibility="Hidden"/>
+                                <Grid Grid.Row="1" x:Name="grid_items" Margin="10,0,10,10"  Visibility="Hidden">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"></RowDefinition>
+                                        <RowDefinition Height="auto"></RowDefinition>
+
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="1.5*" MinWidth="200"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <DockPanel Grid.ColumnSpan="3" LastChildFill="False">
+                                        <CheckBox x:Name="chk_itemInvoice" Content="Invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_itemInvoice_Checked" Unchecked="chk_itemInvoice_Unchecked"></CheckBox>
+                                        <CheckBox x:Name="chk_itemReturn" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_itemReturn_Checked" Unchecked="chk_itemReturn_Unchecked"></CheckBox>
+                                        <CheckBox x:Name="chk_itemDrafs" IsEnabled="False" Content="Drafts" Checked="chk_itemDrafs_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="chk_itemDrafs_Unchecked"></CheckBox>
+                                        <DatePicker SelectedDateFormat="Short"  Name="dp_ItemEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="dp_ItemEndDate_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
+                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                materialDesign:HintAssist.Hint="End Date..."></DatePicker>
+                                        <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_ItemStartDate_SelectedDateChanged" Name="dp_ItemStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
+                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
+
+                                    </DockPanel>
+
+
+                                    <ComboBox SelectionChanged="cb_Items_SelectionChanged" Name="cb_Items" 
+                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                      materialDesign:HintAssist.Hint="Item ...."
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                    Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
+                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allItems" Click="chk_allItems_Click" Grid.Row="1" Grid.Column="1" Content="All Items" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
+                                    <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
+                                        <materialDesign:TimePicker  SelectedTimeChanged="dt_ItemEndTime_SelectedTimeChanged" Name="dt_ItemEndTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
+                                       Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                materialDesign:HintAssist.Hint="End time..."/>
+                                        <materialDesign:TimePicker SelectedTimeChanged="dt_itemStartTime_SelectedTimeChanged" Name="dt_itemStartTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40"  Width="100" MinWidth="100" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
+                                       Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                materialDesign:HintAssist.Hint="Start time..."/>
+
+                                    </DockPanel>
+
+
+                                </Grid>
                             </Grid>
 
                         </ScrollViewer>
@@ -559,13 +599,13 @@
                         <DataGridTextColumn Width="*" Header="Discount Value" Binding="{Binding discountValue}"/>
                         <DataGridTextColumn Width="*" Header="Total" Binding="{Binding totalNet}"/>
                         <DataGridTextColumn Width="*" Header="Tax" Binding="{Binding tax}" Visibility="Hidden"/>
-                        <DataGridTextColumn Width="*" Header="Count" Binding="{Binding countP}"/>
-                        <DataGridTextColumn x:Name="col_branch" Width="*" Header="Branch" Binding="{Binding branchName}" Visibility="Visible"/>
+                        <DataGridTextColumn x:Name="col_count" Width="*" Header="Count" Binding="{Binding countP}"/>
+                        <DataGridTextColumn x:Name="col_branch" Width="*" Header="Branch" Binding="{Binding branchCreatorName}" Visibility="Visible"/>
                         <DataGridTextColumn x:Name="col_pos" Width="*" Header="Pos" Binding="{Binding posName}" Visibility="Collapsed"/>
                         <DataGridTextColumn x:Name="col_vendor" Width="*" Header="Vendor" Binding="{Binding agentName}" Visibility="Collapsed"/>
                         <DataGridTextColumn x:Name="col_user" Width="*" Header="User" Binding="{Binding uUserAccName}" Visibility="Collapsed"/>
 
-                        <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding itemsCount}" Visibility="Collapsed"/>
+                        <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding ITitemName}" Visibility="Collapsed"/>
 
 
                     </DataGrid.Columns>
@@ -606,51 +646,7 @@
                                     </materialDesign:PackIcon.ToolTip>
                                 </materialDesign:PackIcon>
                             </Button>
-                            <Button FlowDirection="LeftToRight"   Background="{x:Null}"    Grid.Column="2" Margin="2.5,0,2.5,0" 
-                            Padding="0" Height="20" Width="25"   x:Name="btn_pieChart"   
-                                       BorderBrush="{x:Null}" >
-                                <Grid Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Path Width="8.8" Height="9.6" Stretch="Fill" Data="M27.7,8.3l-10.2,7.8l9.1,9.1c2.1-2.5,3.4-5.7,3.4-9.2C30,13.1,29.1,10.5,27.7,8.3z" Fill="#DD191B"
-                              RenderTransformOrigin="5,5" >
-                                        <Path.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform />
-                                                <SkewTransform/>
-                                                <RotateTransform Angle="0"/>
-                                                <TranslateTransform  X="6.5" Y="0.2"/>
-                                            </TransformGroup>
-                                        </Path.RenderTransform>
-                                    </Path>
-                                    <Path Width="7.2" Height="7.2" Stretch="Fill" Data="M17,14l9.4-7.3c-2.4-2.6-5.7-4.4-9.4-4.7V14z" Fill="#F74110" RenderTransformOrigin="0,0">
-                                        <Path.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform />
-                                                <SkewTransform/>
-                                                <RotateTransform/>
-                                                <TranslateTransform  X="6.2" Y="-6"/>
-                                            </TransformGroup>
-                                        </Path.RenderTransform>
-                                    </Path>
-                                    <Path Fill="#377EB8" Width="16" Height="17" Stretch="Fill" Data="M15.3,16.7C15.3,16.7,15.3,16.7,15.3,16.7C15.2,16.6,15.2,16.6,15.3,16.7c-0.1-0.1-0.1-0.2-0.1-0.2c0-0.1-0.1-0.1-0.1-0.2
-   s0-0.1,0-0.2c0,0,0-0.1,0-0.1V2.1C7.7,2.6,2,8.6,2,16c0,7.7,6.3,14,14,14c3.5,0,6.7-1.3,9.2-3.4L15.3,16.7z" RenderTransformOrigin="0,0">
-                                        <Path.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform ScaleX="1"/>
-                                                <SkewTransform/>
-                                                <RotateTransform/>
-                                                <TranslateTransform/>
-                                            </TransformGroup>
-                                        </Path.RenderTransform>
-                                        <Path.ToolTip>
-                                            <ToolTip x:Name="tt_pieChart" Content="Pie Chart"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
-                                        </Path.ToolTip>
-                                    </Path>
-                                </Grid>
-                            </Button>
+                         
                             <Button   Background="{x:Null}"    Grid.Column="3" Margin="5,0,5,0" 
                             Padding="0" Height="35"   x:Name="btn_exportToExcel" 
                                        BorderBrush="{x:Null}">
@@ -723,15 +719,14 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <lvc:PieChart Name="chart1" LegendLocation="Left">
+                    <lvc:PieChart Name="chart1" LegendLocation="Right">
 
                     </lvc:PieChart>
 
                 </Grid>
             </Border>
             <Border Grid.Row="2" Background="White" Margin="10,5,5,0" CornerRadius="7">
-                <lvc:CartesianChart Name="rowChart" LegendLocation="Bottom"  >
-
+                <lvc:CartesianChart Name="rowChart" Margin="0,0,0,10" LegendLocation="Bottom"  >
                 </lvc:CartesianChart>
             </Border>
 

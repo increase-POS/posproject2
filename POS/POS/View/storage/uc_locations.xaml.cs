@@ -406,6 +406,7 @@ namespace POS.View
         {
             MainWindow.mainWindow.StartAwait();
             locations = await locationModel.Get();
+            locations = locations.Where(x => x.branchId  == MainWindow.branchID && x.isFreeZone != 1);
             MainWindow.mainWindow.EndAwait();
             return locations;
         }
