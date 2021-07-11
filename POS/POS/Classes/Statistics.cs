@@ -26,6 +26,12 @@ namespace POS.Classes
         public int Copcid { get; set; }
         public string Copname { get; set; }
     }
+    public class OfferCombo
+    {
+
+        public int OofferId { get; set; }
+        public string Oname { get; set; }
+    }
 
     public class ItemTransferInvoice
     {
@@ -692,6 +698,17 @@ namespace POS.Classes
             return iulist;
 
         }
+        public List<OfferCombo> GetOfferComboList(List<ItemTransferInvoice> ITInvoice)
+        {
+            List<OfferCombo> iulist = new List<OfferCombo>();
+
+            iulist = ITInvoice.GroupBy(x => x.CopcId)
+                   .Select(g => new OfferCombo { OofferId = g.FirstOrDefault().OofferId, Oname = g.FirstOrDefault().Oname }).ToList();
+            return iulist;
+
+        }
+
+        //OfferCombo
 
         // الفواتير  مع الكوبون
         public async Task<List<ItemTransferInvoice>> GetSalecoupon()
