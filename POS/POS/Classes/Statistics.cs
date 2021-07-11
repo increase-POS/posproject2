@@ -13,6 +13,20 @@ using System.Web;
 
 namespace POS.Classes
 {
+    public class ItemUnitCombo
+    {
+       
+            public int itemUnitId { get; set; }
+        public string itemUnitName { get; set; }
+       
+    }
+    public class CouponCombo
+    {
+
+        public int Copcid { get; set; }
+        public string Copname { get; set; }
+    }
+
     public class ItemTransferInvoice
     {
         // ItemTransfer
@@ -108,6 +122,43 @@ namespace POS.Classes
         public Nullable<decimal> paidD { get; set; }
         public Nullable<decimal> deservedD { get; set; }
         public Nullable<decimal> discountValueD { get; set; }
+        // coupon
+  
+      
+        public int CopcId { get; set; }
+        public string Copname { get; set; }
+        public string Copcode { get; set; }
+        public Nullable<byte> CopisActive { get; set; }
+        public Nullable<byte> CopdiscountType { get; set; }
+        public Nullable<decimal> CopdiscountValue { get; set; }
+        public Nullable<System.DateTime> CopstartDate { get; set; }
+        public Nullable<System.DateTime> CopendDate { get; set; }
+        public string Copnotes { get; set; }
+        public Nullable<int> Copquantity { get; set; }
+        public Nullable<int> CopremainQ { get; set; }
+        public Nullable<decimal> CopinvMin { get; set; }
+        public Nullable<decimal> CopinvMax { get; set; }
+        public Nullable<System.DateTime> CopcreateDate { get; set; }
+        public Nullable<System.DateTime> CopupdateDate { get; set; }
+        public Nullable<int> CopcreateUserId { get; set; }
+        public Nullable<int> CopupdateUserId { get; set; }
+        public string Copbarcode { get; set; }
+        // offer
+       
+        public int OofferId { get; set; }
+        public string Oname { get; set; }
+        public string Ocode { get; set; }
+        public Nullable<byte> OisActive { get; set; }
+        public string OdiscountType { get; set; }
+        public Nullable<decimal> OdiscountValue { get; set; }
+        public Nullable<System.DateTime> OstartDate { get; set; }
+        public Nullable<System.DateTime> OendDate { get; set; }
+        public Nullable<System.DateTime> OcreateDate { get; set; }
+        public Nullable<System.DateTime> OupdateDate { get; set; }
+        public Nullable<int> OcreateUserId { get; set; }
+        public Nullable<int> OupdateUserId { get; set; }
+        public string Onotes { get; set; }
+        public Nullable<int> Oquantity { get; set; }
     }
     class Statistics
     {
@@ -596,6 +647,109 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "Statistics/GetSaleitemcount");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<ItemTransferInvoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<ItemTransferInvoice>();
+                }
+                return list;
+            }
+        }
+
+        public List<ItemUnitCombo> GetIUComboList(List<ItemTransferInvoice> ITInvoice)
+        {
+            List<ItemUnitCombo> iulist = new List<ItemUnitCombo>();
+
+            iulist = ITInvoice.GroupBy(x => x.ITitemUnitId)
+                   .Select(g => new ItemUnitCombo { itemUnitId = (int)g.FirstOrDefault().ITitemUnitId, itemUnitName = g.FirstOrDefault().ITitemName + " - " + g.FirstOrDefault().ITunitName }).ToList();
+            return iulist;
+
+        }
+        public List<CouponCombo> GetCopComboList(List<ItemTransferInvoice> ITInvoice)
+        {
+            List<CouponCombo> iulist = new List<CouponCombo>();
+
+            iulist = ITInvoice.GroupBy(x => x.CopcId)
+                   .Select(g => new CouponCombo { Copcid = g.FirstOrDefault().CopcId, Copname = g.FirstOrDefault().Copname  }).ToList();
+            return iulist;
+
+        }
+
+        // الفواتير  مع الكوبون
+        public async Task<List<ItemTransferInvoice>> GetSalecoupon()
+        {
+            List<ItemTransferInvoice> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetSalecoupon");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<ItemTransferInvoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<ItemTransferInvoice>();
+                }
+                return list;
+            }
+        }
+
+        // الفواتير مع العناصر مع الاوفر
+        public async Task<List<ItemTransferInvoice>> GetSaleOffer()
+        {
+            List<ItemTransferInvoice> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetSaleOffer");
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
