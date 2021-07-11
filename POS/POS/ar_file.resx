@@ -1551,4 +1551,7 @@
   <data name="trEnglish" xml:space="preserve">
     <value>الانكليزية</value>
   </data>
+  <data name="trTranseToSameLocation" xml:space="preserve">
+    <value>يجب اختيار مكان تخزين جديد للنقل</value>
+  </data>
 </root>

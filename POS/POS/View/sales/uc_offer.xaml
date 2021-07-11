@@ -465,7 +465,7 @@
                                 Margin="10,0,5,0" Text="is Active" Foreground="#6e6e6e"
                             HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontSize="12"/>
-                            <ToggleButton Grid.Column="1"  x:Name="tgl_ActiveOffer"  
+                            <ToggleButton Grid.Column="1"  x:Name="tgl_ActiveOffer"   IsChecked="True"
                                  VerticalAlignment="Center" Padding="10,15,5,5"
                                               Margin="0" Height="13" Width="28" />
                         </StackPanel>

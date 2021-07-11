@@ -396,7 +396,7 @@ namespace POS.View
             tb_code.Clear();
             tb_name.Clear();
             tb_barcode.Clear();
-            tgl_ActiveCoupon.IsChecked = false;
+            tgl_ActiveCoupon.IsChecked = true;
             cb_typeDiscount.SelectedIndex = -1;
             tb_discountValue.Clear();
             dp_startDate.SelectedDate = null;

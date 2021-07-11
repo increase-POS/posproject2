@@ -290,39 +290,51 @@ namespace POS.View.storage
         }
         private async void Btn_transfer_Click(object sender, RoutedEventArgs e)
         {
-            validateMandatoryInputs();
-            if (itemLocation != null && !tb_quantity.Text.Equals("") && cb_section.SelectedIndex != -1 && cb_XYZ.SelectedIndex != -1 && (!itemLocation.itemType.Equals("d") || (itemLocation.itemType.Equals("d") && dp_startDate.SelectedDate != null && dp_endDate.SelectedDate != null) )) 
+            if (dg_itemsStorage.SelectedIndex != -1)
             {
-                int oldLocationId = (int)itemLocation.locationId;
-                int newLocationId = (int)cb_XYZ.SelectedValue;
-                int quantity = int.Parse(tb_quantity.Text);
-                ItemLocation newLocation = new ItemLocation();
-                newLocation.itemUnitId = itemLocation.itemUnitId;
-                newLocation.locationId = newLocationId;
-                newLocation.quantity = quantity;
-                newLocation.startDate = dp_startDate.SelectedDate;
-                newLocation.endDate = dp_endDate.SelectedDate;
-                newLocation.note = tb_notes.Text;
-                newLocation.updateUserId = MainWindow.userID.Value;
-                newLocation.createUserId = MainWindow.userID.Value;
-                //newLocation.storeCost 
-                bool res = await itemLocation.trasnferItem(itemLocation.itemsLocId, newLocation);
-                if (res)
+                validateMandatoryInputs();
+                if (itemLocation != null &&
+                    !tb_quantity.Text.Equals("") && cb_section.SelectedIndex != -1
+                    && cb_XYZ.SelectedIndex != -1 && (!itemLocation.itemType.Equals("d") ||
+                    (itemLocation.itemType.Equals("d") && dp_startDate.SelectedDate != null && dp_endDate.SelectedDate != null)))
                 {
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    int oldLocationId = (int)itemLocation.locationId;
+                    int newLocationId = (int)cb_XYZ.SelectedValue;
+                    if (oldLocationId != newLocationId)
+                    {
+
+                    int quantity = int.Parse(tb_quantity.Text);
+                    ItemLocation newLocation = new ItemLocation();
+                    newLocation.itemUnitId = itemLocation.itemUnitId;
+                    newLocation.locationId = newLocationId;
+                    newLocation.quantity = quantity;
+                    newLocation.startDate = dp_startDate.SelectedDate;
+                    newLocation.endDate = dp_endDate.SelectedDate;
+                    newLocation.note = tb_notes.Text;
+                    newLocation.updateUserId = MainWindow.userID.Value;
+                    newLocation.createUserId = MainWindow.userID.Value;
+                    //newLocation.storeCost 
+                    bool res = await itemLocation.trasnferItem(itemLocation.itemsLocId, newLocation);
+                    if (res)
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    }
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                    if (tgl_IsActive.IsChecked == true)
+                        await refreshItemsLocations();
+                    else
+                        await refreshFreeZoneItemsLocations();
+
+                    clearInputs();
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTranseToSameLocation"), animation: ToasterAnimation.FadeIn);
+                    
                 }
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                if (tgl_IsActive.IsChecked == true)
-                    await refreshItemsLocations();
-                else
-                    await refreshFreeZoneItemsLocations();
-
-                clearInputs();
             }
         }
-
         private async void Cb_section_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             await refreshLocations();

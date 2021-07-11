@@ -1572,4 +1572,7 @@
   <data name="trEnglish" xml:space="preserve">
     <value>English</value>
   </data>
+  <data name="trTranseToSameLocation" xml:space="preserve">
+    <value>select new location for transf</value>
+  </data>
 </root>

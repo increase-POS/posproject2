@@ -442,7 +442,7 @@ namespace POS.View
             btn_items.IsEnabled = false;
             tb_code.Clear();
             tb_name.Clear();
-            tgl_ActiveOffer.IsChecked = false;
+            tgl_ActiveOffer.IsChecked = true;
             cb_discountType.SelectedIndex = -1;
             tb_discountValue.Clear();
             dp_startDate.SelectedDate = null;

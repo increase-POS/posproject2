@@ -81,12 +81,12 @@ namespace POS.View.windows
             /////////////////////////////////////////////////
             foreach (var i in allLocations)
             {
-                i.x = i.x.Trim() + "-" + i.y.Trim() + "-" + i.z.Trim();
+                i.x = i.x.Trim() + i.y.Trim() + i.z.Trim();
             }
 
             foreach (var i in selectedLocations)
             {
-                i.x = i.x.Trim() + "-" + i.y.Trim() + "-" + i.z.Trim();
+                i.x = i.x.Trim() + i.y.Trim() + i.z.Trim();
             }
 
             lst_allLocations.ItemsSource = allLocations;

@@ -460,7 +460,7 @@
                                 Margin="10,5,5,5" Text="is Active" Foreground="#6e6e6e"
                             HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontSize="12"/>
-                        <ToggleButton x:Name="tgl_ActiveCoupon" Grid.Column="1"    
+                            <ToggleButton x:Name="tgl_ActiveCoupon" Grid.Column="1"    IsChecked="True"
                                  VerticalAlignment="Center" Padding="10,0,5,0"
                                               Margin="0,5,0,5" Height="13" Width="28" />
                         </StackPanel>
@@ -536,7 +536,7 @@
                                         </TextBox.ToolTip>
                                     </TextBox>
 
-                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
                                                       HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
                                                       VerticalAlignment="Center" Width="15"  Height="15" 
                                                       x:Name="p_errorValueDiscount"
@@ -583,7 +583,7 @@
                                                          VerticalOffset="20"/>
                                     </DatePicker.ToolTip>
                                 </DatePicker>
-                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,22.5,5"
                                                           x:Name="p_errorStartDate"
                                                           HorizontalAlignment="Right" Grid.Column="0"  Visibility="Collapsed"   
                                                           VerticalAlignment="Center" Width="15"  Height="15"
@@ -615,7 +615,7 @@
                                                          VerticalOffset="20"/>
                                     </DatePicker.ToolTip>
                                 </DatePicker>
-                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,30,5"
                                                    x:Name="p_errorEndDate"
                                   HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                              VerticalAlignment="Center" Width="15"  Height="15"

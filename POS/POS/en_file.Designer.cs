@@ -4030,6 +4030,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to select new location for transf.
+        /// </summary>
+        internal static string trTranseToSameLocation {
+            get {
+                return ResourceManager.GetString("trTranseToSameLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transfer Number.
         /// </summary>
         internal static string trTransferNumberTooltip {

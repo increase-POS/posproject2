@@ -3976,6 +3976,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to يجب اختيار مكان تخزين جديد للنقل.
+        /// </summary>
+        internal static string trTranseToSameLocation {
+            get {
+                return ResourceManager.GetString("trTranseToSameLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رقم التحويل.
         /// </summary>
         internal static string trTransferNumberTooltip {
