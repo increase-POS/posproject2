@@ -85,7 +85,9 @@
                                      TabIndex="1" Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                      BorderBrush="AliceBlue" 
                                      MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                     Height="40" Margin="10,5,10,5"   >
+                                     Height="40" Margin="10,5,10,5" 
+                                     TextChanged="Tb_validateEmptyTextChange" 
+                                     LostFocus="Tb_validateEmptyLostFocus">
                     <TextBox.ToolTip>
                         <ToolTip x:Name="tt_name" Content="Name"
                                               Placement="left" 
@@ -110,7 +112,9 @@
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="100"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                     Height="40"   Margin="10,5,10,5"  >
+                                     Height="40"   Margin="10,5,10,5"
+                                     TextChanged="Tb_validateEmptyTextChange" 
+                                     LostFocus="Tb_validateEmptyLostFocus">
                     <TextBox.ToolTip>
                         <ToolTip x:Name="tt_address" Content="Address"
                                               Placement="left" 
@@ -136,7 +140,10 @@
                                      BorderBrush="AliceBlue" MaxLength="100"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="40"   Margin="10,5,10,5"
-                                     LostFocus="Tb_email_LostFocus" TabIndex="10" PreviewKeyDown="tb_email_PreviewKeyDown">
+                                     LostFocus="Tb_email_LostFocus" TabIndex="10" 
+                                     TextChanged="Tb_validateEmptyTextChange" 
+                                     PreviewKeyDown="tb_email_PreviewKeyDown"
+                                     >
                     <TextBox.ToolTip>
                         <ToolTip x:Name="tt_email" Content="Email"
                                               Placement="left" 
@@ -147,14 +154,13 @@
                 </TextBox>
                 <Path Grid.Row="2" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                                   x:Name="p_errorEmail"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
+                              HorizontalAlignment="Right" Grid.Column="0"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                     <Path.ToolTip>
                         <ToolTip  x:Name="tt_errorEmail"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                     </Path.ToolTip>
                 </Path>
-
                 <!--#endregion-->
 
                 <!--#region  Phone-->
@@ -164,7 +170,10 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <ComboBox Grid.Column="0" x:Name="cb_areaMobile" Padding="10,5,5,5"  SelectedIndex="0"   TextBlock.Foreground="#4E4E4E" TabIndex="3"  TextBlock.FontSize="12" Margin="5,5,0,5" VerticalAlignment="Center"   Height="40" Width="60" Background="#f8f8f8"   BorderBrush="#737373"      BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}"  />
-                    <TextBox x:Name="tb_mobile" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Stretch" Text="{Binding mobile, Mode=OneWay}" Padding="10,0,5,0"  TabIndex="4"  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" Height="40"   Margin="5" TextChanged="tb_mobile_TextChanged" PreviewKeyDown="tb_mobile_PreviewKeyDown"  >
+                    <TextBox x:Name="tb_mobile" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Stretch" Text="{Binding mobile, Mode=OneWay}" Padding="10,0,5,0"  TabIndex="4"  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" Height="40"   Margin="5" 
+                             PreviewKeyDown="tb_mobile_PreviewKeyDown"   
+                             TextChanged="Tb_validateEmptyTextChange" 
+                             LostFocus="Tb_validateEmptyLostFocus">
                         <TextBox.ToolTip>
                             <ToolTip x:Name="tt_mobile" Content="Mobile"  Placement="left"   HorizontalOffset="35"  PlacementRectangle="50,0,0,0"    VerticalOffset="20"/>
                         </TextBox.ToolTip>
@@ -206,7 +215,9 @@
                            BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      MaxLength="15"
-                  Height="40"   Margin="5"  TabIndex="6" PreviewKeyDown="tb_phone_PreviewKeyDown">
+                  Height="40"   Margin="5"  TabIndex="6" PreviewKeyDown="tb_phone_PreviewKeyDown"
+                              TextChanged="Tb_validateEmptyTextChange" 
+                              LostFocus="Tb_validateEmptyLostFocus">
                         <TextBox.ToolTip>
                             <ToolTip x:Name="tt_phone" Content="Phone"
                                               Placement="left" 
@@ -256,7 +267,9 @@
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
                                      Height="40"   Margin="5" Grid.Column="2" 
-                                     TabIndex="9" PreviewKeyDown="tb_fax_PreviewKeyDown">
+                                     TabIndex="9" PreviewKeyDown="tb_fax_PreviewKeyDown"
+                                     TextChanged="Tb_validateEmptyTextChange" 
+                                     LostFocus="Tb_validateEmptyLostFocus">
                         <TextBox.ToolTip>
                             <ToolTip x:Name="tt_fax" Content="Fax"
                                               Placement="left" 

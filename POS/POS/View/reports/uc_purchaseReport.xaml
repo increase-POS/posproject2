@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-                      xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-                           xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                          xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+                               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
               xmlns:converters="clr-namespace:POS.converters"
 
              xmlns:local="clr-namespace:POS.View.purchases" 
@@ -14,6 +14,7 @@
     <Grid Margin="0,15,15,15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" ></ColumnDefinition>
+            <ColumnDefinition Width="auto" ></ColumnDefinition>
             <ColumnDefinition Width="1*" ></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
@@ -595,11 +596,11 @@
                         <DataGridTextColumn Width="*" Header="No." Binding="{Binding invNumber}"/>
                         <DataGridTextColumn x:Name="col_type" Width="*" Header="Type" Binding="{Binding Path=invType,Converter={StaticResource invoiceTypeConverter }}"  >
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*" Header="Discount Type" Binding="{Binding discountType}"/>
-                        <DataGridTextColumn Width="*" Header="Discount Value" Binding="{Binding discountValue}"/>
+                        
+                        <DataGridTextColumn Width="*" Header="Discount Value" Binding="{Binding discountValue,StringFormat=F2}"/>
                         <DataGridTextColumn Width="*" Header="Total" Binding="{Binding totalNet}"/>
                         <DataGridTextColumn Width="*" Header="Tax" Binding="{Binding tax}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_count" Width="*" Header="Count" Binding="{Binding countP}"/>
+                        <DataGridTextColumn x:Name="col_count" Width="*" Header="Count" Binding="{Binding count}"/>
                         <DataGridTextColumn x:Name="col_branch" Width="*" Header="Branch" Binding="{Binding branchCreatorName}" Visibility="Visible"/>
                         <DataGridTextColumn x:Name="col_pos" Width="*" Header="Pos" Binding="{Binding posName}" Visibility="Collapsed"/>
                         <DataGridTextColumn x:Name="col_vendor" Width="*" Header="Vendor" Binding="{Binding agentName}" Visibility="Collapsed"/>
@@ -696,24 +697,33 @@
             </Border>
 
         </Grid>
+        <GridSplitter Grid.Column="1" Background="Transparent" Width="5" HorizontalAlignment="Stretch" />
 
-
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="2">
             <Grid.RowDefinitions>
 
                 <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0"  Background="White" Margin="10,0,5,5" CornerRadius="7">
+            <Border Grid.Row="0"  Background="White" Margin="5,0,5,5" CornerRadius="7">
                 <Grid Margin="5,10,5,10">
                     <lvc:CartesianChart Name="cartesianChart" LegendLocation="Bottom">
-
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis  x:Name="axcolumn">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="1"/>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
                     </lvc:CartesianChart>
                 </Grid>
             </Border>
-            <Border Grid.Row="1" Background="White" Margin="10,5,5,5" CornerRadius="7">
+            <GridSplitter Grid.Row="1" Background="Transparent" HorizontalAlignment="Stretch" Height="5" />
+            <Border Grid.Row="2" Background="White" Margin="5,5,5,5" CornerRadius="7">
                 <Grid x:Name="grid1" Margin="10,0,5,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -725,8 +735,16 @@
 
                 </Grid>
             </Border>
-            <Border Grid.Row="2" Background="White" Margin="10,5,5,0" CornerRadius="7">
+            <GridSplitter Grid.Row="3" Background="Transparent" HorizontalAlignment="Stretch" Height="5" />
+            <Border Grid.Row="4" Background="White" Margin="5,5,5,0" CornerRadius="7">
                 <lvc:CartesianChart Name="rowChart" Margin="0,0,0,10" LegendLocation="Bottom"  >
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis  x:Name="MyAxis">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator Step="1"/>
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
                 </lvc:CartesianChart>
             </Border>
 

@@ -520,6 +520,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change password.
+        /// </summary>
+        internal static string trChangePassword {
+            get {
+                return ResourceManager.GetString("trChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Administrative password change.
+        /// </summary>
+        internal static string trChangePasswordHint {
+            get {
+                return ResourceManager.GetString("trChangePasswordHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cheque.
         /// </summary>
         internal static string trCheque {
@@ -1213,6 +1231,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Address cann&apos;t be null.
+        /// </summary>
+        internal static string trEmptyAddress {
+            get {
+                return ResourceManager.GetString("trEmptyAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address cann&apos;t be empty.
         /// </summary>
         internal static string trEmptyAddressToolTip {
@@ -1411,6 +1438,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Language cann&apos;t be empty.
+        /// </summary>
+        internal static string trEmptyLanguage {
+            get {
+                return ResourceManager.GetString("trEmptyLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Name can&apos;t be empty!.
         /// </summary>
         internal static string trEmptyLastNameToolTip {
@@ -1519,6 +1555,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Region cann&apos;t be empty.
+        /// </summary>
+        internal static string trEmptyRegion {
+            get {
+                return ResourceManager.GetString("trEmptyRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Section can not be empty.
         /// </summary>
         internal static string trEmptySectionToolTip {
@@ -1542,6 +1587,33 @@ namespace POS {
         internal static string trEmptyStartTimeToolTip {
             get {
                 return ResourceManager.GetString("trEmptyStartTimeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Storage cost cann&apos;t be empty.
+        /// </summary>
+        internal static string trEmptyStoreCost {
+            get {
+                return ResourceManager.GetString("trEmptyStoreCost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tax cann&apos;t be empty .
+        /// </summary>
+        internal static string trEmptyTax {
+            get {
+                return ResourceManager.GetString("trEmptyTax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User cann&apos;t be empty.
+        /// </summary>
+        internal static string trEmptyUser {
+            get {
+                return ResourceManager.GetString("trEmptyUser", resourceCulture);
             }
         }
         
@@ -2437,6 +2509,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log out.
+        /// </summary>
+        internal static string trLogOut {
+            get {
+                return ResourceManager.GetString("trLogOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Main Property.
         /// </summary>
         internal static string trMainProperty {
@@ -3027,6 +3108,15 @@ namespace POS {
         internal static string trPopNotEnoughBalance {
             get {
                 return ResourceManager.GetString("trPopNotEnoughBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved successfully.
+        /// </summary>
+        internal static string trPopSave {
+            get {
+                return ResourceManager.GetString("trPopSave", resourceCulture);
             }
         }
         
@@ -3751,6 +3841,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show password.
+        /// </summary>
+        internal static string trShowPassword {
+            get {
+                return ResourceManager.GetString("trShowPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Smallest Unit.
         /// </summary>
         internal static string trSmallestUnit {
@@ -3837,6 +3936,15 @@ namespace POS {
         internal static string trStorage {
             get {
                 return ResourceManager.GetString("trStorage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Storage cost.
+        /// </summary>
+        internal static string trStorageCost {
+            get {
+                return ResourceManager.GetString("trStorageCost", resourceCulture);
             }
         }
         

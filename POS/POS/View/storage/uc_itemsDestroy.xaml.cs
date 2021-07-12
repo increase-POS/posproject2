@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Resources;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace POS.View.storage
 {
@@ -68,8 +70,43 @@ namespace POS.View.storage
             }
            
             translate();
-            await refreshDestroyDetails();       
+            await refreshDestroyDetails();
+            fillItemCombo();
             //Txb_searchitems_TextChanged(null, null);
+        }
+        IEnumerable<Item> items;
+        // item object
+        Item item = new Item();
+        ItemUnit itemUnit = new ItemUnit();
+        private async void Cb_item_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cb_item.SelectedValue != null)
+                if (int.Parse(cb_item.SelectedValue.ToString()) != -1)
+                { 
+            var list = await itemUnit.GetItemUnits(int.Parse(cb_item.SelectedValue.ToString()));
+            cb_unit.ItemsSource = list;
+            cb_unit.SelectedValue = "unitId";
+            cb_unit.DisplayMemberPath = "mainUnit";
+            cb_unit.SelectedIndex = 0;
+                }
+        }
+
+        async Task<IEnumerable<Item>> RefrishItems()
+        {
+            MainWindow.mainWindow.StartAwait();
+            items = await item.GetAllItems();
+            items = items.Where(x => x.isActive == 1);
+            MainWindow.mainWindow.EndAwait();
+            return items;
+        }
+        private async void fillItemCombo()
+        {
+            if (items is null)
+                await RefrishItems();
+            var listCa = items.Where(x => x.isActive == 1).ToList();
+            cb_item.ItemsSource = listCa;
+            cb_item.SelectedValuePath = "itemId";
+            cb_item.DisplayMemberPath = "name";
         }
 
         private void translate()
@@ -101,11 +138,15 @@ namespace POS.View.storage
         }
         private async void Btn_destroy_Click(object sender, RoutedEventArgs e)
         {
-           bool valid = validateDistroy();
+            bool valid = validateDistroy();
             if(invItemLoc.id != 0 && valid)
             {
                 await invItemLoc.distroyItem(invItemLoc);
                 await refreshDestroyDetails();
+            }
+            else
+            {
+                // اتلاف عنصر يدوياً بدون جرد
             }
         }
 
@@ -141,7 +182,10 @@ namespace POS.View.storage
         private void Dg_itemDestroy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             invItemLoc = dg_itemDestroy.SelectedItem as InventoryItemLocation;
+            tb_itemUnit.Visibility = Visibility.Visible;
+            grid_itemUnit.Visibility = Visibility.Collapsed;
             this.DataContext = invItemLoc;
+            
         }
 
         private void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
@@ -173,5 +217,35 @@ namespace POS.View.storage
         {
 
         }
-    }
+
+        private void Cb_itemUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Cb_itemUnit_KeyUp(object sender, KeyEventArgs e)
+        {
+            //cb_itemUnit.ItemsSource = items.Where(x => x.name.Contains(cb_itemUnit.Text));
+        }
+        private void space_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void Cb_item_KeyUp(object sender, KeyEventArgs e)
+        {
+            cb_item.ItemsSource = items.Where(x => x.name.Contains(cb_item.Text));
+        }
+
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+            tb_itemUnit.Visibility = Visibility.Collapsed;
+            grid_itemUnit.Visibility = Visibility.Visible ;
+            if (invItemLoc!= null)
+            invItemLoc.id = 0;
+            DataContext = new InventoryItemLocation();
+            cb_item.SelectedIndex =
+            cb_unit.SelectedIndex = -1;
+        }
+    } 
 }

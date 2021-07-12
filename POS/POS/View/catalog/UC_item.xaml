@@ -671,7 +671,6 @@
                             </Grid>
 
                             <DockPanel Grid.Row="2">
-                           
                                 <TextBlock x:Name="txt_secondaryInformation" Text="Secondary Infomation" Foreground="#737373"
                                  FontSize="10"      
                                         Margin="5,5,0,5"/>

@@ -477,13 +477,42 @@
                         </Grid.ColumnDefinitions>
                         <Button x:Name="btn_addValue"  Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"  Height="32"
-                     Margin="1,1"    Content="Add" Click="Btn_addValue_Click" VerticalAlignment="Bottom" />
+                     Margin="1,1"    Click="Btn_addValue_Click" VerticalAlignment="Bottom" >
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Name="txt_addValue_Icon" Kind="PlusThick" VerticalAlignment="Center" Width="15"  Height="15" Margin="0,1,2,0">
+
+                                </materialDesign:PackIcon>
+                                <TextBlock Visibility="Collapsed" Name="txt_addValueButton" Text="Add" VerticalAlignment="Center">
+
+                                </TextBlock>
+
+                            </StackPanel>
+                        </Button>
                         <Button x:Name="btn_updateValue"  Grid.Column="1"
                           Background="#4E4E4E" BorderBrush="{x:Null}"  Height="33"
-                    Margin="1,1"    Content="Update" Click="Btn_updateValue_Click" VerticalAlignment="Top" />
+                    Margin="1,1"  Click="Btn_updateValue_Click" VerticalAlignment="Top" >
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Name="txt_updateValue_Icon" Kind="Edit" VerticalAlignment="Center" Width="15" Height="15" Margin="0,1,2,0">
+
+                                </materialDesign:PackIcon>
+                                <TextBlock Visibility="Collapsed" Name="txt_updateValueButton" Text="Update" VerticalAlignment="Center">
+
+                                </TextBlock>
+
+                            </StackPanel>
+                        </Button>
                         <Button x:Name="btn_deleteValue"  Grid.Column="2"
                           Background="#4E4E4E" BorderBrush="{x:Null}"  Height="33"
-                   Margin="1,1"   Content="Delete" Click="Btn_deleteValue_Click" VerticalAlignment="Bottom" />
+                   Margin="1,1" Click="Btn_deleteValue_Click" VerticalAlignment="Bottom" >
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Name="txt_deleteValue_Icon" Kind="Delete" VerticalAlignment="Center" Width="15" Height="15" Margin="0,1,2,0">
+
+                                </materialDesign:PackIcon>
+                                <TextBlock Visibility="Collapsed" Name="txt_deleteValueButton" Width="auto" Text="Delete" VerticalAlignment="Center">
+
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
 
                     </Grid>
                 </Grid>

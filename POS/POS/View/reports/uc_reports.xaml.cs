@@ -125,7 +125,7 @@ namespace POS.View.reports
         {
             refreashBachgroundClick(btn_storageReports);
             grid_main.Children.Clear();
-            //   grid_main.Children.Add(uc_.Instance);
+            grid_main.Children.Add(uc_storageReports.Instance);
         }
 
         private void btn_accountsReports_Click(object sender, RoutedEventArgs e)

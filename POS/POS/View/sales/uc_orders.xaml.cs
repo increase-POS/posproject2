@@ -1223,5 +1223,10 @@ namespace POS.View.sales
         {
 
         }
+
+        private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

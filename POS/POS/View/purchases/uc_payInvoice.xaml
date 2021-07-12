@@ -795,8 +795,14 @@
                 </Border>
                 <Border BorderThickness="0"  Grid.Column="0" Grid.Row="1"  Height="35"   Margin="10,10,5,10"
                     CornerRadius="7" BorderBrush="Black" Background="#178DD2" Padding="0">
-                    <Button Content="Save" Height="auto" BorderBrush="{x:Null}"  FontSize="14" x:Name="btn_save"
+                    <Grid>
+                        <Button Content="Save" Height="auto" BorderBrush="{x:Null}"  FontSize="14" x:Name="btn_save"
                     Background="{x:Null}" Click="Btn_save_Click"  />
+                        <ProgressBar Foreground="White" x:Name="wait_saveBtn"
+                        Style="{StaticResource MaterialDesignCircularProgressBar}"
+                        Value="35" Visibility="Collapsed"
+                        IsIndeterminate="False" />
+                    </Grid>
                 </Border>
             </Grid>
         </Grid>

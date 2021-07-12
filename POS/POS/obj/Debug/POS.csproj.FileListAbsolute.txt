@@ -2298,3 +2298,9 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_saleReport.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_usersReport.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_saleReport.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_usersReport.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_adminChangePassword.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_adminChangePassword.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_serialNum.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_serialNum.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_storageReports.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_storageReports.baml

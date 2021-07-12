@@ -43,25 +43,25 @@ namespace POS.View.purchases
         Pos selectedPos;
         Agent selectedVendor;
         User selectedUser;
-        Item selectedItem;
+        ItemUnitCombo selectedItem;
 
         List<Branch> comboBranches;
         List<Pos> comboPoss;
         List<Agent> comboVendors;
         List<User> comboUsers;
-        List<Item> ComboItem;
+        List<ItemUnitCombo> itemUnitCombos;
 
         ObservableCollection<Branch> comboBrachTemp = new ObservableCollection<Branch>();
         ObservableCollection<Pos> comboPosTemp = new ObservableCollection<Pos>();
         ObservableCollection<Agent> comboVendorTemp = new ObservableCollection<Agent>();
         ObservableCollection<User> comboUserTemp = new ObservableCollection<User>();
-        ObservableCollection<Item> comboItemTemp = new ObservableCollection<Item>();
+        ObservableCollection<ItemUnitCombo> comboItemTemp = new ObservableCollection<ItemUnitCombo>();
 
         ObservableCollection<Branch> dynamicComboBranches;
         ObservableCollection<Pos> dynamicComboPoss;
         ObservableCollection<Agent> dynamicComboVendors;
         ObservableCollection<User> dynamicComboUsers;
-        ObservableCollection<Item> dynamicComboItem;
+        ObservableCollection<ItemUnitCombo> dynamicComboItem;
 
         Branch branchModel = new Branch();
         Pos posModel = new Pos();
@@ -110,13 +110,13 @@ namespace POS.View.purchases
             comboPoss = await posModel.GetPosAsync();
             comboVendors = await agentModel.GetAgentsAsync("v");
             comboUsers = await userModel.GetUsersAsync();
-            ComboItem = await itemModel.GetAllItems();
+            itemUnitCombos = statisticModel.GetIUComboList(Items);
 
             dynamicComboBranches = new ObservableCollection<Branch>(comboBranches);
             dynamicComboPoss = new ObservableCollection<Pos>(comboPoss);
             dynamicComboVendors = new ObservableCollection<Agent>(comboVendors);
             dynamicComboUsers = new ObservableCollection<User>(comboUsers);
-            dynamicComboItem = new ObservableCollection<Item>(ComboItem);
+            dynamicComboItem = new ObservableCollection<ItemUnitCombo>(itemUnitCombos);
 
             fillComboBranches();
             fillComboPos();
@@ -163,8 +163,8 @@ namespace POS.View.purchases
 
         private void fillComboItems()
         {
-            cb_Items.SelectedValuePath = "itemId";
-            cb_Items.DisplayMemberPath = "name";
+            cb_Items.SelectedValuePath = "itemUnitId";
+            cb_Items.DisplayMemberPath = "itemUnitName";
             cb_Items.ItemsSource = dynamicComboItem;
         }
 
@@ -229,7 +229,7 @@ namespace POS.View.purchases
             if (selectedTab == 0)
             {
                 titles.Clear();
-                var temp = fillList(Invoices,chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
+                var temp = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
                 temp = temp.Where(j => (selectedBranchId.Count != 0 ? stackedButton.Contains((int)j.branchCreatorId) : true));
                 var titleTemp = temp.GroupBy(m => m.branchCreatorName);
                 titles.AddRange(titleTemp.Select(jj => jj.Key));
@@ -260,7 +260,7 @@ namespace POS.View.purchases
             {
                 titles.Clear();
                 var temp = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
-                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.IupdateUserId) : true));
+                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.updateUserId) : true));
                 var titleTemp = temp.GroupBy(m => m.cUserAccName);
                 titles.AddRange(titleTemp.Select(jj => jj.Key));
                 var result = temp.GroupBy(s => s.createUserId).Select(s => new { userId = s.Key, count = s.Count() });
@@ -269,8 +269,8 @@ namespace POS.View.purchases
             else if (selectedTab == 4)
             {
                 titles.Clear();
-                var temp = fillList(Items,chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
-                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemId) : true));
+                var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
+                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
                 var titleTemp = temp.GroupBy(m => m.ITitemName);
                 titles.AddRange(titleTemp.Select(jj => jj.Key));
                 var result = temp.GroupBy(s => s.ITitemId).Select(s => new { ITitemId = s.Key, count = s.Count() });
@@ -296,6 +296,8 @@ namespace POS.View.purchases
 
         private void fillColumnChart(ComboBox comboBox, ObservableCollection<int> stackedButton)
         {
+            axcolumn.Labels = new List<string>();
+            List<string> names = new List<string>();
             IEnumerable<int> x = null;
             IEnumerable<int> y = null;
             IEnumerable<int> z = null;
@@ -313,6 +315,11 @@ namespace POS.View.purchases
                 x = result.Select(m => m.countP);
                 y = result.Select(m => m.countPb);
                 z = result.Select(m => m.countD);
+                var tempName = temp.GroupBy(s => s.branchCreatorName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             else if (selectedTab == 1)
             {
@@ -328,6 +335,11 @@ namespace POS.View.purchases
                 x = result.Select(m => m.countP);
                 y = result.Select(m => m.countPb);
                 z = result.Select(m => m.countD);
+                var tempName = temp.GroupBy(s => s.posName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             else if (selectedTab == 2)
             {
@@ -344,11 +356,16 @@ namespace POS.View.purchases
                 x = result.Select(m => m.countP);
                 y = result.Select(m => m.countPb);
                 z = result.Select(m => m.countD);
+                var tempName = temp.GroupBy(s => s.agentName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             else if (selectedTab == 3)
             {
                 var temp = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
-                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.IupdateUserId) : true));
+                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.updateUserId) : true));
                 var result = temp.GroupBy(s => s.createUserId).Select(s => new
                 {
                     createUserId = s.Key,
@@ -360,11 +377,16 @@ namespace POS.View.purchases
                 x = result.Select(m => m.countP);
                 y = result.Select(m => m.countPb);
                 z = result.Select(m => m.countD);
+                var tempName = temp.GroupBy(s => s.uUserAccName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             else if (selectedTab == 4)
             {
-                var temp = fillList(Items,chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
-                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemId) : true));
+                var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
+                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
                 var result = temp.GroupBy(s => s.ITitemId).Select(s => new
                 {
                     ITitemId = s.Key,
@@ -376,6 +398,11 @@ namespace POS.View.purchases
                 x = result.Select(m => m.countP);
                 y = result.Select(m => m.countPb);
                 z = result.Select(m => m.countD);
+                var tempName = temp.GroupBy(s => s.ITitemName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
@@ -391,6 +418,7 @@ namespace POS.View.purchases
                 cP.Add(x.ToList().Skip(i).FirstOrDefault());
                 cPb.Add(y.ToList().Skip(i).FirstOrDefault());
                 cD.Add(z.ToList().Skip(i).FirstOrDefault());
+                axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
 
             //3 فوق بعض
@@ -422,6 +450,8 @@ namespace POS.View.purchases
 
         private void fillRowChart(ComboBox comboBox, ObservableCollection<int> stackedButton)
         {
+            MyAxis.Labels = new List<string>();
+            List<string> names = new List<string>();
             IEnumerable<decimal> pTemp = null;
             IEnumerable<decimal> pbTemp = null;
             IEnumerable<decimal> resultTemp = null;
@@ -441,6 +471,11 @@ namespace POS.View.purchases
                 pTemp = result.Select(x => (decimal)x.totalP);
                 pbTemp = result.Select(x => (decimal)x.totalPb);
                 resultTemp = result.Select(x => (decimal)x.totalP);
+                var tempName = temp.GroupBy(s => s.branchCreatorName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             if (selectedTab == 1)
             {
@@ -457,6 +492,11 @@ namespace POS.View.purchases
                 pTemp = result.Select(x => (decimal)x.totalP);
                 pbTemp = result.Select(x => (decimal)x.totalPb);
                 resultTemp = result.Select(x => (decimal)x.totalP);
+                var tempName = temp.GroupBy(s => s.posName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             if (selectedTab == 2)
             {
@@ -473,11 +513,16 @@ namespace POS.View.purchases
                 pTemp = result.Select(x => (decimal)x.totalP);
                 pbTemp = result.Select(x => (decimal)x.totalPb);
                 resultTemp = result.Select(x => (decimal)x.totalP);
+                var tempName = temp.GroupBy(s => s.agentName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             if (selectedTab == 3)
             {
                 var temp = fillRowChartList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
-                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.IupdateUserId) : true));
+                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.updateUserId) : true));
                 var result = temp.GroupBy(s => s.createUserId).Select(s => new
                 {
                     createUserId = s.Key,
@@ -489,11 +534,16 @@ namespace POS.View.purchases
                 pTemp = result.Select(x => (decimal)x.totalP);
                 pbTemp = result.Select(x => (decimal)x.totalPb);
                 resultTemp = result.Select(x => (decimal)x.totalP);
+                var tempName = temp.GroupBy(s => s.uUserAccName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             if (selectedTab == 4)
             {
-                var temp = fillList(Items,chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
-                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemId) : true));
+                var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
+                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
                 var result = temp.GroupBy(s => s.ITitemId).Select(s => new
                 {
                     ITitemId = s.Key,
@@ -505,6 +555,11 @@ namespace POS.View.purchases
                 pTemp = result.Select(x => (decimal)x.totalP);
                 pbTemp = result.Select(x => (decimal)x.totalPb);
                 resultTemp = result.Select(x => (decimal)x.totalP);
+                var tempName = temp.GroupBy(s => s.ITitemName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
 
 
@@ -521,6 +576,7 @@ namespace POS.View.purchases
                 purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
                 returns.Add(pbTemp.ToList().Skip(i).FirstOrDefault());
                 sub.Add(resultTemp.ToList().Skip(i).FirstOrDefault());
+                MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
 
             rowChartData.Add(
@@ -549,7 +605,7 @@ namespace POS.View.purchases
         public void fillBranchEvent()
         {
             var temp = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
-           temp= temp.Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
+            temp = temp.Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
             dgInvoice.ItemsSource = temp;
             fillPieChart(cb_branches, selectedBranchId);
             fillColumnChart(cb_branches, selectedBranchId);
@@ -577,7 +633,7 @@ namespace POS.View.purchases
         public void fillUsersEvent()
         {
             var temp = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
-            dgInvoice.ItemsSource = temp.Where(j => (selectedUserId.Count != 0 ? selectedUserId.Contains((int)j.IupdateUserId) : true));
+            dgInvoice.ItemsSource = temp.Where(j => (selectedUserId.Count != 0 ? selectedUserId.Contains((int)j.updateUserId) : true));
             fillPieChart(cb_users, selectedUserId);
             fillColumnChart(cb_users, selectedUserId);
             fillRowChart(cb_users, selectedUserId);
@@ -585,8 +641,8 @@ namespace POS.View.purchases
 
         public void fillItemsEvent()
         {
-            var temp = fillList(Items,chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
-            dgInvoice.ItemsSource = temp.Where(j => (selectedItemId.Count != 0 ? selectedItemId.Contains((int)j.ITitemId) : true));
+            var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
+            dgInvoice.ItemsSource = temp.Where(j => (selectedItemId.Count != 0 ? selectedItemId.Contains((int)j.ITitemUnitId) : true));
             fillPieChart(cb_Items, selectedItemId);
             fillColumnChart(cb_Items, selectedItemId);
             fillRowChart(cb_Items, selectedItemId);
@@ -1171,22 +1227,10 @@ namespace POS.View.purchases
                 cb_users.SelectedItem = null;
             }
             fillUsersEvent();
-          
+
         }
 
-        private void Chip_OnDeleteItemClick(object sender, RoutedEventArgs e)
-        {
-            var currentChip = (Chip)sender;
-            stk_tagsItems.Children.Remove(currentChip);
-            var m = comboItemTemp.Where(j => j.itemId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
-            dynamicComboItem.Add(m.FirstOrDefault());
-            selectedItemId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
-            if (selectedItemId.Count == 0)
-            {
-                cb_Items.SelectedItem = null;
-            }
-            fillItemsEvent();
-        }
+   
 
         private void cb_branches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -1284,6 +1328,19 @@ namespace POS.View.purchases
                 }
             }
         }
+        private void Chip_OnDeleteItemClick(object sender, RoutedEventArgs e)
+        {
+            var currentChip = (Chip)sender;
+            stk_tagsItems.Children.Remove(currentChip);
+            var m = comboItemTemp.Where(j => j.itemUnitId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
+            dynamicComboItem.Add(m.FirstOrDefault());
+            selectedItemId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
+            if (selectedItemId.Count == 0)
+            {
+                cb_Items.SelectedItem = null;
+            }
+            fillItemsEvent();
+        }
 
         private void cb_Items_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -1292,18 +1349,18 @@ namespace POS.View.purchases
             {
                 if (stk_tagsItems.Children.Count < 5)
                 {
-                    selectedItem = cb_Items.SelectedItem as Item;
+                    selectedItem = cb_Items.SelectedItem as ItemUnitCombo;
                     var b = new MaterialDesignThemes.Wpf.Chip()
                     {
-                        Content = selectedItem.name,
-                        Name = "btn" + selectedItem.itemId.ToString(),
+                        Content = selectedItem.itemUnitName,
+                        Name = "btn" + selectedItem.itemUnitId.ToString(),
                         IsDeletable = true,
                         Margin = new Thickness(5, 0, 5, 0)
                     };
                     b.DeleteClick += Chip_OnDeleteItemClick;
                     stk_tagsItems.Children.Add(b);
                     comboItemTemp.Add(selectedItem);
-                    selectedItemId.Add(selectedItem.itemId);
+                    selectedItemId.Add(selectedItem.itemUnitId);
                     dynamicComboItem.Remove(selectedItem);
                     fillItemsEvent();
                 }

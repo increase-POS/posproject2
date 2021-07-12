@@ -29,11 +29,13 @@ namespace POS.Classes
         public Nullable<int> updateUserId { get; set; }
         public Nullable<byte> isActive { get; set; }
         public string notes { get; set; }
-        public Boolean canDelete { get; set; }
+        public Boolean canDelete { get; set; } 
         public string itemName { get; set; }
         public string location { get; set; }
         public string section { get; set; }
         public string unitName { get; set; }
+        public int itemId { get; set; }
+        public int unitId { get; set; }
         public string inventoryNum { get; set; }
         public Nullable<System.DateTime> inventoryDate { get; set; }
 

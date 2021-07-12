@@ -19,6 +19,7 @@ using System.IO;
 using System.Resources;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using netoaster;
 
 namespace POS.View.windows
 {
@@ -135,32 +136,12 @@ namespace POS.View.windows
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
         }
-        private void tb_name_LostFocus(object sender, RoutedEventArgs e)
-        {
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-        }
-
-        private void tb_name_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-        }
+      
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
             SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
         }
-        private void Tb_address_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void Tb_mobile_LostFocus(object sender, RoutedEventArgs e)
-        {
-            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-        }
-
-        private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-        }
+   
         private void tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             //doesn't allow spaces into textbox
@@ -319,6 +300,37 @@ namespace POS.View.windows
 
             }
         }
+
+        private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+        }
+
+        private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+        }
+
+        private void validateEmpty(string name, object sender)
+        {
+            if (name == "TextBox")
+            {
+                if ((sender as TextBox).Name == "tb_name")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                else if ((sender as TextBox).Name == "tb_address")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorAddress, tt_errorAddress, "trEmptyAddress");
+                else if ((sender as TextBox).Name == "tb_email")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorEmail, tt_errorEmail, "trEmptyEmailToolTip");
+                else if ((sender as TextBox).Name == "tb_phone")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
+                else if ((sender as TextBox).Name == "tb_mobile")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                else if ((sender as TextBox).Name == "tb_fax")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorFax, tt_errorFax, "trEmptyFaxToolTip");
+            }
+        }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             //only int
@@ -349,7 +361,6 @@ namespace POS.View.windows
         SetValues valueModel = new SetValues();
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-
             #region validate
             //chk empty name
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
@@ -357,6 +368,12 @@ namespace POS.View.windows
             SectionData.validateEmptyTextBox(tb_address, p_errorAddress, tt_errorAddress, "trEmptyAddressToolTip");
             //chk empty email
             SectionData.validateEmptyTextBox(tb_email, p_errorEmail, tt_errorEmail, "trEmptyEmailToolTip");
+            //validate email
+            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+            bool emailError = false;
+            if (!tb_email.Text.Equals(""))
+                if (!ValidatorExtensions.IsValid(tb_email.Text))
+                    emailError = true;
             //chk empty mobile
             SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             //chk empty phone
@@ -368,7 +385,8 @@ namespace POS.View.windows
             #region save
             if ((!tb_name.Text.Equals("")) && (!tb_address.Text.Equals("")) &&
                (!tb_email.Text.Equals("")) && (!tb_mobile.Text.Equals("")) &&
-               (!tb_phone.Text.Equals("")) && (!tb_fax.Text.Equals("")))
+               (!tb_phone.Text.Equals("")) && (!tb_fax.Text.Equals("")) &&
+               !emailError)
             {
                 //save name
                 setVName.value = tb_name.Text;
@@ -376,7 +394,7 @@ namespace POS.View.windows
                 setVName.isDefault = 1;
                 setVName.settingId = nameId;
                 string sName = await valueModel.Save(setVName);
-                MessageBox.Show("name : " + sName);
+                //MessageBox.Show("name : " + sName);
 
                 //save address
                 setVAddress.value = tb_address.Text;
@@ -384,7 +402,7 @@ namespace POS.View.windows
                 setVAddress.isDefault = 1;
                 setVAddress.settingId = addressId;
                 string sAddress = await valueModel.Save(setVAddress);
-                MessageBox.Show("address : " + sAddress);
+                //MessageBox.Show("address : " + sAddress);
 
                 //save email
                 setVEmail.value = tb_email.Text;
@@ -392,7 +410,7 @@ namespace POS.View.windows
                 setVEmail.settingId = emailId;
                 setVEmail.isDefault = 1;
                 string sEmail = await valueModel.Save(setVEmail);
-                MessageBox.Show("email : " + sEmail);
+                //MessageBox.Show("email : " + sEmail);
 
                 //save mobile
                 setVMobile.value = cb_areaMobile.Text + "-" + tb_mobile.Text;
@@ -400,7 +418,7 @@ namespace POS.View.windows
                 setVMobile.isDefault = 1;
                 setVMobile.settingId = mobileId;
                 string sMobile = await valueModel.Save(setVMobile);
-                MessageBox.Show("mobile : " + sMobile);
+                //MessageBox.Show("mobile : " + sMobile);
 
                 //save phone
                 setVPhone.value = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
@@ -408,7 +426,7 @@ namespace POS.View.windows
                 setVPhone.isDefault = 1;
                 setVPhone.settingId = phoneId;
                 string sPhone = await valueModel.Save(setVPhone);
-                MessageBox.Show("phone : " + sPhone);
+                //MessageBox.Show("phone : " + sPhone);
 
                 //save fax
                 setVFax.value = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
@@ -416,7 +434,7 @@ namespace POS.View.windows
                 setVFax.isDefault = 1;
                 setVFax.settingId = faxId;
                 string sFax = await valueModel.Save(setVFax);
-                MessageBox.Show("fax : " + sFax);
+                //MessageBox.Show("fax : " + sFax);
 
                 //save logo
                 //setVLogo.value = "";
@@ -425,6 +443,11 @@ namespace POS.View.windows
                 //setVLogo.settingId = logoId;
                 //string sLogo = await valueModel.Save(setVLogo);
                 //MessageBox.Show("logo : " + sLogo);
+
+                if ((!sName.Equals("0")) && (!sAddress.Equals("0")) && (!sEmail.Equals("0")) && (!sMobile.Equals("0")) && (!sPhone.Equals("")) && (!sFax.Equals("")))
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
             #endregion
 

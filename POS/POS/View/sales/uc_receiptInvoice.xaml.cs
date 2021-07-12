@@ -708,24 +708,49 @@ namespace POS.View
         //    string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
         //    return invoiceNum;
         //}
+        bool logInProcessing = true;
+        void awaitSaveBtn(bool isAwait)
+        {
+            if (isAwait == true)
+            {
+                btn_save.IsEnabled = false;
+                wait_saveBtn.Visibility = Visibility.Visible ;
+                wait_saveBtn.IsIndeterminate = true;
+            } else
+            {
+                btn_save.IsEnabled = true;
+                wait_saveBtn.Visibility = Visibility.Collapsed;
+                wait_saveBtn.IsIndeterminate = false;
+            }
+
+            
+        }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            //check mandatory inputs
-            validateInvoiceValues();
-            Boolean available = true;
-            if(_InvoiceType == "sd")
-                available =  await checkItemsAmounts();
-
-            if ( billDetails.Count > 0 && available && ((cb_paymentProcessType.SelectedIndex == 1 && cb_customer.SelectedIndex != -1) 
-                                            || (cb_paymentProcessType.SelectedIndex == 0)
-                                            || (cb_paymentProcessType.SelectedIndex == 2 && !tb_processNum.Text.Equals("") && cb_card.SelectedIndex != -1)))
+            if (logInProcessing)
             {
-                if (_InvoiceType == "sbd") //pbd means sale bounse draft
-                    await addInvoice("sb"); // pb means sale bounce
-                else//s  sale invoice
-                    await addInvoice("s");
+                logInProcessing = false;
+                awaitSaveBtn(true);
+                //check mandatory inputs
+                validateInvoiceValues();
+                Boolean available = true;
+                if (_InvoiceType == "sd")
+                    available = await checkItemsAmounts();
 
-                if (invoice.invoiceId == 0) clearInvoice();
+                if (billDetails.Count > 0 && available && ((cb_paymentProcessType.SelectedIndex == 1 && cb_customer.SelectedIndex != -1)
+                                                || (cb_paymentProcessType.SelectedIndex == 0)
+                                                || (cb_paymentProcessType.SelectedIndex == 2 && !tb_processNum.Text.Equals("") && cb_card.SelectedIndex != -1)))
+                {
+                
+                    if (_InvoiceType == "sbd") //pbd means sale bounse draft
+                        await addInvoice("sb"); // pb means sale bounce
+                    else//s  sale invoice
+                        await addInvoice("s");
+
+                    if (invoice.invoiceId == 0) clearInvoice();
+                }
+                awaitSaveBtn(false);
+                logInProcessing = true;
             }
         }
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
@@ -776,7 +801,7 @@ namespace POS.View
             cb_company.SelectedIndex = -1;
             cb_user.SelectedIndex = -1;
             tb_processNum.Clear();
-            cb_paymentProcessType.SelectedIndex = 0;
+            cb_paymentProcessType.SelectedIndex = 1;
             lst_coupons.Items.Clear();
             tb_discount.Text = "0";
             btn_updateCustomer.IsEnabled = false;

@@ -22,6 +22,7 @@ using LiveCharts.Helpers;
 using POS.View.windows;
 using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace POS.View.reports
 {
@@ -36,9 +37,13 @@ namespace POS.View.reports
 
         List<ItemTransferInvoice> Invoices;
         List<ItemTransferInvoice> Items;
+        List<ItemTransferInvoice> coupons;
+        List<ItemTransferInvoice> Offers;
 
         List<ItemTransferInvoice> rowChartInvoice;
-        List<ItemTransferInvoice> rowChartItems;    
+        List<ItemTransferInvoice> rowChartItems;
+        List<ItemTransferInvoice> rowChartCoupons;
+        List<ItemTransferInvoice> rowChartOffers;
 
         //for combo boxes
         /*************************/
@@ -46,31 +51,41 @@ namespace POS.View.reports
         Pos selectedPos;
         Agent selectedVendor;
         User selectedUser;
-        Item selectedItem;
+        ItemUnitCombo selectedItem;
+        CouponCombo selectedCouon;
+        OfferCombo selectedOffer;
 
         List<Branch> comboBranches;
         List<Pos> comboPoss;
         List<Agent> comboVendors;
         List<User> comboUsers;
-        List<Item> ComboItem;
+        List<ItemUnitCombo> itemUnitCombos;
+        List<CouponCombo> comboCoupon;
+        List<OfferCombo> comboOffer;
 
         ObservableCollection<Branch> comboBrachTemp = new ObservableCollection<Branch>();
         ObservableCollection<Pos> comboPosTemp = new ObservableCollection<Pos>();
         ObservableCollection<Agent> comboVendorTemp = new ObservableCollection<Agent>();
         ObservableCollection<User> comboUserTemp = new ObservableCollection<User>();
-        ObservableCollection<Item> comboItemTemp = new ObservableCollection<Item>();
+        ObservableCollection<ItemUnitCombo> comboItemTemp = new ObservableCollection<ItemUnitCombo>();
+        ObservableCollection<CouponCombo> comboCouponTemp = new ObservableCollection<CouponCombo>();
+        ObservableCollection<OfferCombo> comboOfferTemp = new ObservableCollection<OfferCombo>();
 
         ObservableCollection<Branch> dynamicComboBranches;
         ObservableCollection<Pos> dynamicComboPoss;
         ObservableCollection<Agent> dynamicComboVendors;
         ObservableCollection<User> dynamicComboUsers;
-        ObservableCollection<Item> dynamicComboItem;
+        ObservableCollection<ItemUnitCombo> dynamicComboItem;
+        ObservableCollection<CouponCombo> dynamicComboCoupon;
+        ObservableCollection<OfferCombo> dynamicComboOffer;
 
         Branch branchModel = new Branch();
         Pos posModel = new Pos();
         Agent agentModel = new Agent();
         User userModel = new User();
         Item itemModel = new Item();
+        Coupon couponModel = new Coupon();
+        Offer offerModel = new Offer();
         /*************************/
 
         Func<ChartPoint, string> labelPoint = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
@@ -80,13 +95,15 @@ namespace POS.View.reports
         ObservableCollection<int> selectedVendorsId = new ObservableCollection<int>();
         ObservableCollection<int> selectedUserId = new ObservableCollection<int>();
         ObservableCollection<int> selectedItemId = new ObservableCollection<int>();
+        ObservableCollection<int> selectedcouponId = new ObservableCollection<int>();
+        ObservableCollection<int> selectedOfferId = new ObservableCollection<int>();
 
         public string[] Labels { get; set; }
 
         public string[] Formatter { get; set; }
 
         private static uc_saleReport _instance;
-        
+
         public static uc_saleReport Instance
         {
             get
@@ -96,42 +113,57 @@ namespace POS.View.reports
                 return _instance;
             }
         }
-       
+
         public uc_saleReport()
         {
             InitializeComponent();
         }
-        
+
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             Invoices = await statisticModel.GetSaleitemcount();
             rowChartInvoice = await statisticModel.GetSaleitemcount();
+
             Items = await statisticModel.GetSaleitem();
             rowChartItems = await statisticModel.GetSaleitem();
+
+            coupons = await statisticModel.GetSalecoupon();
+            rowChartCoupons = await statisticModel.GetSalecoupon();
+
+            Offers = await statisticModel.GetSaleOffer();
+            rowChartOffers = await statisticModel.GetSaleOffer();
 
             comboBranches = await branchModel.GetAllWithoutMain("b");
             comboPoss = await posModel.GetPosAsync();
             comboVendors = await agentModel.GetAgentsAsync("c");
             comboUsers = await userModel.GetUsersAsync();
-            ComboItem = await itemModel.GetAllItems();
+            itemUnitCombos = statisticModel.GetIUComboList(Items);
+            comboCoupon = statisticModel.GetCopComboList(coupons);
+            comboOffer = statisticModel.GetOfferComboList(Offers);
 
             dynamicComboBranches = new ObservableCollection<Branch>(comboBranches);
             dynamicComboPoss = new ObservableCollection<Pos>(comboPoss);
             dynamicComboVendors = new ObservableCollection<Agent>(comboVendors);
             dynamicComboUsers = new ObservableCollection<User>(comboUsers);
-            dynamicComboItem = new ObservableCollection<Item>(ComboItem);
+            dynamicComboItem = new ObservableCollection<ItemUnitCombo>(itemUnitCombos);
+            dynamicComboCoupon = new ObservableCollection<CouponCombo>(comboCoupon);
+            dynamicComboOffer = new ObservableCollection<OfferCombo>(comboOffer);
 
             fillComboBranches();
             fillComboPos();
             fillComboUsers();
             fillComboVendors();
             fillComboItems();
+            fillComboCoupon();
+            fillComboOffer();
 
             chk_invoice.IsChecked = true;
             chk_posInvoice.IsChecked = true;
             chk_vendorsInvoice.IsChecked = true;
             chk_usersInvoice.IsChecked = true;
             chk_itemInvoice.IsChecked = true;
+            chk_couponInvoice.IsChecked = true;
+            chk_offersInvoice.IsChecked = true;
 
             fillBranchEvent();
         }
@@ -166,11 +198,24 @@ namespace POS.View.reports
 
         private void fillComboItems()
         {
-            cb_Items.SelectedValuePath = "itemId";
-            cb_Items.DisplayMemberPath = "name";
+            cb_Items.SelectedValuePath = "itemUnitId";
+            cb_Items.DisplayMemberPath = "itemUnitName";
             cb_Items.ItemsSource = dynamicComboItem;
         }
 
+        private void fillComboCoupon()
+        {
+            cb_Coupons.SelectedValuePath = "Copcid";
+            cb_Coupons.DisplayMemberPath = "Copname";
+            cb_Coupons.ItemsSource = dynamicComboCoupon;
+        }
+
+        private void fillComboOffer()
+        {
+            cb_offers.SelectedValuePath = "OofferId";
+            cb_offers.DisplayMemberPath = "Oname";
+            cb_offers.ItemsSource = dynamicComboOffer;
+        }
         private static void fillDates(DatePicker startDate, DatePicker endDate, TimePicker startTime, TimePicker endTime)
         {
             if (startDate.SelectedDate != null && startTime.SelectedTime != null)
@@ -241,7 +286,7 @@ namespace POS.View.reports
             {
                 var temp = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
                 temp = temp.Where(j => (selectedPosId.Count != 0 ? stackedButton.Contains((int)j.posId) : true));
-                var titleTemp = temp.GroupBy(m => new { m.posName,m.posId});
+                var titleTemp = temp.GroupBy(m => new { m.posName, m.posId });
                 titles.AddRange(titleTemp.Select(jj => jj.Key.posName));
                 var result = temp.GroupBy(s => s.posId).Select(s => new { posId = s.Key, count = s.Count() });
                 x = result.Select(m => m.count);
@@ -258,27 +303,52 @@ namespace POS.View.reports
             else if (selectedTab == 3)
             {
                 var temp = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
-                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.IupdateUserId) : true));
+                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.updateUserId) : true));
                 var titleTemp = temp.GroupBy(m => m.cUserAccName);
                 titles.AddRange(titleTemp.Select(jj => jj.Key));
-                var result = temp.GroupBy(s => s.createUserId).Select(s => new { userId = s.Key, count = s.Count() });
+                var result = temp.GroupBy(s => s.updateUserId).Select(s => new { updateUserId = s.Key, count = s.Count() });
                 x = result.Select(m => m.count);
             }
             else if (selectedTab == 4)
             {
                 titles.Clear();
                 var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
-                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemId) : true));
-                var titleTemp = temp.GroupBy(m => m.ITitemName);
-                titles.AddRange(titleTemp.Select(jj => jj.Key));
-                var result = temp.GroupBy(s => s.ITitemId).Select(s => new { ITitemId = s.Key, count = s.Count() });
+                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
+                var titleTemp = temp.GroupBy(jj => jj.ITitemUnitId)
+                 .Select(g => new  ItemUnitCombo{ itemUnitId =(int) g.FirstOrDefault().ITitemUnitId, itemUnitName = g.FirstOrDefault().ITitemName + "-"+g.FirstOrDefault().ITunitName }).ToList();
+                //var titleTemp = temp.GroupBy(m => m.ITitemName);
+                titles.AddRange(titleTemp.Select(jj => jj.itemUnitName));
+                var result = temp.GroupBy(s => s.ITitemUnitId).Select(s => new { ITitemUnitId = s.Key, count = s.Count() });
                 x = result.Select(m => m.count);
             }
+
+            else if (selectedTab == 5)
+            {
+                titles.Clear();
+                var temp = fillList(coupons, chk_couponInvoice, chk_couponReturn, chk_couponDrafs, dp_couponStartDate, dp_couponEndDate, dt_couponStartTime, dt_couponEndTime);
+                temp = temp.Where(j => (selectedcouponId.Count != 0 ? stackedButton.Contains((int)j.CopcId) : true));
+                var titleTemp = temp.GroupBy(m => m.Copname);
+                titles.AddRange(titleTemp.Select(jj => jj.Key));
+                var result = temp.GroupBy(s => s.CopcId).Select(s => new { CopcId = s.Key, count = s.Count() });
+                x = result.Select(m => m.count);
+            }
+
+            else if (selectedTab == 6)
+            {
+                titles.Clear();
+                var temp = fillList(Offers, chk_offersInvoice, chk_offersReturn, chk_offersDrafs, dp_offersStartDate, dp_offersEndDate, dt_offersStartTime, dt_offersEndTime);
+                temp = temp.Where(j => (selectedOfferId.Count != 0 ? stackedButton.Contains((int)j.OofferId) : true));
+                var titleTemp = temp.GroupBy(m => m.Oname);
+                titles.AddRange(titleTemp.Select(jj => jj.Key));
+                var result = temp.GroupBy(s => s.OofferId).Select(s => new { OofferId = s.Key, count = s.Count() });
+                x = result.Select(m => m.count);
+            }
+
             SeriesCollection piechartData = new SeriesCollection();
             for (int i = 0; i < x.Count(); i++)
             {
                 List<int> final = new List<int>();
-                
+
                 List<string> lable = new List<string>();
                 final.Add(x.ToList().Skip(i).FirstOrDefault());
                 piechartData.Add(
@@ -295,6 +365,8 @@ namespace POS.View.reports
 
         private void fillColumnChart(ComboBox comboBox, ObservableCollection<int> stackedButton)
         {
+            axcolumn.Labels = new List<string>();
+            List<string> names = new List<string>();
             IEnumerable<int> x = null;
             IEnumerable<int> y = null;
             IEnumerable<int> z = null;
@@ -312,6 +384,11 @@ namespace POS.View.reports
                 x = result.Select(m => m.countP);
                 y = result.Select(m => m.countPb);
                 z = result.Select(m => m.countD);
+                var tempName = temp.GroupBy(s => s.branchCreatorName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             else if (selectedTab == 1)
             {
@@ -327,6 +404,11 @@ namespace POS.View.reports
                 x = result.Select(m => m.countP);
                 y = result.Select(m => m.countPb);
                 z = result.Select(m => m.countD);
+                var tempName = temp.GroupBy(s => s.posName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             else if (selectedTab == 2)
             {
@@ -343,14 +425,19 @@ namespace POS.View.reports
                 x = result.Select(m => m.countP);
                 y = result.Select(m => m.countPb);
                 z = result.Select(m => m.countD);
+                var tempName = temp.GroupBy(s => s.agentName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             else if (selectedTab == 3)
             {
                 var temp = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
-                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.IupdateUserId) : true));
-                var result = temp.GroupBy(s => s.createUserId).Select(s => new
+                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.updateUserId) : true));
+                var result = temp.GroupBy(s => s.updateUserId).Select(s => new
                 {
-                    createUserId = s.Key,
+                    updateUserId = s.Key,
                     countP = s.Where(m => m.invType == "s").Count(),
                     countPb = s.Where(m => m.invType == "sb").Count(),
                     countD = s.Where(m => m.invType == "sd" || m.invType == "sbd").Count()
@@ -359,23 +446,76 @@ namespace POS.View.reports
                 x = result.Select(m => m.countP);
                 y = result.Select(m => m.countPb);
                 z = result.Select(m => m.countD);
+                var tempName = temp.GroupBy(s => s.uUserAccName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             else if (selectedTab == 4)
             {
                 var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
-                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemId) : true));
-                var result = temp.GroupBy(s => s.ITitemId).Select(s => new
+                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
+                var result = temp.GroupBy(s => s.ITitemUnitId).Select(s => new
                 {
-                    ITitemId = s.Key,
-                    countP = s.Where(m => m.invType == "p").Count(),
-                    countPb = s.Where(m => m.invType == "pb").Count(),
-                    countD = s.Where(m => m.invType == "pd" || m.invType == "pbd").Count()
+                    ITitemUnitId = s.Key,
+                    countP = s.Where(m => m.invType == "s").Count(),
+                    countPb = s.Where(m => m.invType == "sb").Count(),
+                    countD = s.Where(m => m.invType == "sd" || m.invType == "sbd").Count()
 
                 });
                 x = result.Select(m => m.countP);
                 y = result.Select(m => m.countPb);
                 z = result.Select(m => m.countD);
+                var tempName = temp.GroupBy(jj => jj.ITitemUnitId)
+                 .Select(g => new ItemUnitCombo { itemUnitId = (int)g.FirstOrDefault().ITitemUnitId, itemUnitName = g.FirstOrDefault().ITitemName + "-" + g.FirstOrDefault().ITunitName }).ToList();
+                names.AddRange(tempName.Select(nn => nn.itemUnitName));
             }
+
+            else if (selectedTab == 5)
+            {
+                var temp = fillList(coupons, chk_couponInvoice, chk_couponReturn, chk_couponDrafs, dp_couponStartDate, dp_couponEndDate, dt_couponStartTime, dt_couponEndTime);
+                temp = temp.Where(j => (selectedcouponId.Count != 0 ? stackedButton.Contains((int)j.CopcId) : true));  
+                var result = temp.GroupBy(s => s.CopcId).Select(s => new
+                {
+                    CopcId = s.Key,
+                    countP = s.Where(m => m.invType == "s").Count(),
+                    countPb = s.Where(m => m.invType == "sb").Count(),
+                    countD = s.Where(m => m.invType == "sd" || m.invType == "sbd").Count()
+
+                });
+                x = result.Select(m => m.countP);
+                y = result.Select(m => m.countPb);
+                z = result.Select(m => m.countD);
+                var tempName = temp.GroupBy(s => s.Copname).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
+            }
+
+            else if (selectedTab == 6)
+            {
+                var temp = fillList(Offers, chk_offersInvoice, chk_offersReturn, chk_offersDrafs, dp_offersStartDate, dp_offersEndDate, dt_offersStartTime, dt_offersEndTime);
+                temp = temp.Where(j => (selectedOfferId.Count != 0 ? stackedButton.Contains((int)j.OofferId) : true));
+                var result = temp.GroupBy(s => s.OofferId).Select(s => new
+                {
+                    CopcId = s.Key,
+                    countP = s.Where(m => m.invType == "s").Count(),
+                    countPb = s.Where(m => m.invType == "sb").Count(),
+                    countD = s.Where(m => m.invType == "sd" || m.invType == "sbd").Count()
+
+                });
+                x = result.Select(m => m.countP);
+                y = result.Select(m => m.countPb);
+                z = result.Select(m => m.countD);
+                var tempName = temp.GroupBy(s => s.Oname).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
+            }
+
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
             List<int> cP = new List<int>();
@@ -390,6 +530,7 @@ namespace POS.View.reports
                 cP.Add(x.ToList().Skip(i).FirstOrDefault());
                 cPb.Add(y.ToList().Skip(i).FirstOrDefault());
                 cD.Add(z.ToList().Skip(i).FirstOrDefault());
+                axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
 
             //3 فوق بعض
@@ -421,6 +562,8 @@ namespace POS.View.reports
 
         private void fillRowChart(ComboBox comboBox, ObservableCollection<int> stackedButton)
         {
+            MyAxis.Labels = new List<string>();
+            List<string> names = new List<string>();
             IEnumerable<decimal> pTemp = null;
             IEnumerable<decimal> pbTemp = null;
             IEnumerable<decimal> resultTemp = null;
@@ -435,11 +578,17 @@ namespace POS.View.reports
                     totalP = s.Where(x => x.invType == "s").Sum(x => x.totalNet),
                     totalPb = s.Where(x => x.invType == "sb").Sum(x => x.totalNet)
                 }
+                        
              );
                 var resultTotal = result.Select(x => new { x.branchCreatorId, total = x.totalP - x.totalPb }).ToList();
                 pTemp = result.Select(x => (decimal)x.totalP);
                 pbTemp = result.Select(x => (decimal)x.totalPb);
-                resultTemp = result.Select(x => (decimal)x.totalP);
+                resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
+                var tempName = temp.GroupBy(s => s.branchCreatorName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             if (selectedTab == 1)
             {
@@ -455,7 +604,12 @@ namespace POS.View.reports
                 var resultTotal = result.Select(x => new { x.posId, total = x.totalP - x.totalPb }).ToList();
                 pTemp = result.Select(x => (decimal)x.totalP);
                 pbTemp = result.Select(x => (decimal)x.totalPb);
-                resultTemp = result.Select(x => (decimal)x.totalP);
+                resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
+                var tempName = temp.GroupBy(s => s.posName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             if (selectedTab == 2)
             {
@@ -471,39 +625,97 @@ namespace POS.View.reports
                 var resultTotal = result.Select(x => new { x.agentId, total = x.totalP - x.totalPb }).ToList();
                 pTemp = result.Select(x => (decimal)x.totalP);
                 pbTemp = result.Select(x => (decimal)x.totalPb);
-                resultTemp = result.Select(x => (decimal)x.totalP);
+                resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
+                var tempName = temp.GroupBy(s => s.agentName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             if (selectedTab == 3)
             {
                 var temp = fillRowChartList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
-                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.IupdateUserId) : true));
-                var result = temp.GroupBy(s => s.createUserId).Select(s => new
+                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.updateUserId) : true));
+                var result = temp.GroupBy(s => s.updateUserId).Select(s => new
                 {
-                    createUserId = s.Key,
+                    updateUserId = s.Key,
                     totalP = s.Where(x => x.invType == "s").Sum(x => x.totalNet),
                     totalPb = s.Where(x => x.invType == "sb").Sum(x => x.totalNet)
                 }
              );
-                var resultTotal = result.Select(x => new { x.createUserId, total = x.totalP - x.totalPb }).ToList();
+                var resultTotal = result.Select(x => new { x.updateUserId, total = x.totalP - x.totalPb }).ToList();
                 pTemp = result.Select(x => (decimal)x.totalP);
                 pbTemp = result.Select(x => (decimal)x.totalPb);
-                resultTemp = result.Select(x => (decimal)x.totalP);
+                resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
+                var tempName = temp.GroupBy(s => s.uUserAccName).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
             if (selectedTab == 4)
             {
-                var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
-                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemId) : true));
-                var result = temp.GroupBy(s => s.ITitemId).Select(s => new
+                var temp = fillRowChartList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
+                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
+                var result = temp.GroupBy(s => s.ITitemUnitId).Select(s => new
                 {
-                    ITitemId = s.Key,
-                    totalP = s.Where(x => x.invType == "p").Sum(x => x.totalNet),
-                    totalPb = s.Where(x => x.invType == "pb").Sum(x => x.totalNet)
+                    ITitemUnitId = s.Key,
+                    totalP = s.Where(x => x.invType == "s").Sum(x => x.totalNet),
+                    totalPb = s.Where(x => x.invType == "sb").Sum(x => x.totalNet),
+                   
                 }
              );
-                var resultTotal = result.Select(x => new { x.ITitemId, total = x.totalP - x.totalPb }).ToList();
+                var resultTotal = result.Select(x => new { x.ITitemUnitId, total = x.totalP - x.totalPb }).ToList();
                 pTemp = result.Select(x => (decimal)x.totalP);
                 pbTemp = result.Select(x => (decimal)x.totalPb);
-                resultTemp = result.Select(x => (decimal)x.totalP);
+                resultTemp = result.Select(x => (decimal)x.totalP-(decimal)x.totalPb);
+                var tempName = temp.GroupBy(jj => jj.ITitemUnitId)
+                 .Select(g => new ItemUnitCombo { itemUnitId = (int)g.FirstOrDefault().ITitemUnitId, itemUnitName = g.FirstOrDefault().ITitemName + "-" + g.FirstOrDefault().ITunitName }).ToList();
+                names.AddRange(tempName.Select(nn => nn.itemUnitName));
+            }
+
+            if (selectedTab == 5)
+            {
+                var temp = fillRowChartList(coupons, chk_couponInvoice, chk_couponReturn, chk_couponDrafs, dp_couponStartDate, dp_couponEndDate, dt_couponStartTime, dt_couponEndTime);
+                temp = temp.Where(j => (selectedcouponId.Count != 0 ? stackedButton.Contains((int)j.CopcId) : true));
+                var result = temp.GroupBy(s => s.CopcId).Select(s => new
+                {
+                    CopcId = s.Key,
+                    totalP = s.Where(x => x.invType == "s").Sum(x => x.totalNet),
+                    totalPb = s.Where(x => x.invType == "sb").Sum(x => x.totalNet)
+                }
+             );
+                var resultTotal = result.Select(x => new { x.CopcId, total = x.totalP - x.totalPb }).ToList();
+                pTemp = result.Select(x => (decimal)x.totalP);
+                pbTemp = result.Select(x => (decimal)x.totalPb);
+                resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
+                var tempName = temp.GroupBy(s => s.Copname).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
+            }
+
+            if (selectedTab == 6)
+            {
+                var temp = fillRowChartList(Offers, chk_offersInvoice, chk_offersReturn, chk_offersDrafs, dp_offersStartDate, dp_offersEndDate, dt_offersStartTime, dt_offersEndTime);
+                temp = temp.Where(j => (selectedOfferId.Count != 0 ? stackedButton.Contains((int)j.OofferId) : true));
+                var result = temp.GroupBy(s => s.OofferId).Select(s => new
+                {
+                    OofferId = s.Key,
+                    totalP = s.Where(x => x.invType == "s").Sum(x => x.totalNet),
+                    totalPb = s.Where(x => x.invType == "sb").Sum(x => x.totalNet)
+                }
+             );
+                var resultTotal = result.Select(x => new { x.OofferId, total = x.totalP - x.totalPb }).ToList();
+                pTemp = result.Select(x => (decimal)x.totalP);
+                pbTemp = result.Select(x => (decimal)x.totalPb);
+                resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
+                var tempName = temp.GroupBy(s => s.Oname).Select(s => new
+                {
+                    uUserName = s.Key
+                });
+                names.AddRange(tempName.Select(nn => nn.uUserName));
             }
 
             SeriesCollection rowChartData = new SeriesCollection();
@@ -519,6 +731,7 @@ namespace POS.View.reports
                 purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
                 returns.Add(pbTemp.ToList().Skip(i).FirstOrDefault());
                 sub.Add(resultTemp.ToList().Skip(i).FirstOrDefault());
+                MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
 
             rowChartData.Add(
@@ -546,7 +759,7 @@ namespace POS.View.reports
 
         public void fillBranchEvent()
         {
-            var temp = fillList(Invoices,chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
+            var temp = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
             dgInvoice.ItemsSource = temp.Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
             fillPieChart(cb_branches, selectedBranchId);
             fillColumnChart(cb_branches, selectedBranchId);
@@ -561,7 +774,7 @@ namespace POS.View.reports
             fillPieChart(cb_pos, selectedPosId);
             fillColumnChart(cb_pos, selectedPosId);
         }
-        
+
         public void fillVendorsEvent()
         {
             var temp = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime);
@@ -570,11 +783,11 @@ namespace POS.View.reports
             fillColumnChart(cb_vendors, selectedVendorsId);
             fillRowChart(cb_vendors, selectedVendorsId);
         }
-        
+
         public void fillUsersEvent()
         {
             var temp = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
-            dgInvoice.ItemsSource = temp.Where(j => (selectedUserId.Count != 0 ? selectedUserId.Contains((int)j.IupdateUserId) : true));
+            dgInvoice.ItemsSource = temp.Where(j => (selectedUserId.Count != 0 ? selectedUserId.Contains((int)j.updateUserId) : true));
             fillPieChart(cb_users, selectedUserId);
             fillColumnChart(cb_users, selectedUserId);
             fillRowChart(cb_users, selectedUserId);
@@ -583,10 +796,27 @@ namespace POS.View.reports
         public void fillItemsEvent()
         {
             var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
-            dgInvoice.ItemsSource = temp.Where(j => (selectedItemId.Count != 0 ? selectedItemId.Contains((int)j.ITitemId) : true));
+            dgInvoice.ItemsSource = temp.Where(j => (selectedItemId.Count != 0 ? selectedItemId.Contains((int)j.ITitemUnitId) : true));
             fillPieChart(cb_Items, selectedItemId);
             fillColumnChart(cb_Items, selectedItemId);
             fillRowChart(cb_Items, selectedItemId);
+        }
+        public void fillCouponsEvent()
+        {
+            var temp = fillList(coupons, chk_couponInvoice, chk_couponReturn, chk_couponDrafs, dp_couponStartDate, dp_couponEndDate, dt_couponStartTime, dt_couponEndTime);
+            dgInvoice.ItemsSource = temp.Where(j => (selectedcouponId.Count != 0 ? selectedcouponId.Contains((int)j.CopcId) : true));
+            fillPieChart(cb_Coupons, selectedcouponId);
+            fillColumnChart(cb_Coupons, selectedcouponId);
+            fillRowChart(cb_Coupons, selectedcouponId);
+        }
+
+        public void fillOffersEvent()
+        {
+            var temp = fillList(Offers, chk_offersInvoice, chk_offersReturn, chk_offersDrafs, dp_offersStartDate, dp_offersEndDate, dt_offersStartTime, dt_offersEndTime);
+            dgInvoice.ItemsSource = temp.Where(j => (selectedOfferId.Count != 0 ? selectedOfferId.Contains((int)j.OofferId) : true));
+            fillPieChart(cb_offers, selectedOfferId);
+            fillColumnChart(cb_offers, selectedOfferId);
+            fillRowChart(cb_offers, selectedOfferId);
         }
 
         #region Functions
@@ -597,6 +827,8 @@ namespace POS.View.reports
             stk_tagsPos.Visibility = Visibility.Collapsed;
             stk_tagsUsers.Visibility = Visibility.Collapsed;
             stk_tagsVendors.Visibility = Visibility.Collapsed;
+            stk_tagsCoupons.Visibility = Visibility.Collapsed;
+            stk_tagsOffers.Visibility = Visibility.Collapsed;
         }
 
         public void paint()
@@ -608,24 +840,34 @@ namespace POS.View.reports
             bdr_vendors.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_users.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_items.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_coupon.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_offers.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
             path_branch.Fill = Brushes.White;
             path_pos.Fill = Brushes.White;
             path_vendors.Fill = Brushes.White;
             path_users.Fill = Brushes.White;
             path_items.Fill = Brushes.White;
+            path_coupons.Fill = Brushes.White;
+            path_offers.Fill = Brushes.White;
 
             grid_branch.Visibility = Visibility.Hidden;
             grid_pos.Visibility = Visibility.Hidden;
             grid_vendors.Visibility = Visibility.Hidden;
             grid_users.Visibility = Visibility.Hidden;
             grid_items.Visibility = Visibility.Hidden;
+            grid_coupons.Visibility = Visibility.Hidden;
+            grid_offers.Visibility = Visibility.Hidden;
 
             col_branch.Visibility = Visibility.Collapsed;
             col_item.Visibility = Visibility.Collapsed;
             col_pos.Visibility = Visibility.Collapsed;
             col_user.Visibility = Visibility.Collapsed;
             col_vendor.Visibility = Visibility.Collapsed;
+            col_coupon.Visibility = Visibility.Collapsed;
+            col_offers.Visibility = Visibility.Collapsed;
+            col_quantity.Visibility = Visibility.Collapsed;
+            col_count.Visibility = Visibility.Visible;
         }
 
         private void isEnabledButtons()
@@ -635,6 +877,8 @@ namespace POS.View.reports
             btn_vendors.IsEnabled = true;
             btn_users.IsEnabled = true;
             btn_items.IsEnabled = true;
+            btn_coupons.IsEnabled = true;
+            btn_offers.IsEnabled = true;
         }
         #endregion
 
@@ -724,6 +968,43 @@ namespace POS.View.reports
             btn_items.IsEnabled = false;
             btn_items.Opacity = 1;
             fillItemsEvent();
+        }
+
+        private void btn_coupons_Click(object sender, RoutedEventArgs e)
+        {
+            txt_search.Text = "";
+            hideSatacks();
+            stk_tagsCoupons.Visibility = Visibility.Visible;
+            selectedTab = 5;
+            paint();
+            col_coupon.Visibility = Visibility.Visible;
+            bdr_coupon.Background = Brushes.White;
+            path_coupons.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            grid_coupons.Visibility = Visibility.Visible;
+            isEnabledButtons();
+            btn_coupons.IsEnabled = false;
+            btn_coupons.Opacity = 1;
+            fillCouponsEvent();
+
+        }
+        private void btn_offers_Click(object sender, RoutedEventArgs e)
+        {
+            txt_search.Text = "";
+            hideSatacks();
+            stk_tagsOffers.Visibility = Visibility.Visible;
+            selectedTab = 6;
+            paint();
+            col_offers.Visibility = Visibility.Visible;
+            col_item.Visibility = Visibility.Visible;
+            col_quantity.Visibility = Visibility.Visible;
+            col_count.Visibility=Visibility.Collapsed;
+            bdr_offers.Background = Brushes.White;
+            path_offers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            grid_offers.Visibility = Visibility.Visible;
+            isEnabledButtons();
+            btn_offers.IsEnabled = false;
+            btn_offers.Opacity = 1;
+            fillOffersEvent();
         }
         #endregion
 
@@ -839,7 +1120,49 @@ namespace POS.View.reports
                 stk_tagsItems.Children.Clear();
                 selectedItemId.Clear();
                 fillItemsEvent();
+            }
+            else if (selectedTab == 5)
+            {
+                cb_Coupons.SelectedItem = null;
+                chk_couponDrafs.IsChecked = false;
+                chk_couponReturn.IsChecked = false;
+                chk_couponInvoice.IsChecked = true;
+                dp_couponEndDate.SelectedDate = null;
+                dp_couponStartDate.SelectedDate = null;
+                dt_couponStartTime.SelectedTime = null;
+                dt_couponEndTime.SelectedTime = null;
+                chk_allCoupon.IsChecked = false;
+                cb_Coupons.IsEnabled = true;
+                for (int i = 0; i < comboCouponTemp.Count; i++)
+                {
+                    dynamicComboCoupon.Add(comboCouponTemp.Skip(i).FirstOrDefault());
+                }
+                comboCouponTemp.Clear();
+                stk_tagsCoupons.Children.Clear();
+                selectedcouponId.Clear();
+                fillCouponsEvent();
+            }
 
+            else if (selectedTab == 6)
+            {
+                cb_offers.SelectedItem = null;
+                chk_offersDrafs.IsChecked = false;
+                chk_offersReturn.IsChecked = false;
+                chk_offersInvoice.IsChecked = true;
+                dp_offersEndDate.SelectedDate = null;
+                dp_offersStartDate.SelectedDate = null;
+                dt_offersStartTime.SelectedTime = null;
+                dt_offersEndTime.SelectedTime = null;
+                chk_allOffers.IsChecked = false;
+                cb_offers.IsEnabled = true;
+                for (int i = 0; i < comboOfferTemp.Count; i++)
+                {
+                    dynamicComboOffer.Add(comboOfferTemp.Skip(i).FirstOrDefault());
+                }
+                comboOfferTemp.Clear();
+                stk_tagsOffers.Children.Clear();
+                selectedOfferId.Clear();
+                fillOffersEvent();
             }
             txt_search.Text = "";
         }
@@ -920,6 +1243,14 @@ namespace POS.View.reports
             if (selectedTab == 4)
             {
                 fillItemsEvent();
+            }
+            if (selectedTab == 5)
+            {
+                fillCouponsEvent();
+            }
+            if (selectedTab == 6)
+            {
+                fillCouponsEvent();
             }
         }
 
@@ -1174,7 +1505,7 @@ namespace POS.View.reports
         {
             var currentChip = (Chip)sender;
             stk_tagsItems.Children.Remove(currentChip);
-            var m = comboItemTemp.Where(j => j.itemId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
+            var m = comboItemTemp.Where(j => j.itemUnitId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
             dynamicComboItem.Add(m.FirstOrDefault());
             selectedItemId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
             if (selectedItemId.Count == 0)
@@ -1258,29 +1589,7 @@ namespace POS.View.reports
 
         }
 
-        private void cb_users_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (cb_users.SelectedItem != null)
-            {
-                if (stk_tagsUsers.Children.Count < 5)
-                {
-                    selectedUser = cb_users.SelectedItem as User;
-                    var b = new MaterialDesignThemes.Wpf.Chip()
-                    {
-                        Content = selectedUser.username,
-                        Name = "btn" + selectedUser.userId.ToString(),
-                        IsDeletable = true,
-                        Margin = new Thickness(5, 0, 5, 0)
-                    };
-                    b.DeleteClick += Chip_OnDeleteUserClick;
-                    stk_tagsUsers.Children.Add(b);
-                    comboUserTemp.Add(selectedUser);
-                    selectedUserId.Add(selectedUser.userId);
-                    dynamicComboUsers.Remove(selectedUser);
-                    fillUsersEvent();
-                }
-            }
-        }
+     
 
         private void chk_allBranches_Click(object sender, RoutedEventArgs e)
         {
@@ -1377,18 +1686,18 @@ namespace POS.View.reports
             {
                 if (stk_tagsItems.Children.Count < 5)
                 {
-                    selectedItem = cb_Items.SelectedItem as Item;
+                    selectedItem = cb_Items.SelectedItem as ItemUnitCombo;
                     var b = new MaterialDesignThemes.Wpf.Chip()
                     {
-                        Content = selectedItem.name,
-                        Name = "btn" + selectedItem.itemId.ToString(),
+                        Content = selectedItem.itemUnitName,
+                        Name = "btn" + selectedItem.itemUnitId.ToString(),
                         IsDeletable = true,
                         Margin = new Thickness(5, 0, 5, 0)
                     };
                     b.DeleteClick += Chip_OnDeleteItemClick;
                     stk_tagsItems.Children.Add(b);
                     comboItemTemp.Add(selectedItem);
-                    selectedItemId.Add(selectedItem.itemId);
+                    selectedItemId.Add(selectedItem.itemUnitId);
                     dynamicComboItem.Remove(selectedItem);
                     fillItemsEvent();
                 }
@@ -1465,6 +1774,254 @@ namespace POS.View.reports
         private void dt_itemStartTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
             fillItemsEvent();
+        }
+
+        private void chk_couponInvoice_Checked(object sender, RoutedEventArgs e)
+        {
+            fillCouponsEvent();
+        }
+
+        private void chk_couponInvoice_Unchecked(object sender, RoutedEventArgs e)
+        {
+            fillCouponsEvent();
+        }
+
+        private void chk_couponReturn_Unchecked(object sender, RoutedEventArgs e)
+        {
+            fillCouponsEvent();
+        }
+
+        private void chk_couponDrafs_Unchecked(object sender, RoutedEventArgs e)
+        {
+            fillCouponsEvent();
+        }
+
+        private void dp_couponEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillCouponsEvent();
+        }
+
+        private void dp_couponStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillCouponsEvent();
+        }
+
+
+        private void dt_couponEndTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
+        {
+            fillCouponsEvent();
+        }
+
+        private void dt_couponStartTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
+        {
+            fillCouponsEvent();
+        }
+
+        private void Chip_OnDeleteCouponClick(object sender, RoutedEventArgs e)
+        {
+            var currentChip = (Chip)sender;
+            stk_tagsCoupons.Children.Remove(currentChip);
+            var m = comboCouponTemp.Where(j => j.Copcid == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
+            dynamicComboCoupon.Add(m.FirstOrDefault());
+            selectedcouponId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
+            if (selectedcouponId.Count == 0)
+            {
+                cb_Coupons.SelectedItem = null;
+            }
+            fillCouponsEvent();
+        }
+      
+
+        private void chk_couponReturn_Checked(object sender, RoutedEventArgs e)
+        {
+            fillCouponsEvent();
+        }
+
+        private void chk_couponDrafs_Checked(object sender, RoutedEventArgs e)
+        {
+            fillCouponsEvent();
+        }
+
+
+        private void chk_allCoupon_Click(object sender, RoutedEventArgs e)
+        {
+            if (cb_Coupons.IsEnabled == true)
+            {
+                cb_Coupons.SelectedItem = null;
+                cb_Coupons.IsEnabled = false;
+                for (int i = 0; i < comboCouponTemp.Count; i++)
+                {
+                    dynamicComboCoupon.Add(comboCouponTemp.Skip(i).FirstOrDefault());
+                }
+                comboCouponTemp.Clear();
+                stk_tagsCoupons.Children.Clear();
+                selectedcouponId.Clear();
+            }
+            else
+            {
+                cb_Coupons.IsEnabled = true;
+            }
+
+            fillCouponsEvent();
+        }
+
+
+        private void cb_users_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cb_users.SelectedItem != null)
+            {
+                if (stk_tagsUsers.Children.Count < 5)
+                {
+                    selectedUser = cb_users.SelectedItem as User;
+                    var b = new MaterialDesignThemes.Wpf.Chip()
+                    {
+                        Content = selectedUser.username,
+                        Name = "btn" + selectedUser.userId.ToString(),
+                        IsDeletable = true,
+                        Margin = new Thickness(5, 0, 5, 0)
+                    };
+                    b.DeleteClick += Chip_OnDeleteUserClick;
+                    stk_tagsUsers.Children.Add(b);
+                    comboUserTemp.Add(selectedUser);
+                    selectedUserId.Add(selectedUser.userId);
+                    dynamicComboUsers.Remove(selectedUser);
+                    fillUsersEvent();
+                }
+            }
+        }
+        private void cb_Coupons_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cb_Coupons.SelectedItem != null)
+            {
+                if (stk_tagsCoupons.Children.Count < 5)
+                {
+                    selectedCouon = cb_Coupons.SelectedItem as CouponCombo;
+                    var b = new MaterialDesignThemes.Wpf.Chip()
+                    {
+                        Content = selectedCouon.Copname,
+                        Name = "btn" + selectedCouon.Copcid.ToString(),
+                        IsDeletable = true,
+                        Margin = new Thickness(5, 0, 5, 0)
+                    };
+                    b.DeleteClick += Chip_OnDeleteCouponClick;
+                    stk_tagsCoupons.Children.Add(b);
+                    comboCouponTemp.Add(selectedCouon);
+                    selectedcouponId.Add(selectedCouon.Copcid);
+                    dynamicComboCoupon.Remove(selectedCouon);
+                    fillCouponsEvent();
+                }
+            }
+        }
+        private void cb_offers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cb_offers.SelectedItem != null)
+            {
+                if (stk_tagsOffers.Children.Count < 5)
+                {
+                    selectedOffer = cb_offers.SelectedItem as OfferCombo;
+                    var b = new MaterialDesignThemes.Wpf.Chip()
+                    {
+                        Content = selectedOffer.Oname,
+                        Name = "btn" + selectedOffer.OofferId.ToString(),
+                        IsDeletable = true,
+                        Margin = new Thickness(5, 0, 5, 0)
+                    };
+                    b.DeleteClick += Chip_OnDeleteOfferClick;
+                    stk_tagsOffers.Children.Add(b);
+                    comboOfferTemp.Add(selectedOffer);
+                    selectedOfferId.Add(selectedOffer.OofferId);
+                    dynamicComboOffer.Remove(selectedOffer);
+                    fillOffersEvent();
+                }
+            }
+        }
+
+        private void Chip_OnDeleteOfferClick(object sender, RoutedEventArgs e)
+        {
+            var currentChip = (Chip)sender;
+            stk_tagsOffers.Children.Remove(currentChip);
+            var m = comboOfferTemp.Where(j => j.OofferId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
+            dynamicComboOffer.Add(m.FirstOrDefault());
+            selectedOfferId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
+            if (selectedOfferId.Count == 0)
+            {
+                cb_offers.SelectedItem = null;
+            }
+            fillOffersEvent();
+        }
+
+        private void chk_allOffers_Click(object sender, RoutedEventArgs e)
+        {
+            if (cb_offers.IsEnabled == true)
+            {
+                cb_offers.SelectedItem = null;
+                cb_offers.IsEnabled = false;
+                for (int i = 0; i < comboOfferTemp.Count; i++)
+                {
+                    dynamicComboOffer.Add(comboOfferTemp.Skip(i).FirstOrDefault());
+                }
+                comboOfferTemp.Clear();
+                stk_tagsOffers.Children.Clear();
+                selectedOfferId.Clear();
+            }
+            else
+            {
+                cb_offers.IsEnabled = true;
+            }
+
+            fillOffersEvent();
+        }
+
+        private void chk_offersInvoice_Checked(object sender, RoutedEventArgs e)
+        {
+            fillOffersEvent();
+        }
+
+        private void chk_offersInvoice_Unchecked(object sender, RoutedEventArgs e)
+        {
+            fillOffersEvent();
+        }
+
+        private void chk_offersReturn_Unchecked(object sender, RoutedEventArgs e)
+        {
+            fillOffersEvent();
+        }
+
+        private void chk_offersReturn_Checked(object sender, RoutedEventArgs e)
+        {
+            fillOffersEvent();
+        }
+
+        private void chk_offersDrafs_Unchecked(object sender, RoutedEventArgs e)
+        {
+            fillOffersEvent();
+        }
+
+        private void chk_offersDrafs_Checked(object sender, RoutedEventArgs e)
+        {
+            fillOffersEvent();
+        }
+
+        private void dp_offersEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillOffersEvent();
+        }
+
+        private void dp_offersStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillOffersEvent();
+        }
+
+       
+
+        private void dt_offersEndTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
+        {
+            fillOffersEvent();
+        }
+
+        private void dt_offersStartTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
+        {
+            fillOffersEvent();
         }
     }
 }

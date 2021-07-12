@@ -58,6 +58,13 @@ namespace POS.View
                 txt_add_Icon.Visibility = Visibility.Visible;
                 txt_update_Icon.Visibility = Visibility.Visible;
                 txt_delete_Icon.Visibility = Visibility.Visible;
+
+                txt_deleteValueButton.Visibility = Visibility.Visible;
+                txt_addValueButton.Visibility = Visibility.Visible;
+                txt_updateValueButton.Visibility = Visibility.Visible;
+                txt_addValue_Icon.Visibility = Visibility.Visible;
+                txt_updateValue_Icon.Visibility = Visibility.Visible;
+                txt_deleteValue_Icon.Visibility = Visibility.Visible;
             }
             else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
             {
@@ -68,6 +75,13 @@ namespace POS.View
                 txt_addButton.Visibility = Visibility.Visible;
                 txt_updateButton.Visibility = Visibility.Visible;
 
+                txt_deleteValueButton.Visibility = Visibility.Visible;
+                txt_addValueButton.Visibility = Visibility.Visible;
+                txt_updateValueButton.Visibility = Visibility.Visible;
+                txt_addValue_Icon.Visibility = Visibility.Collapsed;
+                txt_updateValue_Icon.Visibility = Visibility.Collapsed;
+                txt_deleteValue_Icon.Visibility = Visibility.Collapsed;
+
             }
             else
             {
@@ -77,6 +91,13 @@ namespace POS.View
                 txt_add_Icon.Visibility = Visibility.Visible;
                 txt_update_Icon.Visibility = Visibility.Visible;
                 txt_delete_Icon.Visibility = Visibility.Visible;
+
+                txt_deleteValueButton.Visibility = Visibility.Collapsed;
+                txt_addValueButton.Visibility = Visibility.Collapsed;
+                txt_updateValueButton.Visibility = Visibility.Collapsed;
+                txt_addValue_Icon.Visibility = Visibility.Visible;
+                txt_updateValue_Icon.Visibility = Visibility.Visible;
+                txt_deleteValue_Icon.Visibility = Visibility.Visible;
 
             }
 
@@ -128,14 +149,15 @@ namespace POS.View
                 txt_header.Text = MainWindow.resourcemanager.GetString("trProperty");
             txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
             txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
-            btn_updateValue.Content = MainWindow.resourcemanager.GetString("trUpdate");
             txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+
             tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
             tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
             tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
-            btn_deleteValue.Content = MainWindow.resourcemanager.GetString("trDelete");
-
+            txt_updateValueButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
+            txt_addValueButton.Text = MainWindow.resourcemanager.GetString("trAdd");
+            txt_deleteValueButton.Text = MainWindow.resourcemanager.GetString("trDelete");
 
             dg_property.Columns[0].Header = MainWindow.resourcemanager.GetString("trProperty");
             dg_property.Columns[1].Header = MainWindow.resourcemanager.GetString("trValues");

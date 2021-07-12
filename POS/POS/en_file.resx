@@ -1575,4 +1575,40 @@
   <data name="trTranseToSameLocation" xml:space="preserve">
     <value>select new location for transf</value>
   </data>
+  <data name="trEmptyAddress" xml:space="preserve">
+    <value>Address cann't be null</value>
+  </data>
+  <data name="trEmptyLanguage" xml:space="preserve">
+    <value>Language cann't be empty</value>
+  </data>
+  <data name="trEmptyRegion" xml:space="preserve">
+    <value>Region cann't be empty</value>
+  </data>
+  <data name="trEmptyStoreCost" xml:space="preserve">
+    <value>Storage cost cann't be empty</value>
+  </data>
+  <data name="trEmptyTax" xml:space="preserve">
+    <value>Tax cann't be empty </value>
+  </data>
+  <data name="trPopSave" xml:space="preserve">
+    <value>Saved successfully</value>
+  </data>
+  <data name="trChangePassword" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="trChangePasswordHint" xml:space="preserve">
+    <value>Administrative password change</value>
+  </data>
+  <data name="trEmptyUser" xml:space="preserve">
+    <value>User cann't be empty</value>
+  </data>
+  <data name="trLogOut" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="trShowPassword" xml:space="preserve">
+    <value>Show password</value>
+  </data>
+  <data name="trStorageCost" xml:space="preserve">
+    <value>Storage cost</value>
+  </data>
 </root>

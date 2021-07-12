@@ -13,6 +13,68 @@ using System.Web;
 
 namespace POS.Classes
 {
+    public class Storage
+    {
+
+        // item unit
+        public string itemName { get; set; }
+        public string unitName { get; set; }
+        public int itemUnitId { get; set; }
+
+        public int itemId { get; set; }
+        public int unitId { get; set; }
+
+        public string barcode { get; set; }
+        //item location
+        public string CreateuserName { get; set; }
+        public string CreateuserLName { get; set; }
+        public string CreateuserAccName { get; set; }
+        public string UuserName { get; set; }
+        public string UuserLName { get; set; }
+        public string UuserAccName { get; set; }
+
+        //
+        public string branchName { get; set; }
+
+        public string branchType { get; set; }
+        //itemslocations
+
+        public int itemsLocId { get; set; }
+        public int locationId { get; set; }
+        public Nullable<decimal> quantity { get; set; }
+
+        public Nullable<System.DateTime> startDate { get; set; }
+        public Nullable<System.DateTime> endDate { get; set; }
+
+        public string IULnote { get; set; }
+        public Nullable<decimal> storeCost { get; set; }
+
+        public string cuserName { get; set; }
+        public string cuserLast { get; set; }
+        public string cUserAccName { get; set; }
+        public string uuserName { get; set; }
+        public string uuserLast { get; set; }
+        public string uUserAccName { get; set; }
+        // Location
+        public string x { get; set; }
+        public string y { get; set; }
+        public string z { get; set; }
+
+        public Nullable<byte> LocisActive { get; set; }
+        public int sectionId { get; set; }
+        public string Locnote { get; set; }
+        public int branchId { get; set; }
+        public Nullable<byte> LocisFreeZone { get; set; }
+
+
+        // section
+
+        public string Secname { get; set; }
+        public Nullable<byte> SecisActive { get; set; }
+        public string Secnote { get; set; }
+        public Nullable<byte> SecisFreeZone { get; set; }
+    }
+
     public class ItemUnitCombo
     {
        
@@ -38,6 +100,7 @@ namespace POS.Classes
         // ItemTransfer
         public int ITitemsTransId { get; set; }
         public Nullable<int> ITitemUnitId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
         public Nullable<int> ITitemId { get; set; }
         public Nullable<int> ITunitId { get; set; }
         public string ITitemName { get; set; }
@@ -69,6 +132,7 @@ namespace POS.Classes
         public string invType { get; set; }
         public string discountType { get; set; }
         public Nullable<decimal> ITdiscountValue { get; set; }
+        public Nullable<decimal> discountValue { get; set; }
         public Nullable<decimal> total { get; set; }
         public Nullable<decimal> totalNet { get; set; }
         public Nullable<decimal> paid { get; set; }
@@ -165,6 +229,7 @@ namespace POS.Classes
         public Nullable<int> OupdateUserId { get; set; }
         public string Onotes { get; set; }
         public Nullable<int> Oquantity { get; set; }
+        public  int Oitemofferid { get; set; }
     }
     class Statistics
     {
@@ -793,6 +858,53 @@ namespace POS.Classes
                 return list;
             }
         }
+
+        // المخزون 
+        #region Storage
+
+        public async Task<List<Storage>> GetStorage()
+        {
+            List<Storage> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetStorage");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<Storage>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<Storage>();
+                }
+                return list;
+            }
+        }
+
+
+        #endregion
 
     }
 }

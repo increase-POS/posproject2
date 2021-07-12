@@ -61,7 +61,8 @@
             <BeginStoryboard Storyboard="{StaticResource Storyboard3}"/>
         </EventTrigger>
     </Window.Triggers>
-    <Grid Margin="0" x:Name="grid_mainWindow" FlowDirection="LeftToRight" >
+    <!--FlowDirection="RightToLeft"-->
+    <Grid Margin="0" x:Name="grid_mainWindow">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>

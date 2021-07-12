@@ -98,6 +98,7 @@
                 </DockPanel>
                     <CheckBox Grid.Row="3" Margin="5,20,0,0" x:Name="cbxRemmemberMe" Content="Remmember Me" VerticalAlignment="Center" Checked="CbxRemmemberMe_Checked" Unchecked="CbxRemmemberMe_Unchecked"></CheckBox>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="4" >
+                    <Grid>
                         <Button x:Name="btnLogIn" Background="#FF2196F3" Foreground="White" Margin="0,0,10,0" Click="btnLogIn_Click" IsDefault="True">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0">
@@ -106,6 +107,11 @@
                                 <TextBlock x:Name="txt_logIn" Text="Log In"></TextBlock>
                             </StackPanel>
                         </Button>
+                        <ProgressBar Foreground="White" x:Name="wait_saveBtn"
+                        Style="{StaticResource MaterialDesignCircularProgressBar}"
+                        Value="35" Visibility="Collapsed"
+                        IsIndeterminate="False" />
+                    </Grid>
                     <Button x:Name="btnClose" Background="#FF2196F3" Foreground="White" Click="btnClose_Click"   IsCancel="true" >
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0">

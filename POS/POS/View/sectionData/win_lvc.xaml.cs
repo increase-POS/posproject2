@@ -24,6 +24,7 @@ namespace POS.View.sectionData.Charts
     /// </summary>
     public partial class win_lvc : Window
     {
+        int selectedChart=1;
         IEnumerable<Agent> agentsQuery;
         IEnumerable<Bank> banksQuery;
         IEnumerable<User> usersQuery;
@@ -91,7 +92,7 @@ namespace POS.View.sectionData.Charts
             PiechartList = new List<double>();
             ColumnchartList = new List<double>();
             fillDates();
-            cb_cmbChartType.SelectedIndex = 0;
+            fillSelectedChart();
         }
 
         public void fillDates()
@@ -272,7 +273,7 @@ namespace POS.View.sectionData.Charts
                                 label = "Customers count";
                             }
                             else label = "Vendors count";
-                        
+
 
                         }
                         else if (sectionDate == 2)
@@ -387,13 +388,14 @@ namespace POS.View.sectionData.Charts
                       Title = titles.ToList().Skip(i).FirstOrDefault().ToString(),
                       DataLabels = true,
                   }
-              ) ;
+              );
             }
             pieChart.Series = piechartData;
         }
 
         public void fillColumnChart()
         {
+            columnAxis.Labels = new List<string>();
             ColumnchartList.Clear();
             SeriesCollection columnchartData = new SeriesCollection();
             List<string> titles = new List<string>();
@@ -455,7 +457,8 @@ namespace POS.View.sectionData.Charts
                             ColumnchartList.Add(Draw);
                             label = "Cards count";
                         }
-                        titles.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
+                        columnAxis.Separator.Step = 2;
+                        columnAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
                         if (year == dpEndDate.SelectedDate.Value.Year && month == dpEndDate.SelectedDate.Value.Month)
                         {
                             break;
@@ -518,24 +521,33 @@ namespace POS.View.sectionData.Charts
                         ColumnchartList.Add(Draw);
                         label = "Cards count";
                     }
-                    titles.Add(year.ToString());
+                    columnAxis.Separator.Step = 1;
+                    columnAxis.Labels.Add(year.ToString());
                 }
             }
-            for (int i = 0; i < ColumnchartList.Count(); i++)
-            {
-                List<double> final = new List<double>();
-                List<string> lable = new List<string>();
-                final.Add(ColumnchartList.ToList().Skip(i).FirstOrDefault());
-                columnchartData.Add(
-                  new ColumnSeries
-                  {
-                      Values = final.AsChartValues(),
-                      Title = titles.ToList().Skip(i).FirstOrDefault().ToString(),
-                      DataLabels = true,
-                  }
-              );
-            }
-            columnChart.Series = columnchartData;
+            columnchartData.Add(
+                 new ColumnSeries
+                 {
+                     Title = label,
+                     Values = ColumnchartList.AsChartValues(),
+
+                 }
+             );
+        
+        //for (int i = 0; i < ColumnchartList.Count(); i++)
+        //{
+        //    List<double> final = new List<double>();
+        //    List<string> lable = new List<string>();
+        //    final.Add(ColumnchartList.ToList().Skip(i).FirstOrDefault());
+        //    columnchartData.Add(
+        //      new ColumnSeries
+        //      {
+        //          Values = final.AsChartValues(),
+
+        //      }
+        //  );
+        //}
+        columnChart.Series = columnchartData;
         }
 
         private void dpStrtDate_CalendarClosed(object sender, RoutedEventArgs e)
@@ -564,7 +576,7 @@ namespace POS.View.sectionData.Charts
             }
         }
 
-        private void btn_refresh_Click(object sender, RoutedEventArgs e) { cb_cmbChartType.SelectedIndex = 0; rdoMonth.IsChecked = true; fillDates(); fillSelectedChart(); }
+        private void btn_refresh_Click(object sender, RoutedEventArgs e) { selectedChart = 1; rdoMonth.IsChecked = true; fillDates(); fillSelectedChart(); }
 
         private void rdoYear_Click(object sender, RoutedEventArgs e)
         {
@@ -592,46 +604,53 @@ namespace POS.View.sectionData.Charts
             }
         }
 
-        private void cb_cmbChartType_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (cb_cmbChartType.SelectedIndex == 0)
-            {
-                grid1.Visibility = Visibility.Visible;
-                grd_pieChart.Visibility = Visibility.Hidden;
-                grd_columnChart.Visibility = Visibility.Hidden;
-                fillSelectedChart();
-            }
-            else if (cb_cmbChartType.SelectedIndex == 1)
-            {
-                grid1.Visibility = Visibility.Hidden;
-                grd_pieChart.Visibility = Visibility.Visible;
-                grd_columnChart.Visibility = Visibility.Hidden;
-                fillSelectedChart();
-            }
-            else if (cb_cmbChartType.SelectedIndex == 2)
-            {
-                grid1.Visibility = Visibility.Hidden;
-                grd_pieChart.Visibility = Visibility.Hidden;
-                grd_columnChart.Visibility = Visibility.Visible;
-                fillSelectedChart();
-            }
-
-        }
-
         private void fillSelectedChart()
         {
-            if (cb_cmbChartType.SelectedIndex == 0)
+            grid1.Visibility = Visibility.Hidden;
+            grd_pieChart.Visibility = Visibility.Hidden;
+            grd_columnChart.Visibility = Visibility.Hidden;
+
+            icon_rowChar.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            icon_columnChar.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+            icon_pieChar.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E8E8E8"));
+
+            if (selectedChart == 1)
             {
+                grid1.Visibility = Visibility.Visible;
+                icon_rowChar.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
                 fillChart();
             }
-            else if (cb_cmbChartType.SelectedIndex == 1)
+            else if (selectedChart == 2)
             {
+                grd_pieChart.Visibility = Visibility.Visible;
+                icon_pieChar.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
                 fillPieChart();
             }
-            else if (cb_cmbChartType.SelectedIndex == 2)
+            else if (selectedChart == 3)
             {
+                grd_columnChart.Visibility = Visibility.Visible;
+                icon_columnChar.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
                 fillColumnChart();
+               
             }
+        }
+
+        private void btn_rowChart_Click(object sender, RoutedEventArgs e)
+        {
+            selectedChart = 1;
+            fillSelectedChart();
+        }
+
+        private void btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {
+            selectedChart = 2;
+            fillSelectedChart();
+        }
+
+        private void btn_columnChart_Click(object sender, RoutedEventArgs e)
+        {
+            selectedChart = 3;
+            fillSelectedChart();
         }
     }
 }

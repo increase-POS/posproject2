@@ -647,10 +647,33 @@ namespace POS.View
             //SectionData.validateSmalThanDateNowDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
             //return isValid;
         }
+        bool logInProcessing = true;
+        void awaitSaveBtn(bool isAwait)
+        {
+            if (isAwait == true)
+            {
+                btn_save.IsEnabled = false;
+                wait_saveBtn.Visibility = Visibility.Visible;
+                wait_saveBtn.IsIndeterminate = true;
+            }
+            else
+            {
+                btn_save.IsEnabled = true;
+                wait_saveBtn.Visibility = Visibility.Collapsed;
+                wait_saveBtn.IsIndeterminate = false;
+            }
+
+
+        }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            //check mandatory inputs
-            validateInvoiceValues();
+            if (logInProcessing)
+            {
+                logInProcessing = false;
+                awaitSaveBtn(true);
+
+                //check mandatory inputs
+                validateInvoiceValues();
             TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
                 if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0
                     && !tb.Text.Trim().Equals("")   )
@@ -664,7 +687,9 @@ namespace POS.View
 
                 if (invoice.invoiceId == 0) clearInvoice();
             }
-
+                awaitSaveBtn(false);
+                logInProcessing = true;
+            }
         }
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {

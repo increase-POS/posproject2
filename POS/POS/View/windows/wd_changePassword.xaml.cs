@@ -74,7 +74,7 @@ namespace POS.View.windows
         }
 
         private void Btn_save_Click(object sender, RoutedEventArgs e)
-        {
+        {//save
 
         }
 

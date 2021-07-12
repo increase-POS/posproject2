@@ -292,6 +292,9 @@
     <Compile Include="View\reports\uc_saleReport.xaml.cs">
       <DependentUpon>uc_saleReport.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\reports\uc_storageReports.xaml.cs">
+      <DependentUpon>uc_storageReports.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\reports\uc_usersReport.xaml.cs">
       <DependentUpon>uc_usersReport.xaml</DependentUpon>
     </Compile>
@@ -420,6 +423,9 @@
     <Compile Include="View\windows\wd_acceptUser.xaml.cs">
       <DependentUpon>wd_acceptUser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_adminChangePassword.xaml.cs">
+      <DependentUpon>wd_adminChangePassword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_branchesList.xaml.cs">
       <DependentUpon>wd_branchesList.xaml</DependentUpon>
     </Compile>
@@ -458,6 +464,9 @@
     </Compile>
     <Compile Include="View\windows\wd_locationsList.xaml.cs">
       <DependentUpon>wd_locationsList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_serialNum.xaml.cs">
+      <DependentUpon>wd_serialNum.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\wd_subscriptionFees.xaml.cs">
       <DependentUpon>wd_subscriptionFees.xaml</DependentUpon>
@@ -577,6 +586,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\reports\uc_saleReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_storageReports.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -756,6 +769,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\windows\wd_adminChangePassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\windows\wd_branchesList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -805,6 +822,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_locationsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_serialNum.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

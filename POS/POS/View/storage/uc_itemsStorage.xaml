@@ -356,6 +356,7 @@
                                 <RowDefinition Height="auto"></RowDefinition>
                                 <RowDefinition Height="auto"></RowDefinition>
                                 <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
                             </Grid.RowDefinitions>
                             <DockPanel x:Name="dock_location" LastChildFill="True" Grid.Row="0" Margin="0,10,0,0">
                                 <TextBlock x:Name="txt_Location" Text="Location" Foreground="#737373" FontSize="10"  Margin="5,0,5,0"/>
@@ -385,7 +386,6 @@
                                     </TextBox.ToolTip>
                                 </TextBox>
                                 <TextBox x:Name="tb_quantity" Grid.Column="1" Text="{Binding quantity, Mode=OneWay}" Padding="10,0,5,0"                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Quantity..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                     BorderBrush="AliceBlue"  TextChanged="Tb_quantity_TextChanged"
@@ -476,7 +476,22 @@
                                     </Path.ToolTip>
                                 </Path>
                             </Grid>
-                            <TextBox x:Name="tb_notes" Visibility="Visible" Grid.Row="5" Text="{Binding note, Mode=OneWay}" 
+                            <TextBox x:Name="tb_storeCost" Grid.Row="5" Text="{Binding storeCost, Mode=OneWay}" Padding="10,0,5,0"                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Store Cost..."    
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
+                                    BorderBrush="AliceBlue"  
+                                         PreviewTextInput="NumberValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
+                                    MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                    Height="40"   Margin="5,5,10,5" Grid.ColumnSpan="2" LostFocus="input_LostFocus" />
+                            <Path Fill="#E81123" Grid.Row="5" Stretch="Fill" Margin="15,12,15,5"
+                              HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
+                         VerticalAlignment="Top" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorStoreCost" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                            <TextBox x:Name="tb_notes" Visibility="Visible" Grid.Row="6" Text="{Binding note, Mode=OneWay}" 
                                  Padding="10,0,5,0"   
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
@@ -492,7 +507,7 @@
                                               VerticalOffset="20"/>
                                 </TextBox.ToolTip>
                             </TextBox>
-                            <Path Fill="#E81123" Grid.Row="5" Stretch="Fill" Margin="15,12,15,5"
+                            <Path Fill="#E81123" Grid.Row="6" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
                          VerticalAlignment="Top" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">

@@ -502,6 +502,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تغيير كلمة المرور.
+        /// </summary>
+        internal static string trChangePassword {
+            get {
+                return ResourceManager.GetString("trChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تغيير كلمة المرور إدارياً.
+        /// </summary>
+        internal static string trChangePasswordHint {
+            get {
+                return ResourceManager.GetString("trChangePasswordHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to شيك.
         /// </summary>
         internal static string trCheque {
@@ -1195,6 +1213,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to العنوان لا ينمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyAddress {
+            get {
+                return ResourceManager.GetString("trEmptyAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العنوان لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyAddressToolTip {
@@ -1393,6 +1420,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to اللغة لا يمكن أن تكون فارغة.
+        /// </summary>
+        internal static string trEmptyLanguage {
+            get {
+                return ResourceManager.GetString("trEmptyLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الاسم الأخير لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyLastNameToolTip {
@@ -1492,6 +1528,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المنطقة لا يمكن أن تكون فارغة.
+        /// </summary>
+        internal static string trEmptyRegion {
+            get {
+                return ResourceManager.GetString("trEmptyRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا يمكن أن يكون القسم فارغ.
         /// </summary>
         internal static string trEmptySectionToolTip {
@@ -1515,6 +1560,33 @@ namespace POS {
         internal static string trEmptyStartTimeToolTip {
             get {
                 return ResourceManager.GetString("trEmptyStartTimeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to كلفة التخزين لا يمكن أن تكون فارغة.
+        /// </summary>
+        internal static string trEmptyStoreCost {
+            get {
+                return ResourceManager.GetString("trEmptyStoreCost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الضريبة لا يمكن أن تكون فارغة.
+        /// </summary>
+        internal static string trEmptyTax {
+            get {
+                return ResourceManager.GetString("trEmptyTax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المستخدم لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyUser {
+            get {
+                return ResourceManager.GetString("trEmptyUser", resourceCulture);
             }
         }
         
@@ -2401,6 +2473,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تسجيل الخروج.
+        /// </summary>
+        internal static string trLogOut {
+            get {
+                return ResourceManager.GetString("trLogOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الخاصية الأساسية.
         /// </summary>
         internal static string trMainProperty {
@@ -2973,6 +3054,15 @@ namespace POS {
         internal static string trPopNotEnoughBalance {
             get {
                 return ResourceManager.GetString("trPopNotEnoughBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تم الحفظ بنجاح.
+        /// </summary>
+        internal static string trPopSave {
+            get {
+                return ResourceManager.GetString("trPopSave", resourceCulture);
             }
         }
         
@@ -3697,6 +3787,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to عرض كلمة المرور.
+        /// </summary>
+        internal static string trShowPassword {
+            get {
+                return ResourceManager.GetString("trShowPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to أصغر وحدة.
         /// </summary>
         internal static string trSmallestUnit {
@@ -3783,6 +3882,15 @@ namespace POS {
         internal static string trStorage {
             get {
                 return ResourceManager.GetString("trStorage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to كلفة التخزيين.
+        /// </summary>
+        internal static string trStorageCost {
+            get {
+                return ResourceManager.GetString("trStorageCost", resourceCulture);
             }
         }
         

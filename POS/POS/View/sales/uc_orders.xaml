@@ -224,7 +224,7 @@
                     <Button Grid.Column="2" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_pdf" Click="Btn_pdf_Click"   >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
-                         Height="30" Width="30" 
+                         Height="30" Width="25" 
                            Data="M228,174h10v-18h16v-8h-16v-11h17v-8h-27V174z M213.3,133.5c-4.4-3.3-10.4-4.8-19-4.8c-5.2,0-9.3,0.3-14.3,0.9
 	v44.5c4,0.3,6.8,0.7,12.1,0.7c8.9,0,16.4-1.9,21.1-5.8c4.4-3.7,7.6-9.7,7.6-18.3C220.8,142.6,218,137,213.3,133.5z M194.6,166.7
 	c-1.3,0-2.6,0-3.6-0.2v-29.6c1-0.2,2.4-0.4,4.7-0.4c8.8,0,14.3,5,14.2,14.4C210,161.7,203.9,166.8,194.6,166.7z M169.5,132.3
@@ -470,11 +470,9 @@
             <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="0,5,0,5">
                 <Grid.RowDefinitions >
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="2*"/>
-
-
                     <RowDefinition Height="*" />
-                    <!--<RowDefinition Height="1*"/>-->
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Border BorderThickness="0"   Grid.Column="0" Grid.Row="0"    Margin="5,10,5,5"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
@@ -509,7 +507,39 @@
 
                     </Grid>
                 </Border>
-                <Border BorderThickness="0"   Grid.Column="0" Grid.Row="1"      Margin="5,10,5,5"
+                <Border BorderThickness="0"   Grid.Column="0" Grid.Row="1"    Margin="5,10,5,5"
+                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
+                    <Grid   Margin="0" >
+                        <Grid.RowDefinitions >
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Store/Branch" x:Name="txt_store" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
+                                  VerticalAlignment="Center" 
+                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
+                        <Grid Grid.Row="1" Margin="5"  >
+                            <ComboBox   Grid.Row="1" x:Name="cb_branch"
+                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                             Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                            materialDesign:HintAssist.Hint="Store/Branch... "  
+                                            TextBlock.FontSize="12"   Background="#f8f8f8" 
+                                            Height="40"  
+                                                LostFocus="input_LostFocus"
+                                            BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_branch_SelectionChanged" />
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                              Name="p_errorBranch"
+                                                HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                                VerticalAlignment="Center" Width="15"  Height="15"
+                                                Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorBranch"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
+
+                    </Grid>
+                </Border>
+                <Border BorderThickness="0"   Grid.Column="0" Grid.Row="2"      Margin="5,10,5,5"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
                     <Grid   Margin="0" >
                         <Grid.RowDefinitions >
@@ -573,7 +603,7 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-                <Border BorderThickness="0"   Grid.Column="0" Grid.Row="2"     Margin="5,10,5,10"
+                <Border BorderThickness="0"   Grid.Column="0" Grid.Row="3"     Margin="5,10,5,10"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
                     <Grid   Margin="0" >
                         <Grid.RowDefinitions >
@@ -590,24 +620,6 @@
 
                     </Grid>
                 </Border>
-                <!--<Border BorderThickness="0"   Grid.Column="0" Grid.Row="3"    Margin="10"
-                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
-                <Grid   Margin="0" >
-                    <Grid.RowDefinitions >
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0"  Text="SUM" x:Name="txt_sum" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
-                                  VerticalAlignment="Center" 
-                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
-
-                    <TextBlock Grid.Row="1"   x:Name="tb_sum" Grid.Column="1" Margin="10,5,5,5" 
-                       Foreground="#4E4E4E" Text="{Binding total, Mode=OneWay}"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                                  FontWeight="Bold"  FontSize="12"/>
-                </Grid>
-            </Border>-->
             </Grid>
 
             <Grid Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" Margin="0,5,0,5">

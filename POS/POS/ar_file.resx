@@ -1554,4 +1554,40 @@
   <data name="trTranseToSameLocation" xml:space="preserve">
     <value>يجب اختيار مكان تخزين جديد للنقل</value>
   </data>
+  <data name="trEmptyAddress" xml:space="preserve">
+    <value>العنوان لا ينمكن أن يكون فارغ</value>
+  </data>
+  <data name="trEmptyLanguage" xml:space="preserve">
+    <value>اللغة لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trEmptyRegion" xml:space="preserve">
+    <value>المنطقة لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trEmptyStoreCost" xml:space="preserve">
+    <value>كلفة التخزين لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trEmptyTax" xml:space="preserve">
+    <value>الضريبة لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trPopSave" xml:space="preserve">
+    <value>تم الحفظ بنجاح</value>
+  </data>
+  <data name="trChangePassword" xml:space="preserve">
+    <value>تغيير كلمة المرور</value>
+  </data>
+  <data name="trChangePasswordHint" xml:space="preserve">
+    <value>تغيير كلمة المرور إدارياً</value>
+  </data>
+  <data name="trEmptyUser" xml:space="preserve">
+    <value>المستخدم لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trLogOut" xml:space="preserve">
+    <value>تسجيل الخروج</value>
+  </data>
+  <data name="trShowPassword" xml:space="preserve">
+    <value>عرض كلمة المرور</value>
+  </data>
+  <data name="trStorageCost" xml:space="preserve">
+    <value>كلفة التخزيين</value>
+  </data>
 </root>

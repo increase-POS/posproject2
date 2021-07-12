@@ -41,7 +41,7 @@ namespace POS.Classes
         public string role { get; set; }
         public Boolean canDelete { get; set; }
         public string image { get; set; }
-
+        public Nullable<int> groupId { get; set; }
         public async Task<List<User>> GetUsersAsync()
         {
             List<User> users = null;
