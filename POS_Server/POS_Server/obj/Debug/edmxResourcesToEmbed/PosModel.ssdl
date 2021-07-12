@@ -35,6 +35,7 @@
     <Property Name="type" Type="nvarchar" MaxLength="50" />
     <Property Name="accType" Type="nvarchar" MaxLength="50" />
     <Property Name="balance" Type="decimal" Precision="20" Scale="2" />
+    <Property Name="balanceType" Type="tinyint" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
@@ -508,6 +509,7 @@
     <Property Name="notes" Type="ntext" />
     <Property Name="price" Type="decimal" Precision="20" Scale="2" />
     <Property Name="itemUnitId" Type="int" />
+    <Property Name="itemSerial" Type="nvarchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="itemsUnits">
     <Key>
@@ -888,6 +890,8 @@
     <Property Name="role" Type="nvarchar" MaxLength="50" />
     <Property Name="image" Type="ntext" />
     <Property Name="groupId" Type="int" />
+    <Property Name="balance" Type="decimal" Precision="20" Scale="2" />
+    <Property Name="balanceType" Type="tinyint" />
   </EntityType>
   <EntityType Name="userSetValues">
     <Key>

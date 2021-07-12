@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="incposdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="incposdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="agentMemberships">
           <Key>
             <PropertyRef Name="agentMembershipsId" />
@@ -40,6 +40,7 @@
           <Property Name="type" Type="nvarchar" MaxLength="50" />
           <Property Name="accType" Type="nvarchar" MaxLength="50" />
           <Property Name="balance" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="balanceType" Type="tinyint" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
@@ -513,6 +514,7 @@
           <Property Name="notes" Type="ntext" />
           <Property Name="price" Type="decimal" Precision="20" Scale="2" />
           <Property Name="itemUnitId" Type="int" />
+          <Property Name="itemSerial" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="itemsUnits">
           <Key>
@@ -893,6 +895,8 @@
           <Property Name="role" Type="nvarchar" MaxLength="50" />
           <Property Name="image" Type="ntext" />
           <Property Name="groupId" Type="int" />
+          <Property Name="balance" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="balanceType" Type="tinyint" />
         </EntityType>
         <EntityType Name="userSetValues">
           <Key>
@@ -3824,8 +3828,7 @@
             <End Role="usersLogs" EntitySet="usersLogs" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="incposdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3887,6 +3890,7 @@
           <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_agents" FromRole="agents" ToRole="invoices" />
           <NavigationProperty Name="medalAgent" Relationship="Self.FK_medalAgent_agents" FromRole="agents" ToRole="medalAgent" />
           <NavigationProperty Name="Points1" Relationship="Self.FK_Points_agents" FromRole="agents" ToRole="Points" />
+          <Property Name="balanceType" Type="Byte" />
         </EntityType>
         <EntityType Name="banks">
           <Key>
@@ -4493,6 +4497,7 @@
           <NavigationProperty Name="locations" Relationship="Self.FK_itemsTransfer_locations" FromRole="itemsTransfer" ToRole="locations" />
           <NavigationProperty Name="locations1" Relationship="Self.FK_itemsTransfer_locations1" FromRole="itemsTransfer" ToRole="locations" />
           <NavigationProperty Name="itemTransferOffer" Relationship="Self.FK_itemTransferOffer_itemsTransfer" FromRole="itemsTransfer" ToRole="itemTransferOffer" />
+          <Property Name="itemSerial" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="itemsUnits">
           <Key>
@@ -5067,6 +5072,8 @@
           <NavigationProperty Name="userSetValues1" Relationship="Self.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
           <NavigationProperty Name="userSetValues2" Relationship="Self.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
           <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
+          <Property Name="balance" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="balanceType" Type="Byte" />
         </EntityType>
         <EntityType Name="userSetValues">
           <Key>
@@ -8032,6 +8039,7 @@
           <EntitySetMapping Name="agents">
             <EntityTypeMapping TypeName="incposdbModel.agents">
               <MappingFragment StoreEntitySet="agents">
+                <ScalarProperty Name="balanceType" ColumnName="balanceType" />
                 <ScalarProperty Name="agentId" ColumnName="agentId" />
                 <ScalarProperty Name="pointId" ColumnName="pointId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -8534,6 +8542,7 @@
           <EntitySetMapping Name="itemsTransfer">
             <EntityTypeMapping TypeName="incposdbModel.itemsTransfer">
               <MappingFragment StoreEntitySet="itemsTransfer">
+                <ScalarProperty Name="itemSerial" ColumnName="itemSerial" />
                 <ScalarProperty Name="itemsTransId" ColumnName="itemsTransId" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
                 <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
@@ -8930,6 +8939,8 @@
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="incposdbModel.users">
               <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="balanceType" ColumnName="balanceType" />
+                <ScalarProperty Name="balance" ColumnName="balance" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="password" ColumnName="password" />

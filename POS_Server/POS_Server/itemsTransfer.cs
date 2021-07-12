@@ -32,6 +32,7 @@ namespace POS_Server
         public string notes { get; set; }
         public Nullable<decimal> price { get; set; }
         public Nullable<int> itemUnitId { get; set; }
+        public string itemSerial { get; set; }
     
         public virtual invoices invoices { get; set; }
         public virtual itemsUnits itemsUnits { get; set; }

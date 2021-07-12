@@ -116,10 +116,13 @@ namespace POS_Server.Controllers
                                     createUserId = c.createUserId,
                                     updateUserId = c.updateUserId,
                                     canDelete = true,
+                                    itemId = u.items.itemId,
                                     itemName = u.items.name,
+                                    unitId = un.unitId,
+                                    unitName = un.name,
                                     section = lo.sections.name,
                                     location = lo.x + "-" + lo.y + "-" + lo.z,
-                                    unitName = un.name,
+
                                     inventoryDate = c.Inventory.createDate,
                                     inventoryNum = c.Inventory.num,
                                 })

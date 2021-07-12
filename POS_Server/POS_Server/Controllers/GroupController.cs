@@ -131,6 +131,68 @@ namespace POS_Server.Controllers
         }
 
 
+        // GET api/<controller>  ارجاع قائمة المستخدمين التابعين للمجموعة
+        [HttpGet]
+        [Route("GetUsersByGroupId")]
+        public IHttpActionResult GetUsersByGroupId(int groupId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+          
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var list = entity.users
+                   .Where(c => c.groupId == groupId)
+                   .Select(c => new {
+                       c.userId,
+                       c.groupId,
+                       c.name,
+                       c.notes,
+                       c.createDate,
+                       c.updateDate,
+                       c.createUserId,
+                       c.updateUserId,
+
+                       c.isActive,
+                       c.username,
+                       c.password,
+                       c.lastname,
+                       c.job,
+                       c.workHours,
+                       c.phone,
+                       c.mobile,
+                       c.email,
+                       c.address,
+                       c.isOnline,
+                       c.role,
+                       c.image,
+                       c.balance,
+                       c.balanceType,
+
+                   })
+                   .ToList();
+
+                    if (list == null)
+                        return NotFound();
+                    else
+                        return Ok(list);
+                }
+            }
+            else
+                return NotFound();
+        }
+
         // add or update 
         [HttpPost]
         [Route("Save")]

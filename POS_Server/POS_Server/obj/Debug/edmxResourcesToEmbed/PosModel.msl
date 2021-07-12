@@ -23,6 +23,7 @@
     <EntitySetMapping Name="agents">
       <EntityTypeMapping TypeName="incposdbModel.agents">
         <MappingFragment StoreEntitySet="agents">
+          <ScalarProperty Name="balanceType" ColumnName="balanceType" />
           <ScalarProperty Name="agentId" ColumnName="agentId" />
           <ScalarProperty Name="pointId" ColumnName="pointId" />
           <ScalarProperty Name="name" ColumnName="name" />
@@ -525,6 +526,7 @@
     <EntitySetMapping Name="itemsTransfer">
       <EntityTypeMapping TypeName="incposdbModel.itemsTransfer">
         <MappingFragment StoreEntitySet="itemsTransfer">
+          <ScalarProperty Name="itemSerial" ColumnName="itemSerial" />
           <ScalarProperty Name="itemsTransId" ColumnName="itemsTransId" />
           <ScalarProperty Name="quantity" ColumnName="quantity" />
           <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
@@ -921,6 +923,8 @@
     <EntitySetMapping Name="users">
       <EntityTypeMapping TypeName="incposdbModel.users">
         <MappingFragment StoreEntitySet="users">
+          <ScalarProperty Name="balanceType" ColumnName="balanceType" />
+          <ScalarProperty Name="balance" ColumnName="balance" />
           <ScalarProperty Name="userId" ColumnName="userId" />
           <ScalarProperty Name="username" ColumnName="username" />
           <ScalarProperty Name="password" ColumnName="password" />

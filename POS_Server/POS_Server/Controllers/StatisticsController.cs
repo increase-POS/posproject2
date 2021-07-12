@@ -392,8 +392,8 @@ var items = from item in query.AsEnumerable()
                                            I.updateDate,
                                            I.updateUserId,
                                            I.branchId,
-                                           I.discountValue,
-                                           I.discountType,
+                                        discountValue = ((I.discountType == "1" || I.discountType ==null ) || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                        I.discountType,
                                            I.tax,
                                            I.name,
                                            I.isApproved,
@@ -423,7 +423,7 @@ var items = from item in query.AsEnumerable()
                                     }).ToList();
 
                     /*
-          if(S.I.discountType == "1")
+          if(S.(I.discountType == "1" || I.discountType ==null ))
 {
     return S.I.discountValue;
 }else if(S.I.discountType == "2")
@@ -541,7 +541,7 @@ ITbarcode=IU.barcode,
                                         I.updateDate,
                                         I.updateUserId,
                                         I.branchId,
-                                        I.discountValue,
+                                        discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
                                         I.discountType,
                                         I.tax,
                                         I.name,
@@ -560,10 +560,10 @@ ITbarcode=IU.barcode,
                                         agentCode = JAA.code,
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.lastname,
+                                        cUserAccName = JUU.username,
                                         uuserName = JUPUS.name,
                                         uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.lastname,
+                                        uUserAccName = JUPUS.username,
                                         agentCompany = JAA.company,
 
                                         //username
@@ -688,13 +688,12 @@ ITbarcode
                                         I.updateDate,
                                         I.updateUserId,
                                         I.branchId,
-                                        I.discountValue,
+                                     
                                         I.discountType,
                                         I.tax,
                                         I.name,
                                         I.isApproved,
-
-                                        //
+                                        discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),  //
                                         I.branchCreatorId,
                                         branchCreatorName = JBCC.name,
                                         //
@@ -807,7 +806,7 @@ ITbarcode
                                         updateDate=g.Select(S=>S.I.updateDate).FirstOrDefault(),
                                         updateUserId=g.Select(S=>S.I.updateUserId).FirstOrDefault(),
                                         branchId=g.Select(S=>S.I.branchId).FirstOrDefault(),
-                                        discountValue=g.Select(S=>S.I.discountValue).FirstOrDefault(),
+                                       // discountValue=g.Select(S=>S.I.discountValue).FirstOrDefault(),
                                         discountType=g.Select(S=>S.I.discountType).FirstOrDefault(),
                                         tax=g.Select(S=>S.I.tax).FirstOrDefault(),
                                         name=g.Select(S=>S.I.name).FirstOrDefault(),
@@ -826,6 +825,10 @@ ITbarcode
                                         uUserAccName = g.Select(S => S.JUPUS.username).FirstOrDefault(),
                                         agentCompany = g.Select(S => S.JAA.company).FirstOrDefault(),
                                         posId= g.Select(S => S.JPP.posId).FirstOrDefault(),
+                                        discountValue = g.Select(
+                                            S => (S.I.discountType == "1" || S.I.discountType ==null ) ? S.I.discountValue 
+                                            : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0))
+                                        .FirstOrDefault(),
                                         /*
                                         I.invoiceId,
                                         I.invNumber,
@@ -874,7 +877,7 @@ ITbarcode
                                     }).ToList();
 
                     /*
-          if(S.I.discountType == "1")
+          if(S.(I.discountType == "1" || I.discountType ==null ))
 {
     return S.I.discountValue;
 }else if(S.I.discountType == "2")
@@ -950,11 +953,14 @@ else
                                         branchCreatorId = g.Select(S => S.I.branchCreatorId).FirstOrDefault(),
                                         branchCreatorName = g.Select(S => S.B.name).FirstOrDefault(),
                                         //
-                                        discountValue = g.Select(S => S.I.discountValue).FirstOrDefault(),
+                                        
                                         discountType = g.Select(S => S.I.discountType).FirstOrDefault(),
                                         tax = g.Select(S => S.I.tax).FirstOrDefault(),
-                                
-                                     
+                                        discountValue = g.Select(
+                                            S => (S.I.discountType == "1" || S.I.discountType ==null ) ? S.I.discountValue
+                                            : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0))
+                                        .FirstOrDefault(),
+
                                         name = g.Select(S => S.B.name).FirstOrDefault(),
                                         branchType = g.Select(S => S.B.type).FirstOrDefault(),
                                         //posName = g.Select(S => S.P.name).FirstOrDefault(),
@@ -1052,7 +1058,10 @@ else
                                         updateDate = g.Select(S => S.I.updateDate).FirstOrDefault(),
                                         updateUserId = g.Select(S => S.I.updateUserId).FirstOrDefault(),
                                         branchId = g.Select(S => S.I.branchId).FirstOrDefault(),
-                                        discountValue = g.Select(S => S.I.discountValue).FirstOrDefault(),
+                                        discountValue = g.Select(
+                                            S => (S.I.discountType == "1" || S.I.discountType ==null ) ? S.I.discountValue
+                                            : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0))
+                                        .FirstOrDefault(),
                                         discountType = g.Select(S => S.I.discountType).FirstOrDefault(),
                                         tax = g.Select(S => S.I.tax).FirstOrDefault(),
                                         name = g.Select(S => S.I.name).FirstOrDefault(),
@@ -1081,7 +1090,7 @@ else
                                     }).ToList();
 
                     /*
-          if(S.I.discountType == "1")
+          if(S.(I.discountType == "1" || I.discountType ==null ))
 {
     return S.I.discountValue;
 }else if(S.I.discountType == "2")
@@ -1178,8 +1187,8 @@ else
                                                         I.updateDate,
                                                         I.updateUserId,
                                                         I.branchId,
-                                                        I.discountValue,
-                                                        I.discountType,
+                                        discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                        I.discountType,
                                                         I.tax,
                                                         I.name,
                                                         I.isApproved,
@@ -1210,7 +1219,7 @@ else
                                     }).ToList();
 
                     /*
-          if(S.I.discountType == "1")
+          if(S.(I.discountType == "1" || I.discountType ==null ))
 {
     return S.I.discountValue;
 }else if(S.I.discountType == "2")
@@ -1289,16 +1298,16 @@ else
                                       
                                         paid = g.Where(t => t.I.invType == "p").Sum(S => S.I.paid),
                                         deserved = g.Where(t => t.I.invType == "p").Sum(S => S.I.deserved),
-                                        discountValue = g.Where(t => t.I.invType == "p").Sum(S => S.I.discountType == "1" ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
+                                        discountValue = g.Where(t => t.I.invType == "p").Sum(S => S.(I.discountType == "1" || I.discountType ==null ) ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
                                       
                                         paidPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.paid),
                                         deservedPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.deserved),
-                                        discountValuePb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.discountType == "1" ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
+                                        discountValuePb = g.Where(t => t.I.invType == "pb").Sum(S => S.(I.discountType == "1" || I.discountType ==null ) ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
                                            */                             
                                     }).ToList();
 
                     /*
-          if(S.I.discountType == "1")
+          if(S.(I.discountType == "1" || I.discountType ==null ))
 {
     return S.I.discountValue;
 }else if(S.I.discountType == "2")
@@ -1376,16 +1385,16 @@ else
                                       
                                         paid = g.Where(t => t.I.invType == "p").Sum(S => S.I.paid),
                                         deserved = g.Where(t => t.I.invType == "p").Sum(S => S.I.deserved),
-                                        discountValue = g.Where(t => t.I.invType == "p").Sum(S => S.I.discountType == "1" ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
+                                        discountValue = g.Where(t => t.I.invType == "p").Sum(S => S.(I.discountType == "1" || I.discountType ==null ) ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
                                        /*
                                         paidPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.paid),
                                         deservedPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.deserved),
-                                        discountValuePb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.discountType == "1" ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
+                                        discountValuePb = g.Where(t => t.I.invType == "pb").Sum(S => S.(I.discountType == "1" || I.discountType ==null ) ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
                                          
                                     }).ToList();
 
                     /*
-          if(S.I.discountType == "1")
+          if(S.(I.discountType == "1" || I.discountType ==null ))
 {
     return S.I.discountValue;
 }else if(S.I.discountType == "2")
@@ -1475,7 +1484,7 @@ else
                                         I.updateDate,
                                         I.updateUserId,
                                         I.branchId,
-                                        I.discountValue,
+                                        discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
                                         I.discountType,
                                         I.tax,
                                         I.name,
@@ -1607,7 +1616,7 @@ else
                                         I.updateDate,
                                         I.updateUserId,
                                         I.branchId,
-                                        I.discountValue,
+                                        discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
                                         I.discountType,
                                         I.tax,
                                         I.name,
@@ -1717,7 +1726,7 @@ else
                                         I.updateDate,
                                         I.updateUserId,
                                         I.branchId,
-                                        I.discountValue,
+                                        discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
                                         I.discountType,
                                         I.tax,
                                         I.name,
@@ -1853,8 +1862,8 @@ else
                                         I.updateDate,
                                         I.updateUserId,
                                         I.branchId,
-                                        I.discountValue,
-                                        I.discountType,
+                                         discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                         I.discountType,
                                         I.tax,
                                         I.name,
                                         I.isApproved,
@@ -1936,9 +1945,9 @@ else
                                     join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
                                     join P in entity.pos on I.posId equals P.posId into JP
                                     join ITO in entity.itemTransferOffer on IT.itemsTransId equals ITO.itemTransId
-                                    join O in entity.offers on ITO.offerId equals O.offerId                                  
-                                    join ITOF in entity.itemsTransfer on ITO.itemTransId equals ITOF.itemsTransId
-                                    join IUO in entity.itemsOffers on O.offerId equals IUO.offerId
+                                    join O in entity.offers on ITO.offerId equals O.offerId
+                                    //join ITOF in entity.itemsTransfer on ITO.itemTransId equals ITOF.itemsTransId 
+                                 //   from  IUO in entity.itemsOffers.Where(X=> X.offerId == O.offerId).Distinct()
 
 
                                     // from JBB in JB
@@ -1949,24 +1958,25 @@ else
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
                                     where (I.invType == "s" || I.invType == "sb")
-
+                                    orderby IT.itemsTransId
                                     select new
                                     {
                                         // offer
-                                        Oname=O.name,
+                                        Oname = O.name,
                                         OofferId = O.offerId,
-
-                                        Ocode =O.code,
-                                        OisActive=O.isActive,
-                                        OdiscountType=O.discountType,
-                                        OdiscountValue=O.discountValue,
-                                        OstartDate=O.startDate,
-                                        OendDate=O.endDate,
-                                        OcreateDate=O.createDate,
-                                        OupdateDate=O.updateDate,
-                                        OcreateUserId=O.createUserId,
-                                        OupdateUserId=O.updateUserId,
-                                        Onotes=O.notes,
+                                        Oitemofferid = ITO.id,
+                                        //Oquantity = IUO.quantity,
+                                        Ocode = O.code,
+                                        OisActive = O.isActive,
+                                        OdiscountType = O.discountType,
+                                        OdiscountValue = O.discountValue,
+                                        OstartDate = O.startDate,
+                                        OendDate = O.endDate,
+                                        OcreateDate = O.createDate,
+                                        OupdateDate = O.updateDate,
+                                        OcreateUserId = O.createUserId,
+                                        OupdateUserId = O.updateUserId,
+                                        Onotes = O.notes,
 
                                         //itemtransfer
                                         ITitemName = ITEM.name,
@@ -2013,7 +2023,7 @@ else
                                         I.updateDate,
                                         I.updateUserId,
                                         I.branchId,
-                                        I.discountValue,
+                                        discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
                                         I.discountType,
                                         I.tax,
                                         I.name,
@@ -2090,6 +2100,282 @@ notes
         }
 
         //
+
+        #endregion
+
+        // التخزين
+        #region storage
+
+
+            // عرض الاصناف واماكن تخزينها
+        [HttpGet]
+        [Route("GetStorage")]
+        public IHttpActionResult GetStorage()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invListm = (from L in entity.locations
+                                  //  from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+                                  
+                                    join IUL in entity.itemsLocations on L.locationId equals IUL.locationId
+                                    join IU in entity.itemsUnits on IUL.itemUnitId equals IU.itemUnitId
+
+                                  //  join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                                    //join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                     join S in entity.sections on L.sectionId equals S.sectionId into JS
+                                     join B in entity.branches on L.branchId equals B.branchId into JB
+
+
+                                    join UPUSR in entity.users on IUL.updateUserId equals UPUSR.userId into JUPUS
+                                    join U in entity.users on IUL.createUserId equals U.userId into JU
+
+
+
+                                    from JBB in JB
+                                    from JSS in JS.DefaultIfEmpty()
+                                    from JUU in JU.DefaultIfEmpty()
+                                    from JUPUSS in JUPUS.DefaultIfEmpty()
+                               
+                                 
+
+                                    select new
+                                    {
+                                        // item unit
+                                       itemName = ITEM.name,
+                                        unitName = UNIT.name,                                    
+                                       IU.itemUnitId,
+
+                                       IU.itemId,
+                                        IU.unitId,
+                                        
+                                      IU.barcode,
+                                      //item location
+                                       CreateuserName = JUU.name,
+                                       CreateuserLName = JUU.lastname,
+                                       CreateuserAccName = JUU.username,
+                                       UuserName = JUPUSS.name,
+                                       UuserLName = JUPUSS.lastname,
+                                       UuserAccName = JUPUSS.username,
+
+                                        //
+                                        branchName = JBB.name,
+
+                                        branchType = JBB.type,
+                                        //itemslocations
+
+                                        IUL.itemsLocId,
+                                        IUL.locationId,
+                                        IUL.quantity,
+
+                                        IUL.startDate,
+                                        IUL.endDate,
+
+                                        IULnote = IUL.note,
+                                        IUL.storeCost,
+
+                                        cuserName = JUU.name,
+                                        cuserLast = JUU.lastname,
+                                        cUserAccName = JUU.lastname,
+                                        uuserName = JUPUSS.name,
+                                        uuserLast = JUPUSS.lastname,
+                                        uUserAccName = JUPUSS.lastname,
+                                        // Location
+                                         L.x,
+                                         L.y,
+                                         L.z,
+
+                                        LocisActive=  L.isActive,
+                                         L.sectionId,
+                                        Locnote= L.note,
+                                         L.branchId,
+                                        LocisFreeZone=L.isFreeZone,
+
+                                    
+                                        // section
+                                       
+                                       Secname= JSS.name,
+                                        SecisActive= JSS.isActive,
+                                        Secnote=  JSS.note,
+                                        SecisFreeZone=JSS.isFreeZone,
+
+       
+        //username
+
+        //  I.invoiceId,
+        //    JBB.name
+    }).ToList();
+
+       
+
+
+
+                    if (invListm == null)
+                        return NotFound();
+                    else
+                        return Ok(invListm);
+                }
+
+            }
+
+            //else
+            return NotFound();
+        }
+
+        // 
+        // العناصر في الفواتير
+
+        [HttpGet]
+        [Route("GetInItems")]
+        public IHttpActionResult GetInItems()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invListm = (from IT in entity.itemsTransfer
+                                    from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+                                    from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+                                    join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                                    join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                    join B in entity.branches on I.branchId equals B.branchId into JB
+                                   // join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                    join A in entity.agents on I.agentId equals A.agentId into JA
+                                    join U in entity.users on I.createUserId equals U.userId into JU
+                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                   from JPP in entity.pos.Where(X=> X.posId ==I.posId ) 
+                                   join  BP in entity.branches on JPP.branchId equals BP.branchId
+
+                                    from JBB in JB.DefaultIfEmpty()
+                                 //   from JPP into  JP.DefaultIfEmpty
+                                    from JUU in JU.DefaultIfEmpty()
+                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+                                    from JIMM in JIM.DefaultIfEmpty()
+                                    from JAA in JA.DefaultIfEmpty()
+                                   // from JBCC in JBC.DefaultIfEmpty()
+                                    where (I.invType == "p" || I.invType == "sb" || I.invType == "im")// exw
+
+                                    select new
+                                    {
+                                        ITitemName = ITEM.name,
+                                        ITunitName = UNIT.name,
+                                        ITitemsTransId = IT.itemsTransId,
+                                        ITitemUnitId = IT.itemUnitId,
+
+                                        ITitemId = IU.itemId,
+                                        ITunitId = IU.unitId,
+                                        ITquantity = IT.quantity,
+
+                                        ITcreateDate = IT.createDate,
+                                        ITupdateDate = IT.updateDate,
+                                        ITcreateUserId = IT.createUserId,
+                                        ITupdateUserId = IT.updateUserId,
+                                        ITnotes = IT.notes,
+                                        ITprice = IT.price,
+                                        ITbarcode = IU.barcode,
+                                        ITCreateuserName = ITCUSER.name,
+                                        ITCreateuserLName = ITCUSER.lastname,
+                                        ITCreateuserAccName = ITCUSER.username,
+
+                                        ITUpdateuserName = ITUPUSER.name,
+                                        ITUpdateuserLName = ITUPUSER.lastname,
+                                        ITUpdateuserAccName = ITUPUSER.username,
+                                        I.invoiceId,
+                                        I.invNumber,
+                                        I.agentId,
+                                        I.posId,
+                                        I.invType,
+                                        I.total,
+                                        I.totalNet,
+                                        I.paid,
+                                        I.deserved,
+                                        I.deservedDate,
+                                        I.invDate,
+                                        I.invoiceMainId,
+                                        I.invCase,
+                                        I.invTime,
+                                        I.notes,
+                                        I.vendorInvNum,
+                                        I.vendorInvDate,
+                                        I.createUserId,
+                                        I.updateDate,
+                                        I.updateUserId,
+                                        I.branchId,
+                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                        I.discountType,
+                                        I.tax,
+                                        I.name,
+                                        I.isApproved,
+
+                                        //
+                                      //  I.branchCreatorId,
+                                      //  branchCreatorName = JBCC.name,
+                                        //
+                                        branchName = JBB.name,
+
+                                        branchType = JBB.type,
+                                        posName = JPP.name,
+                                        posCode = JPP.code,
+                                        agentName = JAA.name,
+                                        agentCode = JAA.code,
+                                        cuserName = JUU.name,
+                                        cuserLast = JUU.lastname,
+                                        cUserAccName = JUU.username,
+                                        uuserName = JUPUS.name,
+                                        uuserLast = JUPUS.lastname,
+                                        uUserAccName = JUPUS.username,
+                                        agentCompany = JAA.company,
+
+                                        //username
+
+                                        //  I.invoiceId,
+                                        //    JBB.name
+                                    }).ToList();
+
+ 
+
+
+
+                    if (invListm == null)
+                        return NotFound();
+                    else
+                        return Ok(invListm);
+                }
+
+            }
+
+            //else
+            return NotFound();
+        }
+
 
         #endregion
     }

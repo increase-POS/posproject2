@@ -140,6 +140,8 @@ namespace POS_Server
         public string role { get; set; }
         public string image { get; set; }
         public Nullable<int> groupId { get; set; }
+        public Nullable<decimal> balance { get; set; }
+        public Nullable<byte> balanceType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<agentMemberships> agentMemberships { get; set; }
