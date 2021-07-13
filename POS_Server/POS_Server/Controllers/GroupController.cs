@@ -408,5 +408,165 @@ message = Object.groupId.ToString();
                 return "-1";
         }
 
+        //per
+        [HttpGet]
+        [Route("GetUserpermission")]
+        public IHttpActionResult GetUserpermission(int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var list = (from GO in entity.groupObject
+                                join U in entity.users on GO.groupId equals U.groupId
+                                join G in entity.groups on GO.groupId equals G.groupId
+                                join O in entity.objects on GO.objectId equals O.objectId
+                                join POO in entity.objects on O.parentObjectId equals POO.objectId into JP
+
+                                from PO in JP.DefaultIfEmpty()
+                                where U.userId == userId
+                                select new
+                                {
+                                    //group object
+                                    GO.id,
+                                    GO.groupId,
+                                    GO.objectId,
+                                    GO.addOb,
+                                    GO.updateOb,
+                                    GO.deleteOb,
+                                    GO.showOb,
+                                    GO.reportOb,
+                                    GO.levelOb,
+                                    //group 
+                                    GroupName = G.name,
+                                    //object
+                                    ObjectName = O.name,
+                                    O.parentObjectId,
+                                    O.objectType,
+                                    parentObjectName = PO.name,
+
+                                }).ToList();
+
+
+                    if (list == null)
+                        return NotFound();
+                    else
+                        return Ok(list);
+
+                }
+            }
+            else
+                return NotFound();
+
+
+        }
+
+        /*
+               public static List<int> sintlist = new List<int>();
+               public static List<ObjectParent> objlist = new List<ObjectParent>();
+
+               public List<ObjectParent> SonsofObject(List<ObjectParent> objlist1)
+               {
+                  // sintlist.Add(objectId);
+                   List<ObjectParent> templist = null;
+
+                   using (incposdbEntities entity = new incposdbEntities())
+                   {
+                       foreach (ObjectParent row in objlist1 )
+                       {
+
+                            templist = (from O in entity.objects
+                                                         where O.parentObjectId == row.objectId
+                                                         select new ObjectParent
+                                                         {
+                                                             objectId = O.objectId,
+                                                             parentObjectId = O.parentObjectId,
+                                                         }
+                            ).ToList();
+
+                       }
+                       if (templist.Count > 0)
+                       {
+                        objlist.AddRange(SonsofObject(templist));
+                       }
+                       else
+                       {
+                           return objlist;
+                       }
+
+
+
+                       // SonsofObject()
+                   }
+
+                   return templist;
+               }
+
+
+
+               [HttpGet]
+               [Route("GetSons")]
+               public IHttpActionResult GetSons(int objectId)
+               {
+                   var re = Request;
+                   var headers = re.Headers;
+                   string token = "";
+                   objlist = null;
+                   List<ObjectParent> opl=null;
+                   if (headers.Contains("APIKey"))
+                   {
+                       token = headers.GetValues("APIKey").First();
+                   }
+
+                   Validation validation = new Validation();
+                   bool valid = validation.CheckApiKey(token);
+
+                   if (valid)
+                   {
+                       try
+                       {
+         // objlist;
+                       ObjectParent firstelement = new ObjectParent();
+                       firstelement.objectId = objectId;
+                       objlist.Add(firstelement);
+                      opl= SonsofObject(objlist);
+
+
+                       return Ok(opl);
+                       }
+                       catch
+                       {
+                           return Ok(opl);
+                       }
+
+
+           }
+                   else
+                       return NotFound();
+
+
+               }
+               */
+
     }
+
+    /*
+  public class ObjectParent
+  {
+      public int objectId { get; set; }
+      public Nullable<int> parentObjectId { get; set; }
+  }
+  */
 }
