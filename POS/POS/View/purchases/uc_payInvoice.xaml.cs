@@ -166,7 +166,7 @@ namespace POS.View
             //btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             //MainWindow.mainWindow.RemoveHandler(HandleKeyPress);
             MainWindow.mainWindow.KeyDown += HandleKeyPress;
-
+            tb_moneyIcon.Text = MainWindow.Currency;
             //var window = Window.GetWindow(this);
             //window.KeyDown -= HandleKeyPress;
             //window.KeyDown += HandleKeyPress;

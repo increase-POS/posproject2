@@ -153,7 +153,8 @@ namespace POS.View.sales
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             MainWindow.mainWindow.KeyDown += HandleKeyPress;
-
+            tb_moneyIcon.Text = MainWindow.Currency;
+            tb_discountMoneyIcon.Text = MainWindow.Currency;
             //var window = Window.GetWindow(this);
             //window.KeyDown -= HandleKeyPress;
             //window.KeyDown += HandleKeyPress;

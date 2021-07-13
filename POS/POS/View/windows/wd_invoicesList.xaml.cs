@@ -49,7 +49,7 @@ namespace POS.View.windows
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_invoices.FlowDirection = FlowDirection.RightToLeft;
             }
-
+            tb_moneyIcon.Text = MainWindow.Currency;
             translat();
             /*
             allInvoicesSource = await userModel.GetInvoicesAsync();

@@ -186,7 +186,7 @@ namespace POS.View
         {
 
             MainWindow.mainWindow.KeyDown += HandleKeyPress;
-
+            tb_moneyIcon.Text = MainWindow.Currency;
             //var window = Window.GetWindow(this);
             //window.KeyDown -= HandleKeyPress;
             //window.KeyDown += HandleKeyPress;

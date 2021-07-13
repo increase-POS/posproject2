@@ -160,7 +160,8 @@ namespace POS.View.sales
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucOrders.FlowDirection = FlowDirection.RightToLeft;
             }
-
+            tb_moneyIcon.Text = MainWindow.Currency;
+            tb_discountMoneyIcon.Text = MainWindow.Currency;
             translate();
 
             await RefrishItems();

@@ -928,7 +928,7 @@ namespace POS.View.accounts
             wd_invoicesList w = new wd_invoicesList();
             
             if (cb_depositTo.SelectedValue == "v")
-                w.agentId = Convert.ToInt32(cb_recipientV.SelectedValue);
+                //w.agentId = Convert.ToInt32(cb_recipientV.SelectedValue);
          
 
             w.ShowDialog();

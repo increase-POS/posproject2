@@ -143,11 +143,11 @@
                                 </DataTrigger>-->
                                 <DataTrigger Binding="{Binding invType}" Value="pbd">
                                     <!--<Setter Property="Background" Value="PaleVioletRed"></Setter>-->
-                                    <Setter Property="Background" Value="#FFA07A"></Setter>
+                                    <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding invType}" Value="pw">
                                     <!--<Setter Property="Background" Value="PaleVioletRed"></Setter>-->
-                                    <Setter Property="Background" Value="#FFA07A"></Setter>
+                                    <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
