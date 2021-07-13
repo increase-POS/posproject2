@@ -573,7 +573,7 @@ namespace POS.View
                             cashTrasnfer.transNum = SectionData.generateNumber('d', "v").ToString();
 
                             //pull items from free zone
-                            await itemLocationModel.returnInvoice(invoiceItems, invoice.branchId.Value, MainWindow.userID.Value); // increase item quantity in DB
+                            await itemLocationModel.returnInvoice(invoiceItems, invoice.branchCreatorId.Value, MainWindow.userID.Value); // increase item quantity in DB
                         }
                         await cashTrasnfer.Save(cashTrasnfer); //add cash transfer
                         await agentModel.updateBalance((int)invoice.agentId, balance);//update balance
@@ -682,7 +682,7 @@ namespace POS.View
                     await addInvoice("pb", "pb"); // pb means purchase bounce
                 else if (_InvoiceType == "pbw")//pbw  purchase invoice
                     await addInvoice("pb", "pb");
-                else//p  purchase invoice
+                else//pw  waiting purchase invoice
                     await addInvoice("pw", "pi");
 
                 if (invoice.invoiceId == 0) clearInvoice();
@@ -721,6 +721,7 @@ namespace POS.View
             dp_invoiceDate.Text = "";
             tb_note.Clear();
             tb_discount.Clear();
+            tb_taxValue.Clear();
             billDetails.Clear();
             tb_total.Text = "";
             tb_sum.Text = null;
@@ -867,7 +868,7 @@ namespace POS.View
             wd_invoice w = new wd_invoice();
 
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
-            w.branchCreatorId = MainWindow.branchID.Value;
+            w.branchId = MainWindow.branchID.Value;
             // purchase invoices
             w.invoiceType = "pbw"; // invoice type to view in grid
             if (w.ShowDialog() == true)

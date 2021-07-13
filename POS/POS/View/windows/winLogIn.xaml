@@ -6,6 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:POS.View.windows"
         mc:Ignorable="d"
+          xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         Title="winLogIn" Height="400"
         Width="700" KeyDown="HandleKeyPress"
         WindowStartupLocation="CenterScreen"
@@ -96,7 +97,8 @@
                                   MouseLeave="P_showPassword_MouseLeave">
                     </Path>
                 </DockPanel>
-                    <CheckBox Grid.Row="3" Margin="5,20,0,0" x:Name="cbxRemmemberMe" Content="Remmember Me" VerticalAlignment="Center" Checked="CbxRemmemberMe_Checked" Unchecked="CbxRemmemberMe_Unchecked"></CheckBox>
+                    <CheckBox Grid.Row="3" Margin="5,20,0,0" x:Name="cbxRemmemberMe" Content="Remmember Me" 
+                        VerticalAlignment="Center" Checked="CbxRemmemberMe_Checked" Unchecked="CbxRemmemberMe_Unchecked"></CheckBox>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="4" >
                     <Grid>
                         <Button x:Name="btnLogIn" Background="#FF2196F3" Foreground="White" Margin="0,0,10,0" Click="btnLogIn_Click" IsDefault="True">
@@ -107,10 +109,10 @@
                                 <TextBlock x:Name="txt_logIn" Text="Log In"></TextBlock>
                             </StackPanel>
                         </Button>
-                        <ProgressBar Foreground="White" x:Name="wait_saveBtn"
+                        <!--<ProgressBar Foreground="White" x:Name="wait_saveBtn"
                         Style="{StaticResource MaterialDesignCircularProgressBar}"
                         Value="35" Visibility="Collapsed"
-                        IsIndeterminate="False" />
+                        IsIndeterminate="False" />-->
                     </Grid>
                     <Button x:Name="btnClose" Background="#FF2196F3" Foreground="White" Click="btnClose_Click"   IsCancel="true" >
                             <StackPanel Orientation="Horizontal">
@@ -129,9 +131,8 @@
                     <ImageBrush  Stretch="Fill"  ImageSource="/pic/increase-login-bg.png"/>
                 </Border.Background>
             </Border>
-           
-
+            <mah:ProgressRing x:Name="prg_awaitRing" Foreground="White" 
+                              IsActive="False" Grid.RowSpan="2" Grid.ColumnSpan="2"  />
         </Grid>
-
     </Border>
 </Window>

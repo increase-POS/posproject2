@@ -1611,4 +1611,34 @@
   <data name="trStorageCost" xml:space="preserve">
     <value>Storage cost</value>
   </data>
+  <data name="trPopPasswordChanged" xml:space="preserve">
+    <value>Password has been modified successfully</value>
+  </data>
+  <data name="trConfirmedPassword" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="trConfirmedPasswordHint" xml:space="preserve">
+    <value>Confirm password...</value>
+  </data>
+  <data name="trNewPassword" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="trNewPasswordHint" xml:space="preserve">
+    <value>New password...</value>
+  </data>
+  <data name="trOldPassword" xml:space="preserve">
+    <value>Old password</value>
+  </data>
+  <data name="trOldPasswordHint" xml:space="preserve">
+    <value>Old password...</value>
+  </data>
+  <data name="trErrorNewPasswordNotEqualConfirmed" xml:space="preserve">
+    <value>The new password does not match the confirmed password</value>
+  </data>
+  <data name="trInvoices" xml:space="preserve">
+    <value>Invoices</value>
+  </data>
+  <data name="trSelectedInvoices" xml:space="preserve">
+    <value>Selected invoices</value>
+  </data>
 </root>

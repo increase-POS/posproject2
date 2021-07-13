@@ -843,7 +843,7 @@
                     </Border>
                 </Grid>
             </Border>
-
+            <TextBlock x:Name="test" Visibility="Collapsed"></TextBlock>
         </WrapPanel>
     </ScrollViewer>
 </UserControl>

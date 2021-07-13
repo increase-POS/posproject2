@@ -664,6 +664,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm password.
+        /// </summary>
+        internal static string trConfirmedPassword {
+            get {
+                return ResourceManager.GetString("trConfirmedPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm password....
+        /// </summary>
+        internal static string trConfirmedPasswordHint {
+            get {
+                return ResourceManager.GetString("trConfirmedPasswordHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm user.
         /// </summary>
         internal static string trConfirmUserTooltip {
@@ -2077,6 +2095,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The new password does not match the confirmed password.
+        /// </summary>
+        internal static string trErrorNewPasswordNotEqualConfirmed {
+            get {
+                return ResourceManager.GetString("trErrorNewPasswordNotEqualConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password can not be less than 6 characters.
         /// </summary>
         internal static string trErrorPasswordLengthToolTip {
@@ -2343,6 +2370,15 @@ namespace POS {
         internal static string trInvoiceNumberHint {
             get {
                 return ResourceManager.GetString("trInvoiceNumberHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invoices.
+        /// </summary>
+        internal static string trInvoices {
+            get {
+                return ResourceManager.GetString("trInvoices", resourceCulture);
             }
         }
         
@@ -2707,6 +2743,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New password.
+        /// </summary>
+        internal static string trNewPassword {
+            get {
+                return ResourceManager.GetString("trNewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New password....
+        /// </summary>
+        internal static string trNewPasswordHint {
+            get {
+                return ResourceManager.GetString("trNewPasswordHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
         internal static string trNote {
@@ -2766,6 +2820,24 @@ namespace POS {
         internal static string trOfferNameHint {
             get {
                 return ResourceManager.GetString("trOfferNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Old password.
+        /// </summary>
+        internal static string trOldPassword {
+            get {
+                return ResourceManager.GetString("trOldPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Old password....
+        /// </summary>
+        internal static string trOldPasswordHint {
+            get {
+                return ResourceManager.GetString("trOldPasswordHint", resourceCulture);
             }
         }
         
@@ -3108,6 +3180,15 @@ namespace POS {
         internal static string trPopNotEnoughBalance {
             get {
                 return ResourceManager.GetString("trPopNotEnoughBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password has been modified successfully.
+        /// </summary>
+        internal static string trPopPasswordChanged {
+            get {
+                return ResourceManager.GetString("trPopPasswordChanged", resourceCulture);
             }
         }
         
@@ -3675,6 +3756,15 @@ namespace POS {
         internal static string trSelectedBranchs_Stores {
             get {
                 return ResourceManager.GetString("trSelectedBranchs/Stores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected invoices.
+        /// </summary>
+        internal static string trSelectedInvoices {
+            get {
+                return ResourceManager.GetString("trSelectedInvoices", resourceCulture);
             }
         }
         

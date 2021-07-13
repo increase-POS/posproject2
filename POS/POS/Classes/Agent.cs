@@ -310,7 +310,7 @@ namespace POS.Classes
         }
 
         //public async Task<Boolean> uploadImage(string imagePath, int agentId)
-        public async Task<Boolean> uploadImage(string imagePath, string imageName , int agentId)
+        public async Task<string> uploadImage(string imagePath, string imageName, int agentId)
         {
             if (imagePath != "")
             {
@@ -363,7 +363,7 @@ namespace POS.Classes
                             agent.image = fileName;
                             await updateImage(agent);
                             //await saveAgent();
-                            return true;
+                            return fileName;
                         }
                     }
                     stream.Dispose();
@@ -373,9 +373,9 @@ namespace POS.Classes
                         System.IO.File.Delete(tmpPath);
                     }
                 }
-                catch (Exception ex) { return false; }
+                catch (Exception ex) { return ""; }
             }
-            return false;
+            return "";
         }
 
         public async Task<string> updateImage(Agent agent)
@@ -446,6 +446,21 @@ namespace POS.Classes
                     jsonString = await response.Content.ReadAsStreamAsync();
                     img = Bitmap.FromStream(jsonString);
                     byteImg = await response.Content.ReadAsByteArrayAsync();
+
+                    // configure trmporery path
+                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string tmpPath = Path.Combine(dir, Global.TMPAgentsFolder);
+                    if (!Directory.Exists(tmpPath))
+                        Directory.CreateDirectory(tmpPath);
+                    tmpPath = Path.Combine(tmpPath, imageName);
+                    if (System.IO.File.Exists(tmpPath))
+                    {
+                        System.IO.File.Delete(tmpPath);
+                    }
+                    using (FileStream fs = new FileStream(tmpPath, FileMode.Create, FileAccess.ReadWrite))
+                    {
+                        fs.Write(byteImg, 0, byteImg.Length);
+                    }
                 }
                 return byteImg;
             }

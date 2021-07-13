@@ -576,21 +576,22 @@ namespace POS.View.Settings
 
 
 
-        private void Btn_usersList_Click(object sender, RoutedEventArgs e)
+        private async void Btn_usersList_Click(object sender, RoutedEventArgs e)
         {
             //users
             //group
             if (group.groupId >0)
             {
-
-            //SectionData.clearValidate(tb_name, p_errorName);
-            //location = await locationModel.getLocsBySectionId(section.sectionId);
+                
+                //location = await locationModel.getLocsBySectionId(section.sectionId);
+                
             Window.GetWindow(this).Opacity = 0.2;
+
             wd_usersList w = new wd_usersList();
-            //Pre users
-            //w.selectedUsers = await locationModel.getLocsBySectionId(section.sectionId);
-            //w.sectionId = section.sectionId;
-            w.ShowDialog();
+                //Pre users
+                w.selectedUsers = await group.GetUsersByGroupId(group.groupId);
+                //w. = section.sectionId;
+                w.ShowDialog();
             if (w.isActive)
             {
                 //await locationModel.saveUsersSection(w.selectedUsers, section.sectionId, MainWindow.userLogin.userId);

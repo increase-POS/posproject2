@@ -260,8 +260,8 @@ namespace POS.View
                 e.Handled = true;
         }
 
-      
-        private async void  Btn_add_Click(object sender, RoutedEventArgs e)
+
+        private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             agent.agentId = 0;
             //chk empty name
@@ -290,7 +290,7 @@ namespace POS.View
             {
                 if (emailError)
                     //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
                 else
                 {
                     SectionData.genRandomCode("c");
@@ -333,12 +333,13 @@ namespace POS.View
                     {
                         int agentId = int.Parse(s);
                         //await agentModel.uploadImage(openFileDialog.FileName, agentId);
-                        bool b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                        string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                        agent.image = b;
                         isImgPressed = false;
-                        if (b)
+                        if (!b.Equals(""))
                         {
-                            brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                            img_customer.Background = brush;
+                            //brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                            //img_customer.Background = brush;
                         }
                         else
                         {
@@ -349,12 +350,11 @@ namespace POS.View
                     await RefreshCustomersList();
                     Tb_search_TextChanged(null, null);
 
-                 
+
                 }
             }
 
         }
-
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
@@ -421,7 +421,7 @@ namespace POS.View
             {
                 if (emailError)
                     //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
                 else
                 {
                     //Agent customer = new Agent
@@ -452,28 +452,26 @@ namespace POS.View
                     string s = await agentModel.saveAgent(agent);
 
                     if (!s.Equals("0")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                    await RefreshCustomersList();
-                    Tb_search_TextChanged(null, null); 
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     if (isImgPressed)
                     {
                         int agentId = int.Parse(s);
-                        bool b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                        string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                        agent.image = b;
                         isImgPressed = false;
-                        if (b)
-                        {
-                            brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                            img_customer.Background = brush;
-                        }
-                        else
-                        {
-                            SectionData.clearImg(img_customer);
-                            MessageBox.Show("حدث خطأ في تحميل الصورة");
-                        }
+                        //if (b)
+                        //{
+                        //    brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                        //    img_customer.Background = brush;
+                        //}
+                        //else
+                        //{
+                        //    SectionData.clearImg(img_customer);
+                        //    MessageBox.Show("حدث خطأ في تحميل الصورة");
+                        //}
                     }
 
                     SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
@@ -481,7 +479,11 @@ namespace POS.View
                     SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
 
                     SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
+
+                    await RefreshCustomersList();
+                    Tb_search_TextChanged(null, null);
                 }
+
             }
 
         }
@@ -499,21 +501,30 @@ namespace POS.View
                     byte[] imageBuffer = await agentModel.downloadImage(agent.image); // read this as BLOB from your DB
 
                     var bitmapImage = new BitmapImage();
-
-                    using (var memoryStream = new MemoryStream(imageBuffer))
+                    if (imageBuffer != null)
                     {
-                        bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                    }
+                        using (var memoryStream = new MemoryStream(imageBuffer))
+                        {
+                            bitmapImage.BeginInit();
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.StreamSource = memoryStream;
+                            bitmapImage.EndInit();
+                        }
 
-                    img_customer.Background = new ImageBrush(bitmapImage);
+                        img_customer.Background = new ImageBrush(bitmapImage);
+                        // configure trmporary path
+                        string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        string tmpPath = System.IO.Path.Combine(dir, Global.TMPAgentsFolder);
+                        tmpPath = System.IO.Path.Combine(tmpPath, agent.image);
+                        openFileDialog.FileName = tmpPath;
+                    }
+                    else
+                        SectionData.clearImg(img_customer);
                 }
+
             }
             catch { }
         }
-
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
             if (agent.agentId != 0)
@@ -826,9 +837,9 @@ namespace POS.View
             }
         }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            RefreshCustomersList();
+           await RefreshCustomersList();
             Tb_search_TextChanged(null, null);
         }
 

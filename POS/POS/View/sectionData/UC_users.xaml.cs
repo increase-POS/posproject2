@@ -463,12 +463,13 @@ namespace POS.View
                     if (isImgPressed)
                     {
                         int userId = int.Parse(s);
-                        bool b = await userModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
+                        string b = await userModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
+                        user.image = b;
                         isImgPressed = false;
-                        if (b)
+                        if (!b.Equals(""))
                         {
-                            brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                            img_user.Background = brush;
+                           // brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                           // img_user.Background = brush;
                         }
                         else
                         {
@@ -568,21 +569,21 @@ namespace POS.View
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    await RefreshUsersList();
-                    Tb_search_TextChanged(null, null);
+                   
 
                     if (isImgPressed)
                     {
                         int userId = int.Parse(s);
-                        bool b = await userModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
+                        string b = await userModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
+                        user.image = b;
                         isImgPressed = false;
-                        if (b)
+                        if (!b.Equals(""))
                         {
                             //MessageBox.Show("uploaded");
                             //dg_users.Items.Refresh();
                             //brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
                             //img_user.Background = brush;
-                            getImg();
+                            await getImg();
                         }
                         else
                         {
@@ -590,7 +591,8 @@ namespace POS.View
                             MessageBox.Show("حدث خطأ في تحميل الصورة");
                         }
                     }
-                   
+                    await RefreshUsersList();
+                    Tb_search_TextChanged(null, null);
                     SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
 
                     SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
@@ -863,7 +865,7 @@ namespace POS.View
             Tb_search_TextChanged(null, null);
         }
 
-        private async void getImg()
+        private async Task getImg()
         {
             try
             {
@@ -876,31 +878,39 @@ namespace POS.View
                     byte[] imageBuffer = await userModel.downloadImage(user.image); // read this as BLOB from your DB
 
                     var bitmapImage = new BitmapImage();
-
-                    using (var memoryStream = new MemoryStream(imageBuffer))
+                    if (imageBuffer != null)
                     {
-                        bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
+                        using (var memoryStream = new MemoryStream(imageBuffer))
+                        {
+                            bitmapImage.BeginInit();
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.StreamSource = memoryStream;
+                            bitmapImage.EndInit();
+                        }
+
+                        ////////ImageSourceConverter c = new ImageSourceConverter();
+                        ////////img_user.Source = (ImageSource)c.ConvertFrom(bitmapImage);
+
+                        ////////////////using (MemoryStream memory = new MemoryStream())
+                        ////////////////{
+                        ////////////////    //bitmapImage.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                        ////////////////    memory.Position = 0;
+                        ////////////////    BitmapImage bitmapimage = new BitmapImage();
+                        ////////////////    bitmapimage.BeginInit();
+                        ////////////////    bitmapimage.StreamSource = memory;
+                        ////////////////    bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                        ////////////////    bitmapimage.EndInit();
+                        ////////////////    img_user.Source = new Uri bitmapimage;
+                        ////////////////}
+                        img_user.Background = new ImageBrush(bitmapImage);
+                        // configure trmporary path
+                        string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        string tmpPath = System.IO.Path.Combine(dir, Global.TMPAgentsFolder);
+                        tmpPath = System.IO.Path.Combine(tmpPath, user.image);
+                        openFileDialog.FileName = tmpPath;
                     }
-
-                    ////////ImageSourceConverter c = new ImageSourceConverter();
-                    ////////img_user.Source = (ImageSource)c.ConvertFrom(bitmapImage);
-                    
-                    ////////////////using (MemoryStream memory = new MemoryStream())
-                    ////////////////{
-                    ////////////////    //bitmapImage.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
-                    ////////////////    memory.Position = 0;
-                    ////////////////    BitmapImage bitmapimage = new BitmapImage();
-                    ////////////////    bitmapimage.BeginInit();
-                    ////////////////    bitmapimage.StreamSource = memory;
-                    ////////////////    bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
-                    ////////////////    bitmapimage.EndInit();
-                    ////////////////    img_user.Source = new Uri bitmapimage;
-                    ////////////////}
-                    img_user.Background = new ImageBrush(bitmapImage);
-
+                    else
+                        SectionData.clearImg(img_user);
                 }
             }
             catch { }

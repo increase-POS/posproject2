@@ -923,8 +923,16 @@ namespace POS.View.accounts
         }
 
         private void Btn_invoices_Click(object sender, RoutedEventArgs e)
-        {
+        {//invoices
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_invoicesList w = new wd_invoicesList();
+            
+            if (cb_depositTo.SelectedValue == "v")
+                w.agentId = Convert.ToInt32(cb_recipientV.SelectedValue);
+         
 
+            w.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
         }
 
         private void Btn_salaries_Click(object sender, RoutedEventArgs e)

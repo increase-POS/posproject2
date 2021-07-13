@@ -1590,4 +1590,34 @@
   <data name="trStorageCost" xml:space="preserve">
     <value>كلفة التخزيين</value>
   </data>
+  <data name="trPopPasswordChanged" xml:space="preserve">
+    <value>تم تعديل كلمة المرور بنجاح</value>
+  </data>
+  <data name="trConfirmedPassword" xml:space="preserve">
+    <value>تأكيد كلمة المرور</value>
+  </data>
+  <data name="trConfirmedPasswordHint" xml:space="preserve">
+    <value>تأكيد كلمة المرور...</value>
+  </data>
+  <data name="trNewPassword" xml:space="preserve">
+    <value>كلمة المرور الجديدة</value>
+  </data>
+  <data name="trNewPasswordHint" xml:space="preserve">
+    <value>كلمة المرور الجديدة...</value>
+  </data>
+  <data name="trOldPassword" xml:space="preserve">
+    <value>كلمة المرور القديمة</value>
+  </data>
+  <data name="trOldPasswordHint" xml:space="preserve">
+    <value>كلمة المرور القديمة...</value>
+  </data>
+  <data name="trErrorNewPasswordNotEqualConfirmed" xml:space="preserve">
+    <value>كلمة المرور الجديدة غير مطابقة لكلمة المرور المؤكدة</value>
+  </data>
+  <data name="trInvoices" xml:space="preserve">
+    <value>الفواتير</value>
+  </data>
+  <data name="trSelectedInvoices" xml:space="preserve">
+    <value>الفواتير المختارة</value>
+  </data>
 </root>

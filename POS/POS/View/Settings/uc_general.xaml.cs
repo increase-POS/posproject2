@@ -88,8 +88,8 @@ namespace POS.View.Settings
             await getDefaultRegion();
             if (region != null)
             {
-                //MessageBox.Show(region.countryId.ToString());
-                //int index = cb_region.Items.IndexOf(region.name.Trim());
+                int index = cb_region.Items.IndexOf(region);
+                test.Text = index.ToString();
                 cb_region.SelectedValue = region.countryId;
                 cb_region.Text = region.name;
             }
@@ -283,7 +283,9 @@ namespace POS.View.Settings
                         //update language in main window
                         SetValues v = await valueModel.GetByID(Convert.ToInt32(cb_language.SelectedValue));
                         MainWindow.lang = v.value;
+                        //save to user settings
                         Properties.Settings.Default.Lang = v.value;
+                        Properties.Settings.Default.Save();
 
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
                     }
@@ -307,6 +309,12 @@ namespace POS.View.Settings
                         }
 
                         parentWindow.translate();
+
+                        UserControl_Loaded(null, null);
+                        //translate();
+                        //cb_language.ItemsSource = null;
+                        //fillLanguages();
+                        //await getDefaultLanguage();
 
                     }
 
@@ -343,7 +351,8 @@ namespace POS.View.Settings
         private void Cb_region_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             region = cb_region.SelectedItem as CountryCode;
-            tb_currency.Text = region.currency;
+            if(region != null)
+                tb_currency.Text = region.currency;
         }
 
         private void Tb_PreventSpaces(object sender, KeyEventArgs e)
@@ -368,8 +377,8 @@ namespace POS.View.Settings
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
+            //string name = sender.GetType().Name;
+            //validateEmpty(name, sender);
         }
 
 

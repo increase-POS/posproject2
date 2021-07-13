@@ -776,7 +776,7 @@ namespace POS.View.storage
             {
                 invoice.invoiceMainId = invoice.invoiceId;
                 invoice.invoiceId = 0;
-
+                invoice.branchId = invoice.branchCreatorId;
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
 

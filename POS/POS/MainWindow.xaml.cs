@@ -39,8 +39,8 @@ namespace POS
 
         public static ResourceManager resourcemanager;
         bool menuState = false;
-
-        public static string lang ;
+        //ToolTip="{Binding Properties.Settings.Default.Lang}"
+        public static string lang;
         public static string Reportlang = "ar";
         public static string companyName = "Increse";
         public static string Email = "m7mdbonni@gmail.com";
@@ -53,13 +53,11 @@ namespace POS
         internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
-        //internal static int? posID = 54;
         internal static int? posID = 2;
-        //internal static int? branchID = 18;
-        //مخزن الجميلية الفرقان
-        internal static int? branchID = 2;
         //مخزن الجميلية الرئيسي
-        //internal static int? branchID = 2;
+        internal static int? branchID = 2;
+        //مخزن الجميلية الفرقان
+        //internal static int? branchID = 12;
         bool isHome = false;
         internal static int? isInvTax = 1;
         internal static decimal? tax = 2;
@@ -76,24 +74,24 @@ namespace POS
         /// //////// relative screen test
         /// </summary>
 
-        public static double mainUcWidth, mainUcHeight, gridFormWidth, gridFormHeight,
-            windowHeight, windowWidth, ucControlFormSectionWidth, ucControlFormSectionHeight,
-            ucControlViewSectionWidth, ucControlViewSectionHeight;
-        private void generateResponsiveVariables()
-        {
-            // MainWindow Size
-            windowHeight = this.Height;
-            windowWidth = this.Width;
-            // uc_****  Size in the window
-            mainUcHeight = windowHeight - 63;
-            mainUcWidth = windowWidth - 75;
-            // Form section Size
-            ucControlFormSectionWidth = (mainUcWidth / 3) - 20;
-            ucControlFormSectionHeight = mainUcHeight - 20;
-            // View section Size { dataGrid + Cards + Searsh}
-            ucControlViewSectionWidth = ((mainUcWidth / 3) * 2) - 20;
-            ucControlViewSectionHeight = mainUcHeight - 20;
-        }
+        //public static double mainUcWidth, mainUcHeight, gridFormWidth, gridFormHeight,
+        //    windowHeight, windowWidth, ucControlFormSectionWidth, ucControlFormSectionHeight,
+        //    ucControlViewSectionWidth, ucControlViewSectionHeight;
+        //private void generateResponsiveVariables()
+        //{
+        //    // MainWindow Size
+        //    windowHeight = this.Height;
+        //    windowWidth = this.Width;
+        //    // uc_****  Size in the window
+        //    mainUcHeight = windowHeight - 63;
+        //    mainUcWidth = windowWidth - 75;
+        //    // Form section Size
+        //    ucControlFormSectionWidth = (mainUcWidth / 3) - 20;
+        //    ucControlFormSectionHeight = mainUcHeight - 20;
+        //    // View section Size { dataGrid + Cards + Searsh}
+        //    ucControlViewSectionWidth = ((mainUcWidth / 3) * 2) - 20;
+        //    ucControlViewSectionHeight = mainUcHeight - 20;
+        //}
 
         /// <summary>
         /// ////////
@@ -102,34 +100,154 @@ namespace POS
         public static DispatcherTimer timer;
         DispatcherTimer idletimer;//  logout timer
         static public MainWindow mainWindow;
-        public MainWindow()
+         public MainWindow()
         {
             InitializeComponent();
             //MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             //MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
-                            generateResponsiveVariables();
-                #pragma warning disable CS0436 // Type conflicts with imported type
-                            TabTipAutomation.IgnoreHardwareKeyboard = HardwareKeyboardIgnoreOptions.IgnoreAll;
-                #pragma warning restore CS0436 // Type conflicts with imported type
-                #pragma warning disable CS0436 // Type conflicts with imported type
-                #pragma warning restore CS0436 // Type conflicts with imported type
-                #pragma warning disable CS0436 // Type conflicts with imported type
-                            TabTipAutomation.ExceptionCatched += TabTipAutomationOnTest;
-                #pragma warning restore CS0436 // Type conflicts with imported type
-                            this.Height = SystemParameters.MaximizedPrimaryScreenHeight;
-                            //this.Width = SystemParameters.MaximizedPrimaryScreenHeight;
-                            timer = new DispatcherTimer();
-                            timer.Interval = TimeSpan.FromSeconds(1);
-                            timer.Tick += timer_Tick;
-                            timer.Start();
-
-                            // idle timer
-                            idletimer = new DispatcherTimer();
-                            idletimer.Interval = TimeSpan.FromMinutes(Idletime);
-                            idletimer.Tick += timer_Idle;
-                            idletimer.Start();
-
+            //generateResponsiveVariables();
             mainWindow = this;
+            windowFlowDirection();
+
+
+
+        }
+      async  void windowFlowDirection()
+        {
+            if (Properties.Settings.Default.Lang.Equals(""))
+                lang = await getDefaultLanguage();
+            else lang = Properties.Settings.Default.Lang;
+            //translate
+            if (lang.Equals("en"))
+            {
+                resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_mainWindow.FlowDirection = FlowDirection.LeftToRight;
+            }
+            else
+            {
+                resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_mainWindow.FlowDirection = FlowDirection.RightToLeft;
+            }
+
+        }
+        public async void Window_Loaded(object sender, RoutedEventArgs e)
+        {//load
+            StartAwait();
+            grid_mainWindow.IsEnabled = false;
+            #region bonni
+#pragma warning disable CS0436 // Type conflicts with imported type
+            TabTipAutomation.IgnoreHardwareKeyboard = HardwareKeyboardIgnoreOptions.IgnoreAll;
+#pragma warning restore CS0436 // Type conflicts with imported type
+#pragma warning disable CS0436 // Type conflicts with imported type
+#pragma warning restore CS0436 // Type conflicts with imported type
+#pragma warning disable CS0436 // Type conflicts with imported type
+            TabTipAutomation.ExceptionCatched += TabTipAutomationOnTest;
+#pragma warning restore CS0436 // Type conflicts with imported type
+            this.Height = SystemParameters.MaximizedPrimaryScreenHeight;
+            //this.Width = SystemParameters.MaximizedPrimaryScreenHeight;
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += timer_Tick;
+            timer.Start();
+
+            // idle timer
+            idletimer = new DispatcherTimer();
+            idletimer.Interval = TimeSpan.FromMinutes(Idletime);
+            idletimer.Tick += timer_Idle;
+            idletimer.Start();
+            #endregion
+            #region get default System info
+
+
+            tax = decimal.Parse(await getDefaultTax());
+
+            CountryCode c = await getDefaultRegion();
+            Region = c;
+
+            Currency = c.currency;
+
+            StorageCost = decimal.Parse(await getDefaultStorageCost());
+
+            List<SettingCls> settingsCls = await setModel.GetAll();
+            List<SetValues> settingsValues = await valueModel.GetAll();
+
+            SettingCls set = new SettingCls();
+            SetValues setV = new SetValues();
+            //get company name
+            set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
+            nameId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
+            companyName = setV.value;
+            //get company address
+            set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
+            addressId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
+            Address = setV.value;
+            //get company email
+            set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
+            emailId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
+            Email = setV.value;
+            //get company mobile
+            set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
+            mobileId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
+            Mobile = setV.value;
+            //get company phone
+            set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
+            phoneId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
+            Phone = setV.value;
+            //get company fax
+            set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
+            faxId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
+            Fax = setV.value;
+            //get company logo
+            set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
+            logoId = set.settingId;
+            #endregion
+
+
+            translate();
+
+            #region user personal info
+            txt_userName.Text = userLogin.name;
+            txt_userJob.Text = userLogin.job;
+
+
+            try
+            {
+                if (!string.IsNullOrEmpty(userLogin.image))
+                {
+                    byte[] imageBuffer = await userModel.downloadImage(userLogin.image); // read this as BLOB from your DB
+
+                    var bitmapImage = new BitmapImage();
+
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+
+                    img_userLogin.Fill = new ImageBrush(bitmapImage);
+                }
+                else
+                {
+                    clearImg();
+                }
+            }
+            catch
+            {
+                clearImg();
+            }
+            #endregion
+
+            BTN_Home_Click(null, null);
+            grid_mainWindow.IsEnabled = true;
+            EndAwait();
         }
 
         void timer_Idle(object sender, EventArgs e)
@@ -146,6 +264,7 @@ namespace POS
         {
             MainWindow.mainWindow.prg_awaitRing.IsActive = true;
             MainWindow.mainWindow.grid_main.IsEnabled = false;
+            
             MainWindow.mainWindow.grid_main.Opacity = 0.6;
         }
         public void EndAwait()
@@ -443,108 +562,7 @@ namespace POS
             Window.GetWindow(this).Opacity = 1;
         }
 
-        public async void Window_Loaded(object sender, RoutedEventArgs e)
-        {//load
-            #region get default System info
-            if(Properties.Settings.Default.Lang.Equals(""))
-                lang = await getDefaultLanguage();
-            else lang = Properties.Settings.Default.Lang;
-           
-            tax = decimal.Parse(await getDefaultTax());
-
-            CountryCode c = await getDefaultRegion();
-            Region = c;
-
-            Currency = c.currency;
-
-            StorageCost = decimal.Parse(await getDefaultStorageCost());
-
-            List<SettingCls> settingsCls = await setModel.GetAll();
-            List<SetValues> settingsValues = await valueModel.GetAll();
-
-            SettingCls set = new SettingCls();
-            SetValues setV = new SetValues();
-            //get company name
-            set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
-            nameId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
-            companyName = setV.value;
-            //get company address
-            set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
-            addressId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
-            Address = setV.value;
-            //get company email
-            set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
-            emailId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
-            Email = setV.value;
-            //get company mobile
-            set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
-            mobileId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
-            Mobile = setV.value;
-            //get company phone
-            set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
-            phoneId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
-            Phone = setV.value;
-            //get company fax
-            set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
-            faxId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
-            Fax = setV.value;
-            //get company logo
-            set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
-            logoId = set.settingId;
-            #endregion
-         
-            //translate
-            if (lang.Equals("en"))
-            { resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_mainWindow.FlowDirection = FlowDirection.LeftToRight; }
-            else
-            { resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_mainWindow.FlowDirection = FlowDirection.RightToLeft; }
-
-            translate();
-
-            #region user personal info
-            txt_userName.Text = userLogin.name;
-            txt_userJob.Text = userLogin.job;
-
-           
-            try
-            {
-                if (!string.IsNullOrEmpty(userLogin.image))
-                {
-                    byte[] imageBuffer = await userModel.downloadImage(userLogin.image); // read this as BLOB from your DB
-
-                    var bitmapImage = new BitmapImage();
-
-                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
-                    {
-                        bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                    }
-
-                    img_userLogin.Fill = new ImageBrush(bitmapImage);
-                }
-                else
-                {
-                    clearImg();
-                }
-            }
-            catch
-            {
-                clearImg();
-            }
-            #endregion
-
-            BTN_Home_Click(null, null);
-        }
-
+      
         async Task<string> getDefaultStorageCost()
         {
             SetValues v = await uc_general.getDefaultCost();

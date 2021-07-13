@@ -795,6 +795,7 @@ namespace POS.View.storage
                            // import order
                     invoice.invType = "im";
                     invoice.branchId = MainWindow.branchID.Value;
+                    invoice.posId = MainWindow.posID.Value;
                     invoice.createUserId = MainWindow.userID;
                     invoice.updateUserId = MainWindow.userID;
                     if (invoice.invNumber == null)
@@ -860,46 +861,47 @@ namespace POS.View.storage
                     //        }
                           
                     //    }
-                        invoice.invType = "ex";
-                        invoice.branchId = MainWindow.branchID.Value;
-                        invoice.createUserId = MainWindow.userID;
-                        invoice.updateUserId = MainWindow.userID;
-                        if (invoice.invNumber == null)
-                            invoice.invNumber = await generateInvNumber("ex");
-                        // save invoice in DB
-                        invoiceId = int.Parse(await invoice.saveInvoice(invoice));
+                    invoice.invType = "ex";
+                    invoice.branchId = MainWindow.branchID.Value;
+                    invoice.posId = MainWindow.posID.Value;
+                    invoice.createUserId = MainWindow.userID;
+                    invoice.updateUserId = MainWindow.userID;
+                    if (invoice.invNumber == null)
+                        invoice.invNumber = await generateInvNumber("ex");
+                    // save invoice in DB
+                    invoiceId = int.Parse(await invoice.saveInvoice(invoice));
 
-                        if (invoiceId != 0)
+                    if (invoiceId != 0)
+                    {
+                        // import order
+                        if (invoice.invoiceId == 0) // create new export order
                         {
-                            // import order
-                            if (invoice.invoiceId == 0) // create new export order
-                            {
-                                invoice = new Invoice();
-                                invoice.invType = "im";
-                                invoice.invoiceMainId = invoiceId;
-                                if (cb_branch.SelectedIndex != -1)
-                                    invoice.branchId = (int)cb_branch.SelectedValue;
-                                invoice.invNumber = await generateInvNumber("im");
-                                invoice.createUserId = MainWindow.userID;
-                            }
-                            else // edit exit export order
-                            {
-                                invoice = await invoice.getgeneratedInvoice(invoiceId);
-                                invoice.invType = "im";
-                                if (cb_branch.SelectedIndex != -1)
-                                    invoice.branchId = (int)cb_branch.SelectedValue;
-                                invoice.updateUserId = MainWindow.userID;
-                            }
-                            int importId = int.Parse(await invoice.saveInvoice(invoice));
-
-                            // add order details
-                            await invoice.saveInvoiceItems(invoiceItems, invoiceId);
-                            await invoice.saveInvoiceItems(invoiceItems, importId);
-
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                            invoice = new Invoice();
+                            invoice.invType = "im";
+                            invoice.invoiceMainId = invoiceId;
+                            if (cb_branch.SelectedIndex != -1)
+                                invoice.branchId = (int)cb_branch.SelectedValue;
+                            invoice.invNumber = await generateInvNumber("im");
+                            invoice.createUserId = MainWindow.userID;
                         }
-                        else
-                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        else // edit exit export order
+                        {
+                            invoice = await invoice.getgeneratedInvoice(invoiceId);
+                            invoice.invType = "im";
+                            if (cb_branch.SelectedIndex != -1)
+                                invoice.branchId = (int)cb_branch.SelectedValue;
+                            invoice.updateUserId = MainWindow.userID;
+                        }
+                        int importId = int.Parse(await invoice.saveInvoice(invoice));
+
+                        // add order details
+                        await invoice.saveInvoiceItems(invoiceItems, invoiceId);
+                        await invoice.saveInvoiceItems(invoiceItems, importId);
+
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    }
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                        // Window.GetWindow(this).Opacity = 1;                         
                     //}  
                     break;

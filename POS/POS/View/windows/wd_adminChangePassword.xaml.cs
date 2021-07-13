@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using netoaster;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,7 @@ namespace POS.View.windows
         BrushConverter bc = new BrushConverter();
         public int userID = 0;
         User userModel = new User();
+        User user = new User();
 
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
@@ -36,29 +38,38 @@ namespace POS.View.windows
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
+
             #region translate
 
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_changePassword.FlowDirection = FlowDirection.LeftToRight;
-
             }
             else
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_changePassword.FlowDirection = FlowDirection.RightToLeft;
-
             }
 
             translate();
             #endregion
+
+            fillUsers();
+        }
+
+        private async void fillUsers()
+        {
+            List<User> users =  await userModel.GetUsersActive();
+
+            cb_user.ItemsSource = users;
+            cb_user.DisplayMemberPath = "username";
+            cb_user.SelectedValuePath = "userId";
         }
 
         private void translate()
         {
-
             txt_title.Text = MainWindow.resourcemanager.GetString("trChangePassword");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_user, MainWindow.resourcemanager.GetString("trUserHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(pb_password, MainWindow.resourcemanager.GetString("trPasswordHint"));
@@ -76,34 +87,59 @@ namespace POS.View.windows
             }
         }
 
-        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        private bool chkPasswordLength(string password)
         {
+            bool b = false;
+            if (password.Length < 6)
+                b = true;
+            return b;
+        }
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
+        {//save
+            bool wrongPasswordLength = false;
+            //chk empty user
+            SectionData.validateEmptyComboBox(cb_user , p_errorUser , tt_errorUser , "trEmptyUser");
+            //chk empty password
+            if (pb_password.Password.Equals(""))
+                SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
+            else
+            {
+                //chk password length
+                wrongPasswordLength = chkPasswordLength(pb_password.Password);
+                if (wrongPasswordLength)
+                    SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trErrorPasswordLengthToolTip");
+                else
+                    SectionData.clearPasswordValidate(pb_password, p_errorPassword);
+            }
 
+            if ((!cb_user.Text.Equals("")) &&(!pb_password.Password.Equals("")) && (!wrongPasswordLength))
+            {
+                if (user != null)
+                {
+                    string password = Md5Encription.MD5Hash("Inc-m" + pb_password.Password);
+
+                    user.password = password ;
+                    string s = await userModel.saveUser(user);
+                    //MessageBox.Show(s);
+                    if (!s.Equals("0"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopPasswordChanged"), animation: ToasterAnimation.FadeIn);
+                        await Task.Delay(2000);
+                        this.Close();
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+            }
         }
       
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
-        }
-
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
-
-        private void Tb_password_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tb_password_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void Pb_password_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-
+            cb_user.SelectedIndex = -1;
+            pb_password.Clear();
+            tb_password.Clear();
+            e.Cancel = true;
+            this.Visibility = Visibility.Hidden;
         }
 
         private void P_showPassword_MouseEnter(object sender, MouseEventArgs e)
@@ -148,5 +184,10 @@ namespace POS.View.windows
             }
         }
 
+        private async void Cb_user_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {//select user
+            user = await userModel.getUserById(Convert.ToInt32(cb_user.SelectedValue));
+            //pb_password.Password = user.password;
+        }
     }
 }

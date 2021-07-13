@@ -145,15 +145,24 @@ namespace POS.View.windows
         {
             if (isAwait == true)
             {
-                btnLogIn.IsEnabled = false;
-                wait_saveBtn.Visibility = Visibility.Visible;
-                wait_saveBtn.IsIndeterminate = true;
+                this.prg_awaitRing.IsActive = true;
+                this.grid_logs.IsEnabled = false;
+                this.grid_logs.Opacity = 0.6;
+
+                //btnLogIn.IsEnabled = false;
+                //wait_saveBtn.Visibility = Visibility.Visible;
+                //wait_saveBtn.IsIndeterminate = true;
             }
             else
             {
-                btnLogIn.IsEnabled = true;
-                wait_saveBtn.Visibility = Visibility.Collapsed;
-                wait_saveBtn.IsIndeterminate = false;
+
+                this.prg_awaitRing.IsActive = false;
+                this.grid_logs.IsEnabled = true;
+                this.grid_logs.Opacity = 1;
+
+                //btnLogIn.IsEnabled = true;
+                //wait_saveBtn.Visibility = Visibility.Collapsed;
+                //wait_saveBtn.IsIndeterminate = false;
             }
 
 
@@ -163,14 +172,13 @@ namespace POS.View.windows
             if (logInProcessing)
             { 
                 logInProcessing = false;
-                    awaitSaveBtn(true);
-                    clearValidate(txtUserName, p_errorUserName);
+                awaitSaveBtn(true);
+                clearValidate(txtUserName, p_errorUserName);
                 clearPasswordValidate(txtPassword, p_errorPassword);
                 string password = Md5Encription.MD5Hash("Inc-m" + txtPassword.Password);
                 string userName = txtUserName.Text;
                 //check if user is exist
                 users = await userModel.GetUsersActive();
-
                 if (users.Any(i => i.username.Equals(userName)))
                 {
                     //get user info

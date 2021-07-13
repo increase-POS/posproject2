@@ -646,6 +646,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تأكيد كلمة المرور.
+        /// </summary>
+        internal static string trConfirmedPassword {
+            get {
+                return ResourceManager.GetString("trConfirmedPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تأكيد كلمة المرور....
+        /// </summary>
+        internal static string trConfirmedPasswordHint {
+            get {
+                return ResourceManager.GetString("trConfirmedPasswordHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تأكيد المستخدم.
         /// </summary>
         internal static string trConfirmUserTooltip {
@@ -2041,6 +2059,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to كلمة المرور الجديدة غير مطابقة لكلمة المرور المؤكدة.
+        /// </summary>
+        internal static string trErrorNewPasswordNotEqualConfirmed {
+            get {
+                return ResourceManager.GetString("trErrorNewPasswordNotEqualConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا يمكن أن تكون كلمة المرور أقل من 6 محارف.
         /// </summary>
         internal static string trErrorPasswordLengthToolTip {
@@ -2307,6 +2334,15 @@ namespace POS {
         internal static string trInvoiceNumberHint {
             get {
                 return ResourceManager.GetString("trInvoiceNumberHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الفواتير.
+        /// </summary>
+        internal static string trInvoices {
+            get {
+                return ResourceManager.GetString("trInvoices", resourceCulture);
             }
         }
         
@@ -2671,6 +2707,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to كلمة المرور الجديدة.
+        /// </summary>
+        internal static string trNewPassword {
+            get {
+                return ResourceManager.GetString("trNewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to كلمة المرور الجديدة....
+        /// </summary>
+        internal static string trNewPasswordHint {
+            get {
+                return ResourceManager.GetString("trNewPasswordHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ملاحظات.
         /// </summary>
         internal static string trNote {
@@ -2712,6 +2766,24 @@ namespace POS {
         internal static string trOffer {
             get {
                 return ResourceManager.GetString("trOffer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to كلمة المرور القديمة.
+        /// </summary>
+        internal static string trOldPassword {
+            get {
+                return ResourceManager.GetString("trOldPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to كلمة المرور القديمة....
+        /// </summary>
+        internal static string trOldPasswordHint {
+            get {
+                return ResourceManager.GetString("trOldPasswordHint", resourceCulture);
             }
         }
         
@@ -3054,6 +3126,15 @@ namespace POS {
         internal static string trPopNotEnoughBalance {
             get {
                 return ResourceManager.GetString("trPopNotEnoughBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تم تعديل كلمة المرور بنجاح.
+        /// </summary>
+        internal static string trPopPasswordChanged {
+            get {
+                return ResourceManager.GetString("trPopPasswordChanged", resourceCulture);
             }
         }
         
@@ -3621,6 +3702,15 @@ namespace POS {
         internal static string trSelectedBranchs_Stores {
             get {
                 return ResourceManager.GetString("trSelectedBranchs/Stores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الفواتير المختارة.
+        /// </summary>
+        internal static string trSelectedInvoices {
+            get {
+                return ResourceManager.GetString("trSelectedInvoices", resourceCulture);
             }
         }
         
