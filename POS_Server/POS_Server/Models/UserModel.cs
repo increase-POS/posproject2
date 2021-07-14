@@ -25,5 +25,7 @@ namespace POS_Server.Models
         public byte? isOnline { get; set; }
         public Boolean canDelete { get; set; }
         public string image { get; set; }
+        public Nullable<decimal> balance { get; set; }
+        public Nullable<byte> balanceType { get; set; }
     }
 }

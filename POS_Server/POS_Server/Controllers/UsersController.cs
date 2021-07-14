@@ -57,7 +57,8 @@ namespace POS_Server.Controllers
                         isActive =  u.isActive,
                         isOnline =  u.isOnline,
                         image = u.image,
-                      
+                        balance= u.balance,
+                        balanceType =u.balanceType,
                     })
                     .ToList();
 
@@ -190,6 +191,8 @@ namespace POS_Server.Controllers
                        u.isOnline,
                        u.image,
                        u.isActive,
+                       u.balance,
+                       u.balanceType,
                    })
                    .FirstOrDefault();
 
@@ -244,6 +247,8 @@ namespace POS_Server.Controllers
                         u.isActive,
                         u.isOnline,
                         u.image,
+                        u.balance,
+                        u.balanceType,
                     })
                     .ToList();
 
@@ -297,7 +302,8 @@ namespace POS_Server.Controllers
                             newObject.createDate = DateTime.Now;
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
-
+                            newObject.balance = 0;
+                            newObject.balanceType = 0;
                             tmpUser= unitEntity.Add(newObject);
                         }
                         else
@@ -318,6 +324,9 @@ namespace POS_Server.Controllers
                             tmpUser.notes = newObject.notes;
                             tmpUser.address = newObject.address;
                             tmpUser.isActive = newObject.isActive;
+                            tmpUser.balance = newObject.balance ;
+                            tmpUser.balanceType = newObject.balanceType;
+                            
                         }
                         entity.SaveChanges();
                     }
