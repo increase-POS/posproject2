@@ -258,6 +258,7 @@
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\InventoryItemLocationController.cs" />
     <Compile Include="Controllers\InvoicesController.cs" />
+    <Compile Include="Controllers\InvoiceStatusController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\ItemsLocationsController.cs" />
     <Compile Include="Controllers\ItemsOffersController.cs" />
@@ -374,6 +375,7 @@
     <Compile Include="Models\InventoryItemLocationModel.cs" />
     <Compile Include="Models\InventoryModel.cs" />
     <Compile Include="Models\InvoiceModel.cs" />
+    <Compile Include="Models\InvoiceStatusModel.cs" />
     <Compile Include="Models\ItemLocationModel.cs" />
     <Compile Include="Models\ItemOfferModel.cs" />
     <Compile Include="Models\ItemSalePurModel.cs" />

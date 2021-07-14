@@ -522,11 +522,15 @@ namespace POS_Server.Controllers
                 if (requiredAmount != 0)
                 {
                     int newQuant = checkUpperUnit(itemUnitId, branchId, requiredAmount);
+                   // return Ok(newQuant);
                     var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
                     var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
-                    var item = (from  il in entity.itemsLocations 
-                                where il.itemUnitId == itemUnitId
+                    var item = (from  il in entity.itemsLocations where il.itemUnitId == itemUnitId
+                                join l in entity.locations on il.locationId equals l.locationId
+                                join s in entity.sections on l.sectionId equals s.sectionId where s.branchId == branchId
+                                where s.isFreeZone != 1
+                                
                                 select new
                                 {
                                     il.itemsLocId,
@@ -584,7 +588,7 @@ namespace POS_Server.Controllers
                             entity.SaveChanges();
                             remainQuantity = (int)newQuant - firstRequir;
                             requiredAmount = 0;
-                            return (remainQuantity);
+                            return remainQuantity;
                         }
                         else 
                         {
@@ -592,7 +596,6 @@ namespace POS_Server.Controllers
                             breakNum = (int)(breakNum - itemInLocs1[i].quantity);
                             requiredAmount = requiredAmount -( (int)itemInLocs1[i].quantity * (int)upperUnit.unitValue);
                             entity.SaveChanges();
-
                         }
                     }
                     if (breakNum != 0)
@@ -750,7 +753,9 @@ namespace POS_Server.Controllers
                         updateItemQuantity(item.itemUnitId.Value, branchId, (int)item.quantity);
                     }
                 }
+                return true;
             }
+            else
             return false;
         }
         [HttpGet]
