@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POS.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -65,6 +66,17 @@ namespace POS.View
             }
 
             translate();
+            permission();
+        }
+        void permission()
+        {
+            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+            {
+                if (button.Tag != null)
+                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+                        button.Visibility = Visibility.Visible;
+                    else button.Visibility = Visibility.Collapsed;
+            }
         }
 
         void refreashBackground()

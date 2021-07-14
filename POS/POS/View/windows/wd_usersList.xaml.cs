@@ -29,23 +29,19 @@ namespace POS.View.windows
 
 
         public bool isActive;
-        //User user = new User();
-
-
-        //bool isOpend=true;
-        //public int sectionId { get; set; }
-        //Classes.Section section = new Classes.Section();
-        //Classes.Section sectionModel = new Classes.Section();
-
+       
         List<User> allUsersSource = new List<User>();
-        public List<User> selectedUsersSource = new List<User>();
+        List<User> selectedUsersSource = new List<User>();
 
         List<User> allUsers = new List<User>();
-        public List<User> selectedUsers = new List<User>();
+        List<User> selectedUsers = new List<User>();
+
+        public int groupId = 0;
 
         User userModel = new User();
         User user = new User();
 
+        Group groupModel = new Group();
         /// <summary>
         /// Selcted Users if selectedUsers Have Users At the beginning
         /// </summary>
@@ -53,7 +49,8 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //MessageBox.Show(sectionId.ToString());
+
+            #region translate
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_users.FlowDirection = FlowDirection.LeftToRight; }
@@ -62,31 +59,26 @@ namespace POS.View.windows
                 grid_users.FlowDirection = FlowDirection.RightToLeft; }
 
             translat();
+            #endregion
 
-            //section = await sectionModel.GetSectionByID(sectionId);
-            //MessageBox.Show(section.name);
-            allUsersSource = await userModel.GetUsersAsync();
-            var query = allUsersSource.Where(i => i.isActive == 1);
-            selectedUsersSource = query.ToList();
-
+            allUsersSource = await userModel.GetUsersActive();
+            selectedUsersSource = await groupModel.GetUsersByGroupId(groupId);
+            foreach(var u in selectedUsersSource)
+            {
+                u.fullName = u.name + " " + u.lastname;
+            }
             allUsers.AddRange(allUsersSource);
             selectedUsers.AddRange(selectedUsersSource);
 
             //remove selected users from all users
-            foreach (var i in selectedUsers)
+            foreach (var su in selectedUsers)
             {
-                allUsers.Remove(i);
+                for(int i = 0; i < allUsers.Count; i++)
+                if (su.userId == allUsers[i].userId)
+                {
+                    allUsers.Remove(allUsers[i]);
+                }
             }
-            /////////////////////////////////////////////////
-            //foreach (var i in allUsers)
-            //{
-            //    i.x = i.x.Trim() + "-" + i.y.Trim() + "-" + i.z.Trim();
-            //}
-
-            //foreach (var i in selectedUsers)
-            //{
-            //    i.x = i.x.Trim() + "-" + i.y.Trim() + "-" + i.z.Trim();
-            //}
 
             lst_allUsers.ItemsSource = allUsers;
             lst_allUsers.SelectedValuePath = "fullName";
@@ -99,17 +91,15 @@ namespace POS.View.windows
 
         private void translat()
         {
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_searchitems, MainWindow.resourcemanager.GetString("trSearchHint"));
-
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_search , MainWindow.resourcemanager.GetString("trSearchHint"));
+            txt_user.Text = MainWindow.resourcemanager.GetString("trUsers");
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
-            //lst_allUsers.Columns[0].Header = MainWindow.resourcemanager.GetString("trUser");
-            //lst_selectedUsers.Columns[0].Header = MainWindow.resourcemanager.GetString("trSelectedUsers");
+            lst_allUsers.Columns[0].Header = MainWindow.resourcemanager.GetString("trUser");
+            lst_selectedUsers.Columns[0].Header = MainWindow.resourcemanager.GetString("trUser");
 
-            //txt_user.Text = MainWindow.resourcemanager.GetString("trUser");
-            //txt_selectedUsers.Text = MainWindow.resourcemanager.GetString("trSelectedUsers");
-            //txt_HeaderTitle.Text = MainWindow.resourcemanager.GetString("trSection");
-            //tt_searchZ.Content = MainWindow.resourcemanager.GetString("trZ");
+            txt_users.Text = MainWindow.resourcemanager.GetString("trUsers");
+            txt_selectedUsers.Text = MainWindow.resourcemanager.GetString("trSelectedUsers");
 
             tt_selectAllItem.Content = MainWindow.resourcemanager.GetString("trSelectAllItems");
             tt_unselectAllItem.Content = MainWindow.resourcemanager.GetString("trUnSelectAllItems");
@@ -127,6 +117,13 @@ namespace POS.View.windows
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
+            //get selcted ids
+            List<int> userIds = new List<int>();
+            foreach (var u in selectedUsers)
+                userIds.Add(u.userId);
+
+            await groupModel.UpdateGroupIdInUsers(groupId, userIds, MainWindow.userID.Value);
+
             isActive = true;
             this.Close();
         }

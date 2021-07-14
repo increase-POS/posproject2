@@ -1537,6 +1537,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Price cann&apos;t be empty.
+        /// </summary>
+        internal static string trEmptyPrice {
+            get {
+                return ResourceManager.GetString("trEmptyPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Process number can not be empty.
         /// </summary>
         internal static string trEmptyProcessNumToolTip {
@@ -2082,6 +2091,15 @@ namespace POS {
         internal static string trErrorItemNotFoundToolTip {
             get {
                 return ResourceManager.GetString("trErrorItemNotFoundToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum balance value exceeded.
+        /// </summary>
+        internal static string trErrorMaxDeservedExceeded {
+            get {
+                return ResourceManager.GetString("trErrorMaxDeservedExceeded", resourceCulture);
             }
         }
         
@@ -3783,6 +3801,15 @@ namespace POS {
         internal static string trSelectedLocations {
             get {
                 return ResourceManager.GetString("trSelectedLocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected users.
+        /// </summary>
+        internal static string trSelectedUsers {
+            get {
+                return ResourceManager.GetString("trSelectedUsers", resourceCulture);
             }
         }
         

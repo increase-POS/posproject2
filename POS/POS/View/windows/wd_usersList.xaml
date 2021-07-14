@@ -103,7 +103,7 @@
                               AutoGenerateColumns="False" ColumnWidth="SizeToHeader"
                               MouseDoubleClick="Lst_allUsers_MouseDoubleClick" >
                         <DataGrid.Columns>
-                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="User" Binding="{Binding Path=x}"/>
+                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="User" Binding="{Binding Path=fullName}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
@@ -193,7 +193,7 @@
                                AutoGenerateColumns="False"  ColumnWidth="SizeToHeader"
                                MouseDoubleClick="Lst_selectedUsers_MouseDoubleClick">
                         <DataGrid.Columns>
-                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="User" Binding="{Binding Path=x}"/>
+                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="User" Binding="{Binding Path=fullName}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>

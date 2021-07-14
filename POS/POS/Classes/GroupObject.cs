@@ -13,7 +13,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class GroupObject
+    public class GroupObject
     {
         public int id { get; set; }
         public Nullable<int> groupId { get; set; }
@@ -402,7 +402,18 @@ namespace POS.Classes
 
         }
 
+        // get groupObject row by objectName
 
+        public GroupObject GetGObjByObjName(string objectName, List<GroupObject> GOList)
+        {
+       
+            GroupObject element = new GroupObject();
+   
+            element = GOList.Where(X => X.objectName == objectName).FirstOrDefault();
+
+                return element;
+
+        }
         //
     }
 }

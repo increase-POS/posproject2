@@ -330,8 +330,8 @@
                                 x:Name="path_openHome" Visibility="Collapsed" HorizontalAlignment="Right"
                          VerticalAlignment="Center" Width="20"  Height="35"   Margin="0,0,-5,0"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
-                <Button  Width="200" Height="50" Grid.Row="2"
-                         HorizontalAlignment="Left" x:Name="BTN_catalog"
+                <Button  Width="200" Height="50" Grid.Row="2" Tag="catalog"
+                         HorizontalAlignment="Left" x:Name="btn_catalog"
                          Click="BTN_catalog_Click"
                     Background="{x:Null}" BorderBrush="{x:Null}"   
                     Padding="0" >
@@ -368,8 +368,8 @@
                                Grid.Column="0"  x:Name="path_openCatalog" Visibility="Collapsed"
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0" HorizontalAlignment="Right"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
-                <Button  Width="200" Height="50" Grid.Row="3"
-                         HorizontalAlignment="Left" x:Name="BTN_storage"
+                <Button  Width="200" Height="50" Grid.Row="3"  Tag="storage"
+                         HorizontalAlignment="Left" x:Name="btn_storage"
                     Background="{x:Null}" BorderBrush="{x:Null}"   
                     Padding="0" Click="BTN_storage_Click" >
                     <Button.ToolTip>
@@ -410,11 +410,11 @@
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0" HorizontalAlignment="Right"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
                 <Button  Width="200" Height="50" Grid.Row="4" Click="BTN_purchases_Click"
-                        HorizontalAlignment="Left" x:Name="BTN_purchases"
+                        HorizontalAlignment="Left" x:Name="btn_purchase"  Tag="purchase"
                     Background="{x:Null}" BorderBrush="{x:Null}"   
                     Padding="0" >
                     <Button.ToolTip>
-                        <ToolTip Content="Purchases"  Visibility="Visible" x:Name="tt_purchases"/>
+                        <ToolTip Content="Purchases"  Visibility="Visible" x:Name="tt_purchase"/>
                     </Button.ToolTip>
                     <Grid Width="200" Height="50" >
                         <Grid.ColumnDefinitions>
@@ -485,8 +485,8 @@
                                Grid.Column="0"  x:Name="path_openPurchases" Visibility="Collapsed"
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
-                <Button  Width="200" Height="50" Grid.Row="5"
-                       HorizontalAlignment="Left" x:Name="BTN_sales"
+                <Button  Width="200" Height="50" Grid.Row="5"  Tag="sales"
+                       HorizontalAlignment="Left" x:Name="btn_sales"
                     Background="{x:Null}" BorderBrush="{x:Null}"   
                     Padding="0" Click="BTN_sales_Click" >
                     <Button.ToolTip>
@@ -521,10 +521,10 @@
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
                 <Button  Width="200" Height="50" Grid.Row="6" HorizontalAlignment="Left"
-                    Background="{x:Null}" BorderBrush="{x:Null}"   
-                    Padding="0"  x:Name="BTN_accounts" Click="BTN_accounts_Click" >
+                    Background="{x:Null}" BorderBrush="{x:Null}"    Tag="accounts"
+                    Padding="0"  x:Name="btn_accounts" Click="BTN_accounts_Click" >
                     <Button.ToolTip>
-                        <ToolTip Content="Accounts"  Visibility="Visible" x:Name="tt_accounting"/>
+                        <ToolTip Content="Accounts"  Visibility="Visible" x:Name="tt_accounts"/>
                     </Button.ToolTip>
                     <Grid Width="200" Height="50" >
                         <Grid.ColumnDefinitions>
@@ -546,8 +546,8 @@
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
                 <Button  Width="200" Height="50" Grid.Row="7" HorizontalAlignment="Left"
-                    Background="{x:Null}" BorderBrush="{x:Null}"   
-                    Padding="0"  x:Name="BTN_reports" Click="BTN_reports_Click"  >
+                    Background="{x:Null}" BorderBrush="{x:Null}"     Tag="reports"
+                    Padding="0"  x:Name="btn_reports" Click="BTN_reports_Click"  >
                     <Button.ToolTip>
                         <ToolTip Content="Reports"  Visibility="Visible" x:Name="tt_reports"/>
                     </Button.ToolTip>
@@ -575,10 +575,10 @@
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
                 <Button  Width="200" Height="50" Grid.Row="8" HorizontalAlignment="Left"
-                    Background="{x:Null}" BorderBrush="{x:Null}"  
-                    Padding="0" x:Name="BTN_sectionData" Click="BTN_SectionData_Click" >
+                    Background="{x:Null}" BorderBrush="{x:Null}"   Tag="sectionData"
+                    Padding="0" x:Name="btn_sectionData" Click="BTN_SectionData_Click" >
                     <Button.ToolTip>
-                        <ToolTip Content="Section Data"  Visibility="Visible" x:Name="tt_sectiondata"/>
+                        <ToolTip Content="Section Data"  Visibility="Visible" x:Name="tt_sectionData"/>
                     </Button.ToolTip>
                     <Grid Width="200" Height="50" >
                         <Grid.ColumnDefinitions>
@@ -617,8 +617,8 @@
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
                 <Button  Width="200" Height="50" Grid.Row="9" HorizontalAlignment="Left"
-                    Background="{x:Null}" BorderBrush="{x:Null}"   
-                    Padding="0" x:Name="BTN_settings" Click="BTN_settings_Click"  >
+                    Background="{x:Null}" BorderBrush="{x:Null}"    Tag="settings"
+                    Padding="0" x:Name="btn_settings" Click="BTN_settings_Click"  >
                     <Button.ToolTip>
                         <ToolTip Content="Settings" x:Name="tt_settings" Visibility="Visible" />
                     </Button.ToolTip>

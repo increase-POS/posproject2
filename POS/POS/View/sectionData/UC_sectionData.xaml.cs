@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using POS.Classes;
 using POS.View.sectionData;
 
 namespace POS.View
@@ -109,6 +110,17 @@ namespace POS.View
             else
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucSectionData.FlowDirection = FlowDirection.RightToLeft; }
             translate();
+
+        }
+        void permission()
+        {
+            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+            {
+                if (button.Tag != null)
+                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+                        button.Visibility = Visibility.Visible;
+                    else button.Visibility = Visibility.Collapsed;
+            }
         }
         private void translate()
         {

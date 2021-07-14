@@ -1,4 +1,5 @@
-﻿using POS.View.purchases;
+﻿using POS.Classes;
+using POS.View.purchases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace POS.View.reports
         private void translate()
         {
             btn_salesReports.Content = MainWindow.resourcemanager.GetString("trSales");
-            btn_purchaseReport.Content = MainWindow.resourcemanager.GetString("trPurchases");
+            btn_purchaseReports.Content = MainWindow.resourcemanager.GetString("trPurchases");
             btn_storageReports.Content = MainWindow.resourcemanager.GetString("trStorage");
             btn_accountsReports.Content = MainWindow.resourcemanager.GetString("trAccounts");
             btn_usersReports.Content = MainWindow.resourcemanager.GetString("trUsers");
@@ -63,6 +64,17 @@ namespace POS.View.reports
 
             translate();
             btn_salesReports_Click(null, null);
+            //permission();
+        }
+        void permission()
+        {
+            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+            {
+                if (button.Tag != null)
+                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+                        button.Visibility = Visibility.Visible;
+                    else button.Visibility = Visibility.Collapsed;
+            }
         }
 
         void refreashBackground()
@@ -71,23 +83,8 @@ namespace POS.View.reports
             btn_salesReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_salesReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_purchaseReport.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_purchaseReport.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-
-            btn_storageReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_storageReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-
-            btn_accountsReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_accountsReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-
-            btn_usersReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_usersReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-
-            btn_salesReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_salesReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-
-            btn_purchaseReport.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_purchaseReport.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_purchaseReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_purchaseReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
             btn_storageReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_storageReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -116,7 +113,7 @@ namespace POS.View.reports
 
         private void btn_purchaseReport_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_purchaseReport);
+            refreashBachgroundClick(btn_purchaseReports);
             grid_main.Children.Clear();
                grid_main.Children.Add(uc_purchaseReport.Instance);
         }

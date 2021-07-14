@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POS.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -52,22 +53,31 @@ namespace POS.View.accounts
 
             }
             translate();
+            permission();
         }
-
+        void permission()
+        {
+            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+            {
+                if (button.Tag != null)
+                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+                        button.Visibility = Visibility.Visible;
+                    else button.Visibility = Visibility.Collapsed;
+            }
+        }
         private void translate()
         {
 
-            btn_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
-            btn_banks.Content = MainWindow.resourcemanager.GetString("trBanks");
+            btn_posAccounting.Content = MainWindow.resourcemanager.GetString("trPOS");
+            btn_banksAccounting.Content = MainWindow.resourcemanager.GetString("trBanks");
             btn_payments.Content = MainWindow.resourcemanager.GetString("trPayments");
             btn_received.Content = MainWindow.resourcemanager.GetString("trReceived");
             btn_bonds.Content = MainWindow.resourcemanager.GetString("trBonds");
         }
-
         void refreashBackground()
         {
-            btn_pos.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_pos.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_posAccounting.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_posAccounting.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
             btn_payments.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_payments.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -78,18 +88,18 @@ namespace POS.View.accounts
             btn_bonds.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_bonds.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_banks.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_banks.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_banksAccounting.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_banksAccounting.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_orders.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_orders.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_ordersAccounting.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_ordersAccounting.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
 
             btn_subscriptions.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_subscriptions.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_statistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_statistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_accountsStatistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_accountsStatistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
         void refreashBachgroundClick(Button btn)
         {
@@ -99,7 +109,7 @@ namespace POS.View.accounts
         }
         private void Btn_pos_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_pos);
+            refreashBachgroundClick(btn_posAccounting);
 
 
             grid_main.Children.Clear();
@@ -116,7 +126,6 @@ namespace POS.View.accounts
             //uc_paymentsAccounts uc = new uc_paymentsAccounts();
             //grid_main.Children.Add(uc);
         }
-
         private void Btn_received_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_received);
@@ -135,7 +144,7 @@ namespace POS.View.accounts
         }
         private void Btn_banks_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_banks);
+            refreashBachgroundClick(btn_banksAccounting);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_banksAccounts.Instance);
             //uc_banksAccounts uc = new uc_banksAccounts();
@@ -143,7 +152,7 @@ namespace POS.View.accounts
         }
         private void Btn_orders_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_orders);
+            refreashBachgroundClick(btn_ordersAccounting);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_orderAccounts.Instance);
         }
@@ -153,7 +162,6 @@ namespace POS.View.accounts
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_subscriptions.Instance);
         }
-
         private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {
 

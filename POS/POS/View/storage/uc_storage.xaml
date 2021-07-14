@@ -40,8 +40,8 @@
                     <RowDefinition Height="87"/>
                     <RowDefinition Height="87"/>
                 </Grid.RowDefinitions>
-                <Button x:Name="btn_locations" Click="Btn_locations_Click" Style="{StaticResource SmallButton}"   Grid.Row="0" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="2.5"
+                    <Button x:Name="btn_locations" Click="Btn_locations_Click" Style="{StaticResource SmallButton}"   Grid.Row="0" Grid.Column="0"
+                Height="75" Width="75" Background="White" Margin="2.5" Tag="locations"
                   Content="Locations"    BorderBrush="#67686D"  ToolTip="Preparation of Locations"
                 DataContext="M259.8,181h145.9v-70.6c0-9.2-3-12.2-12.3-12.2c-40.6,0-81.2-0.1-121.8,0c-8.9,0-11.8,3-11.8,11.9c-0.1,22.4,0,44.7,0,67.1
 	V181z M373.5,113H394v61.2l0,0l-10.4-11.3l-10.1,11.3l0,0V113z M248.1,181v-4.2c0-22.4,0.1-44.7,0-67.1c0-8.2-3.3-11.5-11.5-11.5
@@ -55,8 +55,8 @@
 	v332c0,9.5,3,12.3,13,12.3h336.3c2.1,0,4.2-0.3,6.3-0.4v-17.4h-19.4h-3.3H259.5h-11.3H99.3v-0.3H91V314h337.4v-17.5h-22.7v-0.1h-146
 	h-11.6H99.3v-0.3h-8.4v-93h337.8L428.7,185.6L428.7,185.6z M393,209.2H272.6c-10.2,0-12.9,2.7-12.9,13v69.7h146v-69.6
 	C405.7,211.9,403.2,209.2,393,209.2z M394.1,285.1L394.1,285.1l-10.4-11.3l-10.1,11.3l0,0v-61.2h20.5V285.1z"/>
-                <Button x:Name="btn_section" Click="Btn_section_Click" Style="{StaticResource SmallButton}"   Grid.Row="1" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="2.5" 
+                    <Button x:Name="btn_section" Click="Btn_section_Click" Style="{StaticResource SmallButton}"   Grid.Row="1" Grid.Column="0"
+                Height="75" Width="75" Background="White" Margin="2.5"  Tag="section"
                   Content="Section"    BorderBrush="#67686D"  ToolTip="Section of stores"
                 DataContext="M431.2,139.4c-37.6-62.7-94-93.6-167.9-94.8c-0.3,2.8-0.6,4.1-0.6,5.4c0,60.2-0.1,120.4,0.2,180.6c0,3.2,2.8,7.6,5.6,9.4
 	c48,30.5,96.2,60.7,144.3,91c4,2.5,8.1,4.9,12.1,7.4C462.4,284,470.2,204.4,431.2,139.4z M376.2,91.1c1.9,1.9,4.1,3.4,7.3,6
@@ -79,8 +79,8 @@
 	c0.7-25.6,0.2-51.2,0.2-76.8V67.6c-58.2-3.7-132.1,26.2-171.7,98.9C33.8,234.8,43.6,320.5,95,380c50.4,58.3,126.8,73.8,177,61
 	c0-0.8,0.2-1.6,0.1-2.4C265.9,400,259.3,361.4,253.5,322.7z M285.1,445.9C345,436.5,390,406.3,422.7,355
 	c-56.5-35.5-112-70.3-169.3-106.3C264.3,315.8,274.6,380.4,285.1,445.9z"/>
-                <Button x:Name="btn_receiptOfPurchaseInvoice" Click="Btn_receiptOfPurchaseInvoice_Click" Style="{StaticResource SmallButton}"   Grid.Row="2" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="2.5"  FlowDirection="LeftToRight"
+                    <Button x:Name="btn_reciptOfInvoice" Click="Btn_receiptOfPurchaseInvoice_Click" Style="{StaticResource SmallButton}"   Grid.Row="2" Grid.Column="0"
+                Height="75" Width="75" Background="White" Margin="2.5"  FlowDirection="LeftToRight" Tag="reciptOfInvoice"
                   Content="Invoice"    BorderBrush="#67686D"  ToolTip="Receipt of a purchase invoice"
                 DataContext="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2.2-0.5,3.1-1.3l8.5-8.5l8.5,8.5
 	c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5l8.5,8.5c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5l8.5,8.5c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5l8.5,8.5
@@ -95,8 +95,8 @@
 	c0.7,0.2,1.5,0.5,2.2,0.8l-1.2,4.5c-0.9-0.4-1.9-0.7-2.9-0.9c-1.2-0.3-2.3-0.4-3.5-0.4c-0.9-0.1-1.8,0.1-2.6,0.6
 	c-0.5,0.4-0.8,1-0.8,1.6c-0.1,0.3,0,0.7,0.2,1s0.5,0.6,0.8,0.8c0.4,0.3,0.8,0.5,1.3,0.7s1.2,0.4,1.9,0.7c1.1,0.4,2.1,0.8,3.1,1.3
 	c0.9,0.4,1.8,0.9,2.5,1.6c0.7,0.6,1.2,1.4,1.6,2.2c0.4,0.9,0.6,1.9,0.6,2.9C93.8,82.1,93.7,82.9,93.5,83.6z"/>
-                <Button x:Name="btn_itemsStorage" Click="Btn_itemsStorage_Click" Style="{StaticResource SmallButton}"   Grid.Row="3" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="2.5" 
+                    <Button x:Name="btn_itemsStorage" Click="Btn_itemsStorage_Click" Style="{StaticResource SmallButton}"   Grid.Row="3" Grid.Column="0"
+                Height="75" Width="75" Background="White" Margin="2.5"  Tag="itemsStorage"
                   Content="Storage"    BorderBrush="#67686D"  ToolTip="Items storage"
                 DataContext="M38.9,98.5c-0.6-0.3-1.3-0.6-1.9-0.9c-7.3-2.7-15.3,1.1-18,8.3c-2.7,7.3,1.1,15.3,8.3,18
 	c7.3,2.7,15.3-1.1,18-8.3C47.7,109.1,45,101.8,38.9,98.5z M37.4,113.7c-0.1,0.2-0.3,0.5-0.4,0.7c-2,2.7-5.7,3.3-8.4,1.3
@@ -109,24 +109,9 @@
 	h41.5h1.8C106.8,62.4,109.8,65.4,109.9,69.1z M59.7,41.3h-2.2v-5.4c0-3.3,2.6-5.9,5.9-5.9h34.1c3.3,0,5.9,2.6,5.9,5.9v5.4h-2.2H59.7
 	z M59.7,61.5h41.5V41.9H59.7V61.5z M67.3,48.7h4.1c0.6,0,1,0.5,1,1c0,0.6-0.5,1-1,1h-4.1c-0.6,0-1-0.5-1-1S66.8,48.7,67.3,48.7z
 	 M67.3,53.9h9.1c0.6,0,1,0.5,1,1c0,0.6-0.5,1-1,1h-9.1c-0.6,0-1-0.5-1-1S66.8,53.9,67.3,53.9z"/>
-                <!--<Button x:Name="btn_itemsImport" Click="Btn_itemsImport_Click" Style="{StaticResource SmallButton}"   Grid.Row="4" Grid.Column="0"
+                    <Button x:Name="btn_importExport" Click="Btn_itemsExport_Click" Style="{StaticResource SmallButton}"   Grid.Row="4" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="2.5" 
-                  Content="Items Import"    BorderBrush="#67686D" 
-                DataContext="M266,158.1c0.7-0.4,1.3-0.8,2.2-1.3c-7.3-4.2-14.3-8.2-21.4-12.3c-20.7-12-41.5-24-62.3-36c-0.7-0.4-1.2-0.9-1.8-1.3H182
-	c-5.6,3.2-11.1,6.5-16.7,9.8c-4.9,2.9-9.8,5.8-15.1,8.8c4.3,2.5,8.3,4.9,12.4,7.2c23.8,13.8,47.6,27.5,71.4,41.3
-	c1.6,0.9,2.7,0.8,4.2-0.1C247.4,168.8,256.7,163.5,266,158.1z M108.2,163.9c24.1,13.9,48.3,27.9,72.5,41.8c0.7,0.3,1.9,0.5,2.5,0.2
-	c11.9-6.8,23.7-13.6,35.8-20.6c-0.8-0.5-1.7-1-2.5-1.5c-27.1-15.7-54.3-31.4-81.4-47.1c-1.3-0.7-2.2-0.7-3.5,0
-	c-11.1,6.4-22.3,12.7-33.5,19.1c-0.6,0.3-1,0.6-1.8,1.2C100.4,159.4,104.3,161.6,108.2,163.9z M190.1,219.8v93.1
-	c0,0.3,0,0.7,0.1,1.3c1.2-0.7,2.4-1.4,3.6-2.1c-0.7-3.6-1-7.3-1-11c0-34.7,28.3-63,63-63c5.9,0,11.7,0.8,17.2,2.4
-	c-0.1-22.6-0.1-45.1-0.1-67.7v-2.4c-0.8,0.3-1.4,0.6-1.9,0.9c-9.4,5.4-18.8,10.8-28.2,16.2c-1.3,0.7-1.7,1.5-1.7,3
-	c0.1,6.8,0,13.7,0.1,20.6c0.1,1.3-0.3,2.2-1.6,2.8c-4.5,2.2-8.9,4.5-13.6,7.2v-23.5c-3.9,2.2-7.5,4.3-11,6.3
-	c-7.8,4.5-15.7,9-23.5,13.5C190.5,217.9,190,218.5,190.1,219.8z M90.9,171.7c0,30.8,0.1,61.5,0,92.3c0,1.6,0.5,2.5,1.9,3.3
-	c26.7,15.4,53.3,30.8,80,46.2c0.5,0.3,1,0.5,1.7,0.9c0-0.7,0.1-1.2,0.1-1.8v-92.9c0-1.4-0.5-2.1-1.6-2.7
-	c-26.7-15.4-53.5-30.9-80.2-46.3c-0.6-0.3-1.2-0.6-1.9-1.1V171.7z M199.3,301c0,31.2,25.3,56.5,56.5,56.5s56.5-25.3,56.5-56.5
-	s-25.3-56.5-56.5-56.5S199.3,269.8,199.3,301z M212.2,301l42.3-24.4v13.6h44.8v21.6h-44.8v13.6L212.2,301z"/>-->
-                <Button x:Name="btn_itemsExport" Click="Btn_itemsExport_Click" Style="{StaticResource SmallButton}"   Grid.Row="4" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="2.5" 
-                  Content="Import/Export"    BorderBrush="#67686D" 
+                  Content="Import/Export"    BorderBrush="#67686D"  Tag="importExport"
                 DataContext="M238.2,174.2c-1.5,0.9-2.6,1-4.2,0.1c-23.8-13.8-47.6-27.5-71.4-41.3c-4.1-2.3-8.1-4.7-12.4-7.2c5.3-3,10.2-5.9,15.1-8.8
 	c5.6-3.3,11.1-6.6,16.7-9.8h0.7c0.6,0.4,1.1,0.9,1.8,1.3c20.8,12,41.6,24,62.3,36c7.1,4.1,14.1,8.1,21.4,12.3
 	c-0.9,0.5-1.5,0.9-2.2,1.3C256.7,163.5,247.4,168.8,238.2,174.2z M108.2,163.9c24.1,13.9,48.3,27.9,72.5,41.8
@@ -139,14 +124,14 @@
 	c26.7,15.4,53.3,30.8,80,46.2c0.5,0.3,1,0.5,1.7,0.9c0-0.7,0.1-1.2,0.1-1.8v-92.9c0-1.4-0.5-2.1-1.6-2.7
 	c-26.7-15.4-53.5-30.9-80.2-46.3c-0.6-0.3-1.2-0.6-1.9-1.1V171.7z M255.8,244.5c31.2,0,56.5,25.3,56.5,56.5s-25.3,56.5-56.5,56.5
 	s-56.5-25.3-56.5-56.5S224.6,244.5,255.8,244.5z M256.7,311.8v13.6L299,301l-42.3-24.5v13.6h-44.8v21.7H256.7z"/>
-                <Button x:Name="btn_itemsDestroy" Click="Btn_itemsDestroy_Click" Style="{StaticResource SmallButton}"   Grid.Row="5" Grid.Column="0"
+                    <Button x:Name="btn_itemsDestroy" Click="Btn_itemsDestroy_Click" Style="{StaticResource SmallButton}"   Grid.Row="5" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="2.5" 
-                  Content="Destroy"    BorderBrush="#67686D" 
+                  Content="Destroy"    BorderBrush="#67686D" Tag="itemsDestroy"
                 DataContext="M28.2,7h-5.8c-0.2-3.5-3.1-6.3-6.5-6.3c-3.4,0-6.2,2.8-6.5,6.3H2.5c-1.1,0-2,0.9-2,2s0.9,2,2,2h1.8v18
 	c0,1.1,0.9,2,2,2h19c1.1,0,2-0.9,2-2V11h1c1.1,0,2-0.9,1.9-2C30.2,7.9,29.3,7,28.2,7z M9.7,28.2H8V12.4h1.7V28.2z M16.8,28.2h-1.7
 	V12.4h1.7V28.2z M12.5,7c0.2-1.8,1.6-3.1,3.4-3.1c1.8,0,3.2,1.4,3.5,3.1H12.5z M23.9,28.2h-1.7V12.4h1.7V28.2z"/>
                 <Button  Style="{StaticResource SmallButton}"   Grid.Row="6" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="2.5"
+                Height="75" Width="75" Background="White" Margin="2.5" Tag="inventory"
                   Content="inventory"  x:Name="btn_inventory"  Click="Btn_inventory_Click" BorderBrush="#67686D" 
                 DataContext="M11,8h9c0.5,0,1-0.4,1-1V6c0-0.6-0.4-1-1-1h-2V4c0-1.1-0.9-2-2-2h-1c-1.1,0-2,0.9-2,2v1h-2c-0.5,0-1,0.4-1,1v1
 	C10,7.6,10.4,8,11,8z M15.5,4C15.8,4,16,4.2,16,4.5S15.8,5,15.5,5S15,4.8,15,4.5S15.2,4,15.5,4z M11,20h-1v-1h1V20z M11,25h-1v-1h1
@@ -156,7 +141,7 @@
 	S12.4,13.8,12.2,14.1z M22,25h-8v-1h8V25z M22,20h-8v-1h8V20z M22,15h-8v-1h8V15z" />
                     <Button  Style="{StaticResource SmallButton}"   Grid.Row="7" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5" FlowDirection="LeftToRight"
-                  Content="Statistic"  x:Name="btn_statistic"  BorderBrush="#67686D" 
+                  Content="Statistic"  x:Name="btn_storageStatistic"  BorderBrush="#67686D"  Tag="storageStatistic"
                 DataContext="M28.6,72.1c-4.4,7.8-13.7,11.2-22,8v38.5c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5V72.2
 	c0-0.1-0.1-0.1-0.1-0.1C28.7,72.1,28.6,72.1,28.6,72.1z M46.2,42.2l-8.8,8.9v67.6c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5
 	V45.9L56,42.2C52.8,43.1,49.4,43.1,46.2,42.2z M68.3,67.1v51.6c0,1.4,1.1,2.5,2.5,2.5h17.3c1.4,0,2.5-1.1,2.5-2.5V68

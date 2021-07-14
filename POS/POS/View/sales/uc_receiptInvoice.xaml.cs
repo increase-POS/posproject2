@@ -512,6 +512,8 @@ namespace POS.View
                     invoice.shippingCompanyId = (int)cb_company.SelectedValue;
                 if (cb_user.SelectedIndex != -1)
                     invoice.shipUserId = (int)cb_user.SelectedValue;
+                invoice.paid = 0;
+                invoice.deserved = invoice.totalNet;
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
 
@@ -524,6 +526,7 @@ namespace POS.View
                 decimal balance = 0;
                 decimal paid = 0;
                 decimal deserved = (decimal) invoice.totalNet ;
+                bool canSave = true;
                 if (invType == "s")
                 {
                     switch (cb_paymentProcessType.SelectedIndex)
@@ -536,20 +539,35 @@ namespace POS.View
                         case 1:// balance
                                // calculate deserved and paid (compare customer balance with totalNet) 
                             Agent customer = customers.ToList().Find(b => b.agentId == invoice.agentId);
-                            if (customer != null)
-                                balance = (decimal)customer.balance;
-                            if (balance >= invoice.totalNet)
+                            if(customer!= null)
                             {
-                                paid = (decimal)invoice.totalNet;
-                                deserved = 0;
-                                balance = (decimal)(balance - invoice.totalNet);
+                                float customerBalance = customer.balance;
+                                decimal remain = 0;
+                                if(customer.balanceType == 0)
+                                    remain = (decimal)invoice.totalNet - (decimal) customerBalance;     
+                                else
+                                    remain = (decimal) customer.balance + (decimal) invoice.totalNet;    
+
+                                if (remain > customer.maxDeserve)
+                                {
+                                    canSave = false;
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorMaxDeservedExceeded"), animation: ToasterAnimation.FadeIn);
+                                }
                             }
-                            else
-                            {
-                                paid = balance;
-                                deserved = (decimal)(invoice.totalNet - balance);
-                                balance = 0;
-                            }
+                            //if (customer != null)
+                            //    balance = (decimal)customer.balance;
+                            //if (balance >= invoice.totalNet)
+                            //{
+                            //    paid = (decimal)invoice.totalNet;
+                            //    deserved = 0;
+                            //    balance = (decimal)(balance - invoice.totalNet);
+                            //}
+                            //else
+                            //{
+                            //    paid = balance;
+                            //    deserved = (decimal)(invoice.totalNet - balance);
+                            //    balance = 0;
+                            //}
                             break;
                         case 2://card
                             paid = (decimal)invoice.totalNet;
@@ -561,153 +579,133 @@ namespace POS.View
                 {                 
                     paid = (decimal)invoice.totalNet;
                     deserved = 0;
-                    balance = (decimal)invoice.totalNet;
- 
-                    invoice.paid = paid;
-                    invoice.deserved = deserved;    
+                    balance = (decimal)invoice.totalNet;   
                 }
                 invoice.invType = invType;
-                // save invoice in DB
-                int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
-
-                if (invoiceId != 0)
+                if (canSave)
                 {
-                    // add invoice details
-                    invoiceItems = new List<ItemTransfer>();
-                    ItemTransfer itemT;
-                    for (int i = 0; i < billDetails.Count; i++)
-                    {
-                        itemT = new ItemTransfer();
+                    // save invoice in DB
+                    int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
+                    invoice.invoiceId = invoiceId;
 
-                        itemT.invoiceId = invoiceId;
-                        itemT.quantity = billDetails[i].Count;
-                        itemT.price = billDetails[i].Price;
-                        itemT.itemUnitId = billDetails[i].itemUnitId;
-                        itemT.createUserId = MainWindow.userID;
-
-                        invoiceItems.Add(itemT);
-                    }
-                    await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
-                    
-                    // edit vendor balance , add cach transfer
-                    if (invType == "s")
+                    if (invoiceId != 0)
                     {
-                       await itemLocationModel.decreaseAmounts(invoiceItems,MainWindow.branchID.Value); // update item quantity in DB
-                        if (paid > 0)
+                        // add invoice details
+                        invoiceItems = new List<ItemTransfer>();
+                        ItemTransfer itemT;
+                        for (int i = 0; i < billDetails.Count; i++)
                         {
+                            itemT = new ItemTransfer();
+
+                            itemT.invoiceId = invoiceId;
+                            itemT.quantity = billDetails[i].Count;
+                            itemT.price = billDetails[i].Price;
+                            itemT.itemUnitId = billDetails[i].itemUnitId;
+                            itemT.createUserId = MainWindow.userID;
+
+                            invoiceItems.Add(itemT);
+                        }
+                        await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
+
+                        // edit vendor balance , add cach transfer
+                        if (invType == "s")
+                        {
+                            await itemLocationModel.decreaseAmounts(invoiceItems, MainWindow.branchID.Value); // update item quantity in DB
+                            //if (paid > 0)
+                            //{
                             switch (cb_paymentProcessType.SelectedIndex)
-                            {
-
+                            { 
                                 case 0:// cash: update pos balance
-
                                     pos.balance += balance;
                                     await pos.savePos(pos);
+                                    // cach transfer model
+                                    CashTransfer cashTrasnfer = new CashTransfer();
+                                    cashTrasnfer.transType = "d"; //deposit
+                                    cashTrasnfer.posId = MainWindow.posID;
+                                    cashTrasnfer.agentId = invoice.agentId;
+                                    cashTrasnfer.invId = invoiceId;
+                                    cashTrasnfer.transNum = SectionData.generateNumber('d', "c").ToString();
+                                    cashTrasnfer.cash = paid;
+                                    cashTrasnfer.side = "c"; // customer
+                                    cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
+                                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                                    {
+                                        cashTrasnfer.cardId = Convert.ToInt32(cb_card.SelectedValue);
+                                        cashTrasnfer.docNum = tb_processNum.Text;
+                                    }
+                                    cashTrasnfer.createUserId = MainWindow.userID;
+                                    await cashTrasnfer.Save(cashTrasnfer); //add cash transfer  
                                     break;
                                 case 1:// balance: update customer balance
-
-                                    await agentModel.updateBalance((int)invoice.agentId, balance);//update customer balance
+                                    await invoice.recordCashTransfer(invoice,"si");
+                                    // await agentModel.updateBalance((int)invoice.agentId, balance);//update customer balance
                                     break;
                             }
 
-                            // cach transfer model
-                            CashTransfer cashTrasnfer = new CashTransfer();
-                            cashTrasnfer.transType = "d"; //deposit
-                            cashTrasnfer.posId = MainWindow.posID;
-                            cashTrasnfer.agentId = invoice.agentId;
-                            cashTrasnfer.invId = invoiceId;
-                            cashTrasnfer.transNum = SectionData.generateNumber('d', "c").ToString();
-                            cashTrasnfer.cash = paid;
-                            cashTrasnfer.side = "c"; // customer
-                            cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
-                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                            {
-                                cashTrasnfer.cardId = Convert.ToInt32(cb_card.SelectedValue);
-                                cashTrasnfer.docNum = tb_processNum.Text;
-                            }
-                            //  cashTrasnfer
-                            cashTrasnfer.createUserId = MainWindow.userID;
-                            await cashTrasnfer.Save(cashTrasnfer); //add cash transfer    
+                                 
+                            //}
                         }
-
-                        //update items quantity
-                    }
-                    else if (invType == "sb")
-                    {
-                       await itemLocationModel.recieptInvoice(invoiceItems,MainWindow.branchID.Value,MainWindow.userID.Value); // update item quantity in DB
-                        if (paid > 0)
+                        else if (invType == "sb")
                         {
-                            switch (cb_paymentProcessType.SelectedIndex)
+                            await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value); // update item quantity in DB
+                            if (paid > 0)
                             {
-                                case 0:
-                                case 2: // cash:card: update pos balance
-                                    
-                                    pos.balance -= balance;
-                                    await pos.savePos(pos);
-                                    break;
-                                case 1:// balance: update customer balance
-                                    Agent customer = customers.ToList().Find(b => b.agentId == invoice.agentId);
-                                    if (customer != null)
-                                        balance = (decimal)customer.balance + balance;
-                                    await agentModel.updateBalance((int)invoice.agentId, balance);//update customer balance
-                                    break;
+                                switch (cb_paymentProcessType.SelectedIndex)
+                                {
+                                    case 0:
+                                    case 2: // cash:card: update pos balance
+
+                                        pos.balance -= balance;
+                                        await pos.savePos(pos);
+                                        // cach transfer model
+                                        CashTransfer cashTrasnfer = new CashTransfer();
+                                        cashTrasnfer.transType = "p"; //pull
+                                        cashTrasnfer.posId = MainWindow.posID;
+                                        cashTrasnfer.agentId = invoice.agentId;
+                                        cashTrasnfer.invId = invoiceId;
+                                        cashTrasnfer.transNum = SectionData.generateNumber('p', "c").ToString();
+                                        cashTrasnfer.cash = paid;
+                                        cashTrasnfer.side = "c"; // customer
+                                        cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
+                                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                                        {
+                                            cashTrasnfer.cardId = Convert.ToInt32(cb_card.SelectedValue);
+                                            cashTrasnfer.docNum = tb_processNum.Text;
+                                        }
+                                        //  cashTrasnfer
+                                        cashTrasnfer.createUserId = MainWindow.userID;
+                                        await cashTrasnfer.Save(cashTrasnfer); //add cash transfer    
+                                        break;
+                                    case 1:// balance: update customer balance
+                                        await invoice.recordCashTransfer(invoice,"sb");
+                                        break;
+                                }
+
+                               
                             }
 
-                            // cach transfer model
-                            CashTransfer cashTrasnfer = new CashTransfer();
-                            cashTrasnfer.transType = "p"; //pull
-                            cashTrasnfer.posId = MainWindow.posID;
-                            cashTrasnfer.agentId = invoice.agentId;
-                            cashTrasnfer.invId = invoiceId;
-                            cashTrasnfer.transNum = SectionData.generateNumber('p', "c").ToString();
-                            cashTrasnfer.cash = paid;
-                            cashTrasnfer.side = "c"; // customer
-                            cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
-                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                            {
-                                cashTrasnfer.cardId = Convert.ToInt32(cb_card.SelectedValue);
-                                cashTrasnfer.docNum = tb_processNum.Text;
-                            }
-                            //  cashTrasnfer
-                            cashTrasnfer.createUserId = MainWindow.userID;
-                            await cashTrasnfer.Save(cashTrasnfer); //add cash transfer    
+                            //update items quantity
                         }
 
-                        //update items quantity
+                        #region save coupns on invoice
+                        //CouponInvoice invCoupon;
+                        //invCouponList.Clear();
+                        foreach (CouponInvoice ci in selectedCoupons)
+                        {
+                            ci.InvoiceId = invoiceId;
+                            ci.createUserId = MainWindow.userID;
+                        }
+                        await invoiceModel.saveInvoiceCoupons(selectedCoupons, invoiceId, invoice.invType);
+                        #endregion
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     }
-
-                    #region save coupns on invoice
-                    //CouponInvoice invCoupon;
-                    //invCouponList.Clear();
-                    foreach (CouponInvoice ci in selectedCoupons)
-                    {
-                        ci.InvoiceId = invoiceId;
-                        ci.createUserId = MainWindow.userID;
-                    }
-                    await invoiceModel.saveInvoiceCoupons(selectedCoupons, invoiceId,invoice.invType);
-                    #endregion
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
-                else
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-   
             }
             clearInvoice();
         }
-        //private async Task<string> generateInvNumber(string invoiceCode)
-        //{
-        //    string storeCode = "";
-        //    string posCode = "";
-        //    if (pos != null)
-        //    {
-        //        storeCode = pos.branchCode;
-        //        posCode = pos.code;
-        //    }
-        //    int sequence = await invoiceModel.GetLastNumOfInv(invoiceCode);
-        //    sequence++;
 
-        //    string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
-        //    return invoiceNum;
-        //}
         bool logInProcessing = true;
         void awaitSaveBtn(bool isAwait)
         {

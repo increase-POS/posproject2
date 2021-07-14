@@ -1620,4 +1620,13 @@
   <data name="trSelectedInvoices" xml:space="preserve">
     <value>الفواتير المختارة</value>
   </data>
+  <data name="trErrorMaxDeservedExceeded" xml:space="preserve">
+    <value>تم تجاوز القيمة العظمى للرصيد</value>
+  </data>
+  <data name="trEmptyPrice" xml:space="preserve">
+    <value>السعر لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trSelectedUsers" xml:space="preserve">
+    <value>المستخدمون المختارون</value>
+  </data>
 </root>

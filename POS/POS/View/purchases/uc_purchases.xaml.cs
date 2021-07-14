@@ -1,4 +1,5 @@
-﻿using POS.View.purchases;
+﻿using POS.Classes;
+using POS.View.purchases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace POS.View
         private void translate()
         {
             btn_payInvoice.Content = MainWindow.resourcemanager.GetString("trInvoice");
-            btn_statistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
+            btn_purchaseStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
            
 
         }
@@ -63,6 +64,17 @@ namespace POS.View
             translate();
             btn_payInvoice_Click(null, null);
 
+            permission();
+        }
+        void permission()
+        {
+            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+            {
+                if (button.Tag != null)
+                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+                        button.Visibility = Visibility.Visible;
+                    else button.Visibility = Visibility.Collapsed;
+            }
         }
         void refreashBackground()
         {
@@ -70,8 +82,8 @@ namespace POS.View
             btn_payInvoice.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_payInvoice.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_statistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_statistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_purchaseStatistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_purchaseStatistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
         }
 
@@ -93,7 +105,7 @@ namespace POS.View
 
         private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_statistic);
+            refreashBachgroundClick(btn_purchaseStatistic);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_statistic.Instance);
 

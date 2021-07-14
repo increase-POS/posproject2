@@ -66,38 +66,21 @@ namespace POS.View.windows
             //                  LastName = p.LastName,
             //                  EmailID = e.EmailAddress1
             //              }).ToList();
-
-            if (!Properties.Settings.Default.userName.Equals(""))
+            if (Properties.Settings.Default.userName != string.Empty)
             {
-                //users = await userModel.GetUsersActive();
-                //if (users.Any(i => i.username.Equals(Properties.Settings.Default.userName)))
-                //    user = users.Where(i => i.username == Properties.Settings.Default.userName).FirstOrDefault<User>();
-                //SettingCls setModel = new SettingCls();
-                //SettingCls set = new SettingCls();
-                //SetValues valueModel = new SetValues();
-                //List<SetValues> languages = new List<SetValues>();
-                //UserSetValues usValueModel = new UserSetValues();
-                //var lanSettings = await setModel.GetAll();
-                //set = lanSettings.Where(l => l.name == "language").FirstOrDefault<SettingCls>();
-
-                //var lanValues = await valueModel.GetAll();
-                //languages = lanValues.Where(vl => vl.settingId == set.settingId).ToList<SetValues>();
-
-                //List<UserSetValues> usValues = new List<UserSetValues>();
-                //usValues = await usValueModel.GetAll();
-                //var curUserValues = usValues.Where(c => c.userId == user.userId);
-
-                //foreach (var l in curUserValues)
-                //    if (languages.Any(c => c.valId == l.valId))
-                //    {
-                //        usLanguage = l;
-                //    }
-
-                //var lan = await valueModel.GetByID(usLanguage.valId.Value);
-                //lang = lan.value;
+                txtUserName.Text = Properties.Settings.Default.userName;
+                txtPassword.Password = Properties.Settings.Default.password;
                 lang = Properties.Settings.Default.Lang;
+                cbxRemmemberMe.IsChecked = true;
+               
             }
-            else lang = "en";
+            else
+            {
+                txtUserName.Clear();
+                txtPassword.Clear();
+                lang = "en";
+                cbxRemmemberMe.IsChecked = false;
+            }
 
             if (lang.Equals("en"))
             {
@@ -109,20 +92,6 @@ namespace POS.View.windows
                 resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_logs.FlowDirection = FlowDirection.RightToLeft;
             }
-            if (Properties.Settings.Default.userName != string.Empty)
-            {
-                txtUserName.Text = Properties.Settings.Default.userName;
-                txtPassword.Password = Properties.Settings.Default.password;
-                cbxRemmemberMe.IsChecked = true;
-
-            }
-            else
-            {
-                txtUserName.Clear();
-                txtPassword.Clear();
-                cbxRemmemberMe.IsChecked = false;
-
-            }
           
             if (txtUserName.Text.Equals(""))
                 Keyboard.Focus(txtUserName);
@@ -130,6 +99,35 @@ namespace POS.View.windows
                 Keyboard.Focus(txtPassword);
 
             translate();
+        }
+
+        private async Task<string> getUserLanguage(int userId)
+        {
+            //users = await userModel.GetUsersActive();
+            //if (users.Any(i => i.username.Equals(Properties.Settings.Default.userName)))
+            //    user = users.Where(i => i.username == Properties.Settings.Default.userName).FirstOrDefault<User>();
+            SettingCls setModel = new SettingCls();
+            SettingCls set = new SettingCls();
+            SetValues valueModel = new SetValues();
+            List<SetValues> languages = new List<SetValues>();
+            UserSetValues usValueModel = new UserSetValues();
+            var lanSettings = await setModel.GetAll();
+            set = lanSettings.Where(l => l.name == "language").FirstOrDefault<SettingCls>();
+
+            var lanValues = await valueModel.GetAll();
+            languages = lanValues.Where(vl => vl.settingId == set.settingId).ToList<SetValues>();
+
+            List<UserSetValues> usValues = new List<UserSetValues>();
+            usValues = await usValueModel.GetAll();
+            var curUserValues = usValues.Where(c => c.userId == userId);
+            foreach (var l in curUserValues)
+                if (languages.Any(c => c.valId == l.valId))
+                {
+                    usLanguage = l;
+                }
+
+            var lan = await valueModel.GetByID(usLanguage.valId.Value);
+            return lan.value;
         }
 
         private void translate()
@@ -188,7 +186,8 @@ namespace POS.View.windows
                         //send user info to main window
                         MainWindow.userID = user.userId;
                         MainWindow.userLogin = user;
-                        MainWindow.lang = lang;
+                        MainWindow.lang = await getUserLanguage(user.userId);
+                        //MainWindow.lang = lang;
                         //make user online
                         user.isOnline = 1;
                         user.isActive = 1;

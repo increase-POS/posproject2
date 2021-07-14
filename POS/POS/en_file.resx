@@ -1641,4 +1641,13 @@
   <data name="trSelectedInvoices" xml:space="preserve">
     <value>Selected invoices</value>
   </data>
+  <data name="trErrorMaxDeservedExceeded" xml:space="preserve">
+    <value>Maximum balance value exceeded</value>
+  </data>
+  <data name="trEmptyPrice" xml:space="preserve">
+    <value>Price cann't be empty</value>
+  </data>
+  <data name="trSelectedUsers" xml:space="preserve">
+    <value>Selected users</value>
+  </data>
 </root>

@@ -1510,6 +1510,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to السعر لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyPrice {
+            get {
+                return ResourceManager.GetString("trEmptyPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رقم العملية لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyProcessNumToolTip {
@@ -2046,6 +2055,15 @@ namespace POS {
         internal static string trErrorItemNotFoundToolTip {
             get {
                 return ResourceManager.GetString("trErrorItemNotFoundToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تم تجاوز القيمة العظمى للرصيد.
+        /// </summary>
+        internal static string trErrorMaxDeservedExceeded {
+            get {
+                return ResourceManager.GetString("trErrorMaxDeservedExceeded", resourceCulture);
             }
         }
         
@@ -3729,6 +3747,15 @@ namespace POS {
         internal static string trSelectedLocations {
             get {
                 return ResourceManager.GetString("trSelectedLocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المستخدمون المختارون.
+        /// </summary>
+        internal static string trSelectedUsers {
+            get {
+                return ResourceManager.GetString("trSelectedUsers", resourceCulture);
             }
         }
         

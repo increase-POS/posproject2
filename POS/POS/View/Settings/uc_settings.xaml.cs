@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POS.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -44,12 +45,23 @@ namespace POS.View.Settings
             else
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucSettings.FlowDirection = FlowDirection.RightToLeft; }
             translate();
+            permission();
+        }
+        void permission()
+        {
+            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+            {
+                if (button.Tag != null)
+                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+                        button.Visibility = Visibility.Visible;
+                    else button.Visibility = Visibility.Collapsed;
+            }
         }
         private void translate()
         {
             btn_general.Content = MainWindow.resourcemanager.GetString("trGeneral");
-            btn_reports.Content = MainWindow.resourcemanager.GetString("trReports");
-            btn_permission.Content = MainWindow.resourcemanager.GetString("trPermission");
+            btn_reportsSettings.Content = MainWindow.resourcemanager.GetString("trReports");
+            btn_permissions.Content = MainWindow.resourcemanager.GetString("trPermission");
            
         }
         void refreashBackground()
@@ -57,11 +69,11 @@ namespace POS.View.Settings
             btn_general.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_general.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_reports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_reports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_reportsSettings.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_reportsSettings.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_permission.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_permission.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_permissions.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_permissions.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
 
         void refreashBachgroundClick(Button btn)
@@ -79,14 +91,14 @@ namespace POS.View.Settings
 
         private void btn_reports_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_reports);
+            refreashBachgroundClick(btn_reportsSettings);
             grid_main.Children.Clear();
            
         }
 
         private void btn_permission_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_permission);
+            refreashBachgroundClick(btn_permissions);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_permissions.Instance);
         }

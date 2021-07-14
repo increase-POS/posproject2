@@ -1,4 +1,5 @@
-﻿using POS.View.storage;
+﻿using POS.Classes;
+using POS.View.storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +53,17 @@ namespace POS.View
             }
 
             Btn_locations_Click(null, null);
+            permission();
+        }
+        void permission()
+        {
+            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+            {
+                if (button.Tag != null)
+                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+                        button.Visibility = Visibility.Visible;
+                    else button.Visibility = Visibility.Collapsed;
+            }
         }
         void refreashBackground()
         {
@@ -62,8 +74,8 @@ namespace POS.View
             btn_section.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_section.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_receiptOfPurchaseInvoice.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_receiptOfPurchaseInvoice.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_reciptOfInvoice.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_reciptOfInvoice.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
             btn_itemsStorage.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_itemsStorage.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -72,8 +84,8 @@ namespace POS.View
             //btn_itemsImport.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             //btn_itemsImport.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_itemsExport.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_itemsExport.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_importExport.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_importExport.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
 
             btn_itemsDestroy.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
@@ -107,7 +119,7 @@ namespace POS.View
         }
         private void Btn_receiptOfPurchaseInvoice_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_receiptOfPurchaseInvoice);
+            refreashBachgroundClick(btn_reciptOfInvoice);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_receiptOfPurchaseInvoice.Instance);
             //uc_receiptOfPurchaseInvoice uc = new uc_receiptOfPurchaseInvoice();
@@ -131,7 +143,7 @@ namespace POS.View
         }
         private void Btn_itemsExport_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_itemsExport);
+            refreashBachgroundClick(btn_importExport);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_itemsExport.Instance);
             //uc_itemsExport uc = new uc_itemsExport();

@@ -21,6 +21,7 @@ using System.Windows.Navigation;
 using System.Windows.Resources;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using netoaster;
 using POS.Classes;
 using POS.View;
 using POS.View.accounts;
@@ -64,6 +65,8 @@ namespace POS
         internal static decimal? StorageCost = 100;
         public static int Idletime = 5;
 
+        static public GroupObject groupObject = new GroupObject();
+        static public List<GroupObject> groupObjects = new List<GroupObject>();
         static SettingCls setModel = new SettingCls();
         static SetValues valueModel = new SetValues();
         static int nameId, addressId, emailId, mobileId, phoneId, faxId, logoId , taxId;
@@ -114,9 +117,9 @@ namespace POS
         }
       async  void windowFlowDirection()
         {
-            if (Properties.Settings.Default.Lang.Equals(""))
-                lang = await getDefaultLanguage();
-            else lang = Properties.Settings.Default.Lang;
+            //if (Properties.Settings.Default.Lang.Equals(""))
+            //    lang = await getDefaultLanguage();
+            //else lang = Properties.Settings.Default.Lang;
             //translate
             if (lang.Equals("en"))
             {
@@ -215,7 +218,7 @@ namespace POS
             txt_userName.Text = userLogin.name;
             txt_userJob.Text = userLogin.job;
 
-
+           
             try
             {
                 if (!string.IsNullOrEmpty(userLogin.image))
@@ -244,12 +247,64 @@ namespace POS
                 clearImg();
             }
             #endregion
+            #region 
 
+            groupObjects = await groupObject.GetUserpermission(userLogin.userId);
+
+            #endregion
             BTN_Home_Click(null, null);
             grid_mainWindow.IsEnabled = true;
             EndAwait();
+            permission();
+            btn_reports.Visibility = Visibility.Visible;
         }
+        void permission()
+        {
+            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+            {
+                //if (path.Name == "path_" + button.Tag)
+                //{
+                //    //MessageBox.Show("Hey i'm in " + "path_" + button.Tag);
+                //    path.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                //    break;
+                //}
+                if (button.Tag != null)
+                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+                        button.Visibility = Visibility.Visible;
+                    else button.Visibility = Visibility.Collapsed;
+            }
+            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
+            //    btn_sectionData.Visibility = Visibility.Visible;
+            //else btn_sectionData.Visibility = Visibility.Collapsed;
 
+            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
+            //    btn_sectionData.Visibility = Visibility.Visible;
+            //else btn_sectionData.Visibility = Visibility.Collapsed;
+
+            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
+            //    btn_sectionData.Visibility = Visibility.Visible;
+            //else btn_sectionData.Visibility = Visibility.Collapsed;
+
+            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
+            //    btn_sectionData.Visibility = Visibility.Visible;
+            //else btn_sectionData.Visibility = Visibility.Collapsed;
+
+            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
+            //    btn_sectionData.Visibility = Visibility.Visible;
+            //else btn_sectionData.Visibility = Visibility.Collapsed;
+
+            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
+            //    btn_sectionData.Visibility = Visibility.Visible;
+            //else btn_sectionData.Visibility = Visibility.Collapsed;
+
+            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
+            //    btn_sectionData.Visibility = Visibility.Visible;
+            //else btn_sectionData.Visibility = Visibility.Collapsed;
+
+            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
+            //    btn_sectionData.Visibility = Visibility.Visible;
+            //else btn_sectionData.Visibility = Visibility.Collapsed;
+        }
         void timer_Idle(object sender, EventArgs e)
         {
             if (IdleClass.IdleTime.Minutes >= Idletime)
@@ -359,15 +414,15 @@ namespace POS
             txt_catalog.Text = resourcemanager.GetString("trCatalog");
             tt_storage.Content = resourcemanager.GetString("trStorage");
             txt_storage.Text = resourcemanager.GetString("trStorage");
-            tt_purchases.Content = resourcemanager.GetString("trPurchases");
+            tt_purchase.Content = resourcemanager.GetString("trPurchases");
             txt_purchases.Text = resourcemanager.GetString("trPurchases");
             tt_sales.Content = resourcemanager.GetString("trSales");
             txt_sales.Text = resourcemanager.GetString("trSales");
-            tt_accounting.Content = resourcemanager.GetString("trAccounting");
+            tt_accounts.Content = resourcemanager.GetString("trAccounting");
             txt_accounting.Text = resourcemanager.GetString("trAccounting");
             tt_reports.Content = resourcemanager.GetString("trReports");
             txt_reports.Text = resourcemanager.GetString("trReports");
-            tt_sectiondata.Content = resourcemanager.GetString("trSectionData");
+            tt_sectionData.Content = resourcemanager.GetString("trSectionData");
             txt_sectiondata.Text = resourcemanager.GetString("trSectionData");
             tt_settings.Content = resourcemanager.GetString("trSettings");
             txt_settings.Text = resourcemanager.GetString("trSettings");
@@ -396,14 +451,14 @@ namespace POS
             #region tooltipVisibility
             FN_tooltipVisibility(BTN_menu);
             FN_tooltipVisibility(BTN_home);
-            FN_tooltipVisibility(BTN_catalog);
-            FN_tooltipVisibility(BTN_storage);
-            FN_tooltipVisibility(BTN_purchases);
-            FN_tooltipVisibility(BTN_sales);
-            FN_tooltipVisibility(BTN_reports);
-            FN_tooltipVisibility(BTN_accounts);
-            FN_tooltipVisibility(BTN_sectionData);
-            FN_tooltipVisibility(BTN_settings);
+            FN_tooltipVisibility(btn_catalog);
+            FN_tooltipVisibility(btn_storage);
+            FN_tooltipVisibility(btn_purchase);
+            FN_tooltipVisibility(btn_sales);
+            FN_tooltipVisibility(btn_reports);
+            FN_tooltipVisibility(btn_accounts);
+            FN_tooltipVisibility(btn_sectionData);
+            FN_tooltipVisibility(btn_settings);
             #endregion
 
 
@@ -518,16 +573,19 @@ namespace POS
 
         private void BTN_SectionData_Click(object sender, RoutedEventArgs e)
         {
-            colorTextRefreash(txt_sectiondata);
-            FN_pathVisible(path_openSectionData);
-            fn_ColorIconRefreash(path_iconSectionData);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(UC_SectionData.Instance);
-            //UC_SectionData uc = new UC_SectionData();
-            //grid_main.Children.Add(uc);
-            isHome = true;
-
-
+            //if (MainWindow.groupObject.HasPermission(BTN_sectionData.Tag.ToString(), MainWindow.groupObjects))
+            //{
+                colorTextRefreash(txt_sectiondata);
+                FN_pathVisible(path_openSectionData);
+                fn_ColorIconRefreash(path_iconSectionData);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(UC_SectionData.Instance);
+                //UC_SectionData uc = new UC_SectionData();
+                //grid_main.Children.Add(uc);
+                isHome = true;
+            //}
+            //else
+            //    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private void BTN_catalog_Click(object sender, RoutedEventArgs e)

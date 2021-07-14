@@ -490,138 +490,44 @@ namespace POS.View
 
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
-
-                // calculate deserved and paid (compare vendor balance with totalNet)  
-                Agent vendor = vendors.ToList().Find(b => b.agentId == invoice.agentId);
-                decimal balance = 0;
-                if (vendor != null)
-                    balance = (decimal)vendor.balance;
-                decimal paid = 0;
-                decimal deserved = (decimal)invoice.totalNet;
-
                 if (invType == "pw")
-                {
-                    invoice.invNumber = await invoice.generateInvNumber(invCode);
-                    //deserved = 0;
-                    //paid = (decimal)invoice.totalNet;
-                    //balance = (decimal)(balance + invoice.totalNet);
-
-                    if (balance >= invoice.totalNet)
-                    {
-                        paid = (decimal)invoice.totalNet;
-                        deserved = 0;
-                        balance = (decimal)(balance - invoice.totalNet);
-                    }
-                    else
-                    {
-                        paid = balance;
-                        deserved = (decimal)(invoice.totalNet - balance);
-                        balance = 0;
-                    }
-                }
-                else if (invType == "pb")
-                {
-                    invoice.invNumber = await invoice.generateInvNumber(invCode);
-                    deserved = 0;
-                    paid = (decimal)invoice.totalNet;
-                    balance = (decimal)(balance + invoice.totalNet);
-                    //if (balance >= invoice.totalNet)
-                    //{
-                    //    paid = (decimal)invoice.totalNet;
-                    //    deserved = 0;
-                    //    balance = (decimal)(balance - invoice.totalNet);
-                    //}
-                    //else
-                    //{
-                    //    paid = balance;
-                    //    deserved = (decimal)(invoice.totalNet - balance);
-                    //    balance = 0;
-                    //}
-                }
-                invoice.paid = paid;
-                invoice.deserved = deserved;
+                    invoice.invNumber = await invoice.generateInvNumber("pi");  
 
                 // save invoice in DB
                 int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
-
+                invoice.invoiceId = invoiceId;
                 if (invoiceId != 0)
                 {
-                    // edit vendor balance , add cach transfer
-                    if (paid > 0)
+                    if (invType == "pw")
+                        await invoice.recordCashTransfer(invoice,"pi");
+                    else if (invType == "pb")
+                        await invoice.recordCashTransfer(invoice,"pb");
+
+                    // add invoice details
+                    invoiceItems = new List<ItemTransfer>();
+                    ItemTransfer itemT;
+                    for (int i = 0; i < billDetails.Count; i++)
                     {
-                        CashTransfer cashTrasnfer = new CashTransfer();
-                        cashTrasnfer.posId = MainWindow.posID;
-                        cashTrasnfer.agentId = invoice.agentId;
-                        cashTrasnfer.invId = invoiceId;
-                        cashTrasnfer.cash = paid;
-                        cashTrasnfer.side = "v"; // vendor
-                        cashTrasnfer.createUserId = MainWindow.userID;
-                        ///processType 
-                        cashTrasnfer.processType = "balance";
+                        itemT = new ItemTransfer();
 
-                        ///
+                        itemT.invoiceId = invoiceId;
+                        itemT.quantity = billDetails[i].Count;
+                        itemT.price = billDetails[i].Price;
+                        itemT.itemUnitId = billDetails[i].itemUnitId;
+                        itemT.createUserId = MainWindow.userID;
 
-
-                        if (invType == "pw")// purchase wait
-                        {
-                            cashTrasnfer.transType = "p"; //pull
-                            cashTrasnfer.transNum = SectionData.generateNumber('p', "v").ToString();
-                        }
-                        else if (_InvoiceType == "pbw")//purchase bounce
-                        {
-                            cashTrasnfer.transType = "d"; //deposit
-                            cashTrasnfer.transNum = SectionData.generateNumber('d', "v").ToString();
-
-                            //pull items from free zone
-                            await itemLocationModel.returnInvoice(invoiceItems, invoice.branchCreatorId.Value, MainWindow.userID.Value); // increase item quantity in DB
-                        }
-                        await cashTrasnfer.Save(cashTrasnfer); //add cash transfer
-                        await agentModel.updateBalance((int)invoice.agentId, balance);//update balance
+                        invoiceItems.Add(itemT);
                     }
+                    await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                 }
                 else
                     Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-
-                // add invoice details
-                invoiceItems = new List<ItemTransfer>();
-                ItemTransfer itemT;
-                for (int i = 0; i < billDetails.Count; i++)
-                {
-                    itemT = new ItemTransfer();
-
-                    itemT.invoiceId = invoiceId;
-                    itemT.quantity = billDetails[i].Count;
-                    itemT.price = billDetails[i].Price;
-                    itemT.itemUnitId = billDetails[i].itemUnitId;
-                    itemT.createUserId = MainWindow.userID;
-
-                    invoiceItems.Add(itemT);
-                }
-                await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
             }
             clearInvoice();
         }
-        //private async Task<string> generateInvNumber(string invoiceCode)
-        //{
-        //    Branch store = branches.ToList().Find(b => b.branchId == invoice.branchId);
-        //    string storeCode = "";
-        //    if (store != null)
-        //        storeCode = store.code;
-        //    string posCode = "";
-        //    if (pos != null)
-        //    {
-        //        storeCode = pos.branchCode;
-        //        posCode = pos.code;
-        //    }
-        //    int sequence = await invoiceModel.GetLastNumOfInv(invoiceCode);
-        //    sequence++;
-
-        //    string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
-        //    return invoiceNum;
-        //}
         private void dp_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             //DateTime invoiceDate;
@@ -674,19 +580,19 @@ namespace POS.View
 
                 //check mandatory inputs
                 validateInvoiceValues();
-            TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
+                TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
                 if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0
                     && !tb.Text.Trim().Equals("")   )
-            {
-                if (_InvoiceType == "pbd") //pbd means purchase bounse draft
-                    await addInvoice("pb", "pb"); // pb means purchase bounce
-                else if (_InvoiceType == "pbw")//pbw  purchase invoice
-                    await addInvoice("pb", "pb");
-                else//pw  waiting purchase invoice
-                    await addInvoice("pw", "pi");
+                {
+                    if (_InvoiceType == "pbd") //pbd means purchase bounse draft
+                        await addInvoice("pb", "pb"); // pb means purchase bounce
+                    else if (_InvoiceType == "pbw")//pbw  purchase invoice
+                        await addInvoice("pb", "pb");
+                    else//pw  waiting purchase invoice
+                        await addInvoice("pw", "pi");
 
-                if (invoice.invoiceId == 0) clearInvoice();
-            }
+                    if (invoice.invoiceId == 0) clearInvoice();
+                }
                 awaitSaveBtn(false);
                 logInProcessing = true;
             }

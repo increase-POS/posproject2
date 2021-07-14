@@ -705,5 +705,124 @@ namespace POS.Classes
             string invoiceNum = invoiceCode + "-" + strSeq;
             return invoiceNum;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="invoice"></param>
+        /// <param name="invType">pi,pb,si,sb</param>
+        /// <returns></returns>
+        public async Task<Invoice> recordCashTransfer(Invoice invoice,string invType)
+        {
+            Agent agent = new Agent();
+            float newBalance = 0;
+            agent = await agent.getAgentById(invoice.agentId.Value);
+
+            CashTransfer cashTrasnfer = new CashTransfer();
+            cashTrasnfer.posId = invoice.posId;
+            cashTrasnfer.agentId = invoice.agentId;
+            cashTrasnfer.invId = invoice.invoiceId;
+            cashTrasnfer.createUserId = invoice.createUserId; 
+            cashTrasnfer.processType = "balance";
+
+            switch (invType)
+            {
+                #region purchase
+                case "pi"://purchase invoice
+                case "sb"://sale bounce
+                    if(invType.Equals("pi"))
+                    {
+                        cashTrasnfer.side = "v"; // vendor
+                        cashTrasnfer.transNum = SectionData.generateNumber('p', "v").ToString();
+                    }
+                    else
+                    {
+                        cashTrasnfer.side = "c"; // vendor
+                        cashTrasnfer.transNum = SectionData.generateNumber('p', "c").ToString();
+                    }
+                    if(agent.balanceType == 1)
+                    {
+                        if (invoice.totalNet <= (decimal)agent.balance)
+                        {
+                            invoice.paid = invoice.totalNet;
+                            invoice.deserved = 0;
+                            newBalance = agent.balance - (float)invoice.totalNet;
+                            agent.balance = newBalance;
+                        }
+                        else
+                        {
+                            invoice.paid = (decimal)agent.balance;
+                            invoice.deserved = invoice.totalNet - (decimal)agent.balance ;
+                            newBalance = (float)invoice.totalNet - agent.balance;
+                            agent.balance = newBalance;
+                            agent.balanceType = 0;
+                        }
+                       
+                        cashTrasnfer.cash = invoice.paid;
+                        cashTrasnfer.transType = "p"; //pull
+                       
+
+                        await invoice.saveInvoice(invoice);
+                        await cashTrasnfer.Save(cashTrasnfer); //add cash transfer
+                        await agent.saveAgent(agent);
+                    }
+                    else if (agent.balanceType == 0)
+                    {
+                        newBalance = agent.balance + (float)invoice.totalNet;
+                        agent.balance = newBalance;
+                        await agent.saveAgent(agent);
+                    }
+                        break;
+                #endregion
+                #region purchase bounce
+                case "pb"://purchase bounce invoice
+                case "si"://sale invoice
+                    if(invType.Equals("pb"))
+                    {
+                        cashTrasnfer.side = "v"; // vendor
+                        cashTrasnfer.transNum = SectionData.generateNumber('d', "v").ToString();
+                    }
+                    else
+                    {
+                        cashTrasnfer.side = "c"; // customer
+                        cashTrasnfer.transNum = SectionData.generateNumber('d', "c").ToString();
+                    }
+                    if (agent.balanceType == 0)
+                    {
+                        if (invoice.totalNet <= (decimal)agent.balance)
+                        {
+                            invoice.paid = invoice.totalNet;
+                            invoice.deserved = 0;
+                            newBalance = agent.balance - (float)invoice.totalNet;
+                            agent.balance = newBalance;
+                        }
+                        else
+                        {
+                            invoice.paid = (decimal)agent.balance;
+                            invoice.deserved = invoice.totalNet - (decimal)agent.balance;
+                            newBalance = (float)invoice.totalNet - agent.balance;
+                            agent.balance = newBalance;
+                            agent.balanceType = 1;
+                        }
+                       
+                        cashTrasnfer.cash = invoice.paid;
+                        cashTrasnfer.transType = "d"; //deposit
+
+                        await invoice.saveInvoice(invoice);
+                        await cashTrasnfer.Save(cashTrasnfer); //add cash transfer
+                        await agent.saveAgent(agent);
+                    }
+                    else if (agent.balanceType == 1)
+                    {
+                        newBalance = agent.balance + (float)invoice.totalNet;
+                        agent.balance = newBalance;
+                        await agent.saveAgent(agent);
+                    }
+                    break;
+                #endregion  
+            }
+
+            return invoice;
+        }
+
     }
 }

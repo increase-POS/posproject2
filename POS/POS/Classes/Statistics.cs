@@ -15,7 +15,6 @@ namespace POS.Classes
 {
     public class Storage
     {
-
         // item unit
         public string itemName { get; set; }
         public string unitName { get; set; }
@@ -59,6 +58,7 @@ namespace POS.Classes
         public string x { get; set; }
         public string y { get; set; }
         public string z { get; set; }
+        private string sectionLoactionName;
 
         public Nullable<byte> LocisActive { get; set; }
         public int sectionId { get; set; }
@@ -73,14 +73,15 @@ namespace POS.Classes
         public Nullable<byte> SecisActive { get; set; }
         public string Secnote { get; set; }
         public Nullable<byte> SecisFreeZone { get; set; }
+        public string SectionLoactionName { get => sectionLoactionName = Secname + x + y + z; set => sectionLoactionName = value; }
     }
 
     public class ItemUnitCombo
     {
-       
-            public int itemUnitId { get; set; }
+
+        public int itemUnitId { get; set; }
         public string itemUnitName { get; set; }
-       
+
     }
     public class CouponCombo
     {
@@ -161,7 +162,7 @@ namespace POS.Classes
         public int countP { get; set; }
         public int countS { get; set; }
         public int count { get; set; }
-        
+
         public Nullable<decimal> totalS { get; set; }
         public Nullable<decimal> totalNetS { get; set; }
         public Nullable<decimal> totalP { get; set; }
@@ -193,8 +194,8 @@ namespace POS.Classes
         public Nullable<decimal> deservedD { get; set; }
         public Nullable<decimal> discountValueD { get; set; }
         // coupon
-  
-      
+
+
         public int CopcId { get; set; }
         public string Copname { get; set; }
         public string Copcode { get; set; }
@@ -214,7 +215,7 @@ namespace POS.Classes
         public Nullable<int> CopupdateUserId { get; set; }
         public string Copbarcode { get; set; }
         // offer
-       
+
         public int OofferId { get; set; }
         public string Oname { get; set; }
         public string Ocode { get; set; }
@@ -229,7 +230,7 @@ namespace POS.Classes
         public Nullable<int> OupdateUserId { get; set; }
         public string Onotes { get; set; }
         public Nullable<int> Oquantity { get; set; }
-        public  int Oitemofferid { get; set; }
+        public int Oitemofferid { get; set; }
     }
     class Statistics
     {
@@ -618,7 +619,7 @@ namespace POS.Classes
 
         // مبيعات
 
-            // فواتير المبيعات بكل انواعها
+        // فواتير المبيعات بكل انواعها
         public async Task<List<Invoice>> GetSaleinv()
         {
             List<Invoice> list = null;
@@ -759,7 +760,7 @@ namespace POS.Classes
             List<CouponCombo> iulist = new List<CouponCombo>();
 
             iulist = ITInvoice.GroupBy(x => x.CopcId)
-                   .Select(g => new CouponCombo { Copcid = g.FirstOrDefault().CopcId, Copname = g.FirstOrDefault().Copname  }).ToList();
+                   .Select(g => new CouponCombo { Copcid = g.FirstOrDefault().CopcId, Copname = g.FirstOrDefault().Copname }).ToList();
             return iulist;
 
         }
@@ -903,6 +904,8 @@ namespace POS.Classes
             }
         }
 
+
+        // حركة الاصناف التي دخلت الى الفرع
         public async Task<List<ItemTransferInvoice>> GetInItems()
         {
             List<ItemTransferInvoice> list = null;
@@ -946,6 +949,43 @@ namespace POS.Classes
 
 
         #endregion
+
+        public class itemCombo
+        {
+            private int itemId;
+            private string itemName;
+            private int branchId;
+            public int ItemId { get => itemId; set => itemId = value; }
+            public string ItemName { get => itemName; set => itemName = value; }
+            public int BranchId { get => branchId; set => branchId = value; }
+        }
+        public List<itemCombo> getItemCombo(List<Storage> ITInvoice)
+        {
+            List<itemCombo> iulist = new List<itemCombo>();
+
+            iulist = ITInvoice.Select(g => new itemCombo { ItemId = (int)g.itemId, ItemName = g.itemName, BranchId = g.branchId }).ToList();
+            return iulist;
+
+        }
+
+        public class unitCombo
+        {
+            private int unitId;
+            private string unitName;
+            private int itemId;
+            public int UnitId { get => unitId; set => unitId = value; }
+            public string UnitName { get => unitName; set => unitName = value; }
+            public int ItemId { get => itemId; set => itemId = value; }
+        }
+
+        public List<unitCombo> getUnitCombo(List<Storage> ITInvoice)
+        {
+            List<unitCombo> iulist = new List<unitCombo>();
+
+            iulist = ITInvoice.Select(g => new unitCombo { UnitId = (int)g.unitId, UnitName = g.unitName, ItemId = g.itemId }).ToList();
+            return iulist;
+
+        }
 
     }
 }

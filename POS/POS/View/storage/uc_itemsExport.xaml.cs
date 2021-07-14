@@ -557,7 +557,7 @@ namespace POS.View.storage
                     invoice.createUserId = MainWindow.userID;
                     invoice.updateUserId = MainWindow.userID;
                     if(invoice.invNumber == null)
-                        invoice.invNumber = await generateInvNumber("im");
+                        invoice.invNumber = await invoice.generateInvNumber("im");
                     // save invoice in DB
                     invoiceId = int.Parse(await invoice.saveInvoice(invoice));
                     if (invoiceId != 0)
@@ -570,7 +570,7 @@ namespace POS.View.storage
                             invoice.invoiceMainId = invoiceId;
                             if (cb_branch.SelectedIndex != -1)
                                 invoice.branchId = (int)cb_branch.SelectedValue;
-                            invoice.invNumber = await generateInvNumber("ex");
+                            invoice.invNumber = await invoice.generateInvNumber("ex");
                             invoice.createUserId = MainWindow.userID;
                         }
                         else // edit exit export order
@@ -598,7 +598,7 @@ namespace POS.View.storage
                     invoice.createUserId = MainWindow.userID;
                     invoice.updateUserId = MainWindow.userID;
                     if(invoice.invNumber == null)
-                        invoice.invNumber = await generateInvNumber("ex");
+                        invoice.invNumber = await invoice.generateInvNumber("ex");
                     // save invoice in DB
                     invoiceId = int.Parse(await invoice.saveInvoice(invoice));
 
@@ -612,7 +612,7 @@ namespace POS.View.storage
                             invoice.invoiceMainId = invoiceId;
                             if (cb_branch.SelectedIndex != -1)
                                 invoice.branchId = (int)cb_branch.SelectedValue;
-                            invoice.invNumber = await generateInvNumber("im");
+                            invoice.invNumber = await invoice.generateInvNumber("im");
                             invoice.createUserId = MainWindow.userID;
                         }
                         else // edit exit export order
@@ -799,7 +799,7 @@ namespace POS.View.storage
                     invoice.createUserId = MainWindow.userID;
                     invoice.updateUserId = MainWindow.userID;
                     if (invoice.invNumber == null)
-                        invoice.invNumber = await generateInvNumber("im");
+                        invoice.invNumber = await invoice.generateInvNumber("im");
                     // save invoice in DB
                     invoiceId = int.Parse(await invoice.saveInvoice(invoice));
                     if (invoiceId != 0)
@@ -812,7 +812,7 @@ namespace POS.View.storage
                             invoice.invoiceMainId = invoiceId;
                             if (cb_branch.SelectedIndex != -1)
                                 invoice.branchId = (int)cb_branch.SelectedValue;
-                            invoice.invNumber = await generateInvNumber("ex");
+                            invoice.invNumber = await invoice.generateInvNumber("ex");
                             invoice.createUserId = MainWindow.userID;
                         }
                         else // edit exit export order
@@ -836,38 +836,13 @@ namespace POS.View.storage
                     break;
                 case "exd":// add or edit export order then add import order
                            // import order
-                    //Window.GetWindow(this).Opacity = 0.2;
-                    //wd_transItemsLocation w = new wd_transItemsLocation();
-                    //w.orderList = invoiceItems;
-                    //List<ItemTransfer> readyItemsLoc = new List<ItemTransfer>();
-                    
-                    //if (w.ShowDialog() == true)
-                    //{
-                    //    if (w.selectedItemsLocations != null)
-                    //    {
-                    //        List<ItemLocation> itemsLocations = w.selectedItemsLocations;
-                            
-                    //        // _ProcessType ="ex";
-                    //        for (int i = 0; i < itemsLocations.Count; i++)
-                    //        {
-                    //            if (itemsLocations[i].isSelected == true)
-                    //            {
-                    //                ItemTransfer itemTr = new ItemTransfer();
-                    //                itemTr.itemUnitId = itemsLocations[i].itemUnitId;
-                    //                itemTr.quantity = itemsLocations[i].quantity;
-                    //                itemTr.locationIdOld = itemsLocations[i].locationId;
-                    //                readyItemsLoc.Add(itemTr);
-                    //            }
-                    //        }
-                          
-                    //    }
                     invoice.invType = "ex";
                     invoice.branchId = MainWindow.branchID.Value;
                     invoice.posId = MainWindow.posID.Value;
                     invoice.createUserId = MainWindow.userID;
                     invoice.updateUserId = MainWindow.userID;
                     if (invoice.invNumber == null)
-                        invoice.invNumber = await generateInvNumber("ex");
+                        invoice.invNumber = await invoice.generateInvNumber("ex");
                     // save invoice in DB
                     invoiceId = int.Parse(await invoice.saveInvoice(invoice));
 
@@ -881,7 +856,7 @@ namespace POS.View.storage
                             invoice.invoiceMainId = invoiceId;
                             if (cb_branch.SelectedIndex != -1)
                                 invoice.branchId = (int)cb_branch.SelectedValue;
-                            invoice.invNumber = await generateInvNumber("im");
+                            invoice.invNumber = await invoice.generateInvNumber("im");
                             invoice.createUserId = MainWindow.userID;
                         }
                         else // edit exit export order
@@ -901,9 +876,8 @@ namespace POS.View.storage
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     }
                     else
-                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                       // Window.GetWindow(this).Opacity = 1;                         
-                    //}  
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);                     
+                    
                     break;
                 case "exw":
                     invoice.invType = "ex";
@@ -1034,7 +1008,6 @@ namespace POS.View.storage
                 _Count -= oldCount;
                 _Count += newCount;
 
-
                 //  refresh count text box
                 tb_count.Text = _Count.ToString();
 
@@ -1061,24 +1034,6 @@ namespace POS.View.storage
             {
                 cb_processType.SelectedValue = _SelectedProcess;
             }
-        }
-        private async Task<string> generateInvNumber(string processCode)
-        {
-            Branch store = branches.ToList().Find(b => b.branchId == invoice.branchId);
-            string storeCode = "";
-            if (store != null)
-                storeCode = store.code;
-            string posCode = "";
-            if (pos != null)
-            {
-                //storeCode = pos.branchCode;
-                posCode = pos.code;
-            }
-            int sequence = await invoice.GetLastNumOfInv(processCode);
-            sequence++;
-
-            string invoiceNum = processCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
-            return invoiceNum;
-        }
+        }     
     }
 }

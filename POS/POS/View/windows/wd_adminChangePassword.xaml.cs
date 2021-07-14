@@ -123,6 +123,11 @@ namespace POS.View.windows
                     //MessageBox.Show(s);
                     if (!s.Equals("0"))
                     {
+                        if (Properties.Settings.Default.password != string.Empty)
+                        {
+                            Properties.Settings.Default.password = pb_password.Password;
+                            Properties.Settings.Default.Save();
+                        }
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopPasswordChanged"), animation: ToasterAnimation.FadeIn);
                         await Task.Delay(2000);
                         this.Close();

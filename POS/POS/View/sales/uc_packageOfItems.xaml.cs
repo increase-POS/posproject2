@@ -62,8 +62,6 @@ namespace POS.View
         ItemUnit itemUnit = new ItemUnit();
         OpenFileDialog openFileDialog = new OpenFileDialog();
 
-
-
         Item itemModel = new Item();
         Unit unitModel = new Unit();
         Property propertyModel = new Property();
@@ -85,6 +83,7 @@ namespace POS.View
         Service service = new Service();
         string selectedType = "";
 
+        ImageBrush brush = new ImageBrush();
 
         DataGrid dt = new DataGrid();
 
@@ -107,9 +106,11 @@ namespace POS.View
         List<string> unitNames = new List<string>();
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             catigoriesAndItemsView.ucPackageOfItems = this;
+
+            #region translate
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -120,14 +121,19 @@ namespace POS.View
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucPackage.FlowDirection = FlowDirection.RightToLeft;
             }
+            translate();
+            #endregion
+
+            fillCategories();
+
+            generateBarcode();
+
+            fillBarcodeList();
 
             RefrishCategoriesCard();
             Txb_searchitems_TextChanged(null, null);
 
-            translate();
-            fillCategories();
-            generateBarcode();
-            fillBarcodeList();
+            tb_code.Focus();
         }
         async void fillBarcodeList()
         {
@@ -154,23 +160,41 @@ namespace POS.View
             System.Drawing.ImageConverter ic = new System.Drawing.ImageConverter();
             //generate bitmap
             img_barcode.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(serial_bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-
         }
 
         private void btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            tb_code.Text = "";
-            tb_name.Text = "";
-            tb_details.Text = "";
+            tb_code.Clear();
+            tb_name.Clear();
+            tb_details.Clear();
             cb_categorie.SelectedIndex = -1;
-            tb_taxes.Text = "";
+            tb_taxes.Clear();
             item = new Item();
-            tb_price.Text = "";
+            tb_price.Clear();
             // set random barcode on image
             generateBarcode();
             itemUnit = new ItemUnit();
+
+            SectionData.clearValidate(tb_code , p_errorCode );
+            SectionData.clearValidate(tb_name, p_errorName);
+            SectionData.clearComboBoxValidate(cb_categorie , p_errorCategorie);
+            SectionData.clearValidate(tb_taxes , p_errorTaxes);
+            SectionData.clearValidate(tb_price , p_errorPrice);
+
+            clearImg();
+          
         }
+
+        private void clearImg()
+        {
+            //clear img
+            Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            brush.ImageSource = temp;
+            img_item.Background = brush;
+        }
+
         static public string generateRandomBarcode()
         {
             var now = DateTime.Now;
@@ -212,131 +236,26 @@ namespace POS.View
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_price, MainWindow.resourcemanager.GetString("trPriceHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
-
-
-
-
-
-
         }
 
-        #region
-        private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var bc = new BrushConverter();
-
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-        }
-
-        private void tb_name_LostFocus(object sender, RoutedEventArgs e)
-        {
-            var bc = new BrushConverter();
-
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-        }
-        private void Tb_code_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var bc = new BrushConverter();
-
-            if (tb_code.Text.Equals(""))
-            {
-                p_errorCode.Visibility = Visibility.Visible;
-                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_code.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorCode.Visibility = Visibility.Collapsed;
-                tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-        }
-        private void Tb_code_LostFocus(object sender, RoutedEventArgs e)
-        {
-            var bc = new BrushConverter();
-
-            if (tb_code.Text.Equals(""))
-            {
-                p_errorCode.Visibility = Visibility.Visible;
-                tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_code.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorCode.Visibility = Visibility.Collapsed;
-                tt_errorCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-        }
-        private void Cb_categorie_LostFocus(object sender, RoutedEventArgs e)
-        {
-            var bc = new BrushConverter();
-
-            if (cb_categorie.Text.Equals(""))
-            {
-                p_errorCategorie.Visibility = Visibility.Visible;
-                tt_categorie.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                cb_categorie.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorCategorie.Visibility = Visibility.Collapsed;
-                cb_categorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-        }
-        private void Tb_taxes_LostFocus(object sender, RoutedEventArgs e)
-        {
-            var bc = new BrushConverter();
-
-            if (tb_taxes.Text.Equals(""))
-            {
-                p_errorTaxes.Visibility = Visibility.Visible;
-                tt_errorTaxes.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_taxes.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorTaxes.Visibility = Visibility.Collapsed;
-                tb_taxes.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-        }
         private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
         {
             string barCode = tb_barcode.Text;
             generateBarcode(barCode);
         }
-        private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
-        {
-            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
-                e.Handled = false;
+        //private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
+        //{
+        //    var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+        //    if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+        //        e.Handled = false;
 
-            else
-                e.Handled = true;
-        }
+        //    else
+        //        e.Handled = true;
+        //}
         private void tb_upperLimit_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
         }
-        #endregion
 
         private void tb_barcode_Generate(object sender, KeyEventArgs e)
         {
@@ -758,6 +677,155 @@ namespace POS.View
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Tb_code_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+
+        private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+        }
+
+        private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+        }
+
+        private void Tb_PreventSpaces(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void validateEmpty(string name, object sender)
+        {
+            if (name == "TextBox")
+            {
+                if ((sender as TextBox).Name == "tb_code")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+                else if ((sender as TextBox).Name == "tb_name")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                else if ((sender as TextBox).Name == "tb_taxes")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorTaxes, tt_errorTaxes, "trEmptyTax");
+                else if ((sender as TextBox).Name == "tb_price")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorPrice, tt_errorPrice, "trEmptyPrice");
+            }
+            else if (name == "ComboBox")
+            {
+                if ((sender as ComboBox).Name == "cb_categorie")
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCategorie, tt_errorCategorie , "trErrorEmptyCategoryToolTip");
+            }
+        }
+
+        private void Tb_decimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        { //decimal
+            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                e.Handled = false;
+
+            else
+                e.Handled = true;
+        }
+
+        private void Tb_EnglishAndDigits_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {//only english and digits
+            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+            if (!regex.IsMatch(e.Text))
+                e.Handled = true;
+
+        }
+
+        private async void Btn_add_Click(object sender, RoutedEventArgs e)
+        {//add
+            validateEmptyEntries();
+
+            Boolean codeAvailable = await checkCodeAvailabiltiy(tb_code.Text);////////////???????????????????
+            decimal tax = 0;
+            if (tb_taxes.Text != "")
+                tax = decimal.Parse(tb_taxes.Text);
+
+            if ((!tb_code.Text.Equals("")) && (!tb_name.Text.Equals("")) && (!cb_categorie.Text.Equals("")) && 
+                (!tb_taxes.Text.Equals("")) && (!tb_price.Text.Equals("")) &&
+                codeAvailable)
+            {
+                item = new Item();
+                item.code = tb_code.Text;
+                item.name = tb_name.Text;
+                item.details = tb_details.Text;
+                item.type = selectedType;
+                item.image = "";
+                item.taxes = tax;
+                item.isActive = 1;
+                item.categoryId = Convert.ToInt32(cb_categorie.SelectedValue);
+                //item.parentId = parentId;
+                item.createUserId = MainWindow.userID;
+                //item.minUnitId = minUnitId;
+                //item.maxUnitId = maxUnitId;
+
+                string res = await itemModel.saveItem(item);
+                if (!res.Equals("0"))
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                else
+                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                int itemId = int.Parse(res);
+
+                if (openFileDialog.FileName != "")
+                    await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
+
+                await RefrishItems();
+                Txb_searchitems_TextChanged(null, null);
+                btn_clear_Click(sender, e);
+            }
+            tb_code.Focus();
+        }
+
+        private async Task<Boolean> checkCodeAvailabiltiy(string oldCode = "")
+        {
+            List<string> itemsCodes = await itemModel.GetItemsCodes();
+            string code = tb_code.Text;
+            var match = "";
+            if (code != oldCode && itemsCodes != null)
+                match = itemsCodes.FirstOrDefault(stringToCheck => stringToCheck.Contains(code));
+
+            if (match != "" && match != null)
+            {
+                SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                return false;
+            }
+            else
+            {
+                SectionData.clearValidate(tb_code, p_errorCode);
+                return true;
+            }
+        }
+
+        private void validateEmptyEntries()
+        {
+            //chk empty code
+            SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+            //chk empty name 
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk empty category
+            SectionData.validateEmptyComboBox(cb_categorie, p_errorCategorie, tt_errorCategorie, "trErrorEmptyCategoryToolTip");
+            //chk empty tax
+            SectionData.validateEmptyTextBox(tb_taxes, p_errorTaxes, tt_errorTaxes, "trEmptyTax");
+            //chk empty price
+            SectionData.validateEmptyTextBox(tb_price, p_errorPrice, tt_errorPrice, "trEmptyPrice");
+        }
+
+        private void Img_item_Click(object sender, RoutedEventArgs e)
+        {//select image
+            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                img_item.Background = brush;
+            }
         }
     }
 }

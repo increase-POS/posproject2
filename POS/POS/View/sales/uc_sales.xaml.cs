@@ -1,4 +1,5 @@
-﻿using POS.View.sales;
+﻿using POS.Classes;
+using POS.View.sales;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,8 +40,8 @@ namespace POS.View
         }
         private void translate()
         {
-            btn_receiptInvoice.Content = MainWindow.resourcemanager.GetString("trInvoice");
-            btn_statistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
+            btn_reciptInvoice.Content = MainWindow.resourcemanager.GetString("trInvoice");
+            btn_salesStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
             btn_coupon.Content = MainWindow.resourcemanager.GetString("trCoupon");
             btn_offer.Content = MainWindow.resourcemanager.GetString("trOffer");
             btn_medals.Content = MainWindow.resourcemanager.GetString("trMedals");
@@ -61,15 +62,26 @@ namespace POS.View
 
             translate();
             Btn_receiptInvoice_Click(null, null);
+            permission();
+        }
+        void permission()
+        {
+            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+            {
+                if (button.Tag != null)
+                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+                        button.Visibility = Visibility.Visible;
+                    else button.Visibility = Visibility.Collapsed;
+            }
         }
         void refreashBackground()
         {
 
-            btn_receiptInvoice.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_receiptInvoice.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_reciptInvoice.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_reciptInvoice.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_statistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_statistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_salesStatistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_salesStatistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
             btn_coupon.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_coupon.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -80,11 +92,11 @@ namespace POS.View
             btn_package.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_package.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_quotations.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_quotations.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_quotation.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_quotation.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_orders.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_orders.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_salesOrders.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_salesOrders.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
             btn_medals.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_medals.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -101,7 +113,7 @@ namespace POS.View
         }
         private void Btn_receiptInvoice_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_receiptInvoice);
+            refreashBachgroundClick(btn_reciptInvoice);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_receiptInvoice.Instance);
             //uc_receiptInvoice uc = new uc_receiptInvoice();
@@ -112,7 +124,7 @@ namespace POS.View
         }
         private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_statistic);
+            refreashBachgroundClick(btn_salesStatistic);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_salesStatistic.Instance);
         }
@@ -143,13 +155,13 @@ namespace POS.View
 
         private void Btn_quotations_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_quotations);
+            refreashBachgroundClick(btn_quotation);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_quotations.Instance);
         }
         private void Btn_orders_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_orders);
+            refreashBachgroundClick(btn_salesOrders);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_orders.Instance);
         }
