@@ -115,7 +115,7 @@ namespace POS.View.windows
             logoId = set.settingId;
             setVLogo = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
             //tb_fax.Text = setV.value;//getLogo();
-
+          await  getImg();
             #endregion
         }
         private void translate()
@@ -436,21 +436,100 @@ namespace POS.View.windows
                 string sFax = await valueModel.Save(setVFax);
                 //MessageBox.Show("fax : " + sFax);
 
-                //save logo
-                //setVLogo.value = "";
-                //setVLogo.isSystem = 1;
-                //setVLogo.isDefault = 1;
-                //setVLogo.settingId = logoId;
-                //string sLogo = await valueModel.Save(setVLogo);
+                //  save logo
+                // image
+
+                if (isImgPressed)
+                {
+                    int valId = setVLogo.valId;
+                    string b = await setVLogo.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + valId.ToString()), valId);
+                    setVLogo.value = b;
+                    isImgPressed = false;
+                    if (!b.Equals(""))
+                    {
+
+                        setVLogo.value = b;
+                        setVLogo.isSystem = 1;
+                        setVLogo.isDefault = 1;
+                        setVLogo.settingId = logoId;
+                        string sLogo = await valueModel.Save(setVLogo);
+
+                        // brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                        // img_user.Background = brush;
+                    }
+                    else
+                    {
+                        MessageBox.Show("حدث خطأ في تحميل الصورة");
+                    }
+                }
+
+                
+            
                 //MessageBox.Show("logo : " + sLogo);
 
                 if ((!sName.Equals("0")) && (!sAddress.Equals("0")) && (!sEmail.Equals("0")) && (!sMobile.Equals("0")) && (!sPhone.Equals("")) && (!sFax.Equals("")))
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+
+              
             }
             #endregion
 
         }
+
+
+        private async Task getImg()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(setVLogo.value))
+                {
+                    SectionData.clearImg(img_customer);
+                }
+                else
+                {
+                    byte[] imageBuffer = await setVLogo.downloadImage(setVLogo.value); // read this as BLOB from your DB
+
+                    var bitmapImage = new BitmapImage();
+                    if (imageBuffer != null)
+                    {
+                        using (var memoryStream = new MemoryStream(imageBuffer))
+                        {
+                            bitmapImage.BeginInit();
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.StreamSource = memoryStream;
+                            bitmapImage.EndInit();
+                        }
+
+                        ////////ImageSourceConverter c = new ImageSourceConverter();
+                        ////////img_user.Source = (ImageSource)c.ConvertFrom(bitmapImage);
+
+                        ////////////////using (MemoryStream memory = new MemoryStream())
+                        ////////////////{
+                        ////////////////    //bitmapImage.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                        ////////////////    memory.Position = 0;
+                        ////////////////    BitmapImage bitmapimage = new BitmapImage();
+                        ////////////////    bitmapimage.BeginInit();
+                        ////////////////    bitmapimage.StreamSource = memory;
+                        ////////////////    bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                        ////////////////    bitmapimage.EndInit();
+                        ////////////////    img_user.Source = new Uri bitmapimage;
+                        ////////////////}
+                        img_customer.Background = new ImageBrush(bitmapImage);
+                        // configure trmporary path
+                        string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        string tmpPath = System.IO.Path.Combine(dir, Global.TMPAgentsFolder);
+                        tmpPath = System.IO.Path.Combine(tmpPath, setVLogo.value);
+                        openFileDialog.FileName = tmpPath;
+                    }
+                    else
+                        SectionData.clearImg(img_customer);
+                }
+            }
+            catch { }
+        }
+
     }
 }
