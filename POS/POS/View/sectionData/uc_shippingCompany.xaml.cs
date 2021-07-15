@@ -37,6 +37,7 @@ namespace POS.View.sectionData
         byte tgl_shComState;
         string searchText = "";
 
+        string basicsPermission = "shippingCompany_basics";
         private static uc_shippingCompany _instance;
         public static uc_shippingCompany Instance
         {
@@ -54,16 +55,18 @@ namespace POS.View.sectionData
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (shComs is null)
-                await RefreshShComList();
-            searchText = tb_search.Text.ToLower();
-            shComQuery = shComs.Where(s => (s.name.ToLower().Contains(searchText) ||
-            s.deliveryType.Contains(searchText) ||
-            s.deliveryCost.ToString().ToLower().Contains(searchText)||
-            s.RealDeliveryCost.ToString().ToLower().Contains(searchText)
-            ) && s.isActive == tgl_shComState);
-            RefreshshComView();
-
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                if (shComs is null)
+                    await RefreshShComList();
+                searchText = tb_search.Text.ToLower();
+                shComQuery = shComs.Where(s => (s.name.ToLower().Contains(searchText) ||
+                s.deliveryType.Contains(searchText) ||
+                s.deliveryCost.ToString().ToLower().Contains(searchText) ||
+                s.RealDeliveryCost.ToString().ToLower().Contains(searchText)
+                ) && s.isActive == tgl_shComState);
+                RefreshshComView();
+            }
         }
 
         async Task<IEnumerable<ShippingCompanies>> RefreshShComList()
@@ -103,12 +106,17 @@ namespace POS.View.sectionData
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
-            this.Dispatcher.Invoke(() =>
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                this.Dispatcher.Invoke(() =>
             {
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
             });
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         void FN_ExportToExcel()
@@ -164,8 +172,10 @@ namespace POS.View.sectionData
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            //chk empty name
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+                //chk empty name
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             //chk empty delivery cost
             SectionData.validateEmptyTextBox(tb_deliveryCost, p_errorDeliveryCost, tt_errorDeliveryCost, "trEmptyDeliveryCostToolTip");
             //chk empty real delivery cost
@@ -198,12 +208,18 @@ namespace POS.View.sectionData
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-         //chk empty name
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            {
+                //chk empty name
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             //chk empty delivery cost
             SectionData.validateEmptyTextBox(tb_deliveryCost, p_errorDeliveryCost, tt_errorDeliveryCost, "trEmptyDeliveryCostToolTip");
             //chk empty real delivery cost
@@ -233,11 +249,17 @@ namespace POS.View.sectionData
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (shCompany.shippingCompanyId != 0)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            {
+                if (shCompany.shippingCompanyId != 0)
             {
                 if ((!shCompany.canDelete) && (shCompany.isActive == 0))
                 {
@@ -287,6 +309,9 @@ namespace POS.View.sectionData
                 //clear textBoxs
                 Btn_clear_Click(sender, e);
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private async void activate()

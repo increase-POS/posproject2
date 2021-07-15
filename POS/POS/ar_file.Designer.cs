@@ -2842,6 +2842,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to رزمة.
+        /// </summary>
+        internal static string trPackage {
+            get {
+                return ResourceManager.GetString("trPackage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تم الدفع.
         /// </summary>
         internal static string trPaid {

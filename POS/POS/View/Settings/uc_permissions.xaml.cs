@@ -226,7 +226,7 @@ namespace POS.View.Settings
                 //groupObject.id = 0;
                 groupObject.groupId = groupId;
                 groupObject.objectId = item.objectId;
-                if (item.objectType == "add")
+                if (item.objectType == "one")
                 {
                     groupObject.showOb = 0;
                     groupObject.addOb = 2;
@@ -581,7 +581,6 @@ namespace POS.View.Settings
             if (group.groupId > 0)
             {
                 Window.GetWindow(this).Opacity = 0.2;
-
                 wd_usersList w = new wd_usersList();
                 w.groupId = group.groupId;
 

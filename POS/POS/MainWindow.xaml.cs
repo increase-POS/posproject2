@@ -43,14 +43,14 @@ namespace POS
         //ToolTip="{Binding Properties.Settings.Default.Lang}"
         public static string lang;
         public static string Reportlang = "ar";
-        public static string companyName = "Increse";
-        public static string Email = "m7mdbonni@gmail.com";
-        public static string Fax = "0215232233";
-        public static string Mobile = "+963967376542";
-        public static string Address = "Aleppo";
+        public static string companyName;
+        public static string Email;
+        public static string Fax;
+        public static string Mobile;
+        public static string Address;
         public static CountryCode Region ;
-        public static string Currency = "KD";
-        public static string Phone = "+963967376542";
+        public static string Currency;
+        public static string Phone ;
         internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
@@ -159,6 +159,7 @@ namespace POS
             idletimer.Tick += timer_Idle;
             idletimer.Start();
             #endregion
+
             #region get default System info
 
 
@@ -247,11 +248,13 @@ namespace POS
                 clearImg();
             }
             #endregion
+
             #region 
 
             groupObjects = await groupObject.GetUserpermission(userLogin.userId);
 
             #endregion
+
             BTN_Home_Click(null, null);
             grid_mainWindow.IsEnabled = true;
             EndAwait();

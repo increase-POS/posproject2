@@ -131,11 +131,7 @@ D:\Increase Company\GitHub\posproject2\POS\POS\obj\Debug\View\UC_unit.baml
 D:\Increase Company\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
 D:\Increase Company\GitHub\posproject2\POS\POS\obj\Debug\View\UC_pos.g.cs
 D:\Increase Company\GitHub\posproject2\POS\POS\obj\Debug\View\UC_pos.baml
-E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.g.cs
-E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice_ar.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_squareCard.g.cs
-E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.baml
-E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice_ar.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_squareCard.baml
 D:\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
 D:\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardPrice.g.cs
@@ -543,10 +539,6 @@ D:\myproj\posproject2\POS\POS\obj\Debug\POS.exe
 D:\myproj\posproject2\POS\POS\obj\Debug\POS.pdb
 E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCard.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCard.baml
-E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice.g.cs
-E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice.baml
-E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice_ar.g.cs
-E:\GitHub\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCardWithoutPrice_ar.baml
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\bin\Debug\POS.exe.config
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\bin\Debug\POS.exe
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\bin\Debug\POS.pdb
@@ -2304,3 +2296,5 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_serialNum.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_serialNum.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_storageReports.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_storageReports.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsUnitList.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_itemsUnitList.baml

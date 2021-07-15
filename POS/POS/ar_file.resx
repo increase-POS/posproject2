@@ -1629,4 +1629,7 @@
   <data name="trSelectedUsers" xml:space="preserve">
     <value>المستخدمون المختارون</value>
   </data>
+  <data name="trPackage" xml:space="preserve">
+    <value>رزمة</value>
+  </data>
 </root>

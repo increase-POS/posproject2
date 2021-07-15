@@ -46,6 +46,7 @@ namespace POS.View.sectionData
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
 
+        string basicsPermission = "cards_basics";
         private static uc_card _instance;
         public static uc_card Instance
         {
@@ -92,7 +93,7 @@ namespace POS.View.sectionData
 
         }
 
-       
+
         private void translate()
         {
             //txt_card.Text = MainWindow.resourcemanager.GetString("trCard");
@@ -157,7 +158,7 @@ namespace POS.View.sectionData
         {
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
         }
-       
+
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
@@ -177,133 +178,148 @@ namespace POS.View.sectionData
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            card.cardId = 0;
-            //chk empty name
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-           
-            //string phoneStr = "";
-
-            if ((!tb_name.Text.Equals("")))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
             {
-                bool isCardExist = await chkDuplicateCard();
-                if (isCardExist)
-                {
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopCardExist"), animation: ToasterAnimation.FadeIn);
-                    p_errorName.Visibility = Visibility.Visible;
-                    tt_errorName.Content = MainWindow.resourcemanager.GetString("trPopCardExist");
-                    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                }
-                else
-                {
-                    card.name = tb_name.Text;
-                    card.notes = tb_notes.Text;
-                    card.createUserId = MainWindow.userID;
-                    card.updateUserId = MainWindow.userID;
-                    card.isActive = 1;
+                card.cardId = 0;
+                //chk empty name
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
 
-                    string s = await cardModel.Save(card);
-                    
-                    if (s.Equals("true")) //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
+                //string phoneStr = "";
+
+                if ((!tb_name.Text.Equals("")))
+                {
+                    bool isCardExist = await chkDuplicateCard();
+                    if (isCardExist)
                     {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                        Btn_clear_Click(null, null);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopCardExist"), animation: ToasterAnimation.FadeIn);
+                        p_errorName.Visibility = Visibility.Visible;
+                        tt_errorName.Content = MainWindow.resourcemanager.GetString("trPopCardExist");
+                        tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
                     }
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    else
+                    {
+                        card.name = tb_name.Text;
+                        card.notes = tb_notes.Text;
+                        card.createUserId = MainWindow.userID;
+                        card.updateUserId = MainWindow.userID;
+                        card.isActive = 1;
 
-                    await RefreshCardsList();
-                    Tb_search_TextChanged(null, null);
+                        string s = await cardModel.Save(card);
+
+                        if (s.Equals("true")) //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
+                        {
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                            Btn_clear_Click(null, null);
+                        }
+                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                        await RefreshCardsList();
+                        Tb_search_TextChanged(null, null);
+                    }
                 }
             }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
 
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            //chk empty name
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-            
-            if ((!tb_name.Text.Equals("")))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
             {
-                bool isCardExist = await chkDuplicateCard();
-                if (isCardExist)
+                //chk empty name
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+
+                if ((!tb_name.Text.Equals("")))
                 {
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopCardExist"), animation: ToasterAnimation.FadeIn);
-                    p_errorName.Visibility = Visibility.Visible;
-                    tt_errorName.Content = MainWindow.resourcemanager.GetString("trPopCardExist");
-                    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                }
-                else
-                {
+                    bool isCardExist = await chkDuplicateCard();
+                    if (isCardExist)
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopCardExist"), animation: ToasterAnimation.FadeIn);
+                        p_errorName.Visibility = Visibility.Visible;
+                        tt_errorName.Content = MainWindow.resourcemanager.GetString("trPopCardExist");
+                        tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    }
+                    else
+                    {
 
-                    card.name = tb_name.Text;
-                    card.notes = tb_notes.Text;
-                    card.createUserId = MainWindow.userID;
-                    card.updateUserId = MainWindow.userID;
-                    card.isActive = 1;
+                        card.name = tb_name.Text;
+                        card.notes = tb_notes.Text;
+                        card.createUserId = MainWindow.userID;
+                        card.updateUserId = MainWindow.userID;
+                        card.isActive = 1;
 
-                    string s = await cardModel.Save(card);
+                        string s = await cardModel.Save(card);
 
-                    if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    await RefreshCardsList();
-                    Tb_search_TextChanged(null, null);
+                        await RefreshCardsList();
+                        Tb_search_TextChanged(null, null);
+                    }
                 }
             }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
 
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (card.cardId != 0)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
             {
-                if ((!card.canDelete) && (card.isActive == 0))
+                if (card.cardId != 0)
                 {
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
-                activate();
-                }
-                else
-                {
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    if (card.canDelete)
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                    if (!card.canDelete)
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
+                    if ((!card.canDelete) && (card.isActive == 0))
                     {
-                        string popupContent = "";
-                        if (card.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                        if ((!card.canDelete) && (card.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-
-                        bool b = await cardModel.deleteCard(card.cardId, MainWindow.userID.Value, card.canDelete);
-
-                        if (b) //SectionData.popUpResponse("", popupContent);
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        #endregion
+                        if (w.isOk)
+                            activate();
                     }
+                    else
+                    {
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        if (card.canDelete)
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                        if (!card.canDelete)
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        #endregion
+                        if (w.isOk)
+                        {
+                            string popupContent = "";
+                            if (card.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                            if ((!card.canDelete) && (card.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                            bool b = await cardModel.deleteCard(card.cardId, MainWindow.userID.Value, card.canDelete);
+
+                            if (b) //SectionData.popUpResponse("", popupContent);
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                        }
+                    }
+                    await RefreshCardsList();
+                    Tb_search_TextChanged(null, null);
                 }
-                await RefreshCardsList();
-                Tb_search_TextChanged(null, null);
+                //clear textBoxs
+                Btn_clear_Click(sender, e);
             }
-            //clear textBoxs
-            Btn_clear_Click(sender, e);
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private async void activate()
@@ -372,14 +388,14 @@ namespace POS.View.sectionData
 
         }
 
-      
+
 
         private void tb_phone_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
         }
 
-       
+
 
         private void Tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -447,20 +463,23 @@ namespace POS.View.sectionData
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            p_errorName.Visibility = Visibility.Collapsed;
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-            if (cards is null)
-                await RefreshCardsList();
-            searchText = tb_search.Text.ToLower();
-            cardsQuery = cards.Where(s =>(
-            s.name.ToLower().Contains(searchText)
-            
-             && s.isActive == tgl_cardState));
-            RefreshCardView();
+                if (cards is null)
+                    await RefreshCardsList();
+                searchText = tb_search.Text.ToLower();
+                cardsQuery = cards.Where(s => (
+                s.name.ToLower().Contains(searchText)
 
+                 && s.isActive == tgl_cardState));
+                RefreshCardView();
+
+            }
         }
-         
+
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
@@ -486,71 +505,48 @@ namespace POS.View.sectionData
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            this.Dispatcher.Invoke(() =>
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                this.Dispatcher.Invoke(() =>
             {
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
             });
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-/*
-            string addpath = @"\Reports\CardReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            rep.ReportPath = reppath;
-            rep.DataSources.Clear();
-            rep.DataSources.Add(new ReportDataSource("DataSetCard", cardsQuery));
-
-            ReportParameter[] paramarr = new ReportParameter[4];
-            paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trCards"));
-            paramarr[1] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
-            paramarr[2] = new ReportParameter("trNote", MainWindow.resourcemanager.GetString("trNote"));
-            paramarr[3] = new ReportParameter("lang", MainWindow.lang);
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            saveFileDialog.Filter = "PDF|*.pdf;";
-
-            if (saveFileDialog.ShowDialog() == true)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
             {
-
-                string filepath = saveFileDialog.FileName;
-                LocalReportExtensions.ExportToPDF(rep, filepath);
-
             }
-            */
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            string addpath = @"\Reports\CardReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            rep.ReportPath = reppath;
-            rep.DataSources.Clear();
-            rep.DataSources.Add(new ReportDataSource("DataSetCard", cardsQuery));
-            ReportParameter[] paramarr = new ReportParameter[4];
-            paramarr[0] = new ReportParameter("Title", MainWindow.resourcemanager.GetString("trCards"));
-            paramarr[1] = new ReportParameter("trName", MainWindow.resourcemanager.GetString("trName"));
-            paramarr[2] = new ReportParameter("trNote", MainWindow.resourcemanager.GetString("trNote"));
-            paramarr[3] = new ReportParameter("lang", MainWindow.lang);
-            rep.SetParameters(paramarr);
-            rep.Refresh();
-            LocalReportExtensions.PrintToPrinter(rep);
-            */
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
-            win_lvc win = new win_lvc(cardsQuery, 6);
-            win.ShowDialog();
-            Window.GetWindow(this).Opacity = 1;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                Window.GetWindow(this).Opacity = 0.2;
+                win_lvc win = new win_lvc(cardsQuery, 6);
+                win.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
     }
 }

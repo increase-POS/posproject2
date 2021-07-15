@@ -2896,6 +2896,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Package.
+        /// </summary>
+        internal static string trPackage {
+            get {
+                return ResourceManager.GetString("trPackage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Paid.
         /// </summary>
         internal static string trPaid {

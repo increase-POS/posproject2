@@ -1650,4 +1650,7 @@
   <data name="trSelectedUsers" xml:space="preserve">
     <value>Selected users</value>
   </data>
+  <data name="trPackage" xml:space="preserve">
+    <value>Package</value>
+  </data>
 </root>

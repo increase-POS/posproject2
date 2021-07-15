@@ -91,7 +91,7 @@ namespace POS.View
         List<string> categoryNames = new List<string>();
         List<Property> properties;
         List<PropertiesItems> propItems;
-        List<Unit> units;
+        List<Unit> units = new List<Unit>();
         List<ItemsProp> itemsProp;
         List<Serial> itemSerials;
         List<ItemUnit> itemUnits;
@@ -105,8 +105,11 @@ namespace POS.View
         List<int> unitIds = new List<int>();
         List<string> unitNames = new List<string>();
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
+
+            btn_items.IsEnabled = false;
+
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             catigoriesAndItemsView.ucPackageOfItems = this;
 
@@ -134,6 +137,12 @@ namespace POS.View
             Txb_searchitems_TextChanged(null, null);
 
             tb_code.Focus();
+            SectionData.clearValidate(tb_code, p_errorCode);
+
+            units = await unitModel.GetUnitsAsync();
+            var uQuery = units.Where(u => u.name == "package").FirstOrDefault();
+            unitpackageId = uQuery.unitId;
+
         }
         async void fillBarcodeList()
         {
@@ -164,6 +173,8 @@ namespace POS.View
 
         private void btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
+            btn_items.IsEnabled = false;
+
             tb_code.Clear();
             tb_name.Clear();
             tb_details.Clear();
@@ -173,7 +184,7 @@ namespace POS.View
             tb_price.Clear();
             // set random barcode on image
             generateBarcode();
-            itemUnit = new ItemUnit();
+            //itemUnit = new ItemUnit();
 
             SectionData.clearValidate(tb_code , p_errorCode );
             SectionData.clearValidate(tb_name, p_errorName);
@@ -213,29 +224,53 @@ namespace POS.View
             cb_categorie.SelectedValuePath = "categoryId";
             cb_categorie.DisplayMemberPath = "name";
         }
+
         private void translate()
         {
+            txt_package.Text = MainWindow.resourcemanager.GetString("trPackage");
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_searchitems, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_details, MainWindow.resourcemanager.GetString("trDetailsHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trCode"));
-
 
             txt_secondaryInformation.Text = MainWindow.resourcemanager.GetString("trSecondaryInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_categorie, MainWindow.resourcemanager.GetString("trSelectCategorieHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_taxes, MainWindow.resourcemanager.GetString("trTaxesHint"));
 
+            txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarCode");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_price , MainWindow.resourcemanager.GetString("trPrice"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode , MainWindow.resourcemanager.GetString("trBarcodeHint"));
 
-
-
+            btn_items.Content = MainWindow.resourcemanager.GetString("trItems");
+            btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
             btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
-            btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
-            ///////////////////////////Barcode
+            txt_active.Text = MainWindow.resourcemanager.GetString("trActive");
 
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_price, MainWindow.resourcemanager.GetString("trPriceHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
+            dg_items.Columns[0].Header = MainWindow.resourcemanager.GetString("trCode");
+            dg_items.Columns[1].Header = MainWindow.resourcemanager.GetString("trName");
+            dg_items.Columns[2].Header = MainWindow.resourcemanager.GetString("trDetails");
+            dg_items.Columns[3].Header = MainWindow.resourcemanager.GetString("trCategorie");
+
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+            tt_code.Content = MainWindow.resourcemanager.GetString("trCode");
+            tt_name.Content = MainWindow.resourcemanager.GetString("trName");
+            tt_details.Content = MainWindow.resourcemanager.GetString("trDetails");
+            tt_category.Content = MainWindow.resourcemanager.GetString("trCategorie");
+            tt_tax.Content = MainWindow.resourcemanager.GetString("trTax");
+            tt_price.Content = MainWindow.resourcemanager.GetString("trPrice");
+            tt_barCode.Content = MainWindow.resourcemanager.GetString("trBarcode");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+            tt_grid.Content = MainWindow.resourcemanager.GetString("trViewGrid");
+            tt_items.Content = MainWindow.resourcemanager.GetString("trViewItems");
         }
 
         private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
@@ -243,15 +278,7 @@ namespace POS.View
             string barCode = tb_barcode.Text;
             generateBarcode(barCode);
         }
-        //private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
-        //{
-        //    var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-        //    if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
-        //        e.Handled = false;
-
-        //    else
-        //        e.Handled = true;
-        //}
+       
         private void tb_upperLimit_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
@@ -271,9 +298,8 @@ namespace POS.View
             e.Handled = regex.IsMatch(e.Text);
         }
 
-
-
         #region Categor and Item
+
         #region Refrish Y
         /// <summary>
         /// Category
@@ -284,6 +310,7 @@ namespace POS.View
             categories = await categoryModel.GetAllCategories();
             return categories;
         }
+
         async void RefrishCategoriesCard()
         {
             if (categories is null)
@@ -293,6 +320,7 @@ namespace POS.View
             generateCoulmnCategoriesGrid(categoriesQuery.Count());
             catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
         }
+
         void generateCoulmnCategoriesGrid(int column)
         {
             #region
@@ -336,25 +364,35 @@ namespace POS.View
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
         }
         #endregion
+
         #region Get Id By Click  Y
-        private void dg_items_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-           
-
+        private async void dg_items_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {//selection
             if (dg_items.SelectedIndex != -1)
             {
                 item = dg_items.SelectedItem as Item;
                 this.DataContext = item;
-
-
             }
             if (item != null)
             {
-               
-
+                btn_items.IsEnabled = true;
+                cb_categorie.SelectedValue = item.categoryId;
+                List<ItemUnit> itemUnits = new List<ItemUnit>();
+                itemUnits = await itemUnitModel.Getall();
+                var uQuery = itemUnits.Where(iu => iu.itemId == item.itemId && iu.unitId == unitpackageId).FirstOrDefault();
+                if (uQuery != null)
+                {
+                    tb_price.Text = uQuery.price.ToString();
+                    tb_barcode.Text = uQuery.barcode;
+                }
+                else
+                {
+                    tb_price.Text = "";
+                    tb_barcode.Text = "";
+                }
+                getImg();
             }
-            tb_barcode.Focus();
+            //tb_barcode.Focus();
 
         }
         private async void getImg()
@@ -405,13 +443,28 @@ namespace POS.View
             Txb_searchitems_TextChanged(null, null);
         }
 
-        public void ChangeItemIdEvent(int itemId)
-        {
-           
+        public async void ChangeItemIdEvent(int itemId)
+        {//change id
             item = items.ToList().Find(c => c.itemId == itemId);
             if (item != null)
             {
                 this.DataContext = item;
+                btn_items.IsEnabled = true;
+                cb_categorie.SelectedValue = item.categoryId;
+                List<ItemUnit> itemUnits = new List<ItemUnit>();
+                itemUnits = await itemUnitModel.Getall();
+                var uQuery = itemUnits.Where(iu => iu.itemId == itemId && iu.unitId == unitpackageId).FirstOrDefault();
+                if (uQuery != null)
+                {
+                    tb_price.Text = uQuery.price.ToString();
+                    tb_barcode.Text = uQuery.barcode;
+                }
+                else
+                {
+                    tb_price.Text = "";
+                    tb_barcode.Text = "";
+                }
+                getImg();
             }
         }
 
@@ -446,6 +499,7 @@ namespace POS.View
             tb_barcode.Focus();
         }
         #endregion
+
         #region Switch Card/DataGrid Y
 
         private void Btn_itemsInCards_Click(object sender, RoutedEventArgs e)
@@ -472,6 +526,7 @@ namespace POS.View
             tb_barcode.Focus();
         }
         #endregion
+
         #region Search Y
 
 
@@ -481,7 +536,7 @@ namespace POS.View
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        {//search
             if (items is null)
                 await RefrishItems();
             txtItemSearch = txb_searchitems.Text.ToLower();
@@ -502,6 +557,7 @@ namespace POS.View
         }
 
         #endregion
+
         #region Pagination Y
         Pagination pagination = new Pagination();
         Button[] btns;
@@ -598,6 +654,7 @@ namespace POS.View
             #endregion
         }
         #endregion
+
         #region categoryPathControl Y
 
         async void generateTrack(int categorypaPathId)
@@ -667,19 +724,38 @@ namespace POS.View
         #endregion
 
         #endregion
+
         #region Excel
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
+        {//excel
+            this.Dispatcher.Invoke(() =>
+            {
+                Thread t1 = new Thread(FN_ExportToExcel);
+                t1.SetApartmentState(ApartmentState.STA);
+                t1.Start();
+            });
+        }
 
+        private void FN_ExportToExcel()
+        {
+            var QueryExcel = itemsQuery.AsEnumerable().Select(x => new
+            {
+                Code = x.code,
+                Name = x.name,
+                Details = x.details,
+                Categoty = x.categoryName
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trCode");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trDetails");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trCategorie");
+
+            ExportToExcel.Export(DTForExcel);
         }
         #endregion
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tb_code_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
 
         }
@@ -738,33 +814,36 @@ namespace POS.View
                 e.Handled = true;
 
         }
-
+        int unitpackageId = 0;
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             validateEmptyEntries();
 
-            Boolean codeAvailable = await checkCodeAvailabiltiy(tb_code.Text);////////////???????????????????
+            Boolean codeAvailable = await checkCodeAvailabiltiy(tb_code.Text);
+
             decimal tax = 0;
             if (tb_taxes.Text != "")
                 tax = decimal.Parse(tb_taxes.Text);
+
+            decimal price = 0;
+            if (tb_price.Text != "")
+                price = decimal.Parse(tb_price.Text);
 
             if ((!tb_code.Text.Equals("")) && (!tb_name.Text.Equals("")) && (!cb_categorie.Text.Equals("")) && 
                 (!tb_taxes.Text.Equals("")) && (!tb_price.Text.Equals("")) &&
                 codeAvailable)
             {
+                //item record
                 item = new Item();
                 item.code = tb_code.Text;
                 item.name = tb_name.Text;
                 item.details = tb_details.Text;
-                item.type = selectedType;
+                item.type = "p";
                 item.image = "";
                 item.taxes = tax;
                 item.isActive = 1;
                 item.categoryId = Convert.ToInt32(cb_categorie.SelectedValue);
-                //item.parentId = parentId;
                 item.createUserId = MainWindow.userID;
-                //item.minUnitId = minUnitId;
-                //item.maxUnitId = maxUnitId;
 
                 string res = await itemModel.saveItem(item);
                 if (!res.Equals("0"))
@@ -777,27 +856,167 @@ namespace POS.View
                 if (openFileDialog.FileName != "")
                     await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
 
+               
+                //itemunit record
+                itemUnit = new ItemUnit();
+                itemUnit.itemId = itemId;
+                itemUnit.unitId = unitpackageId;
+                itemUnit.price = price;
+                itemUnit.barcode = tb_barcode.Text;
+                itemUnit.createUserId = MainWindow.userID;
+
+                string s = await itemUnitModel.saveItemUnit(itemUnit);
+
                 await RefrishItems();
                 Txb_searchitems_TextChanged(null, null);
                 btn_clear_Click(sender, e);
             }
+
             tb_code.Focus();
+            SectionData.clearValidate(tb_code , p_errorCode);
+          
         }
 
-        private async Task<Boolean> checkCodeAvailabiltiy(string oldCode = "")
-        {
-            List<string> itemsCodes = await itemModel.GetItemsCodes();
-            string code = tb_code.Text;
-            var match = "";
-            if (code != oldCode && itemsCodes != null)
-                match = itemsCodes.FirstOrDefault(stringToCheck => stringToCheck.Contains(code));
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {//update
+            validateEmptyEntries();
 
-            if (match != "" && match != null)
+            Boolean codeAvailable = await checkCodeAvailabiltiy(tb_code.Text);
+
+            decimal tax = 0;
+            if (tb_taxes.Text != "")
+                tax = decimal.Parse(tb_taxes.Text);
+
+            decimal price = 0;
+            if (tb_price.Text != "")
+                price = decimal.Parse(tb_price.Text);
+
+            if ((!tb_code.Text.Equals("")) && (!tb_name.Text.Equals("")) && (!cb_categorie.Text.Equals("")) &&
+                (!tb_taxes.Text.Equals("")) && (!tb_price.Text.Equals("")) &&
+                codeAvailable)
             {
-                SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
-                return false;
+                item.code = tb_code.Text;
+                item.name = tb_name.Text;
+                item.details = tb_details.Text;
+                item.type = selectedType;
+                item.image = "";
+                item.taxes = tax;
+                item.isActive = 1;
+                item.categoryId = Convert.ToInt32(cb_categorie.SelectedValue);
+                item.createUserId = MainWindow.userID;
+              
+                string res = await itemModel.saveItem(item);
+                if (!res.Equals("0"))
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                else
+                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                int itemId = int.Parse(res);
+
+                if (openFileDialog.FileName != "")
+                    await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
+
+                List<ItemUnit> itemUnits = new List<ItemUnit>();
+                itemUnits = await itemUnitModel.Getall();
+                var uQuery = itemUnits.Where(iu => iu.itemId == itemId && iu.unitId == unitpackageId).FirstOrDefault();
+                int itemUnitId = 0;
+                if (uQuery != null)
+                itemUnitId = uQuery.itemUnitId;
+
+                //itemunit record
+                itemUnit.itemUnitId = itemUnitId;
+                itemUnit.itemId = itemId;
+                itemUnit.unitId = unitpackageId;
+                itemUnit.price = price;
+                itemUnit.barcode = tb_barcode.Text;
+                itemUnit.createUserId = MainWindow.userID;
+
+                string s = await itemUnitModel.saveItemUnit(itemUnit);
+
+                await RefrishItems();
+                Txb_searchitems_TextChanged(null, null);
             }
-            else
+
+            tb_code.Focus();
+            SectionData.clearValidate(tb_code, p_errorCode);
+
+        }
+
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {//delete
+            if (item.itemId != 0)
+            {
+                if ((!item.canDelete) && (item.isActive == 0))
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                        activate();
+                }
+                else
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    if (item.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                    if (!item.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                    {
+                        string popupContent = "";
+                        if (item.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                        if ((!item.canDelete) && (item.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                        bool b = await itemModel.deleteItem(item.itemId, MainWindow.userID.Value, item.canDelete);
+
+                        if (b)
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
+                }
+
+                await RefrishItems();
+                Txb_searchitems_TextChanged(null, null);
+            }
+            //clear textBoxs
+            btn_clear_Click(sender, e);
+            tb_code.Focus();
+            SectionData.clearValidate(tb_code, p_errorCode);
+
+        }
+
+        private void activate()
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task<Boolean> checkCodeAvailabiltiy(string code)
+        {
+            List<Item> items = await itemModel.GetAllItems();
+         
+           if(items != null)
+                if(items.Any(i => i.code == code && i.itemId != item.itemId))
+                {
+                    SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                    return false;
+                }
+                else
+                {
+                    SectionData.clearValidate(tb_code, p_errorCode);
+                    return true;
+                }
+           else
             {
                 SectionData.clearValidate(tb_code, p_errorCode);
                 return true;
@@ -826,6 +1045,24 @@ namespace POS.View
                 brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
                 img_item.Background = brush;
             }
+        }
+
+        private async void Btn_items_Click(object sender, RoutedEventArgs e)
+        {//items
+            SectionData.clearValidate(tb_code, p_errorCode);
+
+            Window.GetWindow(this).Opacity = 0.2;
+
+            wd_itemsUnitList w = new wd_itemsUnitList();
+
+            w.itemId = item.itemId;
+            w.ShowDialog();
+            if (w.isActive)
+            {
+               
+            }
+
+            Window.GetWindow(this).Opacity = 1;
         }
     }
 }

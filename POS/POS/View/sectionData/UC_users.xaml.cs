@@ -69,6 +69,9 @@ namespace POS.View
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
+        string basicsPermission = "users_basics";
+        string storesPermission = "users_stores";
+
         private static UC_users _instance;
         public static UC_users Instance
         {
@@ -370,7 +373,9 @@ namespace POS.View
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            user.userId = 0;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+                user.userId = 0;
 
             //chk empty name
             SectionData.validateEmptyTextBox(tb_firstName, p_errorFirstName, tt_errorFirstName, "trEmptyNameToolTip");
@@ -488,14 +493,20 @@ namespace POS.View
 
                 }
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-         //var user1 = new User();
-          
-            //chk empty name
-            SectionData.validateEmptyTextBox(tb_firstName, p_errorFirstName, tt_errorFirstName, "trEmptyNameToolTip");
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            {
+                //var user1 = new User();
+
+                //chk empty name
+                SectionData.validateEmptyTextBox(tb_firstName, p_errorFirstName, tt_errorFirstName, "trEmptyNameToolTip");
             //chk empty last name
             SectionData.validateEmptyTextBox(tb_lastName, p_errorLastName, tt_errorLastName, "trEmptyLastNameToolTip");
             //chk empty mobile
@@ -601,11 +612,17 @@ namespace POS.View
 
                 }
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (user.userId != 0)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            {
+                if (user.userId != 0)
             {
 
                 if ((!user.canDelete) && (user.isActive == 0))
@@ -654,6 +671,9 @@ namespace POS.View
 
             //clear textBoxs
             Btn_clear_Click(sender, e);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private async void activate()
@@ -754,45 +774,7 @@ namespace POS.View
 
        
 
-        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Dispatcher.Invoke(() =>
-            {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
-        }
-
-        void FN_ExportToExcel()
-        {
-            var QueryExcel = usersQuery.AsEnumerable().Select(x => new
-            {
-                Name     = x.name,
-                LastName = x.lastname,
-                Job      = x.job,
-                WorkHours= x.workHours,
-                Mobile   = x.mobile,
-                Phone    = x.phone,
-                Address  = x.address,
-                Notes    = x.notes,
-                UserName = x.username,
-                Password = x.password
-            });
-            var DTForExcel = QueryExcel.ToDataTable();
-            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
-            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trLastName");
-            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trJob");
-            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trWorkHours");
-            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trMobile");
-            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trPhone");
-            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trAddress");
-            DTForExcel.Columns[7].Caption = MainWindow.resourcemanager.GetString("trNote");
-            DTForExcel.Columns[8].Caption = MainWindow.resourcemanager.GetString("trUserName");
-            DTForExcel.Columns[9].Caption = MainWindow.resourcemanager.GetString("trPassword");
-
-            ExportToExcel.Export(DTForExcel);
-        }
+        
 
         private async void Tgl_userIsActive_Checked(object sender, RoutedEventArgs e)
         {
@@ -938,10 +920,55 @@ namespace POS.View
         {
             /////?????????????????
         }
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                this.Dispatcher.Invoke(() =>
+            {
+                Thread t1 = new Thread(FN_ExportToExcel);
+                t1.SetApartmentState(ApartmentState.STA);
+                t1.Start();
+            });
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+        }
 
+        void FN_ExportToExcel()
+        {
+            var QueryExcel = usersQuery.AsEnumerable().Select(x => new
+            {
+                Name = x.name,
+                LastName = x.lastname,
+                Job = x.job,
+                WorkHours = x.workHours,
+                Mobile = x.mobile,
+                Phone = x.phone,
+                Address = x.address,
+                Notes = x.notes,
+                UserName = x.username,
+                Password = x.password
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trLastName");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trJob");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trWorkHours");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trMobile");
+            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trPhone");
+            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trAddress");
+            DTForExcel.Columns[7].Caption = MainWindow.resourcemanager.GetString("trNote");
+            DTForExcel.Columns[8].Caption = MainWindow.resourcemanager.GetString("trUserName");
+            DTForExcel.Columns[9].Caption = MainWindow.resourcemanager.GetString("trPassword");
+
+            ExportToExcel.Export(DTForExcel);
+        }
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-            ReportParameter[] paramarr = new ReportParameter[6];
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+                {
+                    ReportParameter[] paramarr = new ReportParameter[6];
 
             string addpath;
             bool isArabic = ReportCls.checkLang();
@@ -963,11 +990,16 @@ namespace POS.View
             rep.Refresh();
             LocalReportExtensions.PrintToPrinter(rep);
 
-        }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+            }
 
-        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+            private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            ReportParameter[] paramarr = new ReportParameter[6];
+                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+                    {
+                        ReportParameter[] paramarr = new ReportParameter[6];
 
             string addpath;
             bool isArabic = ReportCls.checkLang();
@@ -998,9 +1030,23 @@ namespace POS.View
             }
 
 
-        }
-
-        private void Tb_preventSpaces_PreviewKeyDown(object sender, KeyEventArgs e)
+                    }
+                    else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                }
+                private void btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {
+                        if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+                        {
+                            Window.GetWindow(this).Opacity = 0.2;
+            win_lvc win = new win_lvc(usersQuery, 3);
+            win.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
+                        }
+                        else
+                            Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                    }
+                    private void Tb_preventSpaces_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
         }
@@ -1208,26 +1254,29 @@ namespace POS.View
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            p_errorFirstName.Visibility = Visibility.Collapsed;
-            tb_firstName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                p_errorFirstName.Visibility = Visibility.Collapsed;
+                tb_firstName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-            if (users is null)
-                await RefreshUsersList();
-            searchText = tb_search.Text.ToLower();
-            pageIndex = 1;
+                if (users is null)
+                    await RefreshUsersList();
+                searchText = tb_search.Text.ToLower();
+                pageIndex = 1;
 
-            #region
-            usersQuery = users.Where(s => (s.lastname.ToLower().Contains(searchText) ||
-            s.name.ToLower().Contains(searchText) ||
-            s.username.ToLower().Contains(searchText) ||
-            s.job.ToLower().Contains(searchText)
-            ) && s.isActive == tgl_userState);
-            //txt_count.Text = usersQuery.Count().ToString();
-            if (btns is null)
-                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            RefrishItemsCard(pagination.refrishPagination(usersQuery, pageIndex, btns));
-            #endregion
-            RefreshUserView();
+                #region
+                usersQuery = users.Where(s => (s.lastname.ToLower().Contains(searchText) ||
+                s.name.ToLower().Contains(searchText) ||
+                s.username.ToLower().Contains(searchText) ||
+                s.job.ToLower().Contains(searchText)
+                ) && s.isActive == tgl_userState);
+                //txt_count.Text = usersQuery.Count().ToString();
+                if (btns is null)
+                    btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+                RefrishItemsCard(pagination.refrishPagination(usersQuery, pageIndex, btns));
+                #endregion
+                RefreshUserView();
+            }
         }
        
 
@@ -1354,17 +1403,13 @@ namespace POS.View
             RefrishItemsCard(pagination.refrishPagination(usersQuery, pageIndex, btns));
         }
 
-        private void btn_pieChart_Click(object sender, RoutedEventArgs e)
-        {
-            Window.GetWindow(this).Opacity = 0.2;
-            win_lvc win = new win_lvc(usersQuery, 3);
-            win.ShowDialog();
-            Window.GetWindow(this).Opacity = 1;
-        }
+        
 
         private void Btn_stores_Click(object sender, RoutedEventArgs e)
         {//stores
-            Window.GetWindow(this).Opacity = 0.2;
+            if (MainWindow.groupObject.HasPermissionAction(storesPermission, MainWindow.groupObjects, "one"))
+            {
+                Window.GetWindow(this).Opacity = 0.2;
 
             wd_branchesList w = new wd_branchesList();
 
@@ -1373,13 +1418,13 @@ namespace POS.View
             w.ShowDialog();
             if (w.isActive)
             {
-               
+
             }
-
             Window.GetWindow(this).Opacity = 1;
+        } else
+            Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
-
-        private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
+    private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
         {
             SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
         }

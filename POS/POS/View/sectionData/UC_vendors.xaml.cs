@@ -66,7 +66,7 @@ namespace POS.View
         string imgFileName = "pic/no-image-icon-125x125.png";
 
         bool isImgPressed = false;
-
+        string basicsPermission = "suppliers_basics";
         private static UC_vendors _instance;
         public static UC_vendors Instance
         {
@@ -263,8 +263,8 @@ namespace POS.View
 
             translate();
 
-            var agents = await agentModel.GetAgentsAsync("v");
-            dg_vendor.ItemsSource = agents;
+            //var agents = await agentModel.GetAgentsAsync("v");
+            //dg_vendor.ItemsSource = agents;
 
 
 
@@ -293,96 +293,104 @@ namespace POS.View
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            agent.agentId = 0;
-            //chk empty name
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-            //chk empty mobile
-            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-            //validate email
-            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-
-            string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) //phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
-                phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
-            string faxStr = "";
-            if (!tb_fax.Text.Equals("")) //faxStr = cb_areaFax.Text + cb_areaFaxLocal.Text + tb_fax.Text;
-                faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
-            bool emailError = false;
-            if (!tb_email.Text.Equals(""))
-                if (!ValidatorExtensions.IsValid(tb_email.Text))
-                    emailError = true;
-
-            decimal maxDeserveValue = 0;
-            //if (!tb_upperLimit.Text.Equals(""))
-            //    maxDeserveValue = decimal.Parse(tb_upperLimit.Text);
-
-            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
+            Button button = sender as Button;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects,"add"))
             {
-                if (emailError)
-                    //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
-                else
+                agent.agentId = 0;
+                //chk empty name
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                //chk empty mobile
+                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                //validate email
+                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+
+                string phoneStr = "";
+                if (!tb_phone.Text.Equals("")) //phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
+                    phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+                string faxStr = "";
+                if (!tb_fax.Text.Equals("")) //faxStr = cb_areaFax.Text + cb_areaFaxLocal.Text + tb_fax.Text;
+                    faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
+                bool emailError = false;
+                if (!tb_email.Text.Equals(""))
+                    if (!ValidatorExtensions.IsValid(tb_email.Text))
+                        emailError = true;
+
+                decimal maxDeserveValue = 0;
+                //if (!tb_upperLimit.Text.Equals(""))
+                //    maxDeserveValue = decimal.Parse(tb_upperLimit.Text);
+
+                if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
                 {
-                    SectionData.genRandomCode("v");
-                    tb_code.Text = SectionData.code;
-
-                    agent.name = tb_name.Text;
-                    agent.code = tb_code.Text;
-                    agent.company = tb_company.Text;
-                    agent.address = tb_address.Text;
-                    agent.email = tb_email.Text;
-                    agent.phone = phoneStr;
-                    agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
-                    agent.image = "";
-                    agent.type = "v";
-                    agent.accType = "";
-                    agent.balance = 0;
-                    agent.createUserId = MainWindow.userID;
-                    agent.updateUserId = MainWindow.userID;
-                    agent.notes = tb_notes.Text;
-                    agent.isActive = 1;
-                    agent.fax = faxStr;
-                    agent.maxDeserve = maxDeserveValue;
-
-                    string s = await agentModel.saveAgent(agent);
-
-                    if (!s.Equals("0"))   //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);}  
+                    if (emailError)
+                        //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
+                    else
                     {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                        Btn_clear_Click(null, null);
-                    }
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        SectionData.genRandomCode("v");
+                        tb_code.Text = SectionData.code;
 
-                    if (isImgPressed)
-                    {
-                        int agentId = int.Parse(s);
-                        string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
-                        agent.image = b;
-                        isImgPressed = false;
-                        if (!b.Equals(""))
+                        agent.name = tb_name.Text;
+                        agent.code = tb_code.Text;
+                        agent.company = tb_company.Text;
+                        agent.address = tb_address.Text;
+                        agent.email = tb_email.Text;
+                        agent.phone = phoneStr;
+                        agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
+                        agent.image = "";
+                        agent.type = "v";
+                        agent.accType = "";
+                        agent.balance = 0;
+                        agent.createUserId = MainWindow.userID;
+                        agent.updateUserId = MainWindow.userID;
+                        agent.notes = tb_notes.Text;
+                        agent.isActive = 1;
+                        agent.fax = faxStr;
+                        agent.maxDeserve = maxDeserveValue;
+
+                        string s = await agentModel.saveAgent(agent);
+
+                        if (!s.Equals("0"))   //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);}  
                         {
-                            // brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                            //img_vendor.Background = brush;
-                            //getImg();
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                            Btn_clear_Click(null, null);
                         }
-                        else
+                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                        if (isImgPressed)
                         {
-                            MessageBox.Show("حدث خطأ في تحميل الصورة");
+                            int agentId = int.Parse(s);
+                            string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                            agent.image = b;
+                            isImgPressed = false;
+                            if (!b.Equals(""))
+                            {
+                                // brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                                //img_vendor.Background = brush;
+                                //getImg();
+                            }
+                            else
+                            {
+                                MessageBox.Show("حدث خطأ في تحميل الصورة");
+                            }
                         }
+                        await RefreshVendorsList();
+                        Tb_search_TextChanged(null, null);
                     }
-                    await RefreshVendorsList();
-                    Tb_search_TextChanged(null, null);
                 }
-            }
+            } else
+            Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
 
         }
 
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            //chk empty name
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            Button button = sender as Button;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            {
+                //chk empty name
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             //chk empty mobile
             SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             //validate email
@@ -462,12 +470,18 @@ namespace POS.View
                     Tb_search_TextChanged(null, null);
                 }
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
 
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (agent.agentId != 0)
+            Button button = sender as Button;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            {
+                if (agent.agentId != 0)
             {
                 if ((!agent.canDelete) && (agent.isActive == 0))
                 {
@@ -513,6 +527,10 @@ namespace POS.View
             }
             //clear textBoxs
             Btn_clear_Click(sender, e);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+
         }
 
         private async void activate()
@@ -792,18 +810,28 @@ namespace POS.View
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            this.Dispatcher.Invoke(() =>
+            Button button = sender as Button;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                this.Dispatcher.Invoke(() =>
             {
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
             });
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+
         }
 
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-            ReportParameter[] paramarr = new ReportParameter[6];
+            Button button = sender as Button;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                ReportParameter[] paramarr = new ReportParameter[6];
 
             string addpath;
             bool isArabic = ReportCls.checkLang();
@@ -822,12 +850,18 @@ namespace POS.View
             rep.SetParameters(paramarr);
             rep.Refresh();
             LocalReportExtensions.PrintToPrinter(rep);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
 
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            ReportParameter[] paramarr = new ReportParameter[6];
+            Button button = sender as Button;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                ReportParameter[] paramarr = new ReportParameter[6];
 
             string addpath;
             bool isArabic = ReportCls.checkLang();
@@ -855,6 +889,9 @@ namespace POS.View
                 LocalReportExtensions.ExportToPDF(rep, filepath);
             }
 
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
 
         }
 
@@ -1027,7 +1064,9 @@ namespace POS.View
         /// 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var bc = new BrushConverter();
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                var bc = new BrushConverter();
             p_errorName.Visibility = Visibility.Collapsed;
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             if (agents is null)
@@ -1045,10 +1084,8 @@ namespace POS.View
             RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
             #endregion
             RefreshVendorView();
+            }
         }
-
-
-
 
         #endregion
         #region Pagination Y
@@ -1177,10 +1214,18 @@ namespace POS.View
 
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
+            Button button = sender as Button;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+
+                Window.GetWindow(this).Opacity = 0.2;
             win_lvc win = new win_lvc(agentsQuery, 1, false);
             win.ShowDialog();
             Window.GetWindow(this).Opacity = 1;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+
         }
     }
 }

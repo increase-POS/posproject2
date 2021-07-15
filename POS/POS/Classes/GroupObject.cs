@@ -412,9 +412,30 @@ namespace POS.Classes
             element = GOList.Where(X => X.objectName == objectName).FirstOrDefault();
 
                 return element;
-
         }
         //
+
+        public bool HasPermissionAction(string objectname, List<GroupObject> GOList, string type)
+        {
+            bool hasPermission = false;
+            GroupObject groupObject =  GetGObjByObjName(objectname, GOList);
+            if (type == "add" && groupObject.addOb == 1)
+                     hasPermission = true;
+            else if (type == "update" && groupObject.updateOb == 1)
+                hasPermission = true;
+            else if (type == "delete" && groupObject.deleteOb == 1)
+                hasPermission = true;
+            else if (type == "show" && groupObject.showOb == 1)
+                hasPermission = true;
+            else if (type == "report" && groupObject.reportOb == 1)
+                hasPermission = true;
+            else if (type == "one" && groupObject.showOb == 1)
+                hasPermission = true;
+
+            return hasPermission;
+        }
+
+
     }
 }
 

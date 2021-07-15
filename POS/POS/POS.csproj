@@ -217,18 +217,6 @@
     <Compile Include="controlTemplate\UC_rectangleCard.xaml.cs">
       <DependentUpon>UC_rectangleCard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="controlTemplate\UC_rectangleCardWithoutPrice_ar.xaml.cs">
-      <DependentUpon>UC_rectangleCardWithoutPrice_ar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="controlTemplate\UC_rectangleCardWithoutPrice.xaml.cs">
-      <DependentUpon>UC_rectangleCardWithoutPrice.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="controlTemplate\UC_rectangleCardPrice.xaml.cs">
-      <DependentUpon>UC_rectangleCardPrice.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="controlTemplate\UC_rectangleCardPrice_ar.xaml.cs">
-      <DependentUpon>UC_rectangleCardPrice_ar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="controlTemplate\UC_squareCard.xaml.cs">
       <DependentUpon>UC_squareCard.xaml</DependentUpon>
     </Compile>
@@ -459,6 +447,9 @@
     <Compile Include="View\windows\wd_itemsOfferList.xaml.cs">
       <DependentUpon>wd_itemsOfferList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_itemsUnitList.xaml.cs">
+      <DependentUpon>wd_itemsUnitList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_locationAddRange.xaml.cs">
       <DependentUpon>wd_locationAddRange.xaml</DependentUpon>
     </Compile>
@@ -490,22 +481,6 @@
       <DependentUpon>winLogIn.xaml</DependentUpon>
     </Compile>
     <Page Include="controlTemplate\UC_rectangleCard.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="controlTemplate\UC_rectangleCardWithoutPrice_ar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="controlTemplate\UC_rectangleCardWithoutPrice.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="controlTemplate\UC_rectangleCardPrice.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="controlTemplate\UC_rectangleCardPrice_ar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -816,6 +791,10 @@
     <Page Include="View\windows\wd_itemsOfferList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_itemsUnitList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\windows\wd_locationAddRange.xaml">
       <SubType>Designer</SubType>

@@ -39,7 +39,7 @@ namespace POS.View
     /// </summary>
     public partial class UC_Customer : UserControl
     {
-        
+
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
         IEnumerable<Agent> agentsQuery;
         IEnumerable<Agent> agents;
@@ -48,7 +48,7 @@ namespace POS.View
 
 
         Agent agentModel = new Agent();
-        
+
         Agent agent = new Agent();
         //phone variabels
         IEnumerable<CountryCode> countrynum;
@@ -68,13 +68,14 @@ namespace POS.View
         ImageBrush brush = new ImageBrush();
 
         BrushConverter bc = new BrushConverter();
-       
+
         int index = 0;
 
         string imgFileName = "pic/no-image-icon-125x125.png";
 
         bool isImgPressed = false;
 
+        string basicsPermission = "customers_basics";
         private static UC_Customer _instance;
         public static UC_Customer Instance
         {
@@ -146,7 +147,7 @@ namespace POS.View
             cb_areaPhone.SelectedIndex = MainWindow.Region.countryId;
             cb_areaFax.SelectedIndex = MainWindow.Region.countryId;
         }
-       
+
         async Task<IEnumerable<City>> RefreshCity()
         {
             citynum = await cityCodes.Get();
@@ -163,7 +164,7 @@ namespace POS.View
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-          //  MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trPamentMethodHint"));
+            //  MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trPamentMethodHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trCodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
@@ -263,96 +264,101 @@ namespace POS.View
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            agent.agentId = 0;
-            //chk empty name
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-            //chk empty name
-            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-            //validate email
-            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-            //phone
-            string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
-            //fax
-            string faxStr = "";
-            if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
-            //email
-            bool emailError = false;
-            if (!tb_email.Text.Equals(""))
-                if (!ValidatorExtensions.IsValid(tb_email.Text))
-                    emailError = true;
-            //deserve
-            decimal maxDeserveValue = 0;
-            if (!tb_upperLimit.Text.Equals(""))
-                maxDeserveValue = decimal.Parse(tb_upperLimit.Text);
-
-            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
             {
-                if (emailError)
-                    //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
-                else
+                agent.agentId = 0;
+                //chk empty name
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                //chk empty name
+                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                //validate email
+                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                //phone
+                string phoneStr = "";
+                if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+                //fax
+                string faxStr = "";
+                if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
+                //email
+                bool emailError = false;
+                if (!tb_email.Text.Equals(""))
+                    if (!ValidatorExtensions.IsValid(tb_email.Text))
+                        emailError = true;
+                //deserve
+                decimal maxDeserveValue = 0;
+                if (!tb_upperLimit.Text.Equals(""))
+                    maxDeserveValue = decimal.Parse(tb_upperLimit.Text);
+
+                if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
                 {
-                    SectionData.genRandomCode("c");
-                    tb_code.Text = SectionData.code;
-
-                    //Agent customer = new Agent
-                    //{
-                    agent.name = tb_name.Text;
-                    agent.code = tb_code.Text;
-                    agent.company = tb_company.Text;
-                    agent.address = tb_address.Text;
-                    agent.email = tb_email.Text;
-                    agent.phone = phoneStr;
-                    agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
-                    //agent.image = "";
-                    agent.type = "c";
-                    agent.accType = "";
-                    agent.balance = 0;
-                    //createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                    //updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                    agent.createUserId = MainWindow.userID;
-                    agent.updateUserId = MainWindow.userID;
-                    agent.notes = tb_notes.Text;
-                    agent.isActive = 1;
-                    agent.fax = faxStr;
-                    agent.maxDeserve = maxDeserveValue;
-
-                    //};
-
-                    string s = await agentModel.saveAgent(agent);
-                    if (!s.Equals("0"))  //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
+                    if (emailError)
+                        //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
+                    else
                     {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                        Btn_clear_Click(null, null);
-                    }
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        SectionData.genRandomCode("c");
+                        tb_code.Text = SectionData.code;
 
-                    if (isImgPressed)
-                    {
-                        int agentId = int.Parse(s);
-                        //await agentModel.uploadImage(openFileDialog.FileName, agentId);
-                        string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
-                        agent.image = b;
-                        isImgPressed = false;
-                        if (!b.Equals(""))
+                        //Agent customer = new Agent
+                        //{
+                        agent.name = tb_name.Text;
+                        agent.code = tb_code.Text;
+                        agent.company = tb_company.Text;
+                        agent.address = tb_address.Text;
+                        agent.email = tb_email.Text;
+                        agent.phone = phoneStr;
+                        agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
+                        //agent.image = "";
+                        agent.type = "c";
+                        agent.accType = "";
+                        agent.balance = 0;
+                        //createDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                        //updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                        agent.createUserId = MainWindow.userID;
+                        agent.updateUserId = MainWindow.userID;
+                        agent.notes = tb_notes.Text;
+                        agent.isActive = 1;
+                        agent.fax = faxStr;
+                        agent.maxDeserve = maxDeserveValue;
+
+                        //};
+
+                        string s = await agentModel.saveAgent(agent);
+                        if (!s.Equals("0"))  //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
                         {
-                            //brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                            //img_customer.Background = brush;
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                            Btn_clear_Click(null, null);
                         }
-                        else
+                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                        if (isImgPressed)
                         {
-                            MessageBox.Show("حدث خطأ في تحميل الصورة");
+                            int agentId = int.Parse(s);
+                            //await agentModel.uploadImage(openFileDialog.FileName, agentId);
+                            string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                            agent.image = b;
+                            isImgPressed = false;
+                            if (!b.Equals(""))
+                            {
+                                //brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                                //img_customer.Background = brush;
+                            }
+                            else
+                            {
+                                MessageBox.Show("حدث خطأ في تحميل الصورة");
+                            }
                         }
+
+                        await RefreshCustomersList();
+                        Tb_search_TextChanged(null, null);
+
+
                     }
-
-                    await RefreshCustomersList();
-                    Tb_search_TextChanged(null, null);
-
-
                 }
             }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
 
         }
 
@@ -373,7 +379,7 @@ namespace POS.View
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucCustomer.FlowDirection = FlowDirection.RightToLeft;
             }
-            
+
             translate();
 
             this.Dispatcher.Invoke(() =>
@@ -381,11 +387,10 @@ namespace POS.View
                 Tb_search_TextChanged(null, null);
             });
 
-    
+
             fillCountries();
-        
             fillCity();
-       
+
             Keyboard.Focus(tb_name);
 
             SectionData.genRandomCode("c");
@@ -395,96 +400,102 @@ namespace POS.View
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            //chk empty name
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-            //chk empty name
-            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-            //validate email
-            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-
-            string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
-
-            string faxStr = "";
-            if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
-
-            bool emailError = false;
-            if (!tb_email.Text.Equals(""))
-                if (!ValidatorExtensions.IsValid(tb_email.Text))
-                    emailError = true;
-
-            decimal maxDeserveValue = 0;
-            if (!tb_upperLimit.Text.Equals(""))
-                maxDeserveValue = decimal.Parse(tb_upperLimit.Text);
-
-            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
             {
-                if (emailError)
-                    //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
-                else
+                //chk empty name
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                //chk empty name
+                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                //validate email
+                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+
+                string phoneStr = "";
+                if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+
+                string faxStr = "";
+                if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
+
+                bool emailError = false;
+                if (!tb_email.Text.Equals(""))
+                    if (!ValidatorExtensions.IsValid(tb_email.Text))
+                        emailError = true;
+
+                decimal maxDeserveValue = 0;
+                if (!tb_upperLimit.Text.Equals(""))
+                    maxDeserveValue = decimal.Parse(tb_upperLimit.Text);
+
+                if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
                 {
-                    //Agent customer = new Agent
-                    //{
-                    //agentId = AgentId,
-                    agent.name = tb_name.Text;
-                    agent.code = tb_code.Text;
-                    agent.company = tb_company.Text;
-                    agent.address = tb_address.Text;
-                    agent.email = tb_email.Text;
-                    agent.phone = phoneStr;
-                    agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
-                    //agent.image = "";
-                    //agent.type = "c";
-                    //agent.accType = "";
-                    //agent.balance = 0;
-                    //createDate = CreateDate,
-                    //updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
-                    //createUserId = CreateUser,
-                    agent.updateUserId = MainWindow.userID;
-                    agent.notes = tb_notes.Text;
-                    //isActive = IsActive,
-                    agent.fax = faxStr;
-                    agent.maxDeserve = maxDeserveValue;
-
-                    //};
-
-                    string s = await agentModel.saveAgent(agent);
-
-                    if (!s.Equals("0")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                    if (isImgPressed)
+                    if (emailError)
+                        //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
+                    else
                     {
-                        int agentId = int.Parse(s);
-                        string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
-                        agent.image = b;
-                        isImgPressed = false;
-                        //if (b)
+                        //Agent customer = new Agent
                         //{
-                        //    brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                        //    img_customer.Background = brush;
-                        //}
-                        //else
-                        //{
-                        //    SectionData.clearImg(img_customer);
-                        //    MessageBox.Show("حدث خطأ في تحميل الصورة");
-                        //}
+                        //agentId = AgentId,
+                        agent.name = tb_name.Text;
+                        agent.code = tb_code.Text;
+                        agent.company = tb_company.Text;
+                        agent.address = tb_address.Text;
+                        agent.email = tb_email.Text;
+                        agent.phone = phoneStr;
+                        agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
+                        //agent.image = "";
+                        //agent.type = "c";
+                        //agent.accType = "";
+                        //agent.balance = 0;
+                        //createDate = CreateDate,
+                        //updateDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),
+                        //createUserId = CreateUser,
+                        agent.updateUserId = MainWindow.userID;
+                        agent.notes = tb_notes.Text;
+                        //isActive = IsActive,
+                        agent.fax = faxStr;
+                        agent.maxDeserve = maxDeserveValue;
+
+                        //};
+
+                        string s = await agentModel.saveAgent(agent);
+
+                        if (!s.Equals("0")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                        if (isImgPressed)
+                        {
+                            int agentId = int.Parse(s);
+                            string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                            agent.image = b;
+                            isImgPressed = false;
+                            //if (b)
+                            //{
+                            //    brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                            //    img_customer.Background = brush;
+                            //}
+                            //else
+                            //{
+                            //    SectionData.clearImg(img_customer);
+                            //    MessageBox.Show("حدث خطأ في تحميل الصورة");
+                            //}
+                        }
+
+                        SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
+
+                        SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
+                        SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
+
+                        await RefreshCustomersList();
+                        Tb_search_TextChanged(null, null);
                     }
 
-                    SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
-
-                    SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
-
-                    SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
-
-                    await RefreshCustomersList();
-                    Tb_search_TextChanged(null, null);
                 }
-
             }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+
 
         }
 
@@ -527,52 +538,56 @@ namespace POS.View
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (agent.agentId != 0)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
             {
-                if ((!agent.canDelete) && (agent.isActive == 0))
+                if (agent.agentId != 0)
                 {
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
-                    activate();
-                }
-                else
-                {
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    if (agent.canDelete)
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                    if (!agent.canDelete)
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
+                    if ((!agent.canDelete) && (agent.isActive == 0))
                     {
-                        string popupContent = "";
-                        if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                        if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-
-                        bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
-
-                        if (b) //SectionData.popUpResponse("", popupContent);
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        #endregion
+                        if (w.isOk)
+                            activate();
                     }
+                    else
+                    {
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        if (agent.canDelete)
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                        if (!agent.canDelete)
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        #endregion
+                        if (w.isOk)
+                        {
+                            string popupContent = "";
+                            if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                            if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                            bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
+
+                            if (b) //SectionData.popUpResponse("", popupContent);
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        }
+                    }
+                    await RefreshCustomersList();
+                    Tb_search_TextChanged(null, null);
                 }
-                await RefreshCustomersList();
-                Tb_search_TextChanged(null, null);
+                //clear textBoxs
+                Btn_clear_Click(sender, e);
             }
-            //clear textBoxs
-            Btn_clear_Click(sender , e);
-           
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private async void activate()
@@ -585,7 +600,7 @@ namespace POS.View
             if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             await RefreshCustomersList();
             Tb_search_TextChanged(null, null);
@@ -616,57 +631,7 @@ namespace POS.View
             SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
         }
 
-        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
-            //try
-            //{
-            this.Dispatcher.Invoke(() =>
-            {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
 
-
-            //}
-            //catch (Exception ex)
-            //{
-            //AllClasses.Exception1(ex);
-            //}
-        }
-         void FN_ExportToExcel()
-        {
-           
-            var QueryExcel = agentsQuery.AsEnumerable().Select(x => new
-            {
-                Code = x.code,
-                Name = x.name,
-                Company = x.company,
-                Mobile = x.mobile,
-                Phone = x.phone,
-                Fax = x.fax,
-                Email = x.email,
-                Address = x.address,
-                MaxDeserve = x.maxDeserve,
-                Notes = x.notes,
-
-            });
-            var DTForExcel = QueryExcel.ToDataTable();
-            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trCode");
-            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trName");
-            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trCompany");
-            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trMobile");
-            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trPhone");
-            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trFax");
-            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trEmail");
-            DTForExcel.Columns[7].Caption = MainWindow.resourcemanager.GetString("trAddress");
-            DTForExcel.Columns[8].Caption = MainWindow.resourcemanager.GetString("trUpperLimit");
-            DTForExcel.Columns[9].Caption = MainWindow.resourcemanager.GetString("trNote");
-
-
-            ExportToExcel.Export(DTForExcel);
-
-        }
 
         private async void Tgl_customerIsActive_Checked(object sender, RoutedEventArgs e)
         {
@@ -674,7 +639,7 @@ namespace POS.View
                 await RefreshCustomersList();
             tgl_customerState = 1;
             Tb_search_TextChanged(null, null);
-            
+
         }
 
         private async void Tgl_customerIsActive_Unchecked(object sender, RoutedEventArgs e)
@@ -695,10 +660,10 @@ namespace POS.View
         {
             dg_customer.ItemsSource = agentsQuery;
             txt_count.Text = agentsQuery.Count().ToString();
-       
+
         }
-        
-        
+
+
 
         private void tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -723,7 +688,7 @@ namespace POS.View
 
         private void tb_search_GotFocus(object sender, RoutedEventArgs e)
         {
-           
+
             var bc = new BrushConverter();
 
             p_errorName.Visibility = Visibility.Collapsed;
@@ -732,10 +697,10 @@ namespace POS.View
 
         private void UserControl_LostFocus(object sender, RoutedEventArgs e)
         {
-        //    var bc = new BrushConverter();
+            //    var bc = new BrushConverter();
 
-        //    p_errorName.Visibility = Visibility.Collapsed;
-        //    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            //    p_errorName.Visibility = Visibility.Collapsed;
+            //    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
         }
 
         private void tb_email_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -800,9 +765,9 @@ namespace POS.View
                 {
                     if (cb_areaFax.SelectedIndex >= 0)
                         countryid = int.Parse(cb_areaFax.SelectedValue.ToString());
-                
+
                     citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
-                   
+
                     cb_areaFaxLocal.ItemsSource = citynumofcountry;
                     cb_areaFaxLocal.SelectedValuePath = "cityId";
                     cb_areaFaxLocal.DisplayMemberPath = "cityCode";
@@ -839,66 +804,11 @@ namespace POS.View
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-           await RefreshCustomersList();
+            await RefreshCustomersList();
             Tb_search_TextChanged(null, null);
         }
 
-        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
-            ReportParameter[] paramarr = new ReportParameter[6];
 
-            string addpath;
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                addpath = @"\Reports\SectionData\Ar\ArCustomerReport.rdlc";
-            }
-            else addpath = @"\Reports\SectionData\En\CustomerReport.rdlc";
-
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            clsReports.customerReport(agentsQuery, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            saveFileDialog.Filter = "PDF|*.pdf;";
-
-            if (saveFileDialog.ShowDialog() == true)
-            {
-
-                string filepath = saveFileDialog.FileName;
-                LocalReportExtensions.ExportToPDF(rep, filepath);
-
-            }
-        }
-
-        private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
-            ReportParameter[] paramarr = new ReportParameter[6];
-
-            string addpath;
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                addpath = @"\Reports\SectionData\Ar\ArVendorReport.rdlc";
-            }
-            else addpath = @"\Reports\SectionData\En\VendorReport.rdlc";
-
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            clsReports.customerReport(agentsQuery, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-            LocalReportExtensions.PrintToPrinter(rep);
-        }
 
         private void Tb_email_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -916,7 +826,7 @@ namespace POS.View
         }
         #endregion
         #region Get Id By Click  Y
-        private  void DG_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void DG_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorEmail.Visibility = Visibility.Collapsed;
@@ -1067,25 +977,27 @@ namespace POS.View
         /// 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (agents is null)
-                await RefreshCustomersList();
-            searchText = tb_search.Text.ToLower();
-            pageIndex = 1;
-            #region
-            agentsQuery = agents.Where(s => (s.code.ToLower().Contains(searchText) ||
-            s.name.ToLower().Contains(searchText) ||
-            s.company.ToLower().Contains(searchText) ||
-            s.mobile.ToLower().Contains(searchText)
-            ) && s.isActive == tgl_customerState);
-            if (btns is null)
-                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
-            #endregion
-            RefreshCustomerView();
-
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                if (agents is null)
+                    await RefreshCustomersList();
+                searchText = tb_search.Text.ToLower();
+                pageIndex = 1;
+                #region
+                agentsQuery = agents.Where(s => (s.code.ToLower().Contains(searchText) ||
+                s.name.ToLower().Contains(searchText) ||
+                s.company.ToLower().Contains(searchText) ||
+                s.mobile.ToLower().Contains(searchText)
+                ) && s.isActive == tgl_customerState);
+                if (btns is null)
+                    btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+                RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+                #endregion
+                RefreshCustomerView();
+            }
 
         }
-       
+
 
 
         #endregion
@@ -1205,13 +1117,139 @@ namespace POS.View
         {
             RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
         }
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                //try
+                //{
+                this.Dispatcher.Invoke(() =>
+            {
+                Thread t1 = new Thread(FN_ExportToExcel);
+                t1.SetApartmentState(ApartmentState.STA);
+                t1.Start();
+            });
+
+                //}
+                //catch (Exception ex)
+                //{
+                //AllClasses.Exception1(ex);
+                //}
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+        }
+        void FN_ExportToExcel()
+        {
+
+            var QueryExcel = agentsQuery.AsEnumerable().Select(x => new
+            {
+                Code = x.code,
+                Name = x.name,
+                Company = x.company,
+                Mobile = x.mobile,
+                Phone = x.phone,
+                Fax = x.fax,
+                Email = x.email,
+                Address = x.address,
+                MaxDeserve = x.maxDeserve,
+                Notes = x.notes,
+
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trCode");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trName");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trCompany");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trMobile");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trPhone");
+            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trFax");
+            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trEmail");
+            DTForExcel.Columns[7].Caption = MainWindow.resourcemanager.GetString("trAddress");
+            DTForExcel.Columns[8].Caption = MainWindow.resourcemanager.GetString("trUpperLimit");
+            DTForExcel.Columns[9].Caption = MainWindow.resourcemanager.GetString("trNote");
+
+
+            ExportToExcel.Export(DTForExcel);
+
+        }
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                ReportParameter[] paramarr = new ReportParameter[6];
+
+                string addpath;
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\SectionData\Ar\ArCustomerReport.rdlc";
+                }
+                else addpath = @"\Reports\SectionData\En\CustomerReport.rdlc";
+
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                clsReports.customerReport(agentsQuery, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+
+                }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                ReportParameter[] paramarr = new ReportParameter[6];
+
+                string addpath;
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\SectionData\Ar\ArVendorReport.rdlc";
+                }
+                else addpath = @"\Reports\SectionData\En\VendorReport.rdlc";
+
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                clsReports.customerReport(agentsQuery, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+                LocalReportExtensions.PrintToPrinter(rep);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+        }
 
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
-            win_lvc win = new win_lvc(agentsQuery,1,true);
-            win.ShowDialog();
-            Window.GetWindow(this).Opacity = 1;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                Window.GetWindow(this).Opacity = 0.2;
+                win_lvc win = new win_lvc(agentsQuery, 1, true);
+                win.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
     }
 }

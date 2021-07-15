@@ -580,6 +580,7 @@ namespace POS.Classes
         }
 
         #endregion
+        /*
         #region  sale
         #region En
         UC_rectangleCardPrice FN_createCatalogItem(Item item, string price,  int row, int column,
@@ -779,7 +780,7 @@ namespace POS.Classes
 
 
         #endregion
-        
+        */
         #endregion
 
 
