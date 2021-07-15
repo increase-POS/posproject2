@@ -19,6 +19,7 @@ namespace POS_Server.Models
         public string type { get; set; }
         public string accType { get; set; }
         public Nullable<decimal> balance { get; set; }
+        public Nullable<byte> balanceType { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }

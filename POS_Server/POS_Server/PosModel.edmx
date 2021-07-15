@@ -677,6 +677,21 @@
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
+        <EntityType Name="packages">
+          <Key>
+            <PropertyRef Name="packageId" />
+          </Key>
+          <Property Name="packageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="parentIUId" Type="int" />
+          <Property Name="childIUId" Type="int" />
+          <Property Name="quantity" Type="int" Nullable="false" />
+          <Property Name="isActive" Type="tinyint" Nullable="false" />
+          <Property Name="notes" Type="ntext" />
+          <Property Name="createUserId" Type="int" />
+          <Property Name="updateUserId" Type="int" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="Points">
           <Key>
             <PropertyRef Name="pointId" />
@@ -2637,6 +2652,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_packages_itemsUnits">
+          <End Role="itemsUnits" Type="Self.itemsUnits" Multiplicity="0..1" />
+          <End Role="packages" Type="Self.packages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="itemsUnits">
+              <PropertyRef Name="itemUnitId" />
+            </Principal>
+            <Dependent Role="packages">
+              <PropertyRef Name="parentIUId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_packages_itemsUnits1">
+          <End Role="itemsUnits" Type="Self.itemsUnits" Multiplicity="0..1" />
+          <End Role="packages" Type="Self.packages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="itemsUnits">
+              <PropertyRef Name="itemUnitId" />
+            </Principal>
+            <Dependent Role="packages">
+              <PropertyRef Name="childIUId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_packages_users1">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="packages" Type="Self.packages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="packages">
+              <PropertyRef Name="updateUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_packages_users2">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="packages" Type="Self.packages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="packages">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Points_agents">
           <End Role="agents" Type="Self.agents" Multiplicity="0..1" />
           <End Role="Points" Type="Self.Points" Multiplicity="*" />
@@ -3098,6 +3161,7 @@
           <EntitySet Name="offers" EntityType="Self.offers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="orders" EntityType="Self.orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="orderscontents" EntityType="Self.orderscontents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="packages" EntityType="Self.packages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Points" EntityType="Self.Points" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="pos" EntityType="Self.pos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="posUsers" EntityType="Self.posUsers" Schema="dbo" store:Type="Tables" />
@@ -3686,6 +3750,22 @@
           <AssociationSet Name="FK_orderscontents_users1" Association="Self.FK_orderscontents_users1">
             <End Role="users" EntitySet="users" />
             <End Role="orderscontents" EntitySet="orderscontents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_packages_itemsUnits" Association="Self.FK_packages_itemsUnits">
+            <End Role="itemsUnits" EntitySet="itemsUnits" />
+            <End Role="packages" EntitySet="packages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_packages_itemsUnits1" Association="Self.FK_packages_itemsUnits1">
+            <End Role="itemsUnits" EntitySet="itemsUnits" />
+            <End Role="packages" EntitySet="packages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_packages_users1" Association="Self.FK_packages_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="packages" EntitySet="packages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_packages_users2" Association="Self.FK_packages_users2">
+            <End Role="users" EntitySet="users" />
+            <End Role="packages" EntitySet="packages" />
           </AssociationSet>
           <AssociationSet Name="FK_Points_agents" Association="Self.FK_Points_agents">
             <End Role="agents" EntitySet="agents" />
@@ -4524,6 +4604,8 @@
           <NavigationProperty Name="units" Relationship="Self.FK_itemsUnits_units" FromRole="itemsUnits" ToRole="units" />
           <NavigationProperty Name="users" Relationship="Self.FK_itemsUnits_users" FromRole="itemsUnits" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_itemsUnits_users1" FromRole="itemsUnits" ToRole="users" />
+          <NavigationProperty Name="packages" Relationship="incposdbModel.FK_packages_itemsUnits" FromRole="itemsUnits" ToRole="packages" />
+          <NavigationProperty Name="packages1" Relationship="incposdbModel.FK_packages_itemsUnits1" FromRole="itemsUnits" ToRole="packages" />
         </EntityType>
         <EntityType Name="itemTransferOffer">
           <Key>
@@ -5074,6 +5156,8 @@
           <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
           <Property Name="balance" Type="Decimal" Precision="20" Scale="2" />
           <Property Name="balanceType" Type="Byte" />
+          <NavigationProperty Name="packages" Relationship="incposdbModel.FK_packages_users1" FromRole="users" ToRole="packages" />
+          <NavigationProperty Name="packages1" Relationship="incposdbModel.FK_packages_users2" FromRole="users" ToRole="packages" />
         </EntityType>
         <EntityType Name="userSetValues">
           <Key>
@@ -8010,7 +8094,91 @@
             <End Role="users" EntitySet="users" />
             <End Role="usersLogs" EntitySet="usersLogs" />
           </AssociationSet>
+          <EntitySet Name="packages" EntityType="incposdbModel.packages" />
+          <AssociationSet Name="FK_packages_itemsUnits" Association="incposdbModel.FK_packages_itemsUnits">
+            <End Role="itemsUnits" EntitySet="itemsUnits" />
+            <End Role="packages" EntitySet="packages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_packages_itemsUnits1" Association="incposdbModel.FK_packages_itemsUnits1">
+            <End Role="itemsUnits" EntitySet="itemsUnits" />
+            <End Role="packages" EntitySet="packages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_packages_users1" Association="incposdbModel.FK_packages_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="packages" EntitySet="packages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_packages_users2" Association="incposdbModel.FK_packages_users2">
+            <End Role="users" EntitySet="users" />
+            <End Role="packages" EntitySet="packages" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="packages">
+          <Key>
+            <PropertyRef Name="packageId" />
+          </Key>
+          <Property Name="packageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="parentIUId" Type="Int32" />
+          <Property Name="childIUId" Type="Int32" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <Property Name="isActive" Type="Byte" Nullable="false" />
+          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="createUserId" Type="Int32" />
+          <Property Name="updateUserId" Type="Int32" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="itemsUnits" Relationship="incposdbModel.FK_packages_itemsUnits" FromRole="packages" ToRole="itemsUnits" />
+          <NavigationProperty Name="itemsUnits1" Relationship="incposdbModel.FK_packages_itemsUnits1" FromRole="packages" ToRole="itemsUnits" />
+          <NavigationProperty Name="users" Relationship="incposdbModel.FK_packages_users1" FromRole="packages" ToRole="users" />
+          <NavigationProperty Name="users1" Relationship="incposdbModel.FK_packages_users2" FromRole="packages" ToRole="users" />
+        </EntityType>
+        <Association Name="FK_packages_itemsUnits">
+          <End Type="incposdbModel.itemsUnits" Role="itemsUnits" Multiplicity="0..1" />
+          <End Type="incposdbModel.packages" Role="packages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="itemsUnits">
+              <PropertyRef Name="itemUnitId" />
+            </Principal>
+            <Dependent Role="packages">
+              <PropertyRef Name="parentIUId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_packages_itemsUnits1">
+          <End Type="incposdbModel.itemsUnits" Role="itemsUnits" Multiplicity="0..1" />
+          <End Type="incposdbModel.packages" Role="packages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="itemsUnits">
+              <PropertyRef Name="itemUnitId" />
+            </Principal>
+            <Dependent Role="packages">
+              <PropertyRef Name="childIUId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_packages_users1">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.packages" Role="packages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="packages">
+              <PropertyRef Name="updateUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_packages_users2">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.packages" Role="packages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="packages">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8987,6 +9155,22 @@
                 <ScalarProperty Name="sOutDate" ColumnName="sOutDate" />
                 <ScalarProperty Name="posId" ColumnName="posId" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="packages">
+            <EntityTypeMapping TypeName="incposdbModel.packages">
+              <MappingFragment StoreEntitySet="packages">
+                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="createDate" ColumnName="createDate" />
+                <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+                <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+                <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="childIUId" ColumnName="childIUId" />
+                <ScalarProperty Name="parentIUId" ColumnName="parentIUId" />
+                <ScalarProperty Name="packageId" ColumnName="packageId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -136,12 +136,14 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var searchPredicate = PredicateBuilder.New<items>();
-                    searchPredicate = searchPredicate.Or(item => true);
+                   
                     var unitPredicate = PredicateBuilder.New<itemsUnits>();
                     searchPredicate = searchPredicate.Or(item => false);
 
                     if (categoryId != 0)
                         searchPredicate = searchPredicate.Or(item => item.categoryId == categoryId);
+                    else
+                        searchPredicate = searchPredicate.Or(item => true);
                     if (defaultSale != 0)
                         unitPredicate = unitPredicate.Or(unit => unit.defaultSale == 1);
                     if (defaultPurchase != 0)

@@ -240,6 +240,11 @@
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users2" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_usersLogs_users" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="incposdbModel.packages" Width="1.5" PointX="16.75" PointY="101.125" />
+        <AssociationConnector Association="incposdbModel.FK_packages_itemsUnits" />
+        <AssociationConnector Association="incposdbModel.FK_packages_itemsUnits1" />
+        <AssociationConnector Association="incposdbModel.FK_packages_users1" />
+        <AssociationConnector Association="incposdbModel.FK_packages_users2" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

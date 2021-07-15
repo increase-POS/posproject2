@@ -692,6 +692,8 @@
     <NavigationProperty Name="units" Relationship="Self.FK_itemsUnits_units" FromRole="itemsUnits" ToRole="units" />
     <NavigationProperty Name="users" Relationship="Self.FK_itemsUnits_users" FromRole="itemsUnits" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_itemsUnits_users1" FromRole="itemsUnits" ToRole="users" />
+    <NavigationProperty Name="packages" Relationship="incposdbModel.FK_packages_itemsUnits" FromRole="itemsUnits" ToRole="packages" />
+    <NavigationProperty Name="packages1" Relationship="incposdbModel.FK_packages_itemsUnits1" FromRole="itemsUnits" ToRole="packages" />
   </EntityType>
   <EntityType Name="itemTransferOffer">
     <Key>
@@ -1242,6 +1244,8 @@
     <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
     <Property Name="balance" Type="Decimal" Precision="20" Scale="2" />
     <Property Name="balanceType" Type="Byte" />
+    <NavigationProperty Name="packages" Relationship="incposdbModel.FK_packages_users1" FromRole="users" ToRole="packages" />
+    <NavigationProperty Name="packages1" Relationship="incposdbModel.FK_packages_users2" FromRole="users" ToRole="packages" />
   </EntityType>
   <EntityType Name="userSetValues">
     <Key>
@@ -4178,5 +4182,89 @@
       <End Role="users" EntitySet="users" />
       <End Role="usersLogs" EntitySet="usersLogs" />
     </AssociationSet>
+    <EntitySet Name="packages" EntityType="incposdbModel.packages" />
+    <AssociationSet Name="FK_packages_itemsUnits" Association="incposdbModel.FK_packages_itemsUnits">
+      <End Role="itemsUnits" EntitySet="itemsUnits" />
+      <End Role="packages" EntitySet="packages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_packages_itemsUnits1" Association="incposdbModel.FK_packages_itemsUnits1">
+      <End Role="itemsUnits" EntitySet="itemsUnits" />
+      <End Role="packages" EntitySet="packages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_packages_users1" Association="incposdbModel.FK_packages_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="packages" EntitySet="packages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_packages_users2" Association="incposdbModel.FK_packages_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="packages" EntitySet="packages" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="packages">
+    <Key>
+      <PropertyRef Name="packageId" />
+    </Key>
+    <Property Name="packageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="parentIUId" Type="Int32" />
+    <Property Name="childIUId" Type="Int32" />
+    <Property Name="quantity" Type="Int32" Nullable="false" />
+    <Property Name="isActive" Type="Byte" Nullable="false" />
+    <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <NavigationProperty Name="itemsUnits" Relationship="incposdbModel.FK_packages_itemsUnits" FromRole="packages" ToRole="itemsUnits" />
+    <NavigationProperty Name="itemsUnits1" Relationship="incposdbModel.FK_packages_itemsUnits1" FromRole="packages" ToRole="itemsUnits" />
+    <NavigationProperty Name="users" Relationship="incposdbModel.FK_packages_users1" FromRole="packages" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_packages_users2" FromRole="packages" ToRole="users" />
+  </EntityType>
+  <Association Name="FK_packages_itemsUnits">
+    <End Type="incposdbModel.itemsUnits" Role="itemsUnits" Multiplicity="0..1" />
+    <End Type="incposdbModel.packages" Role="packages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="itemsUnits">
+        <PropertyRef Name="itemUnitId" />
+      </Principal>
+      <Dependent Role="packages">
+        <PropertyRef Name="parentIUId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_packages_itemsUnits1">
+    <End Type="incposdbModel.itemsUnits" Role="itemsUnits" Multiplicity="0..1" />
+    <End Type="incposdbModel.packages" Role="packages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="itemsUnits">
+        <PropertyRef Name="itemUnitId" />
+      </Principal>
+      <Dependent Role="packages">
+        <PropertyRef Name="childIUId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_packages_users1">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.packages" Role="packages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="packages">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_packages_users2">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.packages" Role="packages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="packages">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

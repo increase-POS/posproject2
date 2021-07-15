@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using LinqKit;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using POS_Server.Models;
 using System;
@@ -148,27 +149,27 @@ namespace POS_Server.Controllers
                                                             bankName = jbb.name,
                                                             agentName = jaa.name,
                                                             usersName = juu.name,// side =u
-                                                          
+
                                                             posName = jpp.name,
                                                             posCreatorName = jpcc.name,
                                                             processType = C.processType,
                                                             cardId = C.cardId,
                                                             bondId = C.bondId,
                                                             usersLName = juu.lastname,// side =u
-                                                            createUserName = jucc.name ,
+                                                            createUserName = jucc.name,
                                                             createUserLName = jucc.lastname,
-                                                            createUserJob =jucc.job,
-                                                                cardName =jcrd.name,
-                                                            bondDeserveDate=jbbo.deserveDate,
-                                                            bondIsRecieved=jbbo.isRecieved,
-                                                          
+                                                            createUserJob = jucc.job,
+                                                            cardName = jcrd.name,
+                                                            bondDeserveDate = jbbo.deserveDate,
+                                                            bondIsRecieved = jbbo.isRecieved,
+
                                                         }).Where(C => ((type == "all") ? true : C.transType == type)
             && ((side == "all") ? true : C.side == side)).ToList();
-                   
-                    if(cachlist.Count>0 && side == "p")
+
+                    if (cachlist.Count > 0 && side == "p")
                     {
                         CashTransferModel tempitem = null;
-                        foreach ( CashTransferModel cashtItem in cachlist)
+                        foreach (CashTransferModel cashtItem in cachlist)
                         {
                             tempitem = this.Getpostransmodel(cashtItem.cashTransId)
                                 .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
@@ -245,15 +246,15 @@ namespace POS_Server.Controllers
             isConfirm = C.isConfirm,
             cashTransIdSource = C.cashTransIdSource,
             side = C.side,
-            
+
             docName = C.docName,
             docNum = C.docNum,
             docImage = C.docImage,
             bankId = C.bankId,
             processType = C.processType,
             cardId = C.cardId,
-            bondId=C.bondId,
-         
+            bondId = C.bondId,
+
         }).FirstOrDefault();
 
                     if (cacht == null)
@@ -289,7 +290,7 @@ namespace POS_Server.Controllers
                     var cashList = entity.cashTransfer
                    .Where(C => ((type == "all") ? true : C.transType == type)
             && ((side == "all") ? true : C.side == side) &&
-             C.transNum.Contains(searchwords) || C.notes.Contains(searchwords) 
+             C.transNum.Contains(searchwords) || C.notes.Contains(searchwords)
              || C.docName.Contains(searchwords) || C.docNum.Contains(searchwords))
                    .Select(C => new
                    {
@@ -310,13 +311,13 @@ namespace POS_Server.Controllers
                        C.isConfirm,
                        C.cashTransIdSource,
                        C.side,
-                       
+
                        C.docName,
                        C.docNum,
                        C.docImage,
                        C.bankId,
                        C.processType,
-                      C.cardId,
+                       C.cardId,
                        C.bondId,
                    })
                    .ToList();
@@ -423,7 +424,7 @@ namespace POS_Server.Controllers
                             cashtr.isConfirm = Obj.isConfirm;
                             cashtr.cashTransIdSource = Obj.cashTransIdSource;
                             cashtr.side = Obj.side;
-                           
+
                             cashtr.docName = Obj.docName;
                             cashtr.docNum = Obj.docNum;
                             cashtr.docImage = Obj.docImage;
@@ -574,7 +575,7 @@ namespace POS_Server.Controllers
                                         isConfirm = C.isConfirm,
                                         cashTransIdSource = C.cashTransIdSource,
                                         side = C.side,
-                                      
+
                                         docName = C.docName,
                                         docNum = C.docNum,
                                         docImage = C.docImage,
@@ -586,8 +587,8 @@ namespace POS_Server.Controllers
                                         processType = C.processType,
                                         cardId = C.cardId,
                                         bondId = C.bondId,
-                }).Where(C => ((type == "all") ? true : C.transType == type)
-            && ((side == "all") ? true : C.side == side) && (C.cashTransId == sourceId || C.cashTransIdSource == sourceId)).ToList();
+                                    }).Where(C => ((type == "all") ? true : C.transType == type)
+                                && ((side == "all") ? true : C.side == side) && (C.cashTransId == sourceId || C.cashTransIdSource == sourceId)).ToList();
 
 
                     // one row mean type=d
@@ -625,7 +626,7 @@ namespace POS_Server.Controllers
                                            isConfirm = C.isConfirm,
                                            cashTransIdSource = C.cashTransIdSource,
                                            side = C.side,
-                                         
+
                                            docName = C.docName,
                                            docNum = C.docNum,
                                            docImage = C.docImage,
@@ -687,35 +688,35 @@ namespace POS_Server.Controllers
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         allList = this.Getpostransmodel(cashTransId).ToList();
-                        delList = allList.Where(C=> C.isConfirm==1 ).ToList();
-                        if(delList!= null)
+                        delList = allList.Where(C => C.isConfirm == 1).ToList();
+                        if (delList != null)
                         {
- if (delList.Count == 2)
-                        {
-
-                            return Ok("0");
-                        }
-                        else
-                        {
-
-                            foreach (CashTransferModel ctitem in allList)
+                            if (delList.Count == 2)
                             {
-                                cashobject = entity.cashTransfer.Where(C => C.cashTransId == ctitem.cashTransId).FirstOrDefault();
-                                entity.cashTransfer.Remove(cashobject);
+
+                                return Ok("0");
+                            }
+                            else
+                            {
+
+                                foreach (CashTransferModel ctitem in allList)
+                                {
+                                    cashobject = entity.cashTransfer.Where(C => C.cashTransId == ctitem.cashTransId).FirstOrDefault();
+                                    entity.cashTransfer.Remove(cashobject);
+
+                                }
+                                entity.SaveChanges();
+
 
                             }
-                            entity.SaveChanges();
-
-                            
-                        }
 
                         }
-                       
-                            
-                        
-                        
-                      
-                      
+
+
+
+
+
+
                         return Ok("1");
                     }
                 }
@@ -733,7 +734,7 @@ namespace POS_Server.Controllers
 
         [HttpPost]
         [Route("MovePosCash")]
-        public IHttpActionResult MovePosCash(int cashTransId,int userIdD)
+        public IHttpActionResult MovePosCash(int cashTransId, int userIdD)
         {
             var re = Request;
             var headers = re.Headers;
@@ -742,7 +743,7 @@ namespace POS_Server.Controllers
             List<CashTransferModel> allList = null;
             CashTransferModel cashobject = new CashTransferModel();
             cashTransfer ctObject = new cashTransfer();
-           
+
             pos posobject = new pos();
             pos posobjectD = new pos();
             int? posidPull = 0;
@@ -764,66 +765,66 @@ namespace POS_Server.Controllers
                     {
                         allList = this.Getpostransmodel(cashTransId).ToList();
                         if (allList.Count > 0)
-                        { 
+                        {
                             //check if first pos is confirm
                             tempList = allList.Where(C => C.transType == "p" && C.isConfirm == 1).ToList();
 
-                        if (tempList != null)
-                        {
-                            if (tempList.Count >= 1)
+                            if (tempList != null)
                             {
-                                cashobject = tempList.FirstOrDefault();
-                                cash = cashobject.cash;
-                                posidPull = cashobject.posId;
-                                posobject = entity.pos.Where(p => p.posId == posidPull).FirstOrDefault();
-                                if (cashobject.cash <= posobject.balance)
+                                if (tempList.Count >= 1)
                                 {
-                                    //in "d" set confirm to 1
-                                    //get row of type d
-                                    cashobject = allList.Where(C => C.transType == "d").FirstOrDefault();
-                                    ctObject = entity.cashTransfer.Where(C => C.cashTransId == cashobject.cashTransId).FirstOrDefault();
-                                    ctObject.isConfirm = 1;
-                                    ctObject.updateUserId = userIdD;
-                                    ctObject.updateDate = DateTime.Now;
-                                    ctObject.userId = userIdD;
-                                    // END in "d" set confirm to 1
-
-                                    //START decreas balance from pull pos
-                                    posidD = ctObject.posId;
+                                    cashobject = tempList.FirstOrDefault();
+                                    cash = cashobject.cash;
+                                    posidPull = cashobject.posId;
                                     posobject = entity.pos.Where(p => p.posId == posidPull).FirstOrDefault();
-
-                                    posobject.balance = posobject.balance - cash;
-                                    posobject.updateUserId = userIdD;
-                                    posobject.updateDate = DateTime.Now;
-                                    // end
-                                    //increase balance from d pos
-                                    posobjectD = entity.pos.Where(p => p.posId == posidD).FirstOrDefault();
-                                    if (posobjectD.balance == null)
+                                    if (cashobject.cash <= posobject.balance)
                                     {
-                                        posobjectD.balance = 0;
+                                        //in "d" set confirm to 1
+                                        //get row of type d
+                                        cashobject = allList.Where(C => C.transType == "d").FirstOrDefault();
+                                        ctObject = entity.cashTransfer.Where(C => C.cashTransId == cashobject.cashTransId).FirstOrDefault();
+                                        ctObject.isConfirm = 1;
+                                        ctObject.updateUserId = userIdD;
+                                        ctObject.updateDate = DateTime.Now;
+                                        ctObject.userId = userIdD;
+                                        // END in "d" set confirm to 1
+
+                                        //START decreas balance from pull pos
+                                        posidD = ctObject.posId;
+                                        posobject = entity.pos.Where(p => p.posId == posidPull).FirstOrDefault();
+
+                                        posobject.balance = posobject.balance - cash;
+                                        posobject.updateUserId = userIdD;
+                                        posobject.updateDate = DateTime.Now;
+                                        // end
+                                        //increase balance from d pos
+                                        posobjectD = entity.pos.Where(p => p.posId == posidD).FirstOrDefault();
+                                        if (posobjectD.balance == null)
+                                        {
+                                            posobjectD.balance = 0;
+                                        }
+                                        posobjectD.balance = posobjectD.balance + cash;
+                                        posobjectD.updateUserId = userIdD;
+                                        posobjectD.updateDate = DateTime.Now;
+                                        entity.SaveChanges();
+                                        return Ok("transdone");
                                     }
-                                    posobjectD.balance = posobjectD.balance + cash;
-                                    posobjectD.updateUserId = userIdD;
-                                    posobjectD.updateDate = DateTime.Now;
-                                    entity.SaveChanges();
-                                    return Ok("transdone");
+                                    else
+                                    {
+                                        return Ok("nobalanceinpullpos");
+                                    }
+
+
                                 }
                                 else
                                 {
-                                    return Ok("nobalanceinpullpos");
+                                    return Ok("pullposnotconfirmed");
                                 }
-
-
                             }
                             else
                             {
-                                return Ok("pullposnotconfirmed");
+                                return Ok("nopullidornotconfirmed");
                             }
-                        }
-                        else
-                        {
-                            return Ok("nopullidornotconfirmed");
-                        }
                         }
                         else
                         {
@@ -879,7 +880,7 @@ namespace POS_Server.Controllers
                                     isConfirm = C.isConfirm,
                                     cashTransIdSource = C.cashTransIdSource,
                                     side = C.side,
-                                   
+
                                     docName = C.docName,
                                     docNum = C.docNum,
                                     docImage = C.docImage,
@@ -930,7 +931,7 @@ namespace POS_Server.Controllers
                                        isConfirm = C.isConfirm,
                                        cashTransIdSource = C.cashTransIdSource,
                                        side = C.side,
-                                      
+
                                        docName = C.docName,
                                        docNum = C.docNum,
                                        docImage = C.docImage,
@@ -941,7 +942,7 @@ namespace POS_Server.Controllers
                                        posName = jpp.name,
                                        processType = C.processType,
                                        cardId = C.cardId,
-                                       bondId=C.bondId,
+                                       bondId = C.bondId,
                                    }).Where(C => ((type == "all") ? true : C.transType == type)
                       && ((side == "all") ? true : C.side == side) && (C.cashTransId == pullposcashtransid)).ToList();
 
@@ -982,59 +983,59 @@ namespace POS_Server.Controllers
 
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-          
+
             if (valid)
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-               
+
                     CashTransferModel cachtrans = (from C in entity.cashTransfer
-                                                        join b in entity.banks on C.bankId equals b.bankId into jb
-                                                        join a in entity.agents on C.agentId equals a.agentId into ja
-                                                        join p in entity.pos on C.posId equals p.posId into jp
-                                                        join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
-                                                        join u in entity.users on C.userId equals u.userId into ju
-                                                        from jbb in jb.DefaultIfEmpty()
-                                                        from jaa in ja.DefaultIfEmpty()
-                                                        from jpp in jp.DefaultIfEmpty()
-                                                        from juu in ju.DefaultIfEmpty()
-                                                        from jpcc in jpcr.DefaultIfEmpty()
-                                                        select new CashTransferModel()
-                                                        {
-                                                            cashTransId = C.cashTransId,
-                                                            transType = C.transType,
-                                                            posId = C.posId,
-                                                            userId = C.userId,
-                                                            agentId = C.agentId,
-                                                            invId = C.invId,
-                                                            transNum = C.transNum,
-                                                            createDate = C.createDate,
-                                                            updateDate = C.updateDate,
-                                                            cash = C.cash,
-                                                            updateUserId = C.updateUserId,
-                                                            createUserId = C.createUserId,
-                                                            notes = C.notes,
-                                                            posIdCreator = C.posIdCreator,
-                                                            isConfirm = C.isConfirm,
-                                                            cashTransIdSource = C.cashTransIdSource,
-                                                            side = C.side,
+                                                   join b in entity.banks on C.bankId equals b.bankId into jb
+                                                   join a in entity.agents on C.agentId equals a.agentId into ja
+                                                   join p in entity.pos on C.posId equals p.posId into jp
+                                                   join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+                                                   join u in entity.users on C.userId equals u.userId into ju
+                                                   from jbb in jb.DefaultIfEmpty()
+                                                   from jaa in ja.DefaultIfEmpty()
+                                                   from jpp in jp.DefaultIfEmpty()
+                                                   from juu in ju.DefaultIfEmpty()
+                                                   from jpcc in jpcr.DefaultIfEmpty()
+                                                   select new CashTransferModel()
+                                                   {
+                                                       cashTransId = C.cashTransId,
+                                                       transType = C.transType,
+                                                       posId = C.posId,
+                                                       userId = C.userId,
+                                                       agentId = C.agentId,
+                                                       invId = C.invId,
+                                                       transNum = C.transNum,
+                                                       createDate = C.createDate,
+                                                       updateDate = C.updateDate,
+                                                       cash = C.cash,
+                                                       updateUserId = C.updateUserId,
+                                                       createUserId = C.createUserId,
+                                                       notes = C.notes,
+                                                       posIdCreator = C.posIdCreator,
+                                                       isConfirm = C.isConfirm,
+                                                       cashTransIdSource = C.cashTransIdSource,
+                                                       side = C.side,
 
-                                                            docName = C.docName,
-                                                            docNum = C.docNum,
-                                                            docImage = C.docImage,
-                                                            bankId = C.bankId,
-                                                            bankName = jbb.name,
-                                                            agentName = jaa.name,
-                                                            usersName = juu.username,
-                                                            posName = jpp.name,
-                                                            posCreatorName = jpcc.name,
-                                                            processType = C.processType,
-                                                            cardId = C.cardId,
-                                                            bondId = C.bondId,
-                                                        }).Where(C => ((type == "all") ? true : C.transType == type)
-                                && ((side == "all") ? true : C.side == side) && C.invId==invId).FirstOrDefault();
+                                                       docName = C.docName,
+                                                       docNum = C.docNum,
+                                                       docImage = C.docImage,
+                                                       bankId = C.bankId,
+                                                       bankName = jbb.name,
+                                                       agentName = jaa.name,
+                                                       usersName = juu.username,
+                                                       posName = jpp.name,
+                                                       posCreatorName = jpcc.name,
+                                                       processType = C.processType,
+                                                       cardId = C.cardId,
+                                                       bondId = C.bondId,
+                                                   }).Where(C => ((type == "all") ? true : C.transType == type)
+                           && ((side == "all") ? true : C.side == side) && C.invId == invId).FirstOrDefault();
 
-                  
+
 
 
                     if (cachtrans == null)
@@ -1047,6 +1048,138 @@ namespace POS_Server.Controllers
             else
                 return NotFound();
         }
+        /// <summary>
+        /// /////////////
+        /// </summary>
+        /// <param name="agentId"></param>
+        /// <param name="amount"></param>
+        /// <param name="payType">{pay,feed}</param>
+        /// <param name="cashTransfer"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("payByAmount")]
+        public IHttpActionResult payByAmount(int agentId, decimal amount, string payType, cashTransfer cashTransfer)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
 
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                string[] types = { "pw", "pi", "sb" };
+                switch (payType)
+                {
+                    case "pay"://get pw,pi,sb invoices
+                        types = new string[] { "pw", "pi", "sb" };
+                        break;
+                    case "feed": //get si, pb
+                        types = new string[] { "pb", "si" };
+                        break;
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    agents agent = entity.agents.Find(agentId);
+                    var invList = (from b in entity.invoices.Where(x => x.agentId == agentId && types.ToList().Contains(x.invType) && x.deserved > 0)
+                                   select new InvoiceModel()
+                                   {
+                                       invoiceId = b.invoiceId,
+                                       invNumber = b.invNumber,
+                                       agentId = b.agentId,
+                                       invType = b.invType,
+                                       total = b.total,
+                                       totalNet = b.totalNet,
+                                       paid = b.paid,
+                                       deserved = b.deserved,
+                                       deservedDate = b.deservedDate,
+                                       invDate = b.invDate,
+                                       invoiceMainId = b.invoiceMainId,
+                                       invCase = b.invCase,
+                                       invTime = b.invTime,
+                                       notes = b.notes,
+                                       vendorInvNum = b.vendorInvNum,
+                                       vendorInvDate = b.vendorInvDate,
+                                       createUserId = b.createUserId,
+                                       updateDate = b.updateDate,
+                                       updateUserId = b.updateUserId,
+                                       branchId = b.branchId,
+                                       discountValue = b.discountValue,
+                                       discountType = b.discountType,
+                                       tax = b.tax,
+                                       taxtype = b.taxtype,
+                                       name = b.name,
+                                       isApproved = b.isApproved,
+                                       branchCreatorId = b.branchCreatorId,
+                                       shippingCompanyId = b.shippingCompanyId,
+                                       shipUserId = b.shipUserId,
+                                   }).ToList().OrderBy(b => b.deservedDate);
+
+                    switch (payType)
+                    {
+                        case "pay"://get pw,pi,sb invoices
+                            foreach (InvoiceModel inv in invList)
+                            {
+                                decimal paid = 0;
+                                var invObj = entity.invoices.Find(inv.invoiceId);
+                                cashTransfer.invId = inv.invoiceId;
+                                if (amount >= inv.deserved)
+                                {                                  
+                                    paid = (decimal)inv.deserved;
+                                    invObj.paid = invObj.paid + inv.deserved;
+                                    invObj.deserved = 0;
+                                    amount -= (decimal)inv.deserved;
+                                }
+                                else
+                                {
+                                    paid = amount;
+                                    invObj.paid = invObj.paid + amount;
+                                    invObj.deserved -= amount;
+                                    amount = 0;
+                                }
+                                cashTransfer.cash = paid;
+                                entity.cashTransfer.Add(cashTransfer);
+                                // increase agent balance
+                                if (agent.balanceType == 1)
+                                {
+                                    if (paid <= (decimal)agent.balance)
+                                    {
+                                        agent.balance = agent.balance - paid;
+                                    }
+                                    else
+                                    {
+                                        agent.balance = paid - agent.balance;
+                                        agent.balanceType = 0;
+                                    }
+                                }
+                                else if (agent.balanceType == 0)
+                                {
+                                    agent.balance += paid;
+                                }
+                                if (amount == 0)
+                                    break;
+                            }
+                            entity.SaveChanges();
+                            break;
+                        case "feed": //get si, pb
+                            types = new string[] { "pb", "si" };
+                            break;
+                          
+                    }
+                        
+                    return Ok("true");
+                }
+            }
+            else
+                return Ok("false");
+           
+            }
+           
+        }
     }
-}
+

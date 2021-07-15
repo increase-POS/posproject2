@@ -672,6 +672,21 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
   </EntityType>
+  <EntityType Name="packages">
+    <Key>
+      <PropertyRef Name="packageId" />
+    </Key>
+    <Property Name="packageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="parentIUId" Type="int" />
+    <Property Name="childIUId" Type="int" />
+    <Property Name="quantity" Type="int" Nullable="false" />
+    <Property Name="isActive" Type="tinyint" Nullable="false" />
+    <Property Name="notes" Type="ntext" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+  </EntityType>
   <EntityType Name="Points">
     <Key>
       <PropertyRef Name="pointId" />
@@ -2632,6 +2647,54 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_packages_itemsUnits">
+    <End Role="itemsUnits" Type="Self.itemsUnits" Multiplicity="0..1" />
+    <End Role="packages" Type="Self.packages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="itemsUnits">
+        <PropertyRef Name="itemUnitId" />
+      </Principal>
+      <Dependent Role="packages">
+        <PropertyRef Name="parentIUId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_packages_itemsUnits1">
+    <End Role="itemsUnits" Type="Self.itemsUnits" Multiplicity="0..1" />
+    <End Role="packages" Type="Self.packages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="itemsUnits">
+        <PropertyRef Name="itemUnitId" />
+      </Principal>
+      <Dependent Role="packages">
+        <PropertyRef Name="childIUId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_packages_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="packages" Type="Self.packages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="packages">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_packages_users2">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="packages" Type="Self.packages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="packages">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Points_agents">
     <End Role="agents" Type="Self.agents" Multiplicity="0..1" />
     <End Role="Points" Type="Self.Points" Multiplicity="*" />
@@ -3093,6 +3156,7 @@
     <EntitySet Name="offers" EntityType="Self.offers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="orders" EntityType="Self.orders" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="orderscontents" EntityType="Self.orderscontents" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="packages" EntityType="Self.packages" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Points" EntityType="Self.Points" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="pos" EntityType="Self.pos" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="posUsers" EntityType="Self.posUsers" Schema="dbo" store:Type="Tables" />
@@ -3681,6 +3745,22 @@
     <AssociationSet Name="FK_orderscontents_users1" Association="Self.FK_orderscontents_users1">
       <End Role="users" EntitySet="users" />
       <End Role="orderscontents" EntitySet="orderscontents" />
+    </AssociationSet>
+    <AssociationSet Name="FK_packages_itemsUnits" Association="Self.FK_packages_itemsUnits">
+      <End Role="itemsUnits" EntitySet="itemsUnits" />
+      <End Role="packages" EntitySet="packages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_packages_itemsUnits1" Association="Self.FK_packages_itemsUnits1">
+      <End Role="itemsUnits" EntitySet="itemsUnits" />
+      <End Role="packages" EntitySet="packages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_packages_users1" Association="Self.FK_packages_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="packages" EntitySet="packages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_packages_users2" Association="Self.FK_packages_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="packages" EntitySet="packages" />
     </AssociationSet>
     <AssociationSet Name="FK_Points_agents" Association="Self.FK_Points_agents">
       <End Role="agents" EntitySet="agents" />

@@ -63,6 +63,7 @@ namespace POS_Server.Controllers
                        type = p.type,
                        accType = p.accType,
                        balance = p.balance,
+                      balanceType = p.balanceType,
                        notes = p.notes,
                        isActive = p.isActive,
                        createDate = p.createDate,
@@ -131,6 +132,7 @@ namespace POS_Server.Controllers
                        p.type,
                        p.accType,
                        p.balance,
+                       p.balanceType,
                        p.notes,
                        p.maxDeserve,
                        p.fax,
@@ -175,7 +177,7 @@ namespace POS_Server.Controllers
 
                     var agent = entity.agents
                    .Where(p => p.agentId == agentID)
-                   .Select(p => new { p.agentId, p.name, p.accType, p.address, p.balance, p.code, p.company, p.createDate, p.createUserId,  p.email,  p.mobile, p.notes, p.phone, p.type, p.image, p.maxDeserve, p.fax,p.isActive,p.updateDate,p.updateUserId })
+                   .Select(p => new { p.agentId, p.name, p.accType, p.address, p.balance,p.balanceType, p.code, p.company, p.createDate, p.createUserId,  p.email,  p.mobile, p.notes, p.phone, p.type, p.image, p.maxDeserve, p.fax,p.isActive,p.updateDate,p.updateUserId })
                    .FirstOrDefault();
                    
                     if (agent == null)
@@ -223,6 +225,7 @@ namespace POS_Server.Controllers
                        p.type,
                        p.accType,
                        p.balance,
+                       p.balanceType,
                        p.notes,
                        p.maxDeserve,
                        p.fax,
@@ -306,6 +309,7 @@ namespace POS_Server.Controllers
                             agent.updateUserId = agentObj.updateUserId;
                             agent.isActive = agentObj.isActive;
                             agent.balance = agentObj.balance;
+                            agent.balanceType = agentObj.balanceType;
                         }
                         entity.SaveChanges();
                     }
