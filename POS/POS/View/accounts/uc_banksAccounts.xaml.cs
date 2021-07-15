@@ -47,7 +47,8 @@ namespace POS.View.accounts
         BrushConverter bc = new BrushConverter();
 
         wd_acceptUser w = new wd_acceptUser();
-
+        string createPermission = "banksAccounting_create";
+        string reportsPermission = "banksAccounting_reports";
         private static uc_banksAccounts _instance;
         public static uc_banksAccounts Instance
         {
@@ -269,6 +270,11 @@ namespace POS.View.accounts
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//save
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            {
+
+
+           
             if (cashtrans.cashTransId == 0)
             {
                 //chk empty cash
@@ -349,6 +355,9 @@ namespace POS.View.accounts
                     }
                 }
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private async void calcBalance(decimal ammount)
@@ -404,12 +413,17 @@ namespace POS.View.accounts
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
             this.Dispatcher.Invoke(() =>
             {
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
             });
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         void FN_ExportToExcel()
@@ -432,6 +446,8 @@ namespace POS.View.accounts
 
         private void Btn_image_Click(object sender, RoutedEventArgs e)
         {//image
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            {
             if (cashtrans != null || cashtrans.cashTransId != 0)
             {
                 //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
@@ -444,6 +460,9 @@ namespace POS.View.accounts
                 w.ShowDialog();
                 // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)

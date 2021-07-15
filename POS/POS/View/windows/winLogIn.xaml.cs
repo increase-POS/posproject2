@@ -46,7 +46,7 @@ namespace POS.View.windows
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            System.Windows.Application.Current.Shutdown();
         }
         UserSetValues usLanguage = new UserSetValues();
         private async void Window_Loaded(object sender, RoutedEventArgs e)

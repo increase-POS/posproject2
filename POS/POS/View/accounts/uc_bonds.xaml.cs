@@ -46,8 +46,9 @@ namespace POS.View.accounts
 
         CashTransfer cashModel = new CashTransfer();
 
+        string createPermission = "bonds_create";
+        string reportsPermission = "bonds_reports";
         private static uc_bonds _instance;
-
         byte tgl_bondState;
         public static uc_bonds Instance
         {
@@ -150,6 +151,11 @@ namespace POS.View.accounts
 
         private async void Btn_pay_Click(object sender, RoutedEventArgs e)
         {//pay
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            {
+
+
+            
             //chk empty payment type
             SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
             //chk empty card 
@@ -212,6 +218,9 @@ namespace POS.View.accounts
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -320,14 +329,17 @@ namespace POS.View.accounts
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
-            //this.Dispatcher.Invoke(() =>
-            //{
-                //await Task.Run(FN_ExportToExcel);
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
+            this.Dispatcher.Invoke(() =>
+            {
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
-            //});
-
+            });
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
         
         void FN_ExportToExcel()
@@ -356,6 +368,11 @@ namespace POS.View.accounts
 
         private void Btn_image_Click(object sender, RoutedEventArgs e)
         {//image
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            {
+
+
+            
             if (bonds != null || bond.bondId != 0)
             {
                 //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
@@ -368,6 +385,9 @@ namespace POS.View.accounts
                 w.ShowDialog();
                 // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -543,7 +563,13 @@ namespace POS.View.accounts
 
         private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {//print
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            {
 
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private async void fillVendors()

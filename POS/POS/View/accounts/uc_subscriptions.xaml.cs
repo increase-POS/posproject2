@@ -1,4 +1,5 @@
-﻿using System;
+﻿using netoaster;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,9 @@ namespace POS.View.accounts
     /// </summary>
     public partial class uc_subscriptions : UserControl
     {
+
+        string createPermission = "subscriptions_create";
+        string reportsPermission = "subscriptions_reports";
         private static uc_subscriptions _instance;
         public static uc_subscriptions Instance
         {
@@ -57,8 +61,15 @@ namespace POS.View.accounts
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
+               
 
-        }
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+            }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
@@ -112,7 +123,13 @@ namespace POS.View.accounts
 
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            {
 
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -31,17 +31,17 @@ namespace POS.View.accounts
 
         Pos posModel = new Pos();
         IEnumerable<Pos> poss;
-
         CashTransfer cashtrans = new CashTransfer();
         CashTransfer cashModel = new CashTransfer();
         IEnumerable<CashTransfer> cashesQuery;
         IEnumerable<CashTransfer> cashes;
         IEnumerable<CashTransfer> cashesSearch;
         string searchText = "";
-
         CashTransfer cashtrans2 = new CashTransfer();
         CashTransfer cashtrans3 = new CashTransfer();
         IEnumerable<CashTransfer> cashes2;
+        string basicsPermission = "posAccounting_basics";
+        string transAdminPermission = "posAccounting_transAdmin";
         public static uc_posAccounts Instance
         {
             get
@@ -55,7 +55,6 @@ namespace POS.View.accounts
         {
             InitializeComponent();
         }
-
         private void translate()
         {
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trTransaferDetails");
@@ -97,7 +96,6 @@ namespace POS.View.accounts
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
 
         }
-
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
 
@@ -166,19 +164,16 @@ namespace POS.View.accounts
             //Tb_search_TextChanged(null, null);
 
         }
-
         private async void dp_SelectedEndDateChanged(object sender, SelectionChangedEventArgs e)
         {
             await RefreshCashesList();
             Tb_search_TextChanged(null, null);
         }
-
         private async void dp_SelectedStartDateChanged(object sender, SelectionChangedEventArgs e)
         {
             await RefreshCashesList();
             Tb_search_TextChanged(null, null);
         }
-
         private async void Dg_posAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
             SectionData.clearValidate(tb_cash, p_errorCash);
@@ -242,74 +237,78 @@ namespace POS.View.accounts
                 }
             }
         }
-
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (cashes is null)
-                await RefreshCashesList();
-            searchText = tb_search.Text;
-
-            switch (cb_state.Text)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
             {
-                case "غير مؤكدة"://inconfirmed
-                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                     || s.transType.Contains(searchText)
-                     || s.cash.ToString().Contains(searchText)
-                     || s.posName.Contains(searchText)
-                     )
-                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                    && s.posId == MainWindow.posID.Value
-                    && s.isConfirm == 0
-                    );
-                break;
-                case "بانتظار التأكيد"://waiting
-                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                    || s.transType.Contains(searchText)
-                    || s.cash.ToString().Contains(searchText)
-                    || s.posName.Contains(searchText)
-                    )
-                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                    && s.posId == MainWindow.posID.Value
-                    && s.isConfirm == 1
-                    //&& another is not confirmed 
-                    && s.isConfirm2 == 0
-                    );
-                    break;
-                case "مؤكدة"://confirmed
-                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                    || s.transType.Contains(searchText)
-                    || s.cash.ToString().Contains(searchText)
-                    || s.posName.Contains(searchText)
-                    )
-                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                    && s.posId == MainWindow.posID.Value
-                    && s.isConfirm == 1
-                    //&& another is confirmed
-                    && s.isConfirm2 == 1
-                    );
-                break;
-                default://no select
-                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                    || s.transType.Contains(searchText)
-                    || s.cash.ToString().Contains(searchText)
-                    || s.posName.Contains(searchText)
-                    )
-                   && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                   && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                   );
-                break;
-            }
-            RefreshCashView();
-            txt_count.Text = cashesQuery.Count().ToString();
-        }
+                if (cashes is null)
+                    await RefreshCashesList();
+                searchText = tb_search.Text;
 
+                switch (cb_state.Text)
+                {
+                    case "غير مؤكدة"://inconfirmed
+                        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                         || s.transType.Contains(searchText)
+                         || s.cash.ToString().Contains(searchText)
+                         || s.posName.Contains(searchText)
+                         )
+                        && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                        && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                        && s.posId == MainWindow.posID.Value
+                        && s.isConfirm == 0
+                        );
+                        break;
+                    case "بانتظار التأكيد"://waiting
+                        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                        || s.transType.Contains(searchText)
+                        || s.cash.ToString().Contains(searchText)
+                        || s.posName.Contains(searchText)
+                        )
+                        && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                        && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                        && s.posId == MainWindow.posID.Value
+                        && s.isConfirm == 1
+                        //&& another is not confirmed 
+                        && s.isConfirm2 == 0
+                        );
+                        break;
+                    case "مؤكدة"://confirmed
+                        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                        || s.transType.Contains(searchText)
+                        || s.cash.ToString().Contains(searchText)
+                        || s.posName.Contains(searchText)
+                        )
+                        && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                        && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                        && s.posId == MainWindow.posID.Value
+                        && s.isConfirm == 1
+                        //&& another is confirmed
+                        && s.isConfirm2 == 1
+                        );
+                        break;
+                    default://no select
+                        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                        || s.transType.Contains(searchText)
+                        || s.cash.ToString().Contains(searchText)
+                        || s.posName.Contains(searchText)
+                        )
+                       && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                       && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                       );
+                        break;
+                }
+                RefreshCashView();
+                txt_count.Text = cashesQuery.Count().ToString();
+            }
+        }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            //chk empty cash
-            SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+
+             //chk empty cash
+             SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
             //chk empty pos1
             SectionData.validateEmptyComboBox(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorEmptyFromPosToolTip");
             //chk empty pos2
@@ -324,7 +323,7 @@ namespace POS.View.accounts
                 SectionData.showComboBoxValidate(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorSamePos");
             }
 
-            if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")) && !isSame)
+            if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")) && !isSame && !validTransAdmin())
             {
                 //first operation
                 CashTransfer cash1 = new CashTransfer();
@@ -374,13 +373,16 @@ namespace POS.View.accounts
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
             }
-            
-       }
-
+        }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+        }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            //chk empty cash
-            SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            {
+                //chk empty cash
+                SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
             //chk empty user
             SectionData.validateEmptyComboBox(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorEmptyFromPosToolTip");
             //chk empty bank
@@ -424,10 +426,14 @@ namespace POS.View.accounts
                 }
             }
         }
-
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+        }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (cashtrans.cashTransId != 0)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            {
+                if (cashtrans.cashTransId != 0)
             {
                 #region
                 Window.GetWindow(this).Opacity = 0.2;
@@ -455,8 +461,10 @@ namespace POS.View.accounts
                     Tb_search_TextChanged(null, null);
                 }
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
-
         private async void Btn_confirm_Click(object sender, RoutedEventArgs e)
         {//confirm
             if (cashtrans.cashTransId != 0)
@@ -490,7 +498,6 @@ namespace POS.View.accounts
                 }
             }
         }
-
         private async void confirmOpr()
         {
             cashtrans.isConfirm = 1;
@@ -506,7 +513,6 @@ namespace POS.View.accounts
                 btn_confirm.IsEnabled = false;
             }
             }
-
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             txt_transNum.Text = "";
@@ -524,23 +530,25 @@ namespace POS.View.accounts
             SectionData.clearComboBoxValidate(cb_pos1, p_errorPos1);
             SectionData.clearComboBoxValidate(cb_pos2, p_errorPos2);
         }
-
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
-            this.Dispatcher.Invoke(() =>
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                this.Dispatcher.Invoke(() =>
             {
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
             });
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
-
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
             await RefreshCashesList();
             Tb_search_TextChanged(null, null);
         }
-
         async Task<IEnumerable<CashTransfer>> RefreshCashesList()
         {
             cashes = await cashModel.GetCashTransferAsync("all", "p");
@@ -566,24 +574,20 @@ namespace POS.View.accounts
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorPos2, tt_errorPos2, "trErrorEmptyPosToolTip");
             }
         }
-
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
             string name = sender.GetType().Name;
             validateEmpty(name, sender);
         }
-
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
             string name = sender.GetType().Name;
             validateEmpty(name, sender);
         }
-
         private void PreventSpaces(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
         }
-
         private void Tb_cash_PreviewTextInput(object sender, TextCompositionEventArgs e)
         { //only decimal
             var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
@@ -592,7 +596,31 @@ namespace POS.View.accounts
             else
                 e.Handled = true;
         }
+       
+        void FN_ExportToExcel()
+        {
+            var QueryExcel = cashesQuery.AsEnumerable().Select(x => new
+            {
+                TransNum = x.transNum,
+                PosFromName = x.posName,
+                PosToName   = x.pos2Name,
+                OpperationType = x.transType,
+                Cash = x.cash
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trFromPos");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trToPos");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trOpperationTypeToolTip");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trCashTooltip");
 
+            ExportToExcel.Export(DTForExcel);
+        }
+        private async void Cb_state_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            await RefreshCashesList();
+            Tb_search_TextChanged(null, null);
+        }
         private async void Cb_pos1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//pos1selection
             //cb_pos2.IsEnabled = true;
@@ -618,32 +646,23 @@ namespace POS.View.accounts
             //}
             //#endregion
 
+                
         }
-
-        void FN_ExportToExcel()
+        bool validTransAdmin()
         {
-            var QueryExcel = cashesQuery.AsEnumerable().Select(x => new
-            {
-                TransNum = x.transNum,
-                PosFromName = x.posName,
-                PosToName   = x.pos2Name,
-                OpperationType = x.transType,
-                Cash = x.cash
-            });
-            var DTForExcel = QueryExcel.ToDataTable();
-            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trFromPos");
-            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trToPos");
-            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trOpperationTypeToolTip");
-            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trCashTooltip");
-
-            ExportToExcel.Export(DTForExcel);
+            if (!MainWindow.groupObject.HasPermissionAction(transAdminPermission, MainWindow.groupObjects, "one"))
+                if (cb_pos1.SelectedValue != null && cb_pos2.SelectedValue != null)
+                    if (int.Parse(cb_pos1.SelectedValue.ToString()) != MainWindow.posID
+                        && int.Parse(cb_pos2.SelectedValue.ToString()) != MainWindow.posID)
+                    {
+                        Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                        return false;
+                    }
+                        return true;
         }
-
-        private async void Cb_state_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Cb_pos2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            await RefreshCashesList();
-            Tb_search_TextChanged(null, null);
+
         }
     }
 }

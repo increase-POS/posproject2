@@ -708,7 +708,7 @@ namespace POS.View
             e.Handled = e.Key == Key.Space;
         }
 
-        private void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // MessageBox.Show(cb_areaPhone.SelectedValue.ToString());
             if (firstchange == true)
@@ -719,6 +719,8 @@ namespace POS.View
                         countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
                     // MessageBox.Show(cb_areaPhone.SelectedIndex.ToString());
                     // MessageBox.Show(countryid.ToString());
+                    if (citynum == null)
+                       await RefreshCity();
                     citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
                     //MessageBox.Show(citynumofcountry.Count().ToString());
                     cb_areaPhoneLocal.ItemsSource = citynumofcountry;

@@ -29,14 +29,14 @@
                
                     <Grid Margin="0,7,0,0" Width="90">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="87"/>
-                            <RowDefinition Height="87"/>
-                            <RowDefinition Height="87"/>
-                            <RowDefinition Height="87"/>
-                            <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                             <!--<RowDefinition Height="87"/>-->
 
                         </Grid.RowDefinitions>

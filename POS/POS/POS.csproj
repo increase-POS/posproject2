@@ -194,6 +194,7 @@
     <Compile Include="Classes\Memberships.cs" />
     <Compile Include="Classes\Object.cs" />
     <Compile Include="Classes\Offer.cs" />
+    <Compile Include="Classes\Package.cs" />
     <Compile Include="Classes\Pagination.cs" />
     <Compile Include="Classes\Points.cs" />
     <Compile Include="Classes\Pos.cs" />

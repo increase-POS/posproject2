@@ -42,6 +42,8 @@ namespace POS.View.accounts
         IEnumerable<CashTransfer> cashesQueryExcel;
         IEnumerable<CashTransfer> cashes;
         string searchText = "";
+        string  createPermission = "received_create";
+        string reportsPermission = "received_reports";
         public static uc_receivedAccounts Instance
         {
             get
@@ -270,7 +272,12 @@ namespace POS.View.accounts
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//save
-         //chk empty cash
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            {
+
+
+            
+            //chk empty cash
             SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
 
             //chk empty doc num
@@ -396,6 +403,9 @@ namespace POS.View.accounts
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
 
         }
         private async void saveBond(string num, decimal ammount, Nullable<DateTime> date, string type, int? cashId)
@@ -506,12 +516,20 @@ namespace POS.View.accounts
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            {
+
+
+           
             this.Dispatcher.Invoke(() =>
             {
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
             });
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         void FN_ExportToExcel()
@@ -538,7 +556,9 @@ namespace POS.View.accounts
 
         private void Btn_image_Click(object sender, RoutedEventArgs e)
         {//image
-            if (cashtrans != null || cashtrans.cashTransId != 0)
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            {
+                if (cashtrans != null || cashtrans.cashTransId != 0)
             {
                 //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
 
@@ -550,7 +570,11 @@ namespace POS.View.accounts
                 w.ShowDialog();
                 // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
@@ -778,6 +802,11 @@ namespace POS.View.accounts
 
         private async void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            {
+
+
+           
             Agent ag = new Agent();
             ag = await ag.getAgentById(119);
             MessageBox.Show(ag.balance.ToString()+" "+ag.address);
@@ -786,11 +815,39 @@ namespace POS.View.accounts
             string msg = await ag.saveAgent(ag);
             MessageBox.Show(ag.balance.ToString() + " " + ag.address);
             MessageBox.Show(msg);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+
 
         private void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {
 
         }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            {
+
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            {
+
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+        }
+
+        
     }
 }

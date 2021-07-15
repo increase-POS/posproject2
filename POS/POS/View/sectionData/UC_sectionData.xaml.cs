@@ -68,8 +68,8 @@ namespace POS.View
             btn_cards.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_cards.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            //btn_shippingCompany.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            //btn_shippingCompany.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn_shippingCompany.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_shippingCompany.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
 
         void refreashBachgroundClick(Button btn)
@@ -110,7 +110,7 @@ namespace POS.View
             else
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucSectionData.FlowDirection = FlowDirection.RightToLeft; }
             translate();
-
+            permission();
         }
         void permission()
         {
