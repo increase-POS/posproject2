@@ -175,7 +175,7 @@
                     </Button>
                     <Border Grid.Column="4" DockPanel.Dock="Right" Background="White" Margin="5"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />
                     <Button DockPanel.Dock="Right" Grid.Column="3" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}" x:Name="btn_preview"   >
+                    Background="{x:Null}" x:Name="btn_preview"  Click="Btn_preview_Click"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
                         Height="30" Width="30" 
                            Data="M243,83.3c0,2.5,0,4.7,0,6.9c0,23.1,0,46.3,0,69.4c0,5.4,1.7,7.1,7.2,7.1c23.6,0,47.3,0,70.9,0c5.2,0,5.2,0,5.2,5
@@ -216,7 +216,7 @@
                     <Button Grid.Column="2" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_pdf" Click="Btn_pdf_Click"   >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
-                         Height="30" Width="30" 
+                         Height="30" Width="25" 
                            Data="M228,174h10v-18h16v-8h-16v-11h17v-8h-27V174z M213.3,133.5c-4.4-3.3-10.4-4.8-19-4.8c-5.2,0-9.3,0.3-14.3,0.9
 	v44.5c4,0.3,6.8,0.7,12.1,0.7c8.9,0,16.4-1.9,21.1-5.8c4.4-3.7,7.6-9.7,7.6-18.3C220.8,142.6,218,137,213.3,133.5z M194.6,166.7
 	c-1.3,0-2.6,0-3.6-0.2v-29.6c1-0.2,2.4-0.4,4.7-0.4c8.8,0,14.3,5,14.2,14.4C210,161.7,203.9,166.8,194.6,166.7z M169.5,132.3
@@ -243,7 +243,7 @@
                         </Path>
                     </Button>
                     <Button Grid.Column="1" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
-                    Background="{x:Null}" x:Name="btn_printInvoice"   >
+                    Background="{x:Null}" x:Name="btn_printInvoice" Click="Btn_printInvoice_Click"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
                        Height="30" Width="30"
                            Data="M9,23.9v4.8c0,0.3,0.2,0.5,0.5,0.5h13.1c0.3,0,0.5-0.2,0.5-0.5v-4.8v-3c0-0.3-0.2-0.5-0.5-0.5H9.5

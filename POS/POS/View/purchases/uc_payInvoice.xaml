@@ -128,7 +128,7 @@
                     <Border  DockPanel.Dock="Right"  Margin="5,10,5,10"   CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
 
                     <Button Grid.Column="7" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}" x:Name="btn_payments"    >
+                    Background="{x:Null}" x:Name="btn_payments" Click="Btn_payments_Click"   >
                         <Path Fill="#4E4E4E" Stretch="Fill"   FlowDirection="LeftToRight"
                                     Width="30" Height="30"  
                            Data="M43,28.6l-5.1-5.1H26.2L21,28.6c-2.6,2.6-4,6-4,9.7C17,45.8,23.2,52,30.7,52h2.5C40.8,52,47,45.8,47,38.3

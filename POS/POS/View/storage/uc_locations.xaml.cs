@@ -28,6 +28,8 @@ namespace POS.View
     /// </summary>
     public partial class uc_locations : UserControl
     {
+        string basicsPermission = "locations_basics";
+        string addRangePermission = "locations_addRange";
         private static uc_locations _instance;
         public static uc_locations Instance
         {
@@ -188,7 +190,9 @@ namespace POS.View
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            location.locationId = 0;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+                location.locationId = 0;
             if (validate(location))
             {
                 if (locations.Where(x => x.name == location.name && x.branchId == MainWindow.branchID).Count() == 0)
@@ -219,11 +223,15 @@ namespace POS.View
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trDublicateLocation"), animation: ToasterAnimation.FadeIn);
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-           
-            if (validate(location))
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+                {
+                    if (validate(location))
             {
                 location.x=  tb_x.Text;
                 location.y = tb_y.Text;
@@ -243,10 +251,15 @@ namespace POS.View
 
 
             }
-        }
-        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (location.locationId != 0)
+                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+                    {
+                        if (location.locationId != 0)
             {
                 if ((!location.canDelete) && (location.isActive == 0))
                 {
@@ -292,8 +305,11 @@ namespace POS.View
             }
             //clear textBoxs
             Btn_clear_Click(sender, e);
-        }
-        private async void activate()
+                    }
+                    else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                }
+                private async void activate()
         {//activate
             location.isActive = 1;
 
@@ -418,7 +434,9 @@ namespace POS.View
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (locations is null)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                if (locations is null)
                 await RefreshLocationsList();
             searchText = tb_search.Text.ToLower();
             locationsQuery = locations.Where(s => (s.x.ToLower().Contains(searchText) ||
@@ -426,6 +444,10 @@ namespace POS.View
             s.z.ToLower().Contains(searchText)
             ) && s.isActive == tgl_locationState && s.isFreeZone != 1);
             RefreshLocationView();
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -436,12 +458,17 @@ namespace POS.View
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            this.Dispatcher.Invoke(() =>
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                this.Dispatcher.Invoke(() =>
             {
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
             });
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         void FN_ExportToExcel()
@@ -461,11 +488,16 @@ namespace POS.View
 
         private void Btn_addRange_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
+            if (MainWindow.groupObject.HasPermissionAction(addRangePermission, MainWindow.groupObjects, "one"))
+            {
+                Window.GetWindow(this).Opacity = 0.2;
             wd_locationAddRange w = new wd_locationAddRange();
             w.ShowDialog();
             Window.GetWindow(this).Opacity = 1;
             Btn_refresh_Click(null, null);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using netoaster;
+using POS.Classes;
 using POS.View.windows;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,8 @@ namespace POS.View.storage
     /// </summary>
     public partial class uc_itemsDestroy : UserControl
     {
+        string destroyPermission = "itemsDestroy_destroy";
+        string reportsPermission = "itemsDestroy_reports";
         private static uc_itemsDestroy _instance;
         public static uc_itemsDestroy Instance
         {
@@ -125,7 +128,12 @@ namespace POS.View.storage
         #region Excel
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
 
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         #endregion
 
@@ -138,7 +146,9 @@ namespace POS.View.storage
         }
         private async void Btn_destroy_Click(object sender, RoutedEventArgs e)
         {
-            bool valid = validateDistroy();
+            if (MainWindow.groupObject.HasPermissionAction(destroyPermission, MainWindow.groupObjects, "one"))
+            {
+                bool valid = validateDistroy();
             if(invItemLoc.id != 0 && valid)
             {
                 await invItemLoc.distroyItem(invItemLoc);
@@ -148,6 +158,9 @@ namespace POS.View.storage
             {
                 // اتلاف عنصر يدوياً بدون جرد
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -200,17 +213,32 @@ namespace POS.View.storage
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
 
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
 
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
 
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void btn_destroy_Click_1(object sender, RoutedEventArgs e)

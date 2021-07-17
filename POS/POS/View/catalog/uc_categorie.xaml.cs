@@ -724,7 +724,9 @@ namespace POS.View
         #region Search Y
         private async void Txb_searchcategories_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (categories is null)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                if (categories is null)
          
                 await RefrishCategories();
 
@@ -741,7 +743,11 @@ namespace POS.View
             if (btns is null)
                 btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery , pageIndex, btns));
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+
         #endregion
         #region Pagination Y
 
@@ -842,13 +848,18 @@ namespace POS.View
         #region Excel
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            this.Dispatcher.Invoke(() =>
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                this.Dispatcher.Invoke(() =>
             {
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
             });
+        } else
+            Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+
         void FN_ExportToExcel()
         {
 

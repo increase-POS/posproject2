@@ -1632,4 +1632,7 @@
   <data name="trPackage" xml:space="preserve">
     <value>رزمة</value>
   </data>
+  <data name="trdontHavePermission" xml:space="preserve">
+    <value>ليس لديك صلاحية</value>
+  </data>
 </root>

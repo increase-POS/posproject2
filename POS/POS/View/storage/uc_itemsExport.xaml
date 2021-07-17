@@ -180,7 +180,7 @@
                     </Button>
                     <Border Grid.Column="4" DockPanel.Dock="Right" Background="White" Margin="5"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />-->
                     <Button DockPanel.Dock="Right" Grid.Column="3" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}" x:Name="btn_preview"   >
+                    Background="{x:Null}" x:Name="btn_preview" Click="Btn_preview_Click"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
                         Height="30" Width="30" 
                            Data="M243,83.3c0,2.5,0,4.7,0,6.9c0,23.1,0,46.3,0,69.4c0,5.4,1.7,7.1,7.2,7.1c23.6,0,47.3,0,70.9,0c5.2,0,5.2,0,5.2,5
@@ -248,7 +248,7 @@
                         </Path>
                     </Button>
                     <Button Grid.Column="1" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
-                    Background="{x:Null}" x:Name="btn_printInvoice"   >
+                    Background="{x:Null}" x:Name="btn_printInvoice" Click="Btn_printInvoice_Click"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
                        Height="30" Width="30"
                            Data="M9,23.9v4.8c0,0.3,0.2,0.5,0.5,0.5h13.1c0.3,0,0.5-0.2,0.5-0.5v-4.8v-3c0-0.3-0.2-0.5-0.5-0.5H9.5
@@ -269,6 +269,7 @@
             </Border>
             <Grid Grid.Column="0" Grid.Row="1" Margin="0,5,0,5">
                 <Grid.RowDefinitions >
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
@@ -338,6 +339,69 @@
                         </Grid>
 
                     </Grid>
+                </Border>
+                <Border BorderThickness="0"   Grid.Column="0" Grid.Row="2"    Margin="10,10,10,5"
+                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
+                    <StackPanel   Margin="0" >
+                        <TextBlock Grid.Row="0" Text="Delivery" x:Name="txt_delivery" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
+                                  VerticalAlignment="Center" 
+                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
+                        <!--////////////////////////////// vendor////////////////////////////////////-->
+                        <Grid  >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <ComboBox x:Name="cb_company"  Grid.Row="0" 
+                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                  materialDesign:HintAssist.Hint="Company..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                  Grid.Column="0" Height="40"   Margin="10,5,10,0"
+                                  BorderBrush="#737373" BorderThickness="0" 
+                                  SelectionChanged="Cb_company_SelectionChanged" 
+                                  LostFocus="Cb_company_LostFocus" VerticalAlignment="Top">
+                                <ComboBox.ToolTip>
+                                    <ToolTip x:Name="tt_company" Content="Company"
+                                                          Placement="left" 
+                                                          HorizontalOffset="35"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="20"/>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
+                            <Path Fill="#E81123" x:Name="p_errorCompany" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Row="0"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15" 
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorCompany" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                            <ComboBox x:Name="cb_user"  Grid.Row="1"
+                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                  materialDesign:HintAssist.Hint="User..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                 Visibility="Collapsed"
+                                  Grid.Column="0" Height="40"  Margin="10,5,10,5"
+                                  BorderBrush="#737373" BorderThickness="0" 
+                                  LostFocus="Tb_validateEmptyLostFocus">
+                                <ComboBox.ToolTip>
+                                    <ToolTip x:Name="tt_user" Content="User"
+                                                          Placement="left" 
+                                                          HorizontalOffset="35"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="20"/>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
+                            <Path Fill="#E81123" x:Name="p_errorUser" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Row="1" Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorUser" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
+                    </StackPanel>
                 </Border>
 
                 <Border BorderThickness="0"  Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="3"   Height="70" Margin="10,10,10,10"

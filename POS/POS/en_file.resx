@@ -1653,4 +1653,7 @@
   <data name="trPackage" xml:space="preserve">
     <value>Package</value>
   </data>
+  <data name="trdontHavePermission" xml:space="preserve">
+    <value>you don't have permission</value>
+  </data>
 </root>

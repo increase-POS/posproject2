@@ -1114,6 +1114,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ليس لديك صلاحية.
+        /// </summary>
+        internal static string trdontHavePermission {
+            get {
+                return ResourceManager.GetString("trdontHavePermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مسودة.
         /// </summary>
         internal static string trDraft {

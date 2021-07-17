@@ -261,7 +261,9 @@ namespace POS.View
         //******************* delete property***************
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {
-            if ((!property.canDelete) && (property.isActive == 0))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            {
+                if ((!property.canDelete) && (property.isActive == 0))
             {
                 #region
                 Window.GetWindow(this).Opacity = 0.2;
@@ -304,7 +306,11 @@ namespace POS.View
             await RefreshPropertiesList();
             Tb_search_TextChanged(null, null);
             Btn_clear_Click(sender, e);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+
         private async Task activateProperty()
         {//activate
 
@@ -462,7 +468,9 @@ namespace POS.View
             private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {
             //add
-            var bc = new BrushConverter();
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+                var bc = new BrushConverter();
             if (tb_valueName.Text.Equals(""))
             {
                 p_errorNameSub.Visibility = Visibility.Visible;
@@ -500,12 +508,17 @@ namespace POS.View
                 //var properties = await propertyModel.getProperty();
                 //dg_property.ItemsSource = properties;
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+
         private async void Btn_updateValue_Click(object sender, RoutedEventArgs e)
         {
-
-            //check mandatory values
-            var bc = new BrushConverter();
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            {
+                //check mandatory values
+                var bc = new BrushConverter();
             if (tb_valueName.Text.Equals(""))
             {
                 p_errorNameSub.Visibility = Visibility.Visible;
@@ -532,7 +545,11 @@ namespace POS.View
                 var propertiesItemss = await propertiesItemsModel.GetPropertyItems(property.propertyId);
                 dg_subProperty.ItemsSource = propertiesItemss;
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+
 
 
 
@@ -551,12 +568,16 @@ namespace POS.View
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-
-            if (properties is null)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                if (properties is null)
                 await RefreshPropertiesList();
             searchText = tb_search.Text.ToLower();
             propertiesQuery = properties.Where(s => s.name.ToLower().Contains(searchText) && s.isActive == tgl_PropertyState);
             refreshPropertiesGrid();
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
@@ -579,13 +600,19 @@ namespace POS.View
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            this.Dispatcher.Invoke(() =>
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                this.Dispatcher.Invoke(() =>
             {
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
             });
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+
         void FN_ExportToExcel()
         {
 

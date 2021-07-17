@@ -37,6 +37,8 @@ namespace POS.View.storage
 
         Location locationModel = new Location();
         IEnumerable<Location> locations;
+        string transferPermission = "itemsStorage_transfer";
+        string reportsPermission = "itemsStorage_reports";
         public static uc_itemsStorage Instance
         {
             get
@@ -189,7 +191,12 @@ namespace POS.View.storage
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.groupObject.HasPermissionAction(transferPermission, MainWindow.groupObjects, "one"))
+            {
 
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -290,7 +297,9 @@ namespace POS.View.storage
         }
         private async void Btn_transfer_Click(object sender, RoutedEventArgs e)
         {
-            if (dg_itemsStorage.SelectedIndex != -1)
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
+                if (dg_itemsStorage.SelectedIndex != -1)
             {
                 validateMandatoryInputs();
                 if (itemLocation != null &&
@@ -334,6 +343,9 @@ namespace POS.View.storage
                     
                 }
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Cb_section_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

@@ -101,6 +101,8 @@ namespace POS.View
         static private object _Sender;
         #endregion
         string basicsPermission = "item_basics";
+        string unitBasicsPermission = "unit_basics";
+        
         public static UC_item Instance
         {
             get
@@ -403,7 +405,8 @@ namespace POS.View
 
         private void Btn_barcode_Click(object sender, RoutedEventArgs e)
         {
-            if (item.itemId > 0)
+           
+                if (item.itemId > 0)
             {
                 grid_itemData.Visibility = grid_properties.Visibility = Visibility.Collapsed;
                 dg_barcode.Visibility = Visibility.Visible;
@@ -642,7 +645,7 @@ namespace POS.View
 
             private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
                 {
                     if ((!item.canDelete) && (item.isActive == 0))
             {
@@ -719,7 +722,9 @@ namespace POS.View
         }
         async void Btn_addProperties_Click(object sender, RoutedEventArgs e)
         {
-            validatePropertyValues();
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+                validatePropertyValues();
 
             if (cb_selectProperties.SelectedValue != null && cb_value.SelectedValue != null && item.itemId > 0)
             {
@@ -749,6 +754,9 @@ namespace POS.View
                 cb_selectProperties.SelectedIndex = -1;
             }
             cb_selectProperties.Focus();
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private void validateServiceValues()
@@ -821,7 +829,9 @@ namespace POS.View
         }
         async void Btn_deleteProperties_Click(object sender, RoutedEventArgs e)
         {
-            if (itemProp.itemPropId != 0)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            {
+                if (itemProp.itemPropId != 0)
             {
                 int propertyItemId = (int)itemProp.propertyItemId;
                 int itemId = item.itemId;
@@ -836,6 +846,8 @@ namespace POS.View
                 refreshPropertiesGrid(item.itemId);
             }
             cb_selectProperties.Focus();
+        } else
+            Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
         async void Btn_deleteSerial_Click(object sender, RoutedEventArgs e)
         {
@@ -892,8 +904,10 @@ namespace POS.View
         // add barcode to item
         async void Btn_addBarcode_Click(object sender, RoutedEventArgs e)
         {
-            //check mandatory values
-            validateUnitValues();
+            if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "add"))
+            {
+                //check mandatory values
+                validateUnitValues();
 
             if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
                 || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
@@ -974,13 +988,18 @@ namespace POS.View
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopErrorBarcodeLength"), animation: ToasterAnimation.FadeIn);
             }
             tb_barcode.Focus();
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
         //**********************************************
         //**************update barcode******************
         async void Btn_updateBarcode_Click(object sender, RoutedEventArgs e)
         {
-            //check mandatory values
-            validateUnitValues();
+                if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "update"))
+                {
+                    //check mandatory values
+                    validateUnitValues();
 
             if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
                 || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
@@ -1058,12 +1077,17 @@ namespace POS.View
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopErrorBarcodeLength"), animation: ToasterAnimation.FadeIn);
             }
             tb_barcode.Focus();
-        }
-        //**********************************************
-        //**************delete barcode******************
-        async void Btn_deleteBarcode_Click(object sender, RoutedEventArgs e)
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+            }
+            //**********************************************
+            //**************delete barcode******************
+            async void Btn_deleteBarcode_Click(object sender, RoutedEventArgs e)
         {
-            if (itemUnit.itemUnitId != 0)
+                    if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "delete"))
+                    {
+                        if (itemUnit.itemUnitId != 0)
             {
                 Boolean res = await itemUnit.Delete(itemUnit.itemUnitId);
 
@@ -1075,7 +1099,11 @@ namespace POS.View
                 refreshItemUnitsGrid(item.itemId);
             }
             tb_barcode.Focus();
-        }
+                    }
+                    else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                }
+            
 
         #endregion barcode
 
@@ -1930,7 +1958,10 @@ namespace POS.View
         /// <param name="e"></param>
         private async void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (items is null)
+
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                if (items is null)
                 await RefrishItems();
             txtItemSearch = txb_searchitems.Text.ToLower();
             pageIndex = 1;
@@ -1948,6 +1979,10 @@ namespace POS.View
             RefrishItemsDatagrid(itemsQuery);
             tb_barcode.Focus();
 
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         #endregion
@@ -2119,7 +2154,11 @@ namespace POS.View
         #region Excel
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
 
+            } else
+            Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
 
@@ -2148,11 +2187,17 @@ namespace POS.View
 
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                Window.GetWindow(this).Opacity = 0.2;
             win_lvcCatalog win = new win_lvcCatalog(itemsQuery, 2);
             win.ShowDialog();
             Window.GetWindow(this).Opacity = 1;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+   
 
         private async void Cb_selectUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

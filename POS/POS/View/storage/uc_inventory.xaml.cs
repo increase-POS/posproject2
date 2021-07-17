@@ -34,6 +34,9 @@ namespace POS.View.storage
         Inventory inventory = new Inventory();
 
         string _InventoryType = "d";
+        string createInventoryPermission = "inventory_createInventory";
+        string archivingPermission = "inventory_archiving";
+        string reportsPermission = "inventory_reports";
         public static uc_inventory Instance
         {
             get
@@ -233,23 +236,48 @@ namespace POS.View.storage
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            await addInventory("n"); // n:normal
+            if (MainWindow.groupObject.HasPermissionAction(createInventoryPermission, MainWindow.groupObjects, "one"))
+                await addInventory("n"); // n:normal
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_archive_Click(object sender, RoutedEventArgs e)
         {
-            await addInventory("a"); // a:archived
-
+            if (MainWindow.groupObject.HasPermissionAction(archivingPermission, MainWindow.groupObjects, "one"))
+                await addInventory("a"); // a:archived
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
-        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void Btn_Images_Click(object sender, RoutedEventArgs e)
         {
 
         }
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
 
-       
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+        private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+                {
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
     }
 }

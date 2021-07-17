@@ -34,6 +34,9 @@ namespace POS.View
     /// </summary>
     public partial class uc_payInvoice : UserControl
     {
+        string invoicePermission = "payInvoice_invoice";
+        string returnPermission = "payInvoice_return";
+        string paymentsPermission = "payInvoice_payments";
         private static uc_payInvoice _instance;
         public static uc_payInvoice Instance
         {
@@ -573,6 +576,10 @@ namespace POS.View
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
+            if ((MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one")  &&
+                (invoice.invType == "pd" || invoice.invType == "pw" || invoice.invType == "pi"))
+                || (invoice.invType != "pd" && invoice.invType != "pw" && invoice.invType != "pi"))
+            {
             if (logInProcessing)
             {
                 logInProcessing = false;
@@ -591,12 +598,17 @@ namespace POS.View
                     else//pw  waiting purchase invoice
                         await addInvoice("pw", "pi");
 
-                    if (invoice.invoiceId == 0) clearInvoice();
+                    if (invoice.invoiceId == 0)
+                            clearInvoice();
                 }
                 awaitSaveBtn(false);
                 logInProcessing = true;
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
             if (billDetails.Count > 0)
@@ -742,6 +754,8 @@ namespace POS.View
         }
         private async void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
+            {
             Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
 
@@ -767,10 +781,15 @@ namespace POS.View
                 }
             }
             Window.GetWindow(this).Opacity = 1;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_returnWInvoice_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
+            if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
+            {
+                Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
 
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
@@ -794,7 +813,11 @@ namespace POS.View
                 }
             }
             Window.GetWindow(this).Opacity = 1;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+
         private async Task buildInvoiceDetails()
         {
             //get invoice items
@@ -1559,6 +1582,15 @@ namespace POS.View
             _Sender = sender;
         }
 
-       
+        private void Btn_payments_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
+            {
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+        }
+
     }
 }

@@ -27,7 +27,8 @@ namespace POS.View
     /// </summary>
     public partial class uc_section : UserControl
     {
-
+        string basicsPermission = "section_basics";
+        string selectLocationPermission = "section_selectLocation";
         private static uc_section _instance;
         public static uc_section Instance
         {
@@ -187,7 +188,9 @@ namespace POS.View
        
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            section.sectionId = 0;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+                section.sectionId = 0;
             if (validate(section))
             {
                 section.name = tb_name.Text;
@@ -210,11 +213,15 @@ namespace POS.View
                 await RefreshSectionsList();
                 Tb_search_TextChanged(null, null);
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-
-            if (validate(section))
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+                {
+                    if (validate(section))
             {
                 section.name = tb_name.Text;
                 section.branchId = Convert.ToInt32(cb_branch.SelectedValue);
@@ -233,10 +240,15 @@ namespace POS.View
 
 
             }
-        }
-        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (section.sectionId != 0)
+                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+                    {
+                        if (section.sectionId != 0)
             {
                 if ((!section.canDelete) && (section.isActive == 0))
                 {
@@ -282,8 +294,11 @@ namespace POS.View
             }
             //clear textBoxs
             Btn_clear_Click(sender, e);
-        }
-        private async void activate()
+                    }
+                    else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                }
+                private async void activate()
         {//activate
             section.isActive = 1;
 
@@ -413,14 +428,19 @@ namespace POS.View
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-
-            if (sections is null)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                if (sections is null)
                 await RefreshSectionsList();
             searchText = tb_search.Text.ToLower();
             sectionsQuery = sections.Where(s => (s.name.ToLower().Contains(searchText) 
             ) && s.isActive == tgl_sectionState && s.isFreeZone != 1);
             RefreshSectionView();
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             RefreshSectionsList();
@@ -428,13 +448,20 @@ namespace POS.View
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            this.Dispatcher.Invoke(() =>
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+
+                this.Dispatcher.Invoke(() =>
             {
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
             });
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+
         void FN_ExportToExcel()
         {
 
@@ -468,7 +495,10 @@ namespace POS.View
 
         private async void Btn_locations_Click(object sender, RoutedEventArgs e)
         {//locations
-            SectionData.clearValidate(tb_name, p_errorName);
+            if (MainWindow.groupObject.HasPermissionAction(selectLocationPermission, MainWindow.groupObjects, "one"))
+            {
+
+           SectionData.clearValidate(tb_name, p_errorName);
             //location = await locationModel.getLocsBySectionId(section.sectionId);
             Window.GetWindow(this).Opacity = 0.2;
             wd_locationsList w = new wd_locationsList();
@@ -485,6 +515,10 @@ namespace POS.View
                 //}
             }
             Window.GetWindow(this).Opacity = 1;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
         }
     }
 }

@@ -1132,6 +1132,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to you don&apos;t have permission.
+        /// </summary>
+        internal static string trdontHavePermission {
+            get {
+                return ResourceManager.GetString("trdontHavePermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Draft.
         /// </summary>
         internal static string trDraft {

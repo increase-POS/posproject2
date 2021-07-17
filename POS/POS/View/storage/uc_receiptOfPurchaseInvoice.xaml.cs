@@ -28,7 +28,9 @@ namespace POS.View.storage
     /// </summary>
     public partial class uc_receiptOfPurchaseInvoice : UserControl
     {
-
+        string reciptPermission = "reciptOfInvoice_recipt";
+        string returnPermission = "reciptOfInvoice_return";
+        string reportsPermission = "reciptOfInvoice_reports";
         private static uc_receiptOfPurchaseInvoice _instance;
         public static uc_receiptOfPurchaseInvoice Instance
         {
@@ -424,7 +426,9 @@ namespace POS.View.storage
 
         private async void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
+            if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
+            {
+                Window.GetWindow(this).Opacity = 0.2;
 
             wd_invoice w = new wd_invoice();
 
@@ -451,9 +455,12 @@ namespace POS.View.storage
                 }
             }
             Window.GetWindow(this).Opacity = 1;
-        }
+        } else
+            Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+		}
 
-        private void Dg_invoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+    private void Dg_invoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
@@ -598,14 +605,13 @@ namespace POS.View.storage
 
         #endregion
 
-        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
         private async void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
+            if (MainWindow.groupObject.HasPermissionAction(reciptPermission, MainWindow.groupObjects, "one"))
+            {
+                Window.GetWindow(this).Opacity = 0.2;
 
             wd_invoice w = new wd_invoice();
 
@@ -632,7 +638,11 @@ namespace POS.View.storage
                 }
             }
             Window.GetWindow(this).Opacity = 1;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+
         private async Task fillInvoiceInputs(Invoice invoice)
         {
             tb_branch.Text = invoice.branchName;
@@ -862,6 +872,35 @@ namespace POS.View.storage
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
            
+        }
+
+        private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
     }
 }
