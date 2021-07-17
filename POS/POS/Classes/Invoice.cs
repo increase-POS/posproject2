@@ -47,7 +47,19 @@ namespace POS.Classes
         public Nullable<byte> discountType { get; set; }
         public string couponCode { get; set; }
     }
-    public class Invoice
+    public  class invoiceStatus
+    {
+        public int invStatusId { get; set; }
+        public Nullable<int> invoiceId { get; set; }
+        public string status { get; set; }
+        public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<int> createUserId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
+        public string notes { get; set; }
+        public Nullable<byte> isActive { get; set; }
+    }
+        public class Invoice
     {
         public int invoiceId { get; set; }
         public string invNumber { get; set; }
@@ -139,6 +151,39 @@ namespace POS.Classes
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
                 request.RequestUri = new Uri(Global.APIUri + "Invoices/Save?invoiceObject=" + myContent);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
+                }
+                return message;
+            }
+        }
+        public async Task<string> saveOrderStatus(invoiceStatus status)
+        {
+            string message = "";
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            // 
+            var myContent = JsonConvert.SerializeObject(status);
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+                request.RequestUri = new Uri(Global.APIUri + "InvoiceStatus/Save?statusObject=" + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -344,6 +389,46 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "Invoices/getBranchInvoices?invType=" + invType+ "&branchCreatorId=" + branchCreatorId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    invoices = JsonConvert.DeserializeObject<List<Invoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return invoices;
+                }
+                else //web api sent error response 
+                {
+                    invoices = new List<Invoice>();
+                }
+                return invoices;
+            }
+        }
+        public async Task<List<Invoice>> getDeliverOrders(string invType,string status, int userId)
+        {
+            List<Invoice> invoices = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Invoices/getDeliverOrders?invType=" + invType +"&status="+status+ "&shipUserId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

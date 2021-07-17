@@ -28,6 +28,8 @@ namespace POS.View.Settings
     {
         private int isCHecked = 1;
         private int index;
+        string basicsPermission = "permissions_basics";
+        string usersPermission = "Permissions_users";
         private static uc_permissions _instance;
         public static uc_permissions Instance
         {
@@ -186,7 +188,9 @@ namespace POS.View.Settings
         }
         private async void Btn_addGroup_Click(object sender, RoutedEventArgs e)
         {//add
-            group.groupId = 0;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+                group.groupId = 0;
             if (validate(group))
             {
                 group.name = tb_name.Text;
@@ -210,7 +214,12 @@ namespace POS.View.Settings
                 await RefreshGroupObjectList();
                 Tb_search_TextChanged(null, null);
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+
+
 
         #region groupObjects
 
@@ -333,8 +342,9 @@ namespace POS.View.Settings
 
         private async void Btn_updateGroup_Click(object sender, RoutedEventArgs e)
         {//update
-
-            if (validate(group))
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+                {
+                    if (validate(group))
             {
                 group.name = tb_name.Text;
                 group.notes = tb_notes.Text;
@@ -352,10 +362,17 @@ namespace POS.View.Settings
 
 
             }
-        }
-        private async void Btn_deleteGroup_Click(object sender, RoutedEventArgs e)
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+
+
+            private async void Btn_deleteGroup_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (group.groupId != 0)
+                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+                    {
+                        if (group.groupId != 0)
             {
                 if ((!group.canDelete) && (group.isActive == 0))
                 {
@@ -401,8 +418,13 @@ namespace POS.View.Settings
             }
             //clear textBoxs
             Btn_clear_Click(sender, e);
-        }
-        private async void activate()
+                    }
+                    else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                }
+
+
+                private async void activate()
         {//activate
             group.isActive = 1;
 
@@ -508,12 +530,18 @@ namespace POS.View.Settings
         }
         private async void Tb_searchGroup_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (groups is null)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                if (groups is null)
                 await RefreshGroupList();
             searchGroupText = tb_searchGroup.Text;
             groupsQuery = groups.Where(s => (s.name.Contains(searchGroupText)) && s.isActive == tgl_groupState);
             RefreshGroupView();
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+
         private async void Btn_refreshGroup_Click(object sender, RoutedEventArgs e)
         {
             await RefreshGroupList();
@@ -533,8 +561,9 @@ namespace POS.View.Settings
         }
         void FN_ExportToExcel()
         {
-
-            var QueryExcel = groupsQuery.AsEnumerable().Select(x => new
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                var QueryExcel = groupsQuery.AsEnumerable().Select(x => new
             {
                 Name = x.name,
                 Notes = x.notes
@@ -544,6 +573,9 @@ namespace POS.View.Settings
             DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trNote");
 
             ExportToExcel.Export(DTForExcel);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private void Btn_addRange_Click(object sender, RoutedEventArgs e)
         {
@@ -578,6 +610,8 @@ namespace POS.View.Settings
 
         private async void Btn_usersList_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.groupObject.HasPermissionAction(usersPermission, MainWindow.groupObjects, "one"))
+            {
             if (group.groupId > 0)
             {
                 Window.GetWindow(this).Opacity = 0.2;
@@ -588,11 +622,16 @@ namespace POS.View.Settings
 
                 Window.GetWindow(this).Opacity = 1;
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            string s = "";
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            {
+                string s = "";
             foreach (var item in groupObjectsQuery)
             {
                 s = await groupObject.Save(item);
@@ -606,6 +645,9 @@ namespace POS.View.Settings
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void btn_secondLevelClick(object sender, RoutedEventArgs e)

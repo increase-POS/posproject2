@@ -1,4 +1,5 @@
-﻿using System;
+﻿using netoaster;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,9 @@ namespace POS.View.sales
     /// </summary>
     public partial class uc_membership : UserControl
     {
-
+        string basicsPermission = "membership_basics";
+        string customersPermission = "membership_customers";
+        string subscriptionFeesPermission = "membership_subscriptionFees";
         private static uc_membership _instance;
         public static uc_membership Instance
         {
@@ -57,10 +60,7 @@ namespace POS.View.sales
 
         }
 
-        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+       
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
@@ -84,17 +84,31 @@ namespace POS.View.sales
 
         private void Btn_add_Click(object sender, RoutedEventArgs e)
         {
-
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_update_Click(object sender, RoutedEventArgs e)
         {
 
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            {
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_delete_Click(object sender, RoutedEventArgs e)
         {
 
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            {
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Dg_membership_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -114,12 +128,60 @@ namespace POS.View.sales
 
         private void Btn_customers_Click(object sender, RoutedEventArgs e)
         {
-
+            if (MainWindow.groupObject.HasPermissionAction(customersPermission, MainWindow.groupObjects, "one"))
+            {
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_subscriptionFees_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.groupObject.HasPermissionAction(subscriptionFeesPermission, MainWindow.groupObjects, "one"))
+            {
 
+
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+
+        private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
     }
 }

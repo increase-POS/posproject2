@@ -577,8 +577,8 @@ namespace POS.View
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
             if ((MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one")  &&
-                (invoice.invType == "pd" || invoice.invType == "pw" || invoice.invType == "pi"))
-                || (invoice.invType != "pd" && invoice.invType != "pw" && invoice.invType != "pi"))
+                (invoice.invType == "pd" || invoice.invType == "pw" || invoice.invType == "p"))
+                || (invoice.invType != "pd" && invoice.invType != "pw" && invoice.invType != "p"))
             {
             if (logInProcessing)
             {

@@ -119,7 +119,7 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "Package/GetByID?packageId=" + packageId);
                 request.Headers.Add("APIKey", Global.APIKey);
-              
+
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var response = await client.SendAsync(request);
@@ -137,9 +137,45 @@ namespace POS.Classes
             }
         }
 
+        //
+        public async Task<List<Package>> GetChildsByParentId(int parentIUId)
+        {
+            List<Package> memberships = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Package/GetChildsByParentId?parentIUId=" + parentIUId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+
+                    memberships = JsonConvert.DeserializeObject<List<Package>>(jsonString);
+
+                    return memberships;
+                }
+                else //web api sent error response 
+                {
+                    memberships = new List<Package>();
+                }
+                return memberships;
+            }
+        }
+
         public async Task<string> Delete(int packageId, int userId, bool final)
         {
-        
+
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
@@ -172,7 +208,6 @@ namespace POS.Classes
         //
         public async Task<string> UpdatePackByParentId(int parentIUId, List<Package> newplist, int userId)
         {
-
             string message = "";
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -206,9 +241,5 @@ namespace POS.Classes
                 return message;
             }
         }
-
-
-
-
     }
 }

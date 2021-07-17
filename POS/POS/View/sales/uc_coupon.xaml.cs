@@ -35,6 +35,7 @@ namespace POS.View
         IEnumerable<Coupon> coupons;
         byte tgl_couponState;
         string searchText = "";
+        string basicsPermission = "coupon_basics";
         public static uc_coupon Instance
         {
             get
@@ -293,8 +294,9 @@ namespace POS.View
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-
-            bool codeNotExist = await SectionData.CouponCodeNotExist(tb_code.Text , 0);
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+                bool codeNotExist = await SectionData.CouponCodeNotExist(tb_code.Text , 0);
 
             //bool isBarcodeExist = await SectionData.chkIfCouponBarCodeIsExist(tb_barcode.Text , 0);
 
@@ -389,6 +391,9 @@ namespace POS.View
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private async void Btn_clear_Click(object sender, RoutedEventArgs e)
@@ -433,13 +438,19 @@ namespace POS.View
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            this.Dispatcher.Invoke(() =>
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                this.Dispatcher.Invoke(() =>
             {
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
             });
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+
 
         void FN_ExportToExcel()
         {
@@ -538,7 +549,9 @@ namespace POS.View
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (coupon.cId != 0)
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+                {
+                    if (coupon.cId != 0)
             {
                 if ((!coupon.canDelete) && (coupon.isActive == 0))
                 {
@@ -585,9 +598,12 @@ namespace POS.View
             }
             //clear textBoxs
             Btn_clear_Click(sender, e);
-        }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
 
-        private async void activate()
+            private async void activate()
         {//activate
             coupon.isActive = 1;
 
@@ -605,7 +621,9 @@ namespace POS.View
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            bool codeNotExist = await SectionData.CouponCodeNotExist(tb_code.Text , coupon.cId);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+                {
+                    bool codeNotExist = await SectionData.CouponCodeNotExist(tb_code.Text , coupon.cId);
 
             //bool isBarcodeExist = await SectionData.chkIfCouponBarCodeIsExist(tb_barcode.Text , coupon.cId);
 
@@ -697,11 +715,16 @@ namespace POS.View
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
             }
-        }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
 
-        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+            private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (coupons is null)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                if (coupons is null)
                 await RefreshCouponsList();
             searchText = tb_search.Text.ToLower();
             couponsQuery = coupons.Where(s => (s.code.ToLower().Contains(searchText) ||
@@ -709,7 +732,11 @@ namespace POS.View
             s.barcode.ToLower().Contains(searchText) 
             ) && s.isActive == tgl_couponState);
             RefreshCouponView();
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+
 
         async Task<IEnumerable<Coupon>> RefreshCouponsList()
         {
@@ -841,6 +868,42 @@ namespace POS.View
         {
             string name = sender.GetType().Name;
             validateEmpty(name, sender);
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+
+
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+
+
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+
+        private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+
+
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
     }
 }

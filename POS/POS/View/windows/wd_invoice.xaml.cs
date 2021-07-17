@@ -39,6 +39,7 @@ namespace POS.View.windows
         /// for filtering invoice type
         /// </summary>
         public string invoiceType { get; set; }
+        public string invoiceStatus { get; set; }
         public string title { get; set; }
         public string condition { get; set; }
         private void Btn_select_Click(object sender, RoutedEventArgs e)
@@ -77,14 +78,17 @@ namespace POS.View.windows
         }
         private async Task refreshInvoices()
         {
-            if (userId != 0)/// to display draft invoices
+            if (userId != 0 && invoiceStatus == "")/// to display draft invoices
                 invoices = await invoice.GetInvoicesByCreator(invoiceType, userId);
             else if (branchCreatorId != 0)
                 invoices = await invoice.getBranchInvoices(invoiceType, branchCreatorId);
-            else if (condition == "" || condition == null)
-                invoices = await invoice.GetInvoicesByType(invoiceType, branchId);
-            else // get export/ import orders
+            else if (branchId != 0) // get export/ import orders
                 invoices = await invoice.GetOrderByType(invoiceType, branchId);
+            else if (invoiceStatus != "" && userId != 0)
+                invoices = await invoice.getDeliverOrders(invoiceType, invoiceStatus, userId);
+            else
+                invoices = await invoice.GetInvoicesByType(invoiceType, branchId);
+           
 
             //if (invoiceType == "pd ,pbd")
             //{

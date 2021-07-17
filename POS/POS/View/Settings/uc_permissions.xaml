@@ -2431,7 +2431,7 @@
                         <DataGridTemplateColumn Header="Show" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox x:Name="chb_showOb" 
+                                    <CheckBox FlowDirection="LeftToRight" x:Name="chb_showOb" 
                                               IsChecked="{Binding showOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                         <CheckBox.Style>
                                             <Style TargetType="CheckBox">
@@ -2449,7 +2449,7 @@
                         <DataGridTemplateColumn Header="Add" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding addOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                    <CheckBox FlowDirection="LeftToRight" IsChecked="{Binding addOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                                         <CheckBox.Style>
                                             <Style TargetType="CheckBox">
                                                 <Style.Triggers>
@@ -2466,7 +2466,7 @@
                         <DataGridTemplateColumn Header="Update" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox  IsChecked="{Binding updateOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                    <CheckBox FlowDirection="LeftToRight"  IsChecked="{Binding updateOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                                         <CheckBox.Style>
                                             <Style TargetType="CheckBox">
                                                 <Style.Triggers>
@@ -2480,10 +2480,10 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Delete" >
+                        <DataGridTemplateColumn  Header="Delete" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding deleteOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                    <CheckBox FlowDirection="LeftToRight" IsChecked="{Binding deleteOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                                         <CheckBox.Style>
                                             <Style TargetType="CheckBox">
                                                 <Style.Triggers>
@@ -2500,7 +2500,7 @@
                         <DataGridTemplateColumn Header="Report"  >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox  IsChecked="{Binding reportOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                    <CheckBox FlowDirection="LeftToRight" IsChecked="{Binding reportOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                                         <CheckBox.Style>
                                             <Style TargetType="CheckBox">
                                                 <Style.Triggers>
@@ -2517,7 +2517,7 @@
                         <!--<DataGridTemplateColumn Header="Report2"  >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox   IsChecked="{Binding levelOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                    <CheckBox FlowDirection="LeftToRight"  IsChecked="{Binding levelOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                                         <CheckBox.Style>
                                             <Style TargetType="CheckBox">
                                                 <Style.Triggers>

@@ -41,7 +41,8 @@ namespace POS.View.Settings
         static List<SetValues> languages = new List<SetValues>();
 
         static int taxId = 0 , costId = 0;
-
+        string usersSettingsPermission = "general_usersSettings";
+        string companySettingsPermission = "general_companySettings";
         private static uc_general _instance;
         public static uc_general Instance
         {
@@ -59,10 +60,15 @@ namespace POS.View.Settings
 
         private void Btn_companyInfo_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
+            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+            {
+        Window.GetWindow(this).Opacity = 0.2;
             wd_companyInfo w = new wd_companyInfo();
             w.ShowDialog();
             Window.GetWindow(this).Opacity = 1;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -242,7 +248,9 @@ namespace POS.View.Settings
 
         private async void Btn_saveRegion_Click(object sender, RoutedEventArgs e)
         {//save region
-            string s = "";
+            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+            {
+                string s = "";
             SectionData.validateEmptyComboBox(cb_region , p_errorRegion , tt_errorRegion , "trEmptyRegion");
             if (!cb_region.Text.Equals(""))
             {
@@ -263,11 +271,16 @@ namespace POS.View.Settings
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private async void Btn_saveLanguage_Click(object sender, RoutedEventArgs e)
         {//save language
-            SectionData.validateEmptyComboBox(cb_language , p_errorLanguage , tt_errorLanguage , "trEmptyLanguage");
+            if (MainWindow.groupObject.HasPermissionAction(usersSettingsPermission, MainWindow.groupObjects, "one"))
+            {
+                SectionData.validateEmptyComboBox(cb_language , p_errorLanguage , tt_errorLanguage , "trEmptyLanguage");
             if (!cb_language.Text.Equals(""))
             {
                 if (usLanguage == null)
@@ -320,10 +333,18 @@ namespace POS.View.Settings
 
                 }
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_saveTax_Click(object sender, RoutedEventArgs e)
         {//save Tax
-            SectionData.validateEmptyTextBox(tb_tax, p_errorTax, tt_errorTax, "trEmptyTax");
+            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+            {
+
+
+
+           SectionData.validateEmptyTextBox(tb_tax, p_errorTax, tt_errorTax, "trEmptyTax");
             if (!tb_tax.Text.Equals(""))
             {
                 if (tax == null)
@@ -342,10 +363,19 @@ namespace POS.View.Settings
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
         }
 
         private async void Btn_saveCurrency_Click(object sender, RoutedEventArgs e)
         {//save currency
+            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+            {
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Cb_region_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -403,15 +433,30 @@ namespace POS.View.Settings
 
         private void Btn_changePassword_Click(object sender, RoutedEventArgs e)
         {//change password
+            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+            {
+
+
+
             Window.GetWindow(this).Opacity = 0.2;
             wd_adminChangePassword w = new wd_adminChangePassword();
             w.ShowDialog();
             Window.GetWindow(this).Opacity = 1;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
         }
+
+
+
+
 
         private async void Btn_saveStorageCost_Click(object sender, RoutedEventArgs e)
         {//save storage cost
-            SectionData.validateEmptyTextBox(tb_storageCost , p_errorStorageCost , tt_errorStorageCost , "trEmptyStoreCost");
+            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+            {
+                SectionData.validateEmptyTextBox(tb_storageCost , p_errorStorageCost , tt_errorStorageCost , "trEmptyStoreCost");
             if (!tb_storageCost.Text.Equals(""))
             {
                 if (cost == null)
@@ -431,7 +476,11 @@ namespace POS.View.Settings
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+
 
 
     }

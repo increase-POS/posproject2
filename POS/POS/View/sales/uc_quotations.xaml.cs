@@ -31,6 +31,8 @@ namespace POS.View.sales
     /// </summary>
     public partial class uc_quotations : UserControl
     {
+        string createPermission = "quotation_create";
+        string reportsPermission = "quotation_reports";
         private static uc_quotations _instance;
         public static uc_quotations Instance
         {
@@ -566,7 +568,7 @@ namespace POS.View.sales
             invoice.updateUserId = MainWindow.userID;
 
             // build invoice NUM like storCode_PI_sequence exp: 123_PI_2
-            if (invType =="q")
+            if (invType == "q")
             {
                 invoice.invNumber = await invoice.generateInvNumber("si");
             }
@@ -659,7 +661,7 @@ namespace POS.View.sales
             tb_discount.Text = _Discount.ToString();
             #endregion
             decimal taxValue = _Tax;
-            decimal total = _Sum - _Discount ;
+            decimal total = _Sum - _Discount;
             if (MainWindow.isInvTax == 1)
             {
                 taxValue = SectionData.calcPercentage(total, (decimal)MainWindow.tax);
@@ -884,10 +886,7 @@ namespace POS.View.sales
         {
 
         }
-        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
         private async void Btn_quotations_Click(object sender, RoutedEventArgs e)
         {
             // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
@@ -1039,7 +1038,9 @@ namespace POS.View.sales
         }
         private void Btn_invoiceImages_Click(object sender, RoutedEventArgs e)
         {
-            if (invoice != null && invoice.invoiceId != 0)
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
+                if (invoice != null && invoice.invoiceId != 0)
             {
                 //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
 
@@ -1053,6 +1054,9 @@ namespace POS.View.sales
             }
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trChooseInvoiceToolTip"), animation: ToasterAnimation.FadeIn);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async Task<Boolean> checkItemsAmounts()
         {
@@ -1071,18 +1075,24 @@ namespace POS.View.sales
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            //check mandatory inputs
-            validateInvoiceValues();
-            Boolean available = true;
-            if (_InvoiceType == "qd")
-                available = await checkItemsAmounts();
-            if (billDetails.Count > 0 && available && !tb_name.Equals(""))
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
             {
-                await addInvoice("q");//quontation invoice
+                //check mandatory inputs
+                validateInvoiceValues();
+                Boolean available = true;
+                if (_InvoiceType == "qd")
+                    available = await checkItemsAmounts();
+                if (billDetails.Count > 0 && available && !tb_name.Equals(""))
+                {
+                    await addInvoice("q");//quontation invoice
 
-                if (invoice.invoiceId == 0) clearInvoice();
+                    if (invoice.invoiceId == 0) clearInvoice();
+                }
             }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+
         private void Btn_updateCustomer_Click(object sender, RoutedEventArgs e)
         {
 
@@ -1122,8 +1132,9 @@ namespace POS.View.sales
         private void Btn_items_Click(object sender, RoutedEventArgs e)
         {
             //items
-
-            Window.GetWindow(this).Opacity = 0.2;
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            {
+                Window.GetWindow(this).Opacity = 0.2;
             wd_items w = new wd_items();
             w.CardType = "sales";
             w.ShowDialog();
@@ -1134,7 +1145,11 @@ namespace POS.View.sales
             }
 
             Window.GetWindow(this).Opacity = 1;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
 
@@ -1158,6 +1173,41 @@ namespace POS.View.sales
                 else
                     clearInvoice();
             }
+        }
+
+        private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
+
+
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
+
+
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            {
+
+
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
     }
 }

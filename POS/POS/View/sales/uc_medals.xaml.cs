@@ -36,7 +36,8 @@ namespace POS.View.sales
         string searchText = "";
         BrushConverter bc = new BrushConverter();
         string symbol = "";
-
+        string basicsPermission = "medals_basics";
+        string customersPermission = "medals_customers";
         private static uc_medals _instance;
         public static uc_medals Instance
         {
@@ -166,33 +167,52 @@ namespace POS.View.sales
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (medals is null)
-                await RefreshMedalsList();
-            searchText = tb_search.Text.ToLower();
-            medalsQuery = medals.Where(s => s.name.ToLower().Contains(searchText)
-            && s.isActive == tgl_medalState);
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                if (medals is null)
+                    await RefreshMedalsList();
+                searchText = tb_search.Text.ToLower();
+                medalsQuery = medals.Where(s => s.name.ToLower().Contains(searchText)
+                && s.isActive == tgl_medalState);
 
-            RefreshMedalView();
+                RefreshMedalView();
+            }
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
 
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {//print
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
 
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
-            this.Dispatcher.Invoke(() =>
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                this.Dispatcher.Invoke(() =>
             {
                 Thread t1 = new Thread(FN_ExportToExcel);
                 t1.SetApartmentState(ApartmentState.STA);
                 t1.Start();
             });
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         void FN_ExportToExcel()
@@ -212,7 +232,9 @@ namespace POS.View.sales
 
         private void Btn_customers_Click(object sender, RoutedEventArgs e)
         { //customers
-            Window.GetWindow(this).Opacity = 0.2;
+            if (MainWindow.groupObject.HasPermissionAction(customersPermission, MainWindow.groupObjects, "one"))
+            {
+                Window.GetWindow(this).Opacity = 0.2;
 
             wd_customersList w = new wd_customersList();
             w.medalId = medal.medalId;
@@ -226,11 +248,17 @@ namespace POS.View.sales
             //}
 
             Window.GetWindow(this).Opacity = 1;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
-        private async void Btn_add_Click(object sender, RoutedEventArgs e)
+
+    private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            //chk empty name
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+                //chk empty name
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             //chk not exist
             string txt = tb_name.Text;
             bool isExist = medalsQuery.Any(i => i.name == tb_name.Text);
@@ -274,12 +302,18 @@ namespace POS.View.sales
                 Tb_search_TextChanged(null, null);
             }
 
-         }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            //chk empty name
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+                {
+                    //chk empty name
+                    SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             //chk not exist
             string txt = tb_name.Text;
             bool isExist = medalsQuery.Any(i => i.name == tb_name.Text && i.medalId != medal.medalId);
@@ -316,11 +350,17 @@ namespace POS.View.sales
                 Tb_search_TextChanged(null, null);
 
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (medal.medalId != 0)
+                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+                    {
+                        if (medal.medalId != 0)
             {
                 if ((!medal.canDelete) && (medal.isActive == 0))
                 {
@@ -368,9 +408,13 @@ namespace POS.View.sales
             }
             //clear textBoxs
             Btn_clear_Click(sender, e);
-        }
+                    }
+                    else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                }
 
-        private async void activate()
+
+                private async void activate()
         {//activate
             medal.isActive = 1;
 
@@ -512,5 +556,14 @@ namespace POS.View.sales
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-    }
+
+        private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+
+            } else
+            Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+		}
+}
 }
