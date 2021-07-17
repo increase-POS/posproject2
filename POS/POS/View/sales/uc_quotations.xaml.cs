@@ -659,14 +659,15 @@ namespace POS.View.sales
             tb_discount.Text = _Discount.ToString();
             #endregion
             decimal taxValue = _Tax;
+            decimal total = _Sum - _Discount ;
             if (MainWindow.isInvTax == 1)
             {
-                taxValue = SectionData.calcPercentage(_Sum, (decimal)MainWindow.tax);
+                taxValue = SectionData.calcPercentage(total, (decimal)MainWindow.tax);
             }
             else
                 tb_taxValue.Text = _Tax.ToString();
-            decimal total = _Sum - _Discount + taxValue;
 
+            total += taxValue;
             tb_sum.Text = _Sum.ToString();
 
 

@@ -465,9 +465,9 @@ namespace POS.View.windows
 
         #endregion
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-
+            await RefrishItems();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
