@@ -74,6 +74,12 @@ namespace POS.Classes
         public string Secnote { get; set; }
         public Nullable<byte> SecisFreeZone { get; set; }
         public string SectionLoactionName { get => sectionLoactionName = Secname + x + y + z; set => sectionLoactionName = value; }
+
+
+        private string itemUnits;
+        private string LoactionName;
+        public string LoactionName1 { get => LoactionName = x + y + z; set => LoactionName = value; }
+        public string ItemUnits { get => itemUnits = itemName + " - " + unitName; set => itemUnits = value; }
     }
 
     public class ItemUnitCombo
@@ -97,7 +103,20 @@ namespace POS.Classes
     }
 
     public class ItemTransferInvoice
-    {
+    {// new properties
+        public string itemName  {get;set;}
+        public string unitName  {get;set;}
+        public int itemsTransId {get;set;}
+        public Nullable<int> itemUnitId {get;set;}
+
+        public Nullable<int> itemId {get;set;}
+        public Nullable<int> unitId {get;set;}
+        public Nullable<long> quantity {get;set;}
+
+       
+        public Nullable<decimal> price {get;set;}
+        public string barcode {get;set;}
+
         // ItemTransfer
         public int ITitemsTransId { get; set; }
         public Nullable<int> ITitemUnitId { get; set; }
@@ -108,6 +127,7 @@ namespace POS.Classes
         public string ITunitName { get; set; }
         public Nullable<long> ITquantity { get; set; }
         public Nullable<decimal> ITprice { get; set; }
+
 
 
 
@@ -171,6 +191,7 @@ namespace POS.Classes
         public string posName { get; set; }
         public string posCode { get; set; }
         public string agentName { get; set; }
+        public string agentType { get; set; }
         public string agentCode { get; set; }
         public string cuserName { get; set; }
         public string cuserLast { get; set; }
@@ -234,7 +255,11 @@ namespace POS.Classes
         //external
         public int movbranchid { get; set; }
         public string movbranchname { get; set; }
-      
+        // internal
+        public string exportBranch { get; set; }
+        public string importBranch { get; set; }
+        public int exportBranchId { get; set; }
+        public int importBranchId { get; set; }
 
     }
     class Statistics
@@ -993,6 +1018,49 @@ namespace POS.Classes
             }
         }
 
+        //حركة الاصناف الداخلية بين الفروع
+        public async Task<List<ItemTransferInvoice>> GetInternalMov()
+        {
+            List<ItemTransferInvoice> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetInternalMov");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<ItemTransferInvoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<ItemTransferInvoice>();
+                }
+                return list;
+            }
+        }
+
+
         #endregion
 
         public class itemCombo
@@ -1004,11 +1072,30 @@ namespace POS.Classes
             public string ItemName { get => itemName; set => itemName = value; }
             public int BranchId { get => branchId; set => branchId = value; }
         }
+        public class ExternalitemCombo
+        {
+            private int? itemId;
+            private string itemName;
+            private int? branchId;
+
+            public int? ItemId { get => itemId; set => itemId = value; }
+            public string ItemName { get => itemName; set => itemName = value; }
+            public int? BranchId { get => branchId; set => branchId = value; }
+        }
         public List<itemCombo> getItemCombo(List<Storage> ITInvoice)
         {
             List<itemCombo> iulist = new List<itemCombo>();
 
             iulist = ITInvoice.Select(g => new itemCombo { ItemId = (int)g.itemId, ItemName = g.itemName, BranchId = g.branchId }).ToList();
+            return iulist;
+
+        }
+
+        public List<ExternalitemCombo> getExternalItemCombo(List<ItemTransferInvoice> ITInvoice)
+        {
+            List<ExternalitemCombo> iulist = new List<ExternalitemCombo>();
+
+            iulist = ITInvoice.Select(g => new ExternalitemCombo { ItemId = g.ITitemId, ItemName = g.ITitemName, BranchId = g.movbranchid }).ToList();
             return iulist;
 
         }
@@ -1022,12 +1109,149 @@ namespace POS.Classes
             public string UnitName { get => unitName; set => unitName = value; }
             public int ItemId { get => itemId; set => itemId = value; }
         }
+        public class ExternalUnitCombo
+        {
+            private int? unitId;
+            private string unitName;
+            private int? itemId;
+
+            public int? UnitId { get => unitId; set => unitId = value; }
+            public string UnitName { get => unitName; set => unitName = value; }
+            public int? ItemId { get => itemId; set => itemId = value; }
+        }
+
 
         public List<unitCombo> getUnitCombo(List<Storage> ITInvoice)
         {
             List<unitCombo> iulist = new List<unitCombo>();
-
             iulist = ITInvoice.Select(g => new unitCombo { UnitId = (int)g.unitId, UnitName = g.unitName, ItemId = g.itemId }).ToList();
+            return iulist;
+        }
+
+        public List<ExternalUnitCombo> getExternalUnitCombo(List<ItemTransferInvoice> ITInvoice)
+        {
+            List<ExternalUnitCombo> iulist = new List<ExternalUnitCombo>();
+            iulist = ITInvoice.Select(g => new ExternalUnitCombo { UnitId = (int)g.ITunitId, UnitName = g.ITunitName, ItemId = g.ITitemId }).ToList();
+            return iulist;
+        }
+        public class sectionCombo
+        {
+            private int sectionId;
+            private string sectionName;
+            private int branchId;
+            public int SectionId { get => sectionId; set => sectionId = value; }
+            public string SectionName { get => sectionName; set => sectionName = value; }
+            public int BranchId { get => branchId; set => branchId = value; }
+        }
+
+        public List<sectionCombo> getSectionCombo(List<Storage> ITInvoice)
+        {
+            List<sectionCombo> iulist = new List<sectionCombo>();
+
+            iulist = ITInvoice.Select(g => new sectionCombo { SectionId = (int)g.sectionId, SectionName = g.Secname, BranchId = g.branchId }).ToList();
+            return iulist;
+
+        }
+
+        public class locationCombo
+        {
+            private int locationId;
+            private string locationName;
+            private int sectionId;
+            public int LocationId { get => locationId; set => locationId = value; }
+            public string LocationName { get => locationName; set => locationName = value; }
+            public int SectionId { get => sectionId; set => sectionId = value; }
+        }
+
+        public List<locationCombo> getLocationCombo(List<Storage> ITInvoice)
+        {
+            List<locationCombo> iulist = new List<locationCombo>();
+
+            iulist = ITInvoice.Select(g => new locationCombo { LocationId = (int)g.locationId, LocationName = g.LoactionName1, SectionId = g.sectionId }).ToList();
+            return iulist;
+
+        }
+
+
+        public class AgentTypeCombo
+        {
+            private int agentId;
+            private string agentType;
+            private int? branchId;
+
+            public int AgentId { get => agentId; set => agentId = value; }
+            public int? BranchId { get => branchId; set => branchId = value; }
+            public string AgentType { get => agentType; set => agentType = value; }
+        }
+
+        public List<AgentTypeCombo> GetExternalAgentTypeCombos(List<ItemTransferInvoice> ITInvoice)
+        {
+            List<AgentTypeCombo> iulist = new List<AgentTypeCombo>();
+
+            //iulist = ITInvoice.Select(g => new AgentTypeCombo { AgentId = (int)g.agentId, AgentType = g.agentType, BranchId = g.movbranchid }).ToList();
+            return iulist;
+
+        }
+
+        public class AgentCombo
+        {
+            private int agentId;
+            private string agentName;
+            private int? branchId;
+            private string agentType;
+
+            public int AgentId { get => agentId; set => agentId = value; }
+            public int? BranchId { get => branchId; set => branchId = value; }
+            public string AgentName { get => agentName; set => agentName = value; }
+            public string AgentType { get => agentType; set => agentType = value; }
+        }
+
+        public List<AgentCombo> GetExternalAgentCombos(List<ItemTransferInvoice> ITInvoice)
+        {
+            List<AgentCombo> iulist = new List<AgentCombo>();
+
+            //iulist = ITInvoice.Select(g => new AgentCombo { AgentId = (int)g.agentId, AgentName = g.agentName, BranchId = g.movbranchid ,AgentType=g.agentType}).ToList();
+            return iulist;
+
+        }
+
+        public class InvTypeCombo
+        {
+            private int invoiceId;
+            private string invoiceType;
+            private int? branchId;
+
+            public int InvoiceId { get => invoiceId; set => invoiceId = value; }
+            public string InvoiceType { get => invoiceType; set => invoiceType = value; }
+            public int? BranchId { get => branchId; set => branchId = value; }
+        }
+
+        public List<InvTypeCombo> GetExternalInvoiceTypeCombos(List<ItemTransferInvoice> ITInvoice)
+        {
+            List<InvTypeCombo> iulist = new List<InvTypeCombo>();
+
+            iulist = ITInvoice.Select(g => new InvTypeCombo { InvoiceId = (int)g.invoiceId, InvoiceType = g.invType, BranchId = g.movbranchid }).ToList();
+            return iulist;
+
+        }
+        public class InvCombo
+        {
+            private int invoiceId;
+            private string invoiceNumber;
+            private int? branchId;
+            private string invoiceType;
+
+            public int InvoiceId { get => invoiceId; set => invoiceId = value; }
+            public string InvoiceNumber { get => invoiceNumber; set => invoiceNumber = value; }
+            public int? BranchId { get => branchId; set => branchId = value; }
+            public string InvoiceType { get => invoiceType; set => invoiceType = value; }
+        }
+
+        public List<InvCombo> GetExternalInvoiceCombos(List<ItemTransferInvoice> ITInvoice)
+        {
+            List<InvCombo> iulist = new List<InvCombo>();
+
+            iulist = ITInvoice.Select(g => new InvCombo { InvoiceId = (int)g.invoiceId, InvoiceNumber = g.invNumber, BranchId = g.movbranchid, InvoiceType = g.invType }).ToList();
             return iulist;
 
         }

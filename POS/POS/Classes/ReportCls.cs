@@ -162,12 +162,12 @@ namespace POS.Classes
             checkLang();
 
             string title = MainWindow.resourcemanager.GetString("trPayVocher");
-            string company_name = "Increase";
-            string comapny_address = "Kuwait";
-            string company_phone = "+965599959595";
-            string company_fax = "+965595959";
-            string company_email = "increase@gmail.com";
-            string company_logo_img = "";
+            string company_name = MainWindow.companyName;
+            string comapny_address = MainWindow.Address;
+            string company_phone = MainWindow.Address;
+            string company_fax = MainWindow.Fax;
+            string company_email = MainWindow.Email;
+            string company_logo_img = GetLogoImagePath();
             string amount = cashtrans.cash.ToString();
             string voucher_num = cashtrans.transNum.ToString();
             string type = "";
@@ -349,6 +349,22 @@ namespace POS.Classes
             return words;
         }
 
+        public string GetLogoImagePath()
+        {
+            string imageName = MainWindow.logoImage;
+            string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            string tmpPath = Path.Combine(dir, @"Thumb\setting");
+            tmpPath = Path.Combine(tmpPath, imageName);
+            /*
+                  
+                  
+             * */
+
+            //string addpath = @"\Thumb\setting\" ;
+
+            return tmpPath;
+        }
+
         //
         public ReportParameter[] fillPurInvReport(Invoice invoice ,ReportParameter[] paramarr)
         {
@@ -373,6 +389,7 @@ namespace POS.Classes
             paramarr[17] = new ReportParameter("tax", "0");
             paramarr[18] = new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invoice.invNumber.ToString(), "invnum"));
             paramarr[19] = new ReportParameter("Currency",MainWindow.Currency);
+            paramarr[20] = new ReportParameter("logoImage", "file:\\" +GetLogoImagePath());
 
 
             return paramarr;

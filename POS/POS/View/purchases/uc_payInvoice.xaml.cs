@@ -1478,10 +1478,15 @@ namespace POS.View
                 HandleKeyPress(sender, e);
             }
         }
+
+
+        //print
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
+            ReportCls rr = new ReportCls();
+            // MessageBox.Show(rr.GetLogoImagePath());
 
-            ReportParameter[] paramarr = new ReportParameter[20];
+            ReportParameter[] paramarr = new ReportParameter[21];
 
             string addpath;
             bool isArabic = ReportCls.checkLang();
@@ -1520,32 +1525,11 @@ namespace POS.View
 
 
         }
-
-        private void Btn_items_Click(object sender, RoutedEventArgs e)
-        {
-            //items
-
-            Window.GetWindow(this).Opacity = 0.2;
-            wd_items w = new wd_items();
-            w.CardType = "purchase";
-            w.ShowDialog();
-            if (w.isActive)
-            {
-                ////// w.selectedItem this is ItemId
-                ChangeItemIdEvent(w.selectedItem);
-            }
-
-            Window.GetWindow(this).Opacity = 1;
-        }
-
-        private void Btn_clear_Click(object sender, RoutedEventArgs e)
-        {
-            clearInvoice();
-        }
-
         private async void btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
-            ReportParameter[] paramarr = new ReportParameter[20];
+            ReportCls rr = new ReportCls();
+
+            ReportParameter[] paramarr = new ReportParameter[21];
 
             string addpath;
             bool isArabic = ReportCls.checkLang();
@@ -1577,6 +1561,30 @@ namespace POS.View
             }
         }
 
+
+        private void Btn_items_Click(object sender, RoutedEventArgs e)
+        {
+            //items
+
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_items w = new wd_items();
+            w.CardType = "purchase";
+            w.ShowDialog();
+            if (w.isActive)
+            {
+                ////// w.selectedItem this is ItemId
+                ChangeItemIdEvent(w.selectedItem);
+            }
+
+            Window.GetWindow(this).Opacity = 1;
+        }
+
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+            clearInvoice();
+        }
+
+     
         private void Tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
         {
             _Sender = sender;

@@ -70,7 +70,7 @@ namespace POS
         static SettingCls setModel = new SettingCls();
         static SetValues valueModel = new SetValues();
         static int nameId, addressId, emailId, mobileId, phoneId, faxId, logoId , taxId;
-
+        public static string logoImage;
         ImageBrush myBrush = new ImageBrush();
 
         /// <summary>
@@ -210,6 +210,12 @@ namespace POS
             //get company logo
             set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
             logoId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
+            logoImage = setV.value;      
+            await setV.getImg(logoImage);
+
+
+
             #endregion
 
 

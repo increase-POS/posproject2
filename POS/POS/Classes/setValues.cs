@@ -12,7 +12,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Drawing;
 using System.IO;
-
+using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 namespace POS.Classes
 {
     public class SetValues
@@ -312,7 +313,7 @@ namespace POS.Classes
 
                     // configure trmporery path
                     string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-                    string tmpPath = Path.Combine(dir, Global.TMPUsersFolder);
+                    string tmpPath = Path.Combine(dir, Global.TMPSettingFolder);
                     if (!Directory.Exists(tmpPath))
                         Directory.CreateDirectory(tmpPath);
                     tmpPath = Path.Combine(tmpPath, imageName);
@@ -329,6 +330,43 @@ namespace POS.Classes
             }
         }
 
+        public async Task getImg(string imageName)
+        {
+           
+            try
+            {
+                if (string.IsNullOrEmpty(imageName))
+                {
+                   // SectionData.clearImg(img_customer);
+                }
+                else
+                {
+                    byte[] imageBuffer = await this.downloadImage(imageName); // read this as BLOB from your DB
+
+                   var bitmapImage = new BitmapImage();
+                 
+                    if (imageBuffer != null)
+                    {
+                        using (var memoryStream = new MemoryStream(imageBuffer))
+                        {
+                            bitmapImage.BeginInit();
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.StreamSource = memoryStream;
+                            bitmapImage.EndInit();
+                         Bitmap serial_bitmap = new Bitmap(memoryStream);
+                         string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                         string tmpPath = System.IO.Path.Combine(dir, Global.TMPSettingFolder);
+                         tmpPath = System.IO.Path.Combine(tmpPath, imageName);
+                         serial_bitmap.Save(tmpPath);
+                        }
+                      
+                       
+                    }
+                
+                }
+            }
+            catch { }
+        }
 
         #endregion
 
