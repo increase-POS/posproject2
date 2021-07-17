@@ -37,6 +37,7 @@ namespace POS.View
         byte tgl_PropertyState;
         string searchText = "";
 
+        string basicsPermission = "properties_basics";
         private static UC_porperty _instance;
         public static UC_porperty Instance
         {
@@ -220,8 +221,10 @@ namespace POS.View
         //******************* update property***************
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {
-            //update
-            property.name = tb_name.Text;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            {
+                //update
+                property.name = tb_name.Text;
             property.createUserId = MainWindow.userID;
             property.updateUserId = MainWindow.userID;
 
@@ -234,10 +237,14 @@ namespace POS.View
 
             await RefreshPropertiesList();
             Tb_search_TextChanged(null, null);
-            //var poss = await propertyModel.getProperty();
-            //dg_property.ItemsSource = poss;
+                //var poss = await propertyModel.getProperty();
+                //dg_property.ItemsSource = poss;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
-        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+
+    private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
 
@@ -380,8 +387,10 @@ namespace POS.View
 
         private async void Btn_addValue_Click(object sender, RoutedEventArgs e)
             {
-
-            var bc = new BrushConverter();
+                //add
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+                {
+                    var bc = new BrushConverter();
             if (tb_valueName.Text.Equals(""))
             {
                 p_errorNameSub.Visibility = Visibility.Visible;
@@ -395,8 +404,8 @@ namespace POS.View
             }
             if (!tb_valueName.Text.Equals(""))
             {
-                //add
-                propertyItem.propertyItemId = 0;
+                
+                    propertyItem.propertyItemId = 0;
                 propertyItem.name = tb_valueName.Text;
                 propertyItem.propertyId = property.propertyId;
                 propertyItem.createUserId = MainWindow.userID;
@@ -416,12 +425,17 @@ namespace POS.View
                 var propertiesItemss = await propertiesItemsModel.GetPropertyItems(property.propertyId);
                 dg_subProperty.ItemsSource = propertiesItemss;
             }
-            
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private async void Btn_deleteValue_Click(object sender, RoutedEventArgs e)
         {
-            if ((!propertyItem.canDelete) && (propertyItem.isActive == 0))
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+                {
+                    if ((!propertyItem.canDelete) && (propertyItem.isActive == 0))
                await activatePropertyItem();
             else
             {
@@ -438,10 +452,14 @@ namespace POS.View
             }
 
             var propertiesitems = await propertiesItemsModel.GetPropertyItems(property.propertyId);
-            dg_subProperty.ItemsSource = propertiesitems;       
-        }
-       
-        private async void Btn_add_Click(object sender, RoutedEventArgs e)
+            dg_subProperty.ItemsSource = propertiesitems;
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+            }
+
+
+            private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {
             //add
             var bc = new BrushConverter();

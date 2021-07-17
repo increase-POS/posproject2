@@ -109,8 +109,9 @@ namespace POS.View
             refreashBachgroundClick(btn_categories);
 
             grid_main.Children.Clear();
-            uc_categorie uc = new uc_categorie();
-            grid_main.Children.Add(uc);
+            //uc_categorie uc = new uc_categorie();
+            //grid_main.Children.Add(uc);
+            grid_main.Children.Add(uc_categorie.Instance);
         }
 
 

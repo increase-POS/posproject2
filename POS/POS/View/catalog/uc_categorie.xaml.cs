@@ -58,6 +58,17 @@ namespace POS.View
         bool isImgPressed = false;
         
 
+        string basicsPermission = "categories_basics";
+        private static uc_categorie _instance;
+        public static uc_categorie Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_categorie();
+                return _instance;
+            }
+        }
         public uc_categorie()
         {
             InitializeComponent();
@@ -143,7 +154,6 @@ namespace POS.View
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
 
         }
-
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             ///////// on Top Always
@@ -222,7 +232,9 @@ namespace POS.View
         #region Add - Update - Delete _ Clear
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            category.categoryId = 0;
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+                category.categoryId = 0;
             //category = new Category();
             //duplicate
             bool iscodeExist = await SectionData.isCodeExist(tb_categoryCode.Text, "", "Category", 0);
@@ -288,11 +300,16 @@ namespace POS.View
                     fillCategories();
                 }
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            //duplicate
-            bool iscodeExist = await SectionData.isCodeExist(tb_categoryCode.Text, "", "Category", category.categoryId);
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            {
+                //duplicate
+                bool iscodeExist = await SectionData.isCodeExist(tb_categoryCode.Text, "", "Category", category.categoryId);
             //chk empty name
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             //chk empty code
@@ -360,8 +377,12 @@ namespace POS.View
                 }
             }
 
-        
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             tb_name.Clear();
@@ -386,7 +407,9 @@ namespace POS.View
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (category.categoryId != 0)
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+                {
+                    if (category.categoryId != 0)
             {
                 if ((!category.canDelete) && (category.isActive == 0))
                 {
@@ -434,8 +457,12 @@ namespace POS.View
             //clear textBoxs
             Btn_clear_Click(sender, e);
 
-        }
-        private async void activate()
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+            }
+
+            private async void activate()
         {//activate
             category.isActive = 1;
 

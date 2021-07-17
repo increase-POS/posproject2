@@ -46,7 +46,7 @@ namespace POS.View.windows
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            this.Close();
         }
         UserSetValues usLanguage = new UserSetValues();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -119,15 +119,24 @@ namespace POS.View.windows
 
             List<UserSetValues> usValues = new List<UserSetValues>();
             usValues = await usValueModel.GetAll();
-            var curUserValues = usValues.Where(c => c.userId == userId);
-            foreach (var l in curUserValues)
-                if (languages.Any(c => c.valId == l.valId))
-                {
-                    usLanguage = l;
-                }
+            if (usValues.Count > 0)
+            {
+                var curUserValues = usValues.Where(c => c.userId == userId);
 
-            var lan = await valueModel.GetByID(usLanguage.valId.Value);
-            return lan.value;
+                if (curUserValues.Count() > 0)
+                {
+                    foreach (var l in curUserValues)
+                        if (languages.Any(c => c.valId == l.valId))
+                        {
+                            usLanguage = l;
+                        }
+
+                    var lan = await valueModel.GetByID(usLanguage.valId.Value);
+                    return lan.value;
+                }
+                else return "en";
+            }
+            else return "en";
         }
 
         private void translate()
@@ -186,8 +195,9 @@ namespace POS.View.windows
                         //send user info to main window
                         MainWindow.userID = user.userId;
                         MainWindow.userLogin = user;
+                        
                         MainWindow.lang = await getUserLanguage(user.userId);
-                        //MainWindow.lang = lang;
+                        lang = MainWindow.lang;
                         //make user online
                         user.isOnline = 1;
                         user.isActive = 1;

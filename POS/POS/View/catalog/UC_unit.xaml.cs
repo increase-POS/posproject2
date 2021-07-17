@@ -27,6 +27,7 @@ namespace POS.View
         //List<Unit> units = new List<Unit>();
         IEnumerable<Unit> unitsQuery;
         IEnumerable<Unit> units;
+        string basicsPermission = "units_basics";
         private static UC_unit _instance;
         public static UC_unit Instance
         {
@@ -220,8 +221,10 @@ namespace POS.View
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            //validate values
-            validateEmptyValues();
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+                //validate values
+                validateEmptyValues();
            
             if (!tb_name.Text.Equals(""))
             {
@@ -256,11 +259,16 @@ namespace POS.View
                     tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
                 }
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if ((!unit.canDelete) && (unit.isActive == 0))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            {
+                if ((!unit.canDelete) && (unit.isActive == 0))
             {
                 #region
                 Window.GetWindow(this).Opacity = 0.2;
@@ -303,7 +311,11 @@ namespace POS.View
             Tb_search_TextChanged(null, null);
 
             Btn_clear_Click(sender,e);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+
         private async Task activate()
         {//activate
 
@@ -325,8 +337,10 @@ namespace POS.View
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-         //validate values
-            validateEmptyValues();
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            {
+                //validate values
+                validateEmptyValues();
 
             if (!tb_name.Text.Equals(""))
             {
@@ -352,7 +366,11 @@ namespace POS.View
                 }
 
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+
 
 
 

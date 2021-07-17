@@ -100,6 +100,7 @@ namespace POS.View
         static private string _BarcodeStr = "";
         static private object _Sender;
         #endregion
+        string basicsPermission = "item_basics";
         public static UC_item Instance
         {
             get
@@ -464,8 +465,10 @@ namespace POS.View
         // add item with basic information 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            //validate values
-            validateItemValues();
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+                //validate values
+                validateItemValues();
             Boolean codeAvailable = await checkCodeAvailabiltiy();
 
             if ((!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1
@@ -531,13 +534,18 @@ namespace POS.View
                 btn_clear_Click(sender, e);
             }
             tb_code.Focus();
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         //update item
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {
-            //validate values
-            validateItemValues();
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            {
+                //validate values
+                validateItemValues();
 
             // check if code available
             Boolean codeAvailable = await checkCodeAvailabiltiy(item.code);
@@ -603,10 +611,16 @@ namespace POS.View
                 Txb_searchitems_TextChanged(null, null);
             }
             tb_code.Focus();
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
+
         async void Btn_deleteService_Click(object sender, RoutedEventArgs e)
         {
-            if (service.costId != 0)
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+                {
+                    if (service.costId != 0)
             {
                 Boolean res = await serviceModel.delete(service.costId);
 
@@ -621,10 +635,16 @@ namespace POS.View
                 tb_costVal.Clear();
             }
             tb_barcode.Focus();
-        }
-        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+            }
+
+            private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if ((!item.canDelete) && (item.isActive == 0))
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+                {
+                    if ((!item.canDelete) && (item.isActive == 0))
             {
                 #region
                 Window.GetWindow(this).Opacity = 0.2;
@@ -672,8 +692,12 @@ namespace POS.View
             //clear textBoxs
             btn_clear_Click(sender, e);
             tb_code.Focus();
-        }
-        private async void activate()
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+            }
+
+            private async void activate()
         {//activate
 
             item.isActive = 1;
