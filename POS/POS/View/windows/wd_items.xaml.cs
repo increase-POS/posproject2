@@ -144,18 +144,18 @@ namespace POS.View.windows
         {
             short defaultSale = 0;
             short defaultPurchase = 0;
+            int branchId = MainWindow.branchID.Value;
             if (CardType.Equals("sales"))
             {
                 defaultSale = 1;
-                //if (category.categoryId == 0)
-                //    items = await itemModel.GetAllItems();
-                //else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
+                defaultPurchase = 0;
             }
             else if (CardType.Equals("purchase"))
             {
                 defaultPurchase = 1;
+                defaultSale = 0;
             }
-            items = await itemModel.GetSaleOrPurItems(category.categoryId,defaultSale,defaultPurchase);
+            items = await itemModel.GetSaleOrPurItems(category.categoryId,defaultSale,defaultPurchase,branchId);
             return items;
         }
 

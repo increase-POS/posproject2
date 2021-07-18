@@ -358,7 +358,7 @@ namespace POS.Classes
                 return items;
             }
         }
-        public async Task<List<Item>> GetSaleOrPurItems(int categoryId, short defaultSale, short defaultPurchase)
+        public async Task<List<Item>> GetSaleOrPurItems(int categoryId, short defaultSale, short defaultPurchase,int branchId)
         {
             List<Item> items = null;
             // ... Use HttpClient.
@@ -371,7 +371,11 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "items/GetSaleOrPurItems?categoryId="+ categoryId+ "&defaultSale="+ defaultSale+ "&defaultPurchase="+ defaultPurchase);
+                request.RequestUri = new Uri(Global.APIUri + "items/GetSaleOrPurItems?" +
+                                            "categoryId="+ categoryId+ 
+                                            "&defaultSale="+ defaultSale
+                                            + "&defaultPurchase="+ defaultPurchase
+                                            + "&branchId=" + branchId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

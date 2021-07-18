@@ -665,6 +665,7 @@ namespace POS.View
             w.invoiceType = "pd ,pbd";
             //w.branchId = int.Parse(MainWindow.branchID.ToString());
             w.userId = MainWindow.userLogin.userId;
+            w.duration = 2; // view drafts which created during 2 last days 
 
             w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
@@ -703,8 +704,10 @@ namespace POS.View
             // purchase invoices
             //w.invoiceType = "pw";
             w.invoiceType = "p , pw";
-            w.branchCreatorId = MainWindow.branchID.Value;
-            
+            //w.branchCreatorId = MainWindow.branchID.Value;
+            w.userId = MainWindow.userLogin.userId;
+            w.duration = 1; // view drafts which created during 1 last days 
+
             w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
 
             if (w.ShowDialog() == true)

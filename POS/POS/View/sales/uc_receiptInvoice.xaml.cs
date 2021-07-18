@@ -283,6 +283,7 @@ namespace POS.View
 
                 cb_paymentProcessType.ItemsSource = typelist;
             }
+            cb_paymentProcessType.SelectedIndex = 0;
         }
         private async Task fillShippingCompanies()
         {
@@ -513,6 +514,7 @@ namespace POS.View
                 invoice.posId = MainWindow.posID;
                 if (!tb_discount.Text.Equals(""))
                     invoice.discountValue = decimal.Parse(tb_discount.Text);
+                invoice.discountType = "1";
 
                 invoice.total = _Sum;
                 invoice.totalNet = decimal.Parse(tb_total.Text);
@@ -835,7 +837,7 @@ namespace POS.View
             cb_company.SelectedIndex = -1;
             cb_user.SelectedIndex = -1;
             tb_processNum.Clear();
-            cb_paymentProcessType.SelectedIndex = 1;
+            cb_paymentProcessType.SelectedIndex = 0;
             lst_coupons.Items.Clear();
             tb_discount.Text = "0";
             btn_updateCustomer.IsEnabled = false;
@@ -908,7 +910,10 @@ namespace POS.View
 
             // sale invoices
             w.invoiceType = "s";
-            w.branchCreatorId = MainWindow.branchID.Value;
+            // w.branchCreatorId = MainWindow.branchID.Value;
+            w.userId = MainWindow.userLogin.userId;
+            w.duration = 1; // view drafts which created during 1 last days 
+
             w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
 
             if (w.ShowDialog() == true)

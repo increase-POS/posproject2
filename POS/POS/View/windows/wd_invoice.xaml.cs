@@ -42,6 +42,7 @@ namespace POS.View.windows
         public string invoiceStatus { get; set; }
         public string title { get; set; }
         public string condition { get; set; }
+        public int duration { get; set; }
         private void Btn_select_Click(object sender, RoutedEventArgs e)
         {
             invoice = dg_Invoice.SelectedItem as Invoice;
@@ -78,13 +79,13 @@ namespace POS.View.windows
         }
         private async Task refreshInvoices()
         {
-            if (userId != 0 && invoiceStatus == "")/// to display draft invoices
-                invoices = await invoice.GetInvoicesByCreator(invoiceType, userId);
+            if (userId != 0 && (invoiceStatus == "" || invoiceStatus == null))/// to display draft invoices
+                invoices = await invoice.GetInvoicesByCreator(invoiceType, userId,duration);
             else if (branchCreatorId != 0)
                 invoices = await invoice.getBranchInvoices(invoiceType, branchCreatorId);
             else if (branchId != 0) // get export/ import orders
                 invoices = await invoice.GetOrderByType(invoiceType, branchId);
-            else if (invoiceStatus != "" && userId != 0)
+            else if (invoiceStatus != "" && userId != 0) // get sales invoices to get deliver accept on it
                 invoices = await invoice.getDeliverOrders(invoiceType, invoiceStatus, userId);
             else
                 invoices = await invoice.GetInvoicesByType(invoiceType, branchId);
