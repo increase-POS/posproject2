@@ -99,7 +99,7 @@ namespace POS.View
         //for bill details
         static private int _SequenceNum = 0;
         static private decimal _Sum = 0;
-        static private string _InvoiceType = "pd"; // purchase draft
+        static public string _InvoiceType = "pd"; // purchase draft
 
         // for report
         ReportCls reportclass = new ReportCls();

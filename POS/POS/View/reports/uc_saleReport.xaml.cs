@@ -2041,7 +2041,6 @@ namespace POS.View.reports
                     uc_receiptInvoice._InvoiceType = invoice.invType;
                     uc_receiptInvoice.Instance.invoice = invoice;
                     await uc_receiptInvoice.Instance.fillInvoiceInputs(invoice);
-                    
                     MainWindow.mainWindow.EndAwait();
 
 
