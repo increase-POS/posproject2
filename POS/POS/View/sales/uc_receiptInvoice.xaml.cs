@@ -172,7 +172,7 @@ namespace POS.View
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-            if (billDetails.Count > 0)
+            if (billDetails.Count > 0 && _InvoiceType == "sd")
             {
                 #region Accept
                 MainWindow.mainWindow.Opacity = 0.2;
@@ -187,6 +187,8 @@ namespace POS.View
                 else
                     clearInvoice();
             }
+            else
+                clearInvoice();
         }
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
