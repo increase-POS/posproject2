@@ -54,9 +54,9 @@ namespace POS
         internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
-        internal static int? posID = 24;
+        internal static int? posID = 2;
         //مخزن الجميلية الرئيسي
-        internal static int? branchID = 5;
+        internal static int? branchID = 2;
         //مخزن الجميلية الفرقان
         //internal static int? branchID = 12;
         bool isHome = false;
@@ -573,11 +573,14 @@ namespace POS
          //update lognin record
             updateLogninRecord();
 
-            //open login window and close this window
-            winLogIn log = new winLogIn();
-            log.Show();
-            this.Close();
-            //BTN_Close_Click(null , null);
+            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+            Application.Current.Shutdown();
+
+            ////open login window and close this window
+            //winLogIn log = new winLogIn();
+            //log.Show();
+            //this.Close();
+            ////BTN_Close_Click(null , null);
         }
 
         private void BTN_SectionData_Click(object sender, RoutedEventArgs e)
