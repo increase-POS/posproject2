@@ -65,6 +65,7 @@ namespace POS_Server
         public virtual DbSet<offers> offers { get; set; }
         public virtual DbSet<orders> orders { get; set; }
         public virtual DbSet<orderscontents> orderscontents { get; set; }
+        public virtual DbSet<packages> packages { get; set; }
         public virtual DbSet<Points> Points { get; set; }
         public virtual DbSet<pos> pos { get; set; }
         public virtual DbSet<posUsers> posUsers { get; set; }
@@ -82,6 +83,5 @@ namespace POS_Server
         public virtual DbSet<users> users { get; set; }
         public virtual DbSet<userSetValues> userSetValues { get; set; }
         public virtual DbSet<usersLogs> usersLogs { get; set; }
-        public virtual DbSet<packages> packages { get; set; }
     }
 }

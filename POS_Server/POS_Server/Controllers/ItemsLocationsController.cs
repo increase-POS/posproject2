@@ -52,10 +52,11 @@ namespace POS_Server.Controllers
                                             updateDate = b.updateDate,
                                             updateUserId = b.updateUserId,
                                             itemName = i.name,
-                                            location = l.x+l.y+l.z,
+                                            location = l.x+"-"+l.y+"-"+l.z,
                                             section = s.name,
                                             sectionId = s.sectionId,
                                             itemType = i.type,
+                                            unitName = u.units.name,
                                         }).ToList();
 
                     if (docImageList == null)
@@ -172,6 +173,9 @@ namespace POS_Server.Controllers
                                             sectionId = s.sectionId,
                                             isFreeZone = s.isFreeZone,
                                             itemType = i.type,
+                                            location = l.x +"-"+l.y+"-"+l.z,
+                                            section = s.name,
+                                            unitName = u.units.name,
                                         })
                                     .ToList();
 
@@ -486,7 +490,7 @@ namespace POS_Server.Controllers
             {
                 var itemInLocs = (from b in entity.branches
                                   where b.branchId == branchId
-                                  join s in entity.sections on b.branchId equals s.branchId where s.isFreeZone != 1
+                                  join s in entity.sections on b.branchId equals s.branchId 
                                   join l in entity.locations on s.sectionId equals l.sectionId
                                   join il in entity.itemsLocations on l.locationId equals il.locationId
                                   where il.itemUnitId == itemUnitId && il.quantity > 0
@@ -561,7 +565,7 @@ namespace POS_Server.Controllers
                     newQuant = (decimal)(breakNum * upperUnit.unitValue);
                     var itemInLocs1 = (from b in entity.branches
                                        where b.branchId == branchId
-                                       join s in entity.sections on b.branchId equals s.branchId where s.isFreeZone != 1
+                                       join s in entity.sections on b.branchId equals s.branchId 
                                        join l in entity.locations on s.sectionId equals l.sectionId
                                        join il in entity.itemsLocations on l.locationId equals il.locationId
                                        where il.itemUnitId == upperUnit.itemUnitId && il.quantity > 0
@@ -650,7 +654,7 @@ namespace POS_Server.Controllers
             {
                 var itemInLocs = (from b in entity.branches
                                   where b.branchId == branchId
-                                  join s in entity.sections on b.branchId equals s.branchId where s.isFreeZone != 1
+                                  join s in entity.sections on b.branchId equals s.branchId 
                                   join l in entity.locations on s.sectionId equals l.sectionId
                                   join il in entity.itemsLocations on l.locationId equals il.locationId
                                   where il.itemUnitId == itemUnitId && il.quantity > 0
@@ -670,8 +674,11 @@ namespace POS_Server.Controllers
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
                 var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
+                if (itemUnitId == upperUnit.itemUnitId)
+                    return amount;
                 if (upperUnit != null)
                     amount += (int)upperUnit.unitValue * getItemUnitAmount(upperUnit.itemUnitId,branchId);
+                
                 return amount;
             }    
         }

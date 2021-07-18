@@ -16,8 +16,6 @@ namespace POS_Server
     {
         public int invStatusId { get; set; }
         public Nullable<int> invoiceId { get; set; }
-        public Nullable<System.DateTime> date { get; set; }
-        public Nullable<int> userId { get; set; }
         public string status { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
@@ -29,6 +27,5 @@ namespace POS_Server
         public virtual invoices invoices { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
-        public virtual users users2 { get; set; }
     }
 }

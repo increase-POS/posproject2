@@ -37,6 +37,7 @@ namespace POS_Server
         public string type { get; set; }
         public string accType { get; set; }
         public Nullable<decimal> balance { get; set; }
+        public Nullable<byte> balanceType { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
@@ -45,7 +46,6 @@ namespace POS_Server
         public Nullable<byte> isActive { get; set; }
         public string fax { get; set; }
         public Nullable<decimal> maxDeserve { get; set; }
-        public Nullable<byte> balanceType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<agentMemberships> agentMemberships { get; set; }

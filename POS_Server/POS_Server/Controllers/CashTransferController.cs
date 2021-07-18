@@ -1058,7 +1058,7 @@ namespace POS_Server.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("payByAmount")]
-        public IHttpActionResult payByAmount(int agentId, decimal amount, string payType, cashTransfer cashTransfer)
+        public IHttpActionResult payByAmount(int agentId, decimal amount, string payType, string cashTransfer)
         {
             var re = Request;
             var headers = re.Headers;
@@ -1083,6 +1083,7 @@ namespace POS_Server.Controllers
                         types = new string[] { "pb", "si" };
                         break;
                 }
+                cashTransfer cashTr = JsonConvert.DeserializeObject<cashTransfer>(cashTransfer, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     agents agent = entity.agents.Find(agentId);
@@ -1127,7 +1128,7 @@ namespace POS_Server.Controllers
                             {
                                 decimal paid = 0;
                                 var invObj = entity.invoices.Find(inv.invoiceId);
-                                cashTransfer.invId = inv.invoiceId;
+                                cashTr.invId = inv.invoiceId;
                                 if (amount >= inv.deserved)
                                 {                                  
                                     paid = (decimal)inv.deserved;
@@ -1142,8 +1143,11 @@ namespace POS_Server.Controllers
                                     invObj.deserved -= amount;
                                     amount = 0;
                                 }
-                                cashTransfer.cash = paid;
-                                entity.cashTransfer.Add(cashTransfer);
+                                cashTr.cash = paid;
+                                cashTr.createDate = DateTime.Now;
+                                cashTr.updateDate = DateTime.Now;
+                                cashTr.updateUserId = cashTr.createUserId;
+                                entity.cashTransfer.Add(cashTr);
                                 // increase agent balance
                                 if (agent.balanceType == 1)
                                 {
@@ -1167,7 +1171,167 @@ namespace POS_Server.Controllers
                             entity.SaveChanges();
                             break;
                         case "feed": //get si, pb
-                            types = new string[] { "pb", "si" };
+                            foreach (InvoiceModel inv in invList)
+                            {
+                                decimal paid = 0;
+                                var invObj = entity.invoices.Find(inv.invoiceId);
+                                cashTr.invId = inv.invoiceId;
+                                if (amount >= inv.deserved)
+                                {
+                                    paid = (decimal)inv.deserved;
+                                    invObj.paid = invObj.paid + inv.deserved;
+                                    invObj.deserved = 0;
+                                    amount -= (decimal)inv.deserved;
+                                }
+                                else
+                                {
+                                    paid = amount;
+                                    invObj.paid = invObj.paid + amount;
+                                    invObj.deserved -= amount;
+                                    amount = 0;
+                                }
+                                cashTr.cash = paid;
+                                cashTr.createDate = DateTime.Now;
+                                cashTr.updateDate = DateTime.Now;
+                                cashTr.updateUserId = cashTr.createUserId;
+                                entity.cashTransfer.Add(cashTr);
+                                // decrease agent balance
+                                if (agent.balanceType == 0)
+                                {
+                                    if (paid <= (decimal)agent.balance)
+                                    {
+                                        agent.balance = agent.balance - paid;
+                                    }
+                                    else
+                                    {
+                                        agent.balance = paid - agent.balance;
+                                        agent.balanceType = 1;
+                                    }
+                                }
+                                else if (agent.balanceType == 1)
+                                {
+                                    agent.balance += paid;
+                                }
+                                if (amount == 0)
+                                    break;
+                            }
+                            break;
+                          
+                    }
+                        
+                    return Ok("true");
+                }
+            }
+            else
+                return Ok("false");
+            }
+        /// <summary>
+        /// //////////////
+        /// </summary>
+        /// <param name="agentId"></param>
+        /// <param name="amount"></param>
+        /// <param name="payType">{pay , feed}</param>
+        /// <param name="cashTransfer"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("payListOfInvoices")]
+        public IHttpActionResult payListOfInvoices(int agentId, string invoices, string payType, string cashTransfer)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                invoices = invoices.Replace("\\", string.Empty);
+                invoices = invoices.Trim('"');
+
+               List<invoices> invoiceList = JsonConvert.DeserializeObject<List<invoices>>(invoices, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                cashTransfer cashTr = JsonConvert.DeserializeObject<cashTransfer>(cashTransfer, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    agents agent = entity.agents.Find(agentId);
+
+                    switch (payType)
+                    {
+                        case "pay"://get pw,pi,sb invoices
+                            foreach (invoices inv in invoiceList)
+                            {
+                                decimal paid = 0;
+                                var invObj = entity.invoices.Find(inv.invoiceId);
+                                cashTr.invId = inv.invoiceId;
+                                  
+                                paid = (decimal)inv.deserved;
+                                invObj.paid = invObj.paid + inv.deserved;
+                                invObj.deserved = 0;
+
+                                cashTr.cash = paid;
+                                cashTr.createDate = DateTime.Now;
+                                cashTr.updateDate = DateTime.Now;
+                                cashTr.updateUserId = cashTr.createUserId;
+                                entity.cashTransfer.Add(cashTr);
+                                // increase agent balance
+                                if (agent.balanceType == 1)
+                                {
+                                    if (paid <= (decimal)agent.balance)
+                                    {
+                                        agent.balance = agent.balance - paid;
+                                    }
+                                    else
+                                    {
+                                        agent.balance = paid - agent.balance;
+                                        agent.balanceType = 0;
+                                    }
+                                }
+                                else if (agent.balanceType == 0)
+                                {
+                                    agent.balance += paid;
+                                }
+                            }
+                            entity.SaveChanges();
+                            break;
+                        case "feed": //get si, pb
+                            foreach (invoices inv in invoiceList)
+                            {
+                                decimal paid = 0;
+                                var invObj = entity.invoices.Find(inv.invoiceId);
+                                cashTr.invId = inv.invoiceId;
+
+                                paid = (decimal)inv.deserved;
+                                invObj.paid = invObj.paid + inv.deserved;
+                                invObj.deserved = 0;
+
+                                cashTr.cash = paid;
+                                cashTr.createDate = DateTime.Now;
+                                cashTr.updateDate = DateTime.Now;
+                                cashTr.updateUserId = cashTr.createUserId;
+                                entity.cashTransfer.Add(cashTr);
+                                // decrease agent balance
+                                if (agent.balanceType == 0)
+                                {
+                                    if (paid <= (decimal)agent.balance)
+                                    {
+                                        agent.balance = agent.balance - paid;
+                                    }
+                                    else
+                                    {
+                                        agent.balance = paid - agent.balance;
+                                        agent.balanceType = 1;
+                                    }
+                                }
+                                else if (agent.balanceType == 1)
+                                {
+                                    agent.balance += paid;
+                                }
+                            }
                             break;
                           
                     }

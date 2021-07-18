@@ -57,6 +57,7 @@ namespace POS_Server
         public Nullable<int> shippingCompanyId { get; set; }
         public Nullable<int> branchCreatorId { get; set; }
         public Nullable<int> shipUserId { get; set; }
+        public string prevStatus { get; set; }
     
         public virtual agents agents { get; set; }
         public virtual branches branches { get; set; }

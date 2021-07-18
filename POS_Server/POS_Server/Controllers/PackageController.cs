@@ -261,8 +261,8 @@ namespace POS_Server.Controllers
 
         // GET api/<controller>
         [HttpGet]
-        [Route("GetChildsByParentI")]
-        public IHttpActionResult GetChildsByParentI(int parentIUId)
+        [Route("GetChildsByParentId")]
+        public IHttpActionResult GetChildsByParentId(int parentIUId)
         {
             var re = Request;
             var headers = re.Headers;

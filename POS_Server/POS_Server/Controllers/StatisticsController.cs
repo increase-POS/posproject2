@@ -408,7 +408,8 @@ var items = from item in query.AsEnumerable()
                                         posCode= JPP.code,
                                         agentName =JAA.name,
                                         agentCode=JAA.code,
-                                        cuserName= JUU.name,
+                                        agentType = JAA.type,
+                                        cuserName = JUU.name,
                                         cuserLast = JUU.lastname,                                     
                                         cUserAccName=JUU.username,
                                         uuserName = JUPUS.name,
@@ -558,6 +559,7 @@ ITbarcode=IU.barcode,
                                         posCode = JPP.code,
                                         agentName = JAA.name,
                                         agentCode = JAA.code,
+                                        agentType = JAA.type,
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
                                         cUserAccName = JUU.username,
@@ -704,6 +706,7 @@ ITbarcode
                                         posCode = JPP.code,
                                         agentName = JAA.name,
                                         agentCode = JAA.code,
+                                        agentType = JAA.type,
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
                                         cUserAccName = JUU.username,
@@ -817,6 +820,7 @@ ITbarcode
                                         posCode = g.Select(S => S.JPP.code).FirstOrDefault(),
                                         agentName = g.Select(S => S.JAA.name).FirstOrDefault(),
                                         agentCode = g.Select(S => S.JAA.code).FirstOrDefault(),
+                                        agentType = g.Select(S => S.JAA.type).FirstOrDefault(),
                                         cuserName = g.Select(S => S.JUU.name).FirstOrDefault(),
                                         cuserLast = g.Select(S => S.JUU.lastname).FirstOrDefault(),
                                         cUserAccName = g.Select(S => S.JUU.username).FirstOrDefault(),
@@ -1072,6 +1076,8 @@ else
                                         posCode = g.Select(S => S.JPP.code).FirstOrDefault(),
                                         agentName = g.Select(S => S.JAA.name).FirstOrDefault(),
                                         agentCode = g.Select(S => S.JAA.code).FirstOrDefault(),
+                                        agentType = g.Select(S => S.JAA.type).FirstOrDefault(),
+                                     
                                         cuserName = g.Select(S => S.JUU.name).FirstOrDefault(),
                                         cuserLast = g.Select(S => S.JUU.lastname).FirstOrDefault(),
                                         cUserAccName = g.Select(S => S.JUU.username).FirstOrDefault(),
@@ -1202,6 +1208,7 @@ else
                                                        posCode  =JPP.code,
                                                        agentName  =JAA.name,
                                                         agentCode =JAA.code,
+                                                          agentType=JAA.type,
                                                         cuserName =JUU.name,
                                                         cuserLast =JUU.lastname,
                                                         cUserAccName =JUU.username,
@@ -1500,12 +1507,13 @@ else
                                         posCode = JPP.code,
                                         agentName = JAA.name,
                                         agentCode = JAA.code,
+                                        agentType = JAA.type,
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.lastname,
+                                        cUserAccName = JUU.username,
                                         uuserName = JUPUS.name,
                                         uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.lastname,
+                                        uUserAccName = JUPUS.username,
                                         agentCompany = JAA.company,
 
                                     }).ToList();
@@ -1633,6 +1641,7 @@ else
                                         posCode = JPP.code,
                                         agentName = JAA.name,
                                         agentCode = JAA.code,
+                                        agentType = JAA.type,
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
                                         cUserAccName = JUU.username,
@@ -1743,6 +1752,7 @@ else
                                         posCode = JPP.code,
                                         agentName = JAA.name,
                                         agentCode = JAA.code,
+                                        agentType = JAA.type,
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
                                         cUserAccName = JUU.username,
@@ -1879,7 +1889,8 @@ else
                                         posCode = JPP.code,
                                         agentName = JAA.name,
                                         agentCode = JAA.code,
-                                        cuserName = JUU.name,
+                                         agentType = JAA.type,
+                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
                                         cUserAccName = JUU.username,
                                         uuserName = JUPUS.name,
@@ -2040,6 +2051,7 @@ else
                                         posCode = JPP.code,
                                         agentName = JAA.name,
                                         agentCode = JAA.code,
+                                        agentType = JAA.type,
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
                                         cUserAccName = JUU.username,
@@ -2157,6 +2169,12 @@ notes
                                     {
                                         // item unit
                                        itemName = ITEM.name,
+                                       ITEM.min,
+                                       ITEM.max,
+                                       ITEM.minUnitId,
+                                       ITEM.maxUnitId,
+                                        minUnitName=entity.units.Where(x=>x.unitId==ITEM.minUnitId).FirstOrDefault().name, 
+                                        maxUnitName= entity.units.Where(x => x.unitId == ITEM.maxUnitId).FirstOrDefault().name,
                                         unitName = UNIT.name,                                    
                                        IU.itemUnitId,
 
@@ -2190,10 +2208,10 @@ notes
 
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.lastname,
+                                        cUserAccName = JUU.username,
                                         uuserName = JUPUSS.name,
                                         uuserLast = JUPUSS.lastname,
-                                        uUserAccName = JUPUSS.lastname,
+                                        uUserAccName = JUPUSS.username,
                                         // Location
                                          L.x,
                                          L.y,
@@ -2346,6 +2364,7 @@ notes
                                         posCode = JPP.code,
                                         agentName = JAA.name,
                                         agentCode = JAA.code,
+                                        agentType = JAA.type,
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
                                         cUserAccName = JUU.username,
@@ -2376,6 +2395,7 @@ notes
             return NotFound();
         }
 
+        // حركة الاصناف الخارجية -مع العملاء والموردين
         [HttpGet]
         [Route("GetExternalMov")]
         public IHttpActionResult GetExternalMov()
@@ -2417,34 +2437,184 @@ notes
                                     from JUPUS in JUPUSR.DefaultIfEmpty()
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
-                                        from JBCC in JBC.DefaultIfEmpty()
+                                    from JBCC in JBC.DefaultIfEmpty()
                                     where (I.invType == "p" || I.invType == "sb" ||I.invType == "s" || I.invType == "pb")// exw
 
                                     select new
                                     {
-                                        ITitemName = ITEM.name,
-                                        ITunitName = UNIT.name,
-                                        ITitemsTransId = IT.itemsTransId,
-                                        ITitemUnitId = IT.itemUnitId,
+                                        itemName = ITEM.name,
+                                        unitName = UNIT.name,
+                                         IT.itemsTransId,
+                                         IT.itemUnitId,
 
-                                        ITitemId = IU.itemId,
-                                        ITunitId = IU.unitId,
-                                        ITquantity = IT.quantity,
+                                        IU.itemId,
+                                        IU.unitId,
+                                        IT.quantity,
 
-                                        ITcreateDate = IT.createDate,
-                                        ITupdateDate = IT.updateDate,
-                                        ITcreateUserId = IT.createUserId,
-                                        ITupdateUserId = IT.updateUserId,
-                                        ITnotes = IT.notes,
-                                        ITprice = IT.price,
-                                        ITbarcode = IU.barcode,
-                                        ITCreateuserName = ITCUSER.name,
-                                        ITCreateuserLName = ITCUSER.lastname,
-                                        ITCreateuserAccName = ITCUSER.username,
+                                      // createDate = IT.createDate,
+                                        //updateDate = IT.updateDate,
+                                      //  ITcreateUserId = IT.createUserId,
+                                        //ITupdateUserId = IT.updateUserId,
+                                       //notes = IT.notes,
+                                         IT.price,
+                                        IU.barcode,
+                                        CreateuserName = ITCUSER.name,
+                                        CreateuserLName = ITCUSER.lastname,
+                                        CreateuserAccName = ITCUSER.username,
 
-                                        ITUpdateuserName = ITUPUSER.name,
-                                        ITUpdateuserLName = ITUPUSER.lastname,
-                                        ITUpdateuserAccName = ITUPUSER.username,
+                                        UpdateuserName = ITUPUSER.name,
+                                        UpdateuserLName = ITUPUSER.lastname,
+                                        UpdateuserAccName = ITUPUSER.username,
+                                        I.invoiceId,
+                                        I.invNumber,
+                                        I.agentId,
+                                        I.posId,
+                                        I.invType,
+                                        I.total,
+                                        I.totalNet,
+                                        I.paid,
+                                        I.deserved,
+                                        I.deservedDate,
+                                        I.invDate,
+                                        I.invoiceMainId,
+                                        I.invCase,
+                                        I.invTime,
+                                        I.notes,
+                                        I.vendorInvNum,
+                                        I.vendorInvDate,
+                                        I.createUserId,
+                                        I.updateDate,
+                                        I.updateUserId,
+                                       // I.branchId,
+                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                        I.discountType,
+                                        I.tax,
+                                        I.name,
+                                        I.isApproved,
+
+                                        //
+                                         I.branchCreatorId,
+                                          branchCreatorName = JBCC.name,
+                                        //
+                                        branchName = ((I.invType=="s"|| I.invType == "pb" || I.invType == "sb")? JBCC.name:(I.invType == "p" ? JBB.name : JBCC.name)),
+                                        branchId = ((I.invType == "s" || I.invType == "pb" || I.invType == "sb") ? I.branchCreatorId : (I.invType == "p" ? I.branchId : I.branchCreatorId)),
+                                      //  branchName = JBB.name,
+
+                                        branchType = JBB.type,
+                                        posName = JPP.name,
+                                        posCode = JPP.code,
+                                     //   agentName =  JAA.name,
+                                        agentName = ((JAA.name==null|| JAA.name == "") && (I.invType=="s"|| I.invType == "sb"))?
+                                        "unknown" : JAA.name,
+                                        
+                                        agentCode = JAA.code,
+                                        //   agentType = JAA.type,
+                                        agentType =((JAA.name == null ||JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                        ?"c": JAA.type,
+                                        cuserName = JUU.name,
+                                        cuserLast = JUU.lastname,
+                                        cUserAccName = JUU.username,
+                                        uuserName = JUPUS.name,
+                                        uuserLast = JUPUS.lastname,
+                                        uUserAccName = JUPUS.username,
+                                        agentCompany = JAA.company,
+
+                                        //username
+
+                                        //  I.invoiceId,
+                                        //    JBB.name
+                                    }).ToList();
+
+
+
+
+
+                    if (invListm == null)
+                        return NotFound();
+                    else
+                        return Ok(invListm);
+                }
+
+            }
+
+            //else
+            return NotFound();
+        }
+
+        // حركة الاصناف الداخلية -بين الفروع والمخازن
+        [HttpGet]
+        [Route("GetInternalMov")]
+        public IHttpActionResult GetInternalMov()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invListm = (from IT in entity.itemsTransfer
+                                    from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+                                    from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+                                    join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                                    join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                    join B in entity.branches on I.branchId equals B.branchId into JB
+                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                    join A in entity.agents on I.agentId equals A.agentId into JA
+                                    join U in entity.users on I.createUserId equals U.userId into JU
+                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                  //  from JPP in entity.pos.Where(X => X.posId == I.posId ).DefaultIfEmpty()
+                                 //   join BP in entity.branches on JPP.branchId equals BP.branchId
+
+                                    from JBB in JB.DefaultIfEmpty()
+                                      
+                                    from JUU in JU.DefaultIfEmpty()
+                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+                                    from JIMM in JIM.DefaultIfEmpty()
+                                    from JAA in JA.DefaultIfEmpty()
+                                    from JBCC in JBC.DefaultIfEmpty()
+                                    where ( I.invType == "ex" )||(
+                                    (I.invType=="im" && I.invoiceMainId==null) ? 
+                                    (entity.invoices.Where(x=>x.invoiceMainId== I.invoiceId && x.invType=="ex").ToList().Count>0)
+                                    : (I.invType == "im" && I.invoiceMainId != null)
+                                    ? entity.invoices.Where(x => x.invoiceId == I.invoiceMainId && x.invType=="ex").ToList().Count>0:false)
+
+                                    select new
+                                    {
+                                        itemName = ITEM.name,
+                                        unitName = UNIT.name,
+                                        IT.itemsTransId,
+                                        IT.itemUnitId,
+
+                                        IU.itemId,
+                                        IU.unitId,
+                                        IT.quantity,
+
+                                        // createDate = IT.createDate,
+                                        //updateDate = IT.updateDate,
+                                        //  ITcreateUserId = IT.createUserId,
+                                        //ITupdateUserId = IT.updateUserId,
+                                        //notes = IT.notes,
+                                        IT.price,
+                                        IU.barcode,
+                                        CreateuserName = ITCUSER.name,
+                                        CreateuserLName = ITCUSER.lastname,
+                                        CreateuserAccName = ITCUSER.username,
+
+                                        UpdateuserName = ITUPUSER.name,
+                                        UpdateuserLName = ITUPUSER.lastname,
+                                        UpdateuserAccName = ITUPUSER.username,
                                         I.invoiceId,
                                         I.invNumber,
                                         I.agentId,
@@ -2473,16 +2643,16 @@ notes
                                         I.isApproved,
 
                                         //
-                                         I.branchCreatorId,
-                                          branchCreatorName = JBCC.name,
+                                        I.branchCreatorId,
+                                        branchCreatorName = JBCC.name,
                                         //
-                                        movbranchname= ((I.invType=="s"|| I.invType == "pb" || I.invType == "sb")? JBCC.name:(I.invType == "p" ? JBB.name : JBCC.name)),
-                                        movbranchid = ((I.invType == "s" || I.invType == "pb" || I.invType == "sb") ? I.branchCreatorId : (I.invType == "p" ? I.branchId : I.branchCreatorId)),
+                                   movbranchname = JBB.name,
+                                     movbranchid = I.branchId,
                                         branchName = JBB.name,
 
                                         branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
+                                   //     posName = JPP.name,
+                                      //  posCode = JPP.code,
                                         agentName = JAA.name,
                                         agentCode = JAA.code,
                                         cuserName = JUU.name,
@@ -2492,11 +2662,62 @@ notes
                                         uuserLast = JUPUS.lastname,
                                         uUserAccName = JUPUS.username,
                                         agentCompany = JAA.company,
+                                        agentType=JAA.type,
+                                        exportBranch = I.invType=="ex" ? JBB.name :
+                                        I.invType == "im"
+                                        ?(I.invoiceMainId == null)?(
+                                        entity.branches.Where
+                                        (B=>B.branchId==entity.invoices.Where
+                                       (x=> x.invoiceMainId==I.invoiceId)
+                                       .FirstOrDefault().branchId)
+                                        .FirstOrDefault().name) :// I.invoiceMainId not null
+                                       entity.branches.Where
+                                       (b=>b.branchId==
+                                       (entity.invoices.Where
+                                       (i=>i.invoiceId==I.invoiceMainId)
+                                       .FirstOrDefault().branchId))
+                                       .FirstOrDefault().name  
+                                       :"",
+                                        importBranch= I.invType == "im" ? JBB.name :
+                                        I.invType == "ex"
+                                        ? (I.invoiceMainId == null) ? (
+                                        entity.branches.Where
+                                        (B => B.branchId == entity.invoices.Where
+                                       (x => x.invoiceMainId == I.invoiceId)
+                                       .FirstOrDefault().branchId)
+                                        .FirstOrDefault().name) :// I.invoiceMainId not null
+                                       entity.branches.Where
+                                       (b => b.branchId ==
+                                       (entity.invoices.Where
+                                       (i => i.invoiceId == I.invoiceMainId)
+                                       .FirstOrDefault().branchId))
+                                       .FirstOrDefault().name
+                                       : "",
+                                        // ex im branchId
+                                        exportBranchId = I.invType == "ex" ? I.branchId :
+                                        I.invType == "im"
+                                        ? (I.invoiceMainId == null) ? 
+                                       (  entity.invoices.Where
+                                       (x => x.invoiceMainId == I.invoiceId)
+                                       .FirstOrDefault().branchId)
+                                         :// I.invoiceMainId not null
+                                       ( entity.invoices.Where
+                                       (i => i.invoiceId == I.invoiceMainId)
+                                       .FirstOrDefault().branchId)
+                                       : null,
 
-                                        //username
-
-                                        //  I.invoiceId,
-                                        //    JBB.name
+                                        importBranchId = I.invType == "im" ? I.branchId :
+                                        I.invType == "ex"
+                                         ? (I.invoiceMainId == null) ?
+                                       (entity.invoices.Where
+                                       (x => x.invoiceMainId == I.invoiceId)
+                                       .FirstOrDefault().branchId)
+                                         :// I.invoiceMainId not null
+                                       (entity.invoices.Where
+                                       (i => i.invoiceId == I.invoiceMainId)
+                                       .FirstOrDefault().branchId)
+                                       : null,
+                     
                                     }).ToList();
 
 

@@ -36,8 +36,6 @@ namespace POS_Server.Controllers
                    {
                        invStatusId = c.invStatusId,
                        invoiceId = c.invoiceId,
-                       date = c.date,
-                       userId = c.userId,
                        status = c.status,
                        createDate = c.createDate,
                        updateDate = c.updateDate,

@@ -386,6 +386,7 @@
     <Property Name="shippingCompanyId" Type="int" />
     <Property Name="branchCreatorId" Type="int" />
     <Property Name="shipUserId" Type="int" />
+    <Property Name="prevStatus" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="invoicesOrders">
     <Key>
@@ -407,8 +408,6 @@
     </Key>
     <Property Name="invStatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="invoiceId" Type="int" />
-    <Property Name="date" Type="datetime2" Precision="7" />
-    <Property Name="userId" Type="int" />
     <Property Name="status" Type="nvarchar" MaxLength="50" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -1912,18 +1911,6 @@
       </Principal>
       <Dependent Role="invoiceStatus">
         <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_invoiceStatus_users2">
-    <End Role="users" Type="Self.users" Multiplicity="0..1" />
-    <End Role="invoiceStatus" Type="Self.invoiceStatus" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="invoiceStatus">
-        <PropertyRef Name="userId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3499,10 +3486,6 @@
       <End Role="invoiceStatus" EntitySet="invoiceStatus" />
     </AssociationSet>
     <AssociationSet Name="FK_invoiceStatus_users1" Association="Self.FK_invoiceStatus_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="invoiceStatus" EntitySet="invoiceStatus" />
-    </AssociationSet>
-    <AssociationSet Name="FK_invoiceStatus_users2" Association="Self.FK_invoiceStatus_users2">
       <End Role="users" EntitySet="users" />
       <End Role="invoiceStatus" EntitySet="invoiceStatus" />
     </AssociationSet>

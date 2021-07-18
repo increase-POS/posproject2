@@ -118,7 +118,7 @@ namespace POS_Server.Controllers
         }
         [HttpGet]
         [Route("GetSaleOrPurItems")]
-        public IHttpActionResult GetSaleOrPurItems(int categoryId, short defaultSale, short defaultPurchase)
+        public IHttpActionResult GetSaleOrPurItems(int categoryId, short defaultSale, short defaultPurchase,int branchId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -136,52 +136,110 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var searchPredicate = PredicateBuilder.New<items>();
-                   
+                    //searchPredicate = searchPredicate.Or(item => false);
+
                     var unitPredicate = PredicateBuilder.New<itemsUnits>();
-                    searchPredicate = searchPredicate.Or(item => false);
 
                     if (categoryId != 0)
-                        searchPredicate = searchPredicate.Or(item => item.categoryId == categoryId);
+                    {
+                        List<categories> categoriesList = entity.categories.ToList()
+                             .Select(p => new categories
+                             {
+                                 categoryId = p.categoryId,
+                                 name = p.name,
+                                 parentId = p.parentId,
+                             })
+                            .ToList();
+
+                        categoriesId = new List<int>();
+                        categoriesId.Add(categoryId);
+
+                        // get items
+                        var result = Recursive(categoriesList, categoryId);
+                        searchPredicate = searchPredicate.Or(item => categoriesId.Contains((int)item.categoryId));
+                    }
                     else
                         searchPredicate = searchPredicate.Or(item => true);
+
                     if (defaultSale != 0)
+                    {
                         unitPredicate = unitPredicate.Or(unit => unit.defaultSale == 1);
+                 
+                        var itemsList = (from I in entity.items.Where(searchPredicate)
+                                         join u in entity.itemsUnits.Where(unitPredicate) on I.itemId equals u.itemId
+                                         join il in entity.itemsLocations on u.itemUnitId equals il.itemUnitId
+                                         join l in entity.locations on il.locationId equals l.locationId
+                                         join s in entity.sections.Where(x => x.branchId == branchId) on l.sectionId equals s.sectionId
+                                         where il.quantity > 0
+                                         select new ItemModel()
+                                         {
+                                             itemId = I.itemId,
+                                             name = I.name,
+                                             code = I.code,
+                                             categoryId = I.categoryId,
+                                             categoryName = I.categories.name,
+                                             max = I.max,
+                                             maxUnitId = I.maxUnitId,
+                                             minUnitId = I.minUnitId,
+                                             min = I.min,
+
+                                             parentId = I.parentId,
+                                             isActive = I.isActive,
+                                             image = I.image,
+                                             type = I.type,
+                                             details = I.details,
+                                             taxes = I.taxes,
+                                             createDate = I.createDate,
+                                             updateDate = I.updateDate,
+                                             createUserId = I.createUserId,
+                                             updateUserId = I.updateUserId,
+                                             isNew = 0,
+
+                                         })
+                                  .ToList();
+                        if (itemsList == null)
+                            return NotFound();
+                        else
+                            return Ok(itemsList);
+                    }
                     if (defaultPurchase != 0)
+                    {
                         unitPredicate = unitPredicate.Or(unit => unit.defaultPurchase == 1);
-                    var itemsList = (from I in entity.items.Where(searchPredicate)
-                                     join u in entity.itemsUnits.Where(unitPredicate) on I.itemId equals u.itemId 
-                                     select new ItemModel()
-                                     {
-                                         itemId = I.itemId,
-                                         name = I.name,
-                                         code = I.code,
-                                         categoryId = I.categoryId,
-                                         categoryName = I.categories.name,
-                                         max = I.max,
-                                         maxUnitId = I.maxUnitId,
-                                         minUnitId = I.minUnitId,
-                                         min = I.min,
+                        var itemsList = (from I in entity.items.Where(searchPredicate)
+                                         join u in entity.itemsUnits.Where(unitPredicate) on I.itemId equals u.itemId
+                                         select new ItemModel()
+                                         {
+                                             itemId = I.itemId,
+                                             name = I.name,
+                                             code = I.code,
+                                             categoryId = I.categoryId,
+                                             categoryName = I.categories.name,
+                                             max = I.max,
+                                             maxUnitId = I.maxUnitId,
+                                             minUnitId = I.minUnitId,
+                                             min = I.min,
 
-                                         parentId = I.parentId,
-                                         isActive = I.isActive,
-                                         image = I.image,
-                                         type = I.type,
-                                         details = I.details,
-                                         taxes = I.taxes,
-                                         createDate = I.createDate,
-                                         updateDate = I.updateDate,
-                                         createUserId = I.createUserId,
-                                         updateUserId = I.updateUserId,
-                                         isNew = 0,
+                                             parentId = I.parentId,
+                                             isActive = I.isActive,
+                                             image = I.image,
+                                             type = I.type,
+                                             details = I.details,
+                                             taxes = I.taxes,
+                                             createDate = I.createDate,
+                                             updateDate = I.updateDate,
+                                             createUserId = I.createUserId,
+                                             updateUserId = I.updateUserId,
+                                             isNew = 0,
 
-                                     })
-                                   .ToList();
-
-                    if (itemsList == null)
-                        return NotFound();
-                    else
-                        return Ok(itemsList);
+                                         })
+                                       .ToList();
+                        if (itemsList == null)
+                            return NotFound();
+                        else
+                            return Ok(itemsList);
+                    }  
                 }
+                return NotFound();
             }
             else
                 return NotFound();
