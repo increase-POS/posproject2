@@ -111,7 +111,7 @@ namespace POS.View
             btn.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
             btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
         }
-        private void Btn_receiptInvoice_Click(object sender, RoutedEventArgs e)
+        public void Btn_receiptInvoice_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_reciptInvoice);
             grid_main.Children.Clear();

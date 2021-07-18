@@ -2023,5 +2023,31 @@ namespace POS.View.reports
         {
             fillOffersEvent();
         }
+        Invoice invoice;
+        private async void DgInvoice_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            //invoiceId
+            invoice = new Invoice();
+            if (dgInvoice.SelectedIndex != -1)
+            {
+                ItemTransferInvoice item = dgInvoice.SelectedItem as ItemTransferInvoice;
+                if (item.invoiceId > 0)
+                {
+                    MainWindow.mainWindow.StartAwait();
+                    invoice = await invoice.GetById(item.invoiceId);
+                    MainWindow.mainWindow.BTN_sales_Click(null, null);
+                    uc_sales.Instance.Btn_receiptInvoice_Click(null, null);
+                    uc_receiptInvoice.Instance.UserControl_Loaded(null, null);
+                    uc_receiptInvoice._InvoiceType = invoice.invType;
+                    uc_receiptInvoice.Instance.invoice = invoice;
+                    await uc_receiptInvoice.Instance.fillInvoiceInputs(invoice);
+                    
+                    MainWindow.mainWindow.EndAwait();
+
+
+                    
+                }
+            }
+        }
     }
 }

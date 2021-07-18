@@ -105,53 +105,69 @@ namespace POS.Classes
                 if (_class.Equals("Agent"))
                 {
                     List<Agent> agents = await agentModel.GetAgentsAsync(type);
-                    Agent agent = new Agent();
-                    for (int i = 0; i < agents.Count; i++)
-                    {
-                        agent = agents[i];
-                        codes.Add(agent.code.Trim());
-                    }
+                    //Agent agent = new Agent();
+                    //for (int i = 0; i < agents.Count; i++)
+                    //{
+                    //    agent = agents[i];
+                    //    codes.Add(agent.code.Trim());
+                    //}
+                    if (agents.Any(a => a.code == randomNum && a.agentId != id))
+                        iscodeExist = true;
+                    else
+                        iscodeExist = false;
                 }
                 else if (_class.Equals("Branch"))
                 {
                     List<Branch> branches = await branchModel.GetBranchesAsync(type);
 
-                    Branch branch = new Branch();
-                    for (int i = 0; i < branches.Count; i++)
-                    {
-                        branch = branches[i];
-                        if (branch.branchId != id)
-                            codes.Add(branch.code.Trim());
-                    }
+                    //Branch branch = new Branch();
+                    //for (int i = 0; i < branches.Count; i++)
+                    //{
+                    //    branch = branches[i];
+                    //    if (branch.branchId != id)
+                    //        codes.Add(branch.code.Trim());
+                    //}
+                    if (branches.Any(b => b.code == randomNum && b.branchId != id))
+                        iscodeExist = true;
+                    else
+                        iscodeExist = false;
                 }
                 else if (_class.Equals("Category"))
                 {
                     List<Category> categories = await categoryModel.GetAllCategories();
 
-                    Category category = new Category();
-                    for (int i = 0; i < categories.Count; i++)
-                    {
-                        category = categories[i];
-                        if (category.categoryId != id)
-                            codes.Add(category.categoryCode.Trim());
-                    }
+                    //Category category = new Category();
+                    //for (int i = 0; i < categories.Count; i++)
+                    //{
+                    //    category = categories[i];
+                    //    if (category.categoryId != id)
+                    //        codes.Add(category.categoryCode.Trim());
+                    //}
+                    if (categories.Any(c => c.categoryCode == randomNum && c.categoryId != id))
+                        iscodeExist = true;
+                    else
+                        iscodeExist = false;
                 }
                 else if (_class.Equals("Pos"))
                 {
                     List<Pos> poss = await posModel.GetPosAsync();
 
-                    Pos pos = new Pos();
-                    for (int i = 0; i < poss.Count; i++)
-                    {
-                        pos = poss[i];
-                        if (pos.posId != id)
-                            codes.Add(pos.code.Trim());
-                    }
+                    //    Pos pos = new Pos();
+                    //    for (int i = 0; i < poss.Count; i++)
+                    //    {
+                    //        pos = poss[i];
+                    //        if (pos.posId != id)
+                    //            codes.Add(pos.code.Trim());
+                    //    }
+                    if (poss.Any(p => p.code == randomNum && p.posId != id))
+                        iscodeExist = true;
+                    else
+                        iscodeExist = false;
                 }
-                if (codes.Contains(randomNum.Trim()))
-                    iscodeExist = true;
-                else
-                    iscodeExist = false;
+                //if (codes.Contains(randomNum.Trim()))
+                //    iscodeExist = true;
+                //else
+                //    iscodeExist = false;
 
             }
             catch { }

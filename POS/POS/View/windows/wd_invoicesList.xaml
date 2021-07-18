@@ -125,8 +125,8 @@
                               AutoGenerateColumns="False" ColumnWidth="SizeToHeader"
                               MouseDoubleClick="Lst_allInvoices_MouseDoubleClick" >
                         <DataGrid.Columns>
-                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Invoice Number" Binding="{Binding Path=x}"/>
-                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Total" Binding="{Binding Path=x}"/>
+                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Invoice Number" Binding="{Binding Path=invNumber}"/>
+                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Total" Binding="{Binding Path=total}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
@@ -216,8 +216,8 @@
                                AutoGenerateColumns="False"  ColumnWidth="SizeToHeader"
                                MouseDoubleClick="Lst_selectedInvoices_MouseDoubleClick">
                         <DataGrid.Columns>
-                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Invoice Number" Binding="{Binding Path=x}"/>
-                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Total" Binding="{Binding Path=x}"/>
+                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Invoice Number" Binding="{Binding Path=invNumber}"/>
+                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Total" Binding="{Binding Path=total}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
@@ -232,7 +232,7 @@
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
                     <TextBlock Grid.Row="1"   x:Name="tb_moneyIcon" Grid.Column="1" Margin="0,0,5,0" 
-                       Foreground="#4E4E4E" Text="$"
+                       Foreground="#4E4E4E" Text="$" 
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
                 </StackPanel>

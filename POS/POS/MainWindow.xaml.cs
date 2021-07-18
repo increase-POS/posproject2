@@ -681,7 +681,7 @@ namespace POS
 
         }
 
-        private void BTN_purchases_Click(object sender, RoutedEventArgs e)
+        public void BTN_purchases_Click(object sender, RoutedEventArgs e)
         {
             colorTextRefreash(txt_purchases);
             FN_pathVisible(path_openPurchases);
@@ -695,7 +695,7 @@ namespace POS
 
         }
 
-        private void BTN_sales_Click(object sender, RoutedEventArgs e)
+        public void BTN_sales_Click(object sender, RoutedEventArgs e)
         {
             colorTextRefreash(txt_sales);
             FN_pathVisible(path_openSales);

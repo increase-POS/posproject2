@@ -1526,6 +1526,28 @@ namespace POS.View.purchases
         {
             fillItemsEvent();
         }
+
+        Invoice invoice;
+        private async void DgInvoice_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            //invoiceId
+            invoice = new Invoice();
+            if (dgInvoice.SelectedIndex != -1)
+            {
+                ItemTransferInvoice item = dgInvoice.SelectedItem as ItemTransferInvoice;
+                if (item.invoiceId > 0)
+                {
+                    MainWindow.mainWindow.StartAwait();
+                    invoice = await invoice.GetById(item.invoiceId);
+                    MainWindow.mainWindow.BTN_purchases_Click(null, null);
+                    uc_purchases.Instance.btn_payInvoice_Click(null, null);
+                    uc_payInvoice.Instance.UserControl_Loaded(null, null);
+                    uc_payInvoice.Instance.invoice = invoice;
+                    await uc_payInvoice.Instance.fillInvoiceInputs(invoice);
+                    MainWindow.mainWindow.EndAwait();
+                }
+            }
+        }
     }
 }
 

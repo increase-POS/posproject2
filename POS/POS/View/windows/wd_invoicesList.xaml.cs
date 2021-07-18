@@ -29,16 +29,21 @@ namespace POS.View.windows
 
         public bool isActive;
         List<Invoice> allInvoicesSource = new List<Invoice>();
-        public List<Invoice> selectedInvoicesSource = new List<Invoice>();
+        //public List<Invoice> selectedInvoicesSource = new List<Invoice>();
 
         List<Invoice> allInvoices = new List<Invoice>();
         public List<Invoice> selectedInvoices = new List<Invoice>();
 
-        Invoice userModel = new Invoice();
-        Invoice user = new Invoice();
+        Invoice invoiceModel = new Invoice();
+        Invoice invoice = new Invoice();
+
+        public int agentId = 0;
+        public decimal sum = 0;
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //MessageBox.Show(sectionId.ToString());
+            //MessageBox.Show(agentId.ToString());
+
+            #region translate
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -51,44 +56,47 @@ namespace POS.View.windows
             }
             tb_moneyIcon.Text = MainWindow.Currency;
             translat();
-            /*
-            allInvoicesSource = await userModel.GetInvoicesAsync();
-            var query = allInvoicesSource.Where(i => i.isActive == 1);
-            selectedInvoicesSource = query.ToList();
+            #endregion
+            //need method
+            allInvoicesSource = await invoiceModel.GetAll();
+            var query = allInvoicesSource.Where(i => i.agentId == agentId && i.paid < i.deserved);
+            allInvoicesSource = query.ToList();
 
             allInvoices.AddRange(allInvoicesSource);
-            selectedInvoices.AddRange(selectedInvoicesSource);
+            //selectedInvoices.AddRange(selectedInvoicesSource);
 
             //remove selected invoices from all invoices
-            foreach (var i in selectedInvoices)
-            {
-                allInvoices.Remove(i);
-            }
+            //foreach (var i in selectedInvoices)
+            //{
+            //    allInvoices.Remove(i);
+            //}
            
 
             lst_allInvoices.ItemsSource = allInvoices;
-            lst_allInvoices.SelectedValuePath = "fullName";
-            lst_allInvoices.DisplayMemberPath = "userId";
+            lst_allInvoices.SelectedValuePath = "invNumber";
+            lst_allInvoices.DisplayMemberPath = "invoiceId";
 
             lst_selectedInvoices.ItemsSource = selectedInvoices;
-            lst_selectedInvoices.SelectedValuePath = "fullName";
-            lst_selectedInvoices.DisplayMemberPath = "userId";
-            */
+            lst_selectedInvoices.SelectedValuePath = "invNumber";
+            lst_selectedInvoices.DisplayMemberPath = "invoiceId";
         }
 
         private void translat()
         {
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_searchitems, MainWindow.resourcemanager.GetString("trSearchHint"));
-
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            txt_invoice.Text = MainWindow.resourcemanager.GetString("trInvoices");
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+            txt_invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
+            txt_selectedInvoices.Text = MainWindow.resourcemanager.GetString("trSelectedInvoices");
 
-            //lst_allInvoices.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoice");
-            //lst_selectedInvoices.Columns[0].Header = MainWindow.resourcemanager.GetString("trSelectedInvoices");
+            lst_allInvoices.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
+            lst_allInvoices.Columns[1].Header = MainWindow.resourcemanager.GetString("trTotal");
 
-            //txt_user.Text = MainWindow.resourcemanager.GetString("trInvoice");
-            //txt_selectedInvoices.Text = MainWindow.resourcemanager.GetString("trSelectedInvoices");
-            //txt_HeaderTitle.Text = MainWindow.resourcemanager.GetString("trSection");
-            //tt_searchZ.Content = MainWindow.resourcemanager.GetString("trZ");
+            lst_selectedInvoices.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
+            lst_selectedInvoices.Columns[1].Header = MainWindow.resourcemanager.GetString("trTotal");
+
+            txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
+            tb_moneyIcon.Text = MainWindow.Currency;
 
             tt_selectAllItem.Content = MainWindow.resourcemanager.GetString("trSelectAllItems");
             tt_unselectAllItem.Content = MainWindow.resourcemanager.GetString("trUnSelectAllItems");
@@ -106,6 +114,7 @@ namespace POS.View.windows
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
+
             isActive = true;
             this.Close();
         }
@@ -142,18 +151,25 @@ namespace POS.View.windows
         }
         private void Btn_selectedInvoice_Click(object sender, RoutedEventArgs e)
         {//select one
-            user = lst_allInvoices.SelectedItem as Invoice;
-            if (user != null)
+            invoice = lst_allInvoices.SelectedItem as Invoice;
+            if (invoice != null)
             {
-                allInvoices.Remove(user);
+                allInvoices.Remove(invoice);
 
-                selectedInvoices.Add(user);
+                selectedInvoices.Add(invoice);
 
                 lst_allInvoices.ItemsSource = allInvoices;
                 lst_selectedInvoices.ItemsSource = selectedInvoices;
 
                 lst_allInvoices.Items.Refresh();
                 lst_selectedInvoices.Items.Refresh();
+
+                decimal x = invoice.deserved.Value - invoice.paid.Value;
+
+                sum += x;
+
+                tb_sum.Text = " "+sum.ToString()+" ";
+
             }
 
         }
@@ -161,18 +177,24 @@ namespace POS.View.windows
 
         private void Btn_unSelectedInvoice_Click(object sender, RoutedEventArgs e)
         {//unselect one
-            user = lst_selectedInvoices.SelectedItem as Invoice;
-            if (user != null)
+            invoice = lst_selectedInvoices.SelectedItem as Invoice;
+            if (invoice != null)
             {
-                selectedInvoices.Remove(user);
+                selectedInvoices.Remove(invoice);
 
-                allInvoices.Add(user);
+                allInvoices.Add(invoice);
 
                 lst_allInvoices.ItemsSource = allInvoices;
                 lst_selectedInvoices.ItemsSource = selectedInvoices;
 
                 lst_allInvoices.Items.Refresh();
                 lst_selectedInvoices.Items.Refresh();
+
+                decimal x = invoice.deserved.Value - invoice.paid.Value;
+
+                sum -= x;
+
+                tb_sum.Text = " "+sum.ToString()+" ";
             }
         }
 
@@ -189,7 +211,8 @@ namespace POS.View.windows
 
         private void Txb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //lst_allInvoices.ItemsSource = allInvoices.Where(x => (x.fullName.ToLower().Contains(txb_search.Text.ToLower())) && x.isActive == 1);
+            lst_allInvoices.ItemsSource = allInvoices.Where(x => (x.invNumber.ToLower().Contains(txb_search.Text.ToLower())) || 
+                                                                 (x.total.ToString().ToLower().Contains(txb_search.Text.ToLower())));
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

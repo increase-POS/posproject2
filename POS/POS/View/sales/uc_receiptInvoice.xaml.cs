@@ -74,7 +74,7 @@ namespace POS.View
         List<ItemUnit> itemUnits;
 
         Invoice invoiceModel = new Invoice();
-        Invoice invoice = new Invoice();
+        public Invoice invoice = new Invoice();
 
         Coupon couponModel = new Coupon();
         IEnumerable<Coupon> coupons;
@@ -113,7 +113,7 @@ namespace POS.View
         static private decimal _Tax = 0;
         static private decimal _Discount = 0;
         static private decimal _DeliveryCost = 0;
-        static private string _InvoiceType = "sd"; // sale draft
+        static public string _InvoiceType = "sd"; // sale draft
 
         // for report
         ReportCls reportclass = new ReportCls();
@@ -188,7 +188,7 @@ namespace POS.View
                     clearInvoice();
             }
         }
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
 
             MainWindow.mainWindow.KeyDown += HandleKeyPress;
@@ -963,7 +963,7 @@ namespace POS.View
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
-        private async Task fillInvoiceInputs(Invoice invoice)
+        public async Task fillInvoiceInputs(Invoice invoice)
         {
             configurProcessType();
 

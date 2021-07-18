@@ -61,6 +61,8 @@ namespace POS.Classes
         public Nullable<int> bondId { get; set; }
         public Nullable<System.DateTime> bondDeserveDate { get; set; }
         public Nullable<byte> bondIsRecieved { get; set; }
+
+
         public async Task<List<CashTransfer>> GetCashTransferAsync(string type, string side)
         {
             List<CashTransfer> cashtransfer = null;
@@ -339,6 +341,85 @@ namespace POS.Classes
                 return "error";
             }
         }
+
+        public async Task<string> PayByAmmount(int agentId ,decimal ammount , string payType , CashTransfer cashTr)
+        {
+            string message = "";
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            string myContent = JsonConvert.SerializeObject(cashTr);
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+
+                HttpRequestMessage request = new HttpRequestMessage();
+
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+
+                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payByAmount?agentId=" + agentId + "&amount=" + ammount + "&payType=" + payType + "&cashtransfer=" + myContent);
+
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
+                }
+                return message;
+            }
+        }
+
+        public async Task<string> PayListOfInvoices(int agentId, List<Invoice> invoicelst , string payType, CashTransfer cashTr)
+        {
+            string message = "";
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            string myContent = JsonConvert.SerializeObject(cashTr);
+
+            string myContent1 = JsonConvert.SerializeObject(invoicelst);
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+
+                HttpRequestMessage request = new HttpRequestMessage();
+
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+
+                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payListOfInvoices?agentId=" + agentId + "&invoices=" + myContent1 + "&payType=" + payType + "&cashtransfer=" + myContent);
+
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
+                }
+                return message;
+            }
+        }
+
     }
 
 }

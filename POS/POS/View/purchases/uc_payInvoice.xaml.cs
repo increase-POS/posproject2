@@ -74,7 +74,7 @@ namespace POS.View
         List<ItemUnit> itemUnits;
 
         Invoice invoiceModel = new Invoice();
-        Invoice invoice = new Invoice();
+        public Invoice invoice = new Invoice();
 
         List<ItemTransfer> invoiceItems;
         List<ItemTransfer> mainInvoiceItems;
@@ -162,7 +162,7 @@ namespace POS.View
                     clearInvoice();
             }
         }
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
 
             // for pagination
@@ -725,7 +725,7 @@ namespace POS.View
             }
             Window.GetWindow(this).Opacity = 1;
         }
-        private async Task fillInvoiceInputs(Invoice invoice)
+        public async Task fillInvoiceInputs(Invoice invoice)
         {
             _Sum = (decimal)invoice.total;
 

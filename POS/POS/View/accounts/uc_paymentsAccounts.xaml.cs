@@ -50,7 +50,6 @@ namespace POS.View.accounts
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
-        string s = "0";
 
         string  createPermission = "payments_create";
         string reportsPermission = "payments_reports";
@@ -313,8 +312,8 @@ namespace POS.View.accounts
                 )
                 && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m")
                 && s.transType == "p" 
-                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                //&& s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                //&& s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
                 );
 
             });
@@ -322,9 +321,11 @@ namespace POS.View.accounts
             cashesQueryExcel = cashesQuery;
             RefreshCashView();
         }
+        string s = "0", s1 = "false";
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//save
+            s = "0"; s1 = "false";
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
             {
                 //chk empty cash
@@ -432,10 +433,22 @@ namespace POS.View.accounts
                 if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
                     cash.docNum = tb_docNumCheque.Text;
 
-                s = await cashModel.Save(cash);
+                    if (cb_recipientV.IsVisible || cb_recipientC.IsVisible)
+                    {
+                        if (tb_cash.IsReadOnly)
+                            s1 = await cashModel.PayListOfInvoices(cash.agentId.Value, invoicesLst, "pay", cash);
+                        else
+                            s1 = await cashModel.PayByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "pay", cash);
 
-                if (!s.Equals("0"))
+                        //MessageBox.Show(s1);
+                    }
+
+                    else
+                        s = await cashModel.Save(cash);
+
+                if ((!s.Equals("0"))||(s1.Equals("true")))
                 {
+
                     //MessageBox.Show(s);
                     calcBalance(cash.cash.Value, recipient, agentid);
 
@@ -455,17 +468,15 @@ namespace POS.View.accounts
 
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private async Task<bool> chkEnoughBalance(decimal ammount)
         {
             Pos pos = await posModel.getPosById(MainWindow.posID.Value);
-
             if (pos.balance.Value >= ammount)
             { return true; }
             else { return false; }
-           
         }
         
 
@@ -534,6 +545,9 @@ namespace POS.View.accounts
         private async void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             btn_add.IsEnabled = true;
+            btn_invoices.Visibility = Visibility.Collapsed;
+            btn_invoices.IsEnabled = false;
+            tb_cash.IsReadOnly = false;
             //tb_transNum.Text = await SectionData.generateNumber('p', cb_depositTo.SelectedValue.ToString());
             cb_depositTo.SelectedIndex = -1;
             //cb_recipient.SelectedIndex = -1;
@@ -606,7 +620,7 @@ namespace POS.View.accounts
             });
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
 
@@ -655,7 +669,7 @@ namespace POS.View.accounts
             }
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
 
@@ -721,6 +735,7 @@ namespace POS.View.accounts
                 case 0:
                     cb_recipientV.Visibility = Visibility.Visible;
                     btn_invoices.Visibility = Visibility.Visible;
+                    btn_invoices.IsEnabled = false;
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Collapsed;
                     btn_salaries.Visibility = Visibility.Collapsed;
@@ -729,7 +744,8 @@ namespace POS.View.accounts
                     break;
                 case 1:
                     cb_recipientV.Visibility = Visibility.Collapsed;
-                    btn_invoices.Visibility = Visibility.Collapsed;
+                    btn_invoices.Visibility = Visibility.Visible;
+                    btn_invoices.IsEnabled = false;
                     cb_recipientC.Visibility = Visibility.Visible;
                     cb_recipientU.Visibility = Visibility.Collapsed;
                     btn_salaries.Visibility = Visibility.Collapsed;
@@ -739,6 +755,7 @@ namespace POS.View.accounts
                 case 2:
                     cb_recipientV.Visibility = Visibility.Collapsed;
                     btn_invoices.Visibility = Visibility.Collapsed;
+                    btn_invoices.IsEnabled = false;
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Visible;
                     cb_recipientU.Margin = new Thickness(10, 5, 10, 5);
@@ -749,11 +766,12 @@ namespace POS.View.accounts
                 case 3:
                     cb_recipientV.Visibility = Visibility.Collapsed;
                     btn_invoices.Visibility = Visibility.Collapsed;
+                    btn_invoices.IsEnabled = false;
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Visible;
                     cb_recipientU.Margin = new Thickness(10, 5, 35, 5);
                     //Margin = "10,5,35,5"
-                    btn_salaries.Visibility = Visibility.Visible;
+                    btn_salaries.Visibility = Visibility.Collapsed;
                     SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                     break;
@@ -761,9 +779,10 @@ namespace POS.View.accounts
                 case 5:
                     cb_recipientV.Visibility = Visibility.Collapsed;
                     btn_invoices.Visibility = Visibility.Collapsed;
+                    btn_invoices.IsEnabled = false;
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Collapsed;
-                    btn_salaries.Visibility = Visibility.Collapsed;
+                    //btn_salaries.Visibility = Visibility.Collapsed;
                     cb_recipientV.Text = ""; cb_recipientC.Text = ""; cb_recipientU.Text = "";
                     SectionData.clearComboBoxValidate(cb_recipientV , p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
@@ -901,7 +920,7 @@ namespace POS.View.accounts
         }
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
 
@@ -926,7 +945,7 @@ namespace POS.View.accounts
                 LocalReportExtensions.PrintToPrinter(rep);
             }
             } else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         private async void Btn_preview_Click(object sender, RoutedEventArgs e)
@@ -953,25 +972,49 @@ namespace POS.View.accounts
 
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
+        public List<Invoice> invoicesLst = new List<Invoice>();
         private void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {//invoices
             Window.GetWindow(this).Opacity = 0.2;
             wd_invoicesList w = new wd_invoicesList();
             
             if (cb_depositTo.SelectedValue == "v")
-                //w.agentId = Convert.ToInt32(cb_recipientV.SelectedValue);
-         
-
+                w.agentId = Convert.ToInt32(cb_recipientV.SelectedValue);
+            else if (cb_depositTo.SelectedValue == "c")
+                w.agentId = Convert.ToInt32(cb_recipientC.SelectedValue);
+           
             w.ShowDialog();
+            if (w.isActive)
+            {
+                tb_cash.Text = w.sum.ToString();
+                tb_cash.IsReadOnly = true;
+                invoicesLst.AddRange(w.selectedInvoices);
+            }
             Window.GetWindow(this).Opacity = 1;
         }
 
         private void Btn_salaries_Click(object sender, RoutedEventArgs e)
-        {
+        {//salaries
 
+        }
+
+        private void Cb_recipientV_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cb_recipientV.SelectedIndex != -1)
+                btn_invoices.IsEnabled = true;
+            else
+                btn_invoices.IsEnabled = false;
+        }
+
+        private void Cb_recipientC_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cb_recipientC.SelectedIndex != -1)
+                btn_invoices.IsEnabled = true;
+            else
+                btn_invoices.IsEnabled = false;
         }
     }
 }
