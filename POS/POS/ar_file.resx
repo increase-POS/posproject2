@@ -1635,4 +1635,10 @@
   <data name="trdontHavePermission" xml:space="preserve">
     <value>ليس لديك صلاحية</value>
   </data>
+  <data name="trGeneral" xml:space="preserve">
+    <value>إعدادات</value>
+  </data>
+  <data name="trPermission" xml:space="preserve">
+    <value>صلاحيات</value>
+  </data>
 </root>

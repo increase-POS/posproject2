@@ -1321,7 +1321,12 @@ namespace POS.View.Settings
             grid_account.Visibility = Visibility.Hidden;
         }
         #endregion
-       
+        private void Grid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            //// Have to do this in the unusual case where the border of the cell gets selected.
+            //// and causes a crash 'EditItem is not allowed'
+            e.Cancel = true;
+        }
 
         //private void Cbm_levelGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //{
@@ -1377,6 +1382,6 @@ namespace POS.View.Settings
         //    //Repait++;
         //}
 
-       
+
     }
 }

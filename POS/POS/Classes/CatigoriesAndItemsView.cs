@@ -24,7 +24,7 @@ namespace POS.Classes
         public uc_categorie ucCategorie;
         public UC_item ucItem;
         public uc_payInvoice ucPayInvoice;
-        public uc_itemsImport ucItemsImport;
+        //public uc_itemsImport ucItemsImport;
         public uc_itemsExport ucItemsExport;
         public uc_itemsDestroy ucItemsDestroy;
         public uc_receiptOfPurchaseInvoice ucreceiptOfPurchaseInvoice;
@@ -172,11 +172,11 @@ namespace POS.Classes
                 ucPayInvoice.ChangeCategoryIdEvent(idCatigories);
 
             }
-            else if (ucItemsImport != null)
-            {
-                ucItemsImport.ChangeCategoryIdEvent(idCatigories);
+            //else if (ucItemsImport != null)
+            //{
+            //    ucItemsImport.ChangeCategoryIdEvent(idCatigories);
 
-            }
+            //}
             else if (ucItemsExport != null)
             {
                 ucItemsExport.ChangeCategoryIdEvent(idCatigories);
@@ -217,11 +217,11 @@ namespace POS.Classes
                 ucPayInvoice.ChangeItemIdEvent(idItem);
 
             }
-            else if (ucItemsImport != null)
-            {
-                ucItemsImport.ChangeItemIdEvent(idItem);
+            //else if (ucItemsImport != null)
+            //{
+            //    ucItemsImport.ChangeItemIdEvent(idItem);
 
-            }
+            //}
             else if (ucItemsExport != null)
             {
                 ucItemsExport.ChangeItemIdEvent(idItem);

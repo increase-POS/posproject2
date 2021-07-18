@@ -1516,7 +1516,7 @@
     <value>Shipping Company</value>
   </data>
   <data name="trDestoryCount" xml:space="preserve">
-    <value>Destroy Count</value>
+    <value>Destructive Count</value>
   </data>
   <data name="trErrorDistroyMoreQuanToolTip" xml:space="preserve">
     <value>Distroy count can not be more than real amount</value>
@@ -1655,5 +1655,11 @@
   </data>
   <data name="trdontHavePermission" xml:space="preserve">
     <value>you don't have permission</value>
+  </data>
+  <data name="trGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="trPermission" xml:space="preserve">
+    <value>Permission</value>
   </data>
 </root>

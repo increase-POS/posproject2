@@ -133,14 +133,14 @@ namespace POS.View
             //uc_itemsStorage uc = new uc_itemsStorage();
             //grid_main.Children.Add(uc);
         }
-        private void Btn_itemsImport_Click(object sender, RoutedEventArgs e)
-        {
-            //refreashBachgroundClick(btn_itemsImport);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_itemsImport.Instance);
-            //uc_itemsImport uc = new uc_itemsImport();
-            //grid_main.Children.Add(uc);
-        }
+        //private void Btn_itemsImport_Click(object sender, RoutedEventArgs e)
+        //{
+        //    //refreashBachgroundClick(btn_itemsImport);
+        //    grid_main.Children.Clear();
+        //    grid_main.Children.Add(uc_itemsImport.Instance);
+        //    //uc_itemsImport uc = new uc_itemsImport();
+        //    //grid_main.Children.Add(uc);
+        //}
         private void Btn_itemsExport_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_importExport);

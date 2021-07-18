@@ -217,7 +217,7 @@
                 <Border  Margin="10" Grid.Row="3"  Grid.Column="4"  BorderBrush="#999999" BorderThickness="1"  >
                     
                     <DataGrid x:Name="dg_selectedItems"  Background="White"
-                    Visibility="Visible" HeadersVisibility="None"
+                    Visibility="Visible" HeadersVisibility="None" 
                          IsReadOnly="False" CanUserAddRows="False"
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader" MouseDoubleClick="Dg_selectedItems_MouseDoubleClick" SelectionChanged="Dg_selectedItems_SelectionChanged"  >

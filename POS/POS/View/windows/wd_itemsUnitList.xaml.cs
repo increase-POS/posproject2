@@ -85,7 +85,9 @@ namespace POS.View.windows
                 {
                     //remove saved itemunits
                     if (p.childIUId == allItemUnits[i].itemUnitId)
-                    { allItemUnits.Remove(allItemUnits[i]); MessageBox.Show("equal"); }
+                    {
+                        allItemUnits.Remove(allItemUnits[i]);
+                    }
                 }
             }
             allPackages.AddRange(allIPackagesSource);
@@ -201,7 +203,12 @@ namespace POS.View.windows
                 dg_allItems.ItemsSource = allItemUnits;
                 dg_selectedItems.ItemsSource = allPackages;
 
+                
                 dg_allItems.Items.Refresh();
+                // for solve problem
+                this.dg_selectedItems.CancelEdit();
+                this.dg_selectedItems.CancelEdit();
+                ////////////
                 dg_selectedItems.Items.Refresh();
             }
         }
@@ -243,8 +250,10 @@ namespace POS.View.windows
 
         private void Dg_selectedItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Btn_unSelectedItem_Click(null, null);
+            //Btn_unSelectedItem_Click(null, null);
         }
+
+        
 
         private void Dg_selectedItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

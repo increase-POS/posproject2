@@ -1103,5 +1103,10 @@ namespace POS.View.storage
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+
+        private void Btn_package_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

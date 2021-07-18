@@ -811,8 +811,6 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsStorage.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsStorage.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_coupon.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\uc_coupon.baml
-E:\GitHub\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsImport.g.cs
-E:\GitHub\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsImport.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsExport.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsExport.baml
 D:\myproj\posproject2\POS\POS\bin\Debug\System.Drawing.Common.dll

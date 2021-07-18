@@ -2248,6 +2248,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to إعدادات.
+        /// </summary>
+        internal static string trGeneral {
+            get {
+                return ResourceManager.GetString("trGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مصروفات عامة.
         /// </summary>
         internal static string trGeneralExpenses {
@@ -3018,6 +3027,15 @@ namespace POS {
         internal static string trPercentageDiscount {
             get {
                 return ResourceManager.GetString("trPercentageDiscount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to صلاحيات.
+        /// </summary>
+        internal static string trPermission {
+            get {
+                return ResourceManager.GetString("trPermission", resourceCulture);
             }
         }
         
