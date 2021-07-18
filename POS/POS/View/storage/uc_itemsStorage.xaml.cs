@@ -318,7 +318,7 @@ namespace POS.View.storage
                     newLocation.quantity = quantity;
                     newLocation.startDate = dp_startDate.SelectedDate;
                     newLocation.endDate = dp_endDate.SelectedDate;
-                    newLocation.storeCost = int.Parse(tb_storeCost.Text);
+                    newLocation.storeCost = decimal.Parse(tb_storeCost.Text);
                     newLocation.note = tb_notes.Text;
                     newLocation.updateUserId = MainWindow.userID.Value;
                     newLocation.createUserId = MainWindow.userID.Value;
