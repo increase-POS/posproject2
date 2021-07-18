@@ -1185,7 +1185,7 @@ namespace POS.View
         {
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
             {
-                ReportParameter[] paramarr = new ReportParameter[6];
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath;
                 bool isArabic = ReportCls.checkLang();
@@ -1223,7 +1223,7 @@ namespace POS.View
         {
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
             {
-                ReportParameter[] paramarr = new ReportParameter[6];
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath;
                 bool isArabic = ReportCls.checkLang();

@@ -817,7 +817,6 @@ D:\myproj\posproject2\POS\POS\bin\Debug\System.Drawing.Common.dll
 D:\myproj\posproject2\POS\POS\bin\Debug\Tulpep.NotificationWindow.dll
 D:\myproj\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCard.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsExport.g.cs
-D:\myproj\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsImport.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsStorage.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\storage\uc_receiptOfPurchaseInvoice.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\catalog\UC_catalog.g.cs
@@ -837,7 +836,6 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_locationsList.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_updateVendor.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCard.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsExport.baml
-D:\myproj\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsImport.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsStorage.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\storage\uc_receiptOfPurchaseInvoice.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\catalog\UC_catalog.baml

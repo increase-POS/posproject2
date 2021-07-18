@@ -11,23 +11,30 @@ namespace POS.Classes
 {
     class clsReports
     {
-        public static void setReportLanguage(ReportParameter[] paramarr)
+        public static void setReportLanguage(List<ReportParameter> paramarr)
         {
-            paramarr[0] = new ReportParameter("lang", MainWindow.Reportlang);
+          
+            paramarr.Add(new ReportParameter("lang", MainWindow.Reportlang));
+        
         }
 
 
-        public static void Header(ReportParameter[] paramarr)
+        public static void Header(List<ReportParameter> paramarr)
         {
-            paramarr[1] = new ReportParameter("companyName", MainWindow.companyName);
-            paramarr[2] = new ReportParameter("Fax", MainWindow.Fax);
-            paramarr[3] = new ReportParameter("Tel", MainWindow.Mobile);
-            paramarr[4] = new ReportParameter("Address", MainWindow.Address);
-            paramarr[5] = new ReportParameter("Email", MainWindow.Email);
+            
+          ReportCls rep = new ReportCls();
+            paramarr.Add(new ReportParameter("companyName", MainWindow.companyName));
+            paramarr.Add(new ReportParameter("Fax", MainWindow.Fax));
+            paramarr.Add(new ReportParameter("Tel", MainWindow.Mobile));
+            paramarr.Add(new ReportParameter("Address", MainWindow.Address));
+            paramarr.Add(new ReportParameter("Email", MainWindow.Email));
+            paramarr.Add(new ReportParameter("logoImage", "file:\\" + rep.GetLogoImagePath()));
+           
         }
         public static void bankReport(IEnumerable<Bank> banksQuery, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
         }
@@ -35,6 +42,7 @@ namespace POS.Classes
         public static void posReport(IEnumerable<Pos> possQuery, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetPos", possQuery));
         }
@@ -42,6 +50,7 @@ namespace POS.Classes
         public static void customerReport(IEnumerable<Agent> customersQuery, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("AgentDataSet", customersQuery));
         }
@@ -49,6 +58,7 @@ namespace POS.Classes
         public static void branchReport(IEnumerable<Branch> branchQuery, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetBranches", branchQuery));
         }
@@ -56,6 +66,7 @@ namespace POS.Classes
         public static void userReport(IEnumerable<User> usersQuery, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetUser", usersQuery));
         }
@@ -63,6 +74,7 @@ namespace POS.Classes
         public static void vendorReport(IEnumerable<Agent> vendorsQuery, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("AgentDataSet", vendorsQuery));
         }
@@ -70,12 +82,14 @@ namespace POS.Classes
         public static void storeReport(IEnumerable<Branch> storesQuery, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetBranches", storesQuery));
         }
         public static void purchaseInvoiceReport(List<ItemTransfer> invoiceItems, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", invoiceItems));
             rep.EnableExternalImages = true;

@@ -157,7 +157,7 @@ namespace POS.Classes
             return isArabic;
         }
 
-        public ReportParameter[] fillPayReport(CashTransfer cashtrans)
+        public List<ReportParameter> fillPayReport(CashTransfer cashtrans)
         {
             checkLang();
 
@@ -226,30 +226,30 @@ namespace POS.Classes
 
             //  rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
 
-            ReportParameter[] paramarr = new ReportParameter[23];
-            paramarr[0] = new ReportParameter("lang", MainWindow.lang);
-            paramarr[1] = new ReportParameter("title", title);
-            paramarr[2] = new ReportParameter("company_name", company_name);
-            paramarr[3] = new ReportParameter("comapny_address", comapny_address);
-            paramarr[4] = new ReportParameter("company_phone", company_phone);
-            paramarr[5] = new ReportParameter("company_fax", company_fax);
-            paramarr[6] = new ReportParameter("company_email", company_email);
-            paramarr[7] = new ReportParameter("company_logo_img", company_logo_img);
-            paramarr[8] = new ReportParameter("amount", amount);
-            paramarr[9] = new ReportParameter("voucher_num", voucher_num);
-            paramarr[10] = new ReportParameter("type", type);
-            paramarr[11] = new ReportParameter("check_num", check_num);
-            paramarr[12] = new ReportParameter("date", date);
-            paramarr[13] = new ReportParameter("from", from);
-            paramarr[14] = new ReportParameter("amount_in_words", amount_in_words);
-            paramarr[15] = new ReportParameter("purpose", purpose);
-            paramarr[16] = new ReportParameter("recived_by", recived_by);
-            paramarr[17] = new ReportParameter("purpose", purpose);
-            paramarr[18] = new ReportParameter("user_name", user_name);
-            paramarr[19] = new ReportParameter("pay_to", pay_to);
-            paramarr[20] = new ReportParameter("job", job);
-            paramarr[21] = new ReportParameter("isCash", isCash);
-            paramarr[22] = new ReportParameter("trans_num_txt", trans_num_txt);
+            List<ReportParameter> paramarr=null;
+            paramarr.Add(new ReportParameter("lang", MainWindow.lang));
+            paramarr.Add(new ReportParameter("title", title));
+            paramarr.Add( new ReportParameter("company_name", company_name));
+            paramarr.Add(new ReportParameter("comapny_address", comapny_address));
+          paramarr.Add( new ReportParameter("company_phone", company_phone));
+            paramarr.Add( new ReportParameter("company_fax", company_fax));
+            paramarr.Add( new ReportParameter("company_email", company_email));
+         paramarr.Add( new ReportParameter("company_logo_img", company_logo_img));
+            paramarr.Add(new ReportParameter("amount", amount));
+            paramarr.Add( new ReportParameter("voucher_num", voucher_num));
+            paramarr.Add( new ReportParameter("type", type));
+           paramarr.Add( new ReportParameter("check_num", check_num));
+         paramarr.Add( new ReportParameter("date", date));
+          paramarr.Add(new ReportParameter("from", from));
+            paramarr.Add( new ReportParameter("amount_in_words", amount_in_words));
+           paramarr.Add( new ReportParameter("purpose", purpose));
+           paramarr.Add( new ReportParameter("recived_by", recived_by));
+         paramarr.Add( new ReportParameter("purpose", purpose));
+            paramarr.Add( new ReportParameter("user_name", user_name));
+            paramarr.Add(new ReportParameter("pay_to", pay_to));
+          paramarr.Add(new ReportParameter("job", job));
+           paramarr.Add( new ReportParameter("isCash", isCash));
+           paramarr.Add( new ReportParameter("trans_num_txt", trans_num_txt));
             return paramarr;
         }
         public static string NumberToWordsEN(int number)
@@ -366,7 +366,7 @@ namespace POS.Classes
         }
 
         //
-        public ReportParameter[] fillPurInvReport(Invoice invoice ,ReportParameter[] paramarr)
+        public List<ReportParameter> fillPurInvReport(Invoice invoice ,List<ReportParameter> paramarr)
         {
             checkLang();
 
@@ -375,21 +375,21 @@ namespace POS.Classes
              //  rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
 
            
-            paramarr[6] = new ReportParameter("invNumber", invoice.invNumber);
-            paramarr[7] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
-            paramarr[8] = new ReportParameter("invDate", DateToString(invoice.invDate));
-            paramarr[9] = new ReportParameter("invTime", TimeToString(invoice.invTime));
-            paramarr[10] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
-            paramarr[11] = new ReportParameter("total", DecTostring(invoice.total));
-            paramarr[12] = new ReportParameter("discountValue", DecTostring(invoice.discountValue));
-            paramarr[13] = new ReportParameter("totalNet", DecTostring(invoice.totalNet));
-            paramarr[14] = new ReportParameter("paid", DecTostring(invoice.paid));
-            paramarr[15] = new ReportParameter("deserved", DecTostring(invoice.deserved));
-            paramarr[16] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
-            paramarr[17] = new ReportParameter("tax", "0");
-            paramarr[18] = new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invoice.invNumber.ToString(), "invnum"));
-            paramarr[19] = new ReportParameter("Currency",MainWindow.Currency);
-            paramarr[20] = new ReportParameter("logoImage", "file:\\" +GetLogoImagePath());
+            paramarr.Add( new ReportParameter("invNumber", invoice.invNumber));//paramarr[6]
+            paramarr.Add(new ReportParameter("invoiceId", invoice.invoiceId.ToString()));
+             paramarr.Add( new ReportParameter("invDate", DateToString(invoice.invDate)));
+            paramarr.Add( new ReportParameter("invTime", TimeToString(invoice.invTime)));
+            paramarr.Add( new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString()));
+             paramarr.Add( new ReportParameter("total", DecTostring(invoice.total)));
+            paramarr.Add(new ReportParameter("discountValue", DecTostring(invoice.discountValue)));
+            paramarr.Add( new ReportParameter("totalNet", DecTostring(invoice.totalNet)));
+            paramarr.Add(new ReportParameter("paid", DecTostring(invoice.paid)));
+            paramarr.Add( new ReportParameter("deserved", DecTostring(invoice.deserved)));
+          paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString()));
+             paramarr.Add( new ReportParameter("tax", "0"));
+            paramarr.Add( new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invoice.invNumber.ToString(), "invnum")));
+            paramarr.Add( new ReportParameter("Currency",MainWindow.Currency));
+            paramarr.Add( new ReportParameter("logoImage", "file:\\" +GetLogoImagePath()));
 
 
             return paramarr;

@@ -11,19 +11,26 @@ namespace POS.Classes
 {
     class rptSectionData
     {
-        public static void setReportLanguage(ReportParameter[] paramarr)
+        public static void setReportLanguage(List<ReportParameter> paramarr)
         {
-            paramarr[0] = new ReportParameter("lang", MainWindow.Reportlang);
+            paramarr.Add(new ReportParameter("lang", MainWindow.Reportlang));
         }
 
 
-        public static void Header(ReportParameter[] paramarr)
+        public static void Header(List<ReportParameter> paramarr)
         {
-            paramarr[1] = new ReportParameter("companyName", MainWindow.companyName);
-            paramarr[2] = new ReportParameter("Fax", MainWindow.Fax);
-            paramarr[3] = new ReportParameter("Tel", MainWindow.Mobile);
-            paramarr[4] = new ReportParameter("Address", MainWindow.Address);
-            paramarr[5] = new ReportParameter("Email", MainWindow.Email);
+          
+           // List<ReportParameter> listParam = new List<ReportParameter>();
+
+            ReportCls rep = new ReportCls();
+            paramarr.Add(new ReportParameter("companyName", MainWindow.companyName));
+            paramarr.Add(new ReportParameter("Fax", MainWindow.Fax));
+            paramarr.Add(new ReportParameter("Tel", MainWindow.Mobile));
+            paramarr.Add(new ReportParameter("Address", MainWindow.Address));
+            paramarr.Add(new ReportParameter("Email", MainWindow.Email));
+            paramarr.Add(new ReportParameter("logoImage", "file:\\" + rep.GetLogoImagePath()));
+          
+            
         }
         public static void bankReport(IEnumerable<Bank> banksQuery, LocalReport rep, string reppath)
         {

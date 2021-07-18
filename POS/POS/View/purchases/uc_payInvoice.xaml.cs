@@ -1491,7 +1491,7 @@ namespace POS.View
             ReportCls rr = new ReportCls();
             // MessageBox.Show(rr.GetLogoImagePath());
 
-            ReportParameter[] paramarr = new ReportParameter[21];
+            List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath;
             bool isArabic = ReportCls.checkLang();
@@ -1534,7 +1534,7 @@ namespace POS.View
         {
             ReportCls rr = new ReportCls();
 
-            ReportParameter[] paramarr = new ReportParameter[21];
+            List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath;
             bool isArabic = ReportCls.checkLang();
