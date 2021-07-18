@@ -100,8 +100,14 @@ namespace POS.View.sectionData
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
-            await RefreshShComList();
-            Tb_search_TextChanged(null, null);
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                await RefreshShComList();
+                Tb_search_TextChanged(null, null);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -116,7 +122,7 @@ namespace POS.View.sectionData
             });
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         void FN_ExportToExcel()
@@ -210,7 +216,7 @@ namespace POS.View.sectionData
             }
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
         }
 
@@ -251,7 +257,7 @@ namespace POS.View.sectionData
             }
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
         }
 
@@ -311,7 +317,7 @@ namespace POS.View.sectionData
             }
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private async void activate()

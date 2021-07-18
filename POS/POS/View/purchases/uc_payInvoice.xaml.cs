@@ -606,7 +606,7 @@ namespace POS.View
             }
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
@@ -783,7 +783,7 @@ namespace POS.View
             Window.GetWindow(this).Opacity = 1;
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_returnWInvoice_Click(object sender, RoutedEventArgs e)
         {
@@ -815,7 +815,7 @@ namespace POS.View
             Window.GetWindow(this).Opacity = 1;
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private async Task buildInvoiceDetails()
@@ -1597,7 +1597,7 @@ namespace POS.View
 
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
     }

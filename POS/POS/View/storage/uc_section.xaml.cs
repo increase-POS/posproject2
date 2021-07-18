@@ -437,14 +437,17 @@ namespace POS.View
             ) && s.isActive == tgl_sectionState && s.isFreeZone != 1);
             RefreshSectionView();
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            RefreshSectionsList();
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                RefreshSectionsList();
             Tb_search_TextChanged(null, null);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {

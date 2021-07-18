@@ -432,8 +432,14 @@ namespace POS.View
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
-            RefreshCouponsList();
-            Tb_search_TextChanged(null, null);
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                RefreshCouponsList();
+                Tb_search_TextChanged(null, null);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -733,8 +739,6 @@ namespace POS.View
             ) && s.isActive == tgl_couponState);
             RefreshCouponView();
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
 

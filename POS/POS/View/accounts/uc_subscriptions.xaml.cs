@@ -68,7 +68,7 @@ namespace POS.View.accounts
 
                 }
                 else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
@@ -129,7 +129,7 @@ namespace POS.View.accounts
 
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)

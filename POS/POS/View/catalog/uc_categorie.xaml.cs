@@ -302,7 +302,7 @@ namespace POS.View
             }
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
@@ -380,7 +380,7 @@ namespace POS.View
 
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
@@ -459,7 +459,7 @@ namespace POS.View
 
                 }
                 else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
 
             private async void activate()
@@ -744,8 +744,6 @@ namespace POS.View
                 btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery , pageIndex, btns));
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
         #endregion
@@ -857,7 +855,7 @@ namespace POS.View
                 t1.Start();
             });
         } else
-            Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+            Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         void FN_ExportToExcel()
@@ -1006,9 +1004,13 @@ namespace POS.View
 
         private  void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            RefrishCategories();
-            Txb_searchcategories_TextChanged(null ,null);
-
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                RefrishCategories();
+                Txb_searchcategories_TextChanged(null, null);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
 

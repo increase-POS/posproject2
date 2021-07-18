@@ -446,14 +446,18 @@ namespace POS.View
             RefreshLocationView();
 
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            RefreshLocationsList();
-            Tb_search_TextChanged(null, null);
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                RefreshLocationsList();
+                Tb_search_TextChanged(null, null);
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)

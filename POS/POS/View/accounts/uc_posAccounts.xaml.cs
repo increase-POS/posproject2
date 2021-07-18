@@ -375,7 +375,7 @@ namespace POS.View.accounts
             }
         }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
@@ -427,7 +427,7 @@ namespace POS.View.accounts
             }
         }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
@@ -463,7 +463,7 @@ namespace POS.View.accounts
             }
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_confirm_Click(object sender, RoutedEventArgs e)
         {//confirm
@@ -542,12 +542,17 @@ namespace POS.View.accounts
             });
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
-            await RefreshCashesList();
-            Tb_search_TextChanged(null, null);
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                await RefreshCashesList();
+                Tb_search_TextChanged(null, null);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         async Task<IEnumerable<CashTransfer>> RefreshCashesList()
         {
@@ -655,7 +660,7 @@ namespace POS.View.accounts
                     if (int.Parse(cb_pos1.SelectedValue.ToString()) != MainWindow.posID
                         && int.Parse(cb_pos2.SelectedValue.ToString()) != MainWindow.posID)
                     {
-                        Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                         return false;
                     }
                         return true;

@@ -495,7 +495,7 @@ namespace POS.View
             }
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
         }
 
@@ -614,7 +614,7 @@ namespace POS.View
             }
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
         }
 
@@ -673,7 +673,7 @@ namespace POS.View
             Btn_clear_Click(sender, e);
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private async void activate()
@@ -843,8 +843,14 @@ namespace POS.View
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            RefreshUsersList();
-            Tb_search_TextChanged(null, null);
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                RefreshUsersList();
+                Tb_search_TextChanged(null, null);
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private async Task getImg()
@@ -932,7 +938,7 @@ namespace POS.View
             });
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         void FN_ExportToExcel()
@@ -992,7 +998,7 @@ namespace POS.View
 
                 }
                 else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
 
             private void Btn_pdf_Click(object sender, RoutedEventArgs e)
@@ -1032,7 +1038,7 @@ namespace POS.View
 
                     }
                     else
-                        Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 }
                 private void btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
@@ -1044,7 +1050,7 @@ namespace POS.View
             Window.GetWindow(this).Opacity = 1;
                         }
                         else
-                            Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                            Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                     }
                     private void Tb_preventSpaces_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -1422,7 +1428,7 @@ namespace POS.View
             }
             Window.GetWindow(this).Opacity = 1;
         } else
-            Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+            Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
     private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
         {

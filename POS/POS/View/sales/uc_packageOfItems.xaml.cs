@@ -772,8 +772,14 @@ namespace POS.View
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
-            await RefrishItems();
-            Txb_searchitems_TextChanged(null, null);
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+
+                await RefrishItems();
+                Txb_searchitems_TextChanged(null, null);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)

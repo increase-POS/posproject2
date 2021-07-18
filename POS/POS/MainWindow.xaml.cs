@@ -594,7 +594,7 @@ namespace POS
                 isHome = true;
             //}
             //else
-            //    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private void BTN_catalog_Click(object sender, RoutedEventArgs e)

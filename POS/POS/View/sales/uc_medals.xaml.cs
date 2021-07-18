@@ -161,8 +161,13 @@ namespace POS.View.sales
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
-            RefreshMedalsList();
-            Tb_search_TextChanged(null, null);
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                RefreshMedalsList();
+                Tb_search_TextChanged(null, null);
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
