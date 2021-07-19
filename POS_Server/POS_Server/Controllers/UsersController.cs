@@ -114,7 +114,9 @@ namespace POS_Server.Controllers
                         isActive = u.isActive,
                         isOnline = u.isOnline,
                         image = u.image,
-                        
+                        balance=u.balance,
+                          balanceType = u.balanceType,
+
                     })
                     .ToList();
 
