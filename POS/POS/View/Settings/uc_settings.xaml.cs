@@ -62,7 +62,7 @@ namespace POS.View.Settings
             btn_general.Content = MainWindow.resourcemanager.GetString("trGeneral");
             btn_reportsSettings.Content = MainWindow.resourcemanager.GetString("trReports");
             btn_permissions.Content = MainWindow.resourcemanager.GetString("trPermission");
-           
+
         }
         void refreashBackground()
         {
@@ -74,6 +74,10 @@ namespace POS.View.Settings
 
             btn_permissions.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_permissions.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_emails.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_emails.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            
         }
 
         void refreashBachgroundClick(Button btn)
@@ -93,7 +97,7 @@ namespace POS.View.Settings
         {
             refreashBachgroundClick(btn_reportsSettings);
             grid_main.Children.Clear();
-           
+
         }
 
         private void btn_permission_Click(object sender, RoutedEventArgs e)
@@ -101,6 +105,13 @@ namespace POS.View.Settings
             refreashBachgroundClick(btn_permissions);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_permissions.Instance);
+        }
+
+        private void Btn_emails_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_emails);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_emailsSetting.Instance);
         }
     }
 }

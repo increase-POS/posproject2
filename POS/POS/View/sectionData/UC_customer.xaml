@@ -731,7 +731,6 @@
                                               VerticalOffset="20"/>
                                 </TextBox.ToolTip>
                             </TextBox>
-
                             <Path Grid.Row="5" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                                   x:Name="p_errorEmail"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 

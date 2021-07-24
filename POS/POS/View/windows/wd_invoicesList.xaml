@@ -126,7 +126,7 @@
                               MouseDoubleClick="Lst_allInvoices_MouseDoubleClick" >
                         <DataGrid.Columns>
                             <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Invoice Number" Binding="{Binding Path=invNumber}"/>
-                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Total" Binding="{Binding Path=total}"/>
+                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Total" Binding="{Binding Path=deserved}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
@@ -217,7 +217,7 @@
                                MouseDoubleClick="Lst_selectedInvoices_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Invoice Number" Binding="{Binding Path=invNumber}"/>
-                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Total" Binding="{Binding Path=total}"/>
+                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Total" Binding="{Binding Path=deserved}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
@@ -228,7 +228,7 @@
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
                     <!--Text="{Binding total, Mode=OneWay}"-->
                     <TextBlock Grid.Row="1"   x:Name="tb_sum" Grid.Column="1" Margin="10,5,0,5" 
-                       Foreground="#4E4E4E" Text="{Binding total, Mode=OneWay}"
+                       Foreground="#4E4E4E" Text="{Binding totalNet, Mode=OneWay}"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
                     <TextBlock Grid.Row="1"   x:Name="tb_moneyIcon" Grid.Column="1" Margin="0,0,5,0" 

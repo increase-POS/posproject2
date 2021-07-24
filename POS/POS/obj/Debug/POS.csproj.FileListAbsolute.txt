@@ -2669,3 +2669,7 @@ F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_transItemsLocation.baml
 F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_usersList.baml
 F:\increase\sales\POS\POS\obj\Debug\View\windows\winControlPanel.baml
 F:\increase\sales\POS\POS\obj\Debug\View\windows\winLogIn.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\uc_storageCost.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\uc_storageCost.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_emailsSetting.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_emailsSetting.baml

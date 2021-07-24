@@ -35,6 +35,7 @@ namespace POS.Classes
         public string section { get; set; }
         public string unitName { get; set; }
         public int itemId { get; set; }
+        public int itemUnitId { get; set; }
         public int unitId { get; set; }
         public string inventoryNum { get; set; }
         public Nullable<System.DateTime> inventoryDate { get; set; }

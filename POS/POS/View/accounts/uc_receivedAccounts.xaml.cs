@@ -41,6 +41,9 @@ namespace POS.View.accounts
         IEnumerable<CashTransfer> cashesQuery;
         IEnumerable<CashTransfer> cashesQueryExcel;
         IEnumerable<CashTransfer> cashes;
+
+        public List<Invoice> invoicesLst = new List<Invoice>();
+
         string searchText = "";
         string  createPermission = "received_create";
         string reportsPermission = "received_reports";
@@ -86,6 +89,8 @@ namespace POS.View.accounts
 
             dp_endSearchDate.SelectedDate = DateTime.Now;
             dp_startSearchDate.SelectedDate = DateTime.Now;
+
+            btn_invoices.IsEnabled = false;
 
             dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
             dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
@@ -223,8 +228,22 @@ namespace POS.View.accounts
                 if (cashtrans != null)
                 {
                    // MessageBox.Show(cashtrans.cashTransId.ToString() + "-" + cashtrans.bondId.ToString());
-
+                   ///////////////////////////
                     btn_add.IsEnabled = false;
+                    cb_depositFrom.IsEnabled = false;
+                    cb_depositorV.IsEnabled = false;
+                    cb_depositorC.IsEnabled = false;
+                    cb_depositorU.IsEnabled = false;
+                    btn_invoices.IsEnabled = false;
+                    cb_paymentProcessType.IsEnabled = false;
+                    cb_card.IsEnabled = false;
+                    tb_docNum.IsEnabled = false;
+                    dp_docDate.IsEnabled = false;
+                    tb_docNumCheque.IsEnabled = false;
+                    dp_docDateCheque.IsEnabled = false;
+                    tb_cash.IsEnabled = false;
+                    tb_note.IsEnabled = false;
+                    //////////////////////////
                     cb_depositFrom.SelectedValue = cashtrans.side;
 
                     switch (cb_depositFrom.SelectedValue.ToString())
@@ -272,10 +291,9 @@ namespace POS.View.accounts
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//save
+            string s = "0" , s1 = "false";
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
             {
-
-
             
             //chk empty cash
             SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
@@ -383,10 +401,21 @@ namespace POS.View.accounts
                 if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
                     cash.docNum = tb_docNumCheque.Text;
 
-                string s = await cashModel.Save(cash);
-                //MessageBox.Show(s);
+                    if (cb_depositorV.IsVisible || cb_depositorC.IsVisible)
+                    {
+                        if (tb_cash.IsReadOnly)
+                            s1 = await cashModel.PayListOfInvoices(cash.agentId.Value, invoicesLst, "feed", cash);
+                        else
+                            s1 = await cashModel.PayByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
+                        MessageBox.Show(s1);
+                    }
 
-                if (!s.Equals("0"))
+                    else
+                        s = await cashModel.Save(cash);
+
+                    //MessageBox.Show(s);
+
+                if ((!s.Equals("0")) || (s1.Equals("true")))
                 {
                     calcBalance(cash.cash.Value, depositor, agentid);
 
@@ -475,13 +504,29 @@ namespace POS.View.accounts
 
         private async void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            tb_transNum.Text = await SectionData.generateNumber('d', cb_depositFrom.SelectedValue.ToString());
+            //tb_transNum.Text = await SectionData.generateNumber('d', cb_depositFrom.SelectedValue.ToString());
+            /////////////////////////
             btn_add.IsEnabled = true;
+            btn_invoices.Visibility = Visibility.Collapsed;
+            cb_depositFrom.IsEnabled = true;
+            cb_depositorV.IsEnabled = true;
+            cb_depositorC.IsEnabled = true;
+            cb_depositorU.IsEnabled = true;
+            btn_invoices.IsEnabled = true;
+            cb_paymentProcessType.IsEnabled = true;
+            cb_card.IsEnabled = true;
+            tb_docNum.IsEnabled = true;
+            dp_docDate.IsEnabled = true;
+            tb_docNumCheque.IsEnabled = true;
+            dp_docDateCheque.IsEnabled = true;
+            tb_cash.IsEnabled = true;
+            tb_note.IsEnabled = true;
+            /////////////////////////
             cb_depositFrom.SelectedIndex = -1;
-            cb_depositorV.SelectedIndex = -1;
-            cb_depositorC.SelectedIndex = -1;
-            cb_depositorU.SelectedIndex = -1;
-            cb_card.SelectedIndex = -1;
+            cb_depositorV.Visibility = Visibility.Collapsed;
+            cb_depositorC.Visibility = Visibility.Collapsed ;
+            cb_depositorU.Visibility = Visibility.Collapsed;
+            cb_card.Visibility = Visibility.Collapsed;
             cb_paymentProcessType.SelectedIndex = -1;
             tb_cash.Clear();
             tb_note.Clear();
@@ -735,12 +780,14 @@ namespace POS.View.accounts
 
         private void Cb_depositFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//deposit selection
+            btn_invoices.IsEnabled = false;
             switch (cb_depositFrom.SelectedIndex)
             {
                 case 0:
+                    cb_depositorV.SelectedIndex = -1;
                     cb_depositorV.Visibility = Visibility.Visible;
                     cb_depositorC.Visibility = Visibility.Collapsed;
-                    btn_invoices.Visibility = Visibility.Collapsed;
+                    btn_invoices.Visibility = Visibility.Visible;
                     cb_depositorU.Visibility = Visibility.Collapsed;
                     break;
                 case 1:
@@ -822,8 +869,25 @@ namespace POS.View.accounts
 
 
         private void Btn_invoices_Click(object sender, RoutedEventArgs e)
-        {
+        {//invoices
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_invoicesList w = new wd_invoicesList();
 
+            if (cb_depositFrom.SelectedValue == "v")
+                w.agentId = Convert.ToInt32(cb_depositorV.SelectedValue);
+            else if (cb_depositFrom.SelectedValue == "c")
+                w.agentId = Convert.ToInt32(cb_depositorC.SelectedValue);
+            w.invType = "s";
+            w.invTypeB = "pb";
+
+            w.ShowDialog();
+            if (w.isActive)
+            {
+                tb_cash.Text = w.sum.ToString();
+                tb_cash.IsReadOnly = true;
+                invoicesLst.AddRange(w.selectedInvoices);
+            }
+            Window.GetWindow(this).Opacity = 1;
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
@@ -848,6 +912,20 @@ namespace POS.View.accounts
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
-        
+        private void Cb_depositorV_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((cb_depositorV.SelectedIndex != -1) && (cb_depositorV.IsEnabled))
+                btn_invoices.IsEnabled = true;
+            else
+                btn_invoices.IsEnabled = false;
+        }
+
+        private void Cb_depositorC_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((cb_depositorC.SelectedIndex != -1) && (cb_depositorC.IsEnabled))
+                btn_invoices.IsEnabled = true;
+            else
+                btn_invoices.IsEnabled = false;
+        }
     }
 }

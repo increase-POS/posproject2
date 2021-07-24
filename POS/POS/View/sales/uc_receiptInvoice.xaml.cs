@@ -1119,7 +1119,7 @@ namespace POS.View
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                     dg_billDetails.Columns[3].IsReadOnly = false;
                     dg_billDetails.Columns[4].IsReadOnly = false;
-                    dg_billDetails.Columns[5].IsReadOnly = false; //make price writable
+                    dg_billDetails.Columns[5].IsReadOnly = true; //make price readonly
                     cb_customer.IsEnabled = true;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
@@ -1146,6 +1146,26 @@ namespace POS.View
                     tb_barcode.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     btn_save.IsEnabled = false;
+                    btn_updateCustomer.IsEnabled = false;
+                    cb_paymentProcessType.IsEnabled = false;
+                    cb_card.IsEnabled = false;
+                    cb_company.IsEnabled = false;
+                    cb_user.IsEnabled = false;
+                    tb_processNum.IsEnabled = false;
+                    tb_coupon.IsEnabled = false;
+                    btn_clearCoupon.IsEnabled = false;
+                    break;
+                case "q": //qoutation invoice
+                    dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
+                    dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                    dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                    dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
+                    cb_customer.IsEnabled = false;
+                    dp_desrvedDate.IsEnabled = false;
+                    tb_note.IsEnabled = false;
+                    tb_barcode.IsEnabled = false;
+                    tb_discount.IsEnabled = false;
+                    btn_save.IsEnabled = true;
                     btn_updateCustomer.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
                     cb_card.IsEnabled = false;

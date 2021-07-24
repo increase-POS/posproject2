@@ -49,6 +49,8 @@ namespace POS.View.storage
         Category category = new Category();
         IEnumerable<Category> categories;
         InventoryItemLocation invItemLoc = new InventoryItemLocation();
+        ItemLocation itemLocationModel = new ItemLocation();
+        Invoice invoiceModel = new Invoice();
         IEnumerable<InventoryItemLocation> inventoriesItems;
         int? categoryParentId = 0;
 
@@ -151,7 +153,58 @@ namespace POS.View.storage
                 bool valid = validateDistroy();
             if(invItemLoc.id != 0 && valid)
             {
-                await invItemLoc.distroyItem(invItemLoc);
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_transItemsLocation w;
+                    w = new wd_transItemsLocation();
+                    decimal price = await invoiceModel.GetAvgItemPrice(invItemLoc.itemUnitId, invItemLoc.itemId); 
+                    List<ItemTransfer> orderList = new List<ItemTransfer>();
+                    orderList.Add(new ItemTransfer()
+                    {
+                        itemName = invItemLoc.itemName,
+                        itemId = invItemLoc.itemId,
+                        unitName = invItemLoc.unitName,
+                        itemUnitId = invItemLoc.itemUnitId,
+                        quantity = invItemLoc.quantity,
+                        price = price,
+                    }) ;
+
+                    w.orderList = orderList;
+                    if (w.ShowDialog() == true)
+                    {
+                        if (w.selectedItemsLocations != null)
+                        {
+                            List<ItemLocation> itemsLocations = w.selectedItemsLocations;
+                            List<ItemLocation> readyItemsLoc = new List<ItemLocation>();
+
+                            // _ProcessType ="ex";
+                            for (int i = 0; i < itemsLocations.Count; i++)
+                            {
+                                if (itemsLocations[i].isSelected == true)
+                                    readyItemsLoc.Add(itemsLocations[i]);
+                            }
+
+                            invoiceModel.invNumber = await invoiceModel.generateInvNumber("ds");
+                            invoiceModel.branchCreatorId = MainWindow.branchID.Value;
+                            invoiceModel.posId = MainWindow.posID.Value;
+                            invoiceModel.createUserId = MainWindow.userID.Value;
+                            invoiceModel.invType = "d"; // destroy
+                            //  invoiceModel.total = ;
+                            // invoiceModel.totalNet = ;
+                            invoiceModel.paid = 0;
+                            invoiceModel.deserved = invoiceModel.totalNet;
+                            invoiceModel.notes = tb_notes.Text;
+
+                            int invoiceId = int.Parse( await invoiceModel.saveInvoice(invoiceModel));
+                            if (invoiceId != 0)
+                            {
+                                await invoiceModel.saveInvoiceItems(orderList, invoiceId);
+                                await itemLocationModel.destroyItem(readyItemsLoc, MainWindow.userID.Value);
+                            }
+                           // await save();
+                        }
+                    }
+                    Window.GetWindow(this).Opacity = 1;
+                    await invItemLoc.distroyItem(invItemLoc);
                 await refreshDestroyDetails();
             }
             else

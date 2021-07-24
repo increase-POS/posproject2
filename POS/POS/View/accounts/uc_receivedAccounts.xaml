@@ -389,7 +389,7 @@
                                   Height="40"   Margin="10,5,10,5"
                                   Visibility="Collapsed"
                                   BorderBrush="#737373" BorderThickness="0" 
-                                  LostFocus="Tb_validateEmptyLostFocus">
+                                  LostFocus="Tb_validateEmptyLostFocus" SelectionChanged="Cb_depositorV_SelectionChanged">
                             <ComboBox.ToolTip>
                                 <ToolTip x:Name="tt_depositorV" Content="Depositor"
                                                           Placement="left" 
@@ -406,7 +406,7 @@
                                   Height="40"   Margin="10,5,35,5"
                                   Visibility="Collapsed"
                                   BorderBrush="#737373" BorderThickness="0" 
-                                  LostFocus="Tb_validateEmptyLostFocus">
+                                  LostFocus="Tb_validateEmptyLostFocus" SelectionChanged="Cb_depositorC_SelectionChanged">
                             <ComboBox.ToolTip>
                                 <ToolTip x:Name="tt_depositorC" Content="Depositor"
                                                           Placement="left" 
@@ -470,10 +470,6 @@
                                 <ToolTip x:Name="tt_errordepositor" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
-                        
-                        
-                        
-                        
                         
                         <ComboBox x:Name="cb_paymentProcessType"  Grid.Row="4"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"

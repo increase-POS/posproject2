@@ -1505,11 +1505,8 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
-
                                     </Grid.ColumnDefinitions>
-
-                              
-                                        <TextBox x:Name="tb_count"   Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0" 
+                                    <TextBox x:Name="tb_count"   Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0" 
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Count..."   
                                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
@@ -1554,8 +1551,13 @@
 
 
 
+                            <Grid Grid.Row="3" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
 
-                            <TextBox x:Name="tb_price" Grid.Row="3"   Text="{Binding test, Mode=OneWay}"
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="tb_price" Grid.Row="3"   Text="{Binding test, Mode=OneWay}"
                                           Padding="10,0,5,0" 
                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Price..."   
@@ -1574,9 +1576,28 @@
                                         <ToolTip x:Name="tt_errorPrice"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                     </Path.ToolTip>
                                 </Path>
-                            
 
-                                <TextBox x:Name="tb_barcode"  Grid.Row="4" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0" 
+                                <ComboBox x:Name="cb_storageCost" Grid.Column ="1"
+                                             Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                             materialDesign:HintAssist.Hint="storageCost... "  
+                           TextBlock.FontSize="12"   Background="#f8f8f8" 
+                        
+                          Height="40"  Margin="5,5,10,5"
+                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_storageCost_SelectionChanged" >
+                                </ComboBox>
+                                <Path x:Name="p_errorStorageCost" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                    <Path.ToolTip>
+                                        <ToolTip  x:Name="tt_errorStorageCost"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    </Path.ToolTip>
+                                </Path>
+
+                            </Grid>
+
+                            <TextBox x:Name="tb_barcode"  Grid.Row="4" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0" 
                                         BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..." 
                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"

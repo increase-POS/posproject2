@@ -346,12 +346,11 @@
 
 
                         <TextBlock  x:Name="tb_transNum"  Grid.Row="1" Text="{Binding transNum, Mode=OneWay}" Padding="10,0,5,0"
-                                     Background="#f8f8f8"
-                                    
+                                    Background="#f8f8f8"
                                     materialDesign:HintAssist.Hint="Transfer number..." 
                                     KeyboardNavigation.IsTabStop="False" 
                                     TextBlock.FontSize="12" Foreground="#4E4E4E"  FontWeight="SemiBold"
-                              Height="40"
+                                    Height="40"
                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                     Margin="10,5,10,5" Grid.ColumnSpan="2">
                             <TextBlock.ToolTip>

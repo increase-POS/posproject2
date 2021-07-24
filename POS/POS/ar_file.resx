@@ -1641,4 +1641,31 @@
   <data name="trPermission" xml:space="preserve">
     <value>صلاحيات</value>
   </data>
+  <data name="trItemType" xml:space="preserve">
+    <value>نوع العنصر</value>
+  </data>
+  <data name="trHaveExpirationDate" xml:space="preserve">
+    <value>تاريخ صلاحية</value>
+  </data>
+  <data name="trHaveSerialNumber" xml:space="preserve">
+    <value>رقم سيريال</value>
+  </data>
+  <data name="trNormalItem" xml:space="preserve">
+    <value>عنصر عادي</value>
+  </data>
+  <data name="trPackageItems" xml:space="preserve">
+    <value>حزمة عناصر</value>
+  </data>
+  <data name="trService" xml:space="preserve">
+    <value>خدمة</value>
+  </data>
+  <data name="trMaxUnit" xml:space="preserve">
+    <value>الحد الأعلى</value>
+  </data>
+  <data name="trMinUnit" xml:space="preserve">
+    <value>الحد الأدنى</value>
+  </data>
+  <data name="trParentName" xml:space="preserve">
+    <value>اسم الأب</value>
+  </data>
 </root>

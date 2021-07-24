@@ -2302,6 +2302,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Have Expiration date.
+        /// </summary>
+        internal static string trHaveExpirationDate {
+            get {
+                return ResourceManager.GetString("trHaveExpirationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Have Serial Number.
+        /// </summary>
+        internal static string trHaveSerialNumber {
+            get {
+                return ResourceManager.GetString("trHaveSerialNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         internal static string trHome {
@@ -2491,6 +2509,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item Type.
+        /// </summary>
+        internal static string trItemType {
+            get {
+                return ResourceManager.GetString("trItemType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item - Unit.
         /// </summary>
         internal static string trItemUnit {
@@ -2644,6 +2671,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to maximum.
+        /// </summary>
+        internal static string trMaxUnit {
+            get {
+                return ResourceManager.GetString("trMaxUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Medals.
         /// </summary>
         internal static string trMedals {
@@ -2734,6 +2770,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to minimum.
+        /// </summary>
+        internal static string trMinUnit {
+            get {
+                return ResourceManager.GetString("trMinUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mobile.
         /// </summary>
         internal static string trMobile {
@@ -2793,6 +2838,15 @@ namespace POS {
         internal static string trNewPasswordHint {
             get {
                 return ResourceManager.GetString("trNewPasswordHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Normal Item.
+        /// </summary>
+        internal static string trNormalItem {
+            get {
+                return ResourceManager.GetString("trNormalItem", resourceCulture);
             }
         }
         
@@ -2923,6 +2977,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Package items.
+        /// </summary>
+        internal static string trPackageItems {
+            get {
+                return ResourceManager.GetString("trPackageItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Paid.
         /// </summary>
         internal static string trPaid {
@@ -2973,6 +3036,15 @@ namespace POS {
         internal static string trParentCategory {
             get {
                 return ResourceManager.GetString("trParentCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parent Name.
+        /// </summary>
+        internal static string trParentName {
+            get {
+                return ResourceManager.GetString("trParentName", resourceCulture);
             }
         }
         
@@ -3954,6 +4026,15 @@ namespace POS {
         internal static string trSelestUnitNameHint {
             get {
                 return ResourceManager.GetString("trSelestUnitNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service.
+        /// </summary>
+        internal static string trService {
+            get {
+                return ResourceManager.GetString("trService", resourceCulture);
             }
         }
         

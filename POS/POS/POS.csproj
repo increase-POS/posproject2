@@ -211,6 +211,7 @@
     <Compile Include="Classes\setValues.cs" />
     <Compile Include="Classes\ShippingCompanies.cs" />
     <Compile Include="Classes\Statistics.cs" />
+    <Compile Include="Classes\StorageCost.cs" />
     <Compile Include="Classes\Unit.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Classes\userSetValues.cs" />
@@ -266,6 +267,9 @@
     <Compile Include="View\accounts\uc_subscriptions.xaml.cs">
       <DependentUpon>uc_subscriptions.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\catalog\uc_storageCost.xaml.cs">
+      <DependentUpon>uc_storageCost.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\catalog\win_lvcCatalog.xaml.cs">
       <DependentUpon>win_lvcCatalog.xaml</DependentUpon>
     </Compile>
@@ -310,6 +314,9 @@
     </Compile>
     <Compile Include="View\sectionData\win_lvc.xaml.cs">
       <DependentUpon>win_lvc.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\uc_emailsSetting.xaml.cs">
+      <DependentUpon>uc_emailsSetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Settings\uc_general.xaml.cs">
       <DependentUpon>uc_general.xaml</DependentUpon>
@@ -542,6 +549,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\catalog\uc_storageCost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\catalog\win_lvcCatalog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -601,6 +612,10 @@
     <Page Include="View\sectionData\win_lvc.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Settings\uc_emailsSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Settings\uc_general.xaml">
       <Generator>MSBuild:Compile</Generator>

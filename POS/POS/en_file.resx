@@ -1662,4 +1662,31 @@
   <data name="trPermission" xml:space="preserve">
     <value>Permission</value>
   </data>
+  <data name="trItemType" xml:space="preserve">
+    <value>Item Type</value>
+  </data>
+  <data name="trHaveExpirationDate" xml:space="preserve">
+    <value>Have Expiration date</value>
+  </data>
+  <data name="trHaveSerialNumber" xml:space="preserve">
+    <value>Have Serial Number</value>
+  </data>
+  <data name="trNormalItem" xml:space="preserve">
+    <value>Normal Item</value>
+  </data>
+  <data name="trPackageItems" xml:space="preserve">
+    <value>Package items</value>
+  </data>
+  <data name="trService" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="trMaxUnit" xml:space="preserve">
+    <value>maximum</value>
+  </data>
+  <data name="trMinUnit" xml:space="preserve">
+    <value>minimum</value>
+  </data>
+  <data name="trParentName" xml:space="preserve">
+    <value>Parent Name</value>
+  </data>
 </root>

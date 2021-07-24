@@ -39,10 +39,10 @@ namespace POS.View.windows
 
         public int agentId = 0;
         public decimal sum = 0;
+        public string invType, invTypeB;
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             //MessageBox.Show(agentId.ToString());
-
             #region translate
             if (MainWindow.lang.Equals("en"))
             {
@@ -59,19 +59,12 @@ namespace POS.View.windows
             #endregion
             //need method
             allInvoicesSource = await invoiceModel.GetAll();
-            var query = allInvoicesSource.Where(i => i.agentId == agentId && i.paid < i.deserved);
+            var query = allInvoicesSource.Where(i => i.agentId == agentId && i.paid < i.deserved && (i.invType == invType || i.invType == invTypeB));
+
             allInvoicesSource = query.ToList();
 
             allInvoices.AddRange(allInvoicesSource);
-            //selectedInvoices.AddRange(selectedInvoicesSource);
-
-            //remove selected invoices from all invoices
-            //foreach (var i in selectedInvoices)
-            //{
-            //    allInvoices.Remove(i);
-            //}
            
-
             lst_allInvoices.ItemsSource = allInvoices;
             lst_allInvoices.SelectedValuePath = "invNumber";
             lst_allInvoices.DisplayMemberPath = "invoiceId";
@@ -114,7 +107,6 @@ namespace POS.View.windows
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-
             isActive = true;
             this.Close();
         }
@@ -127,17 +119,13 @@ namespace POS.View.windows
 
         private void Lst_allInvoices_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
             Btn_selectedInvoice_Click(null, null);
-
         }
 
         private void Lst_selectedInvoices_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Btn_unSelectedInvoice_Click(null, null);
-
         }
-
 
         private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
         {//select all

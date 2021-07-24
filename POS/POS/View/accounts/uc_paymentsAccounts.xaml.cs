@@ -51,6 +51,8 @@ namespace POS.View.accounts
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
 
+        public List<Invoice> invoicesLst = new List<Invoice>();
+
         string  createPermission = "payments_create";
         string reportsPermission = "payments_reports";
         private static uc_paymentsAccounts _instance;
@@ -263,22 +265,39 @@ namespace POS.View.accounts
              //       MessageBox.Show(cashtrans.cashTransId.ToString()+"-"+ cashtrans.bondId.ToString());
 
                     cb_depositTo.SelectedValue = cashtrans.side;
+                    ///////////////////////////
+                    //tb_transNum.IsEnabled = false;
                     btn_add.IsEnabled = false;
-
+                    cb_depositTo.IsEnabled = false;
+                    cb_recipientV.IsEnabled = false;
+                    cb_recipientC.IsEnabled = false;
+                    cb_recipientU.IsEnabled = false;
+                    cb_paymentProcessType.IsEnabled = false;
+                    tb_docNum.IsEnabled = false;
+                    dp_docDate.IsEnabled = false;
+                    tb_docNumCheque.IsEnabled = false;
+                    dp_docDateCheque.IsEnabled = false;
+                    cb_card.IsEnabled = false;
+                    tb_cash.IsEnabled = false;
+                    tb_note.IsEnabled = false;
+                    /////////////////////////
                     switch (cb_depositTo.SelectedValue.ToString())
                     {
                         case "v":
+                            cb_recipientV.SelectedIndex = -1;
                             cb_recipientV.SelectedValue = cashtrans.agentId.Value;
                             cb_recipientC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                             cb_recipientU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
                             break;
                         case "c":
+                            cb_recipientC.SelectedIndex = -1;
                             cb_recipientC.SelectedValue = cashtrans.agentId.Value;
                             cb_recipientV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                             cb_recipientU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
                             break;
                         case "u":
                         case "s":
+                            cb_recipientU.SelectedIndex = -1;
                             cb_recipientU.SelectedValue = cashtrans.userId.Value;
                             cb_recipientV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                             cb_recipientC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
@@ -312,8 +331,8 @@ namespace POS.View.accounts
                 )
                 && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m")
                 && s.transType == "p" 
-                //&& s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                //&& s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
                 );
 
             });
@@ -439,7 +458,6 @@ namespace POS.View.accounts
                             s1 = await cashModel.PayListOfInvoices(cash.agentId.Value, invoicesLst, "pay", cash);
                         else
                             s1 = await cashModel.PayByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "pay", cash);
-
                         //MessageBox.Show(s1);
                     }
 
@@ -549,6 +567,7 @@ namespace POS.View.accounts
             btn_invoices.IsEnabled = false;
             tb_cash.IsReadOnly = false;
             //tb_transNum.Text = await SectionData.generateNumber('p', cb_depositTo.SelectedValue.ToString());
+            //tb_transNum.Text = "";
             cb_depositTo.SelectedIndex = -1;
             //cb_recipient.SelectedIndex = -1;
             cb_paymentProcessType.SelectedIndex = -1;
@@ -579,6 +598,22 @@ namespace POS.View.accounts
             SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
             SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+            ///////////////////////////
+            btn_add.IsEnabled = true;
+            //tb_transNum.IsEnabled = true;
+            cb_depositTo.IsEnabled = true;
+            cb_recipientV.IsEnabled = true;
+            cb_recipientC.IsEnabled = true;
+            cb_recipientU.IsEnabled = true;
+            cb_paymentProcessType.IsEnabled = true;
+            tb_docNum.IsEnabled = true;
+            dp_docDate.IsEnabled = true;
+            tb_docNumCheque.IsEnabled = true;
+            dp_docDateCheque.IsEnabled = true;
+            cb_card.IsEnabled = true;
+            tb_cash.IsEnabled = true;
+            tb_note.IsEnabled = true;
+            /////////////////////////
         }
 
         async Task<IEnumerable<CashTransfer>> RefreshCashesList()
@@ -733,6 +768,7 @@ namespace POS.View.accounts
             switch(cb_depositTo.SelectedIndex)
             {
                 case 0:
+                    cb_recipientV.SelectedIndex = -1;
                     cb_recipientV.Visibility = Visibility.Visible;
                     btn_invoices.Visibility = Visibility.Visible;
                     btn_invoices.IsEnabled = false;
@@ -743,6 +779,7 @@ namespace POS.View.accounts
                     SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
                     break;
                 case 1:
+                    cb_recipientC.SelectedIndex = -1;
                     cb_recipientV.Visibility = Visibility.Collapsed;
                     btn_invoices.Visibility = Visibility.Visible;
                     btn_invoices.IsEnabled = false;
@@ -753,6 +790,7 @@ namespace POS.View.accounts
                     SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
                     break;
                 case 2:
+                    cb_recipientU.SelectedIndex = -1;
                     cb_recipientV.Visibility = Visibility.Collapsed;
                     btn_invoices.Visibility = Visibility.Collapsed;
                     btn_invoices.IsEnabled = false;
@@ -764,6 +802,7 @@ namespace POS.View.accounts
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                     break;
                 case 3:
+                    cb_recipientU.SelectedIndex = -1;
                     cb_recipientV.Visibility = Visibility.Collapsed;
                     btn_invoices.Visibility = Visibility.Collapsed;
                     btn_invoices.IsEnabled = false;
@@ -975,7 +1014,7 @@ namespace POS.View.accounts
                 Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
-        public List<Invoice> invoicesLst = new List<Invoice>();
+       
         private void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {//invoices
             Window.GetWindow(this).Opacity = 0.2;
@@ -985,7 +1024,9 @@ namespace POS.View.accounts
                 w.agentId = Convert.ToInt32(cb_recipientV.SelectedValue);
             else if (cb_depositTo.SelectedValue == "c")
                 w.agentId = Convert.ToInt32(cb_recipientC.SelectedValue);
-           
+            w.invType = "p";
+            w.invTypeB = "sb";
+
             w.ShowDialog();
             if (w.isActive)
             {
@@ -1003,7 +1044,7 @@ namespace POS.View.accounts
 
         private void Cb_recipientV_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_recipientV.SelectedIndex != -1)
+            if ((cb_recipientV.SelectedIndex != -1)&&(cb_recipientV.IsEnabled))
                 btn_invoices.IsEnabled = true;
             else
                 btn_invoices.IsEnabled = false;
@@ -1011,7 +1052,7 @@ namespace POS.View.accounts
 
         private void Cb_recipientC_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_recipientC.SelectedIndex != -1)
+            if ((cb_recipientC.SelectedIndex != -1)&&(cb_recipientC.IsEnabled))
                 btn_invoices.IsEnabled = true;
             else
                 btn_invoices.IsEnabled = false;

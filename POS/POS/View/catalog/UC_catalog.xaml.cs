@@ -1,4 +1,5 @@
 ﻿using POS.Classes;
+using POS.View.catalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,6 +95,9 @@ namespace POS.View
 
             btn_units.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_units.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_storageCost.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_storageCost.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
 
         void refreashBachgroundClick(Button btn)
@@ -147,5 +151,11 @@ namespace POS.View
             //grid_main.Children.Add(uc);
         }
 
+        private void Btn_storageCost_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_storageCost);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_storageCost.Instance);
+        }
     }
 }

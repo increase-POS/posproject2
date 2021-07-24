@@ -21,7 +21,6 @@ namespace POS.View
     public partial class UC_unit : UserControl
     {
         public int UnitId;
-
         Unit unitModel = new Unit();
         Unit unit = new Unit();
         //List<Unit> units = new List<Unit>();
@@ -74,7 +73,6 @@ namespace POS.View
         string searchText = "";
         byte tgl_unitState;
         BrushConverter bc = new BrushConverter();
-
         private void DG_unit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             p_errorName.Visibility = Visibility.Collapsed;
@@ -119,7 +117,6 @@ namespace POS.View
                 }
             }
         }
-
         List<int> ids = new List<int>();
         List<string> names = new List<string>();
         private void fillSmallestUnits()
@@ -133,7 +130,6 @@ namespace POS.View
             }
             //cb_smallestUnitId.ItemsSource = names;
         }
-
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -150,7 +146,6 @@ namespace POS.View
                 tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
         }
-
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
 
@@ -194,7 +189,6 @@ namespace POS.View
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             unit = new Unit();
         }
-
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
@@ -214,7 +208,6 @@ namespace POS.View
             //Tb_search_TextChanged(null, null);
 
         }
-       
         private void validateEmptyValues()
         {
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
@@ -263,7 +256,6 @@ namespace POS.View
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
-
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
@@ -315,7 +307,6 @@ namespace POS.View
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
-
         private async Task activate()
         {//activate
 
@@ -329,12 +320,10 @@ namespace POS.View
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
         }
-
         private void Cb_smallestUnitId_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //smallestUnitId = ids[cb_smallestUnitId.SelectedIndex];
         }
-
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
@@ -370,10 +359,6 @@ namespace POS.View
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
-
-
-
-
         void refreshUnitsGrid()
         {
             
@@ -381,7 +366,6 @@ namespace POS.View
             txt_count.Text = unitsQuery.Count().ToString();
 
         }
-
         async Task<IEnumerable<Unit>> RefreshUnitsList()
         {
             MainWindow.mainWindow.StartAwait();
@@ -389,7 +373,6 @@ namespace POS.View
             MainWindow.mainWindow.EndAwait();
             return units;
         }
-
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
 

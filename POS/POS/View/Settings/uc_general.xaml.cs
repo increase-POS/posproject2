@@ -130,9 +130,9 @@ namespace POS.View.Settings
             #endregion
 
             #region get default cost
-            await getDefaultCost();
-            if (cost != null)
-                tb_storageCost.Text = cost.value;
+            //await getDefaultCost();
+            //if (cost != null)
+            //    tb_storageCost.Text = cost.value;
             #endregion
 
         }
@@ -222,7 +222,7 @@ namespace POS.View.Settings
             txt_currency.Text = MainWindow.resourcemanager.GetString("trCurrency");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_notification.Text = MainWindow.resourcemanager.GetString("trNotification");
-            txt_storageCost.Text = MainWindow.resourcemanager.GetString("trStorageCost");
+            //txt_storageCost.Text = MainWindow.resourcemanager.GetString("trStorageCost");
             txt_notifhint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
             txtOffers.Text = MainWindow.resourcemanager.GetString("trOffer");
             txt_offerHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
@@ -243,7 +243,7 @@ namespace POS.View.Settings
             tt_language.Content = MainWindow.resourcemanager.GetString("trLanguage");
             tt_currency.Content = MainWindow.resourcemanager.GetString("trCurrency");
             tt_tax.Content = MainWindow.resourcemanager.GetString("trTax");
-            tt_storageCost.Content = MainWindow.resourcemanager.GetString("trStorageCost");
+            //tt_storageCost.Content = MainWindow.resourcemanager.GetString("trStorageCost");
         }
 
         private async void Btn_saveRegion_Click(object sender, RoutedEventArgs e)
@@ -418,8 +418,8 @@ namespace POS.View.Settings
             {
                 if ((sender as TextBox).Name == "tb_tax")
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorTax, tt_errorTax, "trEmptyTax");
-                else if ((sender as TextBox).Name == "tb_storageCost")
-                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorStorageCost, tt_errorStorageCost, "trEmptyStoreCost");
+                //else if ((sender as TextBox).Name == "tb_storageCost")
+                //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorStorageCost, tt_errorStorageCost, "trEmptyStoreCost");
                
             }
             else if (name == "ComboBox")
@@ -452,34 +452,34 @@ namespace POS.View.Settings
 
 
 
-        private async void Btn_saveStorageCost_Click(object sender, RoutedEventArgs e)
-        {//save storage cost
-            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
-            {
-                SectionData.validateEmptyTextBox(tb_storageCost , p_errorStorageCost , tt_errorStorageCost , "trEmptyStoreCost");
-            if (!tb_storageCost.Text.Equals(""))
-            {
-                if (cost == null)
-                    cost = new SetValues();
-                cost.value = tb_storageCost.Text;
-                cost.isSystem = 1;
-                cost.settingId = costId;
-                string s = await valueModel.Save(cost);
+        //private async void Btn_saveStorageCost_Click(object sender, RoutedEventArgs e)
+        //{//save storage cost
+        //    if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+        //    {
+        //        SectionData.validateEmptyTextBox(tb_storageCost , p_errorStorageCost , tt_errorStorageCost , "trEmptyStoreCost");
+        //    if (!tb_storageCost.Text.Equals(""))
+        //    {
+        //        if (cost == null)
+        //            cost = new SetValues();
+        //        cost.value = tb_storageCost.Text;
+        //        cost.isSystem = 1;
+        //        cost.settingId = costId;
+        //        string s = await valueModel.Save(cost);
 
-                if (!s.Equals("0"))
-                {
-                    //update tax in main window
-                    MainWindow.StorageCost = decimal.Parse(cost.value);
+        //        if (!s.Equals("0"))
+        //        {
+        //            //update tax in main window
+        //            MainWindow.StorageCost = decimal.Parse(cost.value);
 
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
-                }
-                else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-            }
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
+        //            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+        //        }
+        //        else
+        //            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+        //    }
+        //    }
+        //    else
+        //        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        //}
 
 
 

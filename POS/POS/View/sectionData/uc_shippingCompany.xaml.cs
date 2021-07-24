@@ -29,14 +29,11 @@ namespace POS.View.sectionData
     {
         ShippingCompanies shCompany = new ShippingCompanies();
         ShippingCompanies shCompaniesModel = new ShippingCompanies();
-
         BrushConverter bc = new BrushConverter();
         IEnumerable<ShippingCompanies> shComQuery;
         IEnumerable<ShippingCompanies> shComs;
-      
         byte tgl_shComState;
         string searchText = "";
-
         string basicsPermission = "shippingCompany_basics";
         private static uc_shippingCompany _instance;
         public static uc_shippingCompany Instance
@@ -52,7 +49,6 @@ namespace POS.View.sectionData
         {
             InitializeComponent();
         }
-
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))

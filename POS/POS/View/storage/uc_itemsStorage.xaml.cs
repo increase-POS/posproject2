@@ -286,7 +286,6 @@ namespace POS.View.storage
         private void validateMandatoryInputs()
         {
             SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
-            SectionData.validateEmptyTextBox(tb_storeCost, p_errorQuantity, tt_errorQuantity, "trEmptyStoreCost");
             SectionData.validateEmptyComboBox(cb_section, p_errorSection, tt_errorSection, "trEmptySectionToolTip");
             SectionData.validateEmptyComboBox(cb_XYZ, p_errorXYZ, tt_errorXYZ, "trErrorEmptyLocationToolTip");
             if(itemLocation.itemType.Equals("d"))
@@ -303,7 +302,7 @@ namespace POS.View.storage
             {
                 validateMandatoryInputs();
                 if (itemLocation != null &&
-                    !tb_quantity.Text.Equals("") && !tb_storeCost.Text.Equals("") && cb_section.SelectedIndex != -1
+                    !tb_quantity.Text.Equals("") && cb_section.SelectedIndex != -1
                     && cb_XYZ.SelectedIndex != -1 && (!itemLocation.itemType.Equals("d") ||
                     (itemLocation.itemType.Equals("d") && dp_startDate.SelectedDate != null && dp_endDate.SelectedDate != null)))
                 {
@@ -318,7 +317,6 @@ namespace POS.View.storage
                     newLocation.quantity = quantity;
                     newLocation.startDate = dp_startDate.SelectedDate;
                     newLocation.endDate = dp_endDate.SelectedDate;
-                    newLocation.storeCost = decimal.Parse(tb_storeCost.Text);
                     newLocation.note = tb_notes.Text;
                     newLocation.updateUserId = MainWindow.userID.Value;
                     newLocation.createUserId = MainWindow.userID.Value;

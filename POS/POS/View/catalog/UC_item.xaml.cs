@@ -88,7 +88,7 @@ namespace POS.View
 
         static private int _InternalCounter = 0;
 
-       
+
         private static UC_item _instance;
 
         OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -102,7 +102,7 @@ namespace POS.View
         #endregion
         string basicsPermission = "item_basics";
         string unitBasicsPermission = "unit_basics";
-        
+
         public static UC_item Instance
         {
             get
@@ -186,8 +186,8 @@ namespace POS.View
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
-        {          
-           TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+        {
+            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
             if (elapsed.TotalMilliseconds > 100)
             {
                 _BarcodeStr = "";
@@ -204,7 +204,7 @@ namespace POS.View
             else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
             {
                 digit = e.Key.ToString().Substring(6); // = "1" when NumPad1 is pressed
-               
+
             }
             _BarcodeStr += digit;
             _lastKeystroke = DateTime.Now;
@@ -217,7 +217,7 @@ namespace POS.View
                     TextBox tb = _Sender as TextBox;
                     if (tb != null)
                     {
-                        if (tb.Name == "tb_code" || tb.Name == "tb_name" || tb.Name == "tb_details" || tb.Name == "tb_taxes"|| tb.Name == "tb_min"|| tb.Name == "tb_max")// remove barcode from text box
+                        if (tb.Name == "tb_code" || tb.Name == "tb_name" || tb.Name == "tb_details" || tb.Name == "tb_taxes" || tb.Name == "tb_min" || tb.Name == "tb_max")// remove barcode from text box
                         {
                             string tbString = tb.Text;
                             string newStr = "";
@@ -252,7 +252,7 @@ namespace POS.View
                                 ChangeItemIdEvent(itemId);
                         }
                     }
-                }               
+                }
                 drawBarcode(tb_barcode.Text);
             }
         }
@@ -309,7 +309,7 @@ namespace POS.View
             tb_code.Focus();
             generateBarcode("", true);
         }
-       
+
         private Boolean checkBarcodeValidity(string barcode)
         {
             fillBarcodeList();
@@ -342,15 +342,15 @@ namespace POS.View
         {
             // configur check sum metrics
             BarcodeSymbology s = BarcodeSymbology.CodeEan13;
-          
-           BarcodeDraw drawObject = BarcodeDrawFactory.GetSymbology(s);
-            
+
+            BarcodeDraw drawObject = BarcodeDrawFactory.GetSymbology(s);
+
             BarcodeMetrics barcodeMetrics = drawObject.GetDefaultMetrics(60);
             barcodeMetrics.Scale = 2;
 
             if (barcodeStr != "")
             {
-                if(barcodeStr.Length == 13)
+                if (barcodeStr.Length == 13)
                     barcodeStr = barcodeStr.Substring(1);//remove check sum from barcode string
                 var barcodeImage = drawObject.Draw(barcodeStr, barcodeMetrics);
                 //using (var graphics = System.Drawing.Graphics.FromImage(barcodeImage))
@@ -373,14 +373,14 @@ namespace POS.View
                 img_barcode.Source = null;
             // create encoding object
             //CodeEan13BarcodeDraw barcode = BarcodeDrawFactory.CodeEan13WithChecksum;
-            
-            
+
+
             //    System.Drawing.Bitmap serial_bitmap = (System.Drawing.Bitmap)barcode.Draw(barcodeStr,metrics);
             //    System.Drawing.ImageConverter ic = new System.Drawing.ImageConverter();
             //    //generate bitmap
             //    img_barcode.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(serial_bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            }
-           
+        }
+
         static public string generateRandomBarcode()
         {
             var now = DateTime.Now;
@@ -405,8 +405,8 @@ namespace POS.View
 
         private void Btn_barcode_Click(object sender, RoutedEventArgs e)
         {
-           
-                if (item.itemId > 0)
+
+            if (item.itemId > 0)
             {
                 grid_itemData.Visibility = grid_properties.Visibility = Visibility.Collapsed;
                 dg_barcode.Visibility = Visibility.Visible;
@@ -472,71 +472,71 @@ namespace POS.View
             {
                 //validate values
                 validateItemValues();
-            Boolean codeAvailable = await checkCodeAvailabiltiy();
+                Boolean codeAvailable = await checkCodeAvailabiltiy();
 
-            if ((!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1
-                && cb_minUnit.SelectedIndex != -1 && cb_maxUnit.SelectedIndex != -1 && !tb_min.Text.Equals("") && !tb_max.Text.Equals("")) && codeAvailable ||
-               (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1 && cb_itemType.SelectedIndex == 3 && codeAvailable))
-            {
-                Nullable<int> categoryId = null;
-                if (cb_categorie.SelectedIndex != -1)
-                    categoryId = (int)cb_categorie.SelectedValue;
+                if ((!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1
+                    && cb_minUnit.SelectedIndex != -1 && cb_maxUnit.SelectedIndex != -1 && !tb_min.Text.Equals("") && !tb_max.Text.Equals("")) && codeAvailable ||
+                   (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1 && cb_itemType.SelectedIndex == 3 && codeAvailable))
+                {
+                    Nullable<int> categoryId = null;
+                    if (cb_categorie.SelectedIndex != -1)
+                        categoryId = (int)cb_categorie.SelectedValue;
 
-                Nullable<int> parentId = null;
-                if (cb_parentItem.SelectedIndex != -1)
-                    parentId = (int)cb_parentItem.SelectedValue;
+                    Nullable<int> parentId = null;
+                    if (cb_parentItem.SelectedIndex != -1)
+                        parentId = (int)cb_parentItem.SelectedValue;
 
-                int min = 0;
-                int max = 0;
-                decimal taxes = 0;
+                    int min = 0;
+                    int max = 0;
+                    decimal taxes = 0;
 
-                if (tb_min.Text != "")
-                    min = int.Parse(tb_min.Text);
-                if (tb_max.Text != "")
-                    max = int.Parse(tb_max.Text);
-                if (tb_taxes.Text != "")
-                    taxes = decimal.Parse(tb_taxes.Text);
+                    if (tb_min.Text != "")
+                        min = int.Parse(tb_min.Text);
+                    if (tb_max.Text != "")
+                        max = int.Parse(tb_max.Text);
+                    if (tb_taxes.Text != "")
+                        taxes = decimal.Parse(tb_taxes.Text);
 
-                Nullable<int> minUnitId = null;
-                if (cb_minUnit.SelectedIndex != -1)
-                    minUnitId = units[cb_minUnit.SelectedIndex].unitId;
+                    Nullable<int> minUnitId = null;
+                    if (cb_minUnit.SelectedIndex != -1)
+                        minUnitId = units[cb_minUnit.SelectedIndex].unitId;
 
-                Nullable<int> maxUnitId = null;
-                if (cb_maxUnit.SelectedIndex != -1)
-                    maxUnitId = units[cb_maxUnit.SelectedIndex].unitId;
-                item = new Item();
-                item.code = tb_code.Text;
-                item.name = tb_name.Text;
-                item.details = tb_details.Text;
-                item.type = selectedType;
-                item.image = "";
-                item.taxes = taxes;
-                item.isActive = 1;
-                item.min = min;
-                item.max = max;
-                item.categoryId = categoryId;
-                item.parentId = parentId;
-                item.createUserId = MainWindow.userID;
-                item.updateUserId = MainWindow.userID;
-                item.minUnitId = minUnitId;
-                item.maxUnitId = maxUnitId;
+                    Nullable<int> maxUnitId = null;
+                    if (cb_maxUnit.SelectedIndex != -1)
+                        maxUnitId = units[cb_maxUnit.SelectedIndex].unitId;
+                    item = new Item();
+                    item.code = tb_code.Text;
+                    item.name = tb_name.Text;
+                    item.details = tb_details.Text;
+                    item.type = selectedType;
+                    item.image = "";
+                    item.taxes = taxes;
+                    item.isActive = 1;
+                    item.min = min;
+                    item.max = max;
+                    item.categoryId = categoryId;
+                    item.parentId = parentId;
+                    item.createUserId = MainWindow.userID;
+                    item.updateUserId = MainWindow.userID;
+                    item.minUnitId = minUnitId;
+                    item.maxUnitId = maxUnitId;
 
-                string res = await itemModel.saveItem(item);
-                if (!res.Equals("0"))
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                else
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    string res = await itemModel.saveItem(item);
+                    if (!res.Equals("0"))
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                int itemId = int.Parse(res);
+                    int itemId = int.Parse(res);
 
-                if(openFileDialog.FileName != "")
-                    await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
+                    if (openFileDialog.FileName != "")
+                        await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
 
-                await RefrishItems();
-                Txb_searchitems_TextChanged(null, null);
-                btn_clear_Click(sender, e);
-            }
-            tb_code.Focus();
+                    await RefrishItems();
+                    Txb_searchitems_TextChanged(null, null);
+                    btn_clear_Click(sender, e);
+                }
+                tb_code.Focus();
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -550,70 +550,70 @@ namespace POS.View
                 //validate values
                 validateItemValues();
 
-            // check if code available
-            Boolean codeAvailable = await checkCodeAvailabiltiy(item.code);
+                // check if code available
+                Boolean codeAvailable = await checkCodeAvailabiltiy(item.code);
 
-            if ((!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1
-               && cb_minUnit.SelectedIndex != -1 && cb_maxUnit.SelectedIndex != -1 && !tb_min.Text.Equals("") && !tb_max.Text.Equals("")) && codeAvailable ||
-              (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1 && cb_itemType.SelectedIndex == 3 && codeAvailable))
-            {
-                Nullable<int> categoryId = null;
-                if (cb_categorie.SelectedIndex != -1)
-                    categoryId = (int)cb_categorie.SelectedValue;
+                if ((!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1
+                   && cb_minUnit.SelectedIndex != -1 && cb_maxUnit.SelectedIndex != -1 && !tb_min.Text.Equals("") && !tb_max.Text.Equals("")) && codeAvailable ||
+                  (!tb_code.Text.Equals("") && !tb_name.Text.Equals("") && cb_categorie.SelectedIndex != -1 && cb_itemType.SelectedIndex != -1 && cb_itemType.SelectedIndex == 3 && codeAvailable))
+                {
+                    Nullable<int> categoryId = null;
+                    if (cb_categorie.SelectedIndex != -1)
+                        categoryId = (int)cb_categorie.SelectedValue;
 
-                Nullable<int> parentId = null;
-                if (cb_parentItem.SelectedIndex != -1)
-                    parentId = (int)cb_parentItem.SelectedValue;
+                    Nullable<int> parentId = null;
+                    if (cb_parentItem.SelectedIndex != -1)
+                        parentId = (int)cb_parentItem.SelectedValue;
 
-                int min = 0;
-                int max = 0;
-                decimal taxes = 0;
+                    int min = 0;
+                    int max = 0;
+                    decimal taxes = 0;
 
-                if (tb_min.Text != "")
-                    min = int.Parse(tb_min.Text);
-                if (tb_max.Text != "")
-                    max = int.Parse(tb_max.Text);
-                if (tb_taxes.Text != "")
-                    taxes = decimal.Parse(tb_taxes.Text);
+                    if (tb_min.Text != "")
+                        min = int.Parse(tb_min.Text);
+                    if (tb_max.Text != "")
+                        max = int.Parse(tb_max.Text);
+                    if (tb_taxes.Text != "")
+                        taxes = decimal.Parse(tb_taxes.Text);
 
-                Nullable<int> minUnitId = null;
-                if (cb_minUnit.SelectedIndex != -1)
-                    minUnitId = units[cb_minUnit.SelectedIndex].unitId;
+                    Nullable<int> minUnitId = null;
+                    if (cb_minUnit.SelectedIndex != -1)
+                        minUnitId = units[cb_minUnit.SelectedIndex].unitId;
 
-                Nullable<int> maxUnitId = null;
-                if (cb_maxUnit.SelectedIndex != -1)
-                    maxUnitId = units[cb_maxUnit.SelectedIndex].unitId;
+                    Nullable<int> maxUnitId = null;
+                    if (cb_maxUnit.SelectedIndex != -1)
+                        maxUnitId = units[cb_maxUnit.SelectedIndex].unitId;
 
-                item.itemId = item.itemId;
-                item.code = tb_code.Text;
-                item.name = tb_name.Text;
-                item.details = tb_details.Text;
-                item.type = selectedType;
-                item.image = "";
-                item.taxes = taxes;
-                item.min = min;
-                item.max = max;
-                item.categoryId = categoryId;
-                item.parentId = parentId;
-                item.updateUserId = MainWindow.userID;
-                item.minUnitId = minUnitId;
-                item.maxUnitId = maxUnitId;
-                // };
+                    item.itemId = item.itemId;
+                    item.code = tb_code.Text;
+                    item.name = tb_name.Text;
+                    item.details = tb_details.Text;
+                    item.type = selectedType;
+                    item.image = "";
+                    item.taxes = taxes;
+                    item.min = min;
+                    item.max = max;
+                    item.categoryId = categoryId;
+                    item.parentId = parentId;
+                    item.updateUserId = MainWindow.userID;
+                    item.minUnitId = minUnitId;
+                    item.maxUnitId = maxUnitId;
+                    // };
 
-                string res = await itemModel.saveItem(item);
-                if (!res.Equals("0"))
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                else
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    string res = await itemModel.saveItem(item);
+                    if (!res.Equals("0"))
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                int itemId = int.Parse(res);
+                    int itemId = int.Parse(res);
 
-               await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
+                    await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
 
-                await RefrishItems();
-                Txb_searchitems_TextChanged(null, null);
-            }
-            tb_code.Focus();
+                    await RefrishItems();
+                    Txb_searchitems_TextChanged(null, null);
+                }
+                tb_code.Focus();
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -621,86 +621,86 @@ namespace POS.View
 
         async void Btn_deleteService_Click(object sender, RoutedEventArgs e)
         {
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
-                {
-                    if (service.costId != 0)
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
             {
-                Boolean res = await serviceModel.delete(service.costId);
+                if (service.costId != 0)
+                {
+                    Boolean res = await serviceModel.delete(service.costId);
 
-                if (res)
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-                else
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    if (res)
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                refreshServicesGrid(item.itemId);
+                    refreshServicesGrid(item.itemId);
 
-                tb_serviceName.Clear();
-                tb_costVal.Clear();
-            }
-            tb_barcode.Focus();
+                    tb_serviceName.Clear();
+                    tb_costVal.Clear();
                 }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-            }
-
-            private async void Btn_delete_Click(object sender, RoutedEventArgs e)
-        {//delete
-                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
-                {
-                    if ((!item.canDelete) && (item.isActive == 0))
-            {
-                #region
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                w.ShowDialog();
-                Window.GetWindow(this).Opacity = 1;
-                #endregion
-                if (w.isOk)
-                    activate();
+                tb_barcode.Focus();
             }
             else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {//delete
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
             {
-                #region
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                if (item.canDelete)
-                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                if (!item.canDelete)
-                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-                w.ShowDialog();
-                Window.GetWindow(this).Opacity = 1;
-                #endregion
-                if (w.isOk)
+                if ((!item.canDelete) && (item.isActive == 0))
                 {
-                    string popupContent = "";
-                    if (item.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                    if ((!item.canDelete) && (item.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-                    int userId = (int)MainWindow.userID;
-                    Boolean res = await itemModel.deleteItem(item.itemId, userId, item.canDelete);
-
-                    if (res) 
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                    else 
-                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                }
-            }
-            //var items = await itemModel.GetAllItems();
-            //dg_items.ItemsSource = items;
-
-            await RefrishItems();
-            Txb_searchitems_TextChanged(null, null);
-            // tb_search_TextChanged(null, null);
-
-            //clear textBoxs
-            btn_clear_Click(sender, e);
-            tb_code.Focus();
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                        activate();
                 }
                 else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-            }
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    if (item.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                    if (!item.canDelete)
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                    {
+                        string popupContent = "";
+                        if (item.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                        if ((!item.canDelete) && (item.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                        int userId = (int)MainWindow.userID;
+                        Boolean res = await itemModel.deleteItem(item.itemId, userId, item.canDelete);
 
-            private async void activate()
+                        if (res)
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                        else
+                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
+                }
+                //var items = await itemModel.GetAllItems();
+                //dg_items.ItemsSource = items;
+
+                await RefrishItems();
+                Txb_searchitems_TextChanged(null, null);
+                // tb_search_TextChanged(null, null);
+
+                //clear textBoxs
+                btn_clear_Click(sender, e);
+                tb_code.Focus();
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+
+        private async void activate()
         {//activate
 
             item.isActive = 1;
@@ -726,34 +726,34 @@ namespace POS.View
             {
                 validatePropertyValues();
 
-            if (cb_selectProperties.SelectedValue != null && cb_value.SelectedValue != null && item.itemId > 0)
-            {
-                int propertyItemId = propItems[cb_value.SelectedIndex].propertyItemId;
-                int itemId = (int)item.itemId;
-
-                // check if property assigned previously to item
-                Boolean exist = itemsProp.Any(x => x.propertyItemId == propertyItemId && x.itemId == itemId);
-
-                if (!exist)
+                if (cb_selectProperties.SelectedValue != null && cb_value.SelectedValue != null && item.itemId > 0)
                 {
-                    ItemsProp itemspropObj = new ItemsProp();
-                    itemspropObj.propertyItemId = propItems[cb_value.SelectedIndex].propertyItemId;
-                    itemspropObj.itemId = itemId;
-                    itemspropObj.updateUserId = MainWindow.userID;
-                    itemspropObj.createUserId = MainWindow.userID;
+                    int propertyItemId = propItems[cb_value.SelectedIndex].propertyItemId;
+                    int itemId = (int)item.itemId;
 
-                    Boolean res = await itemsPropModel.Save(itemspropObj);
-                    if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    // check if property assigned previously to item
+                    Boolean exist = itemsProp.Any(x => x.propertyItemId == propertyItemId && x.itemId == itemId);
 
-                    refreshPropertiesGrid(itemId);
+                    if (!exist)
+                    {
+                        ItemsProp itemspropObj = new ItemsProp();
+                        itemspropObj.propertyItemId = propItems[cb_value.SelectedIndex].propertyItemId;
+                        itemspropObj.itemId = itemId;
+                        itemspropObj.updateUserId = MainWindow.userID;
+                        itemspropObj.createUserId = MainWindow.userID;
+
+                        Boolean res = await itemsPropModel.Save(itemspropObj);
+                        if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                        refreshPropertiesGrid(itemId);
+                    }
+                    cb_value.SelectedIndex = -1;
+                    cb_selectProperties.SelectedIndex = -1;
                 }
-                cb_value.SelectedIndex = -1;
-                cb_selectProperties.SelectedIndex = -1;
-            }
-            cb_selectProperties.Focus();
+                cb_selectProperties.Focus();
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -832,22 +832,22 @@ namespace POS.View
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
             {
                 if (itemProp.itemPropId != 0)
-            {
-                int propertyItemId = (int)itemProp.propertyItemId;
-                int itemId = item.itemId;
+                {
+                    int propertyItemId = (int)itemProp.propertyItemId;
+                    int itemId = item.itemId;
 
-                Boolean res = await itemsPropModel.Delete(itemProp.itemPropId);
+                    Boolean res = await itemsPropModel.Delete(itemProp.itemPropId);
 
-                if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                refreshPropertiesGrid(item.itemId);
-            }
-            cb_selectProperties.Focus();
-        } else
-            Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                    refreshPropertiesGrid(item.itemId);
+                }
+                cb_selectProperties.Focus();
+            } else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         async void Btn_deleteSerial_Click(object sender, RoutedEventArgs e)
         {
@@ -858,9 +858,9 @@ namespace POS.View
                     final = true;
                 Boolean res = await serialModel.delete(serial.serialId, (int)MainWindow.userID, final);
 
-                if (res) 
+                if (res)
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-                else 
+                else
                     Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 refreshSerials(item.itemId);
@@ -909,85 +909,85 @@ namespace POS.View
                 //check mandatory values
                 validateUnitValues();
 
-            if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
-                || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
-            {
-                if(tb_barcode.Text.Length == 12 || tb_barcode.Text.Length == 13)
+                if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
+                    || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
                 {
-                    char[] barcodeData;
-                    char checkDigit;
-                    bool valid = true;
-                    if (tb_barcode.Text.Length == 12)// generate checksum didit
-                    {                                               
-                        barcodeData = tb_barcode.Text.ToCharArray();
-                        checkDigit = Mod10CheckDigit(barcodeData);
-                        tb_barcode.Text = checkDigit + tb_barcode.Text;
-                    }
-                    else if(tb_barcode.Text.Length == 13)
+                    if (tb_barcode.Text.Length == 12 || tb_barcode.Text.Length == 13)
                     {
-                        char cd = tb_barcode.Text[0];
-                        string barCode = tb_barcode.Text.Substring(1);
-                        barcodeData = barCode.ToCharArray();
-                        checkDigit = Mod10CheckDigit(barcodeData);
-                        if (checkDigit != cd)
+                        char[] barcodeData;
+                        char checkDigit;
+                        bool valid = true;
+                        if (tb_barcode.Text.Length == 12)// generate checksum didit
                         {
-                            valid = false;
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorBarcodeToolTip"), animation: ToasterAnimation.FadeIn);
+                            barcodeData = tb_barcode.Text.ToCharArray();
+                            checkDigit = Mod10CheckDigit(barcodeData);
+                            tb_barcode.Text = checkDigit + tb_barcode.Text;
                         }
+                        else if (tb_barcode.Text.Length == 13)
+                        {
+                            char cd = tb_barcode.Text[0];
+                            string barCode = tb_barcode.Text.Substring(1);
+                            barcodeData = barCode.ToCharArray();
+                            checkDigit = Mod10CheckDigit(barcodeData);
+                            if (checkDigit != cd)
+                            {
+                                valid = false;
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorBarcodeToolTip"), animation: ToasterAnimation.FadeIn);
+                            }
+                        }
+                        if (valid == true)
+                        {
+                            // check barcode value if assigned to any item
+                            if (!checkBarcodeValidity(tb_barcode.Text))
+                            {
+                                SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorDuplicateBarcodeToolTip");
+                            }
+                            else //barcode is available
+                            {
+                                Nullable<int> unitId = null;
+                                if (cb_selectUnit.SelectedIndex != -1)
+                                    unitId = units[cb_selectUnit.SelectedIndex].unitId;
+
+                                short defaultBurchase = 0;
+                                if (tbtn_isDefaultPurchases.IsChecked == true)
+                                    defaultBurchase = 1;
+
+                                short defaultSale = 0;
+                                if (tbtn_isDefaultSales.IsChecked == true)
+                                    defaultSale = 1;
+
+                                int unitValue = int.Parse(tb_count.Text);
+                                Nullable<int> smallUnitId = (int)cb_unit.SelectedValue;
+                                decimal price = decimal.Parse(tb_price.Text);
+                                string barcode = tb_barcode.Text;
+
+                                itemUnit.itemUnitId = 0;
+                                itemUnit.itemId = item.itemId;
+                                itemUnit.unitId = unitId;
+                                itemUnit.unitValue = unitValue;
+                                itemUnit.subUnitId = smallUnitId;
+                                itemUnit.defaultSale = defaultSale;
+                                itemUnit.defaultPurchase = defaultBurchase;
+                                itemUnit.price = price;
+                                itemUnit.barcode = barcode;
+                                itemUnit.createUserId = MainWindow.userID;
+
+                                string res = await itemUnit.saveItemUnit(itemUnit);
+                                if (res.Equals("true"))
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                                else
+                                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                                refreshItemUnitsGrid(item.itemId);
+                                Btn_unitClear(sender, e);
+                            }
+                        }
+
                     }
-                    if (valid == true)
-                    {
-                        // check barcode value if assigned to any item
-                        if (!checkBarcodeValidity(tb_barcode.Text))
-                        {
-                            SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorDuplicateBarcodeToolTip");
-                        }
-                        else //barcode is available
-                        {
-                            Nullable<int> unitId = null;
-                            if (cb_selectUnit.SelectedIndex != -1)
-                                unitId = units[cb_selectUnit.SelectedIndex].unitId;
-
-                            short defaultBurchase = 0;
-                            if (tbtn_isDefaultPurchases.IsChecked == true)
-                                defaultBurchase = 1;
-
-                            short defaultSale = 0;
-                            if (tbtn_isDefaultSales.IsChecked == true)
-                                defaultSale = 1;
-
-                            int unitValue = int.Parse(tb_count.Text);
-                            Nullable<int> smallUnitId = (int)cb_unit.SelectedValue;
-                            decimal price = decimal.Parse(tb_price.Text);
-                            string barcode = tb_barcode.Text;
-
-                            itemUnit.itemUnitId = 0;
-                            itemUnit.itemId = item.itemId;
-                            itemUnit.unitId = unitId;
-                            itemUnit.unitValue = unitValue;
-                            itemUnit.subUnitId = smallUnitId;
-                            itemUnit.defaultSale = defaultSale;
-                            itemUnit.defaultPurchase = defaultBurchase;
-                            itemUnit.price = price;
-                            itemUnit.barcode = barcode;
-                            itemUnit.createUserId = MainWindow.userID;
-
-                            string res = await itemUnit.saveItemUnit(itemUnit);
-                            if (res.Equals("true")) 
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                            else
-                                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                            refreshItemUnitsGrid(item.itemId);
-                            Btn_unitClear(sender, e);
-                        }
-                    }
-               
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopErrorBarcodeLength"), animation: ToasterAnimation.FadeIn);
                 }
-                else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopErrorBarcodeLength"), animation: ToasterAnimation.FadeIn);
-            }
-            tb_barcode.Focus();
+                tb_barcode.Focus();
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -996,114 +996,114 @@ namespace POS.View
         //**************update barcode******************
         async void Btn_updateBarcode_Click(object sender, RoutedEventArgs e)
         {
-                if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "update"))
-                {
-                    //check mandatory values
-                    validateUnitValues();
-
-            if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
-                || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
+            if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "update"))
             {
-                if (tb_barcode.Text.Length == 12 || tb_barcode.Text.Length == 13)
+                //check mandatory values
+                validateUnitValues();
+
+                if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
+                    || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
                 {
-                    char[] barcodeData;
-                    char checkDigit;
-                    bool valid = true;
-                    if (tb_barcode.Text.Length == 12)// generate checksum didit
+                    if (tb_barcode.Text.Length == 12 || tb_barcode.Text.Length == 13)
                     {
-                        barcodeData = tb_barcode.Text.ToCharArray();
-                        checkDigit = Mod10CheckDigit(barcodeData);
-                        tb_barcode.Text = checkDigit + tb_barcode.Text;
-                    }
-                    else if (tb_barcode.Text.Length == 13)
-                    {
-                        char cd = tb_barcode.Text[0];
-                        string barCode = tb_barcode.Text.Substring(1);
-                        barcodeData = barCode.ToCharArray();
-                        checkDigit = Mod10CheckDigit(barcodeData);
-                        if (checkDigit != cd)
+                        char[] barcodeData;
+                        char checkDigit;
+                        bool valid = true;
+                        if (tb_barcode.Text.Length == 12)// generate checksum didit
                         {
-                            valid = false;
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorBarcodeToolTip"), animation: ToasterAnimation.FadeIn);
+                            barcodeData = tb_barcode.Text.ToCharArray();
+                            checkDigit = Mod10CheckDigit(barcodeData);
+                            tb_barcode.Text = checkDigit + tb_barcode.Text;
                         }
-                    }
-                    if (valid == true)
-                    {
-                        // check barcode value if assigned to any item
-                        if (!checkBarcodeValidity(tb_barcode.Text) && itemUnit.barcode != tb_barcode.Text)
+                        else if (tb_barcode.Text.Length == 13)
                         {
-                            SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorDuplicateBarcodeToolTip");
+                            char cd = tb_barcode.Text[0];
+                            string barCode = tb_barcode.Text.Substring(1);
+                            barcodeData = barCode.ToCharArray();
+                            checkDigit = Mod10CheckDigit(barcodeData);
+                            if (checkDigit != cd)
+                            {
+                                valid = false;
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorBarcodeToolTip"), animation: ToasterAnimation.FadeIn);
+                            }
                         }
-                        else //barcode is available
+                        if (valid == true)
                         {
-                            Nullable<int> unitId = null;
-                            if (cb_selectUnit.SelectedIndex != -1)
-                                unitId = units[cb_selectUnit.SelectedIndex].unitId;
+                            // check barcode value if assigned to any item
+                            if (!checkBarcodeValidity(tb_barcode.Text) && itemUnit.barcode != tb_barcode.Text)
+                            {
+                                SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorDuplicateBarcodeToolTip");
+                            }
+                            else //barcode is available
+                            {
+                                Nullable<int> unitId = null;
+                                if (cb_selectUnit.SelectedIndex != -1)
+                                    unitId = units[cb_selectUnit.SelectedIndex].unitId;
 
-                            short defaultBurchase = 0;
-                            if (tbtn_isDefaultPurchases.IsChecked == true)
-                                defaultBurchase = 1;
+                                short defaultBurchase = 0;
+                                if (tbtn_isDefaultPurchases.IsChecked == true)
+                                    defaultBurchase = 1;
 
-                            short defaultSale = 0;
-                            if (tbtn_isDefaultSales.IsChecked == true)
-                                defaultSale = 1;
+                                short defaultSale = 0;
+                                if (tbtn_isDefaultSales.IsChecked == true)
+                                    defaultSale = 1;
 
-                            int  unitValue = int.Parse(tb_count.Text);
-                            Nullable<int> smallUnitId = (int)cb_unit.SelectedValue;
-                            decimal  price = decimal.Parse(tb_price.Text);
-                            string barcode = tb_barcode.Text;
+                                int unitValue = int.Parse(tb_count.Text);
+                                Nullable<int> smallUnitId = (int)cb_unit.SelectedValue;
+                                decimal price = decimal.Parse(tb_price.Text);
+                                string barcode = tb_barcode.Text;
 
-                            itemUnit.itemId = item.itemId;
-                            itemUnit.unitId = unitId;
-                            itemUnit.unitValue = unitValue;
-                            itemUnit.subUnitId = smallUnitId;
-                            itemUnit.defaultSale = defaultSale;
-                            itemUnit.defaultPurchase = defaultBurchase;
-                            itemUnit.price = price;
-                            itemUnit.barcode = barcode;
-                            itemUnit.createUserId = MainWindow.userID;
+                                itemUnit.itemId = item.itemId;
+                                itemUnit.unitId = unitId;
+                                itemUnit.unitValue = unitValue;
+                                itemUnit.subUnitId = smallUnitId;
+                                itemUnit.defaultSale = defaultSale;
+                                itemUnit.defaultPurchase = defaultBurchase;
+                                itemUnit.price = price;
+                                itemUnit.barcode = barcode;
+                                itemUnit.createUserId = MainWindow.userID;
 
-                            string res = await itemUnit.saveItemUnit(itemUnit);
-                            if (res.Equals("true"))
-                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                            else
-                                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                                string res = await itemUnit.saveItemUnit(itemUnit);
+                                if (res.Equals("true"))
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                                else
+                                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                            refreshItemUnitsGrid(item.itemId);
+                                refreshItemUnitsGrid(item.itemId);
+                            }
                         }
-                    }
-                }
-                else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopErrorBarcodeLength"), animation: ToasterAnimation.FadeIn);
-            }
-            tb_barcode.Focus();
-                }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-            }
-            //**********************************************
-            //**************delete barcode******************
-            async void Btn_deleteBarcode_Click(object sender, RoutedEventArgs e)
-        {
-                    if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "delete"))
-                    {
-                        if (itemUnit.itemUnitId != 0)
-            {
-                Boolean res = await itemUnit.Delete(itemUnit.itemUnitId);
-
-                if (res) 
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-                else 
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                refreshItemUnitsGrid(item.itemId);
-            }
-            tb_barcode.Focus();
                     }
                     else
-                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopErrorBarcodeLength"), animation: ToasterAnimation.FadeIn);
                 }
-            
+                tb_barcode.Focus();
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+        //**********************************************
+        //**************delete barcode******************
+        async void Btn_deleteBarcode_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "delete"))
+            {
+                if (itemUnit.itemUnitId != 0)
+                {
+                    Boolean res = await itemUnit.Delete(itemUnit.itemUnitId);
+
+                    if (res)
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                    refreshItemUnitsGrid(item.itemId);
+                }
+                tb_barcode.Focus();
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+
 
         #endregion barcode
 
@@ -1181,7 +1181,7 @@ namespace POS.View
             }
 
         }
-   
+
         private void Tb_taxes_LostFocus(object sender, RoutedEventArgs e)
         {
             var bc = new BrushConverter();
@@ -1242,9 +1242,9 @@ namespace POS.View
                 char checkDigit;
                 char[] barcodeData;
                 TextBox tb = (TextBox)sender;
-               //string barCode = "";
-               // if (!tb.Text.Equals(""))
-                 string barCode = tb_barcode.Text;
+                //string barCode = "";
+                // if (!tb.Text.Equals(""))
+                string barCode = tb_barcode.Text;
 
                 //int inputLength = barCode.Length;
                 char cd = barCode[0];
@@ -1262,7 +1262,7 @@ namespace POS.View
             }
             //else
             //    tb_barcode.Clear();
-           // HandleKeyPress(sender,e);
+            // HandleKeyPress(sender,e);
         }
 
         public static char Mod10CheckDigit(char[] data)
@@ -1291,7 +1291,7 @@ namespace POS.View
         async void fillCategories()
         {
             categories = await categoryModel.GetAllCategories();
-            if(categories != null)
+            if (categories != null)
                 cb_categorie.ItemsSource = categories.ToList();
             cb_categorie.SelectedValuePath = "categoryId";
             cb_categorie.DisplayMemberPath = "name";
@@ -1313,7 +1313,7 @@ namespace POS.View
         }
         private async Task fillSmallUnits(int itemId, int unitId)
         {
-            List<Unit> units = await unitModel.getSmallUnits(itemId,unitId);
+            List<Unit> units = await unitModel.getSmallUnits(itemId, unitId);
             cb_unit.ItemsSource = units.ToList();
             cb_unit.SelectedValuePath = "unitId";
             cb_unit.DisplayMemberPath = "name";
@@ -1390,9 +1390,9 @@ namespace POS.View
 
             SectionData.clearComboBoxValidate(cb_selectUnit, p_errorSelectUnit);
             SectionData.clearComboBoxValidate(cb_unit, p_errorUnit);
-            SectionData.clearValidate(tb_count,p_errorCount);
-            SectionData.clearValidate(tb_price,p_errorPrice);
-            SectionData.clearValidate(tb_barcode,p_errorBarcode);
+            SectionData.clearValidate(tb_count, p_errorCount);
+            SectionData.clearValidate(tb_price, p_errorPrice);
+            SectionData.clearValidate(tb_barcode, p_errorBarcode);
         }
         async void refreshSerials(int itemId)
         {
@@ -1446,7 +1446,7 @@ namespace POS.View
                 tb_price.Text = itemUnit.price.ToString();
                 tb_barcode.Text = itemUnit.barcode;
 
-               drawBarcode(itemUnit.barcode.Substring(1));
+                drawBarcode(itemUnit.barcode.Substring(1));
             }
             tb_barcode.Focus();
         }
@@ -1869,8 +1869,8 @@ namespace POS.View
         }
 
         #endregion
- 
-      
+
+
         #region Toggle Button Y
         /// <summary>
         /// Category
@@ -1961,22 +1961,22 @@ namespace POS.View
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
             {
                 if (items is null)
-                await RefrishItems();
-            txtItemSearch = txb_searchitems.Text.ToLower();
-            pageIndex = 1;
+                    await RefrishItems();
+                txtItemSearch = txb_searchitems.Text.ToLower();
+                pageIndex = 1;
 
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            txt_count.Text = itemsQuery.Count().ToString();
-            if (btns is null)
-                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-            RefrishItemsDatagrid(itemsQuery);
-            tb_barcode.Focus();
+                #region
+                itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+                x.name.ToLower().Contains(txtItemSearch) ||
+                x.details.ToLower().Contains(txtItemSearch)
+                ) && x.isActive == tglItemState);
+                txt_count.Text = itemsQuery.Count().ToString();
+                if (btns is null)
+                    btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+                RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+                #endregion
+                RefrishItemsDatagrid(itemsQuery);
+                tb_barcode.Focus();
             }
         }
 
@@ -2151,15 +2151,62 @@ namespace POS.View
         {
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
             {
-
+                this.Dispatcher.Invoke(() =>
+                {
+                    Thread t1 = new Thread(FN_ExportToExcel);
+                    t1.SetApartmentState(ApartmentState.STA);
+                    t1.Start();
+                });
             } else
-            Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
+        void FN_ExportToExcel()
+        {
+            var QueryExcel = itemsQuery.AsEnumerable().Select(x => new
+            {
+                code = x.code,
+                name = x.name,
+                details = x.details,
+                parentName = x.parentName,
+                categoryName = x.categoryName,
+                type = convertItemType(x.type),
+                taxes = x.taxes,
+                minUnit = x.min  + x.minUnitName,
+                maxUnit = x.max  + x.maxUnitName,
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trCode");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trName");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trDetails");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trParentName");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trCategorie");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trItemType");
+            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trTax");
+            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trMinUnit");
+            DTForExcel.Columns[7].Caption = MainWindow.resourcemanager.GetString("trMaxUnit");
+            ExportToExcel.Export(DTForExcel);
+        }
+        string convertItemType(string s)
+        {
+            switch (s)
+            {
+                case "n": s = MainWindow.resourcemanager.GetString("trNormalItem");
+                    break;
+                case "d": s = MainWindow.resourcemanager.GetString("trHaveExpirationDate");
+                    break;
+                case "sn": s = MainWindow.resourcemanager.GetString("trHaveSerialNumber");
+                    break;
+                case "sr": s = MainWindow.resourcemanager.GetString("trService"); 
+                    break;
+                case "p": s = MainWindow.resourcemanager.GetString("trPackageItems"); 
+                    break;
+            }
+            return s;
+        }
+    #endregion
 
-        #endregion
-
-        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
+    private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
             {
@@ -2255,6 +2302,11 @@ namespace POS.View
             //for (int i = 0; i < itemsList.Count(); i++)
             //    if (!cb_parentItem.Items.Contains(itemsList[i].parentId))
             //        cb_parentItem.Items.Add(itemsList[i].parentId);
+        }
+
+        private void Cb_storageCost_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }
