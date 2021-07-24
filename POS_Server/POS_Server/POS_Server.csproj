@@ -270,10 +270,11 @@
     <Compile Include="Controllers\ObjectsController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\PointsController.cs" />
+    <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="Controllers\shippingCompaniesController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
-    <Compile Include="Controllers\StorageCostModel.cs" />
-    <Compile Include="Controllers\SysEmailsModel.cs" />
+    <Compile Include="Controllers\StorageCostController.cs" />
+    <Compile Include="Controllers\SysEmailsController.cs" />
     <Compile Include="Controllers\userSetValuesController.cs" />
     <Compile Include="Controllers\CategoryuserController.cs" />
     <Compile Include="Controllers\setValuesController.cs" />
