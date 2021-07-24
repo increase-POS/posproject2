@@ -661,8 +661,10 @@ namespace POS.View.storage
             wd_invoice w = new wd_invoice();
 
             w.invoiceType = "imd ,exd";
+            w.userId = MainWindow.userLogin.userId;
+            w.duration = 2; // view drafts which updated during 2 last days 
             w.title = MainWindow.resourcemanager.GetString("trDrafts");
-            w.branchId = MainWindow.branchID.Value;
+           // w.branchId = MainWindow.branchID.Value;
 
             if (w.ShowDialog() == true)
             {

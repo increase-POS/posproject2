@@ -837,10 +837,10 @@ namespace POS.View.sales
                 // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
 
-            w.invoiceType = "ord"; //draft order
-            w.userId = MainWindow.userLogin.userId;
-
-            w.title = MainWindow.resourcemanager.GetString("trDrafts");
+                w.invoiceType = "ord"; //draft order
+                w.userId = MainWindow.userLogin.userId;
+                w.duration = 2; // view drafts which updated during 2 last days 
+                w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
             if (w.ShowDialog() == true)
             {
@@ -943,7 +943,8 @@ namespace POS.View.sales
             // quontations invoices
             w.invoiceType = "or";
             w.userId = MainWindow.userLogin.userId;
-            w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
+                w.duration = 1; // view orders which updated during 1 last days 
+                w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
 
             if (w.ShowDialog() == true)
             {

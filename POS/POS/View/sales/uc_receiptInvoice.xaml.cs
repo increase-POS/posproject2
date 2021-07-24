@@ -861,7 +861,7 @@ namespace POS.View
 
             w.invoiceType = "sd ,sbd"; //sales draft invoices , sales bounce drafts
             w.userId = MainWindow.userLogin.userId;
-
+            w.duration = 2; // view drafts which updated during 2 last days 
             w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
             if (w.ShowDialog() == true)
@@ -914,7 +914,7 @@ namespace POS.View
             w.invoiceType = "s";
             // w.branchCreatorId = MainWindow.branchID.Value;
             w.userId = MainWindow.userLogin.userId;
-            w.duration = 1; // view drafts which created during 1 last days 
+            w.duration = 1; // view drafts which updated during 1 last days 
 
             w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
 

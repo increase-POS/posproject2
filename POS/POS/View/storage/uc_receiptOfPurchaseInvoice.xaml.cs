@@ -402,8 +402,9 @@ namespace POS.View.storage
 
             // sale invoices
             w.invoiceType = "pbd";
-            w.branchId = MainWindow.branchID.Value;
-
+            // w.branchId = MainWindow.branchID.Value;
+            w.userId = MainWindow.userLogin.userId;
+            w.duration = 2; // view drafts which updated during 2 last days
             w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
             if (w.ShowDialog() == true)

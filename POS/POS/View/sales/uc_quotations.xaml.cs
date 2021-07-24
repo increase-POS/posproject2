@@ -801,7 +801,7 @@ namespace POS.View.sales
 
             w.invoiceType = "qd"; //quontations draft invoices
             w.userId = MainWindow.userLogin.userId;
-
+            w.duration = 2; // view drafts which updated during 2 last days 
             w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
             if (w.ShowDialog() == true)
@@ -894,7 +894,8 @@ namespace POS.View.sales
 
             // quontations invoices
             w.invoiceType = "q";
-            w.branchCreatorId = MainWindow.branchID.Value;
+            w.userId = MainWindow.userLogin.userId;
+            w.duration = 1; // view quotations which updated during 1 last days 
             w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
 
             if (w.ShowDialog() == true)
