@@ -130,6 +130,7 @@
     <NavigationProperty Name="locations" Relationship="Self.FK_locations_branches1" FromRole="branches" ToRole="locations" />
     <NavigationProperty Name="pos" Relationship="Self.FK_pos_branches" FromRole="branches" ToRole="pos" />
     <NavigationProperty Name="sections" Relationship="Self.FK_sections_branches" FromRole="branches" ToRole="sections" />
+    <NavigationProperty Name="sysEmails" Relationship="incposdbModel.FK_sysEmails_branches" FromRole="branches" ToRole="sysEmails" />
   </EntityType>
   <EntityType Name="branchesUsers">
     <Key>
@@ -692,6 +693,8 @@
     <NavigationProperty Name="users1" Relationship="Self.FK_itemsUnits_users1" FromRole="itemsUnits" ToRole="users" />
     <NavigationProperty Name="packages" Relationship="Self.FK_packages_itemsUnits" FromRole="itemsUnits" ToRole="packages" />
     <NavigationProperty Name="packages1" Relationship="Self.FK_packages_itemsUnits1" FromRole="itemsUnits" ToRole="packages" />
+    <Property Name="storageCostId" Type="Int32" />
+    <NavigationProperty Name="storageCost" Relationship="incposdbModel.FK_itemsUnits_storageCost" FromRole="itemsUnits" ToRole="storageCost" />
   </EntityType>
   <EntityType Name="itemTransferOffer">
     <Key>
@@ -1262,6 +1265,8 @@
     <NavigationProperty Name="userSetValues1" Relationship="Self.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
     <NavigationProperty Name="userSetValues2" Relationship="Self.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
     <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
+    <NavigationProperty Name="sysEmails" Relationship="incposdbModel.FK_sysEmails_users" FromRole="users" ToRole="sysEmails" />
+    <NavigationProperty Name="sysEmails1" Relationship="incposdbModel.FK_sysEmails_users1" FromRole="users" ToRole="sysEmails" />
   </EntityType>
   <EntityType Name="userSetValues">
     <Key>
@@ -4247,5 +4252,110 @@
       <End Role="users" EntitySet="users" />
       <End Role="usersLogs" EntitySet="usersLogs" />
     </AssociationSet>
+    <EntitySet Name="storageCost" EntityType="incposdbModel.storageCost" />
+    <EntitySet Name="sysEmails" EntityType="incposdbModel.sysEmails" />
+    <AssociationSet Name="FK_sysEmails_branches" Association="incposdbModel.FK_sysEmails_branches">
+      <End Role="branches" EntitySet="branches" />
+      <End Role="sysEmails" EntitySet="sysEmails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_itemsUnits_storageCost" Association="incposdbModel.FK_itemsUnits_storageCost">
+      <End Role="storageCost" EntitySet="storageCost" />
+      <End Role="itemsUnits" EntitySet="itemsUnits" />
+    </AssociationSet>
+    <AssociationSet Name="FK_sysEmails_users" Association="incposdbModel.FK_sysEmails_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="sysEmails" EntitySet="sysEmails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_sysEmails_users1" Association="incposdbModel.FK_sysEmails_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="sysEmails" EntitySet="sysEmails" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="storageCost">
+    <Key>
+      <PropertyRef Name="storageCostId" />
+    </Key>
+    <Property Name="storageCostId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="cost" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
+    <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="isActive" Type="Byte" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <NavigationProperty Name="itemsUnits" Relationship="incposdbModel.FK_itemsUnits_storageCost" FromRole="storageCost" ToRole="itemsUnits" />
+  </EntityType>
+  <EntityType Name="sysEmails">
+    <Key>
+      <PropertyRef Name="emailId" />
+    </Key>
+    <Property Name="emailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="port" Type="Int32" />
+    <Property Name="isSSL" Type="Boolean" />
+    <Property Name="smtpClient" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="side" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="notes" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="branchId" Type="Int32" />
+    <Property Name="isActive" Type="Byte" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="isMajor" Type="Boolean" />
+    <NavigationProperty Name="branches" Relationship="incposdbModel.FK_sysEmails_branches" FromRole="sysEmails" ToRole="branches" />
+    <NavigationProperty Name="users" Relationship="incposdbModel.FK_sysEmails_users" FromRole="sysEmails" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_sysEmails_users1" FromRole="sysEmails" ToRole="users" />
+  </EntityType>
+  <Association Name="FK_sysEmails_branches">
+    <End Type="incposdbModel.branches" Role="branches" Multiplicity="0..1" />
+    <End Type="incposdbModel.sysEmails" Role="sysEmails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="branches">
+        <PropertyRef Name="branchId" />
+      </Principal>
+      <Dependent Role="sysEmails">
+        <PropertyRef Name="branchId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_itemsUnits_storageCost">
+    <End Type="incposdbModel.storageCost" Role="storageCost" Multiplicity="0..1" />
+    <End Type="incposdbModel.itemsUnits" Role="itemsUnits" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="storageCost">
+        <PropertyRef Name="storageCostId" />
+      </Principal>
+      <Dependent Role="itemsUnits">
+        <PropertyRef Name="storageCostId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_sysEmails_users">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.sysEmails" Role="sysEmails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="sysEmails">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_sysEmails_users1">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.sysEmails" Role="sysEmails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="sysEmails">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

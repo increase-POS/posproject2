@@ -528,6 +528,7 @@
     <Property Name="updateUserId" Type="int" />
     <Property Name="subUnitId" Type="int" />
     <Property Name="purchasePrice" Type="decimal" Precision="20" Scale="2" />
+    <Property Name="storageCostId" Type="int" />
   </EntityType>
   <EntityType Name="itemTransferOffer">
     <Key>
@@ -838,6 +839,20 @@
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
   </EntityType>
+  <EntityType Name="storageCost">
+    <Key>
+      <PropertyRef Name="storageCostId" />
+    </Key>
+    <Property Name="storageCostId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="200" />
+    <Property Name="cost" Type="decimal" Precision="20" Scale="2" Nullable="false" />
+    <Property Name="note" Type="ntext" />
+    <Property Name="isActive" Type="tinyint" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+  </EntityType>
   <EntityType Name="subscriptionFees">
     <Key>
       <PropertyRef Name="subscriptionFeesId" />
@@ -862,6 +877,27 @@
     <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="version" Type="int" />
     <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="sysEmails">
+    <Key>
+      <PropertyRef Name="emailId" />
+    </Key>
+    <Property Name="emailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" />
+    <Property Name="email" Type="nvarchar" MaxLength="100" />
+    <Property Name="password" Type="nvarchar" MaxLength="100" />
+    <Property Name="port" Type="int" />
+    <Property Name="isSSL" Type="bit" />
+    <Property Name="smtpClient" Type="nvarchar" MaxLength="100" />
+    <Property Name="side" Type="nvarchar" MaxLength="100" />
+    <Property Name="notes" Type="nvarchar" MaxLength="100" />
+    <Property Name="branchId" Type="int" />
+    <Property Name="isActive" Type="tinyint" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+    <Property Name="isMajor" Type="bit" />
   </EntityType>
   <EntityType Name="units">
     <Key>
@@ -2262,6 +2298,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_itemsUnits_storageCost">
+    <End Role="storageCost" Type="Self.storageCost" Multiplicity="0..1" />
+    <End Role="itemsUnits" Type="Self.itemsUnits" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="storageCost">
+        <PropertyRef Name="storageCostId" />
+      </Principal>
+      <Dependent Role="itemsUnits">
+        <PropertyRef Name="storageCostId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_itemsUnits_units">
     <End Role="units" Type="Self.units" Multiplicity="0..1" />
     <End Role="itemsUnits" Type="Self.itemsUnits" Multiplicity="*" />
@@ -2994,6 +3042,42 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_sysEmails_branches">
+    <End Role="branches" Type="Self.branches" Multiplicity="0..1" />
+    <End Role="sysEmails" Type="Self.sysEmails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="branches">
+        <PropertyRef Name="branchId" />
+      </Principal>
+      <Dependent Role="sysEmails">
+        <PropertyRef Name="branchId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_sysEmails_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="sysEmails" Type="Self.sysEmails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="sysEmails">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_sysEmails_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="sysEmails" Type="Self.sysEmails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="sysEmails">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_units_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="units" Type="Self.units" Multiplicity="*" />
@@ -3155,8 +3239,10 @@
     <EntitySet Name="setting" EntityType="Self.setting" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="setValues" EntityType="Self.setValues" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="shippingCompanies" EntityType="Self.shippingCompanies" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="storageCost" EntityType="Self.storageCost" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="subscriptionFees" EntityType="Self.subscriptionFees" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysEmails" EntityType="Self.sysEmails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="units" EntityType="Self.units" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="userSetValues" EntityType="Self.userSetValues" Schema="dbo" store:Type="Tables" />
@@ -3605,6 +3691,10 @@
       <End Role="items" EntitySet="items" />
       <End Role="itemsUnits" EntitySet="itemsUnits" />
     </AssociationSet>
+    <AssociationSet Name="FK_itemsUnits_storageCost" Association="Self.FK_itemsUnits_storageCost">
+      <End Role="storageCost" EntitySet="storageCost" />
+      <End Role="itemsUnits" EntitySet="itemsUnits" />
+    </AssociationSet>
     <AssociationSet Name="FK_itemsUnits_units" Association="Self.FK_itemsUnits_units">
       <End Role="units" EntitySet="units" />
       <End Role="itemsUnits" EntitySet="itemsUnits" />
@@ -3848,6 +3938,18 @@
     <AssociationSet Name="FK_subscriptionFees_memberships" Association="Self.FK_subscriptionFees_memberships">
       <End Role="memberships" EntitySet="memberships" />
       <End Role="subscriptionFees" EntitySet="subscriptionFees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_sysEmails_branches" Association="Self.FK_sysEmails_branches">
+      <End Role="branches" EntitySet="branches" />
+      <End Role="sysEmails" EntitySet="sysEmails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_sysEmails_users" Association="Self.FK_sysEmails_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="sysEmails" EntitySet="sysEmails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_sysEmails_users1" Association="Self.FK_sysEmails_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="sysEmails" EntitySet="sysEmails" />
     </AssociationSet>
     <AssociationSet Name="FK_units_users" Association="Self.FK_units_users">
       <End Role="users" EntitySet="users" />

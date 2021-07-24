@@ -52,8 +52,9 @@ namespace POS_Server.Controllers
                                              barcode = IU.barcode,
                                              updateDate = IU.updateDate,
                                              updateUserId = IU.updateUserId,
+                                           storageCostId =IU.storageCostId,
 
-                                         })
+    })
                                          .ToList();
 
                     if (itemUnitsList == null)
@@ -159,7 +160,7 @@ namespace POS_Server.Controllers
                             tmpItemUnit.defaultSale = newObject.defaultSale;
                             tmpItemUnit.updateDate = DateTime.Now;
                             tmpItemUnit.updateUserId = newObject.updateUserId;
-
+                            tmpItemUnit.storageCostId = newObject.storageCostId;
                             message = "Item Unit Is Updated Successfully";
                         }
                         entity.SaveChanges();
@@ -294,6 +295,7 @@ namespace POS_Server.Controllers
                                              itemName=i.name,
                                              itemCode=i.code,
                                              unitName = u.name,
+                                            storageCostId = IU.storageCostId,
 
                                          })
                                          .ToList();
@@ -361,6 +363,7 @@ namespace POS_Server.Controllers
                                              itemName = i.name,
                                              itemCode = i.code,
                                              unitName = u.name,
+                                             storageCostId=IU.storageCostId,
 
                                          })
                                          .ToList();

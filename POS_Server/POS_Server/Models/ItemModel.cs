@@ -45,6 +45,8 @@ namespace POS_Server.Models
         public Nullable<int> offerId { get; set; }
         public Nullable<decimal> priceTax { get; set; }
 
-
+        public string parentName { get; set; }
+        public string minUnitName { get; set; }
+        public string maxUnitName { get; set; }
     }
 }

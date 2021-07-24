@@ -244,6 +244,12 @@
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users2" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_usersLogs_users" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="incposdbModel.storageCost" Width="1.5" PointX="8.25" PointY="107.25" />
+        <EntityTypeShape EntityType="incposdbModel.sysEmails" Width="1.5" PointX="11.25" PointY="71.25" />
+        <AssociationConnector Association="incposdbModel.FK_sysEmails_branches" />
+        <AssociationConnector Association="incposdbModel.FK_itemsUnits_storageCost" />
+        <AssociationConnector Association="incposdbModel.FK_sysEmails_users" />
+        <AssociationConnector Association="incposdbModel.FK_sysEmails_users1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

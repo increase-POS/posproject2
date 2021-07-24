@@ -272,6 +272,8 @@
     <Compile Include="Controllers\PointsController.cs" />
     <Compile Include="Controllers\shippingCompaniesController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
+    <Compile Include="Controllers\StorageCostModel.cs" />
+    <Compile Include="Controllers\SysEmailsModel.cs" />
     <Compile Include="Controllers\userSetValuesController.cs" />
     <Compile Include="Controllers\CategoryuserController.cs" />
     <Compile Include="Controllers\setValuesController.cs" />
@@ -396,6 +398,8 @@
     <Compile Include="Models\PropertiesItemModel.cs" />
     <Compile Include="Models\PropertyModel.cs" />
     <Compile Include="Models\shippingCompaniesModel.cs" />
+    <Compile Include="Models\StorageCostModel.cs" />
+    <Compile Include="Models\SysEmailsModel.cs" />
     <Compile Include="Models\UnitModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\usersLogsModel.cs" />
@@ -468,10 +472,16 @@
     <Compile Include="shippingCompanies.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="storageCost.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="subscriptionFees.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="sysdiagrams.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysEmails.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="units.cs">

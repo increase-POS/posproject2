@@ -38,6 +38,7 @@ namespace POS_Server
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> subUnitId { get; set; }
         public Nullable<decimal> purchasePrice { get; set; }
+        public Nullable<int> storageCostId { get; set; }
     
         public virtual items items { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -53,5 +54,6 @@ namespace POS_Server
         public virtual ICollection<packages> packages { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<packages> packages1 { get; set; }
+        public virtual storageCost storageCost { get; set; }
     }
 }

@@ -25,5 +25,6 @@ namespace POS_Server.Models
         public string itemName { get; set; }
         public string itemCode { get; set; }
         public string unitName { get; set; }
+        public Nullable<int> storageCostId { get; set; }
     }
 }

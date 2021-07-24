@@ -119,6 +119,7 @@ namespace POS_Server.Controllers
                                     itemId = u.items.itemId,
                                     itemName = u.items.name,
                                     unitId = un.unitId,
+                                    itemUnitId = u.itemUnitId,
                                     unitName = un.name,
                                     section = lo.sections.name,
                                     location = lo.x + "-" + lo.y + "-" + lo.z,

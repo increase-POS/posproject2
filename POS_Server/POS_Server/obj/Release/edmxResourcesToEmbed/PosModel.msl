@@ -544,6 +544,7 @@
     <EntitySetMapping Name="itemsUnits">
       <EntityTypeMapping TypeName="incposdbModel.itemsUnits">
         <MappingFragment StoreEntitySet="itemsUnits">
+          <ScalarProperty Name="storageCostId" ColumnName="storageCostId" />
           <ScalarProperty Name="itemUnitId" ColumnName="itemUnitId" />
           <ScalarProperty Name="itemId" ColumnName="itemId" />
           <ScalarProperty Name="unitId" ColumnName="unitId" />
@@ -986,6 +987,43 @@
           <ScalarProperty Name="sOutDate" ColumnName="sOutDate" />
           <ScalarProperty Name="posId" ColumnName="posId" />
           <ScalarProperty Name="userId" ColumnName="userId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="storageCost">
+      <EntityTypeMapping TypeName="incposdbModel.storageCost">
+        <MappingFragment StoreEntitySet="storageCost">
+          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+          <ScalarProperty Name="createDate" ColumnName="createDate" />
+          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="note" ColumnName="note" />
+          <ScalarProperty Name="cost" ColumnName="cost" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="storageCostId" ColumnName="storageCostId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysEmails">
+      <EntityTypeMapping TypeName="incposdbModel.sysEmails">
+        <MappingFragment StoreEntitySet="sysEmails">
+          <ScalarProperty Name="isMajor" ColumnName="isMajor" />
+          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+          <ScalarProperty Name="createDate" ColumnName="createDate" />
+          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="branchId" ColumnName="branchId" />
+          <ScalarProperty Name="notes" ColumnName="notes" />
+          <ScalarProperty Name="side" ColumnName="side" />
+          <ScalarProperty Name="smtpClient" ColumnName="smtpClient" />
+          <ScalarProperty Name="isSSL" ColumnName="isSSL" />
+          <ScalarProperty Name="port" ColumnName="port" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Data.Entity.Core.Objects;
+using System.Linq;
 
 namespace POS_Server.Controllers
 {
@@ -74,6 +75,58 @@ namespace POS_Server.Controllers
             }
             //else
             return NotFound();
+        }
+        [HttpGet]
+        [Route("GetAvgItemPrice")]
+        public decimal GetAvgItemPrice(int itemUnitId, int itemId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            decimal price = 0;
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var itemUnits = entity.itemsUnits.Where(i => i.itemId == itemId).Select(i => itemUnitId).ToList();
+                price += getItemUnitPrice(itemUnits);
+                    return price;
+                }
+            }
+            return price;
+        }
+        private decimal getItemUnitPrice(List<int> itemUnits)
+        {
+            decimal price = 0;
+
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                var sumPrice = (from b in entity.invoices where b.invType == "p"
+                                  join s in entity.itemsTransfer.Where(x => itemUnits.Contains((int)x.itemUnitId)) on b.invoiceId equals s.invoiceId 
+                                  select  s.quantity * s.price).Sum();
+                //var quantity = (from b in entity.invoices
+                //                where b.invType == "p"
+                //                join s in entity.itemsTransfer on b.invoiceId equals s.invoiceId
+                //                where s.itemUnitId == itemUnitId
+                //                select s.quantity).Sum();
+
+                //var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
+                //var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+
+                //if (upperUnit != null && itemUnitId == upperUnit.itemUnitId)
+                //    return price;
+                //if (upperUnit != null)
+                //    price += (int)upperUnit.unitValue * getItemUnitPrice(upperUnit.itemUnitId);
+
+                return price;
+            }
         }
         [HttpGet]
         [Route("GetByInvoiceId")]
@@ -525,12 +578,15 @@ namespace POS_Server.Controllers
                 {
                     var searchPredicate = PredicateBuilder.New<invoices>();
                   
-                    if (duration > 0) 
-                        searchPredicate = searchPredicate.And(inv => DbFunctions.DiffDays(DateTime.Now ,  inv.updateDate).Value < duration &&  invTypeL.Contains(inv.invType) && inv.createUserId == createUserId);
-                    else
-                        searchPredicate = searchPredicate.And(x => invTypeL.Contains(x.invType) && x.createUserId == createUserId);
+                    if (duration > 0)
+                    {
+                        DateTime dt = Convert.ToDateTime(DateTime.Today.AddDays(-duration).ToShortDateString());
+                        searchPredicate = searchPredicate.And(inv =>  inv.updateDate >= dt);
+                    }
+                  searchPredicate = searchPredicate.And(inv => invTypeL.Contains(inv.invType));
+                  searchPredicate = searchPredicate.And(inv =>  inv.createUserId == createUserId);
                     
-                    var invoicesList = (from b in entity.invoices.Where(inv => invTypeL.Contains(inv.invType) && inv.createUserId == createUserId)
+                    var invoicesList = (from b in entity.invoices.Where(searchPredicate)
                                         join l in entity.branches on b.branchId equals l.branchId into lj
                                         from x in lj.DefaultIfEmpty()
                                         select new InvoiceModel()
@@ -567,12 +623,19 @@ namespace POS_Server.Controllers
                                            shipUserId =  b.shipUserId,
                                         })
                     .ToList();
-
-                    int sequence = 0;
-                    for(int i=0;i<invoicesList.Count; i++)
+                  
+                    //List<string> lstStr = new List<string>();
+                   // lstStr.AddRange(myStrings);
+                   // bool hasMatch = invTypeL.Any(lstStr.Contains);
+                   bool hasMatch = new string[] { "pd", "pbd", "sd", "sbd", "qd", "ord" ,"or"}.Any(s => invTypeL.Contains(s));
+                    if (hasMatch)
                     {
-                        sequence++;
-                        invoicesList[i].invNumber = sequence.ToString();
+                        int sequence = 0;
+                        for (int i = 0; i < invoicesList.Count; i++)
+                        {
+                            sequence++;
+                            invoicesList[i].invNumber = sequence.ToString();
+                        }
                     }
                     if (invoicesList != null)
                     {

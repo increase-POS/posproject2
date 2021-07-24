@@ -2467,7 +2467,7 @@ notes
                                         UpdateuserAccName = ITUPUSER.username,
                                         I.invoiceId,
                                         I.invNumber,
-                                        I.agentId,
+                                      
                                         I.posId,
                                         I.invType,
                                         I.total,
@@ -2511,6 +2511,8 @@ notes
                                         //   agentType = JAA.type,
                                         agentType =((JAA.name == null ||JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
                                         ?"c": JAA.type,
+                                        agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                        ? 0 : I.agentId,
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
                                         cUserAccName = JUU.username,

@@ -456,7 +456,6 @@ namespace POS_Server.Controllers
                             newItemL.endDate = itemObject.endDate;
                         if (itemObject.startDate != null)
                             newItemL.startDate = itemObject.startDate;
-                       // newItemL.storeCost = (int)itemObject.storeCost;
                         newItemL.updateDate = DateTime.Now;
                         newItemL.updateUserId = (int)itemObject.createUserId;
                         newItemL.itemUnitId = (int)itemObject.itemUnitId;
@@ -526,7 +525,7 @@ namespace POS_Server.Controllers
                 if (requiredAmount != 0)
                 {
                     int newQuant = checkUpperUnit(itemUnitId, branchId, requiredAmount);
-                   // return Ok(newQuant);
+
                     var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
                     var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
@@ -674,7 +673,7 @@ namespace POS_Server.Controllers
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
                 var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
-                if (itemUnitId == upperUnit.itemUnitId)
+                if (upperUnit != null && itemUnitId == upperUnit.itemUnitId)
                     return amount;
                 if (upperUnit != null)
                     amount += (int)upperUnit.unitValue * getItemUnitAmount(upperUnit.itemUnitId,branchId);
@@ -711,6 +710,42 @@ namespace POS_Server.Controllers
                     {
                         decreaseItemQuantity(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity, userId);
                     }
+                }
+            }
+            return Ok(1);
+        }
+        [HttpPost]
+        [Route("destroyItem")]
+        public IHttpActionResult destroyItem(string itemLocationObject,int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            itemLocationObject = itemLocationObject.Replace("\\", string.Empty);
+            itemLocationObject = itemLocationObject.Trim('"');
+
+            if (valid)
+            {
+                List<itemsLocations> itemList = JsonConvert.DeserializeObject<List<itemsLocations>>(itemLocationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    foreach (itemsLocations item in itemList)
+                    {
+                        itemsLocations itemL = new itemsLocations();
+
+                        itemL = entity.itemsLocations.Find(item.itemsLocId);
+                        itemL.quantity -= item.quantity;
+                        itemL.updateDate = DateTime.Now;
+                        itemL.updateUserId = userId;
+                    }
+                    entity.SaveChanges();
                 }
             }
             return Ok(1);
@@ -792,13 +827,13 @@ namespace POS_Server.Controllers
                    
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var docImageList = (from b in entity.itemsLocations
+                    var locList = (from b in entity.itemsLocations
                                         where b.quantity > 0 && ids.Contains(b.itemUnitId??0)
                                         join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
                                         join i in entity.items on u.itemId equals i.itemId
                                         join l in entity.locations on b.locationId equals l.locationId
                                         join s in entity.sections on l.sectionId equals s.sectionId
-                                        where s.branchId == branchId && s.isFreeZone != 1
+                                        where s.branchId == branchId 
 
                                         select new ItemLocationModel
                                         {
@@ -819,13 +854,13 @@ namespace POS_Server.Controllers
                                             isFreeZone = s.isFreeZone,
                                             itemType = i.type,
                                             location = l.x+l.y+l.z,
-                                        })
+                                        }).OrderBy(a => a.endDate)
                                     .ToList();
 
-                    if (docImageList == null)
+                    if (locList == null)
                         return NotFound();
                     else
-                        return Ok(docImageList);
+                        return Ok(locList);
                 }
             }
             //else
