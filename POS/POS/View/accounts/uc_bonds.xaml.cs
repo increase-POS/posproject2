@@ -84,6 +84,8 @@ namespace POS.View.accounts
 
                 if (bond != null)
                 {
+                    tb_number.Text = bond.number;
+                    MessageBox.Show(bond.ctusersName);
                     //MessageBox.Show(bond.bondId.ToString() +"-"+bond.cashTransId.ToString());
                     //MessageBox.Show(bond.deserveDate.ToString() +"-"+bond.updateDate.ToString());
                     //MessageBox.Show(bond.ctside +"-"+bond.ctposName);

@@ -567,7 +567,7 @@
 
 
                 <!--////////////////////////////////  Item Data ////////////////////////////////////////////////////////-->
-                <Grid x:Name="grid_itemData" Grid.Row="1"   Visibility="Visible">
+                <Grid x:Name="grid_itemData" Grid.Row="1"   Visibility="Collapsed">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="auto"></RowDefinition>
@@ -1336,7 +1336,7 @@
                     </Grid>
                 <!--////////////////////////////////////    Barcode    ////////////////////////////////////////////////////-->
                 <Grid  Grid.Row="1"
-                      x:Name="dg_barcode"  Visibility="Collapsed" >
+                      x:Name="dg_barcode"  Visibility="Visible" >
                     <Grid.RowDefinitions >
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
@@ -1566,7 +1566,7 @@
                             PreviewKeyDown="space_PreviewKeyDown"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      
-                  Height="40"  Margin="10,5,10,5" >
+                  Height="40"  Margin="10,5,0,5" >
                                 </TextBox>
                                 <Path x:Name="p_errorPrice" Grid.Row="3" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -1576,13 +1576,11 @@
                                         <ToolTip x:Name="tt_errorPrice"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                     </Path.ToolTip>
                                 </Path>
-
                                 <ComboBox x:Name="cb_storageCost" Grid.Column ="1"
-                                             Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                             materialDesign:HintAssist.Hint="storageCost... "  
+                                 Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                             materialDesign:HintAssist.Hint="storage Cost... "  
                            TextBlock.FontSize="12"   Background="#f8f8f8" 
-                        
                           Height="40"  Margin="5,5,10,5"
                            BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_storageCost_SelectionChanged" >
                                 </ComboBox>

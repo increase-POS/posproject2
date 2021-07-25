@@ -470,6 +470,7 @@ namespace POS.View.sales
                 _Tax = (decimal)MainWindow.tax;
             }
             else _Tax = 0;
+            txt_invNumber.Text = "";
             _Discount = 0;
             _SequenceNum = 0;
             _SelectedCustomer = -1;
@@ -823,6 +824,7 @@ namespace POS.View.sales
         private async Task fillInvoiceInputs(Invoice invoice)
         {
             _Sum = (decimal)invoice.total;
+            txt_invNumber.Text = invoice.invNumber.ToString();
             if (invoice.tax != null)
                 _Tax = (decimal)invoice.tax;
             tb_name.Text = invoice.name;
@@ -1087,7 +1089,8 @@ namespace POS.View.sales
                 {
                     await addInvoice("q");//quontation invoice
 
-                    if (invoice.invoiceId == 0) clearInvoice();
+                    if (invoice.invoiceId == 0)
+                        clearInvoice();
                 }
             }
             else

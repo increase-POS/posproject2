@@ -628,7 +628,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "ItemsTransfer/GetAvgItemPrice?itemUnitId=" + itemUnitId+ "&itemId="+ itemId);
+                request.RequestUri = new Uri(Global.APIUri + "invoices/GetAvgItemPrice?itemUnitId=" + itemUnitId+ "&itemId="+ itemId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

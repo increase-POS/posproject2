@@ -237,7 +237,7 @@ namespace POS.View.sectionData
                 shCompany.deliveryType = cb_deliveryType.SelectedValue.ToString();
                 shCompany.notes = tb_notes.Text;
                 shCompany.createUserId = MainWindow.userID;
-                shCompany.isActive = 1;
+                //shCompany.isActive = 1;
 
                 string s = await shCompaniesModel.Save(shCompany);
                 //MessageBox.Show(s);

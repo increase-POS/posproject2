@@ -45,7 +45,7 @@ namespace POS.View.Settings
             else
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucSettings.FlowDirection = FlowDirection.RightToLeft; }
             translate();
-            permission();
+            //permission();
         }
         void permission()
         {

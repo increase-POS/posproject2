@@ -244,6 +244,8 @@ namespace POS.View.accounts
                     tb_cash.IsEnabled = false;
                     tb_note.IsEnabled = false;
                     //////////////////////////
+                    tb_transNum.Text = cashtrans.transNum;
+
                     cb_depositFrom.SelectedValue = cashtrans.side;
 
                     switch (cb_depositFrom.SelectedValue.ToString())
@@ -375,7 +377,8 @@ namespace POS.View.accounts
 
                 cash.transType = "d";
                 cash.posId = MainWindow.posID.Value;
-                cash.transNum = await SectionData.generateNumber('d', cb_depositFrom.SelectedValue.ToString());
+                //cash.transNum = await SectionData.generateNumber('d', cb_depositFrom.SelectedValue.ToString());
+                cash.transNum = await cashModel.generateCashNumber("dv");
                 cash.cash = decimal.Parse(tb_cash.Text);
                 cash.notes = tb_note.Text;
                 cash.createUserId = MainWindow.userID;
@@ -531,6 +534,7 @@ namespace POS.View.accounts
             tb_cash.Clear();
             tb_note.Clear();
             tb_transNum.Text = "";
+            tb_cash.IsReadOnly = false;
             SectionData.clearValidate(tb_cash, p_errorCash);
             SectionData.clearComboBoxValidate(cb_depositFrom , p_errorDepositFrom);
             SectionData.clearComboBoxValidate(cb_depositorV,    p_errordepositor);
@@ -926,6 +930,13 @@ namespace POS.View.accounts
                 btn_invoices.IsEnabled = true;
             else
                 btn_invoices.IsEnabled = false;
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //string s = await cashModel.generateCashNumber("pv");
+            //MessageBox.Show(s);
+
         }
     }
 }

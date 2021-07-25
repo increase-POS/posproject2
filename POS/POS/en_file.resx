@@ -1689,4 +1689,25 @@
   <data name="trParentName" xml:space="preserve">
     <value>Parent Name</value>
   </data>
+  <data name="trStorageCostHent" xml:space="preserve">
+    <value>Storage Cost...</value>
+  </data>
+  <data name="trHR" xml:space="preserve">
+    <value>HR</value>
+  </data>
+  <data name="trInfo" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="trManager" xml:space="preserve">
+    <value>Manager</value>
+  </data>
+  <data name="trMarket" xml:space="preserve">
+    <value>Market</value>
+  </data>
+  <data name="trMedia" xml:space="preserve">
+    <value>media</value>
+  </data>
+  <data name="trSupport" xml:space="preserve">
+    <value>Support</value>
+  </data>
 </root>

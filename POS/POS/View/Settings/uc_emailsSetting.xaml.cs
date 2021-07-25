@@ -1,7 +1,14 @@
-﻿using System;
+﻿using netoaster;
+using POS.Classes;
+using POS.View.windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,445 +42,554 @@ namespace POS.View.Settings
             InitializeComponent();
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        Branch branchModel = new Branch();
+        SysEmails sysEmail = new SysEmails();
+        BrushConverter bc = new BrushConverter();
+        IEnumerable<SysEmails> sysEmailQuery;
+        IEnumerable<SysEmails> sysEmails;
+        byte tgl_sysEmailState;
+        string searchText = "";
+        //string basicsPermission = "sysEmail_basics";
+
+        private void Tgl_isSSL_Checked(object sender, RoutedEventArgs e)
         {
 
         }
-        /*
-ShippingCompanies shCompany = new ShippingCompanies();
-ShippingCompanies shCompaniesModel = new ShippingCompanies();
-BrushConverter bc = new BrushConverter();
-IEnumerable<ShippingCompanies> shComQuery;
-IEnumerable<ShippingCompanies> shComs;
-byte tgl_shComState;
-string searchText = "";
-string basicsPermission = "shippingCompany_basics";
 
-private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
-{//search
-   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
-   {
-       if (shComs is null)
-           await RefreshShComList();
-       searchText = tb_search.Text.ToLower();
-       shComQuery = shComs.Where(s => (s.name.ToLower().Contains(searchText) ||
-       s.deliveryType.Contains(searchText) ||
-       s.deliveryCost.ToString().ToLower().Contains(searchText) ||
-       s.RealDeliveryCost.ToString().ToLower().Contains(searchText)
-       ) && s.isActive == tgl_shComState);
-       RefreshshComView();
-   }
-}
+        private void Tgl_isSSL_Unchecked(object sender, RoutedEventArgs e)
+        {
 
-async Task<IEnumerable<ShippingCompanies>> RefreshShComList()
-{
-   MainWindow.mainWindow.StartAwait();
+        }
 
-   shComs = await shCompaniesModel.Get();
-   MainWindow.mainWindow.EndAwait();
-   return shComs;
-}
-void RefreshshComView()
-{
-   dg_shippingCompany.ItemsSource = shComQuery;
-   txt_count.Text = shComQuery.Count().ToString();
-}
-private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
-{//active
-   if (shComs is null)
-       await RefreshShComList();
-   tgl_shComState = 1;
-   Tb_search_TextChanged(null, null);
-}
+        private void Tgl_isMajor_Checked(object sender, RoutedEventArgs e)
+        {
 
-private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
-{//inactive
-   if (shComs is null)
-       await RefreshShComList();
-   tgl_shComState = 0;
-   Tb_search_TextChanged(null, null);
-}
+        }
 
-private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
-{//refresh
-   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
-   {
-       await RefreshShComList();
-       Tb_search_TextChanged(null, null);
-   }
-   else
-       Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        private void Tgl_isMajor_Unchecked(object sender, RoutedEventArgs e)
+        {
 
-}
+        }
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {//search
+            //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                if (sysEmails is null)
+                    await RefreshSysEmailList();
+                searchText = tb_search.Text.ToLower();
+                sysEmailQuery = sysEmails.Where(s => (s.name.ToLower().Contains(searchText) ||
+                s.email.ToString().ToLower().Contains(searchText) 
+                ) && s.isActive == tgl_sysEmailState);
+                RefreshSysEmailView();
+            }
+        }
 
-private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-{//export
-   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
-   {
-       this.Dispatcher.Invoke(() =>
-       {
-           Thread t1 = new Thread(FN_ExportToExcel);
-           t1.SetApartmentState(ApartmentState.STA);
-           t1.Start();
-       });
-   }
-   else
-       Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-}
+        async Task<IEnumerable<SysEmails>> RefreshSysEmailList()
+        {
+            MainWindow.mainWindow.StartAwait();
 
-void FN_ExportToExcel()
-{
-   var QueryExcel = shComQuery.AsEnumerable().Select(x => new
-   {
-       Name = x.name,
-       RealDeliverCost = x.RealDeliveryCost,
-       DeliveryCost = x.deliveryCost,
-       DeliverType = x.deliveryType,
-       Notes = x.notes
-   });
-   var DTForExcel = QueryExcel.ToDataTable();
-   DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
-   DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trRealDeliveryCost");
-   DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trDeliveryCost");
-   DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trDeliveryType");
-   DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trNote");
+            sysEmails = await sysEmail.Get();
+            MainWindow.mainWindow.EndAwait();
+            return sysEmails;
+        }
+        void RefreshSysEmailView()
+        {
+            dg_sysEmail.ItemsSource = sysEmailQuery;
+            txt_count.Text = sysEmailQuery.Count().ToString();
+        }
+        private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
+        {//active
+            if (sysEmails is null)
+                await RefreshSysEmailList();
+            tgl_sysEmailState = 1;
+            Tb_search_TextChanged(null, null);
+        }
 
-   ExportToExcel.Export(DTForExcel);
-}
+        private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
+        {//inactive
+            if (sysEmails is null)
+                await RefreshSysEmailList();
+            tgl_sysEmailState = 0;
+            Tb_search_TextChanged(null, null);
+        }
 
-private void Btn_clear_Click(object sender, RoutedEventArgs e)
-{//clear
-   tb_name.Clear();
-   tb_realDeliveryCost.Clear();
-   tb_deliveryCost.Clear();
-   cb_deliveryType.SelectedIndex = -1;
-   tb_notes.Clear();
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {//refresh
+            //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            {
+                await RefreshSysEmailList();
+                Tb_search_TextChanged(null, null);
+            }
+            //else
+            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
-   SectionData.clearValidate(tb_name, p_errorName);
-   SectionData.clearValidate(tb_deliveryCost, p_errorDeliveryCost);
-   SectionData.clearValidate(tb_realDeliveryCost, p_errorRealDeliveryCost);
-   SectionData.clearComboBoxValidate(cb_deliveryType, p_errorDeliveryType);
-}
+        }
 
-private void validationControl_LostFocus(object sender, RoutedEventArgs e)
-{
-   string name = sender.GetType().Name;
-   validateEmpty(name, sender);
-}
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {//export
+            //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    Thread t1 = new Thread(FN_ExportToExcel);
+                    t1.SetApartmentState(ApartmentState.STA);
+                    t1.Start();
+                });
+            }
+            //else
+            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
 
-private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
-{
-   string name = sender.GetType().Name;
-   validateEmpty(name, sender);
-}
+        void FN_ExportToExcel()
+        {
+            var QueryExcel = sysEmailQuery.AsEnumerable().Select(x => new
+            {
+                name = x.name,
+                email = x.email,
+                port = x.port,
+                isSSL = x.isSSL,
+                smtpClient = x.smtpClient,
+                side = x.side,
+                branchName = x.branchName,
+                isMajor = x.isMajor,
+                notes = x.notes
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("sssssssssssss");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("sssssssssssssss");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("sssssssssssssss");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("sssssssssssssss");
+            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("sssssssssssssss");
+            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("sssssssssssssss");
+            DTForExcel.Columns[7].Caption = MainWindow.resourcemanager.GetString("sssssssssssssss");
+            DTForExcel.Columns[8].Caption = MainWindow.resourcemanager.GetString("trNote");
 
-private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
-{
-   string name = sender.GetType().Name;
-   validateEmpty(name, sender);
-}
-private async void Btn_add_Click(object sender, RoutedEventArgs e)
-{//add
-   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
-   {
-       //chk empty name
-       SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-       //chk empty delivery cost
-       SectionData.validateEmptyTextBox(tb_deliveryCost, p_errorDeliveryCost, tt_errorDeliveryCost, "trEmptyDeliveryCostToolTip");
-       //chk empty real delivery cost
-       SectionData.validateEmptyTextBox(tb_realDeliveryCost, p_errorRealDeliveryCost, tt_errorRealDeliveryCost, "trEmptyRealDeliveryCostToolTip");
-       //chk empty real delivery type
-       SectionData.validateEmptyComboBox(cb_deliveryType, p_errorDeliveryType, tt_errorDeliveryType, "trEmptyDeliveryTypeToolTip");
+            ExportToExcel.Export(DTForExcel);
+        }
 
-       if ((!tb_name.Text.Equals("")) && (!tb_realDeliveryCost.Text.Equals("")) && (!tb_deliveryCost.Text.Equals("")) && (!cb_deliveryType.Text.Equals("")))
-       {
-           ShippingCompanies shCom = new ShippingCompanies();
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {//clear
+            tb_name.Clear();
+            tb_email.Clear();
+            tb_password.Clear();
+            tb_smtpClient.Clear();
+            pb_password.Clear();
+            tgl_isSSL.IsChecked =
+                tgl_isMajor.IsChecked = false;
+            cb_branchId.SelectedIndex = -1;
+            cb_side.SelectedIndex = -1;
+            tb_notes.Clear();
+            SectionData.clearValidate(tb_name, p_errorName);
+            SectionData.clearValidate(tb_email, p_errorEmail);
+            SectionData.clearValidate(tb_port, p_errorPort);
+            SectionData.clearValidate(tb_smtpClient, p_errorSmtpClient);
+            SectionData.clearComboBoxValidate(cb_side, p_errorSide);
+            SectionData.clearComboBoxValidate(cb_branchId, p_errorBranchId);
+            SectionData.clearPasswordValidate(pb_password, p_errorPassword);
+        }
 
-           shCom.name = tb_name.Text;
-           shCom.RealDeliveryCost = decimal.Parse(tb_realDeliveryCost.Text);
-           shCom.deliveryCost = decimal.Parse(tb_deliveryCost.Text);
-           shCom.deliveryType = cb_deliveryType.SelectedValue.ToString();
-           shCom.notes = tb_notes.Text;
-           shCom.createUserId = MainWindow.userID;
-           shCom.isActive = 1;
+        private void validationControl_LostFocus(object sender, RoutedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+        }
 
-           string s = await shCompaniesModel.Save(shCom);
-           //MessageBox.Show(s);
-           if (!s.Equals("0"))
-           {
-               Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-               Btn_clear_Click(null, null);
+        private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+        }
 
-               await RefreshShComList();
-               Tb_search_TextChanged(null, null);
-           }
-           else
-               Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-       }
-   }
-   else
-       Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            validateEmpty(name, sender);
+        }
+        private void validateEmpty(string name, object sender)
+        {
+            if (name == "TextBox")
+            {
+                if ((sender as TextBox).Name == "tb_name")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                else if ((sender as TextBox).Name == "tb_email")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorEmail, tt_errorEmail, "ssssssssssssssssssssss");
+                else if ((sender as TextBox).Name == "tb_port")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorPort, tt_errorPort, "sssssssssssssssssssssssssssss");
+                else if ((sender as TextBox).Name == "tb_smtpClient")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorSmtpClient, tt_errorSmtpClient, "sssssssssssssssssssssssssssss");
 
-}
+            }
+            else if (name == "ComboBox")
+            {
+                if ((sender as ComboBox).Name == "cb_side")
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorSide, tt_errorSide, "sssssssssssssss");
+                else if ((sender as ComboBox).Name == "cb_branchId")
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorBranchId, tt_errorBranchId, "sssssssssssssss");
+            }
+            else if (name == "PasswordBox")
+            {
+                if ((sender as PasswordBox).Name == "pb_password")
+                    SectionData.showPasswordValidate((PasswordBox)sender, p_errorPassword, tt_errorPassword, "ssssssssssssssssssssssss");
+            }
 
-private async void Btn_update_Click(object sender, RoutedEventArgs e)
-{//update
-   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
-   {
-       //chk empty name
-       SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-       //chk empty delivery cost
-       SectionData.validateEmptyTextBox(tb_deliveryCost, p_errorDeliveryCost, tt_errorDeliveryCost, "trEmptyDeliveryCostToolTip");
-       //chk empty real delivery cost
-       SectionData.validateEmptyTextBox(tb_realDeliveryCost, p_errorRealDeliveryCost, tt_errorRealDeliveryCost, "trEmptyRealDeliveryCostToolTip");
-       //chk empty real delivery type
-       SectionData.validateEmptyComboBox(cb_deliveryType, p_errorDeliveryType, tt_errorDeliveryType, "trEmptyDeliveryTypeToolTip");
+        }
+        bool isValid()
+        {
+            if (SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip") == false)
+                return false;
+            if (SectionData.validateEmptyTextBox(tb_email, p_errorEmail, tt_errorEmail, "ssssssssssssssssssssss") == false)
+                return false;
+            if (SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail) == false)
+                return false;
+            if (SectionData.validateEmptyTextBox(tb_port, p_errorPort, tt_errorPort, "sssssssssssssssssssssssssssss") == false)
+                return false;
+            if (SectionData.validateEmptyTextBox(tb_smtpClient, p_errorSmtpClient, tt_errorSmtpClient, "sssssssssssssssssssssssssssss") == false)
+                return false;
+            if (SectionData.validateEmptyComboBox(cb_side, p_errorSide, tt_errorSide, "sssssssssssssss") == false)
+                return false;
+            if (SectionData.validateEmptyComboBox(cb_branchId, p_errorBranchId, tt_errorBranchId, "sssssssssssssss") == false||
+                cb_branchId.SelectedValue == null)
+                return false;
+            if (SectionData.validateEmptyPassword(pb_password, p_errorPassword, tt_errorPassword, "ssssssssssssssssssssssss") == false)
+                return false;
+            return true;
+        }
+        private async void Btn_add_Click(object sender, RoutedEventArgs e)
+        {//add
+            //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            {
+                if (isValid())
+                {
+                    sysEmail.emailId = 0;
+                    sysEmail.name = tb_name.Text;
+                    sysEmail.email = tb_email.Text;
+                    sysEmail.password = pb_password.Password;
+                    sysEmail.port = int.Parse(tb_port.Text);
+                    sysEmail.isSSL = tgl_isSSL.IsChecked;
+                    sysEmail.isMajor = tgl_isMajor.IsChecked;
+                    sysEmail.smtpClient = tb_smtpClient.Text;
+                    sysEmail.side = cb_side.SelectedValue.ToString();
+                    sysEmail.branchId =(int) cb_branchId.SelectedValue;
+                    sysEmail.notes = tb_notes.Text;
+                    sysEmail.createUserId = MainWindow.userID;
+                    sysEmail.updateUserId = MainWindow.userID;
+                    sysEmail.isActive = 1;
 
-       if ((!tb_name.Text.Equals("")) && (!tb_realDeliveryCost.Text.Equals("")) && (!tb_deliveryCost.Text.Equals("")) && (!cb_deliveryType.Text.Equals("")))
-       {
-           shCompany.name = tb_name.Text;
-           shCompany.RealDeliveryCost = decimal.Parse(tb_realDeliveryCost.Text);
-           shCompany.deliveryCost = decimal.Parse(tb_deliveryCost.Text);
-           shCompany.deliveryType = cb_deliveryType.SelectedValue.ToString();
-           shCompany.notes = tb_notes.Text;
-           shCompany.createUserId = MainWindow.userID;
-           shCompany.isActive = 1;
+                    string s = await sysEmail.Save(sysEmail);
 
-           string s = await shCompaniesModel.Save(shCompany);
-           //MessageBox.Show(s);
-           if (!s.Equals("0"))
-           {
-               Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    if (!s.Equals("-1"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-               await RefreshShComList();
-               Tb_search_TextChanged(null, null);
-           }
-           else
-               Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-       }
-   }
-   else
-       Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                    await RefreshSysEmailList();
+                    Tb_search_TextChanged(null, null);
+                }
+            }
+            //else
+            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
-}
+        }
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {//update
+            //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            {
+                if (isValid())
+                {
+                    sysEmail.email = tb_email.Text;
+                    sysEmail.password = pb_password.Password;
+                    sysEmail.port = int.Parse(tb_port.Text);
+                    sysEmail.isSSL = tgl_isSSL.IsChecked;
+                    sysEmail.isMajor = tgl_isMajor.IsChecked;
+                    sysEmail.smtpClient = tb_smtpClient.Text;
+                    sysEmail.side = cb_side.SelectedValue.ToString();
+                    sysEmail.branchId = (int)cb_branchId.SelectedValue;
+                    sysEmail.notes = tb_notes.Text;
+                    sysEmail.createUserId = MainWindow.userID;
+                    sysEmail.updateUserId = MainWindow.userID;
+                    //sysEmail.isActive = 1;
+                    string s = await sysEmail.Save(sysEmail);
+                    if (!s.Equals("-1"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                        await RefreshSysEmailList();
+                        Tb_search_TextChanged(null, null);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+            }
+            //else
+            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {//delete
+            //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            {
+                if (sysEmail.emailId != 0)
+                {
+                    if ((!sysEmail.canDelete) && (sysEmail.isActive == 0))
+                    {
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        #endregion
 
-private async void Btn_delete_Click(object sender, RoutedEventArgs e)
-{//delete
-   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
-   {
-       if (shCompany.shippingCompanyId != 0)
-       {
-           if ((!shCompany.canDelete) && (shCompany.isActive == 0))
-           {
-               #region
-               Window.GetWindow(this).Opacity = 0.2;
-               wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-               w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-               w.ShowDialog();
-               Window.GetWindow(this).Opacity = 1;
-               #endregion
+                        if (w.isOk)
+                            activate();
+                    }
+                    else
+                    {
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        if (sysEmail.canDelete)
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                        if (!sysEmail.canDelete)
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        #endregion
 
-               if (w.isOk)
-                   activate();
-           }
-           else
-           {
-               #region
-               Window.GetWindow(this).Opacity = 0.2;
-               wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-               if (shCompany.canDelete)
-                   w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-               if (!shCompany.canDelete)
-                   w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-               w.ShowDialog();
-               Window.GetWindow(this).Opacity = 1;
-               #endregion
+                        if (w.isOk)
+                        {
+                            string popupContent = "";
+                            if (sysEmail.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                            if ((!sysEmail.canDelete) && (sysEmail.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-               if (w.isOk)
-               {
-                   string popupContent = "";
-                   if (shCompany.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                   if ((!shCompany.canDelete) && (shCompany.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                            string b = await sysEmail.Delete(sysEmail.emailId, MainWindow.userID.Value, sysEmail.canDelete);
 
-                   string b = await shCompaniesModel.Delete(shCompany.shippingCompanyId, MainWindow.userID.Value, shCompany.canDelete);
+                            if (!b.Equals("0"))
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
-                   if (!b.Equals("0"))
-                       Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        }
+                    }
 
-                   else
-                       Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-               }
-           }
+                    await RefreshSysEmailList();
+                    Tb_search_TextChanged(null, null);
 
-           await RefreshShComList();
-           Tb_search_TextChanged(null, null);
+                    //clear textBoxs
+                    Btn_clear_Click(sender, e);
+                }
+            }
+            //else
+            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+        private async void activate()
+        {//activate
+            sysEmail.isActive = 1;
 
-           //clear textBoxs
-           Btn_clear_Click(sender, e);
-       }
-   }
-   else
-       Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-}
+            string s = await sysEmail.Save(sysEmail);
 
-private async void activate()
-{//activate
-   shCompany.isActive = 1;
+            if (!s.Equals("0"))
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-   string s = await shCompaniesModel.Save(shCompany);
+            await RefreshSysEmailList();
+            Tb_search_TextChanged(null, null);
 
-   if (!s.Equals("0"))
-       Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-   else
-       Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+        }
 
-   await RefreshShComList();
-   Tb_search_TextChanged(null, null);
+        private void Dg_sysEmail_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {//selection
+            //SectionData.clearValidate(tb_name, p_errorName);
+            //SectionData.clearValidate(tb_email, p_errorEmail);
+            //SectionData.clearValidate(tb_port, p_errorPort);
+            //SectionData.clearValidate(tb_smtpClient, p_errorSmtpClient);
+            //SectionData.clearComboBoxValidate(cb_side, p_errorSide);
+            //SectionData.clearComboBoxValidate(cb_branchId, p_errorBranchId);
+            //SectionData.clearPasswordValidate(pb_password, p_errorPassword);
 
-}
+            Btn_clear_Click(null, null);
+            if (dg_sysEmail.SelectedIndex != -1)
+            {
+                sysEmail = dg_sysEmail.SelectedItem as SysEmails;
+                this.DataContext = sysEmail;
 
-private void Dg_shippingCompany_SelectionChanged(object sender, SelectionChangedEventArgs e)
-{//selection
-   SectionData.clearValidate(tb_name, p_errorName);
-   SectionData.clearValidate(tb_realDeliveryCost, p_errorRealDeliveryCost);
-   SectionData.clearValidate(tb_deliveryCost, p_errorDeliveryCost);
-   SectionData.clearComboBoxValidate(cb_deliveryType, p_errorDeliveryType);
+                cb_branchId.SelectedValue = sysEmail.branchId;
+                cb_side.SelectedValue = sysEmail.side;
+                pb_password.Password = sysEmail.password;
 
+                if (sysEmail != null)
+                {
+                   
+                    #region delete
+                    if (sysEmail.canDelete)
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                        txt_delete_Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+                    }
 
-   if (dg_shippingCompany.SelectedIndex != -1)
-   {
-       shCompany = dg_shippingCompany.SelectedItem as ShippingCompanies;
-       this.DataContext = shCompany;
+                    else
+                    {
+                        if (sysEmail.isActive == 0)
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                            txt_delete_Icon.Kind =
+                            MaterialDesignThemes.Wpf.PackIconKind.Check;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+                        }
+                        else
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                            txt_delete_Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+                        }
+                    }
+                    #endregion
 
-       if (shCompany != null)
-       {
-           //MessageBox.Show(shCompany.shippingCompanyId.ToString());
-           cb_deliveryType.SelectedValue = shCompany.deliveryType;
+                }
+            }
+        }
 
-           #region delete
-           if (shCompany.canDelete)
-           {
-               txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-               txt_delete_Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Delete;
-               tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
-           }
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {//load
 
-           else
-           {
-               if (shCompany.isActive == 0)
-               {
-                   txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
-                   txt_delete_Icon.Kind =
-                    MaterialDesignThemes.Wpf.PackIconKind.Check;
-                   tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
-               }
-               else
-               {
-                   txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
-                   txt_delete_Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Cancel;
-                   tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
-               }
-           }
-           #endregion
+            if (MainWindow.lang.Equals("en"))
+            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_shipping.FlowDirection = FlowDirection.LeftToRight; }
+            else
+            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_shipping.FlowDirection = FlowDirection.RightToLeft; }
 
-       }
-   }
-}
+            translat();
 
-private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-{//load
+            fillBranches();
+            FillSideCombo();
+            await RefreshSysEmailList();
+            Tb_search_TextChanged(null, null);
+        }
+        private async void fillBranches()
+        {
+            var branches = await branchModel.GetAllWithoutMain("all");
+            cb_branchId.ItemsSource = branches;
+            cb_branchId.SelectedValuePath = "branchId";
+            cb_branchId.DisplayMemberPath = "name";
+        }
+        void FillSideCombo()
+        {
+            #region fill deposit to combo
+            var list = new[] {
+            new { Text = MainWindow.resourcemanager.GetString("trMedia")     , Value = "md" },
+            new { Text = MainWindow.resourcemanager.GetString("trHR")   , Value = "hr" },
+            new { Text = MainWindow.resourcemanager.GetString("trManager")       , Value = "mg" },
+            new { Text = MainWindow.resourcemanager.GetString("trMarket")     , Value = "mk" },
+            new { Text = MainWindow.resourcemanager.GetString("trSupport")     , Value = "sp" },
+            new { Text = MainWindow.resourcemanager.GetString("trInfo")  , Value = "if" }
+             };
+            cb_side.DisplayMemberPath = "Text";
+            cb_side.SelectedValuePath = "Value";
+            cb_side.ItemsSource = list;
+            #endregion
 
-   if (MainWindow.lang.Equals("en"))
-   { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_shipping.FlowDirection = FlowDirection.LeftToRight; }
-   else
-   { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_shipping.FlowDirection = FlowDirection.RightToLeft; }
+        }
+        private void translat()
+        {
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branchId, MainWindow.resourcemanager.GetString("trSelectPosBranchHint"));
+            txt_active.Text = MainWindow.resourcemanager.GetString("trActive");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            txt_sysEmail.Text = MainWindow.resourcemanager.GetString("trSysEmails");
+            txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
 
-   translat();
+            dg_sysEmail.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
+            //dg_sysEmail.Columns[1].Header = MainWindow.resourcemanager.GetString("sssssssssssssss");
+            //dg_sysEmail.Columns[2].Header = MainWindow.resourcemanager.GetString("ssssssssssssss");
+            //dg_sysEmail.Columns[3].Header = MainWindow.resourcemanager.GetString("sssssssssssss");
 
-   #region fill delivery type
-   var typelist = new[] {
-   new { Text = MainWindow.resourcemanager.GetString("trLocaly")     , Value = "local" },
-   new { Text = MainWindow.resourcemanager.GetString("trShippingCompany")   , Value = "com" },
-    };
-   cb_deliveryType.DisplayMemberPath = "Text";
-   cb_deliveryType.SelectedValuePath = "Value";
-   cb_deliveryType.ItemsSource = typelist;
-   #endregion
+            tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
+            tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
-   await RefreshShComList();
-   Tb_search_TextChanged(null, null);
-}
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(pb_password, MainWindow.resourcemanager.GetString("trPasswordHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_password, MainWindow.resourcemanager.GetString("trPasswordHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_email, MainWindow.resourcemanager.GetString("trEmailHint"));
 
-private void translat()
-{
-   txt_active.Text = MainWindow.resourcemanager.GetString("trActive");
-   MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-   txt_shippingCompany.Text = MainWindow.resourcemanager.GetString("trShippingCompanies");
-   txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
-   MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
-   MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_realDeliveryCost, MainWindow.resourcemanager.GetString("trRealDeliveryCostHint"));
-   MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_deliveryCost, MainWindow.resourcemanager.GetString("trDeliveryCostHint"));
-   MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_deliveryType, MainWindow.resourcemanager.GetString("trDeliveryTypeHint"));
-   MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
+            tt_name.Content = MainWindow.resourcemanager.GetString("trName");
+            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+        }
 
-   dg_shippingCompany.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
-   dg_shippingCompany.Columns[1].Header = MainWindow.resourcemanager.GetString("trRealDeliveryCost");
-   dg_shippingCompany.Columns[2].Header = MainWindow.resourcemanager.GetString("trDeliveryCost");
-   dg_shippingCompany.Columns[3].Header = MainWindow.resourcemanager.GetString("trDeliveryType");
+        private void Tb_PreventSpaces(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
 
-   tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
-   tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
-   tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+        private void Tb_Numbers_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                e.Handled = false;
+            else
+                e.Handled = true;
+        }
 
-   tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
-   tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
-   tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
-   tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
-   tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
-   tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
-   tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
-   tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+        private void P_showPassword_MouseEnter(object sender, MouseEventArgs e)
+        {
+            tb_password.Text = pb_password.Password;
+            tb_password.Visibility = Visibility.Visible;
+            pb_password.Visibility = Visibility.Collapsed;
+        }
 
-   tt_name.Content = MainWindow.resourcemanager.GetString("trName");
-   tt_realDeliveryCost.Content = MainWindow.resourcemanager.GetString("trRealDeliveryCost");
-   tt_deliveryCost.Content = MainWindow.resourcemanager.GetString("trDeliveryCost");
-   tt_deliveryType.Content = MainWindow.resourcemanager.GetString("trDeliveryType");
-   tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
-}
+        private void P_showPassword_MouseLeave(object sender, MouseEventArgs e)
+        {
+            tb_password.Visibility = Visibility.Collapsed;
+            pb_password.Visibility = Visibility.Visible;
+        }
 
-private void Tb_PreventSpaces(object sender, KeyEventArgs e)
-{
-   e.Handled = e.Key == Key.Space;
+        private void Pb_password_PasswordChanged(object sender, RoutedEventArgs e)
+        {
 
-}
+            if (pb_password.Password.Equals(""))
+            {
+                SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
+                p_showPassword.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                SectionData.clearPasswordValidate(pb_password, p_errorPassword);
+                p_showPassword.Visibility = Visibility.Visible;
+            }
+        }
 
-private void Tb_Numbers_PreviewTextInput(object sender, TextCompositionEventArgs e)
-{
-   var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-   if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
-       e.Handled = false;
-   else
-       e.Handled = true;
-}
+        private void Tb_password_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (pb_password.Password.Equals(""))
+            {
+                p_errorPassword.Visibility = Visibility.Visible;
+                tt_errorPassword.Content = MainWindow.resourcemanager.GetString("trEmptyPasswordToolTip");
+                pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                p_showPassword.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_errorPassword.Visibility = Visibility.Collapsed;
+                p_showPassword.Visibility = Visibility.Visible;
+            }
+        }
 
-private void validateEmpty(string name, object sender)
-{
-   if (name == "TextBox")
-   {
-       if ((sender as TextBox).Name == "tb_name")
-           SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
-       else if ((sender as TextBox).Name == "tb_realDeliveryCost")
-           SectionData.validateEmptyTextBox((TextBox)sender, p_errorRealDeliveryCost, tt_errorRealDeliveryCost, "trEmptyRealDeliveryCostToolTip");
-       else if ((sender as TextBox).Name == "tb_deliveryCost")
-           SectionData.validateEmptyTextBox((TextBox)sender, p_errorDeliveryCost, tt_errorDeliveryCost, "trEmptyDeliveryCostToolTip");
-   }
-   else if (name == "ComboBox")
-   {
-       if ((sender as ComboBox).Name == "cb_deliveryType")
-           SectionData.validateEmptyComboBox((ComboBox)sender, p_errorDeliveryType, tt_errorDeliveryType, "trErrorEmptyDeliveryTypeToolTip");
-   }
-
-}
-*/
+        private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SectionData.validateEmptyTextBox(tb_email, p_errorEmail, tt_errorEmail,"sssssssssssssssssssss");
+            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+        }
     }
 }

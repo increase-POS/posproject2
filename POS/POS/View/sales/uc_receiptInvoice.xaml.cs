@@ -815,6 +815,7 @@ namespace POS.View
             _Discount = 0;
             _DeliveryCost = 0;
             _SequenceNum = 0;
+            txt_invNumber.Text = "";
             _SelectedCustomer = -1;
             _SelectedPaymentType = "cash";
             _SelectedCard = -1;
@@ -975,6 +976,7 @@ namespace POS.View
             configurProcessType();
 
             _Sum = (decimal)invoice.total;
+            txt_invNumber.Text = invoice.invNumber.ToString();
             if (invoice.tax != null)
             {
                 _Tax = (decimal)invoice.tax;

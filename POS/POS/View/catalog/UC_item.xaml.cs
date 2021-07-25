@@ -62,15 +62,17 @@ namespace POS.View
         ItemUnit itemUnit = new ItemUnit();
         // service object
         Service service = new Service();
+        StorageCost storageCost = new StorageCost();
+
         string selectedType = "";
 
-
         DataGrid dt = new DataGrid();
-
+        
         List<int> categoryIds = new List<int>();
         List<string> categoryNames = new List<string>();
         List<Property> properties;
         List<Category> categories;
+        List<StorageCost> storageCosts;
         List<PropertiesItems> propItems;
         List<Unit> units;
         List<ItemsProp> itemsProp;
@@ -294,7 +296,7 @@ namespace POS.View
             fillUnits();
             fillProperties();
             fillBarcodeList();
-
+            fillStorageCost();
             // fill parent items
             //cb_parentItem.ItemsSource = items.ToList();
             //cb_parentItem.SelectedValuePath = "itemId";
@@ -895,6 +897,7 @@ namespace POS.View
         private void validateUnitValues()
         {
             SectionData.validateEmptyComboBox(cb_selectUnit, p_errorSelectUnit, tt_errorSelectUnit, "trErrorEmptyUnitToolTip");
+            SectionData.validateEmptyComboBox(cb_storageCost, p_errorStorageCost, tt_errorStorageCost, "trEmptyStoreCost");
             SectionData.validateEmptyTextBox(tb_count, p_errorCount, tt_errorCount, "trErrorEmptyCountToolTip");
             SectionData.validateEmptyComboBox(cb_unit, p_errorUnit, tt_errorUnit, "trErrorEmptyUnitToolTip");
             SectionData.validateEmptyTextBox(tb_price, p_errorPrice, tt_errorPrice, "trErrorEmptyPriceToolTip");
@@ -909,7 +912,7 @@ namespace POS.View
                 //check mandatory values
                 validateUnitValues();
 
-                if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
+                if ((cb_selectUnit.SelectedIndex != -1 && cb_storageCost.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
                     || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
                 {
                     if (tb_barcode.Text.Length == 12 || tb_barcode.Text.Length == 13)
@@ -948,6 +951,10 @@ namespace POS.View
                                 if (cb_selectUnit.SelectedIndex != -1)
                                     unitId = units[cb_selectUnit.SelectedIndex].unitId;
 
+                                Nullable<int> storageCostId = null;
+                                if (cb_storageCost.SelectedValue != null)
+                                    storageCostId = (int)cb_storageCost.SelectedValue;
+
                                 short defaultBurchase = 0;
                                 if (tbtn_isDefaultPurchases.IsChecked == true)
                                     defaultBurchase = 1;
@@ -964,6 +971,7 @@ namespace POS.View
                                 itemUnit.itemUnitId = 0;
                                 itemUnit.itemId = item.itemId;
                                 itemUnit.unitId = unitId;
+                                itemUnit.storageCostId = storageCostId;
                                 itemUnit.unitValue = unitValue;
                                 itemUnit.subUnitId = smallUnitId;
                                 itemUnit.defaultSale = defaultSale;
@@ -1001,7 +1009,7 @@ namespace POS.View
                 //check mandatory values
                 validateUnitValues();
 
-                if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
+                if ((cb_selectUnit.SelectedIndex != -1 && cb_storageCost.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
                     || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
                 {
                     if (tb_barcode.Text.Length == 12 || tb_barcode.Text.Length == 13)
@@ -1040,6 +1048,11 @@ namespace POS.View
                                 if (cb_selectUnit.SelectedIndex != -1)
                                     unitId = units[cb_selectUnit.SelectedIndex].unitId;
 
+                                Nullable<int> storageCostId = null;
+                                if (cb_storageCost.SelectedValue != null)
+                                    storageCostId = (int)cb_storageCost.SelectedValue;
+
+
                                 short defaultBurchase = 0;
                                 if (tbtn_isDefaultPurchases.IsChecked == true)
                                     defaultBurchase = 1;
@@ -1055,6 +1068,7 @@ namespace POS.View
 
                                 itemUnit.itemId = item.itemId;
                                 itemUnit.unitId = unitId;
+                                itemUnit.storageCostId = storageCostId;
                                 itemUnit.unitValue = unitValue;
                                 itemUnit.subUnitId = smallUnitId;
                                 itemUnit.defaultSale = defaultSale;
@@ -1296,6 +1310,14 @@ namespace POS.View
             cb_categorie.SelectedValuePath = "categoryId";
             cb_categorie.DisplayMemberPath = "name";
         }
+        async void fillStorageCost()
+        {
+            storageCosts = await storageCost.Get();
+            cb_storageCost.ItemsSource = storageCosts.ToList();
+            cb_storageCost.SelectedValuePath = "storageCostId";
+            cb_storageCost.DisplayMemberPath = "name";
+        }
+        
         private async void fillUnits()
         {
             units = await unitModel.GetUnitsAsync();
@@ -1379,6 +1401,7 @@ namespace POS.View
             tbtn_isDefaultSales.IsChecked = false;
             tb_count.Text = "";
             cb_unit.SelectedIndex = -1;
+            cb_storageCost.SelectedIndex = -1;
             tb_price.Text = "";
             tb_barcode.Clear();
             tb_barcode.Focus();
@@ -1428,6 +1451,11 @@ namespace POS.View
                     cb_selectUnit.SelectedValue = (int)itemUnit.unitId;
                 else
                     cb_selectUnit.SelectedValue = -1;
+
+                if (itemUnit.storageCostId != null)
+                    cb_storageCost.SelectedValue = (int)itemUnit.storageCostId;
+                else
+                    cb_storageCost.SelectedValue = -1;
 
                 if (itemUnit.smallUnit != null)
                     cb_unit.SelectedValue = (int)itemUnit.subUnitId;
@@ -2172,19 +2200,19 @@ namespace POS.View
                 categoryName = x.categoryName,
                 type = convertItemType(x.type),
                 taxes = x.taxes,
-                minUnit = x.min  + x.minUnitName,
-                maxUnit = x.max  + x.maxUnitName,
+                minUnit = x.min  + " " + x.minUnitName,
+                maxUnit = x.max + " " + x.maxUnitName,
             });
             var DTForExcel = QueryExcel.ToDataTable();
             DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trCode");
             DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trName");
             DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trDetails");
             DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trParentName");
-            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trCategorie");
-            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trItemType");
-            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trTax");
-            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trMinUnit");
-            DTForExcel.Columns[7].Caption = MainWindow.resourcemanager.GetString("trMaxUnit");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trCategorie");
+            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trItemType");
+            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trTax");
+            DTForExcel.Columns[7].Caption = MainWindow.resourcemanager.GetString("trMinUnit");
+            DTForExcel.Columns[8].Caption = MainWindow.resourcemanager.GetString("trMaxUnit");
             ExportToExcel.Export(DTForExcel);
         }
         string convertItemType(string s)

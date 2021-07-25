@@ -945,6 +945,7 @@ namespace POS.View
         {
             var QueryExcel = usersQuery.AsEnumerable().Select(x => new
             {
+                UserName = x.username,
                 Name = x.name,
                 LastName = x.lastname,
                 Job = x.job,
@@ -953,20 +954,17 @@ namespace POS.View
                 Phone = x.phone,
                 Address = x.address,
                 Notes = x.notes,
-                UserName = x.username,
-                Password = x.password
             });
             var DTForExcel = QueryExcel.ToDataTable();
-            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
-            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trLastName");
-            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trJob");
-            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trWorkHours");
-            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trMobile");
-            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trPhone");
-            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trAddress");
-            DTForExcel.Columns[7].Caption = MainWindow.resourcemanager.GetString("trNote");
-            DTForExcel.Columns[8].Caption = MainWindow.resourcemanager.GetString("trUserName");
-            DTForExcel.Columns[9].Caption = MainWindow.resourcemanager.GetString("trPassword");
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trUserName");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trName");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trLastName");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trJob");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trWorkHours");
+            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trMobile");
+            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trPhone");
+            DTForExcel.Columns[7].Caption = MainWindow.resourcemanager.GetString("trAddress");
+            DTForExcel.Columns[8].Caption = MainWindow.resourcemanager.GetString("trNote");
 
             ExportToExcel.Export(DTForExcel);
         }

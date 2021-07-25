@@ -201,24 +201,7 @@ namespace POS.View
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
 
             btn_items.Content = MainWindow.resourcemanager.GetString("trItems");
-            ///////////////////////////////////////------on Item------///////////////////////////////
-            ///
-
-            /*
-            txt_onItemHeader.Text = MainWindow.resourcemanager.GetString("trOnItems");
-            tb_items.Text = MainWindow.resourcemanager.GetString("trItems");
-            txt_onItemHeader.Text = MainWindow.resourcemanager.GetString("trOnItems");
-
-            dg_items.Columns[0].Header = MainWindow.resourcemanager.GetString("trCode");
-            dg_items.Columns[1].Header = MainWindow.resourcemanager.GetString("trName");
-            dg_items.Columns[2].Header = MainWindow.resourcemanager.GetString("trValue");
-
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_item, MainWindow.resourcemanager.GetString("trItem"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
-
-            btn_addItem.Content = MainWindow.resourcemanager.GetString("trAdd");
-            btn_deleteItem.Content = MainWindow.resourcemanager.GetString("trDelete");
-            */
+            
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)

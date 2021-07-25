@@ -176,7 +176,6 @@ namespace POS.View
         }
         bool validate(Location location = null)
         {
-            
             //chk empty x
             SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyError");
             //chk empty x

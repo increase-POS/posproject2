@@ -2293,6 +2293,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to موارد بشرية.
+        /// </summary>
+        internal static string trHR {
+            get {
+                return ResourceManager.GetString("trHR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to صورة.
         /// </summary>
         internal static string trImage {
@@ -2316,6 +2325,15 @@ namespace POS {
         internal static string trInActive {
             get {
                 return ResourceManager.GetString("trInActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تواصل.
+        /// </summary>
+        internal static string trInfo {
+            get {
+                return ResourceManager.GetString("trInfo", resourceCulture);
             }
         }
         
@@ -2599,6 +2617,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to اداري.
+        /// </summary>
+        internal static string trManager {
+            get {
+                return ResourceManager.GetString("trManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تسويق.
+        /// </summary>
+        internal static string trMarket {
+            get {
+                return ResourceManager.GetString("trMarket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الأكبر.
         /// </summary>
         internal static string trMaxHint {
@@ -2649,6 +2685,15 @@ namespace POS {
         internal static string trMedals {
             get {
                 return ResourceManager.GetString("trMedals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اعلام.
+        /// </summary>
+        internal static string trMedia {
+            get {
+                return ResourceManager.GetString("trMedia", resourceCulture);
             }
         }
         
@@ -4129,6 +4174,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to كلفة التخزيين....
+        /// </summary>
+        internal static string trStorageCostHent {
+            get {
+                return ResourceManager.GetString("trStorageCostHent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to المخزن.
         /// </summary>
         internal static string trStore {
@@ -4197,6 +4251,15 @@ namespace POS {
         internal static string trSuppliers {
             get {
                 return ResourceManager.GetString("trSuppliers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to دعم تقني.
+        /// </summary>
+        internal static string trSupport {
+            get {
+                return ResourceManager.GetString("trSupport", resourceCulture);
             }
         }
         

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d" 
    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="700" d:DesignWidth="985" Loaded="UserControl_Loaded">
+             d:DesignHeight="800" d:DesignWidth="985" Loaded="UserControl_Loaded">
     <Grid  x:Name="grid_ucUsers" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.54*"/>
@@ -682,7 +682,6 @@
                                      BorderBrush="AliceBlue" MaxLength="100"
                                      TabIndex="8"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                 
                                      Height="40" Margin="10,5,10,5" Grid.ColumnSpan="2" 
                                      LostFocus="Tb_email_LostFocus" >
                                 <TextBox.ToolTip>

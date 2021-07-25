@@ -302,7 +302,8 @@ namespace POS.View.accounts
                     cash.transType = cb_opperationType.SelectedValue.ToString();
                     cash.userId = Convert.ToInt32(cb_user.SelectedValue);
                     //cash.transNum = await generateNumber();
-                    cash.transNum = await SectionData.generateNumber(Convert.ToChar(cb_opperationType.SelectedValue), "bn");
+                    //cash.transNum = await SectionData.generateNumber(Convert.ToChar(cb_opperationType.SelectedValue), "bn");
+                    cash.transNum = await cashModel.generateCashNumber(cb_opperationType.SelectedValue.ToString()+"bn");
                     cash.cash = decimal.Parse(tb_cash.Text);
                     cash.createUserId = MainWindow.userID.Value;
                     cash.notes = tb_note.Text;

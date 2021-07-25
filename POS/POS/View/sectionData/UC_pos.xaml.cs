@@ -100,18 +100,6 @@ namespace POS.View
             cb_branch.ItemsSource = branches;
             cb_branch.SelectedValuePath = "branchId";
             cb_branch.DisplayMemberPath = "name";
-            //dt.ItemsSource = branches;
-            //Branch branch = new Branch();
-            //for (int i = 0; i < branches.Count; i++)
-            //{
-            //    branch = dt.Items[i] as Branch;
-            //    branchIds.Add(branch.branchId);
-            //    branchNames.Add(branch.name);
-            //}
-            ////MessageBox.Show(branches.Count.ToString());
-            ////branchNames.Add("first"); branchNames.Add("second");
-            //cb_branchId.ItemsSource = branchNames;
-
         }
 
         private async void DG_pos_SelectionChanged(object sender, SelectionChangedEventArgs e)

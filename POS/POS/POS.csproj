@@ -212,6 +212,7 @@
     <Compile Include="Classes\ShippingCompanies.cs" />
     <Compile Include="Classes\Statistics.cs" />
     <Compile Include="Classes\StorageCost.cs" />
+    <Compile Include="Classes\SysEmails.cs" />
     <Compile Include="Classes\Unit.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Classes\userSetValues.cs" />

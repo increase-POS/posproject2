@@ -217,6 +217,5 @@
         </ScrollViewer>
         </Expander>
         <Grid Grid.Column="1" x:Name="grid_main"/>
-         
     </Grid>
 </UserControl>

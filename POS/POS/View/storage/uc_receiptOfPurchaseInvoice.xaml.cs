@@ -510,7 +510,8 @@ namespace POS.View.storage
             _Count = 0;
             _InvoiceType = "pbd";
             invoice = new Invoice();
-            tb_branch.Clear();
+            txt_branch.Text = "";
+            txt_invNumber.Text = "";
             billDetails.Clear();
             tb_count.Text = "";
             refrishBillDetails();
@@ -646,7 +647,8 @@ namespace POS.View.storage
 
         private async Task fillInvoiceInputs(Invoice invoice)
         {
-            tb_branch.Text = invoice.branchName;
+            txt_branch.Text = invoice.branchName;
+            txt_invNumber.Text = invoice.invNumber;
            
             // build invoice details grid
             await buildInvoiceDetails(invoice.invoiceId);

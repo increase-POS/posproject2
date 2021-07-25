@@ -95,7 +95,7 @@ namespace POS.Classes
 
         }
 
-        public static async Task<bool> isCodeExist(string randomNum, string type, string _class , int id)
+        public static async Task<bool> isCodeExist(string randomNum, string type, string _class, int id)
         {
             iscodeExist = false;
             try
@@ -198,7 +198,7 @@ namespace POS.Classes
                     for (int i = 0; i < branches.Count; i++)
                     {
                         branch = branches[i];
-                            codes.Add(branch.code.Trim());
+                        codes.Add(branch.code.Trim());
                     }
                 }
                 else if (_class.Equals("Offer"))
@@ -222,7 +222,7 @@ namespace POS.Classes
             catch { }
             return iscodeExist;
         }
-        public static async Task<bool> CouponCodeNotExist(string randomNum , int id)
+        public static async Task<bool> CouponCodeNotExist(string randomNum, int id)
         {
             try
             {
@@ -238,7 +238,7 @@ namespace POS.Classes
             catch { return true; }
         }
 
-        public static async Task<bool> chkIfCouponBarCodeIsExist(string randomNum , int id)
+        public static async Task<bool> chkIfCouponBarCodeIsExist(string randomNum, int id)
         {
             Coupon coupon = new Coupon();
             coupon = await couponModel.getCouponByBarCode(randomNum);
@@ -267,28 +267,85 @@ namespace POS.Classes
         }
         public static void SetError(Control c, Path p_error, ToolTip tt_error, string tr)
         {
-                p_error.Visibility = Visibility.Visible;
-                tt_error.Content = MainWindow.resourcemanager.GetString(tr);
-                c.Background = (Brush)bc.ConvertFrom("#15FF0000");
+            p_error.Visibility = Visibility.Visible;
+            tt_error.Content = MainWindow.resourcemanager.GetString(tr);
+            c.Background = (Brush)bc.ConvertFrom("#15FF0000");
         }
 
-        public static void validateEmptyTextBox(TextBox tb , Path p_error , ToolTip tt_error , string tr)
+        public static bool validateEmptyTextBox(TextBox tb, Path p_error, ToolTip tt_error, string tr)
         {
+            bool isValid = true;
             if (tb.Text.Equals(""))
             {
                 p_error.Visibility = Visibility.Visible;
                 tt_error.Content = MainWindow.resourcemanager.GetString(tr);
                 tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
-
+                isValid = false;
             }
             else
             {
                 tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                 p_error.Visibility = Visibility.Collapsed;
+            }
+            return isValid;
+        }
+        public static bool validateEmptyComboBox(ComboBox cb, Path p_error, ToolTip tt_error, string tr)
+        {
+            bool isValid = true;
+
+            if (cb.SelectedIndex == -1)
+            {
+                p_error.Visibility = Visibility.Visible;
+                tt_error.Content = MainWindow.resourcemanager.GetString(tr);
+                cb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                isValid = false;
+            }
+            else
+            {
+                cb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_error.Visibility = Visibility.Collapsed;
 
             }
+            return isValid;
         }
+        public static bool validateEmptyPassword(PasswordBox pb, Path p_error, ToolTip tt_error, string tr)
+        {
+            bool isValid = true;
 
+            if (pb.Password.Equals(""))
+            {
+                SectionData.showPasswordValidate(pb, p_error, tt_error, "trEmptyPasswordToolTip");
+                p_error.Visibility = Visibility.Collapsed;
+                isValid = false;
+            }
+            else
+            {
+                SectionData.clearPasswordValidate(pb, p_error);
+                p_error.Visibility = Visibility.Visible;
+            }
+            return isValid;
+        }
+        public static bool validateEmail(TextBox tb, Path p_error, ToolTip tt_error)
+        {
+            bool isValid = true;
+            if (!tb.Text.Equals(""))
+            {
+                if (!ValidatorExtensions.IsValid(tb.Text))
+                {
+                    p_error.Visibility = Visibility.Visible;
+                    tt_error.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
+                    tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                isValid = false;
+                }
+                else
+                {
+                    p_error.Visibility = Visibility.Collapsed;
+                    tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                isValid = true;
+                }
+            }
+            return isValid;
+        }
         public static void validateEmptyDatePicker(DatePicker dp, Path p_error, ToolTip tt_error, string tr)
         {
             TextBox tb = (TextBox)dp.Template.FindName("PART_TextBox", dp);
@@ -324,26 +381,22 @@ namespace POS.Classes
             tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             p_error.Visibility = Visibility.Collapsed;
         }
-
         public static void clearPasswordValidate(PasswordBox pb, Path p_error)
         {
             pb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             p_error.Visibility = Visibility.Collapsed;
         }
-
         public static void clearComboBoxValidate(ComboBox cb, Path p_error)
         {
             cb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             p_error.Visibility = Visibility.Collapsed;
         }
-
         public static void showTextBoxValidate(TextBox tb, Path p_error, ToolTip tt_error, string tr)
         {
             p_error.Visibility = Visibility.Visible;
             tt_error.Content = MainWindow.resourcemanager.GetString(tr);
             tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
         }
-
         public static void showPasswordValidate(PasswordBox tb, Path p_error, ToolTip tt_error, string tr)
         {
             p_error.Visibility = Visibility.Visible;
@@ -375,39 +428,9 @@ namespace POS.Classes
             tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
         }
 
-        public static void validateEmptyComboBox(ComboBox cb, Path p_error, ToolTip tt_error, string tr)
-        {
-            if (cb.SelectedIndex == -1)
-            {
-                p_error.Visibility = Visibility.Visible;
-                tt_error.Content = MainWindow.resourcemanager.GetString(tr);
-                cb.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                cb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                p_error.Visibility = Visibility.Collapsed;
+       
 
-            }
-        }
-
-        public static void validateEmail(TextBox tb, Path p_error, ToolTip tt_error)
-        {
-            if (!tb.Text.Equals(""))
-            {
-                if (!ValidatorExtensions.IsValid(tb.Text))
-                {
-                    p_error.Visibility = Visibility.Visible;
-                    tt_error.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
-                    tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                }
-                else
-                {
-                    p_error.Visibility = Visibility.Collapsed;
-                    tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                }
-            }
-        }
+     
 
         public static void validateDuplicateCode(TextBox tb, Path p_error, ToolTip tt_error ,string tr)
         {

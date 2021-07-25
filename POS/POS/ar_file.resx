@@ -1668,4 +1668,25 @@
   <data name="trParentName" xml:space="preserve">
     <value>اسم الأب</value>
   </data>
+  <data name="trStorageCostHent" xml:space="preserve">
+    <value>كلفة التخزيين...</value>
+  </data>
+  <data name="trHR" xml:space="preserve">
+    <value>موارد بشرية</value>
+  </data>
+  <data name="trInfo" xml:space="preserve">
+    <value>تواصل</value>
+  </data>
+  <data name="trManager" xml:space="preserve">
+    <value>اداري</value>
+  </data>
+  <data name="trMarket" xml:space="preserve">
+    <value>تسويق</value>
+  </data>
+  <data name="trMedia" xml:space="preserve">
+    <value>اعلام</value>
+  </data>
+  <data name="trSupport" xml:space="preserve">
+    <value>دعم تقني</value>
+  </data>
 </root>

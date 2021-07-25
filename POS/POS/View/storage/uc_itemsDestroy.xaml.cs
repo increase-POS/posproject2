@@ -99,8 +99,8 @@ namespace POS.View.storage
         async Task<IEnumerable<Item>> RefrishItems()
         {
             MainWindow.mainWindow.StartAwait();
-            items = await item.GetAllItems();
-            items = items.Where(x => x.isActive == 1);
+            items = await item.GetItemsWichHasUnits();
+    
             MainWindow.mainWindow.EndAwait();
             return items;
         }
@@ -108,7 +108,7 @@ namespace POS.View.storage
         {
             if (items is null)
                 await RefrishItems();
-            var listCa = items.Where(x => x.isActive == 1).ToList();
+            var listCa = items.ToList();
             cb_item.ItemsSource = listCa;
             cb_item.SelectedValuePath = "itemId";
             cb_item.DisplayMemberPath = "name";
@@ -138,10 +138,20 @@ namespace POS.View.storage
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         #endregion
+        private void input_LostFocus(object sender, RoutedEventArgs e)
+        {
+            string name = sender.GetType().Name;
+            if (name == "TextBox")
+            {
+                if ((sender as TextBox).Name == "tb_reasonOfDestroy")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorReasonOfDestroy, tt_errorReasonOfDestroy, "trEmptyReasonToolTip");
+            }
 
+        }
         private bool validateDistroy()
         {
             bool valid = true;
+            SectionData.validateEmptyTextBox(tb_reasonOfDestroy, p_errorReasonOfDestroy, tt_errorReasonOfDestroy, "trEmptyReasonToolTip");
             if (tb_reasonOfDestroy.Text.Equals(""))
                 valid = false;
             return valid;
@@ -151,66 +161,98 @@ namespace POS.View.storage
             if (MainWindow.groupObject.HasPermissionAction(destroyPermission, MainWindow.groupObjects, "one"))
             {
                 bool valid = validateDistroy();
-            if(invItemLoc.id != 0 && valid)
-            {
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_transItemsLocation w;
-                    w = new wd_transItemsLocation();
-                    decimal price = await invoiceModel.GetAvgItemPrice(invItemLoc.itemUnitId, invItemLoc.itemId); 
+                if (valid)
+                {
+                    int itemUnitId = 0;
+                    int itemId = 0;
+                    int invoiceId = 0;
+                    if (invItemLoc.id != 0)
+                    {
+                        itemUnitId = invItemLoc.itemUnitId;
+                        itemId = invItemLoc.itemId;
+                    }
+                    else
+                    {
+                        itemUnitId = 0;
+                        itemId = 0;
+                    }
+                    decimal price = await invoiceModel.GetAvgItemPrice(itemUnitId, itemId );
+                    decimal total = price * int.Parse( tb_amount.Text);
+
+                    invoiceModel.invNumber = await invoiceModel.generateInvNumber("ds");
+                    invoiceModel.branchCreatorId = MainWindow.branchID.Value;
+                    invoiceModel.posId = MainWindow.posID.Value;
+                    invoiceModel.createUserId = MainWindow.userID.Value;
+                    invoiceModel.invType = "d"; // destroy
+                    invoiceModel.total = total;
+                    invoiceModel.totalNet = total;
+                    invoiceModel.paid = 0;
+                    invoiceModel.deserved = invoiceModel.totalNet;
+                    invoiceModel.notes = tb_notes.Text;
+
                     List<ItemTransfer> orderList = new List<ItemTransfer>();
-                    orderList.Add(new ItemTransfer()
+                    
+                    if (invItemLoc.id != 0)
                     {
-                        itemName = invItemLoc.itemName,
-                        itemId = invItemLoc.itemId,
-                        unitName = invItemLoc.unitName,
-                        itemUnitId = invItemLoc.itemUnitId,
-                        quantity = invItemLoc.quantity,
-                        price = price,
-                    }) ;
-
-                    w.orderList = orderList;
-                    if (w.ShowDialog() == true)
-                    {
-                        if (w.selectedItemsLocations != null)
+                        orderList.Add(new ItemTransfer()
                         {
-                            List<ItemLocation> itemsLocations = w.selectedItemsLocations;
-                            List<ItemLocation> readyItemsLoc = new List<ItemLocation>();
-
-                            // _ProcessType ="ex";
-                            for (int i = 0; i < itemsLocations.Count; i++)
-                            {
-                                if (itemsLocations[i].isSelected == true)
-                                    readyItemsLoc.Add(itemsLocations[i]);
-                            }
-
-                            invoiceModel.invNumber = await invoiceModel.generateInvNumber("ds");
-                            invoiceModel.branchCreatorId = MainWindow.branchID.Value;
-                            invoiceModel.posId = MainWindow.posID.Value;
-                            invoiceModel.createUserId = MainWindow.userID.Value;
-                            invoiceModel.invType = "d"; // destroy
-                            //  invoiceModel.total = ;
-                            // invoiceModel.totalNet = ;
-                            invoiceModel.paid = 0;
-                            invoiceModel.deserved = invoiceModel.totalNet;
-                            invoiceModel.notes = tb_notes.Text;
-
-                            int invoiceId = int.Parse( await invoiceModel.saveInvoice(invoiceModel));
-                            if (invoiceId != 0)
-                            {
-                                await invoiceModel.saveInvoiceItems(orderList, invoiceId);
-                                await itemLocationModel.destroyItem(readyItemsLoc, MainWindow.userID.Value);
-                            }
-                           // await save();
+                            itemName = invItemLoc.itemName,
+                            itemId = invItemLoc.itemId,
+                            unitName = invItemLoc.unitName,
+                            itemUnitId = invItemLoc.itemUnitId,
+                            quantity = invItemLoc.amountDestroyed,
+                            price = price,
+                        });
+                        invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
+                        if (invoiceId != 0)
+                        {
+                            await invoiceModel.saveInvoiceItems(orderList, invoiceId);
+                            await invItemLoc.distroyItem(invItemLoc);
+                            await itemLocationModel.decreaseItemLocationQuantity((int)invItemLoc.itemLocationId,(int)invItemLoc.amountDestroyed,MainWindow.userID.Value);
+                            await refreshDestroyDetails();
                         }
                     }
-                    Window.GetWindow(this).Opacity = 1;
-                    await invItemLoc.distroyItem(invItemLoc);
-                await refreshDestroyDetails();
-            }
-            else
-            {
-                // اتلاف عنصر يدوياً بدون جرد
-            }
+                    else
+                    {
+                        orderList.Add(new ItemTransfer()
+                        {
+                            itemName = cb_item.SelectedItem.ToString(),
+                            itemId = (int) cb_item.SelectedValue,
+                            unitName = cb_unit.SelectedItem.ToString(),
+                            //itemUnitId = invItemLoc.itemUnitId,
+                            quantity = long.Parse(tb_amount.Text),
+                            price = price,
+                        });
+                        // اتلاف عنصر يدوياً بدون جرد
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_transItemsLocation w;
+                        w = new wd_transItemsLocation();                       
+                        w.orderList = orderList;
+                        if (w.ShowDialog() == true)
+                        {
+                            if (w.selectedItemsLocations != null)
+                            {
+                                List<ItemLocation> itemsLocations = w.selectedItemsLocations;
+                                List<ItemLocation> readyItemsLoc = new List<ItemLocation>();
+
+                                // _ProcessType ="ex";
+                                for (int i = 0; i < itemsLocations.Count; i++)
+                                {
+                                    if (itemsLocations[i].isSelected == true)
+                                        readyItemsLoc.Add(itemsLocations[i]);
+                                }
+
+                               invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
+                                if (invoiceId != 0)
+                                {
+                                    await invoiceModel.saveInvoiceItems(orderList, invoiceId);
+                                    await itemLocationModel.decreaseItemLocationQuantity((int)invItemLoc.itemLocationId, (int)invItemLoc.amountDestroyed, MainWindow.userID.Value);
+                                }
+                            }
+                        }
+                        Window.GetWindow(this).Opacity = 1;
+                    }
+                }
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -225,20 +267,6 @@ namespace POS.View.storage
             inventoriesItems = await invItemLoc.GetItemToDestroy(MainWindow.branchID.Value);
             dg_itemDestroy.ItemsSource = inventoriesItems;
         }
-        private void input_LostFocus(object sender, RoutedEventArgs e)
-        {
-            string name = sender.GetType().Name;
-            if (name == "TextBox")
-            {
-            }
-            else if (name == "ComboBox")
-            {
-            }
-            else
-            {
-
-            }
-        }
 
         private void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -250,6 +278,7 @@ namespace POS.View.storage
             invItemLoc = dg_itemDestroy.SelectedItem as InventoryItemLocation;
             tb_itemUnit.Visibility = Visibility.Visible;
             grid_itemUnit.Visibility = Visibility.Collapsed;
+            tb_amount.IsEnabled = false;
             this.DataContext = invItemLoc;
             
         }
@@ -322,6 +351,7 @@ namespace POS.View.storage
         {
             tb_itemUnit.Visibility = Visibility.Collapsed;
             grid_itemUnit.Visibility = Visibility.Visible ;
+            tb_amount.IsEnabled = true;
             if (invItemLoc!= null)
             invItemLoc.id = 0;
             DataContext = new InventoryItemLocation();

@@ -2329,6 +2329,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HR.
+        /// </summary>
+        internal static string trHR {
+            get {
+                return ResourceManager.GetString("trHR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Image.
         /// </summary>
         internal static string trImage {
@@ -2352,6 +2361,15 @@ namespace POS {
         internal static string trInActive {
             get {
                 return ResourceManager.GetString("trInActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Info.
+        /// </summary>
+        internal static string trInfo {
+            get {
+                return ResourceManager.GetString("trInfo", resourceCulture);
             }
         }
         
@@ -2635,6 +2653,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manager.
+        /// </summary>
+        internal static string trManager {
+            get {
+                return ResourceManager.GetString("trManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Market.
+        /// </summary>
+        internal static string trMarket {
+            get {
+                return ResourceManager.GetString("trMarket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max....
         /// </summary>
         internal static string trMaxHint {
@@ -2685,6 +2721,15 @@ namespace POS {
         internal static string trMedals {
             get {
                 return ResourceManager.GetString("trMedals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to media.
+        /// </summary>
+        internal static string trMedia {
+            get {
+                return ResourceManager.GetString("trMedia", resourceCulture);
             }
         }
         
@@ -4183,6 +4228,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Storage Cost....
+        /// </summary>
+        internal static string trStorageCostHent {
+            get {
+                return ResourceManager.GetString("trStorageCostHent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Store.
         /// </summary>
         internal static string trStore {
@@ -4251,6 +4305,15 @@ namespace POS {
         internal static string trSuppliers {
             get {
                 return ResourceManager.GetString("trSuppliers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Support.
+        /// </summary>
+        internal static string trSupport {
+            get {
+                return ResourceManager.GetString("trSupport", resourceCulture);
             }
         }
         

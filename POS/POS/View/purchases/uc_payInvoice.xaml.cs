@@ -625,6 +625,7 @@ namespace POS.View
         private void clearInvoice()
         {
             _Sum = 0;
+            txt_invNumber.Text = "";
             _SequenceNum = 0;
             _SelectedBranch = -1;
             _SelectedVendor = -1;
@@ -733,7 +734,7 @@ namespace POS.View
         public async Task fillInvoiceInputs(Invoice invoice)
         {
             _Sum = (decimal)invoice.total;
-
+            txt_invNumber.Text = invoice.invNumber.ToString();
             cb_branch.SelectedValue = invoice.branchId;
             cb_vendor.SelectedValue = invoice.agentId;
             dp_desrvedDate.Text = invoice.deservedDate.ToString();

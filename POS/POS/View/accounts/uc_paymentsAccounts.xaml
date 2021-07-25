@@ -155,7 +155,7 @@
 
                         <Button x:Name="btn_pdf1"    Background="{x:Null}"   Margin="10,0,5,0"
                           Padding="0" Height="35" 
-                          BorderBrush="{x:Null}"  >
+                          BorderBrush="{x:Null}" Click="Btn_pdf1_Click"  >
                             <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
                                 
                           Width="22" Height="22">
@@ -736,7 +736,7 @@
                     </Grid.RowDefinitions>
                     <Button x:Name="btn_image" Grid.Row="0" Grid.ColumnSpan="3" TabIndex="10"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,1"    Content="Image" Click="Btn_image_Click" />
+                    Margin="0,1,1,1"    Content="Image" Click="Btn_image_Click" />
                     <Button x:Name="btn_preview" Grid.Row="1" Grid.Column="0"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1"   Content="Preview" Click="Btn_preview_Click" />
@@ -749,7 +749,7 @@
                     <Button x:Name="btn_add" Grid.Row="2" Grid.Column="0" TabIndex="10"
                           Background="#4E4E4E" BorderBrush="{x:Null}" Grid.ColumnSpan="3"
                     Margin="1,1"    Content="Save" Click="Btn_add_Click" />
-          
+
 
 
                 </Grid>

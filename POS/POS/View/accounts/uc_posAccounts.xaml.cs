@@ -329,7 +329,8 @@ namespace POS.View.accounts
                 CashTransfer cash1 = new CashTransfer();
 
                 cash1.transType = "p";//pull
-                cash1.transNum = await SectionData.generateNumber('p', "p");//first parameter is pull , second is pos
+                //cash1.transNum = await SectionData.generateNumber('p', "p");//first parameter is pull , second is pos
+                cash1.transNum = await cashModel.generateCashNumber("pp");
                 cash1.cash = decimal.Parse(tb_cash.Text);
                 cash1.createUserId = MainWindow.userID.Value;
                 cash1.notes = tb_note.Text;
