@@ -162,14 +162,21 @@ namespace POS_Server.Controllers
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-                        var locationEntity = entity.Set<sysEmails>();
+                        
+                        // check if there is other same side in same branch
+                        var sidebranch = entity.sysEmails
+                          .Where(e => e.branchId == newObject.branchId && e.side == newObject.side && e.emailId != newObject.emailId).ToList();
+                        if (sidebranch == null || sidebranch.Count()==0)
+                        { 
+                            var locationEntity = entity.Set<sysEmails>();
                         if (newObject.emailId == 0)
                         {
+
                             newObject.createDate = DateTime.Now;
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
                             //  string encodedStr = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("inputStr"));
-                          // string inputStr = Encoding.UTF8.GetString(Convert.FromBase64String(encodedStr));
+                            // string inputStr = Encoding.UTF8.GetString(Convert.FromBase64String(encodedStr));
                             locationEntity.Add(newObject);
                             entity.SaveChanges();
                             message = newObject.emailId.ToString();
@@ -181,17 +188,17 @@ namespace POS_Server.Controllers
                             tmpObject.updateDate = DateTime.Now;
                             tmpObject.updateUserId = newObject.updateUserId;
 
-                            tmpObject.name  =newObject.name;
+                            tmpObject.name = newObject.name;
                             tmpObject.emailId = newObject.emailId;
-                                            
-                                            tmpObject.email = newObject.email;
-                                            tmpObject.password = newObject.password;
-                                            tmpObject.port = newObject.port;
-                                            tmpObject.isSSL = newObject.isSSL;
-                                            tmpObject.smtpClient = newObject.smtpClient;
-                                            tmpObject.side = newObject.side;
-                                            tmpObject.notes = newObject.notes;
-                                            tmpObject.branchId = newObject.branchId;
+
+                            tmpObject.email = newObject.email;
+                            tmpObject.password = newObject.password;
+                            tmpObject.port = newObject.port;
+                            tmpObject.isSSL = newObject.isSSL;
+                            tmpObject.smtpClient = newObject.smtpClient;
+                            tmpObject.side = newObject.side;
+                            tmpObject.notes = newObject.notes;
+                            tmpObject.branchId = newObject.branchId;
 
                             tmpObject.isActive = newObject.isActive;
                             tmpObject.isMajor = newObject.isMajor;
@@ -201,7 +208,12 @@ namespace POS_Server.Controllers
 
                             message = tmpObject.emailId.ToString();
                         }
-                      //  entity.SaveChanges();
+                        //  entity.SaveChanges();
+                    }
+                        else
+                        {
+                            message = "-4";
+                        }
                     }
                 }
                 catch

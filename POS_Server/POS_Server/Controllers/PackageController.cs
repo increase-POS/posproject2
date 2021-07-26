@@ -102,8 +102,10 @@ namespace POS_Server.Controllers
                     }
                     */
                     var List = (from I in entity.items
+                                join C in entity.categories on I.categoryId equals C.categoryId into JC
 
-                                where I.type=="p"
+                                from CC in JC.DefaultIfEmpty()
+                                where I.type == "p"
 
                                 select new ItemModel()
                                 {
@@ -126,7 +128,7 @@ namespace POS_Server.Controllers
                                     updateUserId = I.updateUserId,
                                     minUnitId = I.minUnitId,
                                     maxUnitId = I.maxUnitId,
-
+                                    categoryName = CC.name,
 
                                     canDelete = true,
 

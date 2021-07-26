@@ -91,8 +91,11 @@ namespace POS.Classes
               //  mail.BodyEncoding = Encoding.UTF8;
                mail.Body = body;
 
-
-                mail.AlternateViews.Add(htmlView);
+                if (htmlView !=null)
+                {
+                        mail.AlternateViews.Add(htmlView);
+                }
+              
 
                 Smtpserver.Port = port;
                 Smtpserver.Credentials = new System.Net.NetworkCredential(from, password);
