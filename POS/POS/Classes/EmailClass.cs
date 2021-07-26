@@ -7,7 +7,7 @@ using System.Net.Mail;
 using System.Net.Mime;
 
 using System.Net;
-namespace mailapp
+namespace POS.Classes
 {
     class MailimageClass
     {
