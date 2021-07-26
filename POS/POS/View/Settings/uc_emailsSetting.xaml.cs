@@ -170,17 +170,21 @@ namespace POS.View.Settings
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            tb_name.Clear();
-            tb_email.Clear();
-            tb_password.Clear();
-            tb_smtpClient.Clear();
-            tb_port.Clear();
+            sysEmail = new  SysEmails();
+            this.DataContext = sysEmail;
+
+            //tb_name.Clear();
+            //tb_email.Clear();
+            //tb_password.Clear();
             pb_password.Clear();
-            tgl_isSSL.IsChecked =
-                tgl_isMajor.IsChecked = false;
+            //tb_smtpClient.Clear();
+            //tb_port.Clear();
+            //pb_password.Clear();
+            //tgl_isSSL.IsChecked =
+            // tgl_isMajor.IsChecked = false;
             cb_branchId.SelectedIndex = -1;
             cb_side.SelectedIndex = -1;
-            tb_notes.Clear();
+            //tb_notes.Clear();
             SectionData.clearValidate(tb_name, p_errorName);
             SectionData.clearValidate(tb_email, p_errorEmail);
             SectionData.clearValidate(tb_port, p_errorPort);
@@ -278,14 +282,13 @@ namespace POS.View.Settings
                     sysEmail.isActive = 1;
 
                     string s = await sysEmail.Save(sysEmail);
-
-                    if (!s.Equals("-1"))
+                    if (s.Equals("-4"))
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmail"), animation: ToasterAnimation.FadeIn);
+                    else  if (!s.Equals("-1"))
                     {
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         Btn_clear_Click(null, null);
                     }
-                    else if (!s.Equals("-4"))
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmail"), animation: ToasterAnimation.FadeIn);
                     else
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
@@ -316,14 +319,14 @@ namespace POS.View.Settings
                     sysEmail.updateUserId = MainWindow.userID;
                     //sysEmail.isActive = 1;
                     string s = await sysEmail.Save(sysEmail);
-                    if (!s.Equals("-1"))
+                      if (s.Equals("-4"))
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmail"), animation: ToasterAnimation.FadeIn);
+                    else if (!s.Equals("-1"))
                     {
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                         await RefreshSysEmailList();
                         Tb_search_TextChanged(null, null);
                     }
-                    else if(!s.Equals("-4"))
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmail"), animation: ToasterAnimation.FadeIn);
                     else
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }

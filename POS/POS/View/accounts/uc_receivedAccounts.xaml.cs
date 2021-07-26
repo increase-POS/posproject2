@@ -404,27 +404,28 @@ namespace POS.View.accounts
                 if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
                     cash.docNum = tb_docNumCheque.Text;
 
-                    if (cb_depositorV.IsVisible || cb_depositorC.IsVisible)
-                    {
+                if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
+                {
+                    string res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d");
+                    cash.bondId = int.Parse(res);
+                }
+
+                if (cb_depositorV.IsVisible || cb_depositorC.IsVisible)
+                {
                         if (tb_cash.IsReadOnly)
-                            s1 = await cashModel.PayListOfInvoices(cash.agentId.Value, invoicesLst, "feed", cash);
+                            s1 = await cashModel.PayListOfInvoices(cash.agentId.Value, invoicesLst, "feed", cash); 
                         else
                             s1 = await cashModel.PayByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
-                        MessageBox.Show(s1);
-                    }
+                }
 
-                    else
-                        s = await cashModel.Save(cash);
-
-                    //MessageBox.Show(s);
+                else
+                    s = await cashModel.Save(cash);
 
                 if ((!s.Equals("0")) || (s1.Equals("true")))
                 {
                     calcBalance(cash.cash.Value, depositor, agentid);
 
-                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-                        saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d", int.Parse(s));
-
+                  
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     Btn_clear_Click(null, null);
 
@@ -440,7 +441,7 @@ namespace POS.View.accounts
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
         }
-        private async void saveBond(string num, decimal ammount, Nullable<DateTime> date, string type, int? cashId)
+        private async Task<string> saveBond(string num, decimal ammount, Nullable<DateTime> date, string type)
         {
             Bonds bond = new Bonds();
             bond.number = num;
@@ -449,24 +450,24 @@ namespace POS.View.accounts
             bond.type = type;
             bond.isRecieved = 0;
             bond.createUserId = MainWindow.userID.Value;
-            bond.cashTransId = cashId;
 
             string s = await bondModel.Save(bond);
 
-            if (!s.Equals("0"))
-            {
-                //MessageBox.Show(s);
-                //MessageBox.Show(cashId.Value.ToString());
-                CashTransfer c = await cashModel.GetByID(cashId.Value);
+            //if (!s.Equals("0"))
+            //{
+            //    //MessageBox.Show(s);
+            //    //MessageBox.Show(cashId.Value.ToString());
+            //    CashTransfer c = await cashModel.GetByID(cashId.Value);
 
-                c.bondId = int.Parse(s);
+            //    c.bondId = int.Parse(s);
 
-                string x = await cashModel.Save(c);
+            //    string x = await cashModel.Save(c);
 
-                //MessageBox.Show(c.bondId.ToString());
-            }
+            //    //MessageBox.Show(c.bondId.ToString());
+            //}
             //    MessageBox.Show("ok");
             //else MessageBox.Show("error");
+            return s;
         }
 
         private async void calcBalance(decimal ammount , string depositor , int agentid)
@@ -874,6 +875,7 @@ namespace POS.View.accounts
 
         private void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {//invoices
+            invoicesLst.Clear();
             Window.GetWindow(this).Opacity = 0.2;
             wd_invoicesList w = new wd_invoicesList();
 
@@ -936,6 +938,8 @@ namespace POS.View.accounts
         {
             //string s = await cashModel.generateCashNumber("pv");
             //MessageBox.Show(s);
+
+            await cashModel.generateCashNumber("pv");
 
         }
     }

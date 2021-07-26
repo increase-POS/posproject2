@@ -85,7 +85,7 @@ namespace POS.View.accounts
                 if (bond != null)
                 {
                     tb_number.Text = bond.number;
-                    MessageBox.Show(bond.ctusersName);
+                    //MessageBox.Show(bond.ctusersName);
                     //MessageBox.Show(bond.bondId.ToString() +"-"+bond.cashTransId.ToString());
                     //MessageBox.Show(bond.deserveDate.ToString() +"-"+bond.updateDate.ToString());
                     //MessageBox.Show(bond.ctside +"-"+bond.ctposName);
@@ -100,44 +100,33 @@ namespace POS.View.accounts
                         btn_pay.IsEnabled = true;
                     }
 
-                    CashTransfer cash = await cashModel.GetByID(bond.cashTransId.Value);
-
-                    if (cash.side.Equals("v"))
+                    if(bond.ctside.Equals("v"))
                     {
-                        cb_depositorV.SelectedValue = cash.agentId.Value;
+                        cb_depositorV.SelectedValue = bond.ctagentId.Value;
                         cb_depositorV.Visibility = Visibility.Visible;
                         cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
                         cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
                     }
-                 
-                    if (cash.side.Equals("c"))
+                    if (bond.ctside.Equals("c"))
                     {
                         cb_depositorC.Visibility = Visibility.Visible;
-                        cb_depositorC.SelectedValue = cash.agentId.Value;
+                        cb_depositorC.SelectedValue = bond.ctagentId.Value;
                         cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
                         cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
                     }
-                  
-                    if (cash.side.Equals("u"))
+                    if (bond.ctside.Equals("u"))
                     {
                         cb_depositorU.Visibility = Visibility.Visible;
-                        cb_depositorU.SelectedValue = cash.userId.Value;
+                        cb_depositorU.SelectedValue = bond.ctuserId.Value;
                         cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
                         cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
                     }
 
                     if (bond.isRecieved == 1)
                     {
-                        IEnumerable<CashTransfer> c;
-                        IEnumerable<CashTransfer> cQuery;
-                        c = await cashModel.GetCashTransferAsync(bond.type, "all");
-                        cQuery = c.Where(s => s.bondId == bond.bondId && s.side == "bnd");
-                        //MessageBox.Show(cQuery.ToList()[0].processType);
-                        cb_paymentProcessType.SelectedValue = cQuery.ToList()[0].processType;
-                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                        {
-                            cb_card.SelectedValue = cQuery.ToList()[0].cardId;
-                        }
+                        cb_paymentProcessType.SelectedValue = bond.ctprocessType;
+                        if(cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                            cb_card.SelectedValue = bond.ctcardId;
                     }
                     else
                     {
@@ -530,7 +519,6 @@ namespace POS.View.accounts
         async Task<IEnumerable<Bonds>> RefreshBondsList()
         {
             bonds = await bondModel.GetAll();
-          //  MessageBox.Show(bonds.Count().ToString());
             return bonds;
         }
 

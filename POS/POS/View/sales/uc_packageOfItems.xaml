@@ -176,7 +176,8 @@
                                               VerticalOffset="25"/>
                                     </Button.ToolTip>
                                 </Button>
-                                <ToggleButton DockPanel.Dock="Right" Margin="0,0,5,0"  Grid.Column="1"  x:Name="tgl_itemIsActive"  Checked="Tgl_itemIsActive_Checked" Unchecked="Tgl_itemIsActive_Unchecked"
+                                <ToggleButton DockPanel.Dock="Right" Margin="0,0,5,0"  Grid.Column="1"  x:Name="tgl_itemIsActive"  
+                                              Checked="Tgl_itemIsActive_Checked" Unchecked="Tgl_itemIsActive_Unchecked"
                              VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                         Height="13" Width="28" />
                                 <TextBlock Grid.Column="0" DockPanel.Dock="Right" 
@@ -614,17 +615,20 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <!--LostFocus="Tb_code_LostFocus" TextChanged="Tb_code_TextChanged"-->
-                                        <TextBox x:Name="tb_code"  Text="{Binding code, Mode=OneWay}" Grid.Row="1" Padding="10,5,5,5" 
+                                        <TextBox x:Name="tb_code"  Text="{Binding code, Mode=OneWay}" Grid.Row="1" 
+                                                 Padding="10,5,5,5" 
                                                  BorderThickness="1"  materialDesign:HintAssist.Hint="Code..."   
                                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                                 BorderBrush="AliceBlue"  MaxLength="100" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                 BorderBrush="AliceBlue"  MaxLength="100" 
+                                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
                                                  PreviewTextInput="Tb_EnglishAndDigits_PreviewTextInput"
                                                  TextChanged="Tb_validateEmptyTextChange" 
                                                  LostFocus="Tb_validateEmptyLostFocus"
                                                  PreviewKeyDown="Tb_PreventSpaces"
                                                  Height="35" Width="195"  Margin="10,5"  >
-                                            <TextBox.ToolTip>
+                                       
+                                                <TextBox.ToolTip>
                                                 <ToolTip x:Name="tt_code" Content="Code"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
@@ -640,6 +644,7 @@
                                                 <ToolTip x:Name="tt_errorCode" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                             </Path.ToolTip>
                                         </Path>
+                                        
                                     </Grid>
 
 

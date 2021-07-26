@@ -388,7 +388,6 @@
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" MaxLength="50" TabIndex="13"
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                       
                                  Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" 
                                  LostFocus="Tb_password_LostFocus" 
                                          PasswordChanged="Pb_password_PasswordChanged" >
@@ -450,7 +449,7 @@
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="12"/>
                             <ToggleButton DockPanel.Dock="Left"  x:Name="tgl_isSSL"  
-                                      IsChecked="{Binding isSSL}" 
+                                      IsChecked="{Binding isSSL, Mode=OneWay}" 
                                      VerticalAlignment="Center" Padding="10,15,5,5" 
                                       Margin="0" Height="13" Width="28"    />
                         </DockPanel>
@@ -541,7 +540,7 @@
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="12"/>
                                 <ToggleButton   x:Name="tgl_isMajor"  
-                                     VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="{Binding isMajor}" 
+                                     VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="{Binding isMajor, Mode=OneWay}" 
                                       Margin="0" Height="13" Width="28"    />
                             </DockPanel>
                         </Grid>

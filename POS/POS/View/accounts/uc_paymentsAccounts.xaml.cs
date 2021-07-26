@@ -433,7 +433,6 @@ namespace POS.View.accounts
                     cash.notes = tb_note.Text;
                     cash.createUserId = MainWindow.userID;
                     cash.side = cb_depositTo.SelectedValue.ToString();
-
                     cash.processType = cb_paymentProcessType.SelectedValue.ToString();
 
                     if (cb_recipientV.IsVisible)
@@ -449,11 +448,18 @@ namespace POS.View.accounts
                         cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
 
                     if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-                        cash.docNum = await SectionData.generateNumberBond('p', "bnd");
+                        //cash.docNum = await SectionData.generateNumberBond('p', "bnd");
+                        cash.docNum = await cashModel.generateCashNumber("pbnd");
 
                     if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
                         cash.docNum = tb_docNumCheque.Text;
 
+                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
+                    {
+                        //saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "p", int.Parse(s));
+                        string res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "p");
+                        cash.bondId = int.Parse(res);
+                    }
                     if (cb_recipientV.IsVisible || cb_recipientC.IsVisible)
                     {
                         if (tb_cash.IsReadOnly)
@@ -465,18 +471,12 @@ namespace POS.View.accounts
                     else
                         s = await cashModel.Save(cash);
 
-                    if ((!s.Equals("0"))||(s1.Equals("true")))
+                    if ((!s.Equals("0")) || (s1.Equals("true")))
                     {
-
                         calcBalance(cash.cash.Value, recipient, agentid);
-
-                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-                            //saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "p", int.Parse(s));
-                            saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "p", 0);
 
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         Btn_clear_Click(null, null);
-
 
                         await RefreshCashesList();
                         Tb_search_TextChanged(null, null);
@@ -499,7 +499,7 @@ namespace POS.View.accounts
         }
         
 
-        private async void saveBond(string num, decimal ammount, Nullable <DateTime> date, string type , int? cashId)
+        private async Task<string> saveBond(string num, decimal ammount, Nullable <DateTime> date, string type)
         {
             Bonds bond = new Bonds();
             bond.number = num;
@@ -508,10 +508,12 @@ namespace POS.View.accounts
             bond.type = type;
             bond.isRecieved = 0;
             bond.createUserId = MainWindow.userID.Value;
-            bond.cashTransId = 0;
+            //bond.cashTransId = 0;
 
             string s = await bondModel.Save(bond);
-           
+
+            return s;
+
             //if(!s.Equals("0"))
             //{
             //    MessageBox.Show(s);
@@ -1018,6 +1020,7 @@ namespace POS.View.accounts
        
         private void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {//invoices
+            invoicesLst.Clear();
             Window.GetWindow(this).Opacity = 0.2;
             wd_invoicesList w = new wd_invoicesList();
             
@@ -1053,30 +1056,19 @@ namespace POS.View.accounts
 
         private async void Btn_pdf1_Click(object sender, RoutedEventArgs e)
         {
-            CashTransfer cash = new CashTransfer();
+            //string res = await saveBond("9999", 100, dp_docDate.SelectedDate.Value, "p", 0);
+            //MessageBox.Show(res);
 
-            cash.transType = "p";
-            cash.posId = MainWindow.posID.Value;
-            cash.transNum = "0000";
-            cash.cash = 1000;
-            cash.notes ="";
-            cash.createUserId = MainWindow.userID;
-            cash.side = "v";
+            Bonds bond = new Bonds();
+            bond.number = "999";
+            bond.amount = 100;
+            bond.deserveDate = dp_docDate.SelectedDate.Value;
+            bond.type = "p";
+            bond.isRecieved = 0;
+            bond.createUserId = MainWindow.userID.Value;
 
-            cash.processType = "doc";
-
-            cash.agentId = 5;
-
-            //cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
-
-            //if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-            //    cash.docNum = await SectionData.generateNumberBond('p', "bnd");
-
-            //if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
-            //    cash.docNum = tb_docNumCheque.Text;
-
-            s1 = await cashModel.PayByAmmount(5 , 1000 , "pay", cash);
-
+            string res = await bondModel.Save(bond);
+            MessageBox.Show(res);
         }
 
         private void Cb_recipientC_SelectionChanged(object sender, SelectionChangedEventArgs e)

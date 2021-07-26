@@ -340,11 +340,13 @@ namespace POS.View
         /// Item
         /// </summary>
         /// <returns></returns>
-
+        Package packageModel = new Package();
         async Task<IEnumerable<Item>> RefrishItems()
         {
             if (category.categoryId == 0)
-                items = await itemModel.GetAllItems();
+                //items = await itemModel.GetAllItems();
+                items = await packageModel.GetPackages();
+
             else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
             return items;
         }
@@ -1121,10 +1123,12 @@ namespace POS.View
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
-        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
             {
+                List<Item> pkg = await packageModel.GetPackages();
+                MessageBox.Show(pkg.Count.ToString());
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
