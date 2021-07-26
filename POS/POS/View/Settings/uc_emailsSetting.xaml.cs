@@ -269,7 +269,9 @@ namespace POS.View.Settings
                     sysEmail.emailId = 0;
                     sysEmail.name = tb_name.Text;
                     sysEmail.email = tb_email.Text;
-                    sysEmail.password = pb_password.Password;
+                   // sysEmail.password = pb_password.Password;
+                   sysEmail.password = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(pb_password.Password));
+
                     sysEmail.port = int.Parse(tb_port.Text);
                     sysEmail.isSSL = tgl_isSSL.IsChecked;
                     sysEmail.isMajor = tgl_isMajor.IsChecked;
@@ -307,7 +309,9 @@ namespace POS.View.Settings
                 if (isValid())
                 {
                     sysEmail.email = tb_email.Text;
-                    sysEmail.password = pb_password.Password;
+                 //   sysEmail.password = pb_password.Password;
+                    sysEmail.password = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(pb_password.Password));
+
                     sysEmail.port = int.Parse(tb_port.Text);
                     sysEmail.isSSL = tgl_isSSL.IsChecked;
                     sysEmail.isMajor = tgl_isMajor.IsChecked;
@@ -426,7 +430,8 @@ namespace POS.View.Settings
 
                 cb_branchId.SelectedValue = sysEmail.branchId;
                 cb_side.SelectedValue = sysEmail.side;
-                pb_password.Password = sysEmail.password;
+           //   pb_password.Password = sysEmail.password;
+             pb_password.Password = Encoding.UTF8.GetString(Convert.FromBase64String(sysEmail.password));
 
                 if (sysEmail != null)
                 {
