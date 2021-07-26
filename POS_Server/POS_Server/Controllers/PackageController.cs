@@ -62,6 +62,90 @@ namespace POS_Server.Controllers
             return NotFound();
         }
 
+
+        [HttpGet]
+        [Route("GetPackages")]
+        public IHttpActionResult GetPackages()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            bool canDelete = false;
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+
+                    //
+                    /*
+                    var templist = (from S in entity.packages
+                                    join IU in entity.itemsUnits on S.parentIUId equals IU.itemUnitId
+
+                                    select new
+                                    {
+                                        IU.itemId
+
+                                    }
+                                  ).ToList();
+                    List<int> listcontain = new List<int>();
+                    foreach (var row in templist)
+                    {
+                        listcontain.Add(int.Parse(row.itemId.ToString()));
+                    }
+                    */
+                    var List = (from I in entity.items
+
+                                where I.type=="p"
+
+                                select new ItemModel()
+                                {
+                                    itemId = I.itemId,
+                                    code = I.code,
+                                    name = I.name,
+                                    details = I.details,
+                                    type = I.type,
+                                    image = I.image,
+                                    taxes = I.taxes,
+                                    isActive = I.isActive,
+                                    min = I.min,
+                                    max = I.max,
+                                    categoryId = I.categoryId,
+
+                                    parentId = I.parentId,
+                                    createDate = I.createDate,
+                                    updateDate = I.updateDate,
+                                    createUserId = I.createUserId,
+                                    updateUserId = I.updateUserId,
+                                    minUnitId = I.minUnitId,
+                                    maxUnitId = I.maxUnitId,
+
+
+                                    canDelete = true,
+
+
+
+                                }).ToList();
+
+
+                  
+                    if (List == null)
+                        return NotFound();
+                    else
+                        return Ok(List);
+                }
+            }
+            //else
+            return NotFound();
+        }
+
         // GET api/<controller>
         [HttpGet]
         [Route("GetByID")]

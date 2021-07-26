@@ -23,7 +23,7 @@ namespace POS_Server.Models
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<bool> isMajor { get; set; }
-
+        public string branchName { get; set; }
         public bool canDelete { get; set; }
     }
 }

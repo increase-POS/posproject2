@@ -41,43 +41,45 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var itemsList = ( from I in entity.items
-                                      join c in entity.categories on I.categoryId equals c.categoryId into lj
-                                      from x in lj.DefaultIfEmpty()
-                                       select new ItemModel(){
-                                      itemId = I.itemId,
-                                      name = I.name,
-                                      code = I.code,
-                                      categoryId = I.categoryId,
-                                      categoryName = x.name,
-                                      max = I.max,
-                                      maxUnitId = I.maxUnitId,
-                                      minUnitId = I.minUnitId,
-                                      min = I.min,
-                                      
-                                      parentId = I.parentId,
-                                    isActive=I.isActive,
-                                      image = I.image,
-                                      type = I.type,
-                                      details = I.details,
-                                      taxes = I.taxes,
-                                      createDate = I.createDate,
-                                      updateDate = I.updateDate,
-                                      createUserId = I.createUserId,
-                                      updateUserId = I.updateUserId,
-                                      isNew=0,
-                                      
-                                   })
+                    var  itemsList = (from I in entity.items
+
+                                                 join c in entity.categories on I.categoryId equals c.categoryId into lj
+                                                 from x in lj.DefaultIfEmpty()
+                                                 select new ItemModel()
+                                                 {
+                                                     itemId = I.itemId,
+                                                     name = I.name,
+                                                     code = I.code,
+                                                     categoryId = I.categoryId,
+                                                     categoryName = x.name,
+                                                     max = I.max,
+                                                     maxUnitId = I.maxUnitId,
+                                                     minUnitId = I.minUnitId,
+                                                     min = I.min,
+
+                                                     parentId = I.parentId,
+                                                     isActive = I.isActive,
+                                                     image = I.image,
+                                                     type = I.type,
+                                                     details = I.details,
+                                                     taxes = I.taxes,
+                                                     createDate = I.createDate,
+                                                     updateDate = I.updateDate,
+                                                     createUserId = I.createUserId,
+                                                     updateUserId = I.updateUserId,
+                                                     isNew = 0,
+                                                     parentName = entity.items.Where(m => m.itemId == I.parentId).FirstOrDefault().name,
+                                                     minUnitName = entity.units.Where(m => m.unitId == I.minUnitId).FirstOrDefault().name,
+                                                     maxUnitName = entity.units.Where(m => m.unitId == I.minUnitId).FirstOrDefault().name,
+
+
+                                                 })
                                    .ToList();
 
                     if (itemsList.Count > 0)
                     {
                         for (int i = 0; i < itemsList.Count; i++)
                         {
-                            string parentName = entity.items.Where(x => x.itemId == itemsList[i].parentId).FirstOrDefault().name;
-                            string minUnitName = entity.units.Where(x => x.unitId == itemsList[i].minUnitId).FirstOrDefault().name;
-                            string maxUnitName = entity.units.Where(x => x.unitId == itemsList[i].minUnitId).FirstOrDefault().name;
-
                             canDelete = false;
                             if (itemsList[i].isActive == 1)
                             {
@@ -89,8 +91,7 @@ namespace POS_Server.Controllers
                                 //var itemLocationsL = entity.itemsLocations.Where(x => x.itemId == itemId).Select(b => new { b.itemsLocId }).FirstOrDefault();
                                 var itemsMaterials = entity.itemsMaterials.Where(x => x.itemId == itemId).Select(b => new { b.itemMatId }).FirstOrDefault();
                                 var serials = entity.serials.Where(x => x.itemId == itemId).Select(b => new { b.serialId }).FirstOrDefault();
-
-
+                             
 
                                 if ((childItemL is null)&&(itemsPropL is null) && (ordersL is null) && (itemUnitsL is null)  && (itemsMaterials is null) && (serials is null))
                                     canDelete = true;
@@ -170,9 +171,9 @@ namespace POS_Server.Controllers
                     if (defaultSale != 0)
                     {
                         unitPredicate = unitPredicate.Or(unit => unit.defaultSale == 1);
-
+                 
                         var itemsList = (from I in entity.items.Where(searchPredicate)
-                                         join u in entity.itemsUnits.Where(x => x.defaultSale == 1) on I.itemId equals u.itemId
+                                         join u in entity.itemsUnits.Where(unitPredicate) on I.itemId equals u.itemId
                                          join il in entity.itemsLocations on u.itemUnitId equals il.itemUnitId
                                          join l in entity.locations on il.locationId equals l.locationId
                                          join s in entity.sections.Where(x => x.branchId == branchId) on l.sectionId equals s.sectionId
@@ -188,6 +189,7 @@ namespace POS_Server.Controllers
                                              maxUnitId = I.maxUnitId,
                                              minUnitId = I.minUnitId,
                                              min = I.min,
+
                                              parentId = I.parentId,
                                              isActive = I.isActive,
                                              image = I.image,
@@ -199,12 +201,9 @@ namespace POS_Server.Controllers
                                              createUserId = I.createUserId,
                                              updateUserId = I.updateUserId,
                                              isNew = 0,
-                                             unitName = u.units.name,
-                                             price = u.price,
 
                                          })
                                   .ToList();
-
                         if (itemsList == null)
                             return NotFound();
                         else
@@ -214,7 +213,7 @@ namespace POS_Server.Controllers
                     {
                         unitPredicate = unitPredicate.Or(unit => unit.defaultPurchase == 1);
                         var itemsList = (from I in entity.items.Where(searchPredicate)
-                                         join u in entity.itemsUnits.Where(x => x.defaultPurchase == 1) on I.itemId equals u.itemId
+                                         join u in entity.itemsUnits.Where(unitPredicate) on I.itemId equals u.itemId
                                          select new ItemModel()
                                          {
                                              itemId = I.itemId,
@@ -248,6 +247,59 @@ namespace POS_Server.Controllers
                     }  
                 }
                 return NotFound();
+            }
+            else
+                return NotFound();
+        }
+        [HttpGet]
+        [Route("GetItemsWichHasUnits")]
+        public IHttpActionResult GetItemsWichHasUnits()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {          
+                    var itemsList = (from I in entity.items
+                                        join u in entity.itemsUnits on I.itemId equals u.itemId
+                                        select new ItemModel()
+                                        {
+                                            itemId = I.itemId,
+                                            name = I.name,
+                                            categoryId = I.categoryId,
+                                            max = I.max,
+                                            maxUnitId = I.maxUnitId,
+                                            minUnitId = I.minUnitId,
+                                            min = I.min,
+
+                                            parentId = I.parentId,
+                                            isActive = I.isActive,
+                                            type = I.type,
+                                            taxes = I.taxes,
+                                            createDate = I.createDate,
+                                            updateDate = I.updateDate,
+                                            createUserId = I.createUserId,
+                                            updateUserId = I.updateUserId,
+                                            isNew = 0,
+
+                                        }).Where(x => x.isActive == 1).Distinct()
+                                .ToList();
+                    if (itemsList == null)
+                        return NotFound();
+                    else
+                        return Ok(itemsList);
+   
+                }
             }
             else
                 return NotFound();
@@ -531,15 +583,17 @@ namespace POS_Server.Controllers
                                          parentId = itm.parentId,
                                          isActive = itm.isActive,
                                          taxes = itm.taxes,
-                                        
-                                         isNew = 0,
 
                                          parentName = entity.items.Where(x => x.itemId == itm.parentId).FirstOrDefault().name,
                                          minUnitName = entity.units.Where(x => x.unitId == itm.minUnitId).FirstOrDefault().name,
                                          maxUnitName = entity.units.Where(x => x.unitId == itm.minUnitId).FirstOrDefault().name,
 
 
-                                     }).Where(p =>  categoriesId.Contains((int)p.categoryId)).ToList();
+                    isNew = 0,
+                                          
+
+
+    }).Where(p =>  categoriesId.Contains((int)p.categoryId)).ToList();
 
                     //.Where(t => categoriesId.Contains((int)t.categoryId))
                     // end test

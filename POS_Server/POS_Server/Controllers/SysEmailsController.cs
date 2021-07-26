@@ -33,7 +33,8 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var List = (from S in  entity.sysEmails                                         
+                    var List = (from S in  entity.sysEmails     
+                                join B in entity.branches  on S.branchId equals B.branchId
                                          select new  SysEmailsModel()
                                          {
                                             emailId=S.emailId,
@@ -53,47 +54,11 @@ namespace POS_Server.Controllers
                                             createUserId = S.createUserId,
                                             updateUserId=S.updateUserId,
                                             canDelete=true,
+                                            branchName=B.name,
 
                                          }).ToList();
-                    /*
-
-
-emailId
-name
-email
-password
-port
-isSSL
-smtpClient
-side
-notes
-branchId
-isActive
-createUserId
-updateUserId
-createDate
-updateDate
-canDelete
-
-                    */
-                    /*
-                    if (List.Count > 0)
-                    {
-                        for (int i = 0; i < List.Count; i++)
-                        {
-                            if (List[i].isActive == 1)
-                            {
-                                int emailId = (int)List[i].emailId;
-                                var itemsI= entity.invoices.Where(x => x.emailId == emailId).Select(b => new { b.invoiceId }).FirstOrDefault();
-                               
-                                if ((itemsI is null)  )
-                                    canDelete = true;
-                            }
-                            List[i].canDelete = canDelete;
-                        }
-                       
-                    }
-                     */
+   
+                     
 
                     if (List == null)
                         return NotFound();

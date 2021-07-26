@@ -768,6 +768,21 @@ namespace POS_Server.Controllers
             }
         }
         [HttpPost]
+        [Route("decreaseItemLocationQuantity")]
+        public void decreaseItemLocationQuantity( int itemLocId, int quantity, int userId)
+        {
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                itemsLocations itemL = new itemsLocations();
+
+                itemL = entity.itemsLocations.Find(itemLocId);
+                itemL.quantity -= quantity;
+                itemL.updateDate = DateTime.Now;
+                itemL.updateUserId = userId;
+                entity.SaveChanges();
+            }
+        }
+        [HttpPost]
         [Route("decraseAmounts")]
         public Boolean decraseAmounts(string itemLocationObject, int branchId)
         {

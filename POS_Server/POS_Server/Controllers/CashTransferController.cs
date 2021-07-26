@@ -198,6 +198,80 @@ namespace POS_Server.Controllers
                 return NotFound();
         }
 
+        // get by bondId
+        [HttpGet]
+        [Route("GetBybondId")]
+        public IHttpActionResult GetBybondId(int bondId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+
+
+
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+         
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+   
+                    List<CashTransferModel> cachlist = (from C in entity.cashTransfer
+                                                        where C.bondId==bondId
+                                                        select new CashTransferModel()
+                                                        {
+                                                            cashTransId = C.cashTransId,
+                                                            transType = C.transType,
+                                                            posId = C.posId,
+                                                            userId = C.userId,
+                                                            agentId = C.agentId,
+                                                            invId = C.invId,
+                                                            transNum = C.transNum,
+                                                            createDate = C.createDate,
+                                                            updateDate = C.updateDate,
+                                                            cash = C.cash,
+                                                            updateUserId = C.updateUserId,
+                                                            createUserId = C.createUserId,
+                                                            notes = C.notes,
+                                                            posIdCreator = C.posIdCreator,
+                                                            isConfirm = C.isConfirm,
+                                                            cashTransIdSource = C.cashTransIdSource,
+                                                            side = C.side,
+
+                                                            docName = C.docName,
+                                                            docNum = C.docNum,
+                                                            docImage = C.docImage,
+                                                            bankId = C.bankId,
+                                                           
+                                                            processType = C.processType,
+                                                            cardId = C.cardId,
+                                                            bondId = C.bondId,
+                                                           
+                                                        }).ToList();
+
+
+
+
+
+                    if (cachlist == null)
+                        return NotFound();
+                    else
+                        return Ok(cachlist);
+
+                }
+            }
+            else
+                return NotFound();
+        }
+
+
         // GET api/agent/5
         [HttpGet]
         [Route("GetByID")]
@@ -1074,6 +1148,7 @@ namespace POS_Server.Controllers
             if (valid)
             {
                 string[] types = { "pw", "pi", "sb" };
+                string cashIds = "";
                 switch (payType)
                 {
                     case "pay"://get pw,pi,sb invoices
@@ -1127,6 +1202,7 @@ namespace POS_Server.Controllers
                             foreach (InvoiceModel inv in invList)
                             {
                                 decimal paid = 0;
+                                cashTransfer ct;
                                 var invObj = entity.invoices.Find(inv.invoiceId);
                                 cashTr.invId = inv.invoiceId;
                                 if (amount >= inv.deserved)
@@ -1147,7 +1223,8 @@ namespace POS_Server.Controllers
                                 cashTr.createDate = DateTime.Now;
                                 cashTr.updateDate = DateTime.Now;
                                 cashTr.updateUserId = cashTr.createUserId;
-                                entity.cashTransfer.Add(cashTr);
+                               ct = entity.cashTransfer.Add(cashTr);
+                                cashIds += ct.cashTransId + ",";
                                 // increase agent balance
                                 if (agent.balanceType == 1)
                                 {
@@ -1174,6 +1251,7 @@ namespace POS_Server.Controllers
                             foreach (InvoiceModel inv in invList)
                             {
                                 decimal paid = 0;
+                                cashTransfer ct;
                                 var invObj = entity.invoices.Find(inv.invoiceId);
                                 cashTr.invId = inv.invoiceId;
                                 if (amount >= inv.deserved)
@@ -1194,7 +1272,9 @@ namespace POS_Server.Controllers
                                 cashTr.createDate = DateTime.Now;
                                 cashTr.updateDate = DateTime.Now;
                                 cashTr.updateUserId = cashTr.createUserId;
-                                entity.cashTransfer.Add(cashTr);
+                               ct = entity.cashTransfer.Add(cashTr);
+
+                                cashIds += ct.cashTransId + ",";
                                 // decrease agent balance
                                 if (agent.balanceType == 0)
                                 {
@@ -1215,11 +1295,12 @@ namespace POS_Server.Controllers
                                 if (amount == 0)
                                     break;
                             }
+                            entity.SaveChanges();
                             break;
                           
                     }
                         
-                    return Ok("true");
+                    return Ok(cashIds);
                 }
             }
             else
@@ -1240,7 +1321,7 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
-
+            string cashIds = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -1266,6 +1347,7 @@ namespace POS_Server.Controllers
                             foreach (invoices inv in invoiceList)
                             {
                                 decimal paid = 0;
+                                cashTransfer ct;
                                 var invObj = entity.invoices.Find(inv.invoiceId);
                                 cashTr.invId = inv.invoiceId;
                                   
@@ -1277,7 +1359,8 @@ namespace POS_Server.Controllers
                                 cashTr.createDate = DateTime.Now;
                                 cashTr.updateDate = DateTime.Now;
                                 cashTr.updateUserId = cashTr.createUserId;
-                                entity.cashTransfer.Add(cashTr);
+                                ct = entity.cashTransfer.Add(cashTr);
+                                cashIds += ct.cashTransId + ",";
                                 // increase agent balance
                                 if (agent.balanceType == 1)
                                 {
@@ -1302,6 +1385,7 @@ namespace POS_Server.Controllers
                             foreach (invoices inv in invoiceList)
                             {
                                 decimal paid = 0;
+                                cashTransfer ct;
                                 var invObj = entity.invoices.Find(inv.invoiceId);
                                 cashTr.invId = inv.invoiceId;
 
@@ -1313,7 +1397,8 @@ namespace POS_Server.Controllers
                                 cashTr.createDate = DateTime.Now;
                                 cashTr.updateDate = DateTime.Now;
                                 cashTr.updateUserId = cashTr.createUserId;
-                                entity.cashTransfer.Add(cashTr);
+                               ct = entity.cashTransfer.Add(cashTr);
+                                cashIds += ct.cashTransId + ",";
                                 // decrease agent balance
                                 if (agent.balanceType == 0)
                                 {
@@ -1332,53 +1417,17 @@ namespace POS_Server.Controllers
                                     agent.balance += paid;
                                 }
                             }
-                            break;
-                          
-                    }
-                        
-                    return Ok("true");
+                            entity.SaveChanges();
+                            break;      
+                    }                     
+                    return Ok(cashIds);
                 }
             }
             else
                 return Ok("false");
            
             }
-        [HttpGet]
-        [Route("GetLastNumOfCash")]
-        public IHttpActionResult GetLastNumOfCash(string cashCode)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
-            {
-                List<string> numberList;
-                int lastNum = 0;
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    numberList = entity.cashTransfer.Where(b => b.transNum.Contains(cashCode + "-")).Select(b => b.transNum).ToList();
-
-                    for (int i = 0; i < numberList.Count; i++)
-                    {
-                        string code = numberList[i];
-                        string s = code.Substring(code.LastIndexOf("-") + 1);
-                        numberList[i] = s;
-                    }
-                    numberList.Sort();
-                    lastNum = int.Parse(numberList[numberList.Count - 1]);
-                }
-                return Ok(lastNum);
-            }
-            return NotFound();
+           
         }
-
-    }
     }
 
