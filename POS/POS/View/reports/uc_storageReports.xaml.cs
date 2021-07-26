@@ -30,6 +30,8 @@ namespace POS.View.reports
         private int selectedFatherTab = 0;
         List<Storage> storages;
         List<ItemTransferInvoice> itemsTransfer;
+        IEnumerable<ItemTransferInvoice> agentsCount;
+        IEnumerable<ItemTransferInvoice> invCount;
 
         private static uc_storageReports _instance;
         public static uc_storageReports Instance
@@ -76,6 +78,11 @@ namespace POS.View.reports
             fillComboExternalInvoiceInvoice();
             fillComboExternalAgentsAgents();
             fillComboExternalAgentsAgentsType();
+
+            chk_externalAgentsIn.IsChecked = true;
+            chk_externalItemsIn.IsChecked = true;
+            chk_externalAgentsOut.IsChecked = true;
+            chk_externalItemsOut.IsChecked = true;
         }
 
 
@@ -113,12 +120,15 @@ namespace POS.View.reports
 
             grid_stock.Visibility = Visibility.Hidden;
             grid_external.Visibility = Visibility.Hidden;
+            grid_internal.Visibility = Visibility.Hidden;
 
             bdr_stock.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_external.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_internal.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
             path_stock.Fill = Brushes.White;
             path_external.Fill = Brushes.White;
+            path_internal.Fill = Brushes.White;
         }
         #endregion
 
@@ -140,6 +150,7 @@ namespace POS.View.reports
         {
             btn_stock.IsEnabled = true;
             btn_external.IsEnabled = true;
+            btn_internal.IsEnabled = true;
         }
         #endregion
 
@@ -900,7 +911,6 @@ namespace POS.View.reports
             });
             var cc = result.Select(m => new { m.itemId, m.quantity, m.unitId });
 
-
             var tempName = temp.GroupBy(s => new { s.itemName, s.unitName }).Select(s => new
             {
                 itemName = s.FirstOrDefault().itemName,
@@ -1016,12 +1026,38 @@ namespace POS.View.reports
         private void fillComboExternalItemsUnits()
         {
             var temp = cb_externalItemsItems.SelectedItem as ExternalitemCombo;
+            var temp1 = cb_externalItemsBranches.SelectedItem as Branch;
+
             cb_externalItemsUnits.SelectedValuePath = "UnitId";
             cb_externalItemsUnits.DisplayMemberPath = "UnitName";
-            if (temp == null)
+            if (temp == null && temp1 == null)
             {
                 cb_externalItemsUnits.ItemsSource = comboExternalItemsUnits
-                    .GroupBy(x => x.UnitName)
+                    .GroupBy(x => x.UnitId)
+                    .Select(g => new ExternalUnitCombo
+                    {
+                        UnitId = g.FirstOrDefault().UnitId,
+                        UnitName = g.FirstOrDefault().UnitName,
+                        ItemId = g.FirstOrDefault().ItemId
+                    });
+            }
+            else if (temp != null && temp1 == null)
+            {
+                cb_externalItemsUnits.ItemsSource = comboExternalItemsUnits
+                     .Where(x => x.ItemId == temp.ItemId)
+                    .GroupBy(x => x.UnitId)
+                    .Select(g => new ExternalUnitCombo
+                    {
+                        UnitId = g.FirstOrDefault().UnitId,
+                        UnitName = g.FirstOrDefault().UnitName,
+                        ItemId = g.FirstOrDefault().ItemId
+                    });
+            }
+            else if (temp == null && temp1 != null)
+            {
+                cb_externalItemsUnits.ItemsSource = comboExternalItemsUnits
+                     .Where(x => x.BranchId == temp1.branchId)
+                    .GroupBy(x => x.UnitId)
                     .Select(g => new ExternalUnitCombo
                     {
                         UnitId = g.FirstOrDefault().UnitId,
@@ -1031,15 +1067,15 @@ namespace POS.View.reports
             }
             else
             {
-                cb_externalItemsUnits.ItemsSource = comboUnits
-                    .Where(x => x.ItemId == temp.ItemId && x.BranchId == temp.BranchId)
+                cb_externalItemsUnits.ItemsSource = comboExternalItemsUnits
+                    .Where(x => x.ItemId == temp.ItemId && x.BranchId == temp1.branchId)
                     .GroupBy(x => x.UnitId)
                     .Select(g => new ExternalUnitCombo
                     {
                         UnitId = g.FirstOrDefault().UnitId,
                         UnitName = g.FirstOrDefault().UnitName,
                         ItemId = g.FirstOrDefault().ItemId
-                    }); ;
+                    });
             }
         }
 
@@ -1054,7 +1090,6 @@ namespace POS.View.reports
                     .GroupBy(x => x.AgentType)
                     .Select(g => new AgentTypeCombo
                     {
-                        AgentId = g.FirstOrDefault().AgentId,
                         AgentType = g.FirstOrDefault().AgentType,
                         BranchId = g.FirstOrDefault().BranchId
                     }).ToList();
@@ -1066,7 +1101,6 @@ namespace POS.View.reports
                     .GroupBy(x => x.AgentType)
                     .Select(g => new AgentTypeCombo
                     {
-                        AgentId = g.FirstOrDefault().AgentId,
                         AgentType = g.FirstOrDefault().AgentType,
                         BranchId = g.FirstOrDefault().BranchId
                     }).ToList();
@@ -1076,6 +1110,7 @@ namespace POS.View.reports
         private void fillComboExternalAgentsAgents()
         {
             var temp = cb_externalAgentsAgentsType.SelectedItem as AgentTypeCombo;
+            var temp1 = cb_externalAgentsBranches.SelectedItem as Branch;
             cb_externalAgentsCustomer.SelectedValuePath = "AgentId";
             cb_externalAgentsCustomer.DisplayMemberPath = "AgentName";
             if (temp == null)
@@ -1090,12 +1125,36 @@ namespace POS.View.reports
                         AgentType = g.FirstOrDefault().AgentType
                     }).ToList();
             }
-
-
+            else if (temp != null && temp1 == null)
+            {
+                cb_externalAgentsCustomer.ItemsSource = comboExternalAgentsAgents
+                        .Where(x => x.AgentType == temp.AgentType)
+                    .GroupBy(x => x.AgentId)
+                    .Select(g => new AgentCombo
+                    {
+                        AgentId = g.FirstOrDefault().AgentId,
+                        AgentName = g.FirstOrDefault().AgentName,
+                        BranchId = g.FirstOrDefault().BranchId,
+                        AgentType = g.FirstOrDefault().AgentType
+                    }).ToList();
+            }
+            else if (temp == null && temp1 != null)
+            {
+                cb_externalAgentsCustomer.ItemsSource = comboExternalAgentsAgents
+                        .Where(x => x.BranchId == temp1.branchId)
+                    .GroupBy(x => x.AgentId)
+                    .Select(g => new AgentCombo
+                    {
+                        AgentId = g.FirstOrDefault().AgentId,
+                        AgentName = g.FirstOrDefault().AgentName,
+                        BranchId = g.FirstOrDefault().BranchId,
+                        AgentType = g.FirstOrDefault().AgentType
+                    }).ToList();
+            }
             else
             {
                 cb_externalAgentsCustomer.ItemsSource = comboExternalAgentsAgents
-                         .Where(x => x.AgentId == temp.AgentId && x.BranchId == temp.BranchId)
+                         .Where(x => x.AgentType == temp.AgentType && x.BranchId == temp1.branchId)
                     .GroupBy(x => x.AgentId)
                     .Select(g => new AgentCombo
                     {
@@ -1110,7 +1169,7 @@ namespace POS.View.reports
 
         private void fillComboExternalInvType()
         {
-            var temp = cb_externalItemsBranches.SelectedItem as Branch;
+            var temp = cb_externalInvoicesBranches.SelectedItem as Branch;
             cb_externalInvoicesInvoiceType.SelectedValuePath = "InvoiceId";
             cb_externalInvoicesInvoiceType.DisplayMemberPath = "InvoiceType";
             if (temp == null)
@@ -1119,7 +1178,6 @@ namespace POS.View.reports
                     .GroupBy(x => x.InvoiceType)
                     .Select(g => new InvTypeCombo
                     {
-                        InvoiceId = g.FirstOrDefault().InvoiceId,
                         InvoiceType = g.FirstOrDefault().InvoiceType,
                         BranchId = g.FirstOrDefault().BranchId
                     }).ToList();
@@ -1131,7 +1189,6 @@ namespace POS.View.reports
                     .GroupBy(x => x.InvoiceType)
                     .Select(g => new InvTypeCombo
                     {
-                        InvoiceId = g.FirstOrDefault().InvoiceId,
                         InvoiceType = g.FirstOrDefault().InvoiceType,
                         BranchId = g.FirstOrDefault().BranchId
                     }).ToList();
@@ -1141,30 +1198,57 @@ namespace POS.View.reports
         private void fillComboExternalInvoiceInvoice()
         {
             var temp = cb_externalInvoicesInvoiceType.SelectedItem as InvTypeCombo;
+            var temp1 = cb_externalInvoicesBranches.SelectedItem as Branch;
             cb_externalInvoicesInvoice.SelectedValuePath = "InvoiceId";
             cb_externalInvoicesInvoice.DisplayMemberPath = "InvoiceNumber";
-            if (temp == null)
+            if (temp == null && temp1 == null)
             {
                 cb_externalInvoicesInvoice.ItemsSource = comboExternalInvoiceInvoice
                     .GroupBy(x => x.InvoiceId)
                     .Select(g => new InvCombo
                     {
-                        InvoiceId = (int)g.FirstOrDefault().InvoiceId,
+                        InvoiceId = g.FirstOrDefault().InvoiceId,
                         InvoiceNumber = g.FirstOrDefault().InvoiceNumber,
-                        BranchId = (int)g.FirstOrDefault().BranchId,
+                        BranchId = g.FirstOrDefault().BranchId,
+                        InvoiceType = g.FirstOrDefault().InvoiceType
+                    }).ToList();
+            }
+            else if (temp != null && temp1 == null)
+            {
+                cb_externalInvoicesInvoice.ItemsSource = comboExternalInvoiceInvoice
+                      .Where(x => x.InvoiceType == temp.InvoiceType)
+                    .GroupBy(x => x.InvoiceId)
+                    .Select(g => new InvCombo
+                    {
+                        InvoiceId = g.FirstOrDefault().InvoiceId,
+                        InvoiceNumber = g.FirstOrDefault().InvoiceNumber,
+                        BranchId = g.FirstOrDefault().BranchId,
+                        InvoiceType = g.FirstOrDefault().InvoiceType
+                    }).ToList();
+            }
+            else if (temp == null && temp1 != null)
+            {
+                cb_externalInvoicesInvoice.ItemsSource = comboExternalInvoiceInvoice
+                      .Where(x => x.BranchId == temp1.branchId)
+                    .GroupBy(x => x.InvoiceId)
+                    .Select(g => new InvCombo
+                    {
+                        InvoiceId = g.FirstOrDefault().InvoiceId,
+                        InvoiceNumber = g.FirstOrDefault().InvoiceNumber,
+                        BranchId = g.FirstOrDefault().BranchId,
                         InvoiceType = g.FirstOrDefault().InvoiceType
                     }).ToList();
             }
             else
             {
                 cb_externalInvoicesInvoice.ItemsSource = comboExternalInvoiceInvoice
-                    .Where(x => x.InvoiceType == temp.InvoiceType && x.BranchId == temp.BranchId)
+                    .Where(x => x.InvoiceType == temp.InvoiceType && x.BranchId == temp1.branchId)
                      .GroupBy(x => x.InvoiceId)
                     .Select(g => new InvCombo
                     {
-                        InvoiceId = (int)g.FirstOrDefault().InvoiceId,
+                        InvoiceId = g.FirstOrDefault().InvoiceId,
                         InvoiceNumber = g.FirstOrDefault().InvoiceNumber,
-                        BranchId = (int)g.FirstOrDefault().BranchId,
+                        BranchId = g.FirstOrDefault().BranchId,
                         InvoiceType = g.FirstOrDefault().InvoiceType
                     }).ToList();
             }
@@ -1180,21 +1264,22 @@ namespace POS.View.reports
             var selectedInvoiceType = comboItem.SelectedItem as InvTypeCombo;
             var selectedInvoice = comboUnit.SelectedItem as InvCombo;
 
-
-
             var result = itemsTransfer.Where(x => (
                   (selectedExternalTab == 0 ? (
-                            (chkIn.IsChecked == true ? (x.invType == "p") || (x.invType == "sb") : true)
-                            && (chkOut.IsChecked == true ? (x.invType == "s") || (x.invType == "pb") : true)
+                            ((chkIn.IsChecked == true ? (x.invType == "p") || (x.invType == "sb") : false)
+                            || (chkOut.IsChecked == true ? (x.invType == "s") || (x.invType == "pb") : false))
                           && (comboBranch.SelectedItem != null ? (x.branchId == selectedBranch.branchId) : true)
-                          && (comboItem.SelectedItem != null ? (x.ITitemId == selectedItem.ItemId) : true)
-                          && (comboUnit.SelectedItem != null ? (x.ITunitId == selectedUnit.UnitId) : true)
-
+                          && (comboItem.SelectedItem != null ? (x.itemId == selectedItem.ItemId) : true)
+                          && (comboUnit.SelectedItem != null ? (x.unitId == selectedUnit.UnitId) : true)
+                          && (dp_externalItemsStartDate.SelectedDate != null ? (x.OstartDate >= startDate.SelectedDate) : true)
+                          && (dp_externalItemsEndDate.SelectedDate != null ? (x.OendDate <= endDate.SelectedDate) : true)
                           )
                           : true
                           )
                           && (selectedExternalTab == 1 ? (
-                           (comboBranch.SelectedItem != null ? (x.branchId == selectedBranch.branchId) : true)
+                           ((chkIn.IsChecked == true ? (x.invType == "p") || (x.invType == "sb") : false)
+                            || (chkOut.IsChecked == true ? (x.invType == "s") || (x.invType == "pb") : false))
+                          && (comboBranch.SelectedItem != null ? (x.branchId == selectedBranch.branchId) : true)
                           && (comboItem.SelectedItem != null ? (x.agentType == selectedAgentType.AgentType) : true)
                           && (comboUnit.SelectedItem != null ? (x.agentId == selectedAgent.AgentId) : true)
 
@@ -1202,7 +1287,7 @@ namespace POS.View.reports
                           : true
                           )
                           && (selectedExternalTab == 2 ? (
-                           (comboBranch.SelectedItem != null ? (x.branchId == selectedBranch.branchId) : true)
+                            (comboBranch.SelectedItem != null ? (x.branchId == selectedBranch.branchId) : true)
                           && (comboItem.SelectedItem != null ? (x.invType == selectedInvoiceType.InvoiceType) : true)
                           && (comboUnit.SelectedItem != null ? (x.invoiceId == selectedInvoice.InvoiceId) : true)
 
@@ -1223,6 +1308,7 @@ namespace POS.View.reports
             chk_externalItemsAllItems.IsEnabled = true;
             fillComboExternalItemsItems();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+            fillExternalPieChart();
         }
 
         private void chk_externalItemsAllBranches_Checked(object sender, RoutedEventArgs e)
@@ -1233,6 +1319,7 @@ namespace POS.View.reports
             chk_externalItemsAllItems.IsEnabled = true;
             fillComboExternalItemsItems();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+            fillExternalPieChart();
         }
 
         private void chk_externalItemsAllBranches_Unchecked(object sender, RoutedEventArgs e)
@@ -1243,37 +1330,43 @@ namespace POS.View.reports
             chk_externalItemsAllItems.IsEnabled = false;
             chk_externalItemsAllItems.IsChecked = false;
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-
+            fillExternalPieChart();
         }
 
         private void chk_externalItemsIn_Checked(object sender, RoutedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+            fillExternalPieChart();
         }
 
         private void chk_externalItemsIn_Unchecked(object sender, RoutedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+            fillExternalPieChart();
         }
 
         private void chk_externalItemsOut_Checked(object sender, RoutedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+            fillExternalPieChart();
         }
 
         private void chk_externalItemsOut_Unchecked(object sender, RoutedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+            fillExternalPieChart();
         }
 
         private void dp_externalItemsEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+            fillExternalPieChart();
         }
 
         private void dp_externalItemsStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+            fillExternalPieChart();
         }
 
         private void cb_externalItemsItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1282,7 +1375,7 @@ namespace POS.View.reports
             chk_externalItemsAllUnits.IsEnabled = true;
             fillComboExternalItemsUnits();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-
+            fillExternalPieChart();
         }
 
         private void chk_externalItemsAllItems_Checked(object sender, RoutedEventArgs e)
@@ -1306,7 +1399,7 @@ namespace POS.View.reports
         private void cb_externalItemsUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-
+            fillExternalPieChart();
         }
 
         private void chk_externalItemsAllUnits_Checked(object sender, RoutedEventArgs e)
@@ -1329,7 +1422,7 @@ namespace POS.View.reports
             chk_externalAgentsAllAgentsType.IsEnabled = true;
             fillComboExternalAgentsAgentsType();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-
+            fillExternalPieChart();
         }
 
         private void cb_externalAgentsAgentsType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1338,13 +1431,13 @@ namespace POS.View.reports
             chk_externalAgentsAllCustomers.IsEnabled = true;
             fillComboExternalAgentsAgents();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-
+            fillExternalPieChart();
         }
 
         private void cb_externalAgentsCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-
+            fillExternalPieChart();
         }
 
         private void chk_externalAgentsAllBranches_Checked(object sender, RoutedEventArgs e)
@@ -1397,36 +1490,37 @@ namespace POS.View.reports
         private void chk_externalAgentsIn_Checked(object sender, RoutedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-
+            fillExternalPieChart();
         }
 
         private void chk_externalAgentsIn_Unchecked(object sender, RoutedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-
+            fillExternalPieChart();
         }
 
         private void chk_externalAgentsOut_Checked(object sender, RoutedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-
+            fillExternalPieChart();
         }
 
         private void chk_externalAgentsOut_Unchecked(object sender, RoutedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-
+            fillExternalPieChart();
         }
 
         private void dp_externalAgentsEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-
+            fillExternalPieChart();
         }
 
         private void dp_externalAgentsStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+            fillExternalPieChart();
         }
 
         #endregion
@@ -1439,6 +1533,7 @@ namespace POS.View.reports
             chk_externalInvoicesAllInvoicesType.IsEnabled = true;
             fillComboExternalInvType();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null);
+            fillExternalPieChart();
         }
 
         private void chk_externalInvoicesAllBranches_Checked(object sender, RoutedEventArgs e)
@@ -1448,6 +1543,7 @@ namespace POS.View.reports
             cb_externalInvoicesInvoiceType.IsEnabled = true;
             chk_externalInvoicesAllInvoicesType.IsEnabled = true;
             fillComboExternalInvType();
+
         }
 
         private void chk_externalInvoicesAllBranches_Unchecked(object sender, RoutedEventArgs e)
@@ -1462,11 +1558,13 @@ namespace POS.View.reports
         private void dp_externalInvoicesEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null);
+            fillExternalPieChart();
         }
 
         private void dp_externalInvoicesStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null);
+            fillExternalPieChart();
         }
 
         private void cb_externalInvoicesInvoiceType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1475,6 +1573,7 @@ namespace POS.View.reports
             chk_externalInvoicesALlInvoice.IsEnabled = true;
             fillComboExternalInvoiceInvoice();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null);
+            fillExternalPieChart();
         }
 
         private void chk_externalInvoicesAllInvoicesType_Checked(object sender, RoutedEventArgs e)
@@ -1498,6 +1597,7 @@ namespace POS.View.reports
         private void cb_externalInvoicesInvoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null);
+            fillExternalPieChart();
 
         }
 
@@ -1520,47 +1620,69 @@ namespace POS.View.reports
         {
             MyAxis.Labels = new List<string>();
             List<string> names = new List<string>();
-            IEnumerable<decimal> pTemp = null;
+            List<int> pTemp = new List<int>();
+            List<int> sTemp = new List<int>();
+            List<int> pbTemp = new List<int>();
+            List<int> sbTemp = new List<int>();
+
 
             var temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
             if (selectedExternalTab == 1)
             {
-
+                temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
             }
             else if (selectedExternalTab == 2)
             {
-
+                temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null);
             }
 
-            var result = temp.GroupBy(s => new { s.branchId, s.invType }).Select(s => new
-            {
-                invType = s.FirstOrDefault().invType,
-                branchId = s.FirstOrDefault().branchId,
-                quantity = s.Count()
-            }
-        );
-            pTemp = result.Select(x => (decimal)x.quantity);
+
+            var result = temp.GroupBy(x => new { x.invoiceId }).Select(x => new { x.FirstOrDefault().branchId, x.FirstOrDefault().invType });
+
+            invCount = result.GroupBy(x => x.branchId).Select(x => new ItemTransferInvoice { PCount = x.Where(g => g.invType == "p").Count(), SCount = x.Where(g => g.invType == "s").Count(), PbCount = x.Where(g => g.invType == "pb").Count(), SbCount = x.Where(g => g.invType == "sb").Count() });
+
+
+            pTemp.AddRange(invCount.Select(x => x.PCount).ToList());
+            pbTemp.AddRange(invCount.Select(x => x.PbCount).ToList());
+            sTemp.AddRange(invCount.Select(x => x.SCount).ToList());
+            sbTemp.AddRange(invCount.Select(x => x.SbCount).ToList());
 
             var tempName = temp.GroupBy(s => new { s.branchId, s.invType }).Select(s => new
             {
-                locationName = s.FirstOrDefault().invType + "\n" + s.FirstOrDefault().branchName
+                locationName =  s.FirstOrDefault().branchName
             });
             names.AddRange(tempName.Select(nn => nn.locationName));
 
             SeriesCollection rowChartData = new SeriesCollection();
-            List<decimal> purchase = new List<decimal>();
             for (int i = 0; i < pTemp.Count(); i++)
             {
-                purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
                 MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
 
             rowChartData.Add(
           new LineSeries
           {
-              Values = purchase.AsChartValues(),
+              Values = pTemp.AsChartValues(),
 
           });
+            rowChartData.Add(
+      new LineSeries
+      {
+          Values = pbTemp.AsChartValues(),
+
+      });
+            rowChartData.Add(
+      new LineSeries
+      {
+          Values = sTemp.AsChartValues(),
+
+      });
+            rowChartData.Add(
+      new LineSeries
+      {
+          Values = sbTemp.AsChartValues(),
+
+      });
             rowChart.Series = rowChartData;
             DataContext = this;
         }
@@ -1574,48 +1696,49 @@ namespace POS.View.reports
 
             if (selectedExternalTab == 1)
             {
-
+                temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
             }
             else if (selectedExternalTab == 2)
             {
-
+                temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null);
             }
 
-            var result = temp.GroupBy(s => new { s.itemId, s.unitId }).Select(s => new ItemTransferInvoice
-            {
-                branchId = (int)s.FirstOrDefault().branchId,
-                itemId = (int)s.FirstOrDefault().itemId,
-                unitId = (int)s.FirstOrDefault().unitId,
-                quantity = s.Sum(g => g.quantity)
-            });
-            var cc = result.Select(m => new { m.itemId, m.quantity, m.unitId });
+            var result = temp.GroupBy(x => new { x.agentId }).Select(x => new { x.FirstOrDefault().branchId, x.FirstOrDefault().agentType });
 
+            agentsCount = result.GroupBy(x => x.branchId).Select(x => new ItemTransferInvoice { CusCount = x.Where(g => g.agentType == "c").Count(), VenCount = x.Where(g => g.agentType == "v").Count() });
 
-            var tempName = temp.GroupBy(s => new { s.itemName, s.unitName }).Select(s => new
+            var tempName = temp.GroupBy(s => new { s.branchId }).Select(s => new
             {
-                itemName = s.FirstOrDefault().itemName,
-                unitName = s.FirstOrDefault().unitName
+                itemName = s.FirstOrDefault().branchName,
             });
-            names.AddRange(tempName.Select(nn => nn.itemName + " - " + nn.unitName));
+            names.AddRange(tempName.Select(nn => nn.itemName));
 
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
-            List<decimal> cP = new List<decimal>();
-            List<decimal> cPb = new List<decimal>();
-            List<decimal> cD = new List<decimal>();
+            List<int> cP = new List<int>();
+            List<int> cPb = new List<int>();
 
-
-            for (int i = 0; i < cc.Count(); i++)
+ 
+            for (int i = 0; i < agentsCount.Count(); i++)
             {
-                cP.Add(cc.ToList().Select(jj => (decimal)jj.quantity).Skip(i).FirstOrDefault());
+                cP.Add(agentsCount.ToList().Skip(i).FirstOrDefault().VenCount);
+                cPb.Add(agentsCount.ToList().Skip(i).FirstOrDefault().CusCount);
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
+
             columnChartData.Add(
             new StackedColumnSeries
             {
                 Values = cP.AsChartValues(),
                 DataLabels = true,
             });
+            columnChartData.Add(
+            new StackedColumnSeries
+            {
+                Values = cPb.AsChartValues(),
+                DataLabels = true,
+            });
+
             DataContext = this;
             cartesianChart.Series = columnChartData;
             fillExternalRowChart();
@@ -1629,11 +1752,11 @@ namespace POS.View.reports
             var temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
             if (selectedExternalTab == 1)
             {
-
+                temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
             }
             else if (selectedExternalTab == 2)
             {
-
+                temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null);
             }
 
             var titleTemp = temp.GroupBy(m => new { m.itemId, m.unitId }).Select(m => new
@@ -1826,6 +1949,234 @@ namespace POS.View.reports
             }
             #endregion
 
+        }
+        /************************************************************************************************************************************/
+        private int selectedInternalTab=0;
+
+        public void paintInternalChilds()
+        {
+            bdrMainInternal.RenderTransform = Animations.borderAnimation(50, bdrMainInternal, true);
+
+            grid_internalItems.Visibility = Visibility.Hidden;
+            grid_internalOperater.Visibility = Visibility.Hidden;
+
+            txt_internalItems.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            txt_internalOperator.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+            path_internalItems.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            path_internalOperator.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+        }
+        private void isEnabledButtonsInternal()
+        {
+            btn_internalItems.IsEnabled = true;
+            btn_internalOperator.IsEnabled = true;
+        }
+        private void btn_internalItems_Click(object sender, RoutedEventArgs e)
+        {
+            selectedInternalTab = 0;
+            txt_search.Text = "";
+            paintInternalChilds();
+            isEnabledButtonsInternal();
+            //fillComboBranches(cb_branchesLocation);
+            btn_internalItems.IsEnabled = false;
+            btn_internalItems.Opacity = 1;
+            grid_internalItems.Visibility = Visibility.Visible;
+            txt_internalItems.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_internalItems.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            //showSelectedTabColumn();
+
+            //dgStock.ItemsSource = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
+            //fillPieChart();
+        }
+
+        private void btn_internalOperator_Click(object sender, RoutedEventArgs e)
+        {
+            selectedInternalTab = 1;
+            txt_search.Text = "";
+            paintInternalChilds();
+            isEnabledButtonsInternal();
+            //fillComboBranches(cb_branchesLocation);
+            btn_internalOperator.IsEnabled = false;
+            btn_internalOperator.Opacity = 1;
+            grid_internalOperater.Visibility = Visibility.Visible;
+            txt_internalOperator.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_internalOperator.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            //showSelectedTabColumn();
+
+            //dgStock.ItemsSource = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
+            //fillPieChart();
+        }
+
+        private void cb_internalItemsBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalItemsAllBranches_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalItemsAllBranches_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void cb_internalItemsItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalItemsAllItems_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalItemsAllItems_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void cb_internalItemsUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalItemsAllUnits_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalItemsAllUnits_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void cb_internalItemsFromBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void cb_internalItemsToBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalItemsFromAllBranches_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalItemsFromAllBranches_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalItemsToAllBranches_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalItemsToAllBranches_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void dp_internalItemsStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void dp_InternalItemsEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void cb_internalOperaterFromBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalOperaterFromAllBranches_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalOperaterFromAllBranches_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void cb_internalOperaterToBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalOperaterToAllBranches_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalOperaterToAllBranches_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void cb_internalOperaterType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalOperatorAllTypes_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalOperatorAllTypes_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void cb_internalOperatorOperators_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalOperatorAllOperators_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chk_internalOperatorAllOperators_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void dp_InternalOperatorEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void dp_internalOperatorStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void btn_internal_Click(object sender, RoutedEventArgs e)
+        {
+            selectedFatherTab = 2;
+            txt_search.Text = "";
+            paint();
+            grid_internal.Visibility = Visibility.Visible;
+            bdr_internal.Background = Brushes.White;
+            path_internal.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            isEnabledButtons();
+            btn_internal.IsEnabled = false;
+            btn_internal.Opacity = 1;
+            //fillComboBranches(cb_externalItemsBranches);
+            //dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+            //showSelectedTabColumn();
+            //fillExternalPieChart();
         }
     }
 }

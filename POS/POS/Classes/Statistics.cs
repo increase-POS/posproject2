@@ -141,8 +141,6 @@ namespace POS.Classes
         public Nullable<decimal> ITprice { get; set; }
 
 
-
-
         public Nullable<System.DateTime> ITcreateDate { get; set; }
         public Nullable<System.DateTime> ITupdateDate { get; set; }
         public Nullable<int> ITcreateUserId { get; set; }
@@ -191,7 +189,7 @@ namespace POS.Classes
         public Nullable<int> branchCreatorId { get; set; }
         public string branchCreatorName { get; set; }
         private string invTypeNumber;
-        public string InvTypeNumber { get => invTypeNumber = invType + invNumber; set => invTypeNumber = value; }
+        public string InvTypeNumber { get => invTypeNumber = invType + "-" + invNumber; set => invTypeNumber = value; }
         // for report
         public int countP { get; set; }
         public int countS { get; set; }
@@ -214,7 +212,7 @@ namespace POS.Classes
         public string uuserLast { get; set; }
         public string uUserAccName { get; set; }
         private string agentTypeAgent;
-        public string AgentTypeAgent { get => agentTypeAgent = agentType + agentName; set => agentTypeAgent = value; }
+        public string AgentTypeAgent { get => agentTypeAgent = agentType + "-" + agentName; set => agentTypeAgent = value; }
         public int countPb { get; set; }
         public int countD { get; set; }
         public Nullable<decimal> totalPb { get; set; }
@@ -275,7 +273,20 @@ namespace POS.Classes
         public string importBranch { get; set; }
         public int exportBranchId { get; set; }
         public int importBranchId { get; set; }
-
+        private string itemUnits;
+        private int cusCount;
+        private int venCount;
+        private int pCount;
+        private int sCount;
+        private int pbCount;
+        private int sbCount;
+        public string ItemUnits { get => itemUnits = itemName + " - " + unitName; set => itemUnits = value; }
+        public int CusCount { get => cusCount; set => cusCount = value; }
+        public int VenCount { get => venCount; set => venCount = value; }
+        public int PCount { get => pCount; set => pCount = value; }
+        public int SCount { get => sCount; set => sCount = value; }
+        public int PbCount { get => pbCount; set => pbCount = value; }
+        public int SbCount { get => sbCount; set => sbCount = value; }
     }
     class Statistics
     {
@@ -1128,6 +1139,7 @@ namespace POS.Classes
         }
         public class ExternalUnitCombo
         {
+            private int? branchId;
             private int? unitId;
             private string unitName;
             private int? itemId;
@@ -1135,6 +1147,7 @@ namespace POS.Classes
             public int? UnitId { get => unitId; set => unitId = value; }
             public string UnitName { get => unitName; set => unitName = value; }
             public int? ItemId { get => itemId; set => itemId = value; }
+            public int? BranchId { get => branchId; set => branchId = value; }
         }
 
 
@@ -1148,7 +1161,7 @@ namespace POS.Classes
         public List<ExternalUnitCombo> getExternalUnitCombo(List<ItemTransferInvoice> ITInvoice)
         {
             List<ExternalUnitCombo> iulist = new List<ExternalUnitCombo>();
-            iulist = ITInvoice.Select(g => new ExternalUnitCombo { UnitId = g.unitId, UnitName = g.unitName, ItemId = g.itemId }).ToList();
+            iulist = ITInvoice.Select(g => new ExternalUnitCombo { BranchId = g.branchId, UnitId = g.unitId, UnitName = g.unitName, ItemId = g.itemId }).ToList();
             return iulist;
         }
         public class sectionCombo
@@ -1194,11 +1207,9 @@ namespace POS.Classes
 
         public class AgentTypeCombo
         {
-            private int? agentId;
             private string agentType;
             private int? branchId;
 
-            public int? AgentId { get => agentId; set => agentId = value; }
             public int? BranchId { get => branchId; set => branchId = value; }
             public string AgentType { get => agentType; set => agentType = value; }
         }
@@ -1207,7 +1218,7 @@ namespace POS.Classes
         {
             List<AgentTypeCombo> iulist = new List<AgentTypeCombo>();
 
-            iulist = ITInvoice.Select(g => new AgentTypeCombo { AgentId = g.agentId, AgentType = g.agentType, BranchId = g.branchId }).ToList();
+            iulist = ITInvoice.Select(g => new AgentTypeCombo {  AgentType = g.agentType, BranchId = g.branchId }).ToList();
             return iulist;
 
         }
@@ -1229,18 +1240,16 @@ namespace POS.Classes
         {
             List<AgentCombo> iulist = new List<AgentCombo>();
 
-            iulist = ITInvoice.Select(g => new AgentCombo { AgentId = g.agentId, AgentName = g.agentName, BranchId = g.branchId ,AgentType=g.agentType}).ToList();
+            iulist = ITInvoice.Select(g => new AgentCombo { AgentId = g.agentId, AgentName = g.agentName, BranchId = g.branchId, AgentType = g.agentType }).ToList();
             return iulist;
 
         }
 
         public class InvTypeCombo
         {
-            private int invoiceId;
             private string invoiceType;
             private int? branchId;
 
-            public int InvoiceId { get => invoiceId; set => invoiceId = value; }
             public string InvoiceType { get => invoiceType; set => invoiceType = value; }
             public int? BranchId { get => branchId; set => branchId = value; }
         }
@@ -1249,7 +1258,7 @@ namespace POS.Classes
         {
             List<InvTypeCombo> iulist = new List<InvTypeCombo>();
 
-            iulist = ITInvoice.Select(g => new InvTypeCombo { InvoiceId = g.invoiceId, InvoiceType = g.invType, BranchId = g.branchId }).ToList();
+            iulist = ITInvoice.Select(g => new InvTypeCombo {  InvoiceType = g.invType, BranchId = g.branchId }).ToList();
             return iulist;
 
         }
