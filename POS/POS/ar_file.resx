@@ -1689,4 +1689,7 @@
   <data name="trSupport" xml:space="preserve">
     <value>دعم تقني</value>
   </data>
+  <data name="trMajorEmail" xml:space="preserve">
+    <value>يوجد ايميل رئيسي مسبقاً</value>
+  </data>
 </root>

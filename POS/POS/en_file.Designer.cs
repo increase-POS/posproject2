@@ -2653,6 +2653,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is already a Major email.
+        /// </summary>
+        internal static string trMajorEmail {
+            get {
+                return ResourceManager.GetString("trMajorEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manager.
         /// </summary>
         internal static string trManager {

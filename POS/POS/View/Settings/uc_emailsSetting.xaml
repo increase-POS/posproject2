@@ -374,7 +374,7 @@
                                 <ToolTip  x:Name="tt_errorEmail"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
-                        <TextBox x:Name="tb_password" Grid.Row="3" Padding="10,0,5,0"   
+                        <TextBox x:Name="tb_password" Grid.Row="3" Padding="10,5,5,5"   
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Password..."    
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" MaxLength="20" Visibility="Collapsed"
@@ -450,7 +450,7 @@
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="12"/>
                             <ToggleButton DockPanel.Dock="Left"  x:Name="tgl_isSSL"  
-                                      IsChecked="{Binding isSSL, Mode=OneWay}" 
+                                      IsChecked="{Binding isSSL}" 
                                      VerticalAlignment="Center" Padding="10,15,5,5" 
                                       Margin="0" Height="13" Width="28"    />
                         </DockPanel>

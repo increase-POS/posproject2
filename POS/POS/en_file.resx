@@ -1710,4 +1710,7 @@
   <data name="trSupport" xml:space="preserve">
     <value>Support</value>
   </data>
+  <data name="trMajorEmail" xml:space="preserve">
+    <value>There is already a Major email</value>
+  </data>
 </root>

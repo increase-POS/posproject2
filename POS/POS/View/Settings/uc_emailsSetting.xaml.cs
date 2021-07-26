@@ -174,6 +174,7 @@ namespace POS.View.Settings
             tb_email.Clear();
             tb_password.Clear();
             tb_smtpClient.Clear();
+            tb_port.Clear();
             pb_password.Clear();
             tgl_isSSL.IsChecked =
                 tgl_isMajor.IsChecked = false;
@@ -283,6 +284,8 @@ namespace POS.View.Settings
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         Btn_clear_Click(null, null);
                     }
+                    else if (!s.Equals("-4"))
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmail"), animation: ToasterAnimation.FadeIn);
                     else
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
@@ -319,6 +322,8 @@ namespace POS.View.Settings
                         await RefreshSysEmailList();
                         Tb_search_TextChanged(null, null);
                     }
+                    else if(!s.Equals("-4"))
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmail"), animation: ToasterAnimation.FadeIn);
                     else
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }

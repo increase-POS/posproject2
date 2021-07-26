@@ -2617,6 +2617,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to يوجد ايميل رئيسي مسبقاً.
+        /// </summary>
+        internal static string trMajorEmail {
+            get {
+                return ResourceManager.GetString("trMajorEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اداري.
         /// </summary>
         internal static string trManager {
