@@ -205,7 +205,7 @@ namespace POS.View.windows
 
                         //create lognin record
                         UsersLogs userLog = new UsersLogs();
-                        userLog.posId = 53;
+                        userLog.posId = MainWindow.posID;
                         userLog.userId = user.userId;
                         string str = await userLogsModel.Save(userLog);
 

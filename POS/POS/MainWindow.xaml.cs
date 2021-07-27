@@ -561,6 +561,7 @@ namespace POS
             //update lognin record
             UsersLogs userLog = new UsersLogs();
             userLog = await userLogsModel.GetByID(userLogInID.Value);
+
             await userLogsModel.Save(userLog);
 
             //update user record
@@ -572,7 +573,7 @@ namespace POS
         {//log out
          //update lognin record
             updateLogninRecord();
-
+      
             System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
             Application.Current.Shutdown();
 
