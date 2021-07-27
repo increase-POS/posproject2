@@ -83,6 +83,15 @@
                             </TransformGroup>
                         </Button.RenderTransform>
                     </Button>
+                    <ToggleButton DockPanel.Dock="Right"  x:Name="tgl_IsActive"  
+                                      Checked="Tgl_IsActive_Checked" 
+                                      Unchecked="Tgl_IsActive_Unchecked"
+                                      VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="False" 
+                                      Margin="0" Height="13" Width="28" IsThreeState="False" />
+                    <TextBlock  DockPanel.Dock="Right"
+                                   Margin="5,0,5,0" Text="Manual" Foreground="#6e6e6e"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="12"/>
                 </DockPanel>
             </Border>
             <!--#endregion-->
@@ -331,7 +340,7 @@
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
 
                     <Grid>
-    
+
                         <Grid x:Name="grid_payinvoice" Visibility="Visible" >
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="auto"/>
@@ -349,7 +358,7 @@
                                 <TextBlock Text="Destroy" x:Name="txt_destroy" Grid.Row="0" Foreground="#737373"
                                  FontSize="10"       VerticalAlignment="Center"  Grid.Column="0"
                                        HorizontalAlignment="Left" Margin="5,5,5,5"/>
-                               
+
                                 <Button DockPanel.Dock="Right" x:Name="btn_clear" Grid.Row="1" Grid.Column="2" 
                                         Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click" Margin="5,1" ToolTip="clear" TabIndex="13">
                                     <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle" HorizontalAlignment="Center" Grid.Column="0" VerticalAlignment="Center" Width="20" Height="20">
@@ -358,7 +367,7 @@
                                         </materialDesign:PackIcon.ToolTip>
                                     </materialDesign:PackIcon>
                                 </Button>
-                            <Separator Background="#999999"  Grid.Row="0"  Margin="5,0,5,0"
+                                <Separator Background="#999999"  Grid.Row="0"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                             </DockPanel>
 
@@ -423,10 +432,10 @@
                                         <ToolTip x:Name="tt_errorUnit" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                     </Path.ToolTip>
                                 </Path>
-                            
+
                             </Grid>
-                           
-                            
+
+
                             <!--<TextBlock   x:Name="txt_amount"  Grid.Row="3" Text="{Binding amountDestroyed, Mode=OneWay}" Padding="10,0,5,0"
                                      Background="#f8f8f8" IsEnabled="False"
                                     materialDesign:HintAssist.Hint="Amount..." 
@@ -470,12 +479,12 @@
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip  x:Name="tt_errorReasonOfDestroy" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorReasonOfDestroy" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
                             <TextBox x:Name="tb_serialNumber" Grid.Row="5"  Text="{Binding test, Mode=OneWay}" 
-                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" Padding="10,0,5,0" 
+                                   Visibility="Collapsed"       Style="{StaticResource MaterialDesignFloatingHintTextBox}" Padding="10,0,5,0" 
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Serial Number..."   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" 
@@ -490,7 +499,7 @@
                                     <ToolTip  x:Name="tt_errorSerialNumber" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
-                            
+
                             <TextBox x:Name="tb_notes" Grid.Row="6" Text="{Binding notes, Mode=OneWay}" 
                                  Padding="10,0,5,0"   
                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -500,35 +509,35 @@
                                  MaxLength="100" 
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                  MinHeight="70"   Margin="10,5,10,5" Grid.ColumnSpan="2" >
-                                    <TextBox.ToolTip>
-                                        <ToolTip x:Name="tt_notes" Content="Notes"
+                                <TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_notes" Content="Notes"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                    </TextBox.ToolTip>
-                                </TextBox>
+                                </TextBox.ToolTip>
+                            </TextBox>
                             <Path Fill="#E81123" Grid.Row="6" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
                          VerticalAlignment="Top" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip x:Name="tt_error_note" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
-                            </Grid>
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_error_note" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
                     </Grid>
-                               
-                   
+
+
                 </ScrollViewer>
                 <Border Grid.Row="2">
-                    
+
                     <Button x:Name="btn_destroy" TabIndex="10" 
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="6,6,6,10" Click="Btn_destroy_Click" Content="Destructive ">
-                        
+                    Margin="6,0,6,10" Click="Btn_destroy_Click" Content="Destructive " VerticalAlignment="Bottom">
+
                     </Button>
-                    
+
                 </Border>
             </Grid>
         </Border>

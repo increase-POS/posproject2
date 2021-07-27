@@ -53,7 +53,7 @@ namespace POS.View.storage
         Invoice invoiceModel = new Invoice();
         IEnumerable<InventoryItemLocation> inventoriesItems;
         int? categoryParentId = 0;
-
+        private string _ItemType = "";
 
         public byte tglCategoryState = 1;
         public byte tglItemState = 1;
@@ -88,11 +88,26 @@ namespace POS.View.storage
             if (cb_item.SelectedValue != null)
                 if (int.Parse(cb_item.SelectedValue.ToString()) != -1)
                 { 
-            var list = await itemUnit.GetItemUnits(int.Parse(cb_item.SelectedValue.ToString()));
-            cb_unit.ItemsSource = list;
-            cb_unit.SelectedValue = "unitId";
-            cb_unit.DisplayMemberPath = "mainUnit";
-            cb_unit.SelectedIndex = 0;
+                    var list = await itemUnit.GetItemUnits(int.Parse(cb_item.SelectedValue.ToString()));
+                    cb_unit.ItemsSource = list;
+                    cb_unit.SelectedValuePath = "itemUnitId";
+                    cb_unit.DisplayMemberPath = "mainUnit";
+                    cb_unit.SelectedIndex = 0;
+                    int itemId = (int)cb_item.SelectedValue;
+                    Item item = items.ToList().Find(x => x.itemId == itemId);
+                    _ItemType = item.type;
+                    if (item.type == "sn")
+                    {
+                        tb_serialNumber.Visibility = Visibility.Visible;
+                        tb_amount.Text = "1";
+                        tb_amount.IsEnabled = false;
+                    }
+                    else
+                    {
+                        tb_serialNumber.Visibility = Visibility.Collapsed;
+                        tb_amount.IsEnabled = true;
+                    }
+
                 }
         }
 
@@ -108,8 +123,7 @@ namespace POS.View.storage
         {
             if (items is null)
                 await RefrishItems();
-            var listCa = items.ToList();
-            cb_item.ItemsSource = listCa;
+            cb_item.ItemsSource = items.ToList();
             cb_item.SelectedValuePath = "itemId";
             cb_item.DisplayMemberPath = "name";
         }
@@ -153,7 +167,17 @@ namespace POS.View.storage
             bool valid = true;
             SectionData.validateEmptyTextBox(tb_reasonOfDestroy, p_errorReasonOfDestroy, tt_errorReasonOfDestroy, "trEmptyReasonToolTip");
             if (tb_reasonOfDestroy.Text.Equals(""))
+            {
                 valid = false;
+                return valid;
+            }
+            if (invItemLoc == null || invItemLoc.id == 0)
+            {
+                SectionData.validateEmptyComboBox(cb_item, p_errorItem,tt_errorItem,"trEmptyItemToolTip");
+                SectionData.validateEmptyComboBox(cb_unit, p_errorUnit,tt_errorUnit, "trErrorEmptyUnitToolTip");
+                if (cb_item.SelectedIndex == -1 || cb_unit.SelectedIndex == -1)
+                    valid = false;
+            }
             return valid;
         }
         private async void Btn_destroy_Click(object sender, RoutedEventArgs e)
@@ -166,6 +190,7 @@ namespace POS.View.storage
                     int itemUnitId = 0;
                     int itemId = 0;
                     int invoiceId = 0;
+                    string serialNum = "";
                     if (invItemLoc.id != 0)
                     {
                         itemUnitId = invItemLoc.itemUnitId;
@@ -173,10 +198,14 @@ namespace POS.View.storage
                     }
                     else
                     {
-                        itemUnitId = 0;
-                        itemId = 0;
+                        itemUnitId = (int)cb_unit.SelectedValue;
+                        itemId = (int)cb_item.SelectedValue;
                     }
+                    if (_ItemType == "sn")
+                        serialNum = tb_serialNumber.Text;
+
                     decimal price = await invoiceModel.GetAvgItemPrice(itemUnitId, itemId );
+                    price = Math.Round(price, 2);
                     decimal total = price * int.Parse( tb_amount.Text);
 
                     invoiceModel.invNumber = await invoiceModel.generateInvNumber("ds");
@@ -194,22 +223,36 @@ namespace POS.View.storage
                     
                     if (invItemLoc.id != 0)
                     {
-                        orderList.Add(new ItemTransfer()
+                        int amount = await itemLocationModel.getAmountByItemLocId((int)invItemLoc.itemLocationId);
+                        if (amount >= invItemLoc.amountDestroyed)
                         {
-                            itemName = invItemLoc.itemName,
-                            itemId = invItemLoc.itemId,
-                            unitName = invItemLoc.unitName,
-                            itemUnitId = invItemLoc.itemUnitId,
-                            quantity = invItemLoc.amountDestroyed,
-                            price = price,
-                        });
-                        invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
-                        if (invoiceId != 0)
+                            orderList.Add(new ItemTransfer()
+                            {
+                                itemName = invItemLoc.itemName,
+                                itemId = invItemLoc.itemId,
+                                unitName = invItemLoc.unitName,
+                                itemUnitId = invItemLoc.itemUnitId,
+                                quantity = invItemLoc.amountDestroyed,
+                                itemSerial = serialNum,
+                                price = price,
+                            }) ;
+                            invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
+                            if (invoiceId != 0)
+                            {
+                                await invoiceModel.saveInvoiceItems(orderList, invoiceId);
+                                await invItemLoc.distroyItem(invItemLoc);
+                                await itemLocationModel.decreaseItemLocationQuantity((int)invItemLoc.itemLocationId, (int)invItemLoc.amountDestroyed, MainWindow.userID.Value);
+                                await refreshDestroyDetails();
+                                Btn_clear_Click(null, null);
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                            }
+                            else
+                                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                        }
+                        else
                         {
-                            await invoiceModel.saveInvoiceItems(orderList, invoiceId);
-                            await invItemLoc.distroyItem(invItemLoc);
-                            await itemLocationModel.decreaseItemLocationQuantity((int)invItemLoc.itemLocationId,(int)invItemLoc.amountDestroyed,MainWindow.userID.Value);
-                            await refreshDestroyDetails();
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trDestroyAmountMoreExist"), animation: ToasterAnimation.FadeIn);
                         }
                     }
                     else
@@ -217,12 +260,13 @@ namespace POS.View.storage
                         orderList.Add(new ItemTransfer()
                         {
                             itemName = cb_item.SelectedItem.ToString(),
-                            itemId = (int) cb_item.SelectedValue,
+                            itemId = (int)cb_item.SelectedValue,
                             unitName = cb_unit.SelectedItem.ToString(),
-                            //itemUnitId = invItemLoc.itemUnitId,
+                            itemUnitId = (int)cb_unit.SelectedValue,
                             quantity = long.Parse(tb_amount.Text),
+                            itemSerial = serialNum,
                             price = price,
-                        });
+                        }) ;
                         // اتلاف عنصر يدوياً بدون جرد
                         Window.GetWindow(this).Opacity = 0.2;
                         wd_transItemsLocation w;
@@ -246,8 +290,17 @@ namespace POS.View.storage
                                 if (invoiceId != 0)
                                 {
                                     await invoiceModel.saveInvoiceItems(orderList, invoiceId);
-                                    await itemLocationModel.decreaseItemLocationQuantity((int)invItemLoc.itemLocationId, (int)invItemLoc.amountDestroyed, MainWindow.userID.Value);
+                                    for (int i = 0; i < readyItemsLoc.Count; i++)
+                                    {
+                                        int itemLocId = readyItemsLoc[i].itemsLocId;
+                                        int quantity = (int) readyItemsLoc[i].quantity;
+                                        await itemLocationModel.decreaseItemLocationQuantity(itemLocId, quantity, MainWindow.userID.Value);
+                                    }
+                                    Btn_clear_Click(null, null);
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 }
+                                else
+                                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             }
                         }
                         Window.GetWindow(this).Opacity = 1;
@@ -280,18 +333,10 @@ namespace POS.View.storage
             grid_itemUnit.Visibility = Visibility.Collapsed;
             tb_amount.IsEnabled = false;
             this.DataContext = invItemLoc;
-            
+            tgl_IsActive.IsChecked = false;
         }
 
-        private void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tgl_IsActive_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
+       
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
@@ -349,14 +394,35 @@ namespace POS.View.storage
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
-            tb_itemUnit.Visibility = Visibility.Collapsed;
-            grid_itemUnit.Visibility = Visibility.Visible ;
+            if (tgl_IsActive.IsChecked == true)
+            {
+                tb_itemUnit.Visibility = Visibility.Collapsed;
+                grid_itemUnit.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                tb_itemUnit.Visibility = Visibility.Visible;
+                grid_itemUnit.Visibility = Visibility.Collapsed;
+            }
+            tb_serialNumber.Visibility = Visibility.Collapsed;
             tb_amount.IsEnabled = true;
             if (invItemLoc!= null)
             invItemLoc.id = 0;
+            _ItemType = "";
             DataContext = new InventoryItemLocation();
             cb_item.SelectedIndex =
             cb_unit.SelectedIndex = -1;
+        }
+        private void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
+        {
+            Btn_clear_Click(null ,null);
+
+        }
+
+        private void Tgl_IsActive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            dg_itemDestroy.SelectedItem = null;
+            Btn_clear_Click(null, null);
         }
     } 
 }
