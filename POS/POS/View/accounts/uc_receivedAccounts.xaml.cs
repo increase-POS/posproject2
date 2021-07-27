@@ -293,7 +293,7 @@ namespace POS.View.accounts
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//save
-            string s = "0" , s1 = "false";
+            string s = "0" , s1 = "";
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
             {
             
@@ -416,19 +416,18 @@ namespace POS.View.accounts
                             s1 = await cashModel.PayListOfInvoices(cash.agentId.Value, invoicesLst, "feed", cash); 
                         else
                             s1 = await cashModel.PayByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
+                        MessageBox.Show(s1);
                 }
 
                 else
                     s = await cashModel.Save(cash);
 
-                if ((!s.Equals("0")) || (s1.Equals("true")))
+                if ((!s.Equals("0")) || (!s1.Equals("")))
                 {
                     calcBalance(cash.cash.Value, depositor, agentid);
-
                   
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     Btn_clear_Click(null, null);
-
 
                     await RefreshCashesList();
                     Tb_search_TextChanged(null, null);

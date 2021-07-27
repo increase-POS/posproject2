@@ -315,13 +315,13 @@ namespace POS.Classes
             if (pb.Password.Equals(""))
             {
                 SectionData.showPasswordValidate(pb, p_error, tt_error, "trEmptyPasswordToolTip");
-                p_error.Visibility = Visibility.Collapsed;
+                p_error.Visibility = Visibility.Visible;
                 isValid = false;
             }
             else
             {
                 SectionData.clearPasswordValidate(pb, p_error);
-                p_error.Visibility = Visibility.Visible;
+                p_error.Visibility = Visibility.Collapsed;
             }
             return isValid;
         }

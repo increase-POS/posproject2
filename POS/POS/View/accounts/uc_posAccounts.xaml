@@ -326,6 +326,8 @@
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
                           
                         </Grid.RowDefinitions>
 
@@ -372,8 +374,24 @@
                                               VerticalOffset="20"/>
                             </TextBlock.ToolTip>
                         </TextBlock>
-
-                        <ComboBox x:Name="cb_pos1"  Grid.Row="2"
+                        <ComboBox   Grid.Row="2" x:Name="cb_fromBranch" Margin="10,5,10,5"
+                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                             Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                            materialDesign:HintAssist.Hint="Store/Branch... "  
+                                            TextBlock.FontSize="12"   Background="#f8f8f8" 
+                                            Height="40"  
+                                                LostFocus="input_LostFocus"
+                                            BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_fromBranch_SelectionChanged" />
+                        <Path  Grid.Row="2" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                              Name="p_errorFromBranch"
+                                                HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                                VerticalAlignment="Center" Width="15"  Height="15"
+                                                Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                <ToolTip  x:Name="tt_errorFromBranch"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        <ComboBox x:Name="cb_pos1"  Grid.Row="3"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   materialDesign:HintAssist.Hint="From pos..."  
@@ -391,15 +409,31 @@
                             </ComboBox.ToolTip>
                         </ComboBox>
                         <Path Fill="#E81123" x:Name="p_errorPos1" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Row="2"  Visibility="Collapsed"   
+                              HorizontalAlignment="Right" Grid.Row="3"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                             <Path.ToolTip>
                                 <ToolTip x:Name="tt_errorPos1" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
-
-                        <ComboBox x:Name="cb_pos2"  Grid.Row="3"
+                        <ComboBox   Grid.Row="4" x:Name="cb_toBranch" Margin="10,5,10,5"
+                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                             Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                            materialDesign:HintAssist.Hint="Store/Branch... "  
+                                            TextBlock.FontSize="12"   Background="#f8f8f8" 
+                                            Height="40"  
+                                                LostFocus="input_LostFocus"
+                                            BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_toBranch_SelectionChanged" />
+                        <Path  Grid.Row="4" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                              Name="p_errorToBranch"
+                                                HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                                                VerticalAlignment="Center" Width="15"  Height="15"
+                                                Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                            <Path.ToolTip>
+                                <ToolTip  x:Name="tt_errorToBranch"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
+                        <ComboBox x:Name="cb_pos2"  Grid.Row="5"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="To pos..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
@@ -417,7 +451,7 @@
                             </ComboBox.ToolTip>
                         </ComboBox>
                         <Path Fill="#E81123" x:Name="p_errorPos2" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Row="3" Visibility="Collapsed"   
+                              HorizontalAlignment="Right" Grid.Row="5" Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                             <Path.ToolTip>
@@ -425,7 +459,7 @@
                             </Path.ToolTip>
                         </Path>
  
-                        <TextBox x:Name="tb_cash" MaxLength="20" Grid.Row="4"
+                        <TextBox x:Name="tb_cash" MaxLength="20" Grid.Row="6"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      Text="{Binding cash, Mode=OneWay}" 
@@ -449,7 +483,7 @@
                             </TextBox.ToolTip>
                         </TextBox>
                         <Path x:Name="p_errorCash" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Row="4"  Visibility="Collapsed"   
+                              HorizontalAlignment="Right" Grid.Row="6"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                             <Path.ToolTip>
@@ -458,7 +492,7 @@
                         </Path>
 
                         <TextBox  x:Name="tb_note" Text="{Binding notes, Mode=OneWay}"
-                                  Grid.Row="5" Padding="10,0,5,0"  
+                                  Grid.Row="7" Padding="10,0,5,0"  
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                   materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                   BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  
@@ -476,7 +510,7 @@
                             </TextBox.ToolTip>
                         </TextBox>
                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                                  HorizontalAlignment="Right" Grid.Row="5" Visibility="Collapsed"   
+                                  HorizontalAlignment="Right" Grid.Row="7" Visibility="Collapsed"   
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                             <Path.ToolTip>

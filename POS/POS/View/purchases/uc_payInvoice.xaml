@@ -103,7 +103,7 @@
                             </Path.ToolTip>
                         </Path>
                     </Button>
-                    <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
+                    <!--<Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_returnWaitInvoice" Click="Btn_returnWInvoice_Click"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
                                        Width="30" Height="30"  
@@ -124,7 +124,7 @@
                                               VerticalOffset="-10"/>
                             </Path.ToolTip>
                         </Path>
-                    </Button>
+                    </Button>-->
                     <Border  DockPanel.Dock="Right"  Margin="5,10,5,10"   CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
 
                     <Button Grid.Column="7" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"

@@ -82,6 +82,9 @@ namespace POS.View
             btn_payInvoice.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_payInvoice.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
+            btn_purchaseOrder.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_purchaseOrder.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
             btn_purchaseStatistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_purchaseStatistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
@@ -102,17 +105,19 @@ namespace POS.View
             //uc_payInvoice uc = new uc_payInvoice();
             //grid_main.Children.Add(uc);
         }
-
+        private void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_purchaseOrder);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_purchaseOrder.Instance);
+        }
         private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_purchaseStatistic);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_statistic.Instance);
-
-
-
         }
 
-
+        
     }
 }

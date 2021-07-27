@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POS.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -26,9 +27,11 @@ namespace POS.View.windows
             InitializeComponent();
         }
         BrushConverter bc = new BrushConverter();
-
+        public string serialNum { get; set; }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
+            serialNum = "";
+            DialogResult = true;
             this.Close();
         }
 
@@ -69,9 +72,23 @@ namespace POS.View.windows
             }
         }
 
+        private bool validate()
+        {
+            bool valid = true;
+            SectionData.validateEmptyTextBox(tb_serialNum, p_errorSerialNum, tt_errorSerialNum, "trEmptySerialNumToolTip");
+            if (tb_serialNum.Text.Equals(""))
+                valid = false;
+            return valid;
+        }
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-
+            bool valid = validate();
+            if (valid)
+            {
+                serialNum = tb_serialNum.Text;
+                DialogResult = true;
+                this.Close();
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -89,6 +106,11 @@ namespace POS.View.windows
        
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_skip_Click(object sender, RoutedEventArgs e)
         {
 
         }

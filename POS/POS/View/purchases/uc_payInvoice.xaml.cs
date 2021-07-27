@@ -391,12 +391,23 @@ namespace POS.View
                 var defaultPurUnit = itemUnits.ToList().Find(c => c.defaultPurchase == 1);
                 if (defaultPurUnit != null)
                 {
-                    // create new row in bill details data grid
-                    addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, 0, 0);
+                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == defaultPurUnit.itemUnitId).FirstOrDefault());
+                    if (index == -1)//item doesn't exist in bill
+                    {
+                        // create new row in bill details data grid
+                        addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, 0, 0);
+                    }
+                    else // item exist prevoiusly in list
+                    {
+                        billDetails[index].Count++;
+                        billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
 
-                    refreshTotalValue();
+                        _Sum += billDetails[index].Price;
+                    }
+                        refreshTotalValue();
                     refrishBillDetails();
                 }
+               
             }
         }
 
@@ -454,11 +465,13 @@ namespace POS.View
 
         private async Task addInvoice(string invType, string invCode)
         {
-            if (invoice.invType == "pw" && (invType == "pb" || invType == "pbd")) // invoice is purchase and will bebounce purchase  or purchase bounce draft bounce , save another invoice in db
+            if (invoice.invType == "p" && (invType == "pbw" || invType == "pbd")) // invoice is purchase and will be bounce purchase  or purchase bounce draft , save another invoice in db
             {
                 invoice.invoiceMainId = invoice.invoiceId;
                 invoice.invoiceId = 0;
                 invoice.invNumber = await invoice.generateInvNumber("pb");
+                invoice.branchCreatorId = MainWindow.branchID.Value;
+                invoice.posId = MainWindow.posID.Value;
             }
             if(invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
@@ -505,8 +518,8 @@ namespace POS.View
                 {
                     if (invType == "pw")
                         await invoice.recordCashTransfer(invoice,"pi");
-                    else if (invType == "pb")
-                        await invoice.recordCashTransfer(invoice,"pb");
+                    //else if (invType == "pb")
+                    //    await invoice.recordCashTransfer(invoice,"pb");
 
                     // add invoice details
                     invoiceItems = new List<ItemTransfer>();
@@ -594,9 +607,9 @@ namespace POS.View
                     && !tb.Text.Trim().Equals("")   )
                 {
                     if (_InvoiceType == "pbd") //pbd means purchase bounse draft
-                        await addInvoice("pb", "pb"); // pb means purchase bounce
-                    else if (_InvoiceType == "pbw")//pbw  purchase invoice
-                        await addInvoice("pb", "pb");
+                        await addInvoice("pbw", "pb"); // pbw means waiting purchase bounce 
+                    //else if (_InvoiceType == "pbw")//pbw  purchase invoice
+                    //    await addInvoice("pb", "pb");
                     else//pw  waiting purchase invoice
                         await addInvoice("pw", "pi");
 
@@ -706,8 +719,7 @@ namespace POS.View
 
             // purchase invoices
             //w.invoiceType = "pw";
-            w.invoiceType = "p , pw";
-            //w.branchCreatorId = MainWindow.branchID.Value;
+            w.invoiceType = "p , pw , pb";
             w.userId = MainWindow.userLogin.userId;
             w.duration = 1; // view drafts which created during 1 last days 
 
@@ -762,17 +774,18 @@ namespace POS.View
         {
             if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
             {
-            Window.GetWindow(this).Opacity = 0.2;
-            wd_invoice w = new wd_invoice();
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_invoice w = new wd_invoice();
 
-            w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");         
-            // purchase invoices
-            //w.invoiceType = "pw"; // invoice type to view in grid
-            w.invoiceType = "p , pw"; // invoice type to view in grid
-            w.branchCreatorId = MainWindow.branchID.Value;
+                w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");         
+                // purchase invoices
+                //w.invoiceType = "pw"; // invoice type to view in grid
+                w.invoiceType = "p"; // invoice type to view in grid
+                w.branchCreatorId = MainWindow.branchID.Value;
+                w.branchId = MainWindow.branchID.Value; 
 
-            if (w.ShowDialog() == true)
-            {
+                if (w.ShowDialog() == true)
+                {
                 if (w.invoice != null)
                 {
                     _InvoiceType = "pbd";
@@ -791,38 +804,38 @@ namespace POS.View
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
-        private async void Btn_returnWInvoice_Click(object sender, RoutedEventArgs e)
-        {
-            if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
-            {
-                Window.GetWindow(this).Opacity = 0.2;
-            wd_invoice w = new wd_invoice();
+        //private async void Btn_returnWInvoice_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
+        //    {
+        //        Window.GetWindow(this).Opacity = 0.2;
+        //    wd_invoice w = new wd_invoice();
 
-            w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
-            w.branchId = MainWindow.branchID.Value;
-            // purchase invoices
-            w.invoiceType = "pbw"; // invoice type to view in grid
-            if (w.ShowDialog() == true)
-            {
-                if (w.invoice != null)
-                {
-                    invoice = w.invoice;
-                    _InvoiceType = invoice.invType;
+        //    w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
+        //    w.branchId = MainWindow.branchID.Value;
+        //    // purchase invoices
+        //    w.invoiceType = "pbw"; // invoice type to view in grid
+        //    if (w.ShowDialog() == true)
+        //    {
+        //        if (w.invoice != null)
+        //        {
+        //            invoice = w.invoice;
+        //            _InvoiceType = invoice.invType;
                    
-                    mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
-                    this.DataContext = invoice;
+        //            mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
+        //            this.DataContext = invoice;
 
-                    await fillInvoiceInputs(invoice);
+        //            await fillInvoiceInputs(invoice);
 
-                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
-                    brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
-                }
-            }
-            Window.GetWindow(this).Opacity = 1;
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
+        //            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+        //            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+        //        }
+        //    }
+        //    Window.GetWindow(this).Opacity = 1;
+        //    }
+        //    else
+        //        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        //}
 
         private async Task buildInvoiceDetails()
         {

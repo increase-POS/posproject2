@@ -237,7 +237,8 @@ namespace POS.View.Settings
                 groupObject.objectId = item.objectId;
                 if (item.objectType == "one")
                 {
-                    groupObject.showOb = 0;
+                    //groupObject.showOb = 0;
+                    groupObject.showOb = 1;
                     groupObject.addOb = 2;
                     groupObject.updateOb = 2;
                     groupObject.deleteOb = 2;
@@ -246,11 +247,17 @@ namespace POS.View.Settings
                 }
                 else
                 {
-                    groupObject.showOb = 0;
-                    groupObject.addOb = 0;
-                    groupObject.updateOb = 0;
-                    groupObject.deleteOb = 0;
-                    groupObject.reportOb = 0;
+                    //groupObject.showOb = 0;
+                    //groupObject.addOb = 0;
+                    //groupObject.updateOb = 0;
+                    //groupObject.deleteOb = 0;
+                    //groupObject.reportOb = 0;
+
+                    groupObject.showOb = 1;
+                    groupObject.addOb = 1;
+                    groupObject.updateOb = 1;
+                    groupObject.deleteOb = 1;
+                    groupObject.reportOb = 1;
                 }
 
 
@@ -999,11 +1006,13 @@ namespace POS.View.Settings
             path_item.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_properties.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_units.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_storageCost.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
             txt_categories.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_item.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_properties.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_units.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_storageCost.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
         }
         public void paintStore()
         {
@@ -1028,9 +1037,11 @@ namespace POS.View.Settings
         public void paintPurchase()
         {
             path_payInvoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_purchaseOrder.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_purchaseStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
             txt_payInvoice.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_purchaseOrder.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_purchaseStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
         }
         public void paintSale()
@@ -1117,10 +1128,12 @@ namespace POS.View.Settings
             path_permissions.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_reportsSettings.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_general.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_emailsSetting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
             txt_permissions.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_reportsSettings.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_general.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_emailsSetting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
         }
 
 

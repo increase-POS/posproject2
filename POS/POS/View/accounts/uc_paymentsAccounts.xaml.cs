@@ -346,7 +346,7 @@ namespace POS.View.accounts
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//save
-            s = "0"; s1 = "false";
+            s = "0"; s1 = "";
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
             {
                 //chk empty cash
@@ -449,7 +449,7 @@ namespace POS.View.accounts
 
                     if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
                         //cash.docNum = await SectionData.generateNumberBond('p', "bnd");
-                        cash.docNum = await cashModel.generateCashNumber("pbnd");
+                        cash.docNum = await cashModel.generateDocNumber("pbnd");
 
                     if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
                         cash.docNum = tb_docNumCheque.Text;
@@ -466,12 +466,12 @@ namespace POS.View.accounts
                             s1 = await cashModel.PayListOfInvoices(cash.agentId.Value, invoicesLst, "pay", cash);
                         else
                             s1 = await cashModel.PayByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "pay", cash);
+                        MessageBox.Show(s1);
                     }
-
                     else
                         s = await cashModel.Save(cash);
 
-                    if ((!s.Equals("0")) || (s1.Equals("true")))
+                    if ((!s.Equals("0")) || (!s1.Equals("")))
                     {
                         calcBalance(cash.cash.Value, recipient, agentid);
 

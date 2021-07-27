@@ -30,7 +30,9 @@ namespace POS.View.accounts
         private static uc_posAccounts _instance;
 
         Pos posModel = new Pos();
+        Branch branchModel = new Branch();
         IEnumerable<Pos> poss;
+        IEnumerable<Branch> branches;
         CashTransfer cashtrans = new CashTransfer();
         CashTransfer cashModel = new CashTransfer();
         IEnumerable<CashTransfer> cashesQuery;
@@ -128,20 +130,23 @@ namespace POS.View.accounts
             dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
             dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
 
-            #region fill pos combo1
             poss = await posModel.GetPosAsync();
-            cb_pos1.ItemsSource = poss;
-            cb_pos1.DisplayMemberPath = "name";
-            cb_pos1.SelectedValuePath = "posId";
-            cb_pos1.SelectedIndex = -1;
+
+            #region fill branch combo1
+            branches = await branchModel.GetBranchesActive("b");
+            cb_fromBranch.ItemsSource = branches;
+            cb_fromBranch.DisplayMemberPath = "name";
+            cb_fromBranch.SelectedValuePath = "branchId";
+            cb_fromBranch.SelectedIndex = MainWindow.branchID.Value;
+            cb_fromBranch.IsEnabled = false;////////////permissions
             #endregion
 
-            #region fill pos combo2
-            poss = await posModel.GetPosAsync();
-            cb_pos2.ItemsSource = poss;
-            cb_pos2.DisplayMemberPath = "name";
-            cb_pos2.SelectedValuePath = "posId";
-            cb_pos2.SelectedIndex = -1;
+            #region fill branch combo2
+            cb_toBranch.ItemsSource = branches;
+            cb_toBranch.DisplayMemberPath = "name";
+            cb_toBranch.SelectedValuePath = "branchId";
+            cb_toBranch.SelectedIndex = MainWindow.branchID.Value;
+            cb_toBranch.IsEnabled = false;/////////////permissions
             #endregion
 
             #region fill operation state
@@ -629,31 +634,15 @@ namespace POS.View.accounts
         }
         private async void Cb_pos1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//pos1selection
-            //cb_pos2.IsEnabled = true;
-            //MessageBox.Show(cb_pos1.SelectedValue.ToString());
-            //fillPos2();
-            //#region fill pos combo2
-            ////var poss1 = cb_pos1.ItemsSource as List<Pos>;
-            //var poss1 = await posModel.GetPosAsync();
-            ////Pos pos = new Pos();
-            ////pos = cb_pos1.SelectedValue as Pos;
-            //if (cb_pos1.SelectedIndex != -1)
-            //{
-            //    poss1.RemoveAt(cb_pos1.SelectedIndex);
-            //    cb_pos2.IsEnabled = true;
-            //    cb_pos2.ItemsSource = poss1;
-            //    cb_pos2.DisplayMemberPath = "name";
-            //    cb_pos2.SelectedValuePath = "posId";
-            //}
-            //else
-            //{
-            //    cb_pos2.ItemsSource = null;
-            //    cb_pos2.IsEnabled = false;
-            //}
-            //#endregion
-
-                
+            int bToId = Convert.ToInt32(cb_toBranch.SelectedValue);
+            int pFromId = Convert.ToInt32(cb_pos1.SelectedValue);
+            var toPos = poss.Where(p => p.branchId == bToId && p.posId != pFromId);
+            cb_pos2.ItemsSource = toPos;
+            cb_pos2.DisplayMemberPath = "name";
+            cb_pos2.SelectedValuePath = "posId";
+            cb_pos2.SelectedIndex = -1;
         }
+
         bool validTransAdmin()
         {
             if (!MainWindow.groupObject.HasPermissionAction(transAdminPermission, MainWindow.groupObjects, "one"))
@@ -669,6 +658,44 @@ namespace POS.View.accounts
         private void Cb_pos2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private async void Cb_fromBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {//fill pos1
+            int bFromId = Convert.ToInt32(cb_fromBranch.SelectedValue);
+            var fromPos = poss.Where(p => p.branchId == bFromId);
+            cb_pos1.ItemsSource = fromPos;
+            cb_pos1.DisplayMemberPath = "name";
+            cb_pos1.SelectedValuePath = "posId";
+            cb_pos1.SelectedIndex = -1;
+        }
+
+        private void Cb_toBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        { //fill pos combo2
+            int bToId = Convert.ToInt32(cb_toBranch.SelectedValue);
+            int pFromId = Convert.ToInt32(cb_pos1.SelectedValue);
+            var toPos = poss.Where(p => p.branchId == bToId && p.posId != pFromId);
+            cb_pos2.ItemsSource = toPos;
+            cb_pos2.DisplayMemberPath = "name";
+            cb_pos2.SelectedValuePath = "posId";
+            cb_pos2.SelectedIndex = -1;
+        }
+
+        private void input_LostFocus(object sender, RoutedEventArgs e)
+        {
+                string name = sender.GetType().Name;
+                //if (name == "TextBox")
+                //{
+                //}
+                //else 
+                if (name == "ComboBox")
+                {
+                    if ((sender as ComboBox).Name == "cb_fromBranch")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorFromBranch, tt_errorFromBranch, "trEmptyBranchToolTip");
+                if ((sender as ComboBox).Name == "cb_toBranch")
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorToBranch, tt_errorToBranch, "trEmptyBranchToolTip");
+            }
+               
         }
     }
 }

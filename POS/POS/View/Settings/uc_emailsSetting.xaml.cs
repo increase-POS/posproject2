@@ -49,7 +49,7 @@ namespace POS.View.Settings
         IEnumerable<SysEmails> sysEmails;
         byte tgl_sysEmailState;
         string searchText = "";
-        //string basicsPermission = "sysEmail_basics";
+        string basicsPermission = "emailsSetting_basics";
 
         private void Tgl_isSSL_Checked(object sender, RoutedEventArgs e)
         {
@@ -72,7 +72,7 @@ namespace POS.View.Settings
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
             {
                 if (sysEmails is null)
                     await RefreshSysEmailList();
@@ -115,19 +115,19 @@ namespace POS.View.Settings
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
-            //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
             {
                 await RefreshSysEmailList();
                 Tb_search_TextChanged(null, null);
             }
-            //else
-            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
-            //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
             {
                 this.Dispatcher.Invoke(() =>
                 {
@@ -136,8 +136,8 @@ namespace POS.View.Settings
                     t1.Start();
                 });
             }
-            //else
-            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         void FN_ExportToExcel()
@@ -262,7 +262,7 @@ namespace POS.View.Settings
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
             {
                 if (isValid())
                 {
@@ -285,7 +285,7 @@ namespace POS.View.Settings
 
                     string s = await sysEmail.Save(sysEmail);
                     if (s.Equals("-4"))
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmail"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmail"), animation: ToasterAnimation.FadeIn);
                     else  if (!s.Equals("-1"))
                     {
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -298,13 +298,13 @@ namespace POS.View.Settings
                     Tb_search_TextChanged(null, null);
                 }
             }
-            //else
-            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
             {
                 if (isValid())
                 {
@@ -335,12 +335,12 @@ namespace POS.View.Settings
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
             }
-            //else
-            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
             {
                 if (sysEmail.emailId != 0)
                 {
@@ -393,8 +393,8 @@ namespace POS.View.Settings
                     Btn_clear_Click(sender, e);
                 }
             }
-            //else
-            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void activate()
         {//activate
@@ -422,7 +422,7 @@ namespace POS.View.Settings
             //SectionData.clearComboBoxValidate(cb_branchId, p_errorBranchId);
             //SectionData.clearPasswordValidate(pb_password, p_errorPassword);
 
-            Btn_clear_Click(null, null);
+            //Btn_clear_Click(null, null);
             if (dg_sysEmail.SelectedIndex != -1)
             {
                 sysEmail = dg_sysEmail.SelectedItem as SysEmails;

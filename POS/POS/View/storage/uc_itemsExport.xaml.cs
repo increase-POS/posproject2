@@ -30,6 +30,8 @@ namespace POS.View.storage
         string importPermission = "importExport_import";
         string exportPermission = "importExport_export";
         string reportsPermission = "importExport_reports";
+        string packagePermission = "importExport_package";
+        string unitConversionPermission = "importExport_unitConversion";
         private static uc_itemsExport _instance;
         public static uc_itemsExport Instance
         {
@@ -1108,7 +1110,22 @@ namespace POS.View.storage
 
         private void Btn_package_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.groupObject.HasPermissionAction(packagePermission, MainWindow.groupObjects, "one"))
+            {
 
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+
+        private void Btn_unitConversion_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(unitConversionPermission, MainWindow.groupObjects, "one"))
+            {
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
     }
 }

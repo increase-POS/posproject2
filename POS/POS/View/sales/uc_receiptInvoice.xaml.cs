@@ -133,6 +133,7 @@ namespace POS.View
             public int itemUnitId { get; set; }
             public string Product { get; set; }
             public string Unit { get; set; }
+            public string serialNum { get; set; }
             public int Count { get; set; }
             public decimal Price { get; set; }
             public decimal Total { get; set; }
@@ -375,14 +376,44 @@ namespace POS.View
                 var defaultsaleUnit = itemUnits.ToList().Find(c => c.defaultSale == 1);
                 if (defaultsaleUnit != null)
                 {
-                    decimal itemTax = 0;
-                    if (item.taxes != null)
-                        itemTax = (decimal)item.taxes;
-                    // create new row in bill details data grid
-                    addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, (decimal)defaultsaleUnit.price, (decimal)defaultsaleUnit.price, itemTax);
+                    addItemToBill(itemId, defaultsaleUnit.itemUnitId, defaultsaleUnit.mainUnit,(decimal) defaultsaleUnit.price);
+                    //decimal itemTax = 0;
+                    //if (item.taxes != null)
+                    //    itemTax = (decimal)item.taxes;
+                    //if (item.type == "sn")
+                    //{
+                    //    Window.GetWindow(this).Opacity = 0.2;
+                    //    wd_serialNum w = new wd_serialNum();
+                    //    if (w.ShowDialog() == true)
+                    //    {
+                    //        if (w.serialNum != "")
+                    //        {
+                    //            string serialNum = w.serialNum;
+                    //            // create new row in bill details data grid
+                    //            addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, (decimal)defaultsaleUnit.price, (decimal)defaultsaleUnit.price, itemTax, serialNum);
+                    //        }
+                    //    }
+                    //    Window.GetWindow(this).Opacity = 1;
+                    //}
+                    //else
+                    //{
 
-                    refreshTotalValue();
-                    refrishBillDetails();
+                    //    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == defaultsaleUnit.itemUnitId).FirstOrDefault());
+                    //    if (index == -1)//item doesn't exist in bill
+                    //    {
+                    //        addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, (decimal)defaultsaleUnit.price, (decimal)defaultsaleUnit.price, itemTax);
+                    //    }
+                    //    else // item exist prevoiusly in list
+                    //    {
+                    //        billDetails[index].Count++;
+                    //        billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
+
+                    //        _Sum += billDetails[index].Price;
+                    //    }
+                    //}
+
+                    //refreshTotalValue();
+                    //refrishBillDetails();
                 }
             }
         }
@@ -626,6 +657,7 @@ namespace POS.View
                             itemT.quantity = billDetails[i].Count;
                             itemT.price = billDetails[i].Price;
                             itemT.itemUnitId = billDetails[i].itemUnitId;
+                            itemT.itemSerial = billDetails[i].serialNum;
                             itemT.createUserId = MainWindow.userID;
 
                             invoiceItems.Add(itemT);
@@ -1529,38 +1561,39 @@ namespace POS.View
                             int itemId = (int)unit1.itemId;
                             if (unit1.itemId != 0)
                             {
-                                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
+                                addItemToBill(itemId,unit1.itemUnitId, unit1.mainUnit, (decimal)unit1.price);
+                                //int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
 
-                                if (index == -1)//item doesn't exist in bill
-                                {
-                                    // get item units
-                                    itemUnits = await itemUnitModel.GetItemUnits(itemId);
-                                    //get item from list
-                                    item = items.ToList().Find(i => i.itemId == itemId);
+                                //if (index == -1)//item doesn't exist in bill
+                                //{
+                                //    // get item units
+                                //    itemUnits = await itemUnitModel.GetItemUnits(itemId);
+                                //    //get item from list
+                                //    item = items.ToList().Find(i => i.itemId == itemId);
 
-                                    int count = 1;
-                                    decimal price = 0;
-                                    if (unit1.price != null)
-                                        price = (decimal)unit1.price;
-                                    decimal total = count * price;
-                                    decimal tax = (decimal)(count * item.taxes);
-                                    addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total, tax);
-                                }
-                                else // item exist prevoiusly in list
-                                {
-                                    decimal itemTax = 0;
-                                    if (item.taxes != null)
-                                        itemTax = (decimal)item.taxes;
-                                    billDetails[index].Count++;
-                                    billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
-                                    billDetails[index].Tax = (decimal)(billDetails[index].Count * itemTax);
+                                //    int count = 1;
+                                //    decimal price = 0;
+                                //    if (unit1.price != null)
+                                //        price = (decimal)unit1.price;
+                                //    decimal total = count * price;
+                                //    decimal tax = (decimal)(count * item.taxes);
+                                //    addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total, tax);
+                                //}
+                                //else // item exist prevoiusly in list
+                                //{
+                                //    decimal itemTax = 0;
+                                //    if (item.taxes != null)
+                                //        itemTax = (decimal)item.taxes;
+                                //    billDetails[index].Count++;
+                                //    billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
+                                //    billDetails[index].Tax = (decimal)(billDetails[index].Count * itemTax);
 
-                                    _Sum += billDetails[index].Price;
-                                    _Tax += billDetails[index].Tax;
+                                //    _Sum += billDetails[index].Price;
+                                //    _Tax += billDetails[index].Tax;
 
-                                }
-                                refreshTotalValue();
-                                refrishBillDetails();
+                                //}
+                                //refreshTotalValue();
+                                //refrishBillDetails();
                             }
                         }
                         else
@@ -1572,6 +1605,57 @@ namespace POS.View
             }
 
             tb_barcode.Clear();
+        }
+        private async void addItemToBill(int itemId, int itemUnitId, string unitName, decimal price)
+        {
+            item = items.ToList().Find(i => i.itemId == itemId);
+            if (item.type == "sn")
+            {
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_serialNum w = new wd_serialNum();
+                if (w.ShowDialog() == true)
+                {
+                    if (w.serialNum != "")
+                    {
+                        string serialNum = w.serialNum;
+                        // create new row in bill details data grid
+                        addRowToBill(item.name, itemId, unitName,itemUnitId, 1, price, price,(decimal)item.taxes , serialNum);
+                    }
+                }
+                Window.GetWindow(this).Opacity = 1;
+            }
+            else
+            {
+                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == itemUnitId).FirstOrDefault());
+
+                if (index == -1)//item doesn't exist in bill
+                {
+                    // get item units
+                    itemUnits = await itemUnitModel.GetItemUnits(itemId);
+                    //get item from list
+                  
+
+                    int count = 1;
+                    decimal total = count * price;
+                    decimal tax = (decimal)(count * item.taxes);
+                    addRowToBill(item.name, item.itemId, unitName, itemUnitId, count, price, total, tax);
+                }
+                else // item exist prevoiusly in list
+                {
+                    decimal itemTax = 0;
+                    if (item.taxes != null)
+                        itemTax = (decimal)item.taxes;
+                    billDetails[index].Count++;
+                    billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
+                    billDetails[index].Tax = (decimal)(billDetails[index].Count * itemTax);
+
+                    _Sum += billDetails[index].Price;
+                    _Tax += billDetails[index].Tax;
+
+                }
+            }
+            refreshTotalValue();
+            refrishBillDetails();
         }
         private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
         {
@@ -1637,7 +1721,7 @@ namespace POS.View
 
         }
 
-        private void addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total, decimal tax)
+        private void addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total, decimal tax, string serialNum ="")
         {
             // increase sequence for each read
             _SequenceNum++;
@@ -1653,6 +1737,7 @@ namespace POS.View
                 Price = price,
                 Total = total,
                 Tax = tax,
+                serialNum = serialNum,
             });
             _Sum += total;
             _Tax += tax;
@@ -2212,6 +2297,11 @@ namespace POS.View
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+
+        private void serialItemsRow(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -59,7 +59,8 @@ namespace POS.View.windows
             #endregion
             //need method
             allInvoicesSource = await invoiceModel.GetAll();
-            var query = allInvoicesSource.Where(i => i.agentId == agentId && i.paid < i.deserved && (i.invType == invType || i.invType == invTypeB));
+            //var query = allInvoicesSource.Where(i => i.agentId == agentId && i.paid < i.deserved && (i.invType == invType || i.invType == invTypeB));
+            var query = allInvoicesSource.Where(i => i.agentId == agentId && i.deserved > 0 && (i.invType == invType || i.invType == invTypeB));
 
             allInvoicesSource = query.ToList();
 

@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POS.View.windows"
         mc:Ignorable="d" KeyDown="HandleKeyPress"
-         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-         WindowStyle="None" WindowStartupLocation="CenterScreen"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
-        Title="wd_itemsList" Height="125" Width="300" Background="#333333" 
+        Title="wd_itemsList" d:DesignHeight="200" Width="300" Background="#333333" 
         Loaded="Window_Loaded" Closing="Window_Closing">
     <Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  x:Name="grid_serialNum">
         <Grid.RowDefinitions>
@@ -47,24 +47,26 @@
             <Grid  >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <ComboBox x:Name="cb_serialNum"  Grid.Row="0"
-                                  Padding="10,5,5,0"  TextBlock.Foreground="#4E4E4E"
+                <TextBox x:Name="tb_serialNum"  Grid.Row="0"
+                                  Padding="10,10,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="serial Num..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
-                                  Grid.Column="0" Height="40"  Margin="10,5,10,5"
+                                  Grid.Column="0" Height="40"  Margin="10,10,10,5"
                                   BorderBrush="#737373" BorderThickness="0" 
                                   LostFocus="Tb_validateEmptyLostFocus">
-                    <ComboBox.ToolTip>
+                    <TextBox.ToolTip>
                         <ToolTip x:Name="tt_serialNum" Content="serial Num"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                    </ComboBox.ToolTip>
-                </ComboBox>
+                    </TextBox.ToolTip>
+                </TextBox>
                 <Path Fill="#E81123" x:Name="p_errorSerialNum" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Row="0" Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -73,9 +75,25 @@
                         <ToolTip x:Name="tt_errorSerialNum" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                     </Path.ToolTip>
                 </Path>
-                <Button   Grid.Row="4"   Content="Save"
-                       Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"
+                <Separator Margin="5,0" Grid.Row="1"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
+                <ListView Grid.Row="2" x:Name="lst_serials"/>
+
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition  Width="*"/>
+                        <ColumnDefinition  Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button   Grid.Row="4" Grid.Column="0"   Content="Skip"
+                       Margin="5,2.5" x:Name="btn_skip" Click="Btn_skip_Click"
                           Background="#178DD2" BorderBrush="{x:Null}" />
+                    
+                    <Button   Grid.Row="4" Grid.Column="1"   Content="Save"
+                       Margin="5,2.5" x:Name="btn_save" Click="Btn_save_Click"
+                          Background="#178DD2" BorderBrush="{x:Null}" />
+                    
+                    
+                </Grid>
+                
 
             </Grid>
 

@@ -13,6 +13,7 @@ FE:\GitHub\posproject2\POS\POS\View\accounts\uc_receivedAccounts.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\accounts\uc_subscriptions.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\catalog\uc_storageCost.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\catalog\win_lvcCatalog.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\purchases\uc_purchaseOrder.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\purchases\uc_statistic.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\reports\uc_purchaseReport.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\reports\uc_reports.xaml;;

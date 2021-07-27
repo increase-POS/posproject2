@@ -326,7 +326,7 @@
                         </DockPanel>
                         <!--#endregion-->
                         <TextBox x:Name="tb_name"  Grid.Row="1" Text="{Binding name, Mode=OneWay}" Padding="10,0,5,0"   
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Name..."  
+                           TabIndex="0"          BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Name..."  
                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue"  MaxLength="50"
@@ -349,14 +349,14 @@
                                 <ToolTip  x:Name="tt_errorName"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
-                        <TextBox x:Name="tb_email" Grid.Row="2" Text="{Binding email, Mode=OneWay}"   Padding="10,0,5,0"  
+                        <TextBox      x:Name="tb_email" Grid.Row="2" Text="{Binding email, Mode=OneWay}"   Padding="10,0,5,0"  
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Email..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" MaxLength="100"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" 
-                                     LostFocus="Tb_email_LostFocus" TabIndex="10" >
+                                     LostFocus="Tb_email_LostFocus" TabIndex="1" >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_email" Content="Email"
                                               Placement="left" 
@@ -386,7 +386,7 @@
                                           Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Password..."    
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue" MaxLength="50" TabIndex="13"
+                                 BorderBrush="AliceBlue" MaxLength="50" TabIndex="2"
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                  Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" 
                                  LostFocus="Tb_password_LostFocus" 
@@ -420,7 +420,7 @@
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="port..."  
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                 BorderBrush="AliceBlue"   
+                                 BorderBrush="AliceBlue"    TabIndex="3" 
                                  LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                                  PreviewKeyDown="Tb_PreventSpaces" 
                                  PreviewTextInput="Tb_Numbers_PreviewTextInput" 
@@ -449,7 +449,7 @@
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="12"/>
                             <ToggleButton DockPanel.Dock="Left"  x:Name="tgl_isSSL"  
-                                      IsChecked="{Binding isSSL, Mode=OneWay}" 
+                                      IsChecked="{Binding isSSL, Mode=OneWay}" TabIndex="4" 
                                      VerticalAlignment="Center" Padding="10,15,5,5" 
                                       Margin="0" Height="13" Width="28"    />
                         </DockPanel>
@@ -457,7 +457,7 @@
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="smtpClient..." 
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                 BorderBrush="AliceBlue"   
+                                 BorderBrush="AliceBlue"    TabIndex="5" 
                                  LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                       MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"    Margin="10,5,10,5" >
@@ -478,7 +478,7 @@
                             </Path.ToolTip>
                         </Path>
                         <ComboBox x:Name="cb_side" Padding="10,0,5,0"  Grid.Row="7"
-                                                  TextBlock.Foreground="#4E4E4E" 
+                                                  TextBlock.Foreground="#4E4E4E" TabIndex="6" 
                                                   materialDesign:HintAssist.Hint="side..." 
                                                   TextBlock.FontSize="12" 
                                 Margin="10,5,10,5"        Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
@@ -511,7 +511,7 @@
                             <ComboBox x:Name="cb_branchId" Padding="10,0,5,0"  Grid.Row="4"
                                                   TextBlock.Foreground="#4E4E4E" 
                                                   materialDesign:HintAssist.Hint="branch..." 
-                                                  TextBlock.FontSize="12" 
+                                                  TextBlock.FontSize="12" TabIndex="7" 
                                 Margin="10,5,10,5"        Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                                   Height="40"  
                                                   Background="#f8f8f8" 
@@ -539,7 +539,7 @@
                                    Margin="5,0,5,0" Text="Major" Foreground="#6e6e6e"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="12"/>
-                                <ToggleButton   x:Name="tgl_isMajor"  
+                                <ToggleButton   x:Name="tgl_isMajor"  TabIndex="8" 
                                      VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="{Binding isMajor, Mode=OneWay}" 
                                       Margin="0" Height="13" Width="28"    />
                             </DockPanel>
@@ -547,7 +547,7 @@
                        
 
                         <TextBox x:Name="tb_notes"  Grid.Row="9" Text="{Binding notes, Mode=OneWay}" 
-                                 Padding="10,0,5,0"  
+                                 Padding="10,0,5,0"  TabIndex="9" 
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Notes..."    
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
@@ -565,7 +565,7 @@
                         </TextBox>
                         <Path Fill="#E81123" Grid.Row="9" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
-                         VerticalAlignment="Top" Width="15"  Height="15"
+                         VerticalAlignment="Top" Width="15"  Height="15" 
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                             <Path.ToolTip>
                                 <ToolTip x:Name="tt_error_note" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>

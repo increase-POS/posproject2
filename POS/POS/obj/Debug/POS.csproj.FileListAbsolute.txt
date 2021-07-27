@@ -2673,3 +2673,5 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\uc_storageCost.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\uc_storageCost.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_emailsSetting.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_emailsSetting.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\purchases\uc_purchaseOrder.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\purchases\uc_purchaseOrder.baml

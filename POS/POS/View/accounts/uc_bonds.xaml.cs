@@ -69,6 +69,7 @@ namespace POS.View.accounts
             SectionData.clearValidate(tb_number, p_errorNumber);
             SectionData.clearValidate(tb_amount, p_errorAmount);
 
+            SectionData.clearValidate(tb_depositor, p_errordepositor);
             SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
             SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
             SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
@@ -85,10 +86,7 @@ namespace POS.View.accounts
                 if (bond != null)
                 {
                     tb_number.Text = bond.number;
-                    //MessageBox.Show(bond.ctusersName);
-                    //MessageBox.Show(bond.bondId.ToString() +"-"+bond.cashTransId.ToString());
-                    //MessageBox.Show(bond.deserveDate.ToString() +"-"+bond.updateDate.ToString());
-                    //MessageBox.Show(bond.ctside +"-"+bond.ctposName);
+                 
                     if (bond.isRecieved == 1)
                     {
                         btn_pay.Content = MainWindow.resourcemanager.GetString("trPaid");
@@ -100,33 +98,60 @@ namespace POS.View.accounts
                         btn_pay.IsEnabled = true;
                     }
 
-                    if(bond.ctside.Equals("v"))
+                    if (bond.ctside.Equals("v"))
                     {
                         cb_depositorV.SelectedValue = bond.ctagentId.Value;
                         cb_depositorV.Visibility = Visibility.Visible;
+                        tb_depositor.Visibility = Visibility.Collapsed; SectionData.clearValidate(tb_depositor, p_errordepositor);
                         cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
                         cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
                     }
-                    if (bond.ctside.Equals("c"))
+                    else if (bond.ctside.Equals("c"))
                     {
                         cb_depositorC.Visibility = Visibility.Visible;
                         cb_depositorC.SelectedValue = bond.ctagentId.Value;
+                        tb_depositor.Visibility = Visibility.Collapsed; SectionData.clearValidate(tb_depositor, p_errordepositor);
                         cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
                         cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
                     }
-                    if (bond.ctside.Equals("u"))
+                    else if (bond.ctside.Equals("u"))
                     {
-                        cb_depositorU.Visibility = Visibility.Visible;
                         cb_depositorU.SelectedValue = bond.ctuserId.Value;
+                        cb_depositorU.Visibility = Visibility.Visible;
+                        tb_depositor.Visibility = Visibility.Collapsed; SectionData.clearValidate(tb_depositor, p_errordepositor);
                         cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
                         cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
                     }
+                    else
+                    {
+                        tb_depositor.Visibility = Visibility.Visible;
+                        
+                        cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+                        cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+                        cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+                    
+                        switch(bond.ctside)
+                        {
+                            case "s": tb_depositor.Text = MainWindow.resourcemanager.GetString("trSalary"); break;
+                            case "e": tb_depositor.Text = MainWindow.resourcemanager.GetString("trGeneralExpenses"); break;
+                            case "m":
+                                if (bond.cttransType == "p")
+                                    tb_depositor.Text = MainWindow.resourcemanager.GetString("trAdministrativePull");
+                                else if (bond.cttransType == "d")
+                                    tb_depositor.Text = MainWindow.resourcemanager.GetString("trAdministrativeDeposit");
+                                break;
 
+                        }
+
+                    }
                     if (bond.isRecieved == 1)
                     {
-                        cb_paymentProcessType.SelectedValue = bond.ctprocessType;
-                        if(cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                            cb_card.SelectedValue = bond.ctcardId;
+                        var query = await cashModel.GetCashTransferAsync("all" , "bnd");
+                        CashTransfer ca = new CashTransfer();
+                        ca = query.Where(c => c.bondId == bond.bondId).FirstOrDefault();
+                        cb_paymentProcessType.SelectedValue = ca.processType;
+                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                            cb_card.SelectedValue = ca.cardId;
                     }
                     else
                     {
@@ -145,8 +170,6 @@ namespace POS.View.accounts
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
             {
 
-
-            
             //chk empty payment type
             SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
             //chk empty card 
@@ -402,6 +425,9 @@ namespace POS.View.accounts
 
             fillUsers();
 
+            cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+            cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+            cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
 
             #region fill process type
             var typelist = new[] {
