@@ -860,6 +860,17 @@
                         ColumnWidth="SizeToHeader">
                             <DataGrid.Resources>
                                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
+                                <Style x:Key="serialButtonStyle" TargetType="{x:Type Button}">
+                                    <Setter Property="Button.Visibility" Value="Visible" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=valid}" Value="true">
+                                            <Setter Property="Button.Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=valid}" Value="false">
+                                            <Setter Property="Button.Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
                                 <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
                                     <Setter Property="Background" Value="#e7f3fa" />
                                     <Setter Property="BorderBrush" Value="White"/>
@@ -906,22 +917,9 @@
                                 <DataGridTemplateColumn Width="30" Header="" IsReadOnly="True" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Margin="-10"   Click="serialItemsRow" Visibility="Visible"
-                                                   Padding="0" ToolTip="{Binding Path=Count}"    Tag="{Binding Path=Count}" 
-                                    Background="{x:Null}" BorderBrush="{x:Null}">
-                                                <Button.Style>
-                                                    <Style TargetType="{x:Type Button}">
-                                                        <Setter Property="Visibility" Value="Visible" />
-                                                        <Style.Triggers>
-                                                            <Trigger Property="Tag" Value="1">
-                                                                <Setter Property="Button.Visibility" Value="Collapsed" />
-                                                            </Trigger>
-                                                            <Trigger Property="Tag" Value="2">
-                                                                <Setter Property="Button.Visibility" Value="Collapsed" />
-                                                            </Trigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Button.Style>
+                                            <Button Margin="-10"   Click="serialItemsRow" 
+                                                   Padding="0" ToolTip="Serial Number"  
+                                    Background="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource serialButtonStyle}">
                                                 <materialDesign:PackIcon Foreground="#E81123" Kind="InfoCircle"  
                               HorizontalAlignment="Center" Grid.Column="0" 
                          VerticalAlignment="Center" Width="17" Height="17"/>
