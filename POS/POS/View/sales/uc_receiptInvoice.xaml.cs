@@ -1611,21 +1611,21 @@ namespace POS.View
         private async void addItemToBill(int itemId, int itemUnitId, string unitName, decimal price, bool valid)
         {
             item = items.ToList().Find(i => i.itemId == itemId);
-            if (item.type == "sn")
-            {
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_serialNum w = new wd_serialNum();
-                w.itemCount = 1;
-                w.valid = valid;
-                if (w.ShowDialog() == true)
-                {
-                    addRowToBill(item.name, itemId, unitName, itemUnitId, 1, price, price, (decimal)item.taxes,item.type,w.valid,  w.serialList);
-                }
+            //if (item.type == "sn")
+            //{
+            //    Window.GetWindow(this).Opacity = 0.2;
+            //    wd_serialNum w = new wd_serialNum();
+            //    w.itemCount = 1;
+            //    w.valid = valid;
+            //    if (w.ShowDialog() == true)
+            //    {
+            //        addRowToBill(item.name, itemId, unitName, itemUnitId, 1, price, price, (decimal)item.taxes,item.type,w.valid,  w.serialList);
+            //    }
                
-                Window.GetWindow(this).Opacity = 1;
-            }
-            else
-            {
+            //    Window.GetWindow(this).Opacity = 1;
+            //}
+            //else
+            //{
                 int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == itemUnitId).FirstOrDefault());
 
                 if (index == -1)//item doesn't exist in bill
@@ -1653,7 +1653,7 @@ namespace POS.View
                     _Tax += billDetails[index].Tax;
 
                 }
-            }
+            //}
             refreshTotalValue();
             refrishBillDetails();
         }
