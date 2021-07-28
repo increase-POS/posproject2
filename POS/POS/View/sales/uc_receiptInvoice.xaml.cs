@@ -1764,7 +1764,7 @@ namespace POS.View
                 Tax = tax,
                 type = type,
                 valid = valid,
-               serialList = serialList.ToList(),
+               //serialList = serialList.ToList(),
             }) ;
             _Sum += total;
             _Tax += tax;
