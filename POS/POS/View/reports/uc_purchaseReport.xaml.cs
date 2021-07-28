@@ -680,8 +680,8 @@ namespace POS.View.purchases
             grid_users.Visibility = Visibility.Hidden;
             grid_items.Visibility = Visibility.Hidden;
 
-            col_branch.Visibility = Visibility.Collapsed;
             col_item.Visibility = Visibility.Collapsed;
+            col_branch.Visibility = Visibility.Collapsed;
             col_pos.Visibility = Visibility.Collapsed;
             col_user.Visibility = Visibility.Collapsed;
             col_vendor.Visibility = Visibility.Collapsed;
@@ -707,9 +707,13 @@ namespace POS.View.purchases
             selectedTab = 0;
             paint();
             col_branch.Visibility = Visibility.Visible;
+            col_count.Visibility = Visibility.Visible;
+            col_agentCompany.Visibility = Visibility.Hidden;
+            col_discount.Visibility = Visibility.Hidden;
             bdr_branch.Background = Brushes.White;
             path_branch.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             grid_branch.Visibility = Visibility.Visible;
+            col_itQuantity.Visibility = Visibility.Hidden;
             isEnabledButtons();
             btn_branch.IsEnabled = false;
             btn_branch.Opacity = 1;
@@ -725,9 +729,13 @@ namespace POS.View.purchases
             paint();
             col_pos.Visibility = Visibility.Visible;
             col_branch.Visibility = Visibility.Visible;
+            col_count.Visibility = Visibility.Visible;
+            col_agentCompany.Visibility = Visibility.Hidden;
+            col_discount.Visibility = Visibility.Hidden;
             bdr_pos.Background = Brushes.White;
             path_pos.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             grid_pos.Visibility = Visibility.Visible;
+            col_itQuantity.Visibility = Visibility.Hidden;
             isEnabledButtons();
             btn_pos.IsEnabled = false;
             btn_pos.Opacity = 1;
@@ -741,10 +749,16 @@ namespace POS.View.purchases
             stk_tagsVendors.Visibility = Visibility.Visible;
             selectedTab = 2;
             paint();
+            col_branch.Visibility = Visibility.Visible;
             col_vendor.Visibility = Visibility.Visible;
+            col_discount.Visibility = Visibility.Visible;
+            col_count.Visibility = Visibility.Visible;
+
+            col_agentCompany.Visibility = Visibility.Visible;
             bdr_vendors.Background = Brushes.White;
             path_vendors.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             grid_vendors.Visibility = Visibility.Visible;
+            col_itQuantity.Visibility = Visibility.Hidden;
             isEnabledButtons();
             btn_vendors.IsEnabled = false;
             btn_vendors.Opacity = 1;
@@ -758,7 +772,14 @@ namespace POS.View.purchases
             stk_tagsUsers.Visibility = Visibility.Visible;
             selectedTab = 3;
             paint();
+            col_pos.Visibility = Visibility.Visible;
+            col_branch.Visibility = Visibility.Visible;
             col_user.Visibility = Visibility.Visible;
+            col_discount.Visibility = Visibility.Visible;
+            col_agentCompany.Visibility = Visibility.Hidden;
+            col_count.Visibility = Visibility.Hidden;
+            col_itQuantity.Visibility = Visibility.Hidden;
+            col_discount.Visibility = Visibility.Hidden;
             bdr_users.Background = Brushes.White;
             path_users.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             grid_users.Visibility = Visibility.Visible;
@@ -766,6 +787,7 @@ namespace POS.View.purchases
             btn_users.IsEnabled = false;
             btn_users.Opacity = 1;
             fillUsersEvent();
+            
         }
 
         private void btn_items_Click(object sender, RoutedEventArgs e)
@@ -776,6 +798,11 @@ namespace POS.View.purchases
             selectedTab = 4;
             paint();
             col_item.Visibility = Visibility.Visible;
+            col_discount.Visibility = Visibility.Visible;
+            col_count.Visibility = Visibility.Hidden;
+            col_itQuantity.Visibility = Visibility.Visible;
+            col_discount.Visibility = Visibility.Hidden;
+            col_agentCompany.Visibility = Visibility.Hidden;
             bdr_items.Background = Brushes.White;
             path_items.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             grid_items.Visibility = Visibility.Visible;

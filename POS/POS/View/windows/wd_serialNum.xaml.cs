@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using netoaster;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,10 +28,15 @@ namespace POS.View.windows
             InitializeComponent();
         }
         BrushConverter bc = new BrushConverter();
-        public string serialNum { get; set; }
+        public List<string> serialList { get; set; }
+        public int itemCount { get; set; }
+        public bool valid { get; set; }
+
+        private static int _serialCount = 0;
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-            serialNum = "";
+            if(serialList != null)
+            serialList.Clear();   
             DialogResult = true;
             this.Close();
         }
@@ -51,7 +57,7 @@ namespace POS.View.windows
                 grid_serialNum.FlowDirection = FlowDirection.RightToLeft;
 
             }
-
+            fillSerialList();
             translate();
             #endregion
         }
@@ -63,29 +69,35 @@ namespace POS.View.windows
 
 
         }
-
+        private void fillSerialList()
+        {
+            if (serialList != null)
+            {
+                for (int i = 0; i < serialList.Count; i++)
+                {
+                    _serialCount++;
+                    lst_serials.Items.Add(serialList[i]);
+                }
+            }
+        }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
-                Btn_save_Click(null, null);
+               //Btn_save_Click(null, null);
             }
         }
 
-        private bool validate()
-        {
-            bool valid = true;
-            SectionData.validateEmptyTextBox(tb_serialNum, p_errorSerialNum, tt_errorSerialNum, "trEmptySerialNumToolTip");
-            if (tb_serialNum.Text.Equals(""))
-                valid = false;
-            return valid;
-        }
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            bool valid = validate();
-            if (valid)
+            if (lst_serials.Items.Count > 0)
             {
-                serialNum = tb_serialNum.Text;
+                serialList = new List<string>();
+                for (int i = 0; i < lst_serials.Items.Count; i++)
+                    serialList.Add(lst_serials.Items[i].ToString());
+
+                _serialCount = 0;
+                valid = true;
                 DialogResult = true;
                 this.Close();
             }
@@ -104,15 +116,43 @@ namespace POS.View.windows
      
      
        
-
-        private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
+    
 
         private void Btn_skip_Click(object sender, RoutedEventArgs e)
         {
+            valid = true;
+            serialList.Clear();
+            DialogResult = true;
+            this.Close();
+        }
 
+        private void space_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void Tb_serialNum_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                string s = tb_serialNum.Text;
+                if (_serialCount == itemCount)
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningItemCountIs:") +" "+ itemCount, animation: ToasterAnimation.FadeIn);
+                }
+                else
+                {
+                    lst_serials.Items.Add(tb_serialNum.Text);
+                    _serialCount++;
+                }
+                tb_serialNum.Clear();
+            }
+        }
+
+        private void Btn_clearSerial_Click(object sender, RoutedEventArgs e)
+        {
+            _serialCount = 0;
+            lst_serials.Items.Clear();
         }
     }
 }

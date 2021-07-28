@@ -51,6 +51,7 @@ namespace POS.View.accounts
         User userModel = new User();
         Pos posModel = new Pos();
         IEnumerable<Agent> agents;
+        IEnumerable<Agent> customers;
         IEnumerable<User> users;
         IEnumerable<Card> cards;
         IEnumerable<CashTransfer> cashesQuery;
@@ -64,6 +65,7 @@ namespace POS.View.accounts
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
 
+            #region translate
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -76,6 +78,8 @@ namespace POS.View.accounts
                 grid_ucOrderAccounts.FlowDirection = FlowDirection.RightToLeft;
 
             }
+            translate();
+            #endregion
 
             #region Style Date
             /////////////////////////////////////////////////////////////
@@ -89,8 +93,6 @@ namespace POS.View.accounts
 
             dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
             dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
-
-
 
             #region fill process type
             var typelist = new[] {
@@ -112,7 +114,42 @@ namespace POS.View.accounts
             cb_card.SelectedIndex = -1;
             #endregion
 
-            translate();
+            #region fill agent combo
+            List<Agent> agents = new List<Agent>();
+            List<Agent> customers = new List<Agent>();
+            customers = await agentModel.GetAgentsActive("c");
+            agents = await agentModel.GetAgentsActive("v");
+            agents.AddRange(customers);
+            foreach(var a in agents)
+            {
+                if (a.type == "v")
+                    a.name = MainWindow.resourcemanager.GetString("trVendor")+ " " + a.name;
+                else if(a.type == "c")
+                    a.name = MainWindow.resourcemanager.GetString("trCustomer")+ " " + a.name;
+            }
+            cb_customer.ItemsSource = agents;
+            cb_customer.DisplayMemberPath = "name";
+            cb_customer.SelectedValuePath = "agentId";
+            cb_customer.SelectedIndex = -1;
+            #endregion
+
+            #region fill salesman combo
+            users = await userModel.GetUsersActive();
+            cb_salesMan.ItemsSource = users;
+            cb_salesMan.DisplayMemberPath = "username";
+            cb_salesMan.SelectedValuePath = "userId";
+            cb_salesMan.SelectedIndex = -1;
+            #endregion
+           
+            #region fill status combo
+            var statuslist = new[] {
+            new { Text = MainWindow.resourcemanager.GetString("trInDelivery")       , Value = "tr" },
+            new { Text = MainWindow.resourcemanager.GetString("trDelivered")   , Value = "rc" }
+             };
+            cb_state.DisplayMemberPath = "Text";
+            cb_state.SelectedValuePath = "Value";
+            cb_state.ItemsSource = statuslist;
+            #endregion
 
             await RefreshCashesList();
             Tb_search_TextChanged(null, null);
@@ -129,8 +166,10 @@ namespace POS.View.accounts
         }
         private void translate()
         {
+            txt_order.Text = MainWindow.resourcemanager.GetString("trOrders");
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trTransaferDetails");
-            //txt_received.Text = MainWindow.resourcemanager.GetString("trReceived");
+            
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_invoiceNum, MainWindow.resourcemanager.GetString("trInvoiceNumberHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentProcessType, MainWindow.resourcemanager.GetString("trPaymentTypeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_docNum, MainWindow.resourcemanager.GetString("trDocNumHint"));
@@ -140,15 +179,20 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_salesMan, MainWindow.resourcemanager.GetString("trSalesManHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trVendor/CustomerHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startSearchDate, MainWindow.resourcemanager.GetString("trSartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endSearchDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_state, MainWindow.resourcemanager.GetString("trStateHint"));
 
             //dg_orderAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            ////dg_orderAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositTo");
-            //dg_orderAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecepient");
-            //dg_orderAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
-            //dg_orderAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            dg_orderAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
+            dg_orderAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trSalesMan");
+            dg_orderAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trVendor/Customer");
+            dg_orderAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            dg_orderAccounts.Columns[5].Header = MainWindow.resourcemanager.GetString("trState");
 
             tt_code.Content = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            
             tt_paymentType.Content = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
             tt_docNum.Content = MainWindow.resourcemanager.GetString("trDocNumTooltip");
             tt_docDate.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
@@ -158,8 +202,9 @@ namespace POS.View.accounts
             tt_cash.Content = MainWindow.resourcemanager.GetString("trCashTooltip");
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
             tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
-            tt_docDate.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
-
+            tt_startDate.Content = MainWindow.resourcemanager.GetString("trSartDate");
+            tt_endDate.Content = MainWindow.resourcemanager.GetString("trEndDate");
+            tt_state.Content = MainWindow.resourcemanager.GetString("trState");
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
@@ -169,15 +214,14 @@ namespace POS.View.accounts
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
             tt_startDate.Content = MainWindow.resourcemanager.GetString("trStartDate");
             tt_endDate.Content = MainWindow.resourcemanager.GetString("trEndDate");
-
+            tt_salesMan.Content = MainWindow.resourcemanager.GetString("trSalesMan");
+            tt_customer.Content = MainWindow.resourcemanager.GetString("trVendor/Customer");
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
-            //btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
-            //btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
             btn_image.Content = MainWindow.resourcemanager.GetString("trImage");
             btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             btn_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
             btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdf");
-
+            tt_add_Button.Content = MainWindow.resourcemanager.GetString("trSave");
         }
         private void Dg_orderAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
@@ -558,19 +602,22 @@ namespace POS.View.accounts
 
         }
 
-        private void Cb_salesMan_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
+        private async void Cb_salesMan_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {//select salesman
+            await RefreshCashesList();
+            Tb_search_TextChanged(null, null);
         }
 
-        private void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
+        private async void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {//select agent
+            await RefreshCashesList();
+            Tb_search_TextChanged(null, null);
         }
 
-        private void Cb_state_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
+        private async void Cb_state_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {//select state
+            await RefreshCashesList();
+            Tb_search_TextChanged(null, null);
         }
 
         private void Btn_save_Click(object sender, RoutedEventArgs e)

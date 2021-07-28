@@ -103,7 +103,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                         <Border x:Name="bdr_internal" Grid.Column="2" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
                             <Button x:Name="btn_internal"  Background="Transparent" 
                                     materialDesign:RippleAssist.Feedback="Transparent"
-                                    BorderBrush="Transparent" Height="auto" Width="60" Click="btn_internal_Click" >
+                                    BorderBrush="Transparent" Height="auto" Click="btn_internal_Click" >
                                 <Button.Triggers>
                                     <EventTrigger RoutedEvent="Button.Click">
                                         <BeginStoryboard>
@@ -540,7 +540,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                                             <!--*****************************************************************************-->
                                             <Grid x:Name="grid_externalItems"
                                                   Margin="10,0,10,10" 
-                                                  Visibility="Hidden">
+                                                  Visibility="Visible">
 
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="auto"></RowDefinition>
@@ -833,7 +833,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                                             <Grid x:Name="grid_externalInvoices"
                                                   Grid.Row="1"
                                                   Margin="10,0,10,10"
-                                                  Visibility="Visible">
+                                                  Visibility="Hidden">
 
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="auto"></RowDefinition>
@@ -1064,7 +1064,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                                                     <RowDefinition Height="auto"></RowDefinition>
                                                     <RowDefinition Height="auto"></RowDefinition>
                                                     <RowDefinition Height="auto"></RowDefinition>
-                                                
+
                                                 </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -1118,10 +1118,11 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                                                           Unchecked="chk_internalItemsToAllBranches_Unchecked"/>
 
                                                 <CheckBox x:Name="chk_internalItemsTwoWay" 
-                                                          Grid.Row="1" Grid.Column="4" Content="Two Ways"></CheckBox>
+                                                          Grid.Row="1" Grid.Column="4" Content="Two Ways"
+                                                          Checked="Chk_internalItemsTwoWay_Checked"></CheckBox>
 
-                                            
-                                                
+
+
 
                                                 <ComboBox Name="cb_internalItemsItems"
                                                           Grid.Row="2"
@@ -1182,7 +1183,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                                                 </DockPanel>
 
                                             </Grid>
-<!--**********************************************************************************************-->
+                                            <!--**********************************************************************************************-->
                                             <Grid x:Name="grid_internalOperater"
                                                   Margin="10,0,10,10" 
                                                   Visibility="Hidden">
@@ -1392,11 +1393,22 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
 
                     </DataGrid.Resources>
                     <DataGrid.Columns>
+
                         <DataGridTextColumn x:Name="col_branch" Width="*" Header="Brnach" Binding="{Binding branchName}"/>
+                        <DataGridTextColumn x:Name="col_agentType" Visibility="Hidden" Width="*" Header="Agent Type" Binding="{Binding agentType}"/>
+
+                        <DataGridTextColumn x:Name="col_agent" Visibility="Hidden" Width="*" Header="Agent Name" Binding="{Binding agentName}"/>
+                        <DataGridTextColumn x:Name="col_invType" Visibility="Hidden" Width="*" Header="Invoice Type" Binding="{Binding invType}"/>
+
+                        <DataGridTextColumn x:Name="col_invNumber" Visibility="Hidden" Width="*" Header="Invoice Number" Binding="{Binding invNumber}"/>
+
+                        <DataGridTextColumn x:Name="col_section" Visibility="Hidden" Width="*" Header="Section" Binding="{Binding Secname}" />
+                        <DataGridTextColumn x:Name="col_location" Visibility="Hidden" Width="*" Header="Location" Binding="{Binding LoactionName}" />
+                        <DataGridTextColumn x:Name="col_itemUnits" Visibility="Hidden" Width="*" Header="Items - Units" Binding="{Binding ItemUnits}"/>
                         <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding itemName}"/>
                         <DataGridTextColumn x:Name="col_unit" Width="*" Header="Unit" Binding="{Binding unitName}"/>
+                        <DataGridTextColumn x:Name="col_quantity" Width="*" Header="Quantity" Binding="{Binding quantity}"/>
                         <DataGridTextColumn x:Name="col_locationSection" Width="*" Header="Location - Section" Binding="{Binding SectionLoactionName}"/>
-                        <DataGridTextColumn x:Name="col_quantity" Width="*" Header="Count" Binding="{Binding quantity}"/>
                         <DataGridTextColumn x:Name="col_startDate" Width="*" Header="Start Date" Binding="{Binding startDate}"/>
                         <DataGridTextColumn x:Name="col_endDate" Width="*" Header="End Date" Binding="{Binding endDate}"/>
                         <DataGridTextColumn x:Name="col_Min" Width="*" Header="Min" Binding="{Binding MinAll}"/>
@@ -1405,17 +1417,10 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                         <DataGridTextColumn x:Name="col_MaxCollect" Width="*" Header="Max" Binding="{Binding maxUnitName}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_stockCost" Width="*" Header="Stock Cost" Binding="{Binding storeCost}"/>
 
-                        <DataGridTextColumn x:Name="col_location" Visibility="Hidden" Width="*" Header="Location" Binding="{Binding LoactionName}" />
-                        <DataGridTextColumn x:Name="col_section" Visibility="Hidden" Width="*" Header="Section" Binding="{Binding Secname}" />
-                        <DataGridTextColumn x:Name="col_itemUnits" Visibility="Hidden" Width="*" Header="Items - Units" Binding="{Binding ItemUnits}"/>
 
-                        <DataGridTextColumn x:Name="col_invNumber" Visibility="Hidden" Width="*" Header="Invoice Number" Binding="{Binding invNumber}"/>
-                        <DataGridTextColumn x:Name="col_invType" Visibility="Hidden" Width="*" Header="Invoice Type" Binding="{Binding invType}"/>
-                        <DataGridTextColumn x:Name="col_invTypeNumber" Visibility="Hidden" Width="*" Header="Invoice Type-Number" Binding="{Binding InvTypeNumber}"/>
-                        <DataGridTextColumn x:Name="col_agentType" Visibility="Hidden" Width="*" Header="Agent Type" Binding="{Binding agentType}"/>
-                        <DataGridTextColumn x:Name="col_agent" Visibility="Hidden" Width="*" Header="Agent Name" Binding="{Binding agentName}"/>
                         <DataGridTextColumn x:Name="col_agentTypeAgent" Visibility="Hidden" Width="*" Header="Agent Type-Name" Binding="{Binding AgentTypeAgent}"/>
-                        <DataGridTextColumn Visibility="Visible" Width="*" Header="Agent Type-Name" Binding="{Binding agentId}"/>
+                        <DataGridTextColumn x:Name="col_invTypeNumber" Visibility="Hidden" Width="*" Header="Invoice Type-Number" Binding="{Binding InvTypeNumber}"/>
+
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
@@ -1545,7 +1550,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
             <Border Grid.Row="4" Background="White" Margin="5,5,5,0" CornerRadius="7">
                 <lvc:CartesianChart Name="rowChart" Margin="0,0,0,10"   >
                     <lvc:CartesianChart.AxisX>
-                        <lvc:Axis  x:Name="MyAxis">
+                        <lvc:Axis  x:Name="MyAxis" >
                             <lvc:Axis.Separator>
                                 <lvc:Separator Step="1"/>
                             </lvc:Axis.Separator>

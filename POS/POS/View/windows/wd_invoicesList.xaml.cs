@@ -39,7 +39,7 @@ namespace POS.View.windows
 
         public int agentId = 0;
         public decimal sum = 0;
-        public string invType, invTypeB;
+        public string invType, invTypeB , invTypC;
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             //MessageBox.Show(agentId.ToString());
@@ -60,7 +60,7 @@ namespace POS.View.windows
             //need method
             allInvoicesSource = await invoiceModel.GetAll();
             //var query = allInvoicesSource.Where(i => i.agentId == agentId && i.paid < i.deserved && (i.invType == invType || i.invType == invTypeB));
-            var query = allInvoicesSource.Where(i => i.agentId == agentId && i.deserved > 0 && (i.invType == invType || i.invType == invTypeB));
+            var query = allInvoicesSource.Where(i => i.agentId == agentId && i.deserved > 0 && (i.invType == invType || i.invType == invTypeB || i.invType == invTypC));
 
             allInvoicesSource = query.ToList();
 

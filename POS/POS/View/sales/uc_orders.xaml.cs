@@ -977,7 +977,7 @@ namespace POS.View.sales
             w.invoiceType = "s";
             w.invoiceStatus = "ex";
             w.userId = MainWindow.userLogin.userId;
-            w.userId =8;
+
             w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
 
             if (w.ShowDialog() == true)

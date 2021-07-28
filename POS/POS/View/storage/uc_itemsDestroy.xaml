@@ -83,15 +83,6 @@
                             </TransformGroup>
                         </Button.RenderTransform>
                     </Button>
-                    <ToggleButton DockPanel.Dock="Right"  x:Name="tgl_IsActive"  
-                                      Checked="Tgl_IsActive_Checked" 
-                                      Unchecked="Tgl_IsActive_Unchecked"
-                                      VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="False" 
-                                      Margin="0" Height="13" Width="28" IsThreeState="False" />
-                    <TextBlock  DockPanel.Dock="Right"
-                                   Margin="5,0,5,0" Text="Manual" Foreground="#6e6e6e"
-                                   HorizontalAlignment="Left" VerticalAlignment="Center"
-                                   FontSize="12"/>
                 </DockPanel>
             </Border>
             <!--#endregion-->
@@ -350,6 +341,7 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
 
 
@@ -370,8 +362,17 @@
                                 <Separator Background="#999999"  Grid.Row="0"  Margin="5,0,5,0"
                                       Grid.Column="1" VerticalAlignment="Center" />
                             </DockPanel>
-
-                            <TextBlock  x:Name="tb_itemUnit"  Grid.Row="1" Text="{Binding itemName, Mode=OneWay}" Padding="10,0,5,0"
+                            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                                <TextBlock  x:Name="txt_manually"
+                                Margin="10,0,5,0" Text="manually" Foreground="#6e6e6e"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                                  FontSize="12"/>
+                                <ToggleButton Grid.Column="1"  x:Name="tgl_manually"   IsChecked="False"
+                                 VerticalAlignment="Center" Padding="10,15,5,5" 
+                                              Checked="Tgl_manually_Checked" Unchecked="Tgl_manually_Unchecked"
+                                              Margin="0" Height="13" Width="28" />
+                            </StackPanel>
+                            <TextBlock  x:Name="tb_itemUnit"  Grid.Row="2" Text="{Binding itemName, Mode=OneWay}" Padding="10,0,5,0"
                                      Background="#f8f8f8" IsEnabled="False"
                                     materialDesign:HintAssist.Hint="Item..." 
                                     KeyboardNavigation.IsTabStop="False" 
@@ -387,7 +388,7 @@
                                               VerticalOffset="20"/>
                                 </TextBlock.ToolTip>
                             </TextBlock>
-                            <Grid x:Name="grid_itemUnit" Grid.Row="2" Visibility="Collapsed">
+                            <Grid x:Name="grid_itemUnit" Grid.Row="3" Visibility="Collapsed">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
@@ -452,14 +453,14 @@
                                               VerticalOffset="20"/>
                                 </TextBlock.ToolTip>
                             </TextBlock>-->
-                            <TextBox Visibility="Visible" x:Name="tb_amount" Grid.Row="3" Text="{Binding amountDestroyed, Mode=OneWay}" Padding="10,0,5,0"                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            <TextBox Visibility="Visible" x:Name="tb_amount" Grid.Row="4" Text="{Binding amountDestroyed, Mode=OneWay}" Padding="10,0,5,0"                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Amount Destroyed..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                     BorderBrush="AliceBlue"  
                                          PreviewTextInput="NumberValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
                                     MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                     Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" LostFocus="input_LostFocus" />
-                            <Path Fill="#E81123" Grid.Row="3" Stretch="Fill" Margin="15,12,15,5"
+                            <Path Fill="#E81123" Grid.Row="4" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
                          VerticalAlignment="Top" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -467,7 +468,7 @@
                                     <ToolTip x:Name="tt_errorAmount" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
-                            <TextBox x:Name="tb_reasonOfDestroy" Grid.Row="4"  Text="{Binding test, Mode=OneWay}" 
+                            <TextBox x:Name="tb_reasonOfDestroy" Grid.Row="5"  Text="{Binding test, Mode=OneWay}" 
                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" Padding="10,0,5,0" 
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Reason of destroy..."   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
@@ -475,7 +476,7 @@
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      
                   Height="40"   Margin="10,5,10,5" />
-                            <Path x:Name="p_errorReasonOfDestroy" Grid.Row="4"  Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                            <Path x:Name="p_errorReasonOfDestroy" Grid.Row="5"  Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -483,24 +484,48 @@
                                     <ToolTip  x:Name="tt_errorReasonOfDestroy" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
-                            <TextBox x:Name="tb_serialNumber" Grid.Row="5"  Text="{Binding test, Mode=OneWay}" 
-                                   Visibility="Collapsed"       Style="{StaticResource MaterialDesignFloatingHintTextBox}" Padding="10,0,5,0" 
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Serial Number..."   
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue" 
-                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                     
-                  Height="40"   Margin="10,5,10,5" />
-                            <Path x:Name="p_errorSerialNumber" Grid.Row="5"  Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                            <Grid x:Name="grid_serial"  Grid.Row="6" Visibility="Collapsed">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBox x:Name="tb_serialNum"  Grid.Row="0"
+                                  Padding="10,10,5,0"  TextBlock.Foreground="#4E4E4E"
+                                  materialDesign:HintAssist.Hint="serial Num..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                  Grid.Column="0" Height="40"  Margin="10,10,10,5"
+                                  BorderBrush="#737373" BorderThickness="0" 
+                                  PreviewKeyDown="space_PreviewKeyDown"
+                                KeyDown="Tb_serialNum_KeyDown">
+                                    <TextBox.ToolTip>
+                                        <ToolTip x:Name="tt_serialNum" Content="serial Num"
+                                                          Placement="left" 
+                                                          HorizontalOffset="35"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="20"/>
+                                    </TextBox.ToolTip>
+                                </TextBox>
+                                <Path Fill="#E81123" x:Name="p_errorSerialNum" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Row="0" Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                <Path.ToolTip>
-                                    <ToolTip  x:Name="tt_errorSerialNumber" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                </Path.ToolTip>
-                            </Path>
+                                    <Path.ToolTip>
+                                        <ToolTip x:Name="tt_errorSerialNum" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    </Path.ToolTip>
+                                </Path>
+                                <Button x:Name="btn_clearSerial"  Padding="0" HorizontalAlignment="Right"
+                                        Background="{x:Null}" BorderBrush="{x:Null}" 
+                                        Margin="5,1,15,1" ToolTip="clear" Click="Btn_clearSerial_Click">
+                                    <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="20" Height="20"/>
+                                </Button>
+                                <Separator Margin="5,0" Grid.Row="1"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
+                                <ListView Grid.Row="2" x:Name="lst_serials"/>
 
-                            <TextBox x:Name="tb_notes" Grid.Row="6" Text="{Binding notes, Mode=OneWay}" 
+                            </Grid>
+                            <TextBox x:Name="tb_notes" Grid.Row="7" Text="{Binding notes, Mode=OneWay}" 
                                  Padding="10,0,5,0"   
                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
@@ -517,7 +542,7 @@
                                               VerticalOffset="20"/>
                                 </TextBox.ToolTip>
                             </TextBox>
-                            <Path Fill="#E81123" Grid.Row="6" Stretch="Fill" Margin="15,12,15,5"
+                            <Path Fill="#E81123" Grid.Row="7" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
                          VerticalAlignment="Top" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">

@@ -439,6 +439,9 @@
     <Compile Include="View\windows\wd_deliveryReceiptInvoice.xaml.cs">
       <DependentUpon>wd_deliveryReceiptInvoice.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_generatePackage.xaml.cs">
+      <DependentUpon>wd_generatePackage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_inventory.xaml.cs">
       <DependentUpon>wd_inventory.xaml</DependentUpon>
     </Compile>
@@ -474,6 +477,9 @@
     </Compile>
     <Compile Include="View\windows\wd_transItemsLocation.xaml.cs">
       <DependentUpon>wd_transItemsLocation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_unitConversion.xaml.cs">
+      <DependentUpon>wd_unitConversion.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\wd_updateVendor.xaml.cs">
       <DependentUpon>wd_updateVendor.xaml</DependentUpon>
@@ -786,6 +792,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\windows\wd_generatePackage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\windows\wd_inventory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -831,6 +841,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_transItemsLocation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_unitConversion.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

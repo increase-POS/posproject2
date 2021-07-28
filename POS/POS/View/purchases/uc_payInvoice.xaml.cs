@@ -1619,5 +1619,9 @@ namespace POS.View
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
+        private void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

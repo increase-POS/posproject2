@@ -471,7 +471,7 @@ namespace POS.View.accounts
                     else
                         s = await cashModel.Save(cash);
 
-                    if ((!s.Equals("0")) || (!s1.Equals("")))
+                    if ((!s.Equals("0")) || (!s1.Equals("")) || (s1.Equals("-1")))
                     {
                         calcBalance(cash.cash.Value, recipient, agentid);
 
@@ -535,21 +535,21 @@ namespace POS.View.accounts
             pos.balance -= ammount;
 
             s = await pos.savePos(pos);
-            if (s.Equals("Pos Is Updated Successfully"))
-            {
-                //MessageBox.Show(pos.balance.ToString());
-                //decrease depositor balance if agent
-                if ((recipient.Equals("v")) || (recipient.Equals("c")))
-                {
-                    Agent agent = await agentModel.getAgentById(agentid);
-                    //MessageBox.Show(agent.balance.ToString());
-                    agent.balance = agent.balance + Convert.ToSingle(ammount);
+            //if (s.Equals("Pos Is Updated Successfully"))
+            //{
+            //    //MessageBox.Show(pos.balance.ToString());
+            //    //decrease depositor balance if agent
+            //    if ((recipient.Equals("v")) || (recipient.Equals("c")))
+            //    {
+            //        Agent agent = await agentModel.getAgentById(agentid);
+            //        //MessageBox.Show(agent.balance.ToString());
+            //        agent.balance = agent.balance + Convert.ToSingle(ammount);
 
-                    s = await agent.saveAgent(agent);
+            //        s = await agent.saveAgent(agent);
 
-                    //if (!s.Equals("0")) MessageBox.Show(agent.balance.ToString());
-                }
-            }
+            //        //if (!s.Equals("0")) MessageBox.Show(agent.balance.ToString());
+            //    }
+            //}
            
 
         }
@@ -1030,6 +1030,7 @@ namespace POS.View.accounts
                 w.agentId = Convert.ToInt32(cb_recipientC.SelectedValue);
             w.invType = "p";
             w.invTypeB = "sb";
+            w.invTypC = "pw";
 
             w.ShowDialog();
             if (w.isActive)

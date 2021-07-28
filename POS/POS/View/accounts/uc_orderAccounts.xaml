@@ -207,11 +207,11 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridCheckBoxColumn Width="50" Binding="{Binding Path=isChecked}" IsThreeState="False"/>
-                        <DataGridTextColumn Width="*"   Header="Invoice Number" Binding="{Binding Path=test}"/>
+                        <DataGridTextColumn Width="*"   Header="Invoice Number" Binding="{Binding Path=invNumber}"/>
                         <DataGridTextColumn Width="*"   Header="sales man" Binding="{Binding Path=test}"/>
-                        <DataGridTextColumn Width="*"   Header="customer" Binding="{Binding Path=test}"/>
-                        <DataGridTextColumn Width="*"  Header="Cash" Binding="{Binding Path=test}"/>
-                        <DataGridTextColumn Width="*"  Header="Status" Binding="{Binding Path=test}"/>
+                        <DataGridTextColumn Width="*"   Header="customer" Binding="{Binding Path=name}"/>
+                        <DataGridTextColumn Width="*"  Header="Cash" Binding="{Binding Path=totalNet}"/>
+                        <DataGridTextColumn Width="*"  Header="Status" Binding="{Binding Path=invCase}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>

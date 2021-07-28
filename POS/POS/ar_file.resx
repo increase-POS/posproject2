@@ -1692,4 +1692,28 @@
   <data name="trMajorEmail" xml:space="preserve">
     <value>يوجد ايميل رئيسي مسبقاً</value>
   </data>
+  <data name="trDelivered" xml:space="preserve">
+    <value>تم التسليم</value>
+  </data>
+  <data name="trInDelivery" xml:space="preserve">
+    <value>قيد التوصيل</value>
+  </data>
+  <data name="trSalesMan" xml:space="preserve">
+    <value>مندوب المبيعات</value>
+  </data>
+  <data name="trSalesManHint" xml:space="preserve">
+    <value>مندوب المبيعات...</value>
+  </data>
+  <data name="trVendor/Customer" xml:space="preserve">
+    <value>مورد/عميل</value>
+  </data>
+  <data name="trVendor/CustomerHint" xml:space="preserve">
+    <value>مورد/عميل...</value>
+  </data>
+  <data name="trState" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="trWarningItemCountIs:" xml:space="preserve">
+    <value>عدد العناصر هو:</value>
+  </data>
 </root>

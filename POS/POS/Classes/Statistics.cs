@@ -84,7 +84,7 @@ namespace POS.Classes
         public Nullable<byte> SecisActive { get; set; }
         public string Secnote { get; set; }
         public Nullable<byte> SecisFreeZone { get; set; }
-        public string SectionLoactionName { get => sectionLoactionName = Secname + x + y + z; set => sectionLoactionName = value; }
+        public string SectionLoactionName { get => sectionLoactionName = Secname + " - " + x + y + z; set => sectionLoactionName = value; }
 
 
         private string itemUnits;
@@ -116,6 +116,7 @@ namespace POS.Classes
 
     public class ItemTransferInvoice
     {// new properties
+        public string agentCompany { get; set; }
         public string itemName { get; set; }
         public string unitName { get; set; }
         public int itemsTransId { get; set; }
@@ -137,6 +138,7 @@ namespace POS.Classes
         public Nullable<int> ITunitId { get; set; }
         public string ITitemName { get; set; }
         public string ITunitName { get; set; }
+        private string ITitemUnitName;
         public Nullable<long> ITquantity { get; set; }
         public Nullable<decimal> ITprice { get; set; }
 
@@ -287,6 +289,7 @@ namespace POS.Classes
         public int SCount { get => sCount; set => sCount = value; }
         public int PbCount { get => pbCount; set => pbCount = value; }
         public int SbCount { get => sbCount; set => sbCount = value; }
+        public string ITitemUnitName1 { get => ITitemUnitName = ITitemName + " - " + ITunitName; set => ITitemUnitName = value; }
     }
     class Statistics
     {
@@ -1218,7 +1221,7 @@ namespace POS.Classes
         {
             List<AgentTypeCombo> iulist = new List<AgentTypeCombo>();
 
-            iulist = ITInvoice.Select(g => new AgentTypeCombo {  AgentType = g.agentType, BranchId = g.branchId }).ToList();
+            iulist = ITInvoice.Select(g => new AgentTypeCombo { AgentType = g.agentType, BranchId = g.branchId }).ToList();
             return iulist;
 
         }
@@ -1258,7 +1261,7 @@ namespace POS.Classes
         {
             List<InvTypeCombo> iulist = new List<InvTypeCombo>();
 
-            iulist = ITInvoice.Select(g => new InvTypeCombo {  InvoiceType = g.invType, BranchId = g.branchId }).ToList();
+            iulist = ITInvoice.Select(g => new InvTypeCombo { InvoiceType = g.invType, BranchId = g.branchId }).ToList();
             return iulist;
 
         }
@@ -1282,6 +1285,38 @@ namespace POS.Classes
             iulist = ITInvoice.Select(g => new InvCombo { InvoiceId = g.invoiceId, InvoiceNumber = g.invNumber, BranchId = g.branchId, InvoiceType = g.invType }).ToList();
             return iulist;
 
+        }
+        public class internalTypeCombo
+        {
+            private int? branchId;
+            private string invType;
+
+            public int? BranchId { get => branchId; set => branchId = value; }
+            public string InvType { get => invType; set => invType = value; }
+        }
+
+
+        public List<internalTypeCombo> getTypeCompo(List<ItemTransferInvoice> ITInvoice)
+        {
+            List<internalTypeCombo> iulist = new List<internalTypeCombo>();
+            iulist = ITInvoice.Select(g => new internalTypeCombo { BranchId = g.branchId, InvType = g.invType }).ToList();
+            return iulist;
+        }
+        public class internalOperatorCombo
+        {
+            private int? branchId;
+            private string invNum;
+
+            public int? BranchId { get => branchId; set => branchId = value; }
+            public string InvNum { get => invNum; set => invNum = value; }
+        }
+
+
+        public List<internalOperatorCombo> getOperatroCompo(List<ItemTransferInvoice> ITInvoice)
+        {
+            List<internalOperatorCombo> iulist = new List<internalOperatorCombo>();
+            iulist = ITInvoice.Select(g => new internalOperatorCombo { BranchId = g.branchId, InvNum = g.invNumber }).ToList();
+            return iulist;
         }
 
     }

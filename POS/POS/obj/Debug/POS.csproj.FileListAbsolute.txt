@@ -2681,3 +2681,7 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_emailsSetting.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\catalog\uc_storageCost.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\purchases\uc_purchaseOrder.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_emailsSetting.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_generatePackage.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_generatePackage.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_unitConversion.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_unitConversion.baml

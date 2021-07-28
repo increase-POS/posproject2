@@ -375,7 +375,7 @@ namespace POS.Classes
                 return invoices;
             }
         }
-        public async Task<List<Invoice>> getBranchInvoices(string invType,int branchCreatorId )
+        public async Task<List<Invoice>> getBranchInvoices(string invType,int branchCreatorId, int branchId = 0 )
         {
             List<Invoice> invoices = null;
             // ... Use HttpClient.
@@ -388,7 +388,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Invoices/getBranchInvoices?invType=" + invType+ "&branchCreatorId=" + branchCreatorId);
+                request.RequestUri = new Uri(Global.APIUri + "Invoices/getBranchInvoices?invType=" + invType+ "&branchCreatorId=" + branchCreatorId + "&branchId="+ branchId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -830,7 +830,7 @@ namespace POS.Classes
             agent = await agent.getAgentById(invoice.agentId.Value);
 
             CashTransfer cashTrasnfer = new CashTransfer();
-            cashTrasnfer.posId = invoice.posId;
+            cashTrasnfer.posId = MainWindow.posID;
             cashTrasnfer.agentId = invoice.agentId;
             cashTrasnfer.invId = invoice.invoiceId;
             cashTrasnfer.createUserId = invoice.createUserId; 

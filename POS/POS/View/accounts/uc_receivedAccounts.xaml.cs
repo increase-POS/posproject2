@@ -422,7 +422,7 @@ namespace POS.View.accounts
                 else
                     s = await cashModel.Save(cash);
 
-                if ((!s.Equals("0")) || (!s1.Equals("")))
+                if ((!s.Equals("0")) || (!s1.Equals("")) || (s1.Equals("-1")))
                 {
                     calcBalance(cash.cash.Value, depositor, agentid);
                   
@@ -479,20 +479,20 @@ namespace POS.View.accounts
            
             s = await pos.savePos(pos);
 
-            if (s.Equals("Pos Is Updated Successfully"))
-            {
-                //decrease depositor balance if agent
-                if ((depositor.Equals("v")) || (depositor.Equals("c")))
-                {
-                    Agent agent = await agentModel.getAgentById(agentid);
+            //if (s.Equals("Pos Is Updated Successfully"))
+            //{
+            //    //decrease depositor balance if agent
+            //    if ((depositor.Equals("v")) || (depositor.Equals("c")))
+            //    {
+            //        Agent agent = await agentModel.getAgentById(agentid);
 
-                    agent.balance = agent.balance - Convert.ToSingle(ammount);
+            //        agent.balance = agent.balance - Convert.ToSingle(ammount);
 
-                    s = await agent.saveAgent(agent);
+            //        s = await agent.saveAgent(agent);
 
-                   // if (!s.Equals("0")) MessageBox.Show(agent.balance.ToString());
-                }
-            }
+            //       // if (!s.Equals("0")) MessageBox.Show(agent.balance.ToString());
+            //    }
+            //}
         }
 
         private void Btn_update_Click(object sender, RoutedEventArgs e)
@@ -884,6 +884,7 @@ namespace POS.View.accounts
                 w.agentId = Convert.ToInt32(cb_depositorC.SelectedValue);
             w.invType = "s";
             w.invTypeB = "pb";
+            w.invTypC = "s";
 
             w.ShowDialog();
             if (w.isActive)

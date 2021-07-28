@@ -78,14 +78,14 @@ namespace POS.View.windows
             await refreshInvoices();
         }
         private async Task refreshInvoices()
-        {/*
+        {
             if (userId != 0 && (invoiceStatus == "" || invoiceStatus == null))/// to display draft invoices
-                invoices = await invoice.GetInvoicesByCreator(invoiceType, userId,duration);
-            else if(branchId != 0 && branchCreatorId != 0) // to get invoices to make return from it
-                invoices = await invoice.getBranchInvoices(invoiceType, branchCreatorId,branchId);
+                invoices = await invoice.GetInvoicesByCreator(invoiceType, userId, duration);
+            else if (branchId != 0 && branchCreatorId != 0) // to get invoices to make return from it
+                invoices = await invoice.getBranchInvoices(invoiceType, branchCreatorId, branchId);
             else if (branchCreatorId != 0)
                 invoices = await invoice.getBranchInvoices(invoiceType, branchCreatorId);
-            else if (invoiceStatus != ""  && branchId != 0) // get return invoice in storage
+            else if (invoiceStatus != "" && branchId != 0) // get return invoice in storage
                 invoices = await invoice.getBranchInvoices(invoiceType, branchCreatorId, branchId);
             else if (branchId != 0) // get export/ import orders
                 invoices = await invoice.GetOrderByType(invoiceType, branchId);
@@ -93,9 +93,9 @@ namespace POS.View.windows
                 invoices = await invoice.getDeliverOrders(invoiceType, invoiceStatus, userId);
             else
                 invoices = await invoice.GetInvoicesByType(invoiceType, branchId);
-           
-          dg_Invoice.ItemsSource = invoices.ToList();
-          */
+
+            dg_Invoice.ItemsSource = invoices.ToList();
+
         }
         private void Dg_Invoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

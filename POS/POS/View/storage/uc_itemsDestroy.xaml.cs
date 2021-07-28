@@ -54,10 +54,11 @@ namespace POS.View.storage
         IEnumerable<InventoryItemLocation> inventoriesItems;
         int? categoryParentId = 0;
         private string _ItemType = "";
-
+        public int itemCount { get; set; }
         public byte tglCategoryState = 1;
         public byte tglItemState = 1;
         public string txtItemSearch;
+        private static int _serialCount = 0;
 
 
         private async  void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -98,13 +99,13 @@ namespace POS.View.storage
                     _ItemType = item.type;
                     if (item.type == "sn")
                     {
-                        tb_serialNumber.Visibility = Visibility.Visible;
+                        grid_serial.Visibility = Visibility.Visible;
                         tb_amount.Text = "1";
                         tb_amount.IsEnabled = false;
                     }
                     else
                     {
-                        tb_serialNumber.Visibility = Visibility.Collapsed;
+                        grid_serial.Visibility = Visibility.Collapsed;
                         tb_amount.IsEnabled = true;
                     }
 
@@ -202,7 +203,7 @@ namespace POS.View.storage
                         itemId = (int)cb_item.SelectedValue;
                     }
                     if (_ItemType == "sn")
-                        serialNum = tb_serialNumber.Text;
+                        serialNum = tb_serialNum.Text;
 
                     decimal price = await invoiceModel.GetAvgItemPrice(itemUnitId, itemId );
                     price = Math.Round(price, 2);
@@ -233,7 +234,7 @@ namespace POS.View.storage
                                 unitName = invItemLoc.unitName,
                                 itemUnitId = invItemLoc.itemUnitId,
                                 quantity = invItemLoc.amountDestroyed,
-                                itemSerial = serialNum,
+                               // itemSerial = serialNum,
                                 price = price,
                             }) ;
                             invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
@@ -264,7 +265,7 @@ namespace POS.View.storage
                             unitName = cb_unit.SelectedItem.ToString(),
                             itemUnitId = (int)cb_unit.SelectedValue,
                             quantity = long.Parse(tb_amount.Text),
-                            itemSerial = serialNum,
+                           // itemSerial = serialNum,
                             price = price,
                         }) ;
                         // اتلاف عنصر يدوياً بدون جرد
@@ -333,7 +334,7 @@ namespace POS.View.storage
             grid_itemUnit.Visibility = Visibility.Collapsed;
             tb_amount.IsEnabled = false;
             this.DataContext = invItemLoc;
-            tgl_IsActive.IsChecked = false;
+            tgl_manually.IsChecked = false;
         }
 
        
@@ -394,18 +395,7 @@ namespace POS.View.storage
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
-            if (tgl_IsActive.IsChecked == true)
-            {
-                tb_itemUnit.Visibility = Visibility.Collapsed;
-                grid_itemUnit.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                tb_itemUnit.Visibility = Visibility.Visible;
-                grid_itemUnit.Visibility = Visibility.Collapsed;
-            }
-            tb_serialNumber.Visibility = Visibility.Collapsed;
-            tb_amount.IsEnabled = true;
+            
             if (invItemLoc!= null)
             invItemLoc.id = 0;
             _ItemType = "";
@@ -423,6 +413,55 @@ namespace POS.View.storage
         {
             dg_itemDestroy.SelectedItem = null;
             Btn_clear_Click(null, null);
+        }
+
+        private void Btn_clearSerial_Click(object sender, RoutedEventArgs e)
+        {
+            _serialCount = 0;
+            lst_serials.Items.Clear();
+        }
+
+        void tglManuallyChecking()
+        {
+            if (tgl_manually.IsChecked == true)
+            {
+                tb_itemUnit.Visibility = Visibility.Collapsed;
+                grid_itemUnit.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                tb_itemUnit.Visibility = Visibility.Visible;
+                grid_itemUnit.Visibility = Visibility.Collapsed;
+            }
+            grid_serial.Visibility = Visibility.Collapsed;
+            tb_amount.IsEnabled = true;
+        }
+        private void Tgl_manually_Checked(object sender, RoutedEventArgs e)
+        {
+            tglManuallyChecking();
+        }
+
+        private void Tgl_manually_Unchecked(object sender, RoutedEventArgs e)
+        {
+            tglManuallyChecking();
+        }
+
+        private void Tb_serialNum_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                string s = tb_serialNum.Text;
+                if (_serialCount == itemCount)
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningItemCountIs:") + " " + itemCount, animation: ToasterAnimation.FadeIn);
+                }
+                else
+                {
+                    lst_serials.Items.Add(tb_serialNum.Text);
+                    _serialCount++;
+                }
+                tb_serialNum.Clear();
+            }
         }
     } 
 }

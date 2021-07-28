@@ -2298,8 +2298,6 @@ namespace POS.View
 
         private void Cb_parentItem_KeyUp(object sender, KeyEventArgs e)
         {
-            //ComboBox cbm = sender as ComboBox;
-            //SectionData.searchInComboBox(cbm);
             cb_parentItem.ItemsSource = items.Where(x => x.name.Contains(cb_parentItem.Text));
         }
 
@@ -2324,12 +2322,6 @@ namespace POS.View
             cb_parentItem.ItemsSource = listCa;
             cb_parentItem.SelectedValuePath = "itemId";
             cb_parentItem.DisplayMemberPath = "name";
-
-            //List<Item> itemsList = new List<Item>();
-            //itemsList.AddRange(items.Where(x => x.isActive == tglItemState).ToList());
-            //for (int i = 0; i < itemsList.Count(); i++)
-            //    if (!cb_parentItem.Items.Contains(itemsList[i].parentId))
-            //        cb_parentItem.Items.Add(itemsList[i].parentId);
         }
 
         private void Cb_storageCost_SelectionChanged(object sender, SelectionChangedEventArgs e)
