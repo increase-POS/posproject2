@@ -369,9 +369,9 @@ namespace POS
             else T.Visibility = Visibility.Visible;
         }
 
-        private void BTN_Close_Click(object sender, RoutedEventArgs e)
+        private async void BTN_Close_Click(object sender, RoutedEventArgs e)
         {
-            updateLogninRecord();
+            await updateLogninRecord();
             timer.Stop();
             System.Windows.Application.Current.Shutdown();
         }
@@ -556,7 +556,7 @@ namespace POS
         User userModel = new User();
         UsersLogs userLogsModel = new UsersLogs();
 
-        async void updateLogninRecord()
+        async Task<bool> updateLogninRecord()
         {
             //update lognin record
             UsersLogs userLog = new UsersLogs();
@@ -566,13 +566,15 @@ namespace POS
 
             //update user record
             userLogin.isOnline = 0;
-            userLogin.isActive = 1;
             await userModel.saveUser(userLogin);
+
+
+            return true;
         }
         private async void BTN_logOut_Click(object sender, RoutedEventArgs e)
         {//log out
          //update lognin record
-            updateLogninRecord();
+           await updateLogninRecord();
       
             System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
             Application.Current.Shutdown();
