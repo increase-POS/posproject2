@@ -348,7 +348,8 @@ namespace POS.View
                 items = await packageModel.GetPackages();
 
             else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
-            return items.Where(x => x.type == "p");
+            items = items.Where(x => x.type == "p");
+            return items;
         }
 
         void RefrishItemsDatagrid(IEnumerable<Item> _items)
