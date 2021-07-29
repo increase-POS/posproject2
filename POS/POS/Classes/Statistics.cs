@@ -15,6 +15,14 @@ namespace POS.Classes
 {
     public class Storage
     {
+
+        //storagecost
+        public Nullable<int> storageCostId { get; set; }
+        public string storageCostName { get; set; }
+        public decimal storageCostValue { get; set; }
+
+       
+        //
         public int min { get; set; }
         public int max { get; set; }
 
@@ -116,6 +124,7 @@ namespace POS.Classes
 
     public class ItemTransferInvoice
     {// new properties
+        public Nullable<decimal> subTotal { get; set; }
         public string agentCompany { get; set; }
         public string itemName { get; set; }
         public string unitName { get; set; }
