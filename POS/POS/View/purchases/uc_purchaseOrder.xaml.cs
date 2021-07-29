@@ -502,7 +502,7 @@ namespace POS.View.purchases
             tb_sum.Text = null;
 
             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-            btn_updateVendor.IsEnabled = false;
+            //btn_updateVendor.IsEnabled = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
             refrishBillDetails();
             inputEditable();
@@ -633,7 +633,7 @@ namespace POS.View.purchases
                 tb_note.IsEnabled = false;
                 tb_barcode.IsEnabled = false;
                 btn_save.IsEnabled = true;
-                btn_updateVendor.IsEnabled = false;
+                //btn_updateVendor.IsEnabled = false;
             }
             else if (_InvoiceType == "pd")
             {
@@ -645,7 +645,7 @@ namespace POS.View.purchases
                 tb_note.IsEnabled = true;
                 tb_barcode.IsEnabled = true;
                 btn_save.IsEnabled = true;
-                btn_updateVendor.IsEnabled = true;
+                //btn_updateVendor.IsEnabled = true;
             }
             else if (_InvoiceType == "pw" || _InvoiceType == "p")
             {
@@ -657,7 +657,7 @@ namespace POS.View.purchases
                 tb_note.IsEnabled = false;
                 tb_barcode.IsEnabled = false;
                 btn_save.IsEnabled = false;
-                btn_updateVendor.IsEnabled = false;
+                //btn_updateVendor.IsEnabled = false;
             }
         }
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
@@ -732,8 +732,8 @@ namespace POS.View.purchases
             {
                 cb_vendor.SelectedValue = _SelectedVendor;
             }
-            if (cb_vendor.SelectedIndex != -1)
-                btn_updateVendor.IsEnabled = true;
+            //if (cb_vendor.SelectedIndex != -1)
+            //    btn_updateVendor.IsEnabled = true;
         }
         private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
         {

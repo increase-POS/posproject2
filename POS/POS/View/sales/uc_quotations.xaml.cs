@@ -145,7 +145,7 @@ namespace POS.View.sales
 
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trCustomerHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_desrvedDate, MainWindow.resourcemanager.GetString("trDeservedDateHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_desrvedDate, MainWindow.resourcemanager.GetString("trDeservedDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
@@ -182,7 +182,7 @@ namespace POS.View.sales
             pos = await posModel.getPosById(MainWindow.posID.Value);
             branch = await branchModel.getBranchById((int)pos.branchId);
             #region Style Date
-            SectionData.defaultDatePickerStyle(dp_desrvedDate);
+            //SectionData.defaultDatePickerStyle(dp_desrvedDate);
             #endregion
             if (MainWindow.isInvTax == 1) // tax is on tatal invoice
             {
@@ -481,7 +481,7 @@ namespace POS.View.sales
             tb_name.Clear();
             cb_customer.SelectedIndex = -1;
             cb_customer.SelectedItem = "";
-            dp_desrvedDate.Text = "";
+            //dp_desrvedDate.Text = "";
             tb_note.Clear();
             txt_discount.Text = "";
             billDetails.Clear();
@@ -494,7 +494,7 @@ namespace POS.View.sales
             lst_coupons.Items.Clear();
             tb_discount.Text = "0";
 
-            btn_updateCustomer.IsEnabled = false;
+            //btn_updateCustomer.IsEnabled = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleInvoice");
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
             SectionData.clearValidate(tb_name, p_errorName);
@@ -512,12 +512,12 @@ namespace POS.View.sales
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
                     cb_customer.IsEnabled = true;
                     tb_name.IsEnabled = true;
-                    dp_desrvedDate.IsEnabled = true;
+                    //dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
                     tb_barcode.IsEnabled = true;
                     tb_discount.IsEnabled = true;
                     btn_save.IsEnabled = true;
-                    btn_updateCustomer.IsEnabled = true;
+                    //btn_updateCustomer.IsEnabled = true;
                     tb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
                     break;
@@ -527,12 +527,12 @@ namespace POS.View.sales
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
                     cb_customer.IsEnabled = false;
                     tb_name.IsEnabled = false;
-                    dp_desrvedDate.IsEnabled = false;
+                    //dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     btn_save.IsEnabled = false;
-                    btn_updateCustomer.IsEnabled = false;
+                    //btn_updateCustomer.IsEnabled = false;
                     tb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     break;
@@ -557,7 +557,7 @@ namespace POS.View.sales
             if (cb_customer.SelectedIndex != -1)
                 invoice.agentId = (int)cb_customer.SelectedValue;
 
-            invoice.deservedDate = dp_desrvedDate.SelectedDate;
+            //invoice.deservedDate = dp_desrvedDate.SelectedDate;
             invoice.notes = tb_note.Text;
 
             if (tb_taxValue.Text != "")
@@ -829,7 +829,7 @@ namespace POS.View.sales
                 _Tax = (decimal)invoice.tax;
             tb_name.Text = invoice.name;
             cb_customer.SelectedValue = invoice.agentId;
-            dp_desrvedDate.Text = invoice.deservedDate.ToString();
+            //dp_desrvedDate.Text = invoice.deservedDate.ToString();
             if (invoice.totalNet != null)
                 tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
             tb_taxValue.Text = invoice.tax.ToString();

@@ -150,21 +150,60 @@ namespace POS.View.windows
         }
         private async void getImg(string imageName)
         {
-            byte[] imageBuffer = await docImgModel.downloadImage(imageName); // read this as BLOB from your DB
+            //byte[] imageBuffer = await docImgModel.downloadImage(imageName); // read this as BLOB from your DB
 
-            var bitmapImage = new BitmapImage();
-            if (imageBuffer != null)
+            //var bitmapImage = new BitmapImage();
+            //if (imageBuffer != null)
+            //{
+            //    using (var memoryStream = new MemoryStream(imageBuffer))
+            //    {
+            //        bitmapImage.BeginInit();
+            //        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            //        bitmapImage.StreamSource = memoryStream;
+            //        bitmapImage.EndInit();
+            //    }
+
+            //    img_upload.Background = new ImageBrush(bitmapImage);
+            //}
+
+            try
             {
-                using (var memoryStream = new MemoryStream(imageBuffer))
+                System.Windows.MessageBox.Show("try");
+                if (docImgModel.image.Equals(""))
                 {
-                    bitmapImage.BeginInit();
-                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmapImage.StreamSource = memoryStream;
-                    bitmapImage.EndInit();
+                    SectionData.clearImg(img_upload);
+                    System.Windows.MessageBox.Show("empty");
                 }
+                else
+                {
+                    System.Windows.MessageBox.Show("full");
+                    byte[] imageBuffer = await docImgModel.downloadImage(imageName); // read this as BLOB from your DB
 
-                img_upload.Background = new ImageBrush(bitmapImage);
+                    var bitmapImage = new BitmapImage();
+                    if (imageBuffer != null)
+                    {
+                        System.Windows.MessageBox.Show("not null");
+                        using (var memoryStream = new MemoryStream(imageBuffer))
+                        {
+                            bitmapImage.BeginInit();
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.StreamSource = memoryStream;
+                            bitmapImage.EndInit();
+                        }
+
+                        img_upload.Background = new ImageBrush(bitmapImage);
+                        // configure trmporary path
+                        string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        string tmpPath = System.IO.Path.Combine(dir, Global.TMPAgentsFolder);
+                        tmpPath = System.IO.Path.Combine(tmpPath, docImgModel.image);
+                        openFileDialog.FileName = tmpPath;
+                    }
+                    else
+                    { SectionData.clearImg(img_upload); System.Windows.MessageBox.Show("null"); }
+                }
             }
+            catch { }
+
         }
         // display image in IMG_customer 
         private void Lst_images_SelectionChanged(object sender, SelectionChangedEventArgs e)

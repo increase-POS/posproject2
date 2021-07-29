@@ -44,7 +44,11 @@ namespace POS.View.accounts
             InitializeComponent();
         }
         CashTransfer cashModel = new CashTransfer();
+        Invoice invoiceModel = new Invoice();
+
         CashTransfer cashtrans = new CashTransfer();
+        Invoice invoice = new Invoice();
+
         Bonds bondModel = new Bonds();
         Card cardModel = new Card();
         Agent agentModel = new Agent();
@@ -56,7 +60,11 @@ namespace POS.View.accounts
         IEnumerable<Card> cards;
         IEnumerable<CashTransfer> cashesQuery;
         IEnumerable<CashTransfer> cashesQueryExcel;
+        IEnumerable<Invoice> invoiceQuery;
+        IEnumerable<Invoice> invoiceQueryExcel;
         IEnumerable<CashTransfer> cashes;
+        IEnumerable<Invoice> invoices;
+
         string searchText = "";
         private void Btn_confirm_Click(object sender, RoutedEventArgs e)
         {//confirm
@@ -151,17 +159,21 @@ namespace POS.View.accounts
             cb_state.ItemsSource = statuslist;
             #endregion
 
-            await RefreshCashesList();
+            //await RefreshCashesList();
+            await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
+
         }
         private async void dp_SelectedEndDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            await RefreshCashesList();
+            //await RefreshCashesList();
+            await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
         }
         private async void dp_SelectedStartDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            await RefreshCashesList();
+            //await RefreshCashesList();
+            await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
         }
         private void translate()
@@ -186,11 +198,11 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_state, MainWindow.resourcemanager.GetString("trStateHint"));
 
             //dg_orderAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            dg_orderAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
-            dg_orderAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trSalesMan");
-            dg_orderAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trVendor/Customer");
-            dg_orderAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
-            dg_orderAccounts.Columns[5].Header = MainWindow.resourcemanager.GetString("trState");
+            dg_orderAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
+            dg_orderAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trSalesMan");
+            dg_orderAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trVendor/Customer");
+            dg_orderAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            dg_orderAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trState");
 
             tt_code.Content = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             tt_paymentType.Content = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
@@ -225,7 +237,6 @@ namespace POS.View.accounts
         }
         private void Dg_orderAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
-            
 
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
             SectionData.clearComboBoxValidate(cb_card, p_errorpaymentProcessType);
@@ -236,46 +247,77 @@ namespace POS.View.accounts
 
             if (dg_orderAccounts.SelectedIndex != -1)
             {
-                cashtrans = dg_orderAccounts.SelectedItem as CashTransfer;
+                //cashtrans = dg_orderAccounts.SelectedItem as CashTransfer;
+                invoice = dg_orderAccounts.SelectedItem as Invoice;
                 this.DataContext = cashtrans;
-                if (cashtrans != null)
+                //if (cashtrans != null)
+                //{
+                //    // MessageBox.Show(cashtrans.cashTransId.ToString() + "-" + cashtrans.bondId.ToString());
+
+                //    btn_save.IsEnabled = false;
+
+
+                //    cb_paymentProcessType.SelectedValue = cashtrans.processType;
+
+                //    cb_card.SelectedValue = cashtrans.cardId;
+
+                //}
+
+                if (invoice != null)
                 {
-                    // MessageBox.Show(cashtrans.cashTransId.ToString() + "-" + cashtrans.bondId.ToString());
+                    //btn_save.IsEnabled = false;
 
-                    btn_save.IsEnabled = false;
+                    //cb_paymentProcessType.SelectedValue = invoice.processType;
 
-                   
-                    cb_paymentProcessType.SelectedValue = cashtrans.processType;
-
-                    cb_card.SelectedValue = cashtrans.cardId;
+                    //cb_card.SelectedValue = cashtrans.cardId;
 
                 }
             }
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (cashes is null)
-                await RefreshCashesList();
+         //if (cashes is null)
+         //    await RefreshCashesList();
+         //this.Dispatcher.Invoke(() =>
+         //{
+         //    searchText = tb_search.Text.ToLower();
+         //    cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
+         //    || s.cash.ToString().ToLower().Contains(searchText)
+         //    )
+         //    && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "m")
+         //    && s.transType == "d"
+         //    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+         //    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+         //    );
+
+            //});
+
+            //cashesQueryExcel = cashesQuery;
+            //RefreshCashesView();
+
+            if (invoices is null)
+                await RefreshInvoiceList();
             this.Dispatcher.Invoke(() =>
             {
                 searchText = tb_search.Text.ToLower();
-                cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
-                || s.cash.ToString().ToLower().Contains(searchText)
+                invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
+                //|| s.cash.ToString().ToLower().Contains(searchText)
                 )
-                && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "m")
-                && s.transType == "d"
-                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                //&& (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "m")
+                //&& s.transType == "d"
+                //&& s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                //&& s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
                 );
 
             });
 
-            cashesQueryExcel = cashesQuery;
-            RefreshCashView();
+            invoiceQueryExcel = invoiceQuery;
+            RefreshInvoiceView();
         }
         private async void saveBond(string num, decimal ammount, Nullable<DateTime> date, string type, int? cashId)
         {
-            Bonds bond = new Bonds();
+            Bonds bond =
+                new Bonds();
             bond.number = num;
             bond.amount = ammount;
             bond.deserveDate = date;
@@ -423,19 +465,29 @@ namespace POS.View.accounts
         }
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
-            await RefreshCashesList();
+            //await RefreshCashesList();
+            await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
         }
-        async Task<IEnumerable<CashTransfer>> RefreshCashesList()
+        //async Task<IEnumerable<CashTransfer>> RefreshCashesList()
+        async Task<IEnumerable<Invoice>> RefreshInvoiceList()
         {
-            cashes = await cashModel.GetCashTransferAsync("d", "all");
-            cashes = cashes.Where(x => x.processType != "balance");
-            return cashes;
+            //invoice.getOrdersForPay(int branchId)
+
+            //cashes = await cashModel.GetCashTransferAsync("d", "all");
+            //cashes = cashes.Where(x => x.processType != "balance");
+            //return cashes;
+            invoices = await invoiceModel.getOrdersForPay(MainWindow.branchID.Value);
+            return invoices;
+
         }
-        void RefreshCashView()
+        //void RefreshCashView()
+        void RefreshInvoiceView()
         {
-            dg_orderAccounts.ItemsSource = cashesQuery;
-            txt_count.Text = cashesQuery.Count().ToString();
+            //dg_orderAccounts.ItemsSource = cashesQuery;
+            //txt_count.Text = cashesQuery.Count().ToString();
+            dg_orderAccounts.ItemsSource = invoiceQuery;
+            txt_count.Text = invoiceQuery.Count().ToString();
         }
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
@@ -604,19 +656,22 @@ namespace POS.View.accounts
 
         private async void Cb_salesMan_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select salesman
-            await RefreshCashesList();
+         //await RefreshCashesList();
+            await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
         }
 
         private async void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select agent
-            await RefreshCashesList();
+            //await RefreshCashesList();
+            await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
         }
 
         private async void Cb_state_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select state
-            await RefreshCashesList();
+            //await RefreshCashesList();
+            await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
         }
 

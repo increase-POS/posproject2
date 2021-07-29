@@ -908,7 +908,7 @@ namespace POS.View
             cb_paymentProcessType.SelectedIndex = 0;
             lst_coupons.Items.Clear();
             tb_discount.Text = "0";
-            btn_updateCustomer.IsEnabled = false;
+            //btn_updateCustomer.IsEnabled = false;
             gd_card.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
@@ -1185,7 +1185,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     btn_save.IsEnabled = true;
-                    btn_updateCustomer.IsEnabled = false;
+                    //btn_updateCustomer.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = true;
                     cb_card.IsEnabled = false;
                     cb_company.IsEnabled = false;
@@ -1206,7 +1206,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = true;
                     tb_discount.IsEnabled = true;
                     btn_save.IsEnabled = true;
-                    btn_updateCustomer.IsEnabled = true;
+                    //btn_updateCustomer.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = true;
                     cb_card.IsEnabled = true;
                     cb_company.IsEnabled = true;
@@ -1226,7 +1226,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     btn_save.IsEnabled = false;
-                    btn_updateCustomer.IsEnabled = false;
+                    //btn_updateCustomer.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
                     cb_card.IsEnabled = false;
                     cb_company.IsEnabled = false;
@@ -1246,7 +1246,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     btn_save.IsEnabled = true;
-                    btn_updateCustomer.IsEnabled = false;
+                    //btn_updateCustomer.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
                     cb_card.IsEnabled = false;
                     cb_company.IsEnabled = false;
@@ -1323,8 +1323,8 @@ namespace POS.View
             {
                 cb_customer.SelectedValue = _SelectedCustomer;
             }
-            if (cb_customer.SelectedIndex != -1)
-                btn_updateCustomer.IsEnabled = true;
+            //if (cb_customer.SelectedIndex != -1)
+            //    btn_updateCustomer.IsEnabled = true;
         }
         private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -2260,7 +2260,7 @@ namespace POS.View
             dp_desrvedDate.SelectedDate = null;
             tb_note.Clear();
 
-            btn_updateCustomer.IsEnabled = false;
+            //btn_updateCustomer.IsEnabled = false;
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
         }
 

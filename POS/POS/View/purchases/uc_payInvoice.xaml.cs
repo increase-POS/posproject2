@@ -668,7 +668,7 @@ namespace POS.View
             SectionData.clearValidate(tbStartDate, p_errorDesrvedDate);
             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
 
-            btn_updateVendor.IsEnabled = false;
+            //btn_updateVendor.IsEnabled = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
             refrishBillDetails();
             inputEditable();
@@ -885,7 +885,7 @@ namespace POS.View
                 tb_discount.IsEnabled = false;
                 cb_typeDiscount.IsEnabled = false;
                 btn_save.IsEnabled = true;
-                btn_updateVendor.IsEnabled = false;
+                //btn_updateVendor.IsEnabled = true;
                 tb_invoiceNumber.IsEnabled = false;
                 tb_taxValue.IsEnabled = false;
             }
@@ -904,7 +904,7 @@ namespace POS.View
                 tb_discount.IsEnabled = true;
                 cb_typeDiscount.IsEnabled = true;
                 btn_save.IsEnabled = true;
-                btn_updateVendor.IsEnabled = true;
+                //btn_updateVendor.IsEnabled = true;
                 tb_invoiceNumber.IsEnabled = true;
                 tb_taxValue.IsEnabled = true;
             }
@@ -923,7 +923,7 @@ namespace POS.View
                 tb_discount.IsEnabled = false;
                 cb_typeDiscount.IsEnabled = false;
                 btn_save.IsEnabled = false;
-                btn_updateVendor.IsEnabled = false;
+                //btn_updateVendor.IsEnabled = true;
                 tb_invoiceNumber.IsEnabled = false;
                 tb_taxValue.IsEnabled = false;
             }
@@ -1002,8 +1002,8 @@ namespace POS.View
             {
                 cb_vendor.SelectedValue = _SelectedVendor;
             }
-            if (cb_vendor.SelectedIndex != -1)
-                btn_updateVendor.IsEnabled = true;
+            //if (cb_vendor.SelectedIndex != -1)
+            //    btn_updateVendor.IsEnabled = true;
         }
         private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
         {

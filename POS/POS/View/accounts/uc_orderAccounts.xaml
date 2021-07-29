@@ -206,12 +206,12 @@
                         <converters:depositorNameConverter x:Key="depositorNameConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Width="50" Binding="{Binding Path=isChecked}" IsThreeState="False"/>
+                        <!--<DataGridCheckBoxColumn Width="50" Binding="{Binding Path=isChecked}" IsThreeState="False"/>-->
                         <DataGridTextColumn Width="*"   Header="Invoice Number" Binding="{Binding Path=invNumber}"/>
-                        <DataGridTextColumn Width="*"   Header="sales man" Binding="{Binding Path=test}"/>
+                        <DataGridTextColumn Width="*"   Header="sales man" Binding="{Binding Path=shipUserId}"/>
                         <DataGridTextColumn Width="*"   Header="customer" Binding="{Binding Path=name}"/>
                         <DataGridTextColumn Width="*"  Header="Cash" Binding="{Binding Path=totalNet}"/>
-                        <DataGridTextColumn Width="*"  Header="Status" Binding="{Binding Path=invCase}"/>
+                        <DataGridTextColumn Width="*"  Header="Status" Binding="{Binding Path=status}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>

@@ -1,12 +1,11 @@
-﻿using netoaster;
-using POS.Classes;
+﻿using POS.Classes;
+using netoaster;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,7 +14,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
+using System.Threading;
+using Microsoft.Win32;
+using System.Windows.Resources;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+
+using System.Data;
+using POS.View.windows;
+using POS.View.sectionData.Charts;
+using POS.View.sectionData;
+
 
 namespace POS.View.windows
 {
@@ -32,10 +44,15 @@ namespace POS.View.windows
         public Agent agent = new Agent();
         IEnumerable<Agent> agentsQuery;
         IEnumerable<Agent> agents;
-        byte tgl_vendorState;
-        string searchText = "";
-      
-        
+
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+
+        string imgFileName = "pic/no-image-icon-125x125.png";
+
+        bool isImgPressed = false;
+
+        ImageBrush brush = new ImageBrush();
+
         private void translate()
         {
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
@@ -85,84 +102,79 @@ namespace POS.View.windows
             cb_areaPhone.SelectedIndex = 0;
             cb_areaPhoneLocal.SelectedIndex = 0;
 
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorEmail.Visibility = Visibility.Collapsed;
-            p_errorMobile.Visibility = Visibility.Collapsed;
+            SectionData.clearImg(img_vendor);
 
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
+            SectionData.clearValidate(tb_name , p_errorName);
+            SectionData.clearValidate(tb_email , p_errorEmail);
+            SectionData.clearValidate(tb_mobile , p_errorMobile);
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
+
+            #region translate
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_wdVendor.FlowDirection = FlowDirection.LeftToRight; }
             else
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_wdVendor.FlowDirection = FlowDirection.RightToLeft; }
 
             translate();
-             agents = await agentModel.GetAgentsAsync("v");
-            agent = agents.ToList().Find(c => c.agentId == agent.agentId);
+            #endregion
+
+            agent = await agentModel.getAgentById(agent.agentId);
             if (agent != null)
             {
                 this.DataContext = agent;
 
-                //mobile
-                if ((agent.mobile != null) && (agent.mobile.ToArray().Length > 4))
-                {
-                    string area = new string(agent.mobile.Take(4).ToArray());
-                    var mobile = agent.mobile.Substring(4, agent.mobile.Length - 4);
+                tb_code.Text = agent.code;
 
-                    cb_areaMobile.Text = area;
-                    tb_mobile.Text = mobile.ToString();
-                }
-                else
-                {
-                    cb_areaMobile.SelectedIndex = -1;
-                    tb_mobile.Clear();
-                }
-                //phone
-                if ((agent.phone != null) && (agent.phone.ToArray().Length > 7))
-                {
-                    string area = new string(agent.phone.Take(4).ToArray());
-                    string areaLocal = new string(agent.phone.Substring(4, agent.phone.Length - 4).Take(3).ToArray());
+                SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
 
-                    var phone = agent.phone.Substring(7, agent.phone.Length - 7);
+                SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
 
-                    cb_areaPhone.Text = area;
-                    cb_areaPhoneLocal.Text = areaLocal;
-                    tb_phone.Text = phone.ToString();
-                }
-                else
-                {
-                    cb_areaPhone.SelectedIndex = -1;
-                    cb_areaPhoneLocal.SelectedIndex = -1;
-                    tb_phone.Clear();
-                }
-                //fax
-                if ((agent.fax != null) && (agent.fax.ToArray().Length > 7))
-                {
-                    string area = new string(agent.fax.Take(4).ToArray());
-                    string areaLocal = new string(agent.fax.Substring(4, agent.fax.Length - 4).Take(3).ToArray());
+                SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
 
-                    var fax = agent.fax.Substring(7, agent.fax.Length - 7);
-
-                    cb_areaFax.Text = area;
-                    cb_areaFaxLocal.Text = areaLocal;
-                    tb_fax.Text = fax.ToString();
-                }
-                else
-                {
-                    cb_areaFax.SelectedIndex = -1;
-                    cb_areaFaxLocal.SelectedIndex = -1;
-                    tb_fax.Clear();
-                }
+                await getImg();
             }
 
                 Keyboard.Focus(tb_name);
+        }
+
+        private async Task getImg()
+        {
+            try
+            {
+                if (agent.image.Equals(""))
+                {
+                    SectionData.clearImg(img_vendor);
+                }
+                else
+                {
+                    byte[] imageBuffer = await agentModel.downloadImage(agent.image); // read this as BLOB from your DB
+
+                    var bitmapImage = new BitmapImage();
+                    if (imageBuffer != null)
+                    {
+                        using (var memoryStream = new MemoryStream(imageBuffer))
+                        {
+                            bitmapImage.BeginInit();
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.StreamSource = memoryStream;
+                            bitmapImage.EndInit();
+                        }
+
+                        img_vendor.Background = new ImageBrush(bitmapImage);
+                        // configure trmporary path
+                        string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        string tmpPath = System.IO.Path.Combine(dir, Global.TMPAgentsFolder);
+                        tmpPath = System.IO.Path.Combine(tmpPath, agent.image);
+                        openFileDialog.FileName = tmpPath;
+                    }
+                    else
+                        SectionData.clearImg(img_vendor);
+                }
+            }
+            catch { }
         }
 
 
@@ -293,86 +305,76 @@ namespace POS.View.windows
             }
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
-        {
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-            }
-            else
-            {
-                p_errorName.Visibility = Visibility.Collapsed;
-            }
-            if (tb_mobile.Text.Equals(""))
-            {
-                p_errorMobile.Visibility = Visibility.Visible;
-                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
-            }
-            else
-            {
-                p_errorMobile.Visibility = Visibility.Collapsed;
+        {//save
+         //chk empty name
+            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            //chk empty mobile
+            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            //validate email
+            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
 
-            }
-            if (!tb_email.Text.Equals(""))
-            {
-                if (!ValidatorExtensions.IsValid(tb_email.Text))
-                {
-                    p_errorEmail.Visibility = Visibility.Visible;
-                    tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
-                }
-                else
-                {
-                    p_errorEmail.Visibility = Visibility.Collapsed;
-                }
-            }
             string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
-
+            if (!tb_phone.Text.Equals("")) 
+                phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
             string faxStr = "";
-            if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + cb_areaFaxLocal.Text + tb_fax.Text;
-
+            if (!tb_fax.Text.Equals("")) 
+                faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
             bool emailError = false;
             if (!tb_email.Text.Equals(""))
                 if (!ValidatorExtensions.IsValid(tb_email.Text))
                     emailError = true;
 
             decimal maxDeserveValue = 0;
-            //if (!tb_upperLimit.Text.Equals(""))
-            //    maxDeserveValue = decimal.Parse(tb_upperLimit.Text);
 
             if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
             {
                 if (emailError)
-                    //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
                 else
                 {
+                    SectionData.genRandomCode("v");
+                    tb_code.Text = SectionData.code;
+
                     agent.name = tb_name.Text;
                     agent.code = tb_code.Text;
                     agent.company = tb_company.Text;
                     agent.address = tb_address.Text;
                     agent.email = tb_email.Text;
                     agent.phone = phoneStr;
-                    agent.mobile = cb_areaMobile.Text + tb_mobile.Text;
+                    agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
                     agent.image = "";
+                    agent.type = "v";
+                    agent.accType = "";
+                    agent.balance = 0;
+                    agent.createUserId = MainWindow.userID;
                     agent.updateUserId = MainWindow.userID;
                     agent.notes = tb_notes.Text;
+                    agent.isActive = 1;
                     agent.fax = faxStr;
                     agent.maxDeserve = maxDeserveValue;
 
                     string s = await agentModel.saveAgent(agent);
 
-                    if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    if (!s.Equals("0"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                        this.Close();
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                    if (isImgPressed)
+                    {
+                        int agentId = int.Parse(s);
+                        string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                        agent.image = b;
+                        isImgPressed = false;
+                        if (b.Equals(""))
+                            MessageBox.Show("حدث خطأ في تحميل الصورة");
+                    }
 
                 }
             }
-            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdateValidate"));
-            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdateValidate"), animation: ToasterAnimation.FadeIn);
-
-            agents = await agentModel.GetAgentsAsync("v");
         }
 
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
@@ -390,6 +392,19 @@ namespace POS.View.windows
             {
 
             }
+        }
+
+        private void Img_vendor_Click(object sender, RoutedEventArgs e)
+        {//select image
+            isImgPressed = true;
+            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                img_vendor.Background = brush;
+                imgFileName = openFileDialog.FileName;
+            }
+
         }
     }
 }

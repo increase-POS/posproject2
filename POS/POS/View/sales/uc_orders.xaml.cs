@@ -514,7 +514,7 @@ namespace POS.View.sales
             lst_coupons.Items.Clear();
             tb_discount.Text = "0";
 
-            btn_updateCustomer.IsEnabled = false;
+            //btn_updateCustomer.IsEnabled = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleInvoice");
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
             refrishBillDetails();
@@ -537,7 +537,7 @@ namespace POS.View.sales
                     tb_barcode.IsEnabled = true;
                     tb_discount.IsEnabled = true;
                     btn_save.IsEnabled = true;
-                    btn_updateCustomer.IsEnabled = true;
+                    //btn_updateCustomer.IsEnabled = true;
                     tb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
                     break;
@@ -553,7 +553,7 @@ namespace POS.View.sales
                     tb_barcode.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     btn_save.IsEnabled = false;
-                    btn_updateCustomer.IsEnabled = false;
+                    //btn_updateCustomer.IsEnabled = false;
                     tb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     break;
@@ -569,7 +569,7 @@ namespace POS.View.sales
                     tb_barcode.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     btn_save.IsEnabled = true;
-                    btn_updateCustomer.IsEnabled = false;
+                    //btn_updateCustomer.IsEnabled = false;
                     tb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     break;
@@ -1201,8 +1201,8 @@ namespace POS.View.sales
             {
                 cb_customer.SelectedValue = _SelectedCustomer;
             }
-            if (cb_customer.SelectedIndex != -1)
-                btn_updateCustomer.IsEnabled = true;
+            //if (cb_customer.SelectedIndex != -1)
+            //    btn_updateCustomer.IsEnabled = true;
         }
         private void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

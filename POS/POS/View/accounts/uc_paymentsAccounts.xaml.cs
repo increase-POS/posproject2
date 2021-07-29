@@ -466,14 +466,14 @@ namespace POS.View.accounts
                             s1 = await cashModel.PayListOfInvoices(cash.agentId.Value, invoicesLst, "pay", cash);
                         else
                             s1 = await cashModel.PayByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "pay", cash);
-                        MessageBox.Show(s1);
                     }
                     else
                         s = await cashModel.Save(cash);
 
                     if ((!s.Equals("0")) || (!s1.Equals("")) || (s1.Equals("-1")))
                     {
-                        calcBalance(cash.cash.Value, recipient, agentid);
+                        if(cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
+                            calcBalance(cash.cash.Value, recipient, agentid);
 
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         Btn_clear_Click(null, null);
