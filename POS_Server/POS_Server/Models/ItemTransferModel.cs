@@ -25,6 +25,9 @@ namespace POS_Server.Models
         public string unitName { get; set; }
         public Nullable<int> unitId { get; set; }
         public string barcode { get; set; }
+        public string itemSerial { get; set; }
+        public string itemType { get; set; }
+
 
     }
 }

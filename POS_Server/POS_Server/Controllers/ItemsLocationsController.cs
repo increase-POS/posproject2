@@ -48,7 +48,7 @@ namespace POS_Server.Controllers
                                             note = b.note,
                                             quantity = b.quantity,
                                             startDate = b.startDate,
-                                            storeCost = b.storeCost,
+                                       
                                             updateDate = b.updateDate,
                                             updateUserId = b.updateUserId,
                                             itemName = i.name,
@@ -63,6 +63,35 @@ namespace POS_Server.Controllers
                         return NotFound();
                     else
                         return Ok(docImageList);
+                }
+            }
+            //else
+            return NotFound();
+        }
+        [HttpGet]
+        [Route("getAmountByItemLocId")]
+        public IHttpActionResult getAmountByItemLocId(int itemLocId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var itemLoc = entity.itemsLocations.Find(itemLocId);
+
+                    if (itemLoc == null)
+                        return NotFound();
+                    else
+                        return Ok(itemLoc.quantity);
                 }
             }
             //else
@@ -104,7 +133,7 @@ namespace POS_Server.Controllers
                                             note = b.note,
                                             quantity = b.quantity,
                                             startDate = b.startDate,
-                                            storeCost = b.storeCost,
+                                          
                                             updateDate = b.updateDate,
                                             updateUserId = b.updateUserId,
                                             itemName = i.name,
@@ -166,7 +195,7 @@ namespace POS_Server.Controllers
                                             note = b.note,
                                             quantity = b.quantity,
                                             startDate = b.startDate,
-                                            storeCost = b.storeCost,
+                                          
                                             updateDate = b.updateDate,
                                             updateUserId = b.updateUserId,
                                             itemName = i.name,
@@ -218,7 +247,7 @@ namespace POS_Server.Controllers
                             b.note,
                             b.quantity,
                             b.startDate,
-                            b.storeCost,
+                        
                             b.updateDate,
                             b.updateUserId,
                         })
@@ -287,7 +316,7 @@ namespace POS_Server.Controllers
                             item.startDate = itemLoc.startDate;
                             item.endDate = itemLoc.endDate;
                             item.note = itemLoc.note;
-                            item.storeCost = itemLoc.storeCost;
+                      
                             item.updateDate = DateTime.Now;
                             item.updateUserId = itemLoc.updateUserId;
                         }
@@ -861,7 +890,7 @@ namespace POS_Server.Controllers
                                             note = b.note,
                                             quantity = b.quantity,
                                             startDate = b.startDate,
-                                            storeCost = b.storeCost,
+                                       
                                             updateDate = b.updateDate,
                                             updateUserId = b.updateUserId,
                                             itemName = i.name,

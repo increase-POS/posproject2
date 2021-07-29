@@ -54,8 +54,10 @@ namespace POS_Server.Controllers
                                             itemUnitId = u.itemUnitId,
                                             price = t.price,
                                             unitName = un.name,
-                                            unitId=un.unitId,
-                                            barcode=u.barcode,
+                                            unitId = un.unitId,
+                                            barcode = u.barcode,
+                                            itemSerial = t.itemSerial,
+                                            itemType = i.type,
                                         })
                                         .ToList();
                     if (transferList == null)

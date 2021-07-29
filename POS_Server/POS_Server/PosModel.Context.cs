@@ -47,7 +47,6 @@ namespace POS_Server
         public virtual DbSet<Inventory> Inventory { get; set; }
         public virtual DbSet<inventoryItemLocation> inventoryItemLocation { get; set; }
         public virtual DbSet<invoices> invoices { get; set; }
-        public virtual DbSet<invoicesOrders> invoicesOrders { get; set; }
         public virtual DbSet<invoiceStatus> invoiceStatus { get; set; }
         public virtual DbSet<items> items { get; set; }
         public virtual DbSet<itemsLocations> itemsLocations { get; set; }
@@ -63,8 +62,6 @@ namespace POS_Server
         public virtual DbSet<memberships> memberships { get; set; }
         public virtual DbSet<objects> objects { get; set; }
         public virtual DbSet<offers> offers { get; set; }
-        public virtual DbSet<orders> orders { get; set; }
-        public virtual DbSet<orderscontents> orderscontents { get; set; }
         public virtual DbSet<packages> packages { get; set; }
         public virtual DbSet<Points> Points { get; set; }
         public virtual DbSet<pos> pos { get; set; }
@@ -77,13 +74,13 @@ namespace POS_Server
         public virtual DbSet<setting> setting { get; set; }
         public virtual DbSet<setValues> setValues { get; set; }
         public virtual DbSet<shippingCompanies> shippingCompanies { get; set; }
+        public virtual DbSet<storageCost> storageCost { get; set; }
         public virtual DbSet<subscriptionFees> subscriptionFees { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<sysEmails> sysEmails { get; set; }
         public virtual DbSet<units> units { get; set; }
         public virtual DbSet<users> users { get; set; }
         public virtual DbSet<userSetValues> userSetValues { get; set; }
         public virtual DbSet<usersLogs> usersLogs { get; set; }
-        public virtual DbSet<storageCost> storageCost { get; set; }
-        public virtual DbSet<sysEmails> sysEmails { get; set; }
     }
 }

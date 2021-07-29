@@ -126,9 +126,7 @@ namespace POS_Server.Controllers
                      .ToList();
 
                     unitsIds = new List<int>();
-                    // unitsIds.Add(categoryId);
 
-                    // get items
                     var result = Recursive(unitsList, unitId);
 
                     var units = (from u in entity.units
@@ -168,8 +166,11 @@ namespace POS_Server.Controllers
 
             foreach (var t in unitsList.Where(item => item.subUnitId == smallLevelid))
             {
-                unitsIds.Add(t.unitId.Value);
-                inner.Add(t);
+                if (t.unitId.Value != smallLevelid)
+                {
+                    unitsIds.Add(t.unitId.Value);
+                    inner.Add(t);
+                }
                 if (t.unitId.Value == smallLevelid)
                     return inner;
                 inner = inner.Union(Recursive(unitsList, t.unitId.Value)).ToList();

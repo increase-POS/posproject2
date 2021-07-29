@@ -297,7 +297,6 @@ D:\NPOS_Server\POS_Server\bin\System.Web.WebPages.Deployment.xml
 D:\NPOS_Server\POS_Server\bin\System.Web.WebPages.Razor.xml
 D:\NPOS_Server\POS_Server\bin\Antlr3.Runtime.pdb
 D:\NPOS_Server\POS_Server\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\NPOS_Server\POS_Server\obj\Release\POS_Server.csprojAssemblyReference.cache
 D:\NPOS_Server\POS_Server\obj\Release\POS_Server.csproj.CoreCompileInputs.cache
 D:\NPOS_Server\POS_Server\obj\Release\POS_Server.csproj.CopyComplete
 D:\NPOS_Server\POS_Server\obj\Release\POS_Server.dll
@@ -406,7 +405,6 @@ D:\Project\ser\POS_Server\POS_Server\bin\System.Web.WebPages.Deployment.xml
 D:\Project\ser\POS_Server\POS_Server\bin\System.Web.WebPages.Razor.xml
 D:\Project\ser\POS_Server\POS_Server\bin\Antlr3.Runtime.pdb
 D:\Project\ser\POS_Server\POS_Server\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\Project\ser\POS_Server\POS_Server\obj\Release\POS_Server.csprojAssemblyReference.cache
 D:\Project\ser\POS_Server\POS_Server\obj\Release\POS_Server.csproj.CoreCompileInputs.cache
 D:\Project\ser\POS_Server\POS_Server\obj\Release\POS_Server.csproj.CopyComplete
 D:\Project\ser\POS_Server\POS_Server\obj\Release\POS_Server.dll
@@ -522,3 +520,6 @@ F:\increase\sales\POS_Server\POS_Server\obj\Release\POS_Server.dll
 F:\increase\sales\POS_Server\POS_Server\obj\Release\POS_Server.pdb
 D:\Project\ser\POS_Server\POS_Server\bin\LinqKit.dll
 D:\Project\ser\POS_Server\POS_Server\bin\LinqKit.xml
+D:\NPOS_Server\POS_Server\bin\LinqKit.dll
+D:\NPOS_Server\POS_Server\bin\LinqKit.xml
+D:\NPOS_Server\POS_Server\obj\Release\POS_Server.csprojAssemblyReference.cache

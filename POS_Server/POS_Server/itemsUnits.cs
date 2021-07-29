@@ -47,6 +47,7 @@ namespace POS_Server
         public virtual ICollection<itemsOffers> itemsOffers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsTransfer> itemsTransfer { get; set; }
+        public virtual storageCost storageCost { get; set; }
         public virtual units units { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
@@ -54,6 +55,5 @@ namespace POS_Server
         public virtual ICollection<packages> packages { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<packages> packages1 { get; set; }
-        public virtual storageCost storageCost { get; set; }
     }
 }

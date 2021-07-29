@@ -31,7 +31,6 @@ namespace POS_Server
         public Nullable<System.DateTime> endDate { get; set; }
         public Nullable<int> itemUnitId { get; set; }
         public string note { get; set; }
-        public Nullable<decimal> storeCost { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<inventoryItemLocation> inventoryItemLocation { get; set; }

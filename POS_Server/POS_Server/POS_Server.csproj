@@ -321,9 +321,6 @@
     <Compile Include="invoices.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="invoicesOrders.cs">
-      <DependentUpon>PosModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="invoiceStatus.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
@@ -413,12 +410,6 @@
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="offers.cs">
-      <DependentUpon>PosModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="orders.cs">
-      <DependentUpon>PosModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="orderscontents.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="packages.cs">

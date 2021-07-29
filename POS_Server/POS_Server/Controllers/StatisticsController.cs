@@ -494,7 +494,7 @@ else
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()                                 
-                                    where (I.invType == "p" || I.invType == "pb")
+                                    where (I.invType == "p" || I.invType == "pw" || I.invType == "pb")
                                 
                                     select new
                                     {
@@ -542,7 +542,7 @@ ITbarcode=IU.barcode,
                                         I.updateDate,
                                         I.updateUserId,
                                         I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                        discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
                                         I.discountType,
                                         I.tax,
                                         I.name,
@@ -663,7 +663,7 @@ ITbarcode
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "p" || I.invType == "pb")
+                                    where (I.invType == "p" || I.invType == "pw" || I.invType == "pb")
 
                                     select new
                                     {
@@ -695,7 +695,7 @@ ITbarcode
                                         I.tax,
                                         I.name,
                                         I.isApproved,
-                                        discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),  //
+                                        discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),  //
                                         I.branchCreatorId,
                                         branchCreatorName = JBCC.name,
                                         //
@@ -707,6 +707,7 @@ ITbarcode
                                         agentName = JAA.name,
                                         agentCode = JAA.code,
                                         agentType = JAA.type,
+                                      
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
                                         cUserAccName = JUU.username,
@@ -2118,8 +2119,7 @@ notes
         // التخزين
         #region storage
 
-
-            // عرض الاصناف واماكن تخزينها
+        // عرض الاصناف واماكن تخزينها
         [HttpGet]
         [Route("GetStorage")]
         public IHttpActionResult GetStorage()
@@ -2139,18 +2139,18 @@ notes
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from L in entity.locations
-                                  //  from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+                                        //  from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
 
-                                  
+
                                     join IUL in entity.itemsLocations on L.locationId equals IUL.locationId
                                     join IU in entity.itemsUnits on IUL.itemUnitId equals IU.itemUnitId
 
-                                  //  join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                                    //  join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
                                     //join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
                                     join ITEM in entity.items on IU.itemId equals ITEM.itemId
                                     join UNIT in entity.units on IU.unitId equals UNIT.unitId
-                                     join S in entity.sections on L.sectionId equals S.sectionId into JS
-                                     join B in entity.branches on L.branchId equals B.branchId into JB
+                                    join S in entity.sections on L.sectionId equals S.sectionId into JS
+                                    join B in entity.branches on L.branchId equals B.branchId into JB
 
 
                                     join UPUSR in entity.users on IUL.updateUserId equals UPUSR.userId into JUPUS
@@ -2162,33 +2162,33 @@ notes
                                     from JSS in JS.DefaultIfEmpty()
                                     from JUU in JU.DefaultIfEmpty()
                                     from JUPUSS in JUPUS.DefaultIfEmpty()
-                               
-                                 
+
+
 
                                     select new
                                     {
                                         // item unit
-                                       itemName = ITEM.name,
-                                       ITEM.min,
-                                       ITEM.max,
-                                       ITEM.minUnitId,
-                                       ITEM.maxUnitId,
-                                        minUnitName=entity.units.Where(x=>x.unitId==ITEM.minUnitId).FirstOrDefault().name, 
-                                        maxUnitName= entity.units.Where(x => x.unitId == ITEM.maxUnitId).FirstOrDefault().name,
-                                        unitName = UNIT.name,                                    
-                                       IU.itemUnitId,
+                                        itemName = ITEM.name,
+                                        ITEM.min,
+                                        ITEM.max,
+                                        ITEM.minUnitId,
+                                        ITEM.maxUnitId,
+                                        minUnitName = entity.units.Where(x => x.unitId == ITEM.minUnitId).FirstOrDefault().name,
+                                        maxUnitName = entity.units.Where(x => x.unitId == ITEM.maxUnitId).FirstOrDefault().name,
+                                        unitName = UNIT.name,
+                                        IU.itemUnitId,
 
-                                       IU.itemId,
+                                        IU.itemId,
                                         IU.unitId,
-                                        
-                                      IU.barcode,
-                                      //item location
-                                       CreateuserName = JUU.name,
-                                       CreateuserLName = JUU.lastname,
-                                       CreateuserAccName = JUU.username,
-                                       UuserName = JUPUSS.name,
-                                       UuserLName = JUPUSS.lastname,
-                                       UuserAccName = JUPUSS.username,
+
+                                        IU.barcode,
+                                        //item location
+                                        CreateuserName = JUU.name,
+                                        CreateuserLName = JUU.lastname,
+                                        CreateuserAccName = JUU.username,
+                                        UuserName = JUPUSS.name,
+                                        UuserLName = JUPUSS.lastname,
+                                        UuserAccName = JUPUSS.username,
 
                                         //
                                         branchName = JBB.name,
@@ -2204,7 +2204,7 @@ notes
                                         IUL.endDate,
 
                                         IULnote = IUL.note,
-                                        IUL.storeCost,
+                                        IU.storageCostId,
 
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
@@ -2213,32 +2213,32 @@ notes
                                         uuserLast = JUPUSS.lastname,
                                         uUserAccName = JUPUSS.username,
                                         // Location
-                                         L.x,
-                                         L.y,
-                                         L.z,
+                                        L.x,
+                                        L.y,
+                                        L.z,
 
-                                        LocisActive=  L.isActive,
-                                         L.sectionId,
-                                        Locnote= L.note,
-                                         L.branchId,
-                                        LocisFreeZone=L.isFreeZone,
+                                        LocisActive = L.isActive,
+                                        L.sectionId,
+                                        Locnote = L.note,
+                                        L.branchId,
+                                        LocisFreeZone = L.isFreeZone,
 
-                                    
+
                                         // section
-                                       
-                                       Secname= JSS.name,
-                                        SecisActive= JSS.isActive,
-                                        Secnote=  JSS.note,
-                                        SecisFreeZone=JSS.isFreeZone,
 
-       
-        //username
+                                        Secname = JSS.name,
+                                        SecisActive = JSS.isActive,
+                                        Secnote = JSS.note,
+                                        SecisFreeZone = JSS.isFreeZone,
 
-        //  I.invoiceId,
-        //    JBB.name
-    }).ToList();
 
-       
+                                        //username
+
+                                        //  I.invoiceId,
+                                        //    JBB.name
+                                    }).ToList();
+
+
 
 
 

@@ -307,6 +307,7 @@ namespace POS_Server.Controllers
                             newObject.balance = 0;
                             newObject.balanceType = 0;
                             tmpUser= unitEntity.Add(newObject);
+                            entity.SaveChanges();
                         }
                         else
                         {
@@ -328,9 +329,10 @@ namespace POS_Server.Controllers
                             tmpUser.isActive = newObject.isActive;
                             tmpUser.balance = newObject.balance ;
                             tmpUser.balanceType = newObject.balanceType;
-                            
+                            tmpUser.isOnline = newObject.isOnline;
+                            entity.SaveChanges();
                         }
-                        entity.SaveChanges();
+                  
                     }
                 }
                 catch

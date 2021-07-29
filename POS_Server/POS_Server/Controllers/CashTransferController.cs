@@ -1147,22 +1147,26 @@ namespace POS_Server.Controllers
 
             if (valid)
             {
-                string[] types = { "pw", "pi", "sb" };
+                List<string> typesList = new List<string>();
                 string cashIds = "";
                 switch (payType)
                 {
                     case "pay"://get pw,pi,sb invoices
-                        types = new string[] { "pw", "pi", "sb" };
+ 
+                        typesList.Add("pw");
+                        typesList.Add("p");
+                        typesList.Add("sb");
                         break;
                     case "feed": //get si, pb
-                        types = new string[] { "pb", "si" };
-                        break;
+   
+                        typesList.Add("pb");
+                        typesList.Add("s");
+                        break;          
                 }
                 cashTransfer cashTr = JsonConvert.DeserializeObject<cashTransfer>(cashTransfer, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    agents agent = entity.agents.Find(agentId);
-                    var invList = (from b in entity.invoices.Where(x => x.agentId == agentId && types.ToList().Contains(x.invType) && x.deserved > 0)
+                    var invList = (from b in entity.invoices.Where(x => x.agentId == agentId && typesList.Contains(x.invType) && x.deserved > 0)
                                    select new InvoiceModel()
                                    {
                                        invoiceId = b.invoiceId,
@@ -1196,111 +1200,252 @@ namespace POS_Server.Controllers
                                        shipUserId = b.shipUserId,
                                    }).ToList().OrderBy(b => b.deservedDate);
 
-                    switch (payType)
-                    {
-                        case "pay"://get pw,pi,sb invoices
-                            foreach (InvoiceModel inv in invList)
-                            {
-                                decimal paid = 0;
-                                cashTransfer ct;
-                                var invObj = entity.invoices.Find(inv.invoiceId);
-                                cashTr.invId = inv.invoiceId;
-                                if (amount >= inv.deserved)
-                                {                                  
-                                    paid = (decimal)inv.deserved;
-                                    invObj.paid = invObj.paid + inv.deserved;
-                                    invObj.deserved = 0;
-                                    amount -= (decimal)inv.deserved;
-                                }
-                                else
-                                {
-                                    paid = amount;
-                                    invObj.paid = invObj.paid + amount;
-                                    invObj.deserved -= amount;
-                                    amount = 0;
-                                }
-                                cashTr.cash = paid;
-                                cashTr.createDate = DateTime.Now;
-                                cashTr.updateDate = DateTime.Now;
-                                cashTr.updateUserId = cashTr.createUserId;
-                               ct = entity.cashTransfer.Add(cashTr);
-                                cashIds += ct.cashTransId + ",";
-                                // increase agent balance
-                                if (agent.balanceType == 1)
-                                {
-                                    if (paid <= (decimal)agent.balance)
+                    cashTransfer ct;
+                    agents agent;
+                    if (invList.ToList().Count > 0)
+                    {     
+                        switch (payType)
+                        {
+                            #region payments
+                            case "pay"://get pw,p,sb invoices
+                                
+                                foreach (InvoiceModel inv in invList)
+                                {                               
+                                    decimal paid = 0;
+                                     agent= entity.agents.Find(agentId);
+                                    decimal agentBalance = (decimal)agent.balance;
+                                    var invObj = entity.invoices.Find(inv.invoiceId);
+                                    cashTr.invId = inv.invoiceId;
+                                    if (amount >= inv.deserved)
                                     {
-                                        agent.balance = agent.balance - paid;
+                                        paid = (decimal)inv.deserved;
+                                        invObj.paid += inv.deserved;
+                                        invObj.deserved = 0;
+                                        amount -= (decimal)inv.deserved;
                                     }
                                     else
                                     {
-                                        agent.balance = paid - agent.balance;
-                                        agent.balanceType = 0;
+                                        paid = amount;
+                                        invObj.paid = invObj.paid + amount;
+                                        invObj.deserved -= amount;
+                                        amount = 0;
                                     }
+                                    cashTr.cash = paid;
+                                    cashTr.createDate = DateTime.Now;
+                                    cashTr.updateDate = DateTime.Now;
+                                    cashTr.updateUserId = cashTr.createUserId;
+                                    ct = entity.cashTransfer.Add(cashTr);
+                                   
+                                    // increase agent balance
+                                    if (agent.balanceType == 1)
+                                    {
+                                        if (paid <= (decimal)agent.balance)
+                                        {
+                                            agent.balance = agentBalance - paid;
+                                        }
+                                        else
+                                        {
+                                            agent.balance = paid - agentBalance;
+                                            agent.balanceType = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        agent.balance = agentBalance + paid;
+                                    }
+                                   
+                                    entity.SaveChanges();
+                                    cashIds += ct.cashTransId + ",";
+                                    if (amount == 0)
+                                        break;
                                 }
-                                else if (agent.balanceType == 0)
+                                if(amount > 0) // save remain amount
                                 {
-                                    agent.balance += paid;
-                                }
-                                if (amount == 0)
-                                    break;
-                            }
-                            entity.SaveChanges();
-                            break;
-                        case "feed": //get si, pb
-                            foreach (InvoiceModel inv in invList)
-                            {
-                                decimal paid = 0;
-                                cashTransfer ct;
-                                var invObj = entity.invoices.Find(inv.invoiceId);
-                                cashTr.invId = inv.invoiceId;
-                                if (amount >= inv.deserved)
-                                {
-                                    paid = (decimal)inv.deserved;
-                                    invObj.paid = invObj.paid + inv.deserved;
-                                    invObj.deserved = 0;
-                                    amount -= (decimal)inv.deserved;
-                                }
-                                else
-                                {
-                                    paid = amount;
-                                    invObj.paid = invObj.paid + amount;
-                                    invObj.deserved -= amount;
-                                    amount = 0;
-                                }
-                                cashTr.cash = paid;
-                                cashTr.createDate = DateTime.Now;
-                                cashTr.updateDate = DateTime.Now;
-                                cashTr.updateUserId = cashTr.createUserId;
-                               ct = entity.cashTransfer.Add(cashTr);
+                                    agent = entity.agents.Find(agentId);
+                                    decimal agentBalance = (decimal) agent.balance;
+                                    cashTr.cash = amount;
+                                    cashTr.invId = null;
+                                    cashTr.createDate = DateTime.Now;
+                                    cashTr.updateDate = DateTime.Now;
+                                    cashTr.updateUserId = cashTr.createUserId;
+                                    ct = entity.cashTransfer.Add(cashTr);
 
-                                cashIds += ct.cashTransId + ",";
-                                // decrease agent balance
-                                if (agent.balanceType == 0)
-                                {
-                                    if (paid <= (decimal)agent.balance)
+                                    // increase agent balance
+                                    if (agent.balanceType == 1)
                                     {
-                                        agent.balance = agent.balance - paid;
+                                        if (amount <= (decimal)agent.balance)
+                                        {
+                                            agent.balance = agentBalance -  amount;
+                                        }
+                                        else
+                                        {
+                                            agent.balance = amount - agentBalance;
+                                            agent.balanceType = 0;
+                                        }
                                     }
                                     else
                                     {
-                                        agent.balance = paid - agent.balance;
-                                        agent.balanceType = 1;
+                                        agent.balance = agentBalance + amount;
                                     }
+                                    entity.SaveChanges();
                                 }
-                                else if (agent.balanceType == 1)
+                                break;
+                            #endregion
+                            #region feed
+                            case "feed": //get s, pb
+                                foreach (InvoiceModel inv in invList)
                                 {
-                                    agent.balance += paid;
+                                     agent = entity.agents.Find(agentId);
+                                    
+                                    decimal paid = 0;
+                                    var invObj = entity.invoices.Find(inv.invoiceId);
+                                    cashTr.invId = inv.invoiceId;
+                                    if (amount >= inv.deserved)
+                                    {
+                                        paid = (decimal)inv.deserved;
+                                        invObj.paid = invObj.paid + inv.deserved;
+                                        invObj.deserved = 0;
+                                        amount -= (decimal)inv.deserved;
+                                    }
+                                    else
+                                    {
+                                        paid = amount;
+                                        invObj.paid = invObj.paid + amount;
+                                        invObj.deserved -= amount;
+                                        amount = 0;
+                                    }
+                                    cashTr.cash = paid;
+                                    cashTr.createDate = DateTime.Now;
+                                    cashTr.updateDate = DateTime.Now;
+                                    cashTr.updateUserId = cashTr.createUserId;
+                                    ct = entity.cashTransfer.Add(cashTr);
+
+                                    // decrease agent balance
+                                    if (agent.balanceType == 0)
+                                    {
+                                        if (paid <= (decimal)agent.balance)
+                                        {
+                                            agent.balance -= paid;
+                                        }
+                                        else
+                                        {
+                                            agent.balance = paid - agent.balance;
+                                            agent.balanceType = 1;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        agent.balance += paid;
+                                    }
+                                   
+                                    entity.SaveChanges();
+                                    cashIds += ct.cashTransId + ",";
+                                    if (amount == 0)
+                                        break;
                                 }
-                                if (amount == 0)
+                                if (amount > 0) // save remain amount
+                                {
+                                   agent = entity.agents.Find(agentId);
+
+                                    cashTr.cash = amount;
+                                    cashTr.invId = null;
+                                    cashTr.createDate = DateTime.Now;
+                                    cashTr.updateDate = DateTime.Now;
+                                    cashTr.updateUserId = cashTr.createUserId;
+                                    ct = entity.cashTransfer.Add(cashTr);
+                                    // decrease agent balance
+                                    if (agent.balanceType == 0)
+                                    {
+                                        if (amount <= (decimal)agent.balance)
+                                        {
+                                            agent.balance = agent.balance - amount;
+                                        }
+                                        else
+                                        {
+                                            agent.balance = amount - agent.balance;
+                                            agent.balanceType = 1;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        agent.balance += amount;
+                                    }
+
+                                    entity.SaveChanges();
+                                }
+                                    break;
+                                #endregion
+                        }
+                        return Ok(cashIds);
+                    }
+                    else
+                    {
+                        if (amount > 0) // save remain amount
+                        {
+                            switch (payType)
+                            {
+                                case "pay":
+                                    agent = entity.agents.Find(agentId);
+                                    decimal agentBalance = (decimal)agent.balance;
+                                    cashTr.cash = amount;
+                                    cashTr.invId = null;
+                                    cashTr.createDate = DateTime.Now;
+                                    cashTr.updateDate = DateTime.Now;
+                                    cashTr.updateUserId = cashTr.createUserId;
+                                    ct = entity.cashTransfer.Add(cashTr);
+
+                                    // increase agent balance
+                                    if (agent.balanceType == 1)
+                                    {
+                                        if (amount <= (decimal)agent.balance)
+                                        {
+                                            agent.balance = agentBalance - amount;
+                                        }
+                                        else
+                                        {
+                                            agent.balance = amount - agentBalance;
+                                            agent.balanceType = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        agent.balance = agentBalance + amount;
+                                    }
+                                    entity.SaveChanges();
+                                    break;
+                                case "feed":
+                                    agent = entity.agents.Find(agentId);
+
+                                    cashTr.cash = amount;
+                                    cashTr.invId = null;
+                                    cashTr.createDate = DateTime.Now;
+                                    cashTr.updateDate = DateTime.Now;
+                                    cashTr.updateUserId = cashTr.createUserId;
+                                    ct = entity.cashTransfer.Add(cashTr);
+                                    // decrease agent balance
+                                    if (agent.balanceType == 0)
+                                    {
+                                        if (amount <= (decimal)agent.balance)
+                                        {
+                                            agent.balance = agent.balance - amount;
+                                        }
+                                        else
+                                        {
+                                            agent.balance = amount - agent.balance;
+                                            agent.balanceType = 1;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        agent.balance += amount;
+                                    }
+
+                                    entity.SaveChanges();
                                     break;
                             }
-                            entity.SaveChanges();
-                            break;
-                          
-                    }
-                        
-                    return Ok(cashIds);
+                        }
+                        return Ok("-1");
+                    }                  
                 }
             }
             else
@@ -1343,7 +1488,7 @@ namespace POS_Server.Controllers
 
                     switch (payType)
                     {
-                        case "pay"://get pw,pi,sb invoices
+                        case "pay"://get pw,p,sb invoices
                             foreach (invoices inv in invoiceList)
                             {
                                 decimal paid = 0;
@@ -1378,10 +1523,11 @@ namespace POS_Server.Controllers
                                 {
                                     agent.balance += paid;
                                 }
+                                entity.SaveChanges();
                             }
                             entity.SaveChanges();
                             break;
-                        case "feed": //get si, pb
+                        case "feed": //get s, pb
                             foreach (invoices inv in invoiceList)
                             {
                                 decimal paid = 0;
@@ -1416,6 +1562,7 @@ namespace POS_Server.Controllers
                                 {
                                     agent.balance += paid;
                                 }
+                                entity.SaveChanges();
                             }
                             entity.SaveChanges();
                             break;      
@@ -1427,7 +1574,77 @@ namespace POS_Server.Controllers
                 return Ok("false");
            
             }
-           
+        [HttpGet]
+        [Route("GetLastNumOfCash")]
+        public IHttpActionResult GetLastNumOfCash(string cashCode)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                List<string> numberList;
+                int lastNum = 0;
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    numberList = entity.cashTransfer.Where(b => b.transNum.Contains(cashCode + "-")).Select(b => b.transNum).ToList();
+
+                    for (int i = 0; i < numberList.Count; i++)
+                    {
+                        string code = numberList[i];
+                        string s = code.Substring(code.LastIndexOf("-") + 1);
+                        numberList[i] = s;
+                    }
+                    numberList.Sort();
+                    lastNum = int.Parse(numberList[numberList.Count - 1]);
+                }
+                return Ok(lastNum);
+            }
+            return NotFound();
         }
+        [HttpGet]
+        [Route("GetLastNumOfDocNum")]
+        public IHttpActionResult GetLastNumOfDocNum(string docNum)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                List<string> numberList;
+                int lastNum = 0;
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    numberList = entity.cashTransfer.Where(b => b.docNum.Contains(docNum + "-")).Select(b => b.docNum).ToList();
+
+                    for (int i = 0; i < numberList.Count; i++)
+                    {
+                        string code = numberList[i];
+                        string s = code.Substring(code.LastIndexOf("-") + 1);
+                        numberList[i] = s;
+                    }
+                    numberList.Sort();
+                    lastNum = int.Parse(numberList[numberList.Count - 1]);
+                }
+                return Ok(lastNum);
+            }
+            return NotFound();
+        }
+
+    }
     }
 

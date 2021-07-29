@@ -86,14 +86,13 @@ namespace POS_Server.Controllers
                                 int itemId = (int)itemsList[i].itemId;
                                 var childItemL = entity.items.Where(x => x.parentId == itemId).Select(b => new { b.itemId }).FirstOrDefault();
                                 var itemsPropL = entity.itemsProp.Where(x => x.itemId == itemId).Select(b => new { b.itemPropId }).FirstOrDefault();
-                                var ordersL = entity.orderscontents.Where(x => x.itemId == itemId).Select(b => new { b.orderId }).FirstOrDefault();
-                                var itemUnitsL = entity.itemsUnits.Where(x => x.itemId == itemId).Select(b => new { b.itemUnitId }).FirstOrDefault();
+                                  var itemUnitsL = entity.itemsUnits.Where(x => x.itemId == itemId).Select(b => new { b.itemUnitId }).FirstOrDefault();
                                 //var itemLocationsL = entity.itemsLocations.Where(x => x.itemId == itemId).Select(b => new { b.itemsLocId }).FirstOrDefault();
                                 var itemsMaterials = entity.itemsMaterials.Where(x => x.itemId == itemId).Select(b => new { b.itemMatId }).FirstOrDefault();
                                 var serials = entity.serials.Where(x => x.itemId == itemId).Select(b => new { b.serialId }).FirstOrDefault();
                              
 
-                                if ((childItemL is null)&&(itemsPropL is null) && (ordersL is null) && (itemUnitsL is null)  && (itemsMaterials is null) && (serials is null))
+                                if ((childItemL is null)&&(itemsPropL is null)  && (itemUnitsL is null)  && (itemsMaterials is null) && (serials is null))
                                     canDelete = true;
                             }
                             itemsList[i].canDelete = canDelete;

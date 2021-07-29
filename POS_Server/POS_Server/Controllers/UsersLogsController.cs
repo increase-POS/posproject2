@@ -149,7 +149,7 @@ canDelete
             return NotFound();
         }
 
-        // GET api/<controller>
+        // GET api/<controller> 
         [HttpGet]
         [Route("GetByID")]
         public IHttpActionResult GetByID(int logId)
@@ -193,6 +193,51 @@ canDelete
                 return NotFound();
         }
 
+
+        //checkOtherUser
+        [HttpGet]
+        [Route("checkOtherUser")]
+        public IHttpActionResult checkOtherUser(int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            string msg = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    List<usersLogs> List = entity.usersLogs.Where(S => S.userId == userId && S.sOutDate == null).ToList(); 
+                    if(List !=null)
+                    {
+                        foreach(usersLogs row in List)
+                       {
+                        row.sOutDate = DateTime.Now;
+                        entity.SaveChanges();
+                       }
+
+                            msg = List.LastOrDefault().sOutDate.ToString();
+
+                        return Ok(msg);
+                    }
+                    else { return Ok("none"); }
+                 
+ 
+                }
+            }
+            //else
+            return Ok("error");
+        }
+
+
         // add or update location
         [HttpPost]
         [Route("Save")]
@@ -232,7 +277,7 @@ canDelete
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var locationEntity = entity.Set<usersLogs>();
-                        if (newObject.logId == 0)
+                        if (newObject.logId == 0 || newObject.logId == null)
                         {
                             // signIn
 
@@ -251,7 +296,7 @@ canDelete
 
                             tmpObject.logId = newObject.logId;
                            //  tmpObject.sInDate=newObject.sInDate;
-                             tmpObject.sOutDate= newObject.sOutDate;
+                             tmpObject.sOutDate= DateTime.Now;
                          //    tmpObject.posId=newObject.posId;
                           //  tmpObject.userId = newObject.userId;
 
