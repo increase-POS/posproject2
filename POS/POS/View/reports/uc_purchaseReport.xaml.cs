@@ -101,6 +101,7 @@ namespace POS.View.purchases
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            MainWindow.mainWindow.StartAwait();
             Invoices = await statisticModel.GetPuritemcount();
             rowChartInvoice = await statisticModel.GetPuritemcount();
             Items = await statisticModel.GetPuritem();
@@ -110,6 +111,7 @@ namespace POS.View.purchases
             comboPoss = await posModel.GetPosAsync();
             comboVendors = await agentModel.GetAgentsAsync("v");
             comboUsers = await userModel.GetUsersAsync();
+            MainWindow.mainWindow.EndAwait();
             itemUnitCombos = statisticModel.GetIUComboList(Items);
 
             dynamicComboBranches = new ObservableCollection<Branch>(comboBranches);
@@ -199,7 +201,7 @@ namespace POS.View.purchases
               || x.discountType.Contains(txt_search.Text) : true)
               && ((chkDraft.IsChecked == true ? (x.invType == "pd" || x.invType == "pbd") : false)
                           || (chkReturn.IsChecked == true ? (x.invType == "pb") : false)
-                          || (chkInvoice.IsChecked == true ? (x.invType == "p") : false))
+                            || (chkInvoice.IsChecked == true ? ((x.invType == "p") || (x.invType == "pw")) : false))
                       && (startDate.SelectedDate != null ? x.invDate >= startDate.SelectedDate : true)
                       && (endDate.SelectedDate != null ? x.invDate <= endDate.SelectedDate : true)
                       && (startTime.SelectedTime != null ? x.invDate >= startTime.SelectedTime : true)
@@ -271,9 +273,12 @@ namespace POS.View.purchases
                 titles.Clear();
                 var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
                 temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
-                var titleTemp = temp.GroupBy(m => m.ITitemName);
-                titles.AddRange(titleTemp.Select(jj => jj.Key));
-                var result = temp.GroupBy(s => s.ITitemId).Select(s => new { ITitemId = s.Key, count = s.Count() });
+                var titleTemp = temp.GroupBy(s => new { s.ITitemId, s.ITunitId }).Select(s => new
+                {
+                    s.FirstOrDefault().ITitemUnitName1
+                });
+                titles.AddRange(titleTemp.Select(jj => jj.ITitemUnitName1));
+                var result = temp.GroupBy(s => new { s.ITitemId, s.ITunitId }).Select(s => new { ITitemId = s.Key, count = s.Count() });
                 x = result.Select(m => m.count);
             }
             SeriesCollection piechartData = new SeriesCollection();
@@ -308,7 +313,7 @@ namespace POS.View.purchases
                 var result = temp.GroupBy(s => s.branchCreatorId).Select(s => new
                 {
                     branchCreatorId = s.Key,
-                    countP = s.Where(m => m.invType == "p").Count(),
+                    countP = s.Where(m => m.invType == "p" || m.invType == "pw").Count(),
                     countPb = s.Where(m => m.invType == "pb").Count(),
                     countD = s.Where(m => m.invType == "pd" || m.invType == "pbd").Count()
                 });
@@ -328,7 +333,7 @@ namespace POS.View.purchases
                 var result = temp.GroupBy(s => s.posId).Select(s => new
                 {
                     posId = s.Key,
-                    countP = s.Where(m => m.invType == "p").Count(),
+                    countP = s.Where(m => m.invType == "p" || m.invType == "pw").Count(),
                     countPb = s.Where(m => m.invType == "pb").Count(),
                     countD = s.Where(m => m.invType == "pd" || m.invType == "pbd").Count()
                 });
@@ -348,7 +353,7 @@ namespace POS.View.purchases
                 var result = temp.GroupBy(s => s.agentId).Select(s => new
                 {
                     agentId = s.Key,
-                    countP = s.Where(m => m.invType == "p").Count(),
+                    countP = s.Where(m => m.invType == "p" || m.invType == "pw").Count(),
                     countPb = s.Where(m => m.invType == "pb").Count(),
                     countD = s.Where(m => m.invType == "pd" || m.invType == "pbd").Count()
 
@@ -369,7 +374,7 @@ namespace POS.View.purchases
                 var result = temp.GroupBy(s => s.createUserId).Select(s => new
                 {
                     createUserId = s.Key,
-                    countP = s.Where(m => m.invType == "p").Count(),
+                    countP = s.Where(m => m.invType == "p" || m.invType == "pw").Count(),
                     countPb = s.Where(m => m.invType == "pb").Count(),
                     countD = s.Where(m => m.invType == "pd" || m.invType == "pbd").Count()
 
@@ -387,10 +392,10 @@ namespace POS.View.purchases
             {
                 var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
                 temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
-                var result = temp.GroupBy(s => s.ITitemId).Select(s => new
+                var result = temp.GroupBy(s => new { s.ITitemId, s.ITunitId }).Select(s => new
                 {
                     ITitemId = s.Key,
-                    countP = s.Where(m => m.invType == "p").Count(),
+                    countP = s.Where(m => m.invType == "p" || m.invType == "pw").Count(),
                     countPb = s.Where(m => m.invType == "pb").Count(),
                     countD = s.Where(m => m.invType == "pd" || m.invType == "pbd").Count()
 
@@ -398,11 +403,11 @@ namespace POS.View.purchases
                 x = result.Select(m => m.countP);
                 y = result.Select(m => m.countPb);
                 z = result.Select(m => m.countD);
-                var tempName = temp.GroupBy(s => s.ITitemName).Select(s => new
+                var tempName = temp.GroupBy(s => new { s.ITitemId, s.ITunitId }).Select(s => new
                 {
-                    uUserName = s.Key
+                    s.FirstOrDefault().ITitemUnitName1
                 });
-                names.AddRange(tempName.Select(nn => nn.uUserName));
+                names.AddRange(tempName.Select(nn => nn.ITitemUnitName1));
             }
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
@@ -463,7 +468,7 @@ namespace POS.View.purchases
                 var result = temp.GroupBy(s => s.branchCreatorId).Select(s => new
                 {
                     branchCreatorId = s.Key,
-                    totalP = s.Where(x => x.invType == "p").Sum(x => x.totalNet),
+                    totalP = s.Where(x => x.invType == "p" || x.invType == "pw").Sum(x => x.totalNet),
                     totalPb = s.Where(x => x.invType == "pb").Sum(x => x.totalNet)
                 }
              );
@@ -484,7 +489,7 @@ namespace POS.View.purchases
                 var result = temp.GroupBy(s => s.posId).Select(s => new
                 {
                     posId = s.Key,
-                    totalP = s.Where(x => x.invType == "p").Sum(x => x.totalNet),
+                    totalP = s.Where(x => x.invType == "p" || x.invType == "pw").Sum(x => x.totalNet),
                     totalPb = s.Where(x => x.invType == "pb").Sum(x => x.totalNet)
                 }
              );
@@ -505,7 +510,7 @@ namespace POS.View.purchases
                 var result = temp.GroupBy(s => s.agentId).Select(s => new
                 {
                     agentId = s.Key,
-                    totalP = s.Where(x => x.invType == "p").Sum(x => x.totalNet),
+                    totalP = s.Where(x => x.invType == "p" || x.invType == "pw").Sum(x => x.totalNet),
                     totalPb = s.Where(x => x.invType == "pb").Sum(x => x.totalNet)
                 }
              );
@@ -526,7 +531,7 @@ namespace POS.View.purchases
                 var result = temp.GroupBy(s => s.createUserId).Select(s => new
                 {
                     createUserId = s.Key,
-                    totalP = s.Where(x => x.invType == "p").Sum(x => x.totalNet),
+                    totalP = s.Where(x => x.invType == "p" || x.invType == "pw").Sum(x => x.totalNet),
                     totalPb = s.Where(x => x.invType == "pb").Sum(x => x.totalNet)
                 }
              );
@@ -544,10 +549,10 @@ namespace POS.View.purchases
             {
                 var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
                 temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
-                var result = temp.GroupBy(s => s.ITitemId).Select(s => new
+                var result = temp.GroupBy(s => new { s.ITitemId, s.ITunitId }).Select(s => new
                 {
                     ITitemId = s.Key,
-                    totalP = s.Where(x => x.invType == "p").Sum(x => x.totalNet),
+                    totalP = s.Where(x => x.invType == "p" || x.invType == "pw").Sum(x => x.totalNet),
                     totalPb = s.Where(x => x.invType == "pb").Sum(x => x.totalNet)
                 }
              );
@@ -555,11 +560,11 @@ namespace POS.View.purchases
                 pTemp = result.Select(x => (decimal)x.totalP);
                 pbTemp = result.Select(x => (decimal)x.totalPb);
                 resultTemp = result.Select(x => (decimal)x.totalP);
-                var tempName = temp.GroupBy(s => s.ITitemName).Select(s => new
+                var tempName = temp.GroupBy(s => new { s.ITitemId, s.ITunitId }).Select(s => new
                 {
-                    uUserName = s.Key
+                    s.FirstOrDefault().ITitemUnitName1
                 });
-                names.AddRange(tempName.Select(nn => nn.uUserName));
+                names.AddRange(tempName.Select(nn => nn.ITitemUnitName1));
             }
 
 
@@ -699,6 +704,22 @@ namespace POS.View.purchases
 
         #region Events
         #region tabControl
+        private void hideAllColumn()
+        {
+            col_branch.Visibility = Visibility.Hidden;
+            col_pos.Visibility = Visibility.Hidden;
+            col_vendor.Visibility = Visibility.Hidden;
+            col_agentCompany.Visibility = Visibility.Hidden;
+            col_user.Visibility = Visibility.Hidden;
+            col_item.Visibility = Visibility.Hidden;
+            col_discount.Visibility = Visibility.Hidden;
+            col_count.Visibility = Visibility.Hidden;
+            col_itQuantity.Visibility = Visibility.Hidden;
+            col_price.Visibility = Visibility.Hidden;
+            col_total.Visibility = Visibility.Hidden;
+            col_totalNet.Visibility = Visibility.Hidden;
+            col_tax.Visibility = Visibility.Hidden;
+        }
         private void btn_branch_Click(object sender, RoutedEventArgs e)
         {
             txt_search.Text = "";
@@ -706,18 +727,19 @@ namespace POS.View.purchases
             stk_tagsBranches.Visibility = Visibility.Visible;
             selectedTab = 0;
             paint();
-            col_branch.Visibility = Visibility.Visible;
-            col_count.Visibility = Visibility.Visible;
-            col_agentCompany.Visibility = Visibility.Hidden;
-            col_discount.Visibility = Visibility.Hidden;
             bdr_branch.Background = Brushes.White;
             path_branch.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             grid_branch.Visibility = Visibility.Visible;
-            col_itQuantity.Visibility = Visibility.Hidden;
             isEnabledButtons();
             btn_branch.IsEnabled = false;
             btn_branch.Opacity = 1;
             fillBranchEvent();
+            hideAllColumn();
+            col_branch.Visibility = Visibility.Visible;
+            col_count.Visibility = Visibility.Visible;
+            col_totalNet.Visibility = Visibility.Visible;
+
+
         }
 
         private void btn_pos_Click(object sender, RoutedEventArgs e)
@@ -727,19 +749,18 @@ namespace POS.View.purchases
             stk_tagsPos.Visibility = Visibility.Visible;
             selectedTab = 1;
             paint();
-            col_pos.Visibility = Visibility.Visible;
-            col_branch.Visibility = Visibility.Visible;
-            col_count.Visibility = Visibility.Visible;
-            col_agentCompany.Visibility = Visibility.Hidden;
-            col_discount.Visibility = Visibility.Hidden;
             bdr_pos.Background = Brushes.White;
             path_pos.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             grid_pos.Visibility = Visibility.Visible;
-            col_itQuantity.Visibility = Visibility.Hidden;
             isEnabledButtons();
             btn_pos.IsEnabled = false;
             btn_pos.Opacity = 1;
             fillPosEvent();
+            hideAllColumn();
+            col_branch.Visibility = Visibility.Visible;
+            col_count.Visibility = Visibility.Visible;
+            col_pos.Visibility = Visibility.Visible;
+            col_totalNet.Visibility = Visibility.Visible;
         }
 
         private void btn_vendors_Click(object sender, RoutedEventArgs e)
@@ -749,20 +770,21 @@ namespace POS.View.purchases
             stk_tagsVendors.Visibility = Visibility.Visible;
             selectedTab = 2;
             paint();
-            col_branch.Visibility = Visibility.Visible;
-            col_vendor.Visibility = Visibility.Visible;
-            col_discount.Visibility = Visibility.Visible;
-            col_count.Visibility = Visibility.Visible;
-
-            col_agentCompany.Visibility = Visibility.Visible;
             bdr_vendors.Background = Brushes.White;
             path_vendors.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             grid_vendors.Visibility = Visibility.Visible;
-            col_itQuantity.Visibility = Visibility.Hidden;
             isEnabledButtons();
             btn_vendors.IsEnabled = false;
             btn_vendors.Opacity = 1;
             fillVendorsEvent();
+            hideAllColumn();
+            col_branch.Visibility = Visibility.Visible;
+            col_vendor.Visibility = Visibility.Visible;
+            col_agentCompany.Visibility = Visibility.Visible;
+            col_discount.Visibility = Visibility.Visible;
+            col_count.Visibility = Visibility.Visible;
+            col_totalNet.Visibility = Visibility.Visible;
+            col_tax.Visibility = Visibility.Visible;
         }
 
         private void btn_users_Click(object sender, RoutedEventArgs e)
@@ -772,14 +794,6 @@ namespace POS.View.purchases
             stk_tagsUsers.Visibility = Visibility.Visible;
             selectedTab = 3;
             paint();
-            col_pos.Visibility = Visibility.Visible;
-            col_branch.Visibility = Visibility.Visible;
-            col_user.Visibility = Visibility.Visible;
-            col_discount.Visibility = Visibility.Visible;
-            col_agentCompany.Visibility = Visibility.Hidden;
-            col_count.Visibility = Visibility.Hidden;
-            col_itQuantity.Visibility = Visibility.Hidden;
-            col_discount.Visibility = Visibility.Hidden;
             bdr_users.Background = Brushes.White;
             path_users.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             grid_users.Visibility = Visibility.Visible;
@@ -787,7 +801,12 @@ namespace POS.View.purchases
             btn_users.IsEnabled = false;
             btn_users.Opacity = 1;
             fillUsersEvent();
-            
+            hideAllColumn();
+            col_branch.Visibility = Visibility.Visible;
+            col_pos.Visibility = Visibility.Visible;
+            col_user.Visibility = Visibility.Visible;
+            col_totalNet.Visibility = Visibility.Visible;
+            col_discount.Visibility = Visibility.Visible;
         }
 
         private void btn_items_Click(object sender, RoutedEventArgs e)
@@ -797,12 +816,6 @@ namespace POS.View.purchases
             stk_tagsItems.Visibility = Visibility.Visible;
             selectedTab = 4;
             paint();
-            col_item.Visibility = Visibility.Visible;
-            col_discount.Visibility = Visibility.Visible;
-            col_count.Visibility = Visibility.Hidden;
-            col_itQuantity.Visibility = Visibility.Visible;
-            col_discount.Visibility = Visibility.Hidden;
-            col_agentCompany.Visibility = Visibility.Hidden;
             bdr_items.Background = Brushes.White;
             path_items.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             grid_items.Visibility = Visibility.Visible;
@@ -810,6 +823,12 @@ namespace POS.View.purchases
             btn_items.IsEnabled = false;
             btn_items.Opacity = 1;
             fillItemsEvent();
+            hideAllColumn();
+            col_item.Visibility = Visibility.Visible;
+            col_itQuantity.Visibility = Visibility.Visible;
+            col_price.Visibility = Visibility.Visible;
+            col_total.Visibility = Visibility.Visible;
+
         }
         #endregion
 
@@ -1257,7 +1276,7 @@ namespace POS.View.purchases
 
         }
 
-   
+
 
         private void cb_branches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

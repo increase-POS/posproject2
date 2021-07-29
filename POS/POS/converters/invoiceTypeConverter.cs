@@ -20,6 +20,9 @@ namespace POS.converters
                 //مشتريات 
                 case "p":  value = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
                     break;
+                case "pw":
+                    value = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                    break;
                 //مبيعات
                 case "s": value = MainWindow.resourcemanager.GetString("trSalesInvoice");
                     break;

@@ -820,23 +820,28 @@
                         <converters:invoiceTypeConverter x:Key="invoiceTypeConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="*" Header="No." Binding="{Binding invNumber}"/>
+                        <DataGridTextColumn x:Name="col_No" Width="*" Header="No." Binding="{Binding invNumber}"/>
                         <DataGridTextColumn x:Name="col_type" Width="*" Header="Type" Binding="{Binding Path=invType,Converter={StaticResource invoiceTypeConverter }}"  >
                         </DataGridTextColumn>
-
-                        <DataGridTextColumn Width="*" Header="Discount Value" Binding="{Binding discountValue,StringFormat=F2}"/>
-                        <DataGridTextColumn Width="*" Header="Total" Binding="{Binding totalNet}"/>
-                        <DataGridTextColumn Width="*" Header="Tax" Binding="{Binding tax}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_count" Width="*" Header="Count" Binding="{Binding count}"/>
                         <DataGridTextColumn x:Name="col_branch" Width="*" Header="Branch" Binding="{Binding branchCreatorName}" Visibility="Visible"/>
-                        <DataGridTextColumn x:Name="col_pos" Width="*" Header="Pos" Binding="{Binding posName}" Visibility="Collapsed"/>
-                        <DataGridTextColumn x:Name="col_vendor" Width="*" Header="Customer" Binding="{Binding agentName}" Visibility="Collapsed"/>
-                        <DataGridTextColumn x:Name="col_user" Width="*" Header="User" Binding="{Binding uUserAccName}" Visibility="Collapsed"/>
-                        <DataGridTextColumn x:Name="col_quantity" Width="*" Header="Quantity" Binding="{Binding ITquantity}" Visibility="Collapsed"/>
+                        <DataGridTextColumn x:Name="col_pos" Width="*" Header="Pos" Binding="{Binding posName}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_vendor" Width="*" Header="Customer" Binding="{Binding agentName}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_agentCompany" Width="*" Header="Company" Binding="{Binding agentCompany}" Visibility="Hidden"/>
 
-                        <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding ITitemName}" Visibility="Collapsed"/>
-                        <DataGridTextColumn x:Name="col_coupon" Width="*" Header="Coupon" Binding="{Binding Copname}" Visibility="Collapsed"/>
-                        <DataGridTextColumn x:Name="col_offers" Width="*" Header="Offer" Binding="{Binding Oname}" Visibility="Collapsed"/>
+                        <DataGridTextColumn x:Name="col_user" Width="*" Header="User" Binding="{Binding uUserAccName}" Visibility="Hidden"/>
+
+                        <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding ITitemUnitName1}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_count" Width="*" Header="Items Quantity" Binding="{Binding count}" Visibility="Visible"/>
+
+                        <DataGridTextColumn x:Name="col_discount" Width="*" Header="Discount Value" Visibility="Visible" Binding="{Binding discountValue,StringFormat=F2}"/>
+                        <DataGridTextColumn x:Name="col_itQuantity" Width="*" Header="Quantity" Binding="{Binding ITquantity}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_price" Width="*" Header="Price" Binding="{Binding ITprice}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_tax" Width="*" Header="Tax" Binding="{Binding tax}" Visibility="Visible"/>
+                        <DataGridTextColumn x:Name="col_total" Width="*" Header="Total" Binding="{Binding total}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_totalNet" Width="*" Header="Total" Binding="{Binding totalNet}" Visibility="Visible"/>
+                      
+                        <DataGridTextColumn x:Name="col_coupon" Width="*" Header="Coupon" Binding="{Binding Copname}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_offers" Width="*" Header="Offer" Binding="{Binding Oname}" Visibility="Hidden"/>
 
 
                     </DataGrid.Columns>

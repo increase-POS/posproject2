@@ -32,6 +32,7 @@ namespace POS.View.reports
         List<ItemTransferInvoice> itemsTransfer;
         List<ItemTransferInvoice> itemsInternalTransfer;
         IEnumerable<ItemTransferInvoice> agentsCount;
+        IEnumerable<ItemTransferInvoice> invTypeCount;
         IEnumerable<ItemTransferInvoice> invCount;
 
         private static uc_storageReports _instance;
@@ -47,10 +48,12 @@ namespace POS.View.reports
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            MainWindow.mainWindow.StartAwait();
             storages = await statisticModel.GetStorage();
             itemsTransfer = await statisticModel.GetExternalMov();
             itemsInternalTransfer = await statisticModel.GetInternalMov();
             comboBranches = await branchModel.GetAllWithoutMain("all");
+            MainWindow.mainWindow.EndAwait();
             comboItems = statisticModel.getItemCombo(storages);
             comboUnits = statisticModel.getUnitCombo(storages);
             comboSection = statisticModel.getSectionCombo(storages);
@@ -242,11 +245,12 @@ namespace POS.View.reports
                           {
                               branchId = s.FirstOrDefault().branchId,
                               branchName = s.FirstOrDefault().branchName,
-                            AgentTypeAgent=s.FirstOrDefault().AgentTypeAgent,
-                            ItemUnits=s.FirstOrDefault().ItemUnits
-                            ,invNumber=s.FirstOrDefault().invNumber,
-                            invType=s.FirstOrDefault().invType,
-                            quantity=s.FirstOrDefault().quantity
+                              AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
+                              ItemUnits = s.FirstOrDefault().ItemUnits
+                            ,
+                              invNumber = s.FirstOrDefault().invNumber,
+                              invType = s.FirstOrDefault().invType,
+                              quantity = s.FirstOrDefault().quantity
                           });
             showSelectedTabColumn();
 
@@ -749,6 +753,7 @@ namespace POS.View.reports
         }
         #endregion
         #endregion
+
 
         private void btn_byItem_Click(object sender, RoutedEventArgs e)
         {
@@ -1720,8 +1725,8 @@ namespace POS.View.reports
 
             var result = temp.GroupBy(x => new { x.branchId, x.invoiceId }).Select(x => new ItemTransferInvoice
             {
-                invType=x.FirstOrDefault().invType,
-                branchId=x.FirstOrDefault().branchId
+                invType = x.FirstOrDefault().invType,
+                branchId = x.FirstOrDefault().branchId
             });
 
             invCount = result.GroupBy(x => x.branchId).Select(x => new ItemTransferInvoice
@@ -1733,7 +1738,7 @@ namespace POS.View.reports
             });
 
 
-         
+
 
             for (int i = 0; i < agentsCount.Count(); i++)
             {
@@ -1758,7 +1763,7 @@ namespace POS.View.reports
           new LineSeries
           {
               Values = pTemp.AsChartValues(),
-              Title="Purchase"
+              Title = "Purchase"
 
           });
             rowChartData.Add(
@@ -1919,87 +1924,76 @@ namespace POS.View.reports
         }
         /*Show dg columns*/
         #region
-        private void showAllColumn()
+        private void hideAllColumn()
         {
-            col_branch.Visibility = Visibility.Visible;
-            col_item.Visibility = Visibility.Visible;
-            col_unit.Visibility = Visibility.Visible;
-            col_locationSection.Visibility = Visibility.Visible;
-            col_quantity.Visibility = Visibility.Visible;
-            col_startDate.Visibility = Visibility.Visible;
-            col_endDate.Visibility = Visibility.Visible;
-            col_Min.Visibility = Visibility.Visible;
-            col_Max.Visibility = Visibility.Visible;
-            col_stockCost.Visibility = Visibility.Visible;
+            col_branch.Visibility = Visibility.Hidden;
+            col_item.Visibility = Visibility.Hidden;
+            col_unit.Visibility = Visibility.Hidden;
+            col_locationSection.Visibility = Visibility.Hidden;
+            col_quantity.Visibility = Visibility.Hidden;
+            col_startDate.Visibility = Visibility.Hidden;
+            col_endDate.Visibility = Visibility.Hidden;
+            col_Min.Visibility = Visibility.Hidden;
+            col_Max.Visibility = Visibility.Hidden;
+            col_stockCost.Visibility = Visibility.Hidden;
 
-            col_location.Visibility = Visibility.Visible;
-            col_section.Visibility = Visibility.Visible;
-            col_itemUnits.Visibility = Visibility.Visible;
+            col_location.Visibility = Visibility.Hidden;
+            col_section.Visibility = Visibility.Hidden;
+            col_itemUnits.Visibility = Visibility.Hidden;
 
-            col_invNumber.Visibility = Visibility.Visible;
-            col_invType.Visibility = Visibility.Visible;
-            col_invTypeNumber.Visibility = Visibility.Visible;
-            col_agentType.Visibility = Visibility.Visible;
-            col_agent.Visibility = Visibility.Visible;
-            col_agentTypeAgent.Visibility = Visibility.Visible;
-            col_MaxCollect.Visibility = Visibility.Visible;
-            col_MinCollect.Visibility = Visibility.Visible;
+            col_invNumber.Visibility = Visibility.Hidden;
+            col_invType.Visibility = Visibility.Hidden;
+            col_invTypeNumber.Visibility = Visibility.Hidden;
+            col_agentType.Visibility = Visibility.Hidden;
+            col_agent.Visibility = Visibility.Hidden;
+            col_agentTypeAgent.Visibility = Visibility.Hidden;
+            col_MaxCollect.Visibility = Visibility.Hidden;
+            col_MinCollect.Visibility = Visibility.Hidden;
+            col_branchFrom.Visibility = Visibility.Hidden;
+            col_branchTo.Visibility = Visibility.Hidden;
         }
         private void showSelectedTabColumn()
         {
-            showAllColumn();
+            hideAllColumn();
             if (selectedFatherTab == 0)
             {
                 if (selectedStockTab == 0)
                 {
-                    showAllColumn();
-                    col_itemUnits.Visibility = Visibility.Hidden;
-                    col_section.Visibility = Visibility.Hidden;
-                    col_location.Visibility = Visibility.Hidden;
-                    col_invNumber.Visibility = Visibility.Hidden;
-                    col_invType.Visibility = Visibility.Hidden;
-                    col_invTypeNumber.Visibility = Visibility.Hidden;
-                    col_agentType.Visibility = Visibility.Hidden;
-                    col_agent.Visibility = Visibility.Hidden;
-                    col_agentTypeAgent.Visibility = Visibility.Hidden;
-                    col_MaxCollect.Visibility = Visibility.Hidden;
-                    col_MinCollect.Visibility = Visibility.Hidden;
+                    hideAllColumn();
+                    col_branch.Visibility = Visibility.Visible;
+                    col_item.Visibility = Visibility.Visible;
+                    col_unit.Visibility = Visibility.Visible;
+                    col_quantity.Visibility = Visibility.Visible;
+                    col_locationSection.Visibility = Visibility.Visible;
+                    col_startDate.Visibility = Visibility.Visible;
+                    col_endDate.Visibility = Visibility.Visible;
+                    col_Min.Visibility = Visibility.Visible;
+                    col_Max.Visibility = Visibility.Visible;
+                    col_stockCost.Visibility = Visibility.Visible;
                 }
                 else if (selectedStockTab == 1)
                 {
-                    showAllColumn();
-                    col_item.Visibility = Visibility.Hidden;
-                    col_unit.Visibility = Visibility.Hidden;
-                    col_locationSection.Visibility = Visibility.Hidden;
-
-                    col_invNumber.Visibility = Visibility.Hidden;
-                    col_invType.Visibility = Visibility.Hidden;
-                    col_invTypeNumber.Visibility = Visibility.Hidden;
-                    col_agentType.Visibility = Visibility.Hidden;
-                    col_agent.Visibility = Visibility.Hidden;
-                    col_agentTypeAgent.Visibility = Visibility.Hidden;
-                    col_MaxCollect.Visibility = Visibility.Hidden;
-                    col_MinCollect.Visibility = Visibility.Hidden;
+                    hideAllColumn();
+                    col_branch.Visibility = Visibility.Visible;
+                    col_section.Visibility = Visibility.Visible;
+                    col_location.Visibility = Visibility.Visible;
+                    col_quantity.Visibility = Visibility.Visible;
+                    col_itemUnits.Visibility = Visibility.Visible;
+                    col_startDate.Visibility = Visibility.Visible;
+                    col_endDate.Visibility = Visibility.Visible;
+                    col_Min.Visibility = Visibility.Visible;
+                    col_Max.Visibility = Visibility.Visible;
+                    col_stockCost.Visibility = Visibility.Visible;
                 }
                 else if (selectedStockTab == 2)
                 {
-                    showAllColumn();
-                    col_endDate.Visibility = Visibility.Hidden;
-                    col_startDate.Visibility = Visibility.Hidden;
-                    col_locationSection.Visibility = Visibility.Hidden;
-                    col_location.Visibility = Visibility.Hidden;
-                    col_section.Visibility = Visibility.Hidden;
-                    col_stockCost.Visibility = Visibility.Hidden;
-                    col_itemUnits.Visibility = Visibility.Hidden;
-                    col_invNumber.Visibility = Visibility.Hidden;
-                    col_invType.Visibility = Visibility.Hidden;
-                    col_invTypeNumber.Visibility = Visibility.Hidden;
-                    col_agentType.Visibility = Visibility.Hidden;
-                    col_agent.Visibility = Visibility.Hidden;
-                    col_agentTypeAgent.Visibility = Visibility.Hidden;
-                    col_Min.Visibility = Visibility.Hidden;
-                    col_Max.Visibility = Visibility.Hidden;
-
+                    hideAllColumn();
+                    col_branch.Visibility = Visibility.Visible;
+                    col_item.Visibility = Visibility.Visible;
+                    col_unit.Visibility = Visibility.Visible;
+                    col_quantity.Visibility = Visibility.Visible;
+                    col_MinCollect.Visibility = Visibility.Visible;
+                    col_MaxCollect.Visibility = Visibility.Visible;
                 }
 
             }
@@ -2007,58 +2001,59 @@ namespace POS.View.reports
             {
                 if (selectedExternalTab == 0)
                 {
-                    col_locationSection.Visibility = Visibility.Hidden;
-                    col_location.Visibility = Visibility.Hidden;
-                    col_section.Visibility = Visibility.Hidden;
-                    col_startDate.Visibility = Visibility.Hidden;
-                    col_endDate.Visibility = Visibility.Hidden;
-                    col_Min.Visibility = Visibility.Hidden;
-                    col_Max.Visibility = Visibility.Hidden;
-                    col_stockCost.Visibility = Visibility.Hidden;
-                    col_itemUnits.Visibility = Visibility.Hidden;
-                    col_invType.Visibility = Visibility.Hidden;
-                    col_invNumber.Visibility = Visibility.Hidden;
-                    col_agentType.Visibility = Visibility.Hidden;
-                    col_agent.Visibility = Visibility.Hidden;
-                    col_MaxCollect.Visibility = Visibility.Hidden;
-                    col_MinCollect.Visibility = Visibility.Hidden;
+                    hideAllColumn();
+                    col_branch.Visibility = Visibility.Visible;
+                    col_item.Visibility = Visibility.Visible;
+                    col_unit.Visibility = Visibility.Visible;
+                    col_quantity.Visibility = Visibility.Visible;
+                    col_agentTypeAgent.Visibility = Visibility.Visible;
+                    col_invTypeNumber.Visibility = Visibility.Visible;
                 }
                 else if (selectedExternalTab == 1)
                 {
-                    col_locationSection.Visibility = Visibility.Hidden;
-                    col_location.Visibility = Visibility.Hidden;
-                    col_section.Visibility = Visibility.Hidden;
-                    col_startDate.Visibility = Visibility.Hidden;
-                    col_endDate.Visibility = Visibility.Hidden;
-                    col_Min.Visibility = Visibility.Hidden;
-                    col_Max.Visibility = Visibility.Hidden;
-                    col_stockCost.Visibility = Visibility.Hidden;
-                    col_invType.Visibility = Visibility.Hidden;
-                    col_invNumber.Visibility = Visibility.Hidden;
-                    col_agentTypeAgent.Visibility = Visibility.Hidden;
-                    col_item.Visibility = Visibility.Hidden;
-                    col_unit.Visibility = Visibility.Hidden;
-                    col_MaxCollect.Visibility = Visibility.Hidden;
-                    col_MinCollect.Visibility = Visibility.Hidden;
+                    hideAllColumn();
+                    col_branch.Visibility = Visibility.Visible;
+                    col_itemUnits.Visibility = Visibility.Visible;
+                    col_agent.Visibility = Visibility.Visible;
+                    col_quantity.Visibility = Visibility.Visible;
+                    col_agentType.Visibility = Visibility.Visible;
+                    col_invTypeNumber.Visibility = Visibility.Visible;
                 }
                 else if (selectedExternalTab == 2)
                 {
-                    col_locationSection.Visibility = Visibility.Hidden;
-                    col_location.Visibility = Visibility.Hidden;
-                    col_section.Visibility = Visibility.Hidden;
-                    col_startDate.Visibility = Visibility.Hidden;
-                    col_endDate.Visibility = Visibility.Hidden;
-                    col_Min.Visibility = Visibility.Hidden;
-                    col_Max.Visibility = Visibility.Hidden;
-                    col_stockCost.Visibility = Visibility.Hidden;
-                    col_invTypeNumber.Visibility = Visibility.Hidden;
-                    col_agentType.Visibility = Visibility.Hidden;
-                    col_agent.Visibility = Visibility.Hidden;
-                    col_item.Visibility = Visibility.Hidden;
-                    col_unit.Visibility = Visibility.Hidden;
-                    col_MaxCollect.Visibility = Visibility.Hidden;
-                    col_MinCollect.Visibility = Visibility.Hidden;
+                    hideAllColumn();
+                    col_branch.Visibility = Visibility.Visible;
+                    col_invType.Visibility = Visibility.Visible;
+                    col_invNumber.Visibility = Visibility.Visible;
+                    col_quantity.Visibility = Visibility.Visible;
+                    col_agentTypeAgent.Visibility = Visibility.Visible;
+                    col_itemUnits.Visibility = Visibility.Visible;
                 }
+            }
+
+            else if (selectedFatherTab == 2)
+            {
+                if (selectedInternalTab == 0)
+                {
+                    hideAllColumn();
+                    col_branchFrom.Visibility = Visibility.Visible;
+                    col_branchTo.Visibility = Visibility.Visible;
+                    col_item.Visibility = Visibility.Visible;
+                    col_unit.Visibility = Visibility.Visible;
+                    col_quantity.Visibility = Visibility.Visible;
+                    col_invTypeNumber.Visibility = Visibility.Visible;
+
+                }
+                else if (selectedInternalTab == 1)
+                {
+                    hideAllColumn();
+                    col_branch.Visibility = Visibility.Visible;
+                    col_item.Visibility = Visibility.Visible;
+                    col_unit.Visibility = Visibility.Visible;
+                    col_quantity.Visibility = Visibility.Visible;
+                    col_invTypeNumber.Visibility = Visibility.Visible;
+                }
+
             }
             #endregion
 
@@ -2100,7 +2095,8 @@ namespace POS.View.reports
             fillComboBranches(cb_internalItemsFromBranches);
             fillComboBranches(cb_internalItemsToBranches);
             dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            //fillPieChart();
+            showSelectedTabColumn();
+            fillInternalColumnChart();
         }
 
         private void btn_internalOperator_Click(object sender, RoutedEventArgs e)
@@ -2117,166 +2113,210 @@ namespace POS.View.reports
             path_internalOperator.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             //showSelectedTabColumn();
             fillComboBranches(cb_internalOperaterFromBranches);
-            fillComboBranches(cb_internalOperaterToBranches);
             fillComboInternalOperatorType();
-            fillComboInternalOperatorOperators();
+
             dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            //fillPieChart();
+            showSelectedTabColumn();
+            fillInternalColumnChart();
         }
 
-        private void cb_internalItemsBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
-        }
-
-        private void chk_internalItemsAllBranches_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void chk_internalItemsAllBranches_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void cb_internalItemsItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             fillComboInternalItemsUnits();
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            fillInternalColumnChart();
         }
 
         private void chk_internalItemsAllItems_Checked(object sender, RoutedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            cb_internalItemsItems.IsEnabled = false;
+            fillInternalColumnChart();
+            cb_internalItemsItems.SelectedItem = null;
         }
 
         private void chk_internalItemsAllItems_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            cb_internalItemsItems.IsEnabled = true;
+            fillInternalColumnChart();
         }
 
         private void cb_internalItemsUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            fillInternalColumnChart();
         }
 
         private void chk_internalItemsAllUnits_Checked(object sender, RoutedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            cb_internalItemsUnits.IsEnabled = false;
+            cb_internalItemsUnits.SelectedItem = null;
+            fillInternalColumnChart();
         }
 
         private void chk_internalItemsAllUnits_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            cb_internalItemsUnits.IsEnabled = true;
+            fillInternalColumnChart();
         }
 
         private void cb_internalItemsFromBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            fillInternalColumnChart();
         }
 
         private void cb_internalItemsToBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            fillInternalColumnChart();
         }
 
         private void chk_internalItemsFromAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            cb_internalItemsFromBranches.IsEnabled = false;
+            cb_internalItemsFromBranches.SelectedItem = null;
+            fillInternalColumnChart();
         }
 
         private void chk_internalItemsFromAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            cb_internalItemsFromBranches.IsEnabled = true;
+            fillInternalColumnChart();
         }
 
         private void chk_internalItemsToAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            cb_internalItemsToBranches.IsEnabled = false;
+            cb_internalItemsToBranches.SelectedItem = null;
+            fillInternalColumnChart();
         }
 
         private void chk_internalItemsToAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            cb_internalItemsToBranches.IsEnabled = true;
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            fillInternalColumnChart();
         }
 
         private void dp_internalItemsStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            fillInternalColumnChart();
         }
 
         private void dp_InternalItemsEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            fillInternalColumnChart();
         }
+
+
+
+
+
+
+
+
+
 
         private void cb_internalOperaterFromBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            fillInternalColumnChart();
         }
 
         private void chk_internalOperaterFromAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            cb_internalOperaterFromBranches.IsEnabled = false;
+            cb_internalOperaterFromBranches.SelectedItem = null;
+            fillInternalColumnChart();
         }
 
         private void chk_internalOperaterFromAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            cb_internalOperaterFromBranches.IsEnabled = true;
+            fillInternalColumnChart();
 
         }
 
         private void cb_internalOperaterToBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            fillInternalColumnChart();
         }
 
         private void chk_internalOperaterToAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            fillInternalColumnChart();
         }
 
         private void chk_internalOperaterToAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            fillInternalColumnChart();
         }
 
         private void cb_internalOperaterType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            fillInternalColumnChart();
         }
 
         private void chk_internalOperatorAllTypes_Checked(object sender, RoutedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            cb_internalOperaterType.IsEnabled = false;
+            cb_internalOperaterType.SelectedItem = null;
+            fillInternalColumnChart();
         }
 
         private void chk_internalOperatorAllTypes_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            cb_internalOperaterType.IsEnabled = true;
+            fillInternalColumnChart();
         }
 
         private void cb_internalOperatorOperators_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            fillInternalColumnChart();
         }
 
         private void chk_internalOperatorAllOperators_Checked(object sender, RoutedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            fillInternalColumnChart();
         }
 
         private void chk_internalOperatorAllOperators_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            fillInternalColumnChart();
         }
 
         private void dp_InternalOperatorEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            fillInternalColumnChart();
         }
 
         private void dp_internalOperatorStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            fillInternalColumnChart();
         }
 
         List<ExternalitemCombo> comboInternalItemsItems;
@@ -2299,9 +2339,9 @@ namespace POS.View.reports
             fillComboBranches(cb_internalItemsToBranches);
             fillComboInternalItemsItems();
             fillComboInternalItemsUnits();
-            //dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            //showSelectedTabColumn();
-            //fillExternalPieChart();
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            showSelectedTabColumn();
+            fillInternalColumnChart();
         }
         private void fillComboInternalItemsItems()
         {
@@ -2357,41 +2397,272 @@ namespace POS.View.reports
                 InvType = g.FirstOrDefault().InvType
             });
         }
-        private void fillComboInternalOperatorOperators()
-        {
-            cb_internalOperatorOperators.SelectedValuePath = "InvNum";
-            cb_internalOperatorOperators.DisplayMemberPath = "InvNum";
-            cb_internalOperatorOperators.ItemsSource = comboInternalOperatorOperator.GroupBy(x => x.InvNum).Select(g => new internalOperatorCombo
-            {
-                InvNum = g.FirstOrDefault().InvNum
-            });
-        }
+
         private IEnumerable<ItemTransferInvoice> fillListInternal(IEnumerable<ItemTransferInvoice> itemsTransfer, ComboBox comboFromBranch, ComboBox comboToBranch, ComboBox Items, ComboBox unit, DatePicker startDate, DatePicker endDate, CheckBox chkAllFromBranches, CheckBox chkAllToBranches, CheckBox chkAllItems, CheckBox chkAllUnits, CheckBox towWays)
         {
             var selectedFromBranch = comboFromBranch.SelectedItem as Branch;
-            var selectedToBranch = comboToBranch.SelectedItem as Branch;
-            var selectedItem = Items.SelectedItem as ExternalitemCombo;
-            var selectedUnit = unit.SelectedItem as ExternalUnitCombo;
 
-            var result = itemsTransfer.Where(x => (
-                  (selectedInternalTab == 0 ? (
-                           (comboFromBranch.SelectedItem != null ? (x.exportBranchId == selectedFromBranch.branchId) : true)
-                          && (comboToBranch.SelectedItem != null ? (x.importBranchId == selectedToBranch.branchId) : true)
-                          && (Items.SelectedItem != null ? (x.itemId == selectedItem.ItemId) : true)
-                          && (unit.SelectedItem != null ? (x.unitId == selectedUnit.UnitId) : true)
-                          && (dp_internalItemsStartDate.SelectedDate != null ? (x.IupdateDate >= startDate.SelectedDate) : true)
-                          && (dp_InternalItemsEndDate.SelectedDate != null ? (x.IupdateDate <= endDate.SelectedDate) : true)
-                          && (towWays.IsChecked == false ? (x.invType == "ex") : true)
-                          )
-                          : true
-            )));
 
-            return result;
+            if (selectedInternalTab == 0)
+            {
+
+                var selectedToBranch = comboToBranch.SelectedItem as Branch;
+                var selectedItem = Items.SelectedItem as ExternalitemCombo;
+                var selectedUnit = unit.SelectedItem as ExternalUnitCombo;
+                var result = itemsTransfer.Where(x => (
+
+                         (comboFromBranch.SelectedItem != null ? (x.exportBranchId == selectedFromBranch.branchId) : true)
+                        && (comboToBranch.SelectedItem != null ? (x.importBranchId == selectedToBranch.branchId) : true)
+                        && (Items.SelectedItem != null ? (x.itemId == selectedItem.ItemId) : true)
+                        && (unit.SelectedItem != null ? (x.unitId == selectedUnit.UnitId) : true)
+                        && (dp_internalItemsStartDate.SelectedDate != null ? (x.IupdateDate >= startDate.SelectedDate) : true)
+                        && (dp_InternalItemsEndDate.SelectedDate != null ? (x.IupdateDate <= endDate.SelectedDate) : true)
+                        && (towWays.IsChecked == false ? (x.invType == "ex") : true)
+
+          ));
+                return result;
+            }
+
+            else if (selectedInternalTab == 1)
+            {
+                var selectedToBranch = comboToBranch.SelectedItem as internalTypeCombo;
+                var result = itemsTransfer.Where(x => (
+
+                                       (comboFromBranch.SelectedItem != null ? (x.branchId == selectedFromBranch.branchId) : true)
+                                      && (comboToBranch.SelectedItem != null ? (x.invType == selectedToBranch.InvType) : true)
+
+                                      && (dp_internalItemsStartDate.SelectedDate != null ? (x.IupdateDate >= startDate.SelectedDate) : true)
+                                      && (dp_InternalItemsEndDate.SelectedDate != null ? (x.IupdateDate <= endDate.SelectedDate) : true)
+
+                        ));
+                return result;
+            }
+            return null;
+
         }
 
         private void Chk_internalItemsTwoWay_Checked(object sender, RoutedEventArgs e)
         {
             dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            fillInternalColumnChart();
+        }
+
+        private void Chk_internalItemsTwoWay_Unchecked(object sender, RoutedEventArgs e)
+        {
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            fillInternalColumnChart();
+        }
+        private void fillInternalRowChart()
+        {
+            MyAxis.Labels = new List<string>();
+            List<string> names = new List<string>();
+            List<int> pTemp = new List<int>();
+            List<int> sTemp = new List<int>();
+            List<int> pbTemp = new List<int>();
+            List<int> sbTemp = new List<int>();
+
+
+            var temp = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            if (selectedInternalTab == 1)
+            {
+                temp = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            }
+
+            var result = temp.GroupBy(x => new { x.branchId, x.invoiceId }).Select(x => new ItemTransferInvoice
+            {
+                invType = x.FirstOrDefault().invType,
+                branchId = x.FirstOrDefault().branchId
+            });
+
+            invCount = result.GroupBy(x => x.branchId).Select(x => new ItemTransferInvoice
+            {
+                PCount = x.Where(g => g.invType == "p").Count(),
+                SCount = x.Where(g => g.invType == "s").Count(),
+                PbCount = x.Where(g => g.invType == "pb").Count(),
+                SbCount = x.Where(g => g.invType == "sb").Count()
+            });
+
+
+
+
+            for (int i = 0; i < agentsCount.Count(); i++)
+            {
+                pTemp.Add(invCount.ToList().Skip(i).FirstOrDefault().PCount);
+                pbTemp.Add(invCount.ToList().Skip(i).FirstOrDefault().PbCount);
+                sTemp.Add(invCount.ToList().Skip(i).FirstOrDefault().SCount);
+                sbTemp.Add(invCount.ToList().Skip(i).FirstOrDefault().SbCount);
+            }
+            var tempName = temp.GroupBy(s => new { s.branchId, s.invType }).Select(s => new
+            {
+                locationName = s.FirstOrDefault().branchName
+            });
+            names.AddRange(tempName.Select(nn => nn.locationName));
+
+            SeriesCollection rowChartData = new SeriesCollection();
+            for (int i = 0; i < pTemp.Count(); i++)
+            {
+                MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+
+            rowChartData.Add(
+          new LineSeries
+          {
+              Values = pTemp.AsChartValues(),
+              Title = "Purchase"
+
+          });
+            rowChartData.Add(
+      new LineSeries
+      {
+          Values = pbTemp.AsChartValues(),
+          Title = "Purchase Returns"
+
+      });
+            rowChartData.Add(
+      new LineSeries
+      {
+          Values = sTemp.AsChartValues(),
+          Title = "Sale"
+
+      });
+            rowChartData.Add(
+      new LineSeries
+      {
+          Values = sbTemp.AsChartValues(),
+          Title = "Sale Returns"
+
+      });
+            rowChart.Series = rowChartData;
+            DataContext = this;
+        }
+
+        private void fillInternalColumnChart()
+        {
+            axcolumn.Labels = new List<string>();
+            List<string> names = new List<string>();
+
+            var temp = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            if (selectedInternalTab == 1)
+            {
+                temp = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            }
+
+            var res = temp.GroupBy(x => new { x.branchId, x.invNumber }).Select(x => new ItemTransferInvoice
+            {
+                invType = x.FirstOrDefault().invType,
+                branchId = x.FirstOrDefault().branchId,
+                branchName = x.FirstOrDefault().branchName
+            });
+            invTypeCount = res.GroupBy(x => x.branchId).Select(x => new ItemTransferInvoice
+            {
+                ImportCount = x.Where(g => g.invType == "im").Count(),
+                ExportCount = x.Where(g => g.invType == "ex").Count()
+            }
+            );
+
+            var tempName = res.GroupBy(s => new { s.branchId }).Select(s => new
+            {
+                itemName = s.FirstOrDefault().branchName,
+            });
+            names.AddRange(tempName.Select(nn => nn.itemName));
+
+            List<string> lable = new List<string>();
+            SeriesCollection columnChartData = new SeriesCollection();
+            List<int> cP = new List<int>();
+            List<int> cPb = new List<int>();
+
+
+            for (int i = 0; i < invTypeCount.Count(); i++)
+            {
+                cP.Add(invTypeCount.ToList().Skip(i).FirstOrDefault().ExportCount);
+                cPb.Add(invTypeCount.ToList().Skip(i).FirstOrDefault().ImportCount);
+                axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+
+            columnChartData.Add(
+            new StackedColumnSeries
+            {
+                Values = cP.AsChartValues(),
+                DataLabels = true,
+                Title = "Export"
+            });
+            columnChartData.Add(
+            new StackedColumnSeries
+            {
+                Values = cPb.AsChartValues(),
+                DataLabels = true,
+                Title = "Import"
+            });
+
+            DataContext = this;
+            cartesianChart.Series = columnChartData;
+            fillInternalPieChart();
+        }
+
+        private void fillInternalPieChart()
+        {
+            List<string> titles = new List<string>();
+            IEnumerable<decimal> x = null;
+            titles.Clear();
+            var temp = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            if (selectedInternalTab == 1)
+            {
+                temp = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            }
+
+            var titleTemp = temp.GroupBy(m => new { m.itemId, m.unitId }).Select(m => new
+            {
+                agentName = m.FirstOrDefault().itemName + "\n" + m.FirstOrDefault().unitName
+            });
+            titles.AddRange(titleTemp.Select(jj => jj.agentName));
+            var result = temp
+                .GroupBy(s => new { s.itemId, s.unitId })
+                .Select(s => new ItemTransferInvoice
+                {
+                    itemId = s.FirstOrDefault().itemId,
+                    unitId = s.FirstOrDefault().unitId,
+                    quantity = s.Sum(g => g.quantity)
+                });
+            if (selectedInternalTab == 0)
+            {
+                if (chk_internalItemsTwoWay.IsChecked == true)
+                {
+                    x = result.Select(m => (decimal)m.quantity / 2);
+                }
+                else
+                {
+                    x = result.Select(m => (decimal)m.quantity);
+                }
+            }
+            else if (selectedInternalTab==1)
+            {
+                if (cb_internalOperaterFromBranches.SelectedItem!=null)
+                {
+                    x = result.Select(m => (decimal)m.quantity);
+                }
+                else
+                {
+                    x = result.Select(m => (decimal)m.quantity / 2);
+                }
+            }
+
+            SeriesCollection piechartData = new SeriesCollection();
+            for (int i = 0; i < x.Count(); i++)
+            {
+                List<decimal> final = new List<decimal>();
+                List<string> lable = new List<string>();
+                final.Add(x.ToList().Skip(i).FirstOrDefault());
+                piechartData.Add(
+                  new PieSeries
+                  {
+                      Values = final.AsChartValues(),
+                      Title = titles.Skip(i).FirstOrDefault(),
+                      DataLabels = true,
+                  }
+              );
+            }
+            chart1.Series = piechartData;
+
         }
     }
 }

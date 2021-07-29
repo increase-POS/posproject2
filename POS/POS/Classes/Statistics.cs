@@ -294,11 +294,16 @@ namespace POS.Classes
         public string ItemUnits { get => itemUnits = itemName + " - " + unitName; set => itemUnits = value; }
         public int CusCount { get => cusCount; set => cusCount = value; }
         public int VenCount { get => venCount; set => venCount = value; }
+   
         public int PCount { get => pCount; set => pCount = value; }
         public int SCount { get => sCount; set => sCount = value; }
         public int PbCount { get => pbCount; set => pbCount = value; }
         public int SbCount { get => sbCount; set => sbCount = value; }
+        private int importCount;
+        private int exportCount;
         public string ITitemUnitName1 { get => ITitemUnitName = ITitemName + " - " + ITunitName; set => ITitemUnitName = value; }
+        public int ImportCount { get => importCount; set => importCount = value; }
+        public int ExportCount { get => exportCount; set => exportCount = value; }
     }
     class Statistics
     {

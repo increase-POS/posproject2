@@ -145,7 +145,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                                         <RowDefinition Height="auto"></RowDefinition>
                                     </Grid.RowDefinitions>
                                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0" Grid.ColumnSpan="6">
-                                        <Button Name="btn_byItem" Click="btn_byItem_Click" Margin="20,5,10,5" Background="Transparent" Padding="0" Height="auto" BorderThickness="0">
+                                        <Button Name="btn_byItem" Click="btn_byItem_Click" Margin="20,5,10,5" Background="Transparent" Padding="0" Height="Auto" BorderThickness="0">
                                             <StackPanel Height="40" Orientation="Horizontal">
                                                 <Path Name="path_byItem"  Fill="{StaticResource MainColorBlue}" Stretch="Fill"
                               HorizontalAlignment="Right" Grid.Column="0"  
@@ -1119,7 +1119,8 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
 
                                                 <CheckBox x:Name="chk_internalItemsTwoWay" 
                                                           Grid.Row="1" Grid.Column="4" Content="Two Ways"
-                                                          Checked="Chk_internalItemsTwoWay_Checked"></CheckBox>
+                                                          Checked="Chk_internalItemsTwoWay_Checked"
+                                                          Unchecked="Chk_internalItemsTwoWay_Unchecked"></CheckBox>
 
 
 
@@ -1204,7 +1205,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                                                 </Grid.ColumnDefinitions>
                                                 <ComboBox Name="cb_internalOperaterFromBranches"
                                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                                          materialDesign:HintAssist.Hint="From Branch/Store ...."
+                                                          materialDesign:HintAssist.Hint="Branch/Store ...."
                                                           Foreground="#4E4E4E"
                                                           TextBlock.FontSize="12" 
                                                           Background="#f8f8f8" 
@@ -1223,30 +1224,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                                                           Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
                                                           Checked="chk_internalOperaterFromAllBranches_Checked" 
                                                           Unchecked="chk_internalOperaterFromAllBranches_Unchecked"/>
-                                                <ComboBox Name="cb_internalOperaterToBranches"
-                                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                                          materialDesign:HintAssist.Hint="To Branch/Store ...."
-                                                          Foreground="#4E4E4E"
-                                                          TextBlock.FontSize="12" 
-                                                          Background="#f8f8f8" 
-                                                          BorderBrush="AliceBlue"
-                                                          BorderThickness="0,0,0,2" 
-                                                          Height="40"
-                                                          Margin="10,5,10,5"
-                                                          Padding="10,0,5,0"
-                                                          Grid.Row="1" Grid.Column="2"
-                                                          SelectionChanged="cb_internalOperaterToBranches_SelectionChanged"/>
-                                                <CheckBox x:Name="chk_internalOperaterToAllBranches" 
-                                                          Background="{StaticResource MainColorBlue}"
-                                                          Grid.Row="1"
-                                                          Grid.Column="3"
-                                                          Content="All"
-                                                          Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
-                                                          Checked="chk_internalOperaterToAllBranches_Checked" 
-                                                          Unchecked="chk_internalOperaterToAllBranches_Unchecked"/>
 
-                                                <CheckBox x:Name="chk_internalOperaterTwoWay" 
-                                                          Grid.Row="1" Grid.Column="4" Content="Two Ways"></CheckBox>
 
 
 
@@ -1254,7 +1232,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                                                 <ComboBox Name="cb_internalOperaterType"
                                                           Grid.Row="2"
                                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                                          materialDesign:HintAssist.Hint="Type ...."
+                                                          materialDesign:HintAssist.Hint="Operator ...."
                                                           Foreground="#4E4E4E" 
                                                           TextBlock.FontSize="12"
                                                           Background="#f8f8f8"
@@ -1276,29 +1254,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                                                           Checked="chk_internalOperatorAllTypes_Checked"
                                                           Unchecked="chk_internalOperatorAllTypes_Unchecked"/>
 
-                                                <ComboBox Name="cb_internalOperatorOperators"
-                                                          Grid.Row="2"
-                                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                                          materialDesign:HintAssist.Hint="Operator ...."
-                                                          Grid.Column="2"
-                                                          Foreground="#4E4E4E" 
-                                                          TextBlock.FontSize="12"
-                                                          Background="#f8f8f8"
-                                                          BorderBrush="AliceBlue"
-                                                          BorderThickness="0,0,0,2" 
-                                                          Height="40" 
-                                                          Margin="10,5,10,5"
-                                                          Padding="10,0,5,0"
-                                                          SelectionChanged="cb_internalOperatorOperators_SelectionChanged"  />
 
-                                                <CheckBox x:Name="chk_internalOperatorAllOperators"
-                                                          Background="{StaticResource MainColorBlue}"
-                                                          Grid.Row="2" 
-                                                          Grid.Column="3"
-                                                          Content="All" 
-                                                          Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
-                                                          Checked="chk_internalOperatorAllOperators_Checked"
-                                                          Unchecked="chk_internalOperatorAllOperators_Unchecked"/>
 
                                                 <DockPanel Grid.ColumnSpan="3" Grid.Row="2" Grid.Column="4" LastChildFill="False">
                                                     <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_InternalOperatorEndDate_SelectedDateChanged" Name="dp_InternalOperatorEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
@@ -1395,6 +1351,8 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                     <DataGrid.Columns>
 
                         <DataGridTextColumn x:Name="col_branch" Width="*" Header="Brnach" Binding="{Binding branchName}"/>
+                        <DataGridTextColumn x:Name="col_branchFrom" Width="*" Header="From Brnach" Visibility="Hidden" Binding="{Binding exportBranch}"/>
+                        <DataGridTextColumn x:Name="col_branchTo" Width="*" Header="To Brnach" Visibility="Hidden" Binding="{Binding importBranch}"/>
                         <DataGridTextColumn x:Name="col_agentType" Visibility="Hidden" Width="*" Header="Agent Type" Binding="{Binding agentType}"/>
 
                         <DataGridTextColumn x:Name="col_agent" Visibility="Hidden" Width="*" Header="Agent Name" Binding="{Binding agentName}"/>
