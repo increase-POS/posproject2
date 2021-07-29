@@ -1737,4 +1737,13 @@
   <data name="trWarningItemCountIs:" xml:space="preserve">
     <value>Item count is:</value>
   </data>
+  <data name="trDestroyAmountMoreExist" xml:space="preserve">
+    <value>Destroy Amount can not be more than real amount</value>
+  </data>
+  <data name="trErrorNoSerialToolTip" xml:space="preserve">
+    <value>There is an item with no serial</value>
+  </data>
+  <data name="trErrorTotalIsZeroToolTip" xml:space="preserve">
+    <value>Total is Zero</value>
+  </data>
 </root>

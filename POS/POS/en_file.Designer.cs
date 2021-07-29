@@ -997,6 +997,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destroy Amount can not be more than real amount.
+        /// </summary>
+        internal static string trDestroyAmountMoreExist {
+            get {
+                return ResourceManager.GetString("trDestroyAmountMoreExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Details.
         /// </summary>
         internal static string trDetails {
@@ -2140,6 +2149,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is an item with no serial.
+        /// </summary>
+        internal static string trErrorNoSerialToolTip {
+            get {
+                return ResourceManager.GetString("trErrorNoSerialToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password can not be less than 6 characters.
         /// </summary>
         internal static string trErrorPasswordLengthToolTip {
@@ -2172,6 +2190,15 @@ namespace POS {
         internal static string trErrorStartBeforEndToolTip {
             get {
                 return ResourceManager.GetString("trErrorStartBeforEndToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total is Zero.
+        /// </summary>
+        internal static string trErrorTotalIsZeroToolTip {
+            get {
+                return ResourceManager.GetString("trErrorTotalIsZeroToolTip", resourceCulture);
             }
         }
         

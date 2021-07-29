@@ -979,6 +979,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to كمية الاتلاف لا يمكن أن تكون أكبر من الكمية الحقيقية.
+        /// </summary>
+        internal static string trDestroyAmountMoreExist {
+            get {
+                return ResourceManager.GetString("trDestroyAmountMoreExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تفاصيل.
         /// </summary>
         internal static string trDetails {
@@ -2104,6 +2113,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to يوجد عنصر ليس له سيريال.
+        /// </summary>
+        internal static string trErrorNoSerialToolTip {
+            get {
+                return ResourceManager.GetString("trErrorNoSerialToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا يمكن أن تكون كلمة المرور أقل من 6 محارف.
         /// </summary>
         internal static string trErrorPasswordLengthToolTip {
@@ -2136,6 +2154,15 @@ namespace POS {
         internal static string trErrorStartBeforEndToolTip {
             get {
                 return ResourceManager.GetString("trErrorStartBeforEndToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إجمالي الفاتورة 0.
+        /// </summary>
+        internal static string trErrorTotalIsZeroToolTip {
+            get {
+                return ResourceManager.GetString("trErrorTotalIsZeroToolTip", resourceCulture);
             }
         }
         

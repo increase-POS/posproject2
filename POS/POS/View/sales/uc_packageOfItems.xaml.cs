@@ -348,7 +348,7 @@ namespace POS.View
                 items = await packageModel.GetPackages();
 
             else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
-            return items;
+            return items.Where(x => x.type == "p");
         }
 
         void RefrishItemsDatagrid(IEnumerable<Item> _items)
@@ -890,7 +890,8 @@ namespace POS.View
                 itemUnit.itemId = itemId;
                 itemUnit.unitId = unitpackageId;
                 itemUnit.price = price;
-                itemUnit.barcode = tb_barcode.Text;
+                itemUnit.defaultSale = 1;
+                \itemUnit.barcode = tb_barcode.Text;
                 itemUnit.createUserId = MainWindow.userID;
 
                 string s = await itemUnitModel.saveItemUnit(itemUnit);

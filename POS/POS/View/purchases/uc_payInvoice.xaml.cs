@@ -568,6 +568,9 @@ namespace POS.View
             SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
             SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip");
             SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
+          if(  decimal.Parse(tb_total.Text) == 0)
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorTotalIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
+
             //SectionData.validateSmalThanDateNowDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
             //return isValid;
         }
@@ -604,7 +607,7 @@ namespace POS.View
                 validateInvoiceValues();
                 TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
                 if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0
-                    && !tb.Text.Trim().Equals("")   )
+                    && !tb.Text.Trim().Equals("") && decimal.Parse(tb_total.Text) > 0  )
                 {
                     if (_InvoiceType == "pbd") //pbd means purchase bounse draft
                         await addInvoice("pbw", "pb"); // pbw means waiting purchase bounce 

@@ -861,13 +861,17 @@
                             <DataGrid.Resources>
                                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
                                 <Style x:Key="serialButtonStyle" TargetType="{x:Type Button}">
-                                    <Setter Property="Button.Visibility" Value="Visible" />
+                                    <Setter Property="Button.Visibility" Value="Collapsed" />
+                                    <Setter Property="Button.Foreground" Value="#E81123" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Path=valid}" Value="true">
+                                        <DataTrigger Binding="{Binding Path=type}" Value="sn">
                                             <Setter Property="Button.Visibility" Value="Visible" />
                                         </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=valid}" Value="true">
+                                            <Setter Property="Button.Foreground" Value="#2BB673" />
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding Path=valid}" Value="false">
-                                            <Setter Property="Button.Visibility" Value="Collapsed" />
+                                            <Setter Property="Button.Foreground" Value="#E65B65" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -917,11 +921,11 @@
                                 <DataGridTemplateColumn Width="30" Header="" IsReadOnly="True" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Margin="-10"   Click="serialItemsRow" 
-                                                   Padding="0" ToolTip="Serial Number"  
+                                            <Button Margin="-10"   Click="serialItemsRow"   x:Name="btn_serialItemsRow"
+                                                   Padding="0" ToolTip="{Binding Path=valid}"   
                                     Background="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource serialButtonStyle}">
-                                                <materialDesign:PackIcon Foreground="#E81123" Kind="InfoCircle"  
-                              HorizontalAlignment="Center" Grid.Column="0" 
+                                                <materialDesign:PackIcon Foreground="{Binding Path=Foreground, ElementName=btn_serialItemsRow}" Kind="InfoCircle"  
+                              HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="17" Height="17"/>
                                             </Button>
                                         </DataTemplate>

@@ -442,8 +442,10 @@ namespace POS.View
         {
             e.Handled = e.Key == Key.Space;
         }
-        private void validateInvoiceValues()
+        private async Task<bool> validateInvoiceValues()
         {
+            bool valid ;
+            bool available = true;
             SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
 
             if (cb_paymentProcessType.SelectedIndex != -1)
@@ -463,6 +465,26 @@ namespace POS.View
                         break;
                 }
             }
+           
+            if (_InvoiceType == "sd" || _InvoiceType == "or")
+                available = await checkItemsAmounts();
+            foreach(BillDetails item in billDetails)
+            {
+                if(item.valid == false)
+                {
+                    valid = false;
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorNoSerialToolTip") , animation: ToasterAnimation.FadeIn);
+
+                    return valid;
+                }
+            }
+            if (billDetails.Count > 0 && available && ((cb_paymentProcessType.SelectedIndex == 1 && cb_customer.SelectedIndex != -1)
+                                                || (cb_paymentProcessType.SelectedIndex == 0)
+                                                || (cb_paymentProcessType.SelectedIndex == 2 && !tb_processNum.Text.Equals("") && cb_card.SelectedIndex != -1)))
+                valid = true;
+            else
+                valid = false;
+          return valid;
         }
         private async Task<Boolean> checkItemsAmounts()
         {
@@ -659,13 +681,16 @@ namespace POS.View
                             itemT.quantity = billDetails[i].Count;
                             itemT.price = billDetails[i].Price;
                             itemT.itemUnitId = billDetails[i].itemUnitId;
-                            List<string> lst = billDetails[i].serialList.ToList();
                             string serialNum = "";
-                            for(int j = 0; j< lst.Count; j++)
+                            if (billDetails[i].serialList != null)
                             {
-                                serialNum += lst[j];
-                                if (j != lst.Count - 1)
-                                    serialNum += ",";
+                                List<string> lst = billDetails[i].serialList.ToList();                              
+                                for (int j = 0; j < lst.Count; j++)
+                                {
+                                    serialNum += lst[j];
+                                    if (j != lst.Count - 1)
+                                        serialNum += ",";
+                                }
                             }
                             itemT.itemSerial = serialNum;
                             itemT.createUserId = MainWindow.userID;
@@ -802,14 +827,12 @@ namespace POS.View
                 logInProcessing = false;
                 awaitSaveBtn(true);
                 //check mandatory inputs
-                validateInvoiceValues();
-                Boolean available = true;
-                if (_InvoiceType == "sd" || _InvoiceType == "or")
-                    available = await checkItemsAmounts();
+               bool valid = await validateInvoiceValues();
+               // Boolean available = true;
+                //if (_InvoiceType == "sd" || _InvoiceType == "or")
+                //    available = await checkItemsAmounts();
 
-                if (billDetails.Count > 0 && available && ((cb_paymentProcessType.SelectedIndex == 1 && cb_customer.SelectedIndex != -1)
-                                                || (cb_paymentProcessType.SelectedIndex == 0)
-                                                || (cb_paymentProcessType.SelectedIndex == 2 && !tb_processNum.Text.Equals("") && cb_card.SelectedIndex != -1)))
+                if (valid)
                 {
 
                     if (_InvoiceType == "sbd") //sbd means sale bounse draft
@@ -954,7 +977,7 @@ namespace POS.View
             wd_invoice w = new wd_invoice();
 
             // sale invoices
-            w.invoiceType = "s";
+            w.invoiceType = "s , sb";
             // w.branchCreatorId = MainWindow.branchID.Value;
             w.userId = MainWindow.userLogin.userId;
             w.duration = 1; // view drafts which updated during 1 last days 
@@ -1116,7 +1139,17 @@ namespace POS.View
             foreach (ItemTransfer itemT in invoiceItems)
             {
                 _SequenceNum++;
+                bool isValid = true;
                 decimal total = (decimal)(itemT.price * itemT.quantity);
+                List<string> serialNumLst = new List<string>();
+                if (itemT.itemSerial != "")
+                {
+                    string[] serialsArray = itemT.itemSerial.Split(',');
+                    foreach (string s in serialsArray)
+                        serialNumLst.Add(s.Trim());
+                }
+                if (itemT.itemType == "sn" && serialNumLst.Count < itemT.quantity && _InvoiceType == "sd")
+                    isValid = false;
                 billDetails.Add(new BillDetails()
                 {
                     ID = _SequenceNum,
@@ -1127,6 +1160,9 @@ namespace POS.View
                     Count = (int)itemT.quantity,
                     Price = (decimal)itemT.price,
                     Total = total,
+                    serialList = serialNumLst,
+                    type = itemT.itemType,
+                    valid = isValid,
                 });
             }
 
@@ -1323,10 +1359,7 @@ namespace POS.View
             else
                 tb_taxValue.Text = _Tax.ToString();
             total += taxValue;
-
             tb_sum.Text = _Sum.ToString();
-
-
             tb_total.Text = Math.Round(total, 2).ToString();
         }
         #region billdetails
@@ -1619,39 +1652,25 @@ namespace POS.View
         private async void addItemToBill(int itemId, int itemUnitId, string unitName, decimal price, bool valid)
         {
             item = items.ToList().Find(i => i.itemId == itemId);
+            bool isValid = true;
+  
+          
+                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == itemUnitId).FirstOrDefault());
             if (item.type == "sn")
             {
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_serialNum w = new wd_serialNum();
-                w.itemCount = 1;
-                w.valid = valid;
-                if (w.ShowDialog() == true)
-                {
-                    List<string> serialNumList;
-                    if (w.serialList != null)
-                        serialNumList = w.serialList.ToList();
-                    else
-                        serialNumList = new List<string>();
-                    addRowToBill(item.name, itemId, unitName, itemUnitId, 1, price, price, (decimal)item.taxes,item.type,w.valid, serialNumList);
-                }
-               
-                Window.GetWindow(this).Opacity = 1;
+                isValid = false;
             }
-            else
-            {
-                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == itemUnitId).FirstOrDefault());
-
-                if (index == -1)//item doesn't exist in bill
+            if (index == -1)//item doesn't exist in bill
                 {
                     // get item units
                     itemUnits = await itemUnitModel.GetItemUnits(itemId);
-                    //get item from list
-                  
+                
+               
 
-                    int count = 1;
+                int count = 1;
                     decimal total = count * price;
                     decimal tax = (decimal)(count * item.taxes);
-                    addRowToBill(item.name, item.itemId, unitName, itemUnitId, count, price, total, tax, item.type,true);
+                    addRowToBill(item.name, item.itemId, unitName, itemUnitId, count, price, total, tax, item.type,isValid);
                 }
                 else // item exist prevoiusly in list
                 {
@@ -1661,38 +1680,40 @@ namespace POS.View
                     billDetails[index].Count++;
                     billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
                     billDetails[index].Tax = (decimal)(billDetails[index].Count * itemTax);
+                billDetails[index].valid = isValid;
 
                     _Sum += billDetails[index].Price;
                     _Tax += billDetails[index].Tax;
 
                 }
-            }
+     
             refreshTotalValue();
             refrishBillDetails();
         }
         private void Dg_billDetails_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
-            int itemId = row.itemId;
-            item = items.ToList().Find(i => i.itemId == itemId);
-            if(item.type == "sn")
-            {
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_serialNum w = new wd_serialNum();
-                w.itemCount = row.Count;
-                w.serialList = row.serialList;
-                w.valid = row.valid;
-                if (w.ShowDialog() == true)
-                {
-                    if (w.serialList != null)
-                    {
-                        List<string> serialNumList = w.serialList;
-                        row.serialList = w.serialList.ToList();
+            //BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
+            //int itemId = row.itemId;
+            //item = items.ToList().Find(i => i.itemId == itemId);
+            //if(item.type == "sn")
+            //{
+            //    Window.GetWindow(this).Opacity = 0.2;
+            //    wd_serialNum w = new wd_serialNum();
+            //    w.itemCount = row.Count;
+            //    w.serialList = row.serialList;
+            //    w.valid = row.valid;
+            //    if (w.ShowDialog() == true)
+            //    {
+            //        if (w.serialList != null)
+            //        {
+            //            List<string> serialNumList = w.serialList;
+            //            row.serialList = w.serialList.ToList();
+            //            row.valid = w.valid;
                         
-                    }
-                }
-                Window.GetWindow(this).Opacity = 1;
-            }
+            //        }
+            //    }
+            //    Window.GetWindow(this).Opacity = 1;
+            //}
 
         }
         private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
@@ -2333,7 +2354,28 @@ namespace POS.View
 
         private void serialItemsRow(object sender, RoutedEventArgs e)
         {
-
+            BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
+            int itemId = row.itemId;
+            item = items.ToList().Find(i => i.itemId == itemId);
+            if (item.type == "sn")
+            {
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_serialNum w = new wd_serialNum();
+                w.itemCount = row.Count;
+                w.serialList = row.serialList;
+                w.valid = row.valid;
+                if (w.ShowDialog() == true)
+                {
+                    if (w.serialList != null)
+                    {
+                        List<string> serialNumList = w.serialList;
+                        row.serialList = w.serialList.ToList();
+                        row.valid = w.valid;
+                        refrishBillDetails();
+                    }
+                }
+                Window.GetWindow(this).Opacity = 1;
+            }
         }
 
        

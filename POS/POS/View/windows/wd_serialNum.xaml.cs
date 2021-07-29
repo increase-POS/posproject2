@@ -34,9 +34,7 @@ namespace POS.View.windows
 
         private static int _serialCount = 0;
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
-        {
-            if(serialList != null)
-            serialList.Clear();   
+        {  
             DialogResult = true;
             this.Close();
         }
@@ -60,6 +58,8 @@ namespace POS.View.windows
             fillSerialList();
             translate();
             #endregion
+            if(serialList == null)
+            serialList = new List<string>();
         }
 
         private void translate()

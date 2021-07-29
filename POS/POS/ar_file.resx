@@ -1716,4 +1716,13 @@
   <data name="trWarningItemCountIs:" xml:space="preserve">
     <value>عدد العناصر هو:</value>
   </data>
+  <data name="trDestroyAmountMoreExist" xml:space="preserve">
+    <value>كمية الاتلاف لا يمكن أن تكون أكبر من الكمية الحقيقية</value>
+  </data>
+  <data name="trErrorNoSerialToolTip" xml:space="preserve">
+    <value>يوجد عنصر ليس له سيريال</value>
+  </data>
+  <data name="trErrorTotalIsZeroToolTip" xml:space="preserve">
+    <value>إجمالي الفاتورة 0</value>
+  </data>
 </root>
