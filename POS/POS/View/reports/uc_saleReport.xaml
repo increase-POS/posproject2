@@ -837,7 +837,7 @@
                         <DataGridTextColumn x:Name="col_itQuantity" Width="*" Header="Quantity" Binding="{Binding ITquantity}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_price" Width="*" Header="Price" Binding="{Binding ITprice}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_tax" Width="*" Header="Tax" Binding="{Binding tax}" Visibility="Visible"/>
-                        <DataGridTextColumn x:Name="col_total" Width="*" Header="Total" Binding="{Binding total}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_total" Width="*" Header="Total" Binding="{Binding subTotal}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_totalNet" Width="*" Header="Total" Binding="{Binding totalNet}" Visibility="Visible"/>
                       
                         <DataGridTextColumn x:Name="col_coupon" Width="*" Header="Coupon" Binding="{Binding Copname}" Visibility="Hidden"/>

@@ -716,9 +716,9 @@ namespace POS.View.purchases
             col_count.Visibility = Visibility.Hidden;
             col_itQuantity.Visibility = Visibility.Hidden;
             col_price.Visibility = Visibility.Hidden;
-            col_total.Visibility = Visibility.Hidden;
             col_totalNet.Visibility = Visibility.Hidden;
             col_tax.Visibility = Visibility.Hidden;
+            col_subTotal.Visibility = Visibility.Hidden;
         }
         private void btn_branch_Click(object sender, RoutedEventArgs e)
         {
@@ -827,8 +827,7 @@ namespace POS.View.purchases
             col_item.Visibility = Visibility.Visible;
             col_itQuantity.Visibility = Visibility.Visible;
             col_price.Visibility = Visibility.Visible;
-            col_total.Visibility = Visibility.Visible;
-
+            col_subTotal.Visibility = Visibility.Visible;
         }
         #endregion
 
