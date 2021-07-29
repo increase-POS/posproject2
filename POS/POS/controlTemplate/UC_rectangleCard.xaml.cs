@@ -55,7 +55,7 @@ namespace POS.controlTemplate
                 rd[i] = new RowDefinition();
             }
             rd[0].Height = new GridLength(5, GridUnitType.Star);
-            rd[1].Height = new GridLength(16, GridUnitType.Star);
+            rd[1].Height = new GridLength(35, GridUnitType.Pixel);
             rd[2].Height = new GridLength(13, GridUnitType.Star);
             //if (cardViewitem.cardType == "sales")
                 rd[3].Height = new GridLength(20, GridUnitType.Star);
@@ -296,7 +296,7 @@ namespace POS.controlTemplate
             titleText.FontWeight = FontWeights.Bold;
             titleText.VerticalAlignment = VerticalAlignment.Top;
             titleText.HorizontalAlignment = HorizontalAlignment.Left;
-            titleText.TextWrapping = TextWrapping.Wrap;
+            titleText.TextWrapping = TextWrapping.WrapWithOverflow;
             Grid.SetRow(titleText, 1);
             /////////////////////////////////
 
