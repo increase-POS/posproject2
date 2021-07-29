@@ -119,6 +119,7 @@ namespace POS_Server.Controllers
                         }
                         if (transferObj[i].itemSerial == null)
                             transferObj[i].itemSerial = "";
+
                         var transferEntity = entity.Set<itemsTransfer>();
 
                         transferObj[i].invoiceId = invoiceId;
@@ -129,15 +130,15 @@ namespace POS_Server.Controllers
                         entity.itemsTransfer.Add(transferObj[i]);
                      
                     }
-                    try
-                    {
+                  //  try
+                  //  {
                         entity.SaveChanges();
-                    }
+                    //}
 
-                    catch
-                    {
-                        return false;
-                    }
+                  //  catch
+                  //  {
+                  //      return false;
+                   // }
                 }
 
             }
