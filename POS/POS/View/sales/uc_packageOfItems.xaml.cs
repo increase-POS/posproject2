@@ -891,7 +891,7 @@ namespace POS.View
                 itemUnit.unitId = unitpackageId;
                 itemUnit.price = price;
                 itemUnit.defaultSale = 1;
-                \itemUnit.barcode = tb_barcode.Text;
+                itemUnit.barcode = tb_barcode.Text;
                 itemUnit.createUserId = MainWindow.userID;
 
                 string s = await itemUnitModel.saveItemUnit(itemUnit);

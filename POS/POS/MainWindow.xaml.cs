@@ -56,7 +56,7 @@ namespace POS
         internal static int? userLogInID;
         internal static int? posID = 2;
         //مخزن الجميلية الرئيسي
-        internal static int? branchID = 2;
+        internal static int? branchID ;
         //مخزن الجميلية الفرقان
         //internal static int? branchID = 12;
         bool isHome = false;
@@ -64,6 +64,7 @@ namespace POS
         internal static decimal? tax = 2;
         internal static decimal? StorageCost = 100;
         public static int Idletime = 5;
+        public static int threadtime = 5;
 
         static public GroupObject groupObject = new GroupObject();
         static public List<GroupObject> groupObjects = new List<GroupObject>();
@@ -102,6 +103,8 @@ namespace POS
 
         public static DispatcherTimer timer;
         DispatcherTimer idletimer;//  logout timer
+        DispatcherTimer threadtimer;//  repeat timer for check other login
+
         static public MainWindow mainWindow;
          public MainWindow()
         {
@@ -115,6 +118,7 @@ namespace POS
 
 
         }
+
       async  void windowFlowDirection()
         {
             //if (Properties.Settings.Default.Lang.Equals(""))
@@ -158,7 +162,20 @@ namespace POS
             idletimer.Interval = TimeSpan.FromMinutes(Idletime);
             idletimer.Tick += timer_Idle;
             idletimer.Start();
+
+
+            //thread
+            threadtimer = new DispatcherTimer();
+            threadtimer.Interval = TimeSpan.FromSeconds(threadtime);
+            threadtimer.Tick += timer_Thread;
+            threadtimer.Start();
+
+
+        
+
             #endregion
+
+
 
             #region get default System info
 
@@ -314,6 +331,8 @@ namespace POS
             //    btn_sectionData.Visibility = Visibility.Visible;
             //else btn_sectionData.Visibility = Visibility.Collapsed;
         }
+
+
         void timer_Idle(object sender, EventArgs e)
         {
             if (IdleClass.IdleTime.Minutes >= Idletime)
@@ -321,6 +340,20 @@ namespace POS
 
                 BTN_logOut_Click(null, null);
                 idletimer.Stop();
+            }
+
+        }
+        async void timer_Thread(object sendert, EventArgs et)
+        {
+
+            //  User thruser = new User();
+            UsersLogs thrlog = new UsersLogs();
+            thrlog = await thrlog.GetByID((int)userLogInID);
+            if (thrlog.sOutDate != null)
+            {
+                BTN_logOut_Click(null, null);
+                threadtimer.Stop();
+
             }
 
         }

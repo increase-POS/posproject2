@@ -177,7 +177,9 @@ namespace POS.View.windows
         private async void btnLogIn_Click(object sender, RoutedEventArgs e)
         {//login
             if (logInProcessing)
-            { 
+            {
+
+
                 logInProcessing = false;
                 awaitSaveBtn(true);
                 clearValidate(txtUserName, p_errorUserName);
@@ -195,17 +197,24 @@ namespace POS.View.windows
                         //send user info to main window
                         MainWindow.userID = user.userId;
                         MainWindow.userLogin = user;
-                        
+
                         MainWindow.lang = await getUserLanguage(user.userId);
                         lang = MainWindow.lang;
                         //make user online
                         user.isOnline = 1;
-                        user.isActive = 1;
+                        //  user.isActive = 1;
+
+                        //checkother
+                        string str1 = await userLogsModel.checkOtherUser((int)MainWindow.userID);
+
                         string s = await userModel.saveUser(user);
 
                         //create lognin record
                         UsersLogs userLog = new UsersLogs();
                         userLog.posId = MainWindow.posID;
+                        Pos posmodel = new Pos();
+                        posmodel = await posmodel.getPosById((int)MainWindow.posID);
+                        MainWindow.branchID = posmodel.branchId;
                         userLog.userId = user.userId;
                         string str = await userLogsModel.Save(userLog);
 
@@ -223,10 +232,10 @@ namespace POS.View.windows
                         {
                             Properties.Settings.Default.userName = "";
                             Properties.Settings.Default.password = "";
-                            Properties.Settings.Default.Lang     = "";
+                            Properties.Settings.Default.Lang = "";
                         }
                         Properties.Settings.Default.Save();
-                        
+
                         //open main window and close this window
                         MainWindow main = new MainWindow();
                         main.Show();

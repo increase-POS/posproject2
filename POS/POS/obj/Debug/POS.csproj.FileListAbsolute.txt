@@ -2685,3 +2685,7 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_generatePackage.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_generatePackage.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_unitConversion.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_unitConversion.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_generatePackage.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_unitConversion.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_generatePackage.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_unitConversion.baml
