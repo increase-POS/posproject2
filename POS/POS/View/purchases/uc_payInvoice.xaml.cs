@@ -536,7 +536,7 @@ namespace POS.View
 
                         invoiceItems.Add(itemT);
                     }
-                    await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
+                string s =    await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                 }
