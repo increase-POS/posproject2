@@ -636,7 +636,7 @@
     <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="price" Type="Decimal" Precision="20" Scale="2" />
     <Property Name="itemUnitId" Type="Int32" />
-    <Property Name="itemSerial" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="itemSerial" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_itemsTransfer_invoices" FromRole="itemsTransfer" ToRole="invoices" />
     <NavigationProperty Name="itemsUnits" Relationship="Self.FK_itemsTransfer_itemsUnits" FromRole="itemsTransfer" ToRole="itemsUnits" />
     <NavigationProperty Name="locations" Relationship="Self.FK_itemsTransfer_locations" FromRole="itemsTransfer" ToRole="locations" />

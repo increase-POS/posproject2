@@ -200,6 +200,7 @@ namespace POS_Server.Controllers
                                              createUserId = I.createUserId,
                                              updateUserId = I.updateUserId,
                                              isNew = 0,
+                                             price = u.price,
 
                                          })
                                   .ToList();
@@ -236,6 +237,7 @@ namespace POS_Server.Controllers
                                              createUserId = I.createUserId,
                                              updateUserId = I.updateUserId,
                                              isNew = 0,
+                                             price = u.price,
 
                                          })
                                        .ToList();

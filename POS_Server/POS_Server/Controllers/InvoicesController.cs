@@ -892,11 +892,16 @@ namespace POS_Server.Controllers
 
             if (valid) // APIKey is valid
             {
+                List<string> statusL = new List<string>();
+                statusL.Add("tr");
+                statusL.Add("rc");
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invoicesList = (from b in entity.invoices.Where(x => x.invType == "s" && x.branchCreatorId == branchId)
                                         join s in entity.invoiceStatus on b.invoiceId equals s.invoiceId
-                                        where (s.status == "tr" && s.invStatusId == entity.invoiceStatus.Where(x => x.invoiceId == b.invoiceId).Max(x => x.invStatusId))
+                                        join u in entity.users on b.shipUserId equals u.userId into lj
+                                        from y in lj.DefaultIfEmpty()
+                                        where (statusL.Contains(s.status) && s.invStatusId == entity.invoiceStatus.Where(x => x.invoiceId == b.invoiceId).Max(x => x.invStatusId))
                                         select new InvoiceModel()
                                         {
                                             invoiceId = b.invoiceId,
@@ -928,6 +933,9 @@ namespace POS_Server.Controllers
                                             branchCreatorId = b.branchCreatorId,
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId = b.shipUserId,
+                                            agentName = b.agents.name,
+                                            shipUserName = y.name,
+                                            status = s.status,
                                         })
                     .ToList();
                     if (invoicesList != null)

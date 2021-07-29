@@ -567,7 +567,7 @@ ITbarcode=IU.barcode,
                                         uuserLast = JUPUS.lastname,
                                         uUserAccName = JUPUS.username,
                                         agentCompany = JAA.company,
-
+                                        subTotal=(IT.price*IT.quantity),
                                         //username
 
                                         //  I.invoiceId,
@@ -1650,7 +1650,7 @@ else
                                         uuserLast = JUPUS.lastname,
                                         uUserAccName = JUPUS.username,
                                         agentCompany = JAA.company,
-
+                                        subTotal = (IT.price * IT.quantity),
                                         //username
 
                                         //  I.invoiceId,
@@ -1717,7 +1717,7 @@ else
                                         I.invoiceId,
                                         count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
                                         I.invNumber,
-                                        I.agentId,
+                                        
                                         I.posId,
                                         I.invType,
                                         I.total,
@@ -1751,9 +1751,20 @@ else
                                    //     branchType = JBB.type,
                                         posName = JPP.name,
                                         posCode = JPP.code,
-                                        agentName = JAA.name,
+                                    
                                         agentCode = JAA.code,
-                                        agentType = JAA.type,
+                                        //
+                                        agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                        "unknown" : JAA.name,
+
+
+                                        //   agentType = JAA.type,
+                                        agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                        ? "c" : JAA.type,
+                                        agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                        ? 0 : I.agentId,
+
+                                     
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
                                         cUserAccName = JUU.username,
@@ -2061,10 +2072,7 @@ else
                                         uUserAccName = JUPUS.username,
                                         agentCompany = JAA.company,
 
-                                        //username
-
-                                        //  I.invoiceId,
-                                        //    JBB.name
+                                        subTotal = (IT.price * IT.quantity),
                                     }).ToList();
 
                     /*
@@ -2138,6 +2146,8 @@ notes
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
+                   // storageCost storageCostsr = new storageCost();
+            
                     var invListm = (from L in entity.locations
                                         //  from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
 
@@ -2205,6 +2215,10 @@ notes
 
                                         IULnote = IUL.note,
                                         IU.storageCostId,
+                                    
+                                     storageCostName= IU.storageCostId != null ? entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().name :"" ,
+                                      storageCostValue = IU.storageCostId != null ? entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().cost:0,
+
 
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
@@ -2503,11 +2517,12 @@ notes
                                         branchType = JBB.type,
                                         posName = JPP.name,
                                         posCode = JPP.code,
-                                     //   agentName =  JAA.name,
+                                        agentCode = JAA.code,
+                                        //   agentName =  JAA.name,
                                         agentName = ((JAA.name==null|| JAA.name == "") && (I.invType=="s"|| I.invType == "sb"))?
                                         "unknown" : JAA.name,
                                         
-                                        agentCode = JAA.code,
+                                        
                                         //   agentType = JAA.type,
                                         agentType =((JAA.name == null ||JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
                                         ?"c": JAA.type,

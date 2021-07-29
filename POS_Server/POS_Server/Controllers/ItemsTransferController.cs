@@ -117,6 +117,8 @@ namespace POS_Server.Controllers
                             Nullable<int> id = null;
                             transferObj[i].createUserId = id;
                         }
+                        if (transferObj[i].itemSerial == null)
+                            transferObj[i].itemSerial = "";
                         var transferEntity = entity.Set<itemsTransfer>();
 
                         transferObj[i].invoiceId = invoiceId;

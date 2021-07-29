@@ -39,6 +39,11 @@ namespace POS_Server.Models
         public Nullable<int> branchCreatorId { get; set; }
         public Nullable<int> shippingCompanyId { get; set; }
         public Nullable<int> shipUserId { get; set; }
+        public string agentName { get; set; }
+        public string shipUserName { get; set; }
+        public string status { get; set; }
+
+
     }
 
     public class CouponInvoiceModel
