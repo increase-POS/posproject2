@@ -470,7 +470,7 @@ namespace POS.View
         // add item with basic information 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
             {
                 //validate values
                 validateItemValues();
@@ -547,7 +547,7 @@ namespace POS.View
         //update item
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
             {
                 //validate values
                 validateItemValues();
@@ -623,7 +623,7 @@ namespace POS.View
 
         async void Btn_deleteService_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
             {
                 if (service.costId != 0)
                 {
@@ -647,7 +647,7 @@ namespace POS.View
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
             {
                 if ((!item.canDelete) && (item.isActive == 0))
                 {
@@ -724,7 +724,7 @@ namespace POS.View
         }
         async void Btn_addProperties_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
             {
                 validatePropertyValues();
 
@@ -831,7 +831,7 @@ namespace POS.View
         }
         async void Btn_deleteProperties_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
             {
                 if (itemProp.itemPropId != 0)
                 {
@@ -907,7 +907,7 @@ namespace POS.View
         // add barcode to item
         async void Btn_addBarcode_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "add"))
+            if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
             {
                 //check mandatory values
                 validateUnitValues();
@@ -1004,7 +1004,7 @@ namespace POS.View
         //**************update barcode******************
         async void Btn_updateBarcode_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "update"))
+            if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
             {
                 //check mandatory values
                 validateUnitValues();
@@ -1099,7 +1099,7 @@ namespace POS.View
         //**************delete barcode******************
         async void Btn_deleteBarcode_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "delete"))
+            if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
             {
                 if (itemUnit.itemUnitId != 0)
                 {
@@ -1986,7 +1986,7 @@ namespace POS.View
         /// <param name="e"></param>
         private async void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
             {
                 if (items is null)
                     await RefrishItems();
@@ -2177,7 +2177,7 @@ namespace POS.View
         #region Excel
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
                 this.Dispatcher.Invoke(() =>
                 {
@@ -2236,7 +2236,7 @@ namespace POS.View
 
     private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
             {
                 await RefrishItems();
                 Txb_searchitems_TextChanged(null, null);
@@ -2261,7 +2261,7 @@ namespace POS.View
 
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
                 Window.GetWindow(this).Opacity = 0.2;
             win_lvcCatalog win = new win_lvcCatalog(itemsQuery, 2);

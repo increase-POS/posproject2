@@ -4,6 +4,7 @@ using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -105,7 +106,25 @@ namespace POS.View.storage
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-          
+
+            if (billDetails.Count > 0 && (_ProcessType == "imd" || _ProcessType == "exd"))
+            {
+                #region Accept
+                MainWindow.mainWindow.Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                w.contentText = "Do you want save sale invoice in drafts?";
+                w.ShowDialog();
+                MainWindow.mainWindow.Opacity = 1;
+                #endregion
+                if (w.isOk)
+                    Btn_newDraft_Click(null, null);
+                else
+                    clearProcess();
+            }
+            else
+                clearProcess();
+
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -129,7 +148,10 @@ namespace POS.View.storage
             pos = await pos.getPosById(MainWindow.posID.Value);
             await RefrishBranches();
             await RefrishItems();
-
+            #region datagridChange
+            CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
+            ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+            #endregion
 
         }
         async Task RefrishBranches()
@@ -356,13 +378,23 @@ namespace POS.View.storage
             wd_invoice w = new wd_invoice();
 
             //w.invoiceType = "im ,ex";
-            if (MainWindow.groupObject.HasPermissionAction(importPermission, MainWindow.groupObjects, "one") &&
-                MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one"))
-                w.invoiceType = "im ,ex";
-            else if (MainWindow.groupObject.HasPermissionAction(importPermission, MainWindow.groupObjects, "one"))
-                w.invoiceType = "im";
-            else if (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one"))
-                w.invoiceType = "ex";
+            
+         if ((
+                MainWindow.groupObject.HasPermissionAction(importPermission, MainWindow.groupObjects, "one" )
+                || SectionData.isAdminPermision()
+                ) &&
+              (
+              MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one")
+              || SectionData.isAdminPermision()
+              ))
+                    w.invoiceType = "im ,ex";
+                else if (MainWindow.groupObject.HasPermissionAction(importPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                    w.invoiceType = "im";
+                else if (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one")|| SectionData.isAdminPermision())
+                    w.invoiceType = "ex";
+
+            
+
             w.condition = "order";
             w.title = MainWindow.resourcemanager.GetString("trOrders");
             w.branchId = MainWindow.branchID.Value;
@@ -393,7 +425,7 @@ namespace POS.View.storage
 
         private async void Btn_ordersWait_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
@@ -428,13 +460,7 @@ namespace POS.View.storage
             }
            
         }
-        private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var cmb = sender as ComboBox;
-
-            //if (dg_billDetails.SelectedIndex != -1)
-            //    billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
-        }
+        
 
         private void Btn_items_Click(object sender, RoutedEventArgs e)
         {
@@ -761,6 +787,7 @@ namespace POS.View.storage
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete hidden
                 dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
+                cb_processType.IsEnabled = true;
                 cb_branch.IsEnabled = true;
                 tb_barcode.IsEnabled = true;
                 btn_save.IsEnabled = true;
@@ -931,10 +958,10 @@ namespace POS.View.storage
         {
             if (
                 ((_ProcessType == "im" || _ProcessType == "imd") 
-                && (MainWindow.groupObject.HasPermissionAction(importPermission, MainWindow.groupObjects, "one")))
+                && (MainWindow.groupObject.HasPermissionAction(importPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()))
                 || 
                 ((_ProcessType == "ex" || _ProcessType == "exd")
-                && (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one")))
+                && (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()))
                 )
             { 
            bool valid =  validateOrder();
@@ -1081,7 +1108,7 @@ namespace POS.View.storage
 
         private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
             }
@@ -1090,7 +1117,7 @@ namespace POS.View.storage
         }
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
             }
@@ -1100,7 +1127,7 @@ namespace POS.View.storage
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
             }
@@ -1110,7 +1137,7 @@ namespace POS.View.storage
 
         private void Btn_package_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(packagePermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(packagePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
             }
@@ -1120,12 +1147,54 @@ namespace POS.View.storage
 
         private void Btn_unitConversion_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(unitConversionPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(unitConversionPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+        private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cmb = sender as ComboBox;
+
+            if (dg_billDetails.SelectedIndex != -1 && cmb != null)
+                billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+        }
+        private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            //billDetails
+            int count = 0;
+            foreach (var item in billDetails)
+            {
+                if (dg_billDetails.Items.Count != 0)
+                {
+                    if (dg_billDetails.Items.Count > 1)
+                    {
+                        var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                        if (cell != null)
+                        {
+                            var cp = (ContentPresenter)cell.Content;
+                            var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
+                            //var combo = (combo)cell.Content;
+                            combo.SelectedValue = (int)item.itemUnitId;
+                            count++;
+                        }
+                    }
+
+                }
+            }
+
+        }
+        private void Cbm_unitItemDetails_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            //billDetails
+            if (billDetails.Count == 1)
+            {
+                var cmb = sender as ComboBox;
+                cmb.SelectedValue = (int)billDetails[0].itemUnitId;
+            }
+        }
+
     }
 }

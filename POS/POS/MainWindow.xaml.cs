@@ -286,7 +286,8 @@ namespace POS
         }
         void permission()
         {
-            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+            if (!SectionData.isAdminPermision())
+                foreach (Button button in FindControls.FindVisualChildren<Button>(this))
             {
                 //if (path.Name == "path_" + button.Tag)
                 //{
@@ -401,12 +402,25 @@ namespace POS
                 T.Visibility = Visibility.Hidden;
             else T.Visibility = Visibility.Visible;
         }
-
-        private async void BTN_Close_Click(object sender, RoutedEventArgs e)
+        private  void BTN_logOut_Click(object sender, RoutedEventArgs e)
         {
+            close();
+            Application.Current.Shutdown();
+            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+        }
+        async void close()
+        {
+            //log out
+            //update lognin record
             await updateLogninRecord();
             timer.Stop();
-            System.Windows.Application.Current.Shutdown();
+            idletimer.Stop();
+            threadtimer.Stop();
+        }
+        private  void BTN_Close_Click(object sender, RoutedEventArgs e)
+        {
+            close();
+            Application.Current.Shutdown();
         }
         //protected override void OnClosed(EventArgs e)
         //{
@@ -455,7 +469,7 @@ namespace POS
             tt_catalog.Content = resourcemanager.GetString("trCatalog");
             txt_catalog.Text = resourcemanager.GetString("trCatalog");
             tt_storage.Content = resourcemanager.GetString("trStorage");
-            txt_storage.Text = resourcemanager.GetString("trStorage");
+            txt_storage.Text = resourcemanager.GetString("trStore");
             tt_purchase.Content = resourcemanager.GetString("trPurchases");
             txt_purchases.Text = resourcemanager.GetString("trPurchases");
             tt_sales.Content = resourcemanager.GetString("trSales");
@@ -604,21 +618,7 @@ namespace POS
 
             return true;
         }
-        private async void BTN_logOut_Click(object sender, RoutedEventArgs e)
-        {//log out
-         //update lognin record
-           await updateLogninRecord();
-      
-            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-            Application.Current.Shutdown();
-
-            ////open login window and close this window
-            //winLogIn log = new winLogIn();
-            //log.Show();
-            //this.Close();
-            ////BTN_Close_Click(null , null);
-        }
-
+       
         private void BTN_SectionData_Click(object sender, RoutedEventArgs e)
         {
             //if (MainWindow.groupObject.HasPermission(BTN_sectionData.Tag.ToString(), MainWindow.groupObjects))
@@ -660,12 +660,14 @@ namespace POS
 
         }
 
-        private void Mi_changePassword_Click(object sender, RoutedEventArgs e)
+        private async void Mi_changePassword_Click(object sender, RoutedEventArgs e)
         {//change password
             Window.GetWindow(this).Opacity = 0.2;
             wd_changePassword w = new wd_changePassword();
             w.ShowDialog();
             Window.GetWindow(this).Opacity = 1;
+
+            userLogin = await userModel.getUserById(w.userID);
         }
 
       

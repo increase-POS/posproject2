@@ -21,7 +21,7 @@ namespace POS.Classes
         public string storageCostName { get; set; }
         public decimal storageCostValue { get; set; }
 
-       
+
         //
         public int min { get; set; }
         public int max { get; set; }
@@ -99,6 +99,45 @@ namespace POS.Classes
         private string loactionName;
         public string LoactionName { get => loactionName = x + y + z; set => loactionName = value; }
         public string ItemUnits { get => itemUnits = itemName + " - " + unitName; set => itemUnits = value; }
+
+    }
+
+
+    public class InventoryClass
+
+    {
+        public Nullable<int> branchId { get; set; }
+        public string branchName { get; set; }
+        public int inventoryILId { get; set; }
+        public Nullable<bool> isDestroyed { get; set; }
+        public Nullable<int> amount { get; set; }
+        public Nullable<int> amountDestroyed { get; set; }
+        public Nullable<int> realAmount { get; set; }
+        public Nullable<int> itemLocationId { get; set; }
+        public Nullable<byte> isActive { get; set; }
+        public string notes { get; set; }
+        public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<int> createUserId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
+        public int itemId { get; set; }
+        public string itemName { get; set; }
+
+        public int unitId { get; set; }
+        public int itemUnitId { get; set; }
+        public string unitName { get; set; }
+        public int sectionId { get; set; }
+        public string Secname { get; set; }
+
+        public string x { get; set; }
+        public string y { get; set; }
+        public string z { get; set; }
+        public string itemType { get; set; }
+        public Nullable<System.DateTime> inventoryDate { get; set; }
+        public string inventoryNum { get; set; }
+        public string inventoryType { get; set; }
+        public int inventoryId { get; set; }
+
 
     }
 
@@ -223,7 +262,7 @@ namespace POS.Classes
         public string uuserLast { get; set; }
         public string uUserAccName { get; set; }
         private string agentTypeAgent;
-        public string AgentTypeAgent { get => agentTypeAgent = agentType + "-" + agentName; set => agentTypeAgent = value; }
+        public string AgentTypeAgent { get => agentType == "v" ? agentTypeAgent = "Vendor" + "-" + agentName : agentTypeAgent = "Customer" + "-" + agentName; set => agentTypeAgent = value; }
         public int countPb { get; set; }
         public int countD { get; set; }
         public Nullable<decimal> totalPb { get; set; }
@@ -259,6 +298,7 @@ namespace POS.Classes
         public Nullable<int> CopcreateUserId { get; set; }
         public Nullable<int> CopupdateUserId { get; set; }
         public string Copbarcode { get; set; }
+        public Nullable<decimal> couponTotalValue { get; set; }
         // offer
 
         public int OofferId { get; set; }
@@ -276,6 +316,8 @@ namespace POS.Classes
         public string Onotes { get; set; }
         public Nullable<int> Oquantity { get; set; }
         public int Oitemofferid { get; set; }
+        public Nullable<decimal> offerTotalValue { get; set; }
+
         //external
         public int movbranchid { get; set; }
         public string movbranchname { get; set; }
@@ -294,7 +336,7 @@ namespace POS.Classes
         public string ItemUnits { get => itemUnits = itemName + " - " + unitName; set => itemUnits = value; }
         public int CusCount { get => cusCount; set => cusCount = value; }
         public int VenCount { get => venCount; set => venCount = value; }
-   
+
         public int PCount { get => pCount; set => pCount = value; }
         public int SCount { get => sCount; set => sCount = value; }
         public int PbCount { get => pbCount; set => pbCount = value; }
@@ -1106,6 +1148,54 @@ namespace POS.Classes
 
         #endregion
 
+
+        // الجرد
+        #region
+        // عناصر الجرد
+
+        public async Task<List<InventoryClass>> GetInventory()
+        {
+            List<InventoryClass> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetInventory");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<InventoryClass>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<InventoryClass>();
+                }
+                return list;
+            }
+        }
+
+
+        #endregion
         public class itemCombo
         {
             private int itemId;
@@ -1330,6 +1420,22 @@ namespace POS.Classes
         {
             List<internalOperatorCombo> iulist = new List<internalOperatorCombo>();
             iulist = ITInvoice.Select(g => new internalOperatorCombo { BranchId = g.branchId, InvNum = g.invNumber }).ToList();
+            return iulist;
+        }
+        public class StocktakingArchivesTypeCombo
+        {
+            private int? branchId;
+            private string inventoryType;
+
+            public int? BranchId { get => branchId; set => branchId = value; }
+            public string InventoryType { get => inventoryType; set => inventoryType = value; }
+        }
+
+
+        public List<StocktakingArchivesTypeCombo> getStocktakingArchivesTypeCombo(List<InventoryClass> ITInvoice)
+        {
+            List<StocktakingArchivesTypeCombo> iulist = new List<StocktakingArchivesTypeCombo>();
+            iulist = ITInvoice.Select(g => new StocktakingArchivesTypeCombo { BranchId = g.branchId, InventoryType = g.inventoryType }).ToList();
             return iulist;
         }
 

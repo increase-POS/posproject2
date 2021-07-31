@@ -1,4 +1,5 @@
 ﻿using netoaster;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,7 +85,7 @@ namespace POS.View.sales
 
         private void Btn_add_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
             {
             }
             else
@@ -94,7 +95,7 @@ namespace POS.View.sales
         private void Btn_update_Click(object sender, RoutedEventArgs e)
         {
 
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
             {
             }
             else
@@ -104,7 +105,7 @@ namespace POS.View.sales
         private void Btn_delete_Click(object sender, RoutedEventArgs e)
         {
 
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
             {
             }
             else
@@ -128,7 +129,7 @@ namespace POS.View.sales
 
         private void Btn_customers_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(customersPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(customersPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
             }
             else
@@ -137,7 +138,7 @@ namespace POS.View.sales
 
         private void Btn_subscriptionFees_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(subscriptionFeesPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(subscriptionFeesPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
 
@@ -148,7 +149,7 @@ namespace POS.View.sales
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
             }
             else
@@ -157,7 +158,7 @@ namespace POS.View.sales
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
 
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
             }
             else
@@ -167,7 +168,7 @@ namespace POS.View.sales
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
 
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
             }
             else
@@ -177,7 +178,7 @@ namespace POS.View.sales
         private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
 
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
             }
             else

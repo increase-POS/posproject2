@@ -429,7 +429,7 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Purchases Bill" x:Name="txt_payInvoice" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
+                        <TextBlock Text="Purchases Order" x:Name="txt_payInvoice" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                      VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" Margin="10,10,5,5"/>
                         <TextBlock Grid.Row="0"  Text="" x:Name="txt_invNumber"  Foreground="#4E4E4E" 

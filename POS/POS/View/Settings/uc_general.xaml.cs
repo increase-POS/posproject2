@@ -60,7 +60,7 @@ namespace POS.View.Settings
 
         private void Btn_companyInfo_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
         Window.GetWindow(this).Opacity = 0.2;
             wd_companyInfo w = new wd_companyInfo();
@@ -221,19 +221,19 @@ namespace POS.View.Settings
             txt_language.Text = MainWindow.resourcemanager.GetString("trLanguage");
             txt_currency.Text = MainWindow.resourcemanager.GetString("trCurrency");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
-            txt_notification.Text = MainWindow.resourcemanager.GetString("trNotification");
+            //txt_notification.Text = MainWindow.resourcemanager.GetString("trNotification");
             //txt_storageCost.Text = MainWindow.resourcemanager.GetString("trStorageCost");
-            txt_notifhint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
-            txtOffers.Text = MainWindow.resourcemanager.GetString("trOffer");
-            txt_offerHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
-            txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
-            txt_couponHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
+            //txt_notifhint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
+            //txtOffers.Text = MainWindow.resourcemanager.GetString("trOffer");
+            //txt_offerHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
+            //txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
+            //txt_couponHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
             txt_adminChangePassword.Text = MainWindow.resourcemanager.GetString("trChangePassword");
             txt_adminChangePasswordHint.Text = MainWindow.resourcemanager.GetString("trChangePasswordHint");
             txt_sms.Text = MainWindow.resourcemanager.GetString("trSms");
             txt_smsHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
-            txt_emails.Text = MainWindow.resourcemanager.GetString("trEmails");
-            txt_emailHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
+            //txt_emails.Text = MainWindow.resourcemanager.GetString("trEmails");
+            //txt_emailHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
             txt_backUp.Text = MainWindow.resourcemanager.GetString("trBackUp/Restore");
             txt_backUpHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
             txt_dashBoard.Text = MainWindow.resourcemanager.GetString("trDashBoard");
@@ -248,7 +248,7 @@ namespace POS.View.Settings
 
         private async void Btn_saveRegion_Click(object sender, RoutedEventArgs e)
         {//save region
-            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 string s = "";
             SectionData.validateEmptyComboBox(cb_region , p_errorRegion , tt_errorRegion , "trEmptyRegion");
@@ -278,7 +278,7 @@ namespace POS.View.Settings
 
         private async void Btn_saveLanguage_Click(object sender, RoutedEventArgs e)
         {//save language
-            if (MainWindow.groupObject.HasPermissionAction(usersSettingsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(usersSettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 SectionData.validateEmptyComboBox(cb_language , p_errorLanguage , tt_errorLanguage , "trEmptyLanguage");
             if (!cb_language.Text.Equals(""))
@@ -339,7 +339,7 @@ namespace POS.View.Settings
         }
         private async void Btn_saveTax_Click(object sender, RoutedEventArgs e)
         {//save Tax
-            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
 
@@ -371,7 +371,7 @@ namespace POS.View.Settings
 
         private async void Btn_saveCurrency_Click(object sender, RoutedEventArgs e)
         {//save currency
-            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
             }
             else
@@ -430,18 +430,21 @@ namespace POS.View.Settings
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorLanguage, tt_errorLanguage, "trEmptyLanguage");
             }
         }
-
-        private void Btn_changePassword_Click(object sender, RoutedEventArgs e)
+        User userModel = new User();
+        User user = new User();
+        private async void Btn_changePassword_Click(object sender, RoutedEventArgs e)
         {//change password
-            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_adminChangePassword w = new wd_adminChangePassword();
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
 
+                //update user in main window
+                user = await userModel.getUserById(w.userID);
+                MainWindow.userLogin = user;
 
-
-            Window.GetWindow(this).Opacity = 0.2;
-            wd_adminChangePassword w = new wd_adminChangePassword();
-            w.ShowDialog();
-            Window.GetWindow(this).Opacity = 1;
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -454,7 +457,7 @@ namespace POS.View.Settings
 
         //private async void Btn_saveStorageCost_Click(object sender, RoutedEventArgs e)
         //{//save storage cost
-        //    if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+        //    if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one")|| SectionData.isAdminPermision())
         //    {
         //        SectionData.validateEmptyTextBox(tb_storageCost , p_errorStorageCost , tt_errorStorageCost , "trEmptyStoreCost");
         //    if (!tb_storageCost.Text.Equals(""))

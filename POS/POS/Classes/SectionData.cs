@@ -663,5 +663,11 @@ namespace POS.Classes
             });
             itemsViewOriginal.Refresh();
         }
+       static public bool isAdminPermision()
+        {
+            if (MainWindow.userLogin.userId == 1 || MainWindow.userLogin.userId == 2)
+                return true;
+            return false;
+        }
     }
 }

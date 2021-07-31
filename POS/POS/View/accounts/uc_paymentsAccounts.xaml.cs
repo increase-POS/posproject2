@@ -85,6 +85,7 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_docNum, MainWindow.resourcemanager.GetString("trDocNumHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_docNumCheque, MainWindow.resourcemanager.GetString("trDocNumHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_docNumCard, MainWindow.resourcemanager.GetString("trProcessNumHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_docDate, MainWindow.resourcemanager.GetString("trDocDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
@@ -104,6 +105,8 @@ namespace POS.View.accounts
             tt_docNum.Content = MainWindow.resourcemanager.GetString("trDocNumTooltip");
             tt_docDate.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
             tt_docNumCheque.Content = MainWindow.resourcemanager.GetString("trDocNumTooltip");
+            tt_docNumCard.Content = MainWindow.resourcemanager.GetString("trProcessNumTooltip");
+
             tt_card.Content = MainWindow.resourcemanager.GetString("trCardTooltip");
             tt_cash.Content = MainWindow.resourcemanager.GetString("trCashTooltip");
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
@@ -136,6 +139,7 @@ namespace POS.View.accounts
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
+            #region translate
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -146,6 +150,8 @@ namespace POS.View.accounts
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucPaymentsAccounts.FlowDirection = FlowDirection.RightToLeft;
             }
+            translate();
+            #endregion
 
             #region Style Date
             /////////////////////////////////////////////////////////////
@@ -220,7 +226,6 @@ namespace POS.View.accounts
             dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
             dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
 
-            translate();
 
             //dg_paymentsAccounts.ItemsSource = await cashModel.GetCashTransferAsync("p", "v");
             await RefreshCashesList();
@@ -262,8 +267,6 @@ namespace POS.View.accounts
 
                 if (cashtrans != null)
                 {
-             //       MessageBox.Show(cashtrans.cashTransId.ToString()+"-"+ cashtrans.bondId.ToString());
-
                     cb_depositTo.SelectedValue = cashtrans.side;
                     ///////////////////////////
                     //tb_transNum.IsEnabled = false;
@@ -277,6 +280,7 @@ namespace POS.View.accounts
                     dp_docDate.IsEnabled = false;
                     tb_docNumCheque.IsEnabled = false;
                     dp_docDateCheque.IsEnabled = false;
+                    tb_docNumCard.IsEnabled = false;
                     cb_card.IsEnabled = false;
                     tb_cash.IsEnabled = false;
                     tb_note.IsEnabled = false;
@@ -342,12 +346,12 @@ namespace POS.View.accounts
             cashesQueryExcel = cashesQuery;
             RefreshCashView();
         }
-        string s = "0", s1 = "false";
 
+        string s = "0", s1 = "false";
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//save
             s = "0"; s1 = "";
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 //chk empty cash
                 SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
@@ -369,7 +373,7 @@ namespace POS.View.accounts
                 //chk empty doc num
                 if (grid_cheque.IsVisible)
                 {
-                    SectionData.validateEmptyTextBox(tb_docNumCheque, p_errorDocNumCheque, tt_errorDocNum, "trEmptyDocNumToolTip");
+                    SectionData.validateEmptyTextBox(tb_docNumCheque, p_errorDocNumCheque, tt_errorDocNumCheque, "trEmptyDocNumToolTip");
                     //SectionData.validateEmptyTextBox(dpDate, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
                 }
                 else
@@ -377,7 +381,15 @@ namespace POS.View.accounts
                     SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
                     //SectionData.clearValidate(dpDate, p_errorDocNum);
                 }
-
+                //chk empty process num
+                if (tb_docNumCard.IsVisible)
+                {
+                    SectionData.validateEmptyTextBox(tb_docNumCard, p_errorDocCard, tt_docNumCard , "trEmptyProcessNumToolTip");
+                }
+                else
+                {
+                    SectionData.clearValidate(tb_docNumCard , p_errorDocCard);
+                }
                 //chk empty deposit to
                 SectionData.validateEmptyComboBox(cb_depositTo, p_errorDepositTo, tt_errorDepositTo, "trErrorEmptyDepositToToolTip");
 
@@ -417,6 +429,7 @@ namespace POS.View.accounts
                      (((tb_docNumCheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!tb_docNumCheque.IsVisible)) &&
                      (((dp_docDate.IsVisible) && (!dp_docDate.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
                      (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible)) &&
+                     (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
                      await chkEnoughBalance(decimal.Parse(tb_cash.Text))
                      )
                 {
@@ -428,7 +441,7 @@ namespace POS.View.accounts
                     cash.transType = "p";
                     cash.posId = MainWindow.posID.Value;
                     //cash.transNum = await SectionData.generateNumber('p', cb_depositTo.SelectedValue.ToString());
-                    cash.transNum = await cashModel.generateCashNumber("pv");
+                    cash.transNum = await cashModel.generateCashNumber(cash.transType+ cb_depositTo.SelectedValue.ToString());
                     cash.cash = decimal.Parse(tb_cash.Text);
                     cash.notes = tb_note.Text;
                     cash.createUserId = MainWindow.userID;
@@ -445,8 +458,10 @@ namespace POS.View.accounts
                         cash.userId = Convert.ToInt32(cb_recipientU.SelectedValue);
 
                     if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                    {
                         cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
-
+                        cash.docNum = tb_docNumCard.Text;
+                    }
                     if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
                         //cash.docNum = await SectionData.generateNumberBond('p', "bnd");
                         cash.docNum = await cashModel.generateDocNumber("pbnd");
@@ -575,26 +590,27 @@ namespace POS.View.accounts
             //cb_recipient.SelectedIndex = -1;
             cb_paymentProcessType.SelectedIndex = -1;
             cb_card.SelectedIndex = -1;
+            cb_card.Visibility = Visibility.Collapsed;
             tb_docNum.Clear();
             tb_docNumCheque.Clear();
+            tb_docNumCard.Clear();
             dp_docDate.SelectedDate = null;
             tb_cash.Clear();
             tb_note.Clear();
             cb_recipientV.Visibility = Visibility.Collapsed;
             cb_recipientC.Visibility = Visibility.Collapsed;
             cb_recipientU.Visibility = Visibility.Collapsed;
-
-            grid_document.Visibility = Visibility.Collapsed ;
-
-            SectionData.clearValidate(tb_docNum, p_errorDocNum);
-            SectionData.clearValidate(tb_cash, p_errorCash);
             if (grid_document.IsVisible)
             {
                 TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
-                SectionData.clearValidate(dpDate, p_errorDocNum);
-
+                SectionData.clearValidate(dpDate, p_errorDocDate);
             }
+            grid_document.Visibility = Visibility.Collapsed ;
+            grid_cheque.Visibility = Visibility.Collapsed;
             SectionData.clearValidate(tb_docNum, p_errorDocNum);
+            SectionData.clearValidate(tb_cash, p_errorCash);
+            SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
+            SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
             SectionData.clearComboBoxValidate(cb_depositTo, p_errorDepositTo);
             SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
             SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
@@ -612,6 +628,7 @@ namespace POS.View.accounts
             tb_docNum.IsEnabled = true;
             dp_docDate.IsEnabled = true;
             tb_docNumCheque.IsEnabled = true;
+            tb_docNumCard.IsEnabled = true;
             dp_docDateCheque.IsEnabled = true;
             cb_card.IsEnabled = true;
             tb_cash.IsEnabled = true;
@@ -648,7 +665,7 @@ namespace POS.View.accounts
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
 
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 this.Dispatcher.Invoke(() =>
             {
@@ -691,7 +708,7 @@ namespace POS.View.accounts
 
         private void Btn_image_Click(object sender, RoutedEventArgs e)
         {//image
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 if (cashtrans != null || cashtrans.cashTransId != 0)
             {
@@ -722,15 +739,21 @@ namespace POS.View.accounts
             TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
             TextBox dpDateCheque = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDateCheque);
 
-
             switch (cb_paymentProcessType.SelectedIndex)
             {
 
                 case 0://cash
-                    grid_document.Visibility = Visibility.Collapsed; tb_docNum.Clear();dp_docDate.SelectedDate = null;
-                    grid_cheque.Visibility = Visibility.Collapsed; tb_docNumCheque.Clear(); dp_docDateCheque.SelectedDate = null;
-                    cb_card.Visibility = Visibility.Collapsed;   cb_card.SelectedIndex = -1;
+                    grid_document.Visibility = Visibility.Collapsed;
+                    tb_docNum.Clear();
+                    dp_docDate.SelectedDate = null;
+                    grid_cheque.Visibility = Visibility.Collapsed;
+                    tb_docNumCheque.Clear();
+                    dp_docDateCheque.SelectedDate = null;
+                    cb_card.Visibility = Visibility.Collapsed;
+                    cb_card.SelectedIndex = -1;
+                    tb_docNumCard.Visibility = Visibility.Collapsed;
                     SectionData.clearValidate(tb_docNum, p_errorDocNum);
+                    SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                     //SectionData.clearValidate(dpDate, p_errorDocDate);
                     SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
                     //SectionData.clearValidate(dpDateCheque, p_errorDocDateCheque);
@@ -739,25 +762,40 @@ namespace POS.View.accounts
 
                 case 1://doc
                     grid_document.Visibility = Visibility.Visible;
-                    grid_cheque.Visibility = Visibility.Collapsed; tb_docNumCheque.Clear(); dp_docDateCheque.SelectedDate = null;
-                    cb_card.Visibility = Visibility.Collapsed; cb_card.SelectedIndex = -1;
+                    grid_cheque.Visibility = Visibility.Collapsed;
+                    tb_docNumCheque.Clear();
+                    dp_docDateCheque.SelectedDate = null;
+                    cb_card.Visibility = Visibility.Collapsed;
+                    cb_card.SelectedIndex = -1;
+                    tb_docNumCard.Visibility = Visibility.Collapsed;
                     SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
+                    SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                     //SectionData.clearValidate(dpDateCheque, p_errorDocDateCheque);
                     SectionData.clearComboBoxValidate(cb_card, p_errorCard);
                     break;
                 case 2://cheque
                     grid_cheque.Visibility = Visibility.Visible;
-                    grid_document.Visibility = Visibility.Collapsed; tb_docNum.Clear(); dp_docDate.SelectedDate = null;
-                    cb_card.Visibility = Visibility.Collapsed; cb_card.SelectedIndex = -1;
+                    grid_document.Visibility = Visibility.Collapsed;
+                    tb_docNum.Clear();
+                    dp_docDate.SelectedDate = null;
+                    cb_card.Visibility = Visibility.Collapsed;
+                    cb_card.SelectedIndex = -1;
+                    tb_docNumCard.Visibility = Visibility.Collapsed;
                     SectionData.clearValidate(tb_docNum, p_errorDocNum);
+                    SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                     //SectionData.clearValidate(dpDate, p_errorDocDate);
                     SectionData.clearComboBoxValidate(cb_card, p_errorCard);
                     break;
                    
                 case 3://card
-                    grid_document.Visibility = Visibility.Collapsed; tb_docNum.Clear(); dp_docDate.SelectedDate = null;
-                    grid_cheque.Visibility = Visibility.Collapsed; tb_docNum.Clear(); dp_docDate.SelectedDate = null;
+                    grid_document.Visibility = Visibility.Collapsed;
+                    tb_docNum.Clear();
+                    dp_docDate.SelectedDate = null;
+                    grid_cheque.Visibility = Visibility.Collapsed;
+                    tb_docNum.Clear();
+                    dp_docDate.SelectedDate = null;
                     cb_card.Visibility = Visibility.Visible ;
+                    tb_docNumCard.Visibility = Visibility.Visible;
                     SectionData.clearValidate(tb_docNum, p_errorDocNum);
                     //SectionData.clearValidate(dpDate, p_errorDocDate);
                     SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
@@ -777,7 +815,7 @@ namespace POS.View.accounts
                     btn_invoices.IsEnabled = false;
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Collapsed;
-                    btn_salaries.Visibility = Visibility.Collapsed;
+                    //btn_salaries.Visibility = Visibility.Collapsed;
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
                     break;
@@ -788,7 +826,7 @@ namespace POS.View.accounts
                     btn_invoices.IsEnabled = false;
                     cb_recipientC.Visibility = Visibility.Visible;
                     cb_recipientU.Visibility = Visibility.Collapsed;
-                    btn_salaries.Visibility = Visibility.Collapsed;
+                    //btn_salaries.Visibility = Visibility.Collapsed;
                     SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
                     break;
@@ -800,7 +838,6 @@ namespace POS.View.accounts
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Visible;
                     cb_recipientU.Margin = new Thickness(10, 5, 10, 5);
-                    //Margin = "10,5,10,5" 
                     SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                     break;
@@ -812,8 +849,7 @@ namespace POS.View.accounts
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Visible;
                     cb_recipientU.Margin = new Thickness(10, 5, 35, 5);
-                    //Margin = "10,5,35,5"
-                    btn_salaries.Visibility = Visibility.Collapsed;
+                    //btn_salaries.Visibility = Visibility.Collapsed;
                     SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                     break;
@@ -883,8 +919,12 @@ namespace POS.View.accounts
                 if ((sender as TextBox).Name == "tb_cash")
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
                 else if ((sender as TextBox).Name == "tb_docNum")
-                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorDocNum, tt_errorDocNum , "trEmptyDocDateToolTip");
-                ///////////date
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");
+                else if ((sender as TextBox).Name == "tb_docNumCard")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorDocCard, tt_errorDocCard, "trEmptyProcessNumToolTip");
+                else if ((sender as TextBox).Name == "tb_docNumCheque")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorDocNumCheque, tt_errorDocNumCheque, "trEmptyDocNumToolTip");
+
             }
             else if (name == "ComboBox")
             {
@@ -904,9 +944,9 @@ namespace POS.View.accounts
             else if (name == "DatePicker")
             {
                 if ((sender as DatePicker).Name == "dp_docDate")
-                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorDocDate, tt_errorDocDate, "trErrorEmptyDocDateToolTip");
+                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
                 if ((sender as DatePicker).Name == "dp_docDateCheque")
-                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorDocDateCheque, tt_errorDocDateCheque, "trErrorEmptyDocDateToolTip");
+                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorDocDateCheque, tt_errorDocDateCheque, "trEmptyDocDateToolTip");
             }
 
         }
@@ -934,7 +974,7 @@ namespace POS.View.accounts
          
         private  void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 if (cashtrans.cashTransId > 0 )
             {
@@ -968,7 +1008,7 @@ namespace POS.View.accounts
 
         private void Btn_print_pay_Click(object sender, RoutedEventArgs e)
         {
-                if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+                if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     if (cashtrans.cashTransId > 0)
             {
@@ -992,7 +1032,7 @@ namespace POS.View.accounts
 
         private async void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 //Pos p = await posModel.getPosById(53);
 

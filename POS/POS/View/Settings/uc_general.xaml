@@ -505,7 +505,7 @@
                     </Border>
                 </Grid>
             </Border>-->
-            <Border Background="White" CornerRadius="7"  Height="140" Width="260" BorderThickness="1" BorderBrush="#178DD2" MinHeight="100" Margin="10,0,10,20">
+            <!--<Border Background="White" CornerRadius="7"  Height="140" Width="260" BorderThickness="1" BorderBrush="#178DD2" MinHeight="100" Margin="10,0,10,20">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -540,8 +540,8 @@
                         </Button>
                     </Border>
                 </Grid>
-            </Border>
-            <Border Background="White" CornerRadius="7"  Height="140" Width="260" BorderThickness="1" BorderBrush="#178DD2" Margin="10,0,10,20">
+            </Border>-->
+            <!--<Border Background="White" CornerRadius="7"  Height="140" Width="260" BorderThickness="1" BorderBrush="#178DD2" Margin="10,0,10,20">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -625,8 +625,8 @@
                         </Button>
                     </Border>
                 </Grid>
-            </Border>
-            <Border Background="White" CornerRadius="7"  Height="140" Width="260" MinHeight="100" BorderThickness="1" BorderBrush="#178DD2" Margin="10,0,10,20">
+            </Border>-->
+            <!--<Border Background="White" CornerRadius="7"  Height="140" Width="260" MinHeight="100" BorderThickness="1" BorderBrush="#178DD2" Margin="10,0,10,20">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -673,7 +673,7 @@
                         </Button>
                     </Border>
                 </Grid>
-            </Border>
+            </Border>-->
             <Border Background="White" CornerRadius="7"  Height="140" Width="260" MinHeight="100" BorderThickness="1" BorderBrush="#178DD2" Margin="10,0,10,20">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -743,7 +743,7 @@
                     </Border>
                 </Grid>
             </Border>
-            <Border Background="White" CornerRadius="7"  Height="140" Width="260" BorderThickness="1" BorderBrush="#178DD2" MinHeight="100" Margin="10,0,10,20">
+            <!--<Border Background="White" CornerRadius="7"  Height="140" Width="260" BorderThickness="1" BorderBrush="#178DD2" MinHeight="100" Margin="10,0,10,20">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -776,7 +776,7 @@
                         </Button>
                     </Border>
                 </Grid>
-            </Border>
+            </Border>-->
             <Border Background="White" CornerRadius="7"  Height="140" Width="260" BorderThickness="1" BorderBrush="#178DD2" MinHeight="100" Margin="10,0,10,20">
                 <Grid>
                     <Grid.ColumnDefinitions>

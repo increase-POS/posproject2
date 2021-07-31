@@ -189,7 +189,7 @@ namespace POS.View
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
             {
                 location.locationId = 0;
             if (validate(location))
@@ -228,7 +228,7 @@ namespace POS.View
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
                     if (validate(location))
             {
@@ -256,7 +256,7 @@ namespace POS.View
             }
             private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                     {
                         if (location.locationId != 0)
             {
@@ -433,7 +433,7 @@ namespace POS.View
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
             {
                 if (locations is null)
                 await RefreshLocationsList();
@@ -449,7 +449,7 @@ namespace POS.View
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
             {
                 RefreshLocationsList();
                 Tb_search_TextChanged(null, null);
@@ -461,7 +461,7 @@ namespace POS.View
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
                 this.Dispatcher.Invoke(() =>
             {
@@ -491,7 +491,7 @@ namespace POS.View
 
         private void Btn_addRange_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(addRangePermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(addRangePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 Window.GetWindow(this).Opacity = 0.2;
             wd_locationAddRange w = new wd_locationAddRange();

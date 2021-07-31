@@ -124,6 +124,7 @@ namespace POS.View.storage
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             MainWindow.mainWindow.KeyDown -= HandleKeyPress;
+            clearInvoice();
             //if (billDetails.Count > 0)
             //{
             //    #region Accept
@@ -137,7 +138,7 @@ namespace POS.View.storage
             //    if (w.isOk)
             //        Btn_newDraft_Click(null, null);
             //    else
-            //        clearInvoice();
+            //       
             //}
         }
         #region bill
@@ -428,7 +429,7 @@ namespace POS.View.storage
 
         private async void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 Window.GetWindow(this).Opacity = 0.2;
 
@@ -451,6 +452,7 @@ namespace POS.View.storage
                         _InvoiceType = "pbd";
                         // set title to bill
                         txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                        btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
                         // orange #FFA926 red #D22A17
                         brd_count.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                         await fillInvoiceInputs(invoice);
@@ -523,7 +525,7 @@ namespace POS.View.storage
         {
             var cmb = sender as ComboBox;
 
-            if (dg_billDetails.SelectedIndex != -1)
+            if (dg_billDetails.SelectedIndex != -1 && cmb != null)
                 billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
         }
         private void Cbm_unitItemDetails_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -613,7 +615,7 @@ namespace POS.View.storage
 
         private async void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reciptPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reciptPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 Window.GetWindow(this).Opacity = 0.2;
 
@@ -636,8 +638,10 @@ namespace POS.View.storage
 
                     // set title to bill
                     txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
-                    // orange #FFA926 red #D22A17
-                    brd_count.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                    btn_save.Content = MainWindow.resourcemanager.GetString("trStoreBtn");
+
+                        // orange #FFA926 red #D22A17
+                        brd_count.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                     await fillInvoiceInputs(invoice);
                 }
             }
@@ -904,7 +908,7 @@ namespace POS.View.storage
 
         private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
             }
@@ -914,7 +918,7 @@ namespace POS.View.storage
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
             }
@@ -923,7 +927,7 @@ namespace POS.View.storage
         }
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
             }

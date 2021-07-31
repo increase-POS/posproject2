@@ -119,8 +119,9 @@ namespace POS.View.windows
                     string password = Md5Encription.MD5Hash("Inc-m" + pb_password.Password);
 
                     user.password = password ;
+
                     string s = await userModel.saveUser(user);
-                    //MessageBox.Show(s);
+
                     if (!s.Equals("0"))
                     {
                         if (Properties.Settings.Default.password != string.Empty)
@@ -131,6 +132,9 @@ namespace POS.View.windows
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopPasswordChanged"), animation: ToasterAnimation.FadeIn);
                         await Task.Delay(2000);
                         this.Close();
+
+                        userID = int.Parse(s);
+                       
                     }
                     else
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);

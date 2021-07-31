@@ -682,9 +682,12 @@
                                Margin="2,2,5,2" FontSize="22"/>
                         <TextBlock  Grid.Column="1" Margin="0" FontWeight="Bold" FontSize="22"  VerticalAlignment="Center"
                                         TextAlignment="Center" Name="tb_total" Foreground="White" HorizontalAlignment="Right" 
-                                                >
+                                                />
+                        <TextBlock Grid.Row="1"   x:Name="tb_moneyIconTotal" Grid.Column="1" Margin="5" 
+                       Foreground="#4E4E4E" Text="{Binding Path=MainWindow.Currency,  Mode=OneWay}"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                                  FontWeight="Bold"  FontSize="12"/>
 
-                        </TextBlock>
                     </StackPanel>
                 </Border>
             </Grid>

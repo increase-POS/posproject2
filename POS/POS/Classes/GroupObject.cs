@@ -417,7 +417,11 @@ namespace POS.Classes
 
         public bool HasPermissionAction(string objectname, List<GroupObject> GOList, string type)
         {
+            if (SectionData.isAdminPermision())
+                return true;
+
             bool hasPermission = false;
+           
             GroupObject groupObject =  GetGObjByObjName(objectname, GOList);
             if (type == "add" && groupObject.addOb == 1)
                      hasPermission = true;

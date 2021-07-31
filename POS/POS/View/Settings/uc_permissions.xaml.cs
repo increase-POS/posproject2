@@ -188,8 +188,8 @@ namespace POS.View.Settings
         }
         private async void Btn_addGroup_Click(object sender, RoutedEventArgs e)
         {//add
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
-            {
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
+                {
                 group.groupId = 0;
             if (validate(group))
             {
@@ -349,7 +349,8 @@ namespace POS.View.Settings
 
         private async void Btn_updateGroup_Click(object sender, RoutedEventArgs e)
         {//update
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
                     if (validate(group))
             {
@@ -377,8 +378,9 @@ namespace POS.View.Settings
 
             private async void Btn_deleteGroup_Click(object sender, RoutedEventArgs e)
         {//delete
-                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
-                    {
+            
+                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
+                {
                         if (group.groupId != 0)
             {
                 if ((!group.canDelete) && (group.isActive == 0))
@@ -537,8 +539,9 @@ namespace POS.View.Settings
         }
         private async void Tb_searchGroup_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
-            {
+             
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
                 if (groups is null)
                 await RefreshGroupList();
             searchGroupText = tb_searchGroup.Text;
@@ -551,8 +554,9 @@ namespace POS.View.Settings
 
         private async void Btn_refreshGroup_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
-            {
+            
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
                 await RefreshGroupList();
                 Tb_searchGroup_TextChanged(null, null);
 
@@ -574,8 +578,9 @@ namespace POS.View.Settings
         }
         void FN_ExportToExcel()
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
-            {
+             
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
                 var QueryExcel = groupsQuery.AsEnumerable().Select(x => new
             {
                 Name = x.name,
@@ -623,8 +628,9 @@ namespace POS.View.Settings
 
         private async void Btn_usersList_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(usersPermission, MainWindow.groupObjects, "one"))
-            {
+             
+            if (MainWindow.groupObject.HasPermissionAction(usersPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
             if (group.groupId > 0)
             {
                 Window.GetWindow(this).Opacity = 0.2;
@@ -642,8 +648,9 @@ namespace POS.View.Settings
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
-            {
+            
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
+                {
                 string s = "";
             foreach (var item in groupObjectsQuery)
             {

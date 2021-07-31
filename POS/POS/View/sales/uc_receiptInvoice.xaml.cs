@@ -198,6 +198,8 @@ namespace POS.View
 
             MainWindow.mainWindow.KeyDown += HandleKeyPress;
             tb_moneyIcon.Text = MainWindow.Currency;
+            tb_moneyIconTotal.Text = MainWindow.Currency;
+            
             //var window = Window.GetWindow(this);
             //window.KeyDown -= HandleKeyPress;
             //window.KeyDown += HandleKeyPress;
@@ -378,7 +380,7 @@ namespace POS.View
                 var defaultsaleUnit = itemUnits.ToList().Find(c => c.defaultSale == 1);
                 if (defaultsaleUnit != null)
                 {
-                    addItemToBill(itemId, defaultsaleUnit.itemUnitId, defaultsaleUnit.mainUnit,(decimal) defaultsaleUnit.price,false);
+                    addItemToBill(itemId, defaultsaleUnit.itemUnitId, defaultsaleUnit.mainUnit, (decimal)defaultsaleUnit.price, false);
                     //decimal itemTax = 0;
                     //if (item.taxes != null)
                     //    itemTax = (decimal)item.taxes;
@@ -416,6 +418,14 @@ namespace POS.View
 
                     //refreshTotalValue();
                     //refrishBillDetails();
+                }
+                else {
+                    bool valid = true;
+                    if (item.type == "sn")
+                        valid = false;
+                    addRowToBill(item.name, itemId, null, 0, 1, 0, 0, (decimal)item.taxes, item.type,valid);
+                    refreshTotalValue();
+                    refrishBillDetails();
                 }
             }
         }
@@ -478,13 +488,16 @@ namespace POS.View
                     return valid;
                 }
             }
+           
             if (billDetails.Count > 0 && available && ((cb_paymentProcessType.SelectedIndex == 1 && cb_customer.SelectedIndex != -1)
                                                 || (cb_paymentProcessType.SelectedIndex == 0)
                                                 || (cb_paymentProcessType.SelectedIndex == 2 && !tb_processNum.Text.Equals("") && cb_card.SelectedIndex != -1)))
                 valid = true;
             else
                 valid = false;
-          return valid;
+            if(valid == true)
+                valid = validateItemUnits();
+            return valid;
         }
         private async Task<Boolean> checkItemsAmounts()
         {
@@ -716,7 +729,8 @@ namespace POS.View
                                     cashTrasnfer.posId = MainWindow.posID;
                                     cashTrasnfer.agentId = invoice.agentId;
                                     cashTrasnfer.invId = invoiceId;
-                                    cashTrasnfer.transNum = SectionData.generateNumber('d', "c").ToString();
+                                   // cashTrasnfer.transNum =  SectionData.generateNumber('d', "c").ToString();
+                                    cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("dc");
                                     cashTrasnfer.cash = paid;
                                     cashTrasnfer.side = "c"; // customer
                                     cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
@@ -755,7 +769,8 @@ namespace POS.View
                                         cashTrasnfer.posId = MainWindow.posID;
                                         cashTrasnfer.agentId = invoice.agentId;
                                         cashTrasnfer.invId = invoiceId;
-                                        cashTrasnfer.transNum = SectionData.generateNumber('p', "c").ToString();
+                                        //cashTrasnfer.transNum = SectionData.generateNumber('p', "c").ToString();
+                                        cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("pc");
                                         cashTrasnfer.cash = paid;
                                         cashTrasnfer.side = "c"; // customer
                                         cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
@@ -818,7 +833,9 @@ namespace POS.View
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            if ((MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") &&
+            if ((
+                (MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                &&
                (invoice.invType == "sd" ||  invoice.invType == "s"))
                || (invoice.invType != "sd" &&  invoice.invType != "s"))
             {
@@ -855,6 +872,21 @@ namespace POS.View
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+        private bool validateItemUnits()
+        {
+            bool valid = true;
+            for (int i = 0; i < billDetails.Count; i++)
+            {
+                if (billDetails[i].itemUnitId == 0)
+                {
+                    valid = false;
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trItemWithNoUnit"), animation: ToasterAnimation.FadeIn);
+
+                    return valid;
+                }
+            }
+            return valid;
+        }
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
             //check mandatory inputs
@@ -862,7 +894,8 @@ namespace POS.View
             Boolean available = true;
             if (_InvoiceType == "sd")
                 available = await checkItemsAmounts();
-            if (billDetails.Count > 0 && available)
+            bool valid = validateItemUnits();
+            if (billDetails.Count > 0 && available && valid)
             {
                 await addInvoice(_InvoiceType);
                 clearInvoice();
@@ -1004,7 +1037,7 @@ namespace POS.View
         }
         private async void Btn_ordersWait_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(executeOrderPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(executeOrderPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 Window.GetWindow(this).Opacity = 0.2;
 
@@ -1100,7 +1133,7 @@ namespace POS.View
         }
         private async void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
@@ -1195,7 +1228,6 @@ namespace POS.View
                     btn_clearCoupon.IsEnabled = false;
                     break;
                 case "sd": // sales draft invoice
-                case "or": //sales order
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                     dg_billDetails.Columns[3].IsReadOnly = false;
                     dg_billDetails.Columns[4].IsReadOnly = false;
@@ -1215,6 +1247,25 @@ namespace POS.View
                     tb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
                     break;
+                case "or": //sales order
+                    dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
+                    dg_billDetails.Columns[3].IsReadOnly = false;
+                    dg_billDetails.Columns[4].IsReadOnly = false;
+                    dg_billDetails.Columns[5].IsReadOnly = true; //make price readonly
+                    cb_customer.IsEnabled = false;
+                    dp_desrvedDate.IsEnabled = true;
+                    tb_note.IsEnabled = true;
+                    tb_barcode.IsEnabled = true;
+                    tb_discount.IsEnabled = true;
+                    btn_save.IsEnabled = true;
+                    cb_paymentProcessType.IsEnabled = true;
+                    cb_card.IsEnabled = true;
+                    cb_company.IsEnabled = true;
+                    cb_user.IsEnabled = true;
+                    tb_processNum.IsEnabled = true;
+                    tb_coupon.IsEnabled = true;
+                    btn_clearCoupon.IsEnabled = true;
+                    break;
                 case "s": //sales invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
@@ -1226,7 +1277,6 @@ namespace POS.View
                     tb_barcode.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     btn_save.IsEnabled = false;
-                    //btn_updateCustomer.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
                     cb_card.IsEnabled = false;
                     cb_company.IsEnabled = false;
@@ -1241,12 +1291,11 @@ namespace POS.View
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
                     dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
                     cb_customer.IsEnabled = false;
-                    dp_desrvedDate.IsEnabled = false;
+                    dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     btn_save.IsEnabled = true;
-                    //btn_updateCustomer.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
                     cb_card.IsEnabled = false;
                     cb_company.IsEnabled = false;
@@ -1808,7 +1857,7 @@ namespace POS.View
         {
             var cmb = sender as ComboBox;
             TextBlock tb;
-            if (dg_billDetails.SelectedIndex != -1)
+            if (dg_billDetails.SelectedIndex != -1 && cmb !=null)
             {
                 int itemUnitId = (int)cmb.SelectedValue;
                 billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
@@ -1993,7 +2042,10 @@ namespace POS.View
 
                 //"tb_amont"
                 if (columnName == MainWindow.resourcemanager.GetString("trAmount"))
+                {
                     newCount = int.Parse(t.Text);
+                    billDetails[index].valid = false;
+                }
                 else
                     newCount = row.Count;
 
@@ -2156,7 +2208,7 @@ namespace POS.View
 
         private async void Btn_quotations_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(quotationPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(quotationPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 Window.GetWindow(this).Opacity = 0.2;
             wd_invoice w = new wd_invoice();
@@ -2342,7 +2394,7 @@ namespace POS.View
 
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
 

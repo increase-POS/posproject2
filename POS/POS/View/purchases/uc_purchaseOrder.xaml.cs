@@ -48,9 +48,32 @@ namespace POS.View.purchases
             InitializeComponent();
         }
 
-        private void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
+        private async void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
         {
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_invoice w = new wd_invoice();
 
+            w.invoiceType = "po";
+            w.userId = MainWindow.userLogin.userId;
+            w.duration = 1; // view purchase orders which created during  last one day 
+
+            w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
+
+            if (w.ShowDialog() == true)
+            {
+                if (w.invoice != null)
+                {
+                    invoice = w.invoice;
+                    //this.DataContext = invoice;
+                    _InvoiceType = invoice.invType;
+
+                    await fillInvoiceInputs(invoice);
+
+                    mainInvoiceItems = invoiceItems;
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrdersBill");
+                }
+            }
+            Window.GetWindow(this).Opacity = 1;
         }
         string createPermission = "purchaseOrder_create";
         string reportsPermission = "purchaseOrder_reports";
@@ -80,9 +103,7 @@ namespace POS.View.purchases
         //  Bill bill;
 
         #region //to handle barcode characters
-        static private int _SelectedBranch = -1;
         static private int _SelectedVendor = -1;
-        static private int _SelectedDiscountType = -1;
         // for barcode
         DateTime _lastKeystroke = new DateTime(0);
         static private string _BarcodeStr = "";
@@ -98,7 +119,7 @@ namespace POS.View.purchases
         //for bill details
         static private int _SequenceNum = 0;
         static private decimal _Sum = 0;
-        static public string _InvoiceType = "pd"; // purchase draft
+        static public string _InvoiceType = "pod"; // purchase order draft
 
         // for report
         ReportCls reportclass = new ReportCls();
@@ -305,10 +326,25 @@ namespace POS.View.purchases
                 var defaultPurUnit = itemUnits.ToList().Find(c => c.defaultPurchase == 1);
                 if (defaultPurUnit != null)
                 {
-                    // create new row in bill details data grid
-                    addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, 0, 0);
+                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == defaultPurUnit.itemUnitId).FirstOrDefault());
+                    if (index == -1)//item doesn't exist in bill
+                    {
+                        // create new row in bill details data grid
+                        addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, 0, 0);
+                    }
+                    else // item exist prevoiusly in list
+                    {
+                        billDetails[index].Count++;
+                        billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
 
+                        _Sum += billDetails[index].Price;
+                    }
                     refreshTotalValue();
+                    refrishBillDetails();
+                }
+                else
+                {
+                    addRowToBill(item.name, itemId, null, 0, 1, 0, 0);
                     refrishBillDetails();
                 }
             }
@@ -352,75 +388,69 @@ namespace POS.View.purchases
         #endregion
         #region save invoice
 
-        private async Task addInvoice(string invType, string invCode)
+        private async Task addInvoice(string invType)
         {
-            if (invoice.invType == "pw" && (invType == "pb" || invType == "pbd")) // invoice is purchase and will bebounce purchase  or purchase bounce draft bounce , save another invoice in db
-            {
-                invoice.invoiceMainId = invoice.invoiceId;
-                invoice.invoiceId = 0;
-                invoice.invNumber = await invoice.generateInvNumber("pb");
-            }
-            if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
-            {
-                invoice.branchCreatorId = MainWindow.branchID.Value;
-                invoice.posId = MainWindow.posID.Value;
-            }
-            if (invoice.invType != "pw" || invoice.invoiceId == 0)
-            {
-                invoice.invType = invType;
-               
+            if (invType == "po")
+                invoice.invNumber = await invoice.generateInvNumber(invType);
+            else
+                invoice.invNumber = "";
 
-                invoice.total = _Sum;
+            invoice.branchCreatorId = MainWindow.branchID.Value;
+            invoice.posId = MainWindow.posID.Value;
+
+            invoice.invType = invType;
+            invoice.total = _Sum;
+            if(!tb_total.Text.Equals(""))
                 invoice.totalNet = decimal.Parse(tb_total.Text);
 
-                if (cb_vendor.SelectedIndex != -1)
-                    invoice.agentId = (int)cb_vendor.SelectedValue;
+            if (cb_vendor.SelectedIndex != -1)
+                invoice.agentId = (int)cb_vendor.SelectedValue;
 
-                invoice.notes = tb_note.Text;
-                invoice.taxtype = 2;
-                invoice.createUserId = MainWindow.userID;
-                invoice.updateUserId = MainWindow.userID;
-                if (invType == "pw")
-                    invoice.invNumber = await invoice.generateInvNumber("pi");
+            invoice.notes = tb_note.Text;
+            invoice.taxtype = 2;
+            invoice.createUserId = MainWindow.userID;
+            invoice.updateUserId = MainWindow.userID;
 
-                // save invoice in DB
-                int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
-                invoice.invoiceId = invoiceId;
-                if (invoiceId != 0)
+            // save invoice in DB
+            int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
+            invoice.invoiceId = invoiceId;
+            if (invoiceId != 0)
+            {
+                // add invoice details
+                invoiceItems = new List<ItemTransfer>();
+                ItemTransfer itemT;
+                for (int i = 0; i < billDetails.Count; i++)
                 {
-                    if (invType == "pw")
-                        await invoice.recordCashTransfer(invoice, "pi");
-                    else if (invType == "pb")
-                        await invoice.recordCashTransfer(invoice, "pb");
+                    itemT = new ItemTransfer();
 
-                    // add invoice details
-                    invoiceItems = new List<ItemTransfer>();
-                    ItemTransfer itemT;
-                    for (int i = 0; i < billDetails.Count; i++)
-                    {
-                        itemT = new ItemTransfer();
+                    itemT.invoiceId = invoiceId;
+                    itemT.quantity = billDetails[i].Count;
+                    itemT.price = billDetails[i].Price;
+                    itemT.itemUnitId = billDetails[i].itemUnitId;
+                    itemT.createUserId = MainWindow.userID;
 
-                        itemT.invoiceId = invoiceId;
-                        itemT.quantity = billDetails[i].Count;
-                        itemT.price = billDetails[i].Price;
-                        itemT.itemUnitId = billDetails[i].itemUnitId;
-                        itemT.createUserId = MainWindow.userID;
-
-                        invoiceItems.Add(itemT);
-                    }
-                    await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
-
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    invoiceItems.Add(itemT);
                 }
-                else
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
 
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
             }
+            else
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
             clearInvoice();
         }
-        private void validateInvoiceValues()
+        private bool validateInvoiceValues()
         {
+            bool valid = true;
             SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
+            if (cb_vendor.SelectedIndex != -1 && billDetails.Count > 0)
+                valid = true;
+            else
+                valid = false;
+            if (valid)
+                valid = validateItemUnits();
+            return valid;
         }
         bool logInProcessing = true;
         void awaitSaveBtn(bool isAwait)
@@ -442,9 +472,7 @@ namespace POS.View.purchases
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            if ((MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") &&
-                (invoice.invType == "pd" || invoice.invType == "pw" || invoice.invType == "p"))
-                || (invoice.invType != "pd" && invoice.invType != "pw" && invoice.invType != "p"))
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 if (logInProcessing)
                 {
@@ -452,17 +480,12 @@ namespace POS.View.purchases
                     awaitSaveBtn(true);
 
                     //check mandatory inputs
-                    validateInvoiceValues();
-                    if (cb_vendor.SelectedIndex != -1 &&  billDetails.Count > 0 )
+                 bool valid =  validateInvoiceValues();
+                    if (valid )
                     {
-                        if (_InvoiceType == "pbd") //pbd means purchase bounse draft
-                            await addInvoice("pb", "pb"); // pb means purchase bounce
-                        else if (_InvoiceType == "pbw")//pbw  purchase invoice
-                            await addInvoice("pb", "pb");
-                        else//pw  waiting purchase invoice
-                            await addInvoice("pw", "pi");
+                         await addInvoice("po"); // po means purchase order
 
-                        if (invoice.invoiceId == 0)
+                       // if (invoice.invoiceId == 0)
                             clearInvoice();
                     }
                     awaitSaveBtn(false);
@@ -472,14 +495,29 @@ namespace POS.View.purchases
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+        private bool validateItemUnits()
+        {
+            bool valid = true;
+            for (int i = 0; i < billDetails.Count; i++)
+            {
+                if (billDetails[i].itemUnitId == 0)
+                {
+                    valid = false;
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trItemWithNoUnit"), animation: ToasterAnimation.FadeIn);
 
+                    return valid;
+                }
+            }
+            return valid;
+        }
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
-            if (billDetails.Count > 0)
+            bool valid = validateItemUnits();
+            if (billDetails.Count > 0 && valid)
             {
-                await addInvoice(_InvoiceType, "pi");
+                await addInvoice(_InvoiceType);
             }
-            else
+            else if (billDetails.Count == 0)
             {
                 clearInvoice();
             }
@@ -489,9 +527,8 @@ namespace POS.View.purchases
             _Sum = 0;
             txt_invNumber.Text = "";
             _SequenceNum = 0;
-            _SelectedBranch = -1;
             _SelectedVendor = -1;
-            _InvoiceType = "pd";
+            _InvoiceType = "pod"; // purchase order draft
             invoice = new Invoice();
             tb_barcode.Clear();
             cb_vendor.SelectedIndex = -1;
@@ -500,10 +537,8 @@ namespace POS.View.purchases
             billDetails.Clear();
             tb_total.Text = "";
             tb_sum.Text = null;
-
-            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-            //btn_updateVendor.IsEnabled = false;
-            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
+            btn_updateVendor.IsEnabled = false;
+            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
             refrishBillDetails();
             inputEditable();
         }
@@ -515,7 +550,7 @@ namespace POS.View.purchases
 
             // purchase drafts and purchase bounce drafts
             // string[] typeArr = { "pd","pdbd" };
-            w.invoiceType = "pd ,pbd";
+            w.invoiceType = "pod";
             //w.branchId = int.Parse(MainWindow.branchID.ToString());
             w.userId = MainWindow.userLogin.userId;
             w.duration = 2; // view drafts which created during 2 last days 
@@ -528,23 +563,12 @@ namespace POS.View.purchases
                 {
                     invoice = w.invoice;
                     //this.DataContext = invoice;
-                    //  mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
                     _InvoiceType = invoice.invType;
 
                     await fillInvoiceInputs(invoice);
-                    if (_InvoiceType == "pd")// set title to bill
-                    {
-                        mainInvoiceItems = invoiceItems;
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
-                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-                    }
-                    if (_InvoiceType == "pbd")
-                    {
-                        mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
-                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
 
-                    }
+                    mainInvoiceItems = invoiceItems;
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
                 }
             }
             Window.GetWindow(this).Opacity = 1;
@@ -583,12 +607,12 @@ namespace POS.View.purchases
         }
         public async Task fillInvoiceInputs(Invoice invoice)
         {
-            _Sum = (decimal)invoice.total;
+            //_Sum = (decimal)invoice.total;
             txt_invNumber.Text = invoice.invNumber.ToString();
             cb_vendor.SelectedValue = invoice.agentId;
-            tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
+            //tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
             tb_note.Text = invoice.notes;
-            tb_sum.Text = invoice.total.ToString();
+           // tb_sum.Text = invoice.total.ToString();
             await buildInvoiceDetails();
             inputEditable();
         }
@@ -623,46 +647,30 @@ namespace POS.View.purchases
         }
         private void inputEditable()
         {
-            if (_InvoiceType == "pbd" || _InvoiceType == "pbw") // return invoice
+            if (_InvoiceType == "pod" ) 
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
-                dg_billDetails.Columns[5].IsReadOnly = false; //make price read only
-                dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
-                cb_vendor.IsEnabled = false;
-                tb_note.IsEnabled = false;
-                tb_barcode.IsEnabled = false;
-                btn_save.IsEnabled = true;
-                //btn_updateVendor.IsEnabled = false;
-            }
-            else if (_InvoiceType == "pd")
-            {
-                dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
-                dg_billDetails.Columns[5].IsReadOnly = false;
-                dg_billDetails.Columns[3].IsReadOnly = false;
-                dg_billDetails.Columns[4].IsReadOnly = false;
                 cb_vendor.IsEnabled = true;
                 tb_note.IsEnabled = true;
                 tb_barcode.IsEnabled = true;
                 btn_save.IsEnabled = true;
-                //btn_updateVendor.IsEnabled = true;
             }
-            else if (_InvoiceType == "pw" || _InvoiceType == "p")
+            else if (_InvoiceType == "po") // purchase order
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
-                dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
                 dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
-                cb_vendor.IsEnabled = false;
-                tb_note.IsEnabled = false;
+                cb_vendor.IsEnabled = true;
+                tb_note.IsEnabled = true;
                 tb_barcode.IsEnabled = false;
-                btn_save.IsEnabled = false;
-                //btn_updateVendor.IsEnabled = false;
+                btn_save.IsEnabled = true;
             }
         }
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 if (invoice != null && invoice.invoiceId != 0)
                 {
@@ -1026,7 +1034,7 @@ namespace POS.View.purchases
         {
             var cmb = sender as ComboBox;
 
-            if (dg_billDetails.SelectedIndex != -1)
+            if (dg_billDetails.SelectedIndex != -1 && cmb != null)
                 billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
         }
 
@@ -1070,15 +1078,11 @@ namespace POS.View.purchases
             {
                 if (columnName == MainWindow.resourcemanager.GetString("trAmount"))
                     t.Text = billDetails[index].Count.ToString();
-                else if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
-                    t.Text = billDetails[index].Price.ToString();
             }
             else
             {
                 int oldCount = 0;
                 long newCount = 0;
-                decimal oldPrice = 0;
-                decimal newPrice = 0;
 
                 //"tb_amont"
                 if (columnName == MainWindow.resourcemanager.GetString("trAmount"))
@@ -1101,44 +1105,29 @@ namespace POS.View.purchases
                     }
                 }
 
-                if (columnName == MainWindow.resourcemanager.GetString("trPrice") && !t.Text.Equals(""))
-                    newPrice = decimal.Parse(t.Text);
-                else
-                    newPrice = row.Price;
-
-                oldPrice = row.Price;
 
                 // old total for changed item
-                decimal total = oldPrice * oldCount;
+                decimal total =  oldCount;
                 _Sum -= total;
 
                 // new total for changed item
-                total = newCount * newPrice;
+                total = newCount;
                 _Sum += total;
-
-                //refresh total cell
-                TextBlock tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
-                tb.Text = total.ToString();
 
                 //  refresh sum and total text box
                 refreshTotalValue();
 
                 // update item in billdetails           
                 billDetails[index].Count = (int)newCount;
-                billDetails[index].Price = newPrice;
                 billDetails[index].Total = total;
             }
         }
 
-        //private void Dp_desrvedDate_KeyDown(object sender, KeyEventArgs e)
+        //private void Dp_date_PreviewKeyUp(object sender, KeyEventArgs e)
         //{
-        //    moveControlToBarcode(sender , e);          
+        //    _Sender = sender;
+        //    moveControlToBarcode(sender, e);
         //}
-        private void Dp_date_PreviewKeyUp(object sender, KeyEventArgs e)
-        {
-            _Sender = sender;
-            moveControlToBarcode(sender, e);
-        }
         private void moveControlToBarcode(object sender, KeyEventArgs e)
         {
             DatePicker dt = sender as DatePicker;
@@ -1154,7 +1143,7 @@ namespace POS.View.purchases
         //print
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
             ReportCls rr = new ReportCls();
             List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -1195,7 +1184,7 @@ namespace POS.View.purchases
         }
         private async void btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
 
@@ -1270,7 +1259,7 @@ namespace POS.View.purchases
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
 

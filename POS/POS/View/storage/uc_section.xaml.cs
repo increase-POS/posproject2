@@ -188,7 +188,7 @@ namespace POS.View
        
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
             {
                 section.sectionId = 0;
             if (validate(section))
@@ -219,7 +219,7 @@ namespace POS.View
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
                     if (validate(section))
             {
@@ -246,7 +246,7 @@ namespace POS.View
             }
             private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                     {
                         if (section.sectionId != 0)
             {
@@ -428,7 +428,7 @@ namespace POS.View
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
             {
                 if (sections is null)
                 await RefreshSectionsList();
@@ -441,7 +441,7 @@ namespace POS.View
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
             {
                 RefreshSectionsList();
             Tb_search_TextChanged(null, null);
@@ -451,7 +451,7 @@ namespace POS.View
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
 
                 this.Dispatcher.Invoke(() =>
@@ -498,7 +498,7 @@ namespace POS.View
 
         private async void Btn_locations_Click(object sender, RoutedEventArgs e)
         {//locations
-            if (MainWindow.groupObject.HasPermissionAction(selectLocationPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(selectLocationPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
            SectionData.clearValidate(tb_name, p_errorName);

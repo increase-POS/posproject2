@@ -356,8 +356,9 @@ namespace POS.View
         // Error Here
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
-            {
+            
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
+                {
                 branch.branchId = 0;
            
             bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "b", "Branch" , 0);
@@ -475,8 +476,9 @@ namespace POS.View
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
-            {
+            
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
+                {
                 bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "b", "Branch" , branch.branchId);
 
             //chk empty branch
@@ -553,8 +555,9 @@ namespace POS.View
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
-            {
+            
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
+                {
                 if (branch.branchId != 0)
             {
                 if ((!branch.canDelete) && (branch.isActive == 0))
@@ -629,8 +632,9 @@ namespace POS.View
 
         private async void tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
-            {
+            
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
                 var bc = new BrushConverter();
 
                 p_errorName.Visibility = Visibility.Collapsed;
@@ -765,8 +769,9 @@ namespace POS.View
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
-            {
+            
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
                 RefreshBranchesList();
                 tb_search_TextChanged(null, null);
             }
@@ -802,8 +807,9 @@ namespace POS.View
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
-            {
+            
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
                 this.Dispatcher.Invoke(() =>
             {
                 Thread t1 = new Thread(FN_ExportToExcel);
@@ -817,7 +823,8 @@ namespace POS.View
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
@@ -857,8 +864,9 @@ namespace POS.View
 
             private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
-                    {
+            
+                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath;
@@ -887,8 +895,9 @@ namespace POS.View
                 }
                 private void btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
-                        if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
-                        {
+            
+                        if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
                             Window.GetWindow(this).Opacity = 0.2;
             win_lvc win = new win_lvc(branchesQuery, 4, true);
             win.ShowDialog();
@@ -919,8 +928,9 @@ namespace POS.View
 
         private void Btn_stores_Click(object sender, RoutedEventArgs e)
         {//stores
-            if (MainWindow.groupObject.HasPermissionAction(storesPermission, MainWindow.groupObjects, "one"))
-            {
+            
+            if (MainWindow.groupObject.HasPermissionAction(storesPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
                 //SectionData.clearValidate(tb_code, p_errorCode);
 
                 //itemUnits = await itemUnitsModel.Getall();

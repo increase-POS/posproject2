@@ -316,6 +316,8 @@
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+
                         </Grid.RowDefinitions>
 
                         <DockPanel Grid.Row="0">
@@ -463,7 +465,7 @@
                                 </Path.ToolTip>
                             </Path>
                         </Button>
-                        <Button DockPanel.Dock="Right" x:Name="btn_salaries" Grid.Row="3" Visibility="Collapsed"   Padding="0"    HorizontalAlignment="Right"
+                        <!--<Button DockPanel.Dock="Right" x:Name="btn_salaries" Grid.Row="3" Visibility="Collapsed"   Padding="0"    HorizontalAlignment="Right"
                                     Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_salaries_Click" VerticalAlignment="Center"      
                                     Margin="5,1,10,1"   ToolTip="salaries" TabIndex="13">
 
@@ -478,7 +480,7 @@
                                              VerticalOffset="20"/>
                                 </Path.ToolTip>
                             </Path>
-                        </Button>
+                        </Button>-->
 
                         <Path Fill="#E81123" x:Name="p_errorRecipient" Stretch="Fill" Margin="5,5,50,5"
                               HorizontalAlignment="Right" Grid.Row="3" Visibility="Collapsed"   
@@ -558,7 +560,8 @@
                                           materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                           materialDesign:HintAssist.Hint="Doc date..."  
                                           Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"                                    
-                                          Height="40"  Margin="5,5,5,5" >
+                                          Height="40"  Margin="5,5,5,5" 
+                                         >
                                 <DatePicker.ToolTip>
                                     <ToolTip x:Name="tt_docDate" Content="Doc Date"
                                                          Placement="left" 
@@ -584,10 +587,10 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBox x:Name="tb_docNumCheque"  MaxLength="20"  Grid.Column="0"
-                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                 Text="{Binding docNum, Mode=OneWay}" 
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                     Text="{Binding docNum, Mode=OneWay}" 
                                      Visibility="Visible"
-                                  Padding="10,0,5,0" Grid.ColumnSpan="2"
+                                     Padding="10,0,5,0" Grid.ColumnSpan="2"
                                  BorderThickness="1" 
                                  materialDesign:HintAssist.Hint="Document Number..."  
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12"
@@ -606,11 +609,11 @@
                                 </TextBox.ToolTip>
                             </TextBox>
                             <Path x:Name="p_errorDocNumCheque" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Row="5" Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                  HorizontalAlignment="Right" Grid.Row="5" Visibility="Collapsed"   
+                                  VerticalAlignment="Center" Width="15"  Height="15" Grid.Column="1"
+                                  Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                 <Path.ToolTip>
-                                    <ToolTip x:Name="tt_errorDocNumCheque" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    <ToolTip x:Name="tt_errorDocNumCheque"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
                             <DatePicker  x:Name="dp_docDateCheque" Grid.Column="0"
@@ -623,7 +626,8 @@
                                           materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                           materialDesign:HintAssist.Hint="Doc date..."  
                                           Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"                                    
-                                          Height="40"  Margin="5,5,5,5" >
+                                          Height="40"  Margin="5,5,5,5" 
+                                          LostFocus="Tb_validateEmptyLostFocus">
                                 <DatePicker.ToolTip>
                                     <ToolTip x:Name="tt_docDateCheque" Content="Doc Date"
                                                          Placement="left" 
@@ -659,15 +663,45 @@
                             </ComboBox.ToolTip>
                         </ComboBox>
                         <Path Fill="#E81123" x:Name="p_errorCard" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Row="6" Visibility="Collapsed"   
+                              HorizontalAlignment="Right" Grid.Row="7" Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                             <Path.ToolTip>
                                 <ToolTip x:Name="tt_errorCard" Content="Card Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
+                        <TextBox x:Name="tb_docNumCard"  MaxLength="20"  Grid.Row="8"  
+                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                 Text="{Binding docNum, Mode=OneWay}" 
+                                 Visibility="Collapsed"
+                                 Padding="10,0,5,0" Grid.ColumnSpan="2"
+                                 BorderThickness="1" 
+                                 materialDesign:HintAssist.Hint="Process Number..."  
+                                 Foreground="#4E4E4E"  TextBlock.FontSize="12"
+                                 Background="#f8f8f8" BorderBrush="#f8f8f8"
+                                 Height="40"   Margin="10,5,10,5"
+                                 TextChanged="Tb_validateEmptyTextChange" 
+                                 LostFocus="Tb_validateEmptyLostFocus"
+                                 PreviewKeyDown="PreventSpaces" 
+                                 PreviewTextInput="Tb_docNum_PreviewTextInput">
+                            <TextBox.ToolTip>
+                                <ToolTip x:Name="tt_docNumCard" Content="Process Number"
+                                                         Placement="left" 
+                                                         HorizontalOffset="35"
+                                                         PlacementRectangle="50,0,0,0"
+                                                         VerticalOffset="20"/>
+                            </TextBox.ToolTip>
+                        </TextBox>
+                        <Path x:Name="p_errorDocCard" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right"   Visibility="Collapsed"   Grid.Row="8"
+                              VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                            <Path.ToolTip>
+                                <ToolTip x:Name="tt_errorDocCard" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
 
-                        <TextBox x:Name="tb_cash" MaxLength="20"  Grid.Row="8"
+                        <TextBox x:Name="tb_cash" MaxLength="20"  Grid.Row="9"
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                  Text="{Binding cash, Mode=OneWay}" 
                                  Padding="10,0,5,0"
@@ -689,7 +723,7 @@
                             </TextBox.ToolTip>
                         </TextBox>
                         <Path x:Name="p_errorCash" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Row="8"  Visibility="Collapsed"   
+                              HorizontalAlignment="Right" Grid.Row="9"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                             <Path.ToolTip>
@@ -699,7 +733,7 @@
 
                         <TextBox  x:Name="tb_note" Text="{Binding notes , Mode=OneWay}" Padding="10,0,5,0"  
                                   materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                  BorderThickness="1" Grid.Row="9" materialDesign:HintAssist.Hint="Note..."  
+                                  BorderThickness="1" Grid.Row="10" materialDesign:HintAssist.Hint="Note..."  
                                   Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                   BorderBrush="#f8f8f8"
                                   MinHeight="70" 
@@ -713,7 +747,7 @@
                             </TextBox.ToolTip>
                         </TextBox>
                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                                  HorizontalAlignment="Right" Grid.Row="8" Visibility="Collapsed"   
+                                  HorizontalAlignment="Right" Grid.Row="10" Visibility="Collapsed"   
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                             <Path.ToolTip>

@@ -90,16 +90,23 @@ namespace POS.View.windows
 
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            if (lst_serials.Items.Count > 0)
+            if (_serialCount <= itemCount)
             {
-                serialList = new List<string>();
-                for (int i = 0; i < lst_serials.Items.Count; i++)
-                    serialList.Add(lst_serials.Items[i].ToString());
+                if (lst_serials.Items.Count > 0)
+                {
+                    serialList = new List<string>();
+                    for (int i = 0; i < lst_serials.Items.Count; i++)
+                        serialList.Add(lst_serials.Items[i].ToString());
 
-                _serialCount = 0;
-                valid = true;
-                DialogResult = true;
-                this.Close();
+                    _serialCount = 0;
+                    valid = true;
+                    DialogResult = true;
+                    this.Close();
+                }
+            }
+            else
+            {
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorSerialMoreItemCountToolTip"), animation: ToasterAnimation.FadeIn);
             }
         }
 

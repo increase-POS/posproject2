@@ -1725,4 +1725,37 @@
   <data name="trErrorTotalIsZeroToolTip" xml:space="preserve">
     <value>إجمالي الفاتورة 0</value>
   </data>
+  <data name="trErrorSerialMoreItemCountToolTip" xml:space="preserve">
+    <value>عدد السيريال أكبر من كمية العنصر</value>
+  </data>
+  <data name="trPurchaseOrder" xml:space="preserve">
+    <value>طلب شراء</value>
+  </data>
+  <data name="trPurchaseOrdersBill" xml:space="preserve">
+    <value>طلبات الشراء</value>
+  </data>
+  <data name="trProcessNumHint" xml:space="preserve">
+    <value>رقم العملية...</value>
+  </data>
+  <data name="trProcessNumTooltip" xml:space="preserve">
+    <value>رقم العملية</value>
+  </data>
+  <data name="trDestructive" xml:space="preserve">
+    <value>اتلاف</value>
+  </data>
+  <data name="trItemWithNoUnit" xml:space="preserve">
+    <value>هناك عنصر بدون واحدة</value>
+  </data>
+  <data name="trMovements" xml:space="preserve">
+    <value>التنقلات</value>
+  </data>
+  <data name="trReturn" xml:space="preserve">
+    <value>إرجاع</value>
+  </data>
+  <data name="trStocktaking" xml:space="preserve">
+    <value>جرد</value>
+  </data>
+  <data name="trStoreBtn" xml:space="preserve">
+    <value>تخزين</value>
+  </data>
 </root>

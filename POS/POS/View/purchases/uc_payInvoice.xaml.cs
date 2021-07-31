@@ -404,10 +404,15 @@ namespace POS.View
 
                         _Sum += billDetails[index].Price;
                     }
-                        refreshTotalValue();
+                    refreshTotalValue();
                     refrishBillDetails();
                 }
-               
+                else
+                {
+                    addRowToBill(item.name, itemId, null, 0, 1, 0, 0);
+                    refrishBillDetails();
+                }
+
             }
         }
 
@@ -594,7 +599,9 @@ namespace POS.View
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            if ((MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one")  &&
+            if ((
+                (MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()) 
+                &&
                 (invoice.invType == "pd" || invoice.invType == "pw" || invoice.invType == "p"))
                 || (invoice.invType != "pd" && invoice.invType != "pw" && invoice.invType != "p"))
             {
@@ -605,9 +612,10 @@ namespace POS.View
 
                 //check mandatory inputs
                 validateInvoiceValues();
+                    bool valid = validateItemUnits();
                 TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
                 if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0
-                    && !tb.Text.Trim().Equals("") && decimal.Parse(tb_total.Text) > 0  )
+                    && !tb.Text.Trim().Equals("") && decimal.Parse(tb_total.Text) > 0 && valid)
                 {
                     if (_InvoiceType == "pbd") //pbd means purchase bounse draft
                         await addInvoice("pbw", "pb"); // pbw means waiting purchase bounce 
@@ -627,16 +635,31 @@ namespace POS.View
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
+        private bool validateItemUnits()
+        {
+            bool valid = true;
+            for (int i = 0; i < billDetails.Count; i++)
+            {
+                if (billDetails[i].itemUnitId == 0)
+                {
+                    valid = false;
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trItemWithNoUnit"), animation: ToasterAnimation.FadeIn);
+
+                    return valid;
+                }
+            }
+            return valid;
+        }
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
-            if (billDetails.Count > 0)
+            bool valid = validateItemUnits();
+            if (billDetails.Count > 0 && valid)
             {
                 await addInvoice(_InvoiceType, "pi");
-            }
-            else
-            {
                 clearInvoice();
             }
+            else if (billDetails.Count == 0)
+                clearInvoice();
         }
         private void clearInvoice()
         {
@@ -775,7 +798,7 @@ namespace POS.View
         }
         private async void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
@@ -809,7 +832,7 @@ namespace POS.View
         }
         //private async void Btn_returnWInvoice_Click(object sender, RoutedEventArgs e)
         //{
-        //    if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
+        //    if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one")|| SectionData.isAdminPermision())
         //    {
         //        Window.GetWindow(this).Opacity = 0.2;
         //    wd_invoice w = new wd_invoice();
@@ -824,7 +847,7 @@ namespace POS.View
         //        {
         //            invoice = w.invoice;
         //            _InvoiceType = invoice.invType;
-                   
+
         //            mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
         //            this.DataContext = invoice;
 
@@ -1377,7 +1400,7 @@ namespace POS.View
         {
             var cmb = sender as ComboBox;
 
-            if (dg_billDetails.SelectedIndex != -1)
+            if (dg_billDetails.SelectedIndex != -1 && cmb != null)
                 billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
         }
 
@@ -1614,7 +1637,7 @@ namespace POS.View
 
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
             }

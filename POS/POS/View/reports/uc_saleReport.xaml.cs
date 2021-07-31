@@ -675,7 +675,7 @@ namespace POS.View.reports
                  .Select(g => new ItemUnitCombo { itemUnitId = (int)g.FirstOrDefault().ITitemUnitId, itemUnitName = g.FirstOrDefault().ITitemName + "-" + g.FirstOrDefault().ITunitName }).ToList();
                 names.AddRange(tempName.Select(nn => nn.itemUnitName));
             }
-
+            /********************************************************************************/
             if (selectedTab == 5)
             {
                 var temp = fillRowChartList(coupons, chk_couponInvoice, chk_couponReturn, chk_couponDrafs, dp_couponStartDate, dp_couponEndDate, dt_couponStartTime, dt_couponEndTime);
@@ -759,6 +759,8 @@ namespace POS.View.reports
             rowChart.Series = rowChartData;
         }
 
+
+
         public void fillBranchEvent()
         {
             var temp = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
@@ -809,7 +811,7 @@ namespace POS.View.reports
             dgInvoice.ItemsSource = temp.Where(j => (selectedcouponId.Count != 0 ? selectedcouponId.Contains((int)j.CopcId) : true));
             fillPieChart(cb_Coupons, selectedcouponId);
             fillColumnChart(cb_Coupons, selectedcouponId);
-            fillRowChart(cb_Coupons, selectedcouponId);
+            fillRowChartCoupAndOffer(cb_Coupons, selectedcouponId);
         }
 
         public void fillOffersEvent()
@@ -818,7 +820,7 @@ namespace POS.View.reports
             dgInvoice.ItemsSource = temp.Where(j => (selectedOfferId.Count != 0 ? selectedOfferId.Contains((int)j.OofferId) : true));
             fillPieChart(cb_offers, selectedOfferId);
             fillColumnChart(cb_offers, selectedOfferId);
-            fillRowChart(cb_offers, selectedOfferId);
+            fillRowChartCoupAndOffer(cb_offers, selectedOfferId);
         }
 
         #region Functions
@@ -880,6 +882,7 @@ namespace POS.View.reports
         #region tabControl
         private void hidAllColumns()
         {
+            col_type.Visibility = Visibility.Hidden;
             col_branch.Visibility = Visibility.Hidden;
             col_pos.Visibility = Visibility.Hidden;
             col_vendor.Visibility = Visibility.Hidden;
@@ -895,6 +898,12 @@ namespace POS.View.reports
             col_tax.Visibility = Visibility.Hidden;
             col_coupon.Visibility = Visibility.Hidden;
             col_offers.Visibility = Visibility.Hidden;
+            col_coupoValue.Visibility = Visibility.Hidden;
+            col_couponType.Visibility = Visibility.Hidden;
+            col_offersType.Visibility = Visibility.Hidden;
+            col_offersValue.Visibility = Visibility.Hidden;
+            col_offersTotalValue.Visibility = Visibility.Hidden;
+            col_couponTotalValue.Visibility = Visibility.Hidden;
         }
         private void btn_branch_Click(object sender, RoutedEventArgs e)
         {
@@ -917,6 +926,8 @@ namespace POS.View.reports
             col_totalNet.Visibility = Visibility.Visible;
             col_discount.Visibility = Visibility.Visible;
             col_tax.Visibility = Visibility.Visible;
+            col_type.Visibility = Visibility.Visible;
+
         }
 
         private void btn_pos_Click(object sender, RoutedEventArgs e)
@@ -942,6 +953,8 @@ namespace POS.View.reports
             col_totalNet.Visibility = Visibility.Visible;
             col_discount.Visibility = Visibility.Visible;
             col_tax.Visibility = Visibility.Visible;
+            col_type.Visibility = Visibility.Visible;
+
         }
 
         private void btn_vendors_Click(object sender, RoutedEventArgs e)
@@ -967,6 +980,8 @@ namespace POS.View.reports
             col_count.Visibility = Visibility.Visible;
             col_totalNet.Visibility = Visibility.Visible;
             col_tax.Visibility = Visibility.Visible;
+            col_type.Visibility = Visibility.Visible;
+
         }
 
         private void btn_users_Click(object sender, RoutedEventArgs e)
@@ -992,6 +1007,8 @@ namespace POS.View.reports
             col_user.Visibility = Visibility.Visible;
             col_totalNet.Visibility = Visibility.Visible;
             col_tax.Visibility = Visibility.Visible;
+            col_type.Visibility = Visibility.Visible;
+
         }
 
         private void btn_items_Click(object sender, RoutedEventArgs e)
@@ -1014,7 +1031,8 @@ namespace POS.View.reports
             col_itQuantity.Visibility = Visibility.Visible;
             col_price.Visibility = Visibility.Visible;
             col_total.Visibility = Visibility.Visible;
-            col_discount.Visibility = Visibility.Hidden;
+            col_type.Visibility = Visibility.Visible;
+
         }
 
         private void btn_coupons_Click(object sender, RoutedEventArgs e)
@@ -1024,7 +1042,6 @@ namespace POS.View.reports
             stk_tagsCoupons.Visibility = Visibility.Visible;
             selectedTab = 5;
             paint();
-            col_coupon.Visibility = Visibility.Visible;
             bdr_coupon.Background = Brushes.White;
             path_coupons.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             grid_coupons.Visibility = Visibility.Visible;
@@ -1032,7 +1049,12 @@ namespace POS.View.reports
             btn_coupons.IsEnabled = false;
             btn_coupons.Opacity = 1;
             fillCouponsEvent();
-
+            hidAllColumns();
+            col_coupon.Visibility = Visibility.Visible;
+            col_couponType.Visibility = Visibility.Visible;
+            col_coupoValue.Visibility = Visibility.Visible;
+            col_couponTotalValue.Visibility = Visibility.Visible;
+          
         }
         private void btn_offers_Click(object sender, RoutedEventArgs e)
         {
@@ -1041,10 +1063,7 @@ namespace POS.View.reports
             stk_tagsOffers.Visibility = Visibility.Visible;
             selectedTab = 6;
             paint();
-            col_offers.Visibility = Visibility.Visible;
-            col_item.Visibility = Visibility.Visible;
-            col_itQuantity.Visibility = Visibility.Visible;
-            col_count.Visibility = Visibility.Collapsed;
+           
             bdr_offers.Background = Brushes.White;
             path_offers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             grid_offers.Visibility = Visibility.Visible;
@@ -1052,6 +1071,13 @@ namespace POS.View.reports
             btn_offers.IsEnabled = false;
             btn_offers.Opacity = 1;
             fillOffersEvent();
+            hidAllColumns();
+            col_offers.Visibility = Visibility.Visible;
+            col_offersType.Visibility = Visibility.Visible;
+            col_offersValue.Visibility = Visibility.Visible;
+            col_item.Visibility = Visibility.Visible;
+            col_itQuantity.Visibility = Visibility.Visible;
+            col_offersTotalValue.Visibility = Visibility.Visible;
         }
         #endregion
 
@@ -2095,5 +2121,84 @@ namespace POS.View.reports
                 }
             }
         }
+
+        private void fillRowChartCoupAndOffer(ComboBox comboBox, ObservableCollection<int> stackedButton)
+        {
+            MyAxis.Labels = new List<string>();
+            List<string> names = new List<string>();
+            IEnumerable<decimal> pTemp = null;
+
+
+
+            /********************************************************************************/
+            
+                var temp = fillRowChartList(coupons, chk_couponInvoice, chk_couponReturn, chk_couponDrafs, dp_couponStartDate, dp_couponEndDate, dt_couponStartTime, dt_couponEndTime);
+                temp = temp.Where(j => (selectedcouponId.Count != 0 ? stackedButton.Contains((int)j.CopcId) : true));
+                var result = temp.GroupBy(s => new { s.CopcId }).Select(s => new
+                {
+                    CopcId = s.FirstOrDefault().CopcId,
+                    copName = s.FirstOrDefault().Copname,
+                    invId = s.FirstOrDefault().invoiceId,
+                    copTotalValue = s.Sum(x => x.couponTotalValue)
+                }
+             );
+              
+
+                var name = temp.GroupBy(s => s.invoiceId).Select(s => new
+                {
+                    uUserName = s.FirstOrDefault().Copname
+                });
+                names.AddRange(name.Select(nn => nn.uUserName));
+            pTemp = result.Select(x =>(decimal) x.copTotalValue);
+
+            if (selectedTab == 6)
+            {
+                names.Clear();
+                 temp = fillRowChartList(Offers, chk_offersInvoice, chk_offersReturn, chk_offersDrafs, dp_offersStartDate, dp_offersEndDate, dt_offersStartTime, dt_offersEndTime);
+                temp = temp.Where(j => (selectedOfferId.Count != 0 ? stackedButton.Contains((int)j.OofferId) : true));
+                var result1 = temp.GroupBy(s => new { s.itemId }).Select(s => new
+                {
+                    offerId = s.FirstOrDefault().OofferId,
+                    offerName = s.FirstOrDefault().Oname,
+                    itemId = s.FirstOrDefault().itemId,
+                    offerTotalValue = s.Sum(x => x.offerTotalValue)
+                }
+             );
+               
+                name = temp.GroupBy(s => s.itemId).Select(s => new
+                {
+                    uUserName = s.FirstOrDefault().Oname
+                });
+                names.AddRange(name.Select(nn => nn.uUserName));
+                pTemp = result1.Select(x => (decimal)x.offerTotalValue);
+            }
+
+
+
+            SeriesCollection rowChartData = new SeriesCollection();
+        List<decimal> purchase = new List<decimal>();
+        List<decimal> returns = new List<decimal>();
+        List<decimal> sub = new List<decimal>();
+        List<string> titles = new List<string>()
+            {
+                "المجموع","اجمالي المرتجع","صافي المبيعات"
+            };
+            for (int i = 0; i<pTemp.Count(); i++)
+            {
+                purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
+                MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+
+    rowChartData.Add(
+          new LineSeries
+          {
+              Values = purchase.AsChartValues(),
+              Title = titles[0]
+});
+
+            DataContext = this;
+            rowChart.Series = rowChartData;
+        }
+
     }
 }

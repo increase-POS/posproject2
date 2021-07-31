@@ -153,6 +153,8 @@ namespace POS.View.sales
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            MainWindow.mainWindow.KeyDown += HandleKeyPress;
+            tb_moneyIcon.Text = MainWindow.Currency;
 
             if (MainWindow.lang.Equals("en"))
             {
@@ -457,21 +459,45 @@ namespace POS.View.sales
         {
 
         }
-        private void validateInvoiceValues()
+        private async Task<bool> validateInvoiceValues()
         {
+            bool valid = true;
             SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
+            if (cb_customer.SelectedIndex == -1 || billDetails.Count == 0)
+                valid = false;         
+            if(valid)
+                 valid = validateItemUnits();
+            if (valid == true && _InvoiceType == "ord")
+                valid = await checkItemsAmounts();
+            return valid;
+        }
+        private bool validateItemUnits()
+        {
+            bool valid = true;
+            for (int i = 0; i < billDetails.Count; i++)
+            {
+                if (billDetails[i].itemUnitId == 0)
+                {
+                    valid = false;
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trItemWithNoUnit"), animation: ToasterAnimation.FadeIn);
+
+                    return valid;
+                }
+            }
+            return valid;
         }
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 Boolean available = true;
-            if (_InvoiceType == "ord")
-                available = await checkItemsAmounts();
-            if (billDetails.Count > 0 && available)
+                bool valid = validateItemUnits();
+
+                if (billDetails.Count > 0 && available && valid )
             {
                 await addInvoice(_InvoiceType);
-            }
+                    clearInvoice();
+                }
             else if (billDetails.Count == 0)
             {
                 clearInvoice();
@@ -506,7 +532,10 @@ namespace POS.View.sales
             tb_total.Text = "";
             tb_sum.Text = null;
             cb_company.SelectedIndex = -1;
+            cb_company.SelectedItem = "";
             cb_user.SelectedIndex = -1;
+            cb_user.SelectedItem = "";
+
             if (MainWindow.isInvTax == 1)
                 tb_taxValue.Text = MainWindow.tax.ToString();
             else
@@ -527,8 +556,8 @@ namespace POS.View.sales
             {
                 case "ord": // quotation draft invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
-                    dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
-                    dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                    dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
+                    dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
                     cb_customer.IsEnabled = true;
                     cb_company.IsEnabled = true;
                     cb_user.IsEnabled = true;
@@ -646,7 +675,10 @@ namespace POS.View.sales
 
                 // save order status
                await saveOrderStatus(invoiceId , "pr");
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
             }
+            else
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
         }
         private async Task saveOrderStatus(int invoiceId, string status)
         {
@@ -672,13 +704,28 @@ namespace POS.View.sales
                 var defaultsaleUnit = itemUnits.ToList().Find(c => c.defaultSale == 1);
                 if (defaultsaleUnit != null)
                 {
+                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == defaultsaleUnit.itemUnitId).FirstOrDefault());
                     decimal itemTax = 0;
                     if (item.taxes != null)
                         itemTax = (decimal)item.taxes;
                     // create new row in bill details data grid
-                    addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, (decimal)defaultsaleUnit.price, (decimal)defaultsaleUnit.price, itemTax);
+                    if (index == -1)//item doesn't exist in bill
+                        addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, (decimal)defaultsaleUnit.price, (decimal)defaultsaleUnit.price, itemTax);
+                    else // item exist prevoiusly in list
+                    {
+                        billDetails[index].Count++;
+                        billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
+
+                        _Sum += billDetails[index].Price;
+                    }
 
                     refreshTotalValue();
+                    refrishBillDetails();
+                }
+                else
+                {
+                    addRowToBill(item.name, itemId, null, 0, 1, 0, 0, (decimal)item.taxes);
+                    //refreshTotalValue();
                     refrishBillDetails();
                 }
             }
@@ -832,7 +879,7 @@ namespace POS.View.sales
         #endregion billdetails
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
@@ -935,7 +982,8 @@ namespace POS.View.sales
         private async void Btn_orders_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") ||
-                MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+                MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") ||
+                SectionData.isAdminPermision())
             {
                 // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
@@ -968,7 +1016,7 @@ namespace POS.View.sales
 
         private async void Btn_waitConfirmUser_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(deliveryPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(deliveryPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
@@ -1000,12 +1048,73 @@ namespace POS.View.sales
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
-        private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cmb = sender as ComboBox;
+            TextBlock tb;
 
-            if (dg_billDetails.SelectedIndex != -1)
+            if (dg_billDetails.SelectedIndex != -1 && cmb != null)
+            {
                 billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+
+                int itemUnitId = (int)cmb.SelectedValue;
+                billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+                var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
+                int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
+
+                int oldCount = 0;
+                long newCount = 0;
+                decimal oldPrice = 0;
+                decimal newPrice = (decimal)unit.price;
+
+                //"tb_amont"
+                tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
+                tb.Text = availableAmount.ToString();
+
+                oldCount = billDetails[dg_billDetails.SelectedIndex].Count;
+                oldPrice = billDetails[dg_billDetails.SelectedIndex].Price;
+
+                if (availableAmount < oldCount)
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                    newCount = availableAmount;
+                    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
+                    tb.Text = availableAmount.ToString();
+                }
+                else
+                    newCount = oldCount;
+
+                decimal total = oldPrice * oldCount;
+                _Sum -= total;
+
+
+                // new total for changed item
+                total = newCount * newPrice;
+                _Sum += total;
+
+                decimal itemTax = 0;
+                if (item.taxes != null)
+                    itemTax = (decimal)item.taxes;
+                // old tax for changed item
+                decimal tax = (decimal)itemTax * oldCount;
+                _Tax -= tax;
+                // new tax for changed item
+                tax = (decimal)itemTax * newCount;
+                _Tax += tax;
+
+                //refresh total cell
+                tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
+                tb.Text = total.ToString();
+
+                //  refresh sum and total text box
+                refreshTotalValue();
+
+                // update item in billdetails           
+                billDetails[dg_billDetails.SelectedIndex].Count = (int)newCount;
+                billDetails[dg_billDetails.SelectedIndex].Price = newPrice;
+                billDetails[dg_billDetails.SelectedIndex].Total = total;
+                refrishBillDetails();
+            }
         }
         private void Cbm_unitItemDetails_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -1126,7 +1235,8 @@ namespace POS.View.sales
         private void Btn_invoiceImages_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") ||
-                MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+                MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || 
+                SectionData.isAdminPermision())
             {
                 if (invoice != null && invoice.invoiceId != 0)
             {
@@ -1164,14 +1274,14 @@ namespace POS.View.sales
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 //check mandatory inputs
-                validateInvoiceValues();
-            Boolean available = true;
-            if (_InvoiceType == "ord") // draft order
-                available = await checkItemsAmounts();
-            if (billDetails.Count > 0 && available)
+                bool valid = await validateInvoiceValues();
+            //Boolean available = true;
+           // if (_InvoiceType == "ord") // draft order
+                //available = await checkItemsAmounts();
+            if (valid)
             {
                 if (_InvoiceType == "s")
                     await saveOrderStatus(invoice.invoiceId,"tr");
@@ -1230,7 +1340,7 @@ namespace POS.View.sales
         }
         private void Btn_items_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 //items
                 Window.GetWindow(this).Opacity = 0.2;
@@ -1293,10 +1403,13 @@ namespace POS.View.sales
                     cb_user.Visibility = Visibility.Collapsed;
                 }
             }
-            else
+            else if(cb_company.SelectedIndex == -1)
             {
+                cb_company.SelectedItem = "";
+            }  
+            else
                 cb_company.SelectedValue = _SelectedCompany;
-            }      
+
         }
 
         private void Cb_company_LostFocus(object sender, RoutedEventArgs e)
@@ -1321,6 +1434,8 @@ namespace POS.View.sales
             {
                 _SelectedUser = (int)cb_user.SelectedValue;
             }
+            else if (cb_customer.SelectedIndex == -1)
+                cb_user.SelectedItem = "";
             else
             {
                 cb_user.SelectedValue = _SelectedUser;
@@ -1331,7 +1446,7 @@ namespace POS.View.sales
 
         private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
 
@@ -1343,7 +1458,7 @@ namespace POS.View.sales
 
         private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
 
@@ -1355,7 +1470,7 @@ namespace POS.View.sales
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
 
@@ -1364,5 +1479,6 @@ namespace POS.View.sales
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+       
     }
 }

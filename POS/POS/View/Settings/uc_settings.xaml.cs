@@ -49,7 +49,8 @@ namespace POS.View.Settings
         }
         void permission()
         {
-            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+            if (!SectionData.isAdminPermision())
+                foreach (Button button in FindControls.FindVisualChildren<Button>(this))
             {
                 if (button.Tag != null)
                     if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))

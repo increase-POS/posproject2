@@ -95,6 +95,8 @@ namespace POS.Classes
         public string branchCreatorName { get; set; }
         public Nullable<int> shippingCompanyId { get; set; }
         public Nullable<int> shipUserId { get; set; }
+        public string shipUserName { get; set; }
+        public string status { get; set; }
         // for report
         public int countP { get; set; }
         public int countS { get; set; }
@@ -885,14 +887,15 @@ namespace POS.Classes
                     if(invType.Equals("pi"))
                     {
                         cashTrasnfer.side = "v"; // vendor
-                        cashTrasnfer.transNum = SectionData.generateNumber('p', "v").ToString();
+                        cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("pv"); 
                     }
                     else
                     {
                         cashTrasnfer.side = "c"; // vendor
-                        cashTrasnfer.transNum = SectionData.generateNumber('p', "c").ToString();
+                        cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("pc");
+
                     }
-                    if(agent.balanceType == 1)
+                    if (agent.balanceType == 1)
                     {
                         if (invoice.totalNet <= (decimal)agent.balance)
                         {
@@ -932,12 +935,13 @@ namespace POS.Classes
                     if(invType.Equals("pb"))
                     {
                         cashTrasnfer.side = "v"; // vendor
-                        cashTrasnfer.transNum = SectionData.generateNumber('d', "v").ToString();
+                        cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("dv");
+
                     }
                     else
                     {
                         cashTrasnfer.side = "c"; // customer
-                        cashTrasnfer.transNum = SectionData.generateNumber('d', "c").ToString();
+                        cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("dc");
                     }
                     if (agent.balanceType == 0)
                     {

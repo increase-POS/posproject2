@@ -35,6 +35,7 @@ namespace POS.View.reports
         IEnumerable<ItemTransferInvoice> invTypeCount;
         IEnumerable<ItemTransferInvoice> invCount;
 
+        List<InventoryClass> inventory;
         private static uc_storageReports _instance;
         public static uc_storageReports Instance
         {
@@ -49,6 +50,7 @@ namespace POS.View.reports
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             MainWindow.mainWindow.StartAwait();
+            inventory = await statisticModel.GetInventory();
             storages = await statisticModel.GetStorage();
             itemsTransfer = await statisticModel.GetExternalMov();
             itemsInternalTransfer = await statisticModel.GetInternalMov();
@@ -70,6 +72,8 @@ namespace POS.View.reports
             comboExternalAgentsAgents = statisticModel.GetExternalAgentCombos(itemsTransfer);
             comboExternalInvType = statisticModel.GetExternalInvoiceTypeCombos(itemsTransfer);
             comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
+
+            cbStockType = statisticModel.getStocktakingArchivesTypeCombo(inventory);
 
             fillComboBranches(cb_branchesItem);
             fillComboItems(cb_branchesItem, cb_itemsItem);
@@ -131,14 +135,17 @@ namespace POS.View.reports
             grid_stock.Visibility = Visibility.Hidden;
             grid_external.Visibility = Visibility.Hidden;
             grid_internal.Visibility = Visibility.Hidden;
+            grid_stocktaking.Visibility = Visibility.Hidden;
 
             bdr_stock.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_external.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_internal.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_stocktaking.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
             path_stock.Fill = Brushes.White;
             path_external.Fill = Brushes.White;
             path_internal.Fill = Brushes.White;
+            path_stocktaking.Fill = Brushes.White;
         }
         #endregion
 
@@ -161,6 +168,7 @@ namespace POS.View.reports
             btn_stock.IsEnabled = true;
             btn_external.IsEnabled = true;
             btn_internal.IsEnabled = true;
+            btn_stocktaking.IsEnabled = true;
         }
         #endregion
 
@@ -833,6 +841,7 @@ namespace POS.View.reports
             bdr_stock.Background = Brushes.White;
             path_stock.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             isEnabledButtons();
+            fillComboBranches(cb_branchesItem);
             btn_stock.IsEnabled = false;
             btn_stock.Opacity = 1;
             showSelectedTabColumn();
@@ -1024,6 +1033,7 @@ namespace POS.View.reports
         List<AgentCombo> comboExternalAgentsAgents;
         List<InvTypeCombo> comboExternalInvType;
         List<InvCombo> comboExternalInvoiceInvoice;
+
 
         private void fillComboExternalItemsItems()
         {
@@ -1951,6 +1961,10 @@ namespace POS.View.reports
             col_MinCollect.Visibility = Visibility.Hidden;
             col_branchFrom.Visibility = Visibility.Hidden;
             col_branchTo.Visibility = Visibility.Hidden;
+
+            col_stockTakeNum.Visibility = Visibility.Hidden;
+            col_stockTakingCoastType.Visibility = Visibility.Hidden;
+            col_stockTakingDate.Visibility = Visibility.Hidden;
         }
         private void showSelectedTabColumn()
         {
@@ -2343,6 +2357,26 @@ namespace POS.View.reports
             showSelectedTabColumn();
             fillInternalColumnChart();
         }
+        private void Btn_stocktaking_Click(object sender, RoutedEventArgs e)
+        {
+            selectedFatherTab = 2;
+            txt_search.Text = "";
+            paint();
+            grid_stocktaking.Visibility = Visibility.Visible;
+            bdr_stocktaking.Background = Brushes.White;
+            path_stocktaking.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            isEnabledButtons();
+            fillComboBranches(cb_stocktakingArchivedBranch);
+            fillComboArchivedTypeType();
+            btn_stocktaking.IsEnabled = false;
+            btn_stocktaking.Opacity = 1;
+            hideAllColumn();
+            col_stockTakeNum.Visibility = Visibility.Visible;
+            col_stockTakingCoastType.Visibility = Visibility.Visible;
+            col_stockTakingDate.Visibility = Visibility.Visible;
+            col_branch.Visibility = Visibility.Visible;
+            fillSocktakingEvents();
+        }
         private void fillComboInternalItemsItems()
         {
             cb_internalItemsItems.SelectedValuePath = "ItemId";
@@ -2634,9 +2668,9 @@ namespace POS.View.reports
                     x = result.Select(m => (decimal)m.quantity);
                 }
             }
-            else if (selectedInternalTab==1)
+            else if (selectedInternalTab == 1)
             {
-                if (cb_internalOperaterFromBranches.SelectedItem!=null)
+                if (cb_internalOperaterFromBranches.SelectedItem != null)
                 {
                     x = result.Select(m => (decimal)m.quantity);
                 }
@@ -2662,8 +2696,180 @@ namespace POS.View.reports
               );
             }
             chart1.Series = piechartData;
+        }
+
+
+        /*44444444444444444444444444444444444444444444444444444444444444444444444444444444444444444*/
+        private int selectedStocktakingTab = 0;
+        List<StocktakingArchivesTypeCombo> cbStockType;
+
+        private void Btn_stocktakeArchived_Click(object sender, RoutedEventArgs e)
+        {
+           selectedStocktakingTab = 0;
+            txt_search.Text = "";
+            paintStockTakingChilds();
+            grid_stocktakingArchived.Visibility = Visibility.Visible;
+            txt_stocktakeArchived.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_stocktakeArchived.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+
+         
+            fillComboBranches(cb_stocktakingArchivedBranch);
+        }
+        private void Btn_stocktakeShortfalse_Click(object sender, RoutedEventArgs e)
+        {
+
+            selectedStocktakingTab = 1;
+            txt_search.Text = "";
+            paintStockTakingChilds();
+            grid_stocktakingShortfalse.Visibility = Visibility.Visible;
+            txt_stocktakeShortfalse.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_stocktakeShortfalse.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+
+
+            fillComboBranches(cb_stocktakingFalseBranch);
+        }
+        public void paintStockTakingChilds()
+        {
+            bdrMainStocktake.RenderTransform = Animations.borderAnimation(50, bdrMainStocktake, true);
+
+            grid_stocktakingArchived.Visibility = Visibility.Hidden;
+            grid_stocktakingShortfalse.Visibility = Visibility.Hidden;
+
+            txt_stocktakeArchived.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            txt_stocktakeShortfalse.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+            path_stocktakeArchived.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            path_stocktakeShortfalse.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+        }
+       
+        private void fillComboArchivedTypeType()
+        {
+            var temp = cb_stocktakingArchivedBranch.SelectedItem as Branch;
+            cb_stocktakingArchivedType.SelectedValuePath = "InventoryType";
+            cb_stocktakingArchivedType.DisplayMemberPath = "InventoryType";
+            if (temp == null)
+            {
+                cb_stocktakingArchivedType.ItemsSource = cbStockType
+                    .GroupBy(x => x.InventoryType)
+                    .Select(g => new StocktakingArchivesTypeCombo
+                    {
+                        InventoryType = g.FirstOrDefault().InventoryType,
+                        BranchId = g.FirstOrDefault().BranchId
+                    }).ToList();
+            }
+            else
+            {
+                cb_stocktakingArchivedType.ItemsSource = cbStockType
+                    .Where(x => x.BranchId == temp.branchId)
+                    .GroupBy(x => x.InventoryType)
+                    .Select(g => new StocktakingArchivesTypeCombo
+                    {
+                        InventoryType = g.FirstOrDefault().InventoryType,
+                        BranchId = g.FirstOrDefault().BranchId
+                    }).ToList();
+            }
+        }
+        private IEnumerable<InventoryClass> fillListStockTaking(ComboBox branch, ComboBox cb, DatePicker startDate, DatePicker endDate)
+        {
+            var selectedBranch = branch.SelectedItem as Branch;
+            var selectedType = cb.SelectedItem as StocktakingArchivesTypeCombo;
+            var result = inventory.Where(x => (
+
+                         (branch.SelectedItem != null ? (x.branchId == selectedBranch.branchId) : true)
+                        && (cb.SelectedItem != null ? (x.inventoryType == selectedType.InventoryType) : true)
+                        && (dp_stocktakingArchivedStartDate.SelectedDate != null ? (x.inventoryDate >= startDate.SelectedDate) : true)
+                        && (dp_stocktakingArchivedEndDate.SelectedDate != null ? (x.inventoryDate <= endDate.SelectedDate) : true)
+          ));
+            return result;
+        }
+        private void fillSocktakingEvents()
+        {
+            dgStock.ItemsSource = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate).GroupBy(x=>x.inventoryId);
+        }
+
+        private void Cb_stocktakingArchivedBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillSocktakingEvents();
+        }
+
+        private void Chk_stocktakingArchivedAllBranches_Checked(object sender, RoutedEventArgs e)
+        {
+            cb_stocktakingArchivedBranch.SelectedItem = null;
+            cb_stocktakingArchivedBranch.IsEnabled = false;
+        }
+
+        private void Chk_stocktakingArchivedAllBranches_Unchecked(object sender, RoutedEventArgs e)
+        {
+            cb_stocktakingArchivedBranch.IsEnabled = true;
+        }
+
+        private void Cb_stocktakingArchivedType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillSocktakingEvents();
+        }
+
+        private void Chk_stocktakingArchivedAllTypes_Checked(object sender, RoutedEventArgs e)
+        {
+            cb_stocktakingArchivedType.SelectedItem = null;
+            cb_stocktakingArchivedType.IsEnabled = false;
+        }
+
+        private void Chk_stocktakingArchivedAllTypes_Unchecked(object sender, RoutedEventArgs e)
+        {
+            cb_stocktakingArchivedType.IsEnabled = true;
+        }
+
+        private void Dp_stocktakingArchivedEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillSocktakingEvents();
+        }
+
+        private void Dp_stocktakingArchivedStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillSocktakingEvents();
+        }
+
+        private void Dp_stocktakingFalseStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
 
         }
+
+        private void Dp_stocktakingFalseEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Chk_stocktakingFalseAllTypes_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Chk_stocktakingFalseAllTypes_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Cb_stocktakingFalseType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Chk_stocktakingFalseAllBranches_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Chk_stocktakingFalseAllBranches_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Cb_stocktakingFalseBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+     
     }
 }
 

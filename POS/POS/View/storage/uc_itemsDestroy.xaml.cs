@@ -48,13 +48,13 @@ namespace POS.View.storage
         Category categoryModel = new Category();
         Category category = new Category();
         IEnumerable<Category> categories;
+        InventoryItemLocation invItemLocModel = new InventoryItemLocation();
         InventoryItemLocation invItemLoc = new InventoryItemLocation();
         ItemLocation itemLocationModel = new ItemLocation();
         Invoice invoiceModel = new Invoice();
         IEnumerable<InventoryItemLocation> inventoriesItems;
         int? categoryParentId = 0;
         private string _ItemType = "";
-        public int itemCount { get; set; }
         public byte tglCategoryState = 1;
         public byte tglItemState = 1;
         public string txtItemSearch;
@@ -100,13 +100,10 @@ namespace POS.View.storage
                     if (item.type == "sn")
                     {
                         grid_serial.Visibility = Visibility.Visible;
-                        tb_amount.Text = "1";
-                        tb_amount.IsEnabled = false;
                     }
                     else
                     {
                         grid_serial.Visibility = Visibility.Collapsed;
-                        tb_amount.IsEnabled = true;
                     }
 
                 }
@@ -145,7 +142,7 @@ namespace POS.View.storage
         #region Excel
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
             }
@@ -177,13 +174,21 @@ namespace POS.View.storage
                 SectionData.validateEmptyComboBox(cb_item, p_errorItem,tt_errorItem,"trEmptyItemToolTip");
                 SectionData.validateEmptyComboBox(cb_unit, p_errorUnit,tt_errorUnit, "trErrorEmptyUnitToolTip");
                 if (cb_item.SelectedIndex == -1 || cb_unit.SelectedIndex == -1)
+                {
                     valid = false;
+                    return valid;
+                }
+            }
+            if(int.Parse(tb_amount.Text) < lst_serials.Items.Count)
+            {
+                valid = false;
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorSerialMoreItemCountToolTip"), animation: ToasterAnimation.FadeIn);
             }
             return valid;
         }
         private async void Btn_destroy_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(destroyPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(destroyPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 bool valid = validateDistroy();
                 if (valid)
@@ -204,7 +209,16 @@ namespace POS.View.storage
                     }
                     if (_ItemType == "sn")
                         serialNum = tb_serialNum.Text;
-
+                  
+                    if (lst_serials.Items.Count > 0)
+                    {
+                        for (int j = 0; j < lst_serials.Items.Count; j++)
+                        {
+                            serialNum += lst_serials.Items[j];
+                            if (j != lst_serials.Items.Count - 1)
+                                serialNum += ",";
+                        }
+                    }
                     decimal price = await invoiceModel.GetAvgItemPrice(itemUnitId, itemId );
                     price = Math.Round(price, 2);
                     decimal total = price * int.Parse( tb_amount.Text);
@@ -234,7 +248,7 @@ namespace POS.View.storage
                                 unitName = invItemLoc.unitName,
                                 itemUnitId = invItemLoc.itemUnitId,
                                 quantity = invItemLoc.amountDestroyed,
-                               // itemSerial = serialNum,
+                                itemSerial = serialNum,
                                 price = price,
                             }) ;
                             invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
@@ -265,7 +279,7 @@ namespace POS.View.storage
                             unitName = cb_unit.SelectedItem.ToString(),
                             itemUnitId = (int)cb_unit.SelectedValue,
                             quantity = long.Parse(tb_amount.Text),
-                           // itemSerial = serialNum,
+                           itemSerial = serialNum,
                             price = price,
                         }) ;
                         // اتلاف عنصر يدوياً بدون جرد
@@ -318,7 +332,7 @@ namespace POS.View.storage
         }
         private async Task refreshDestroyDetails()
         {
-            inventoriesItems = await invItemLoc.GetItemToDestroy(MainWindow.branchID.Value);
+            inventoriesItems = await invItemLocModel.GetItemToDestroy(MainWindow.branchID.Value);
             dg_itemDestroy.ItemsSource = inventoriesItems;
         }
 
@@ -332,6 +346,8 @@ namespace POS.View.storage
             invItemLoc = dg_itemDestroy.SelectedItem as InventoryItemLocation;
             tb_itemUnit.Visibility = Visibility.Visible;
             grid_itemUnit.Visibility = Visibility.Collapsed;
+            if (invItemLoc.itemType == "sn")
+                grid_serial.Visibility = Visibility.Visible;
             tb_amount.IsEnabled = false;
             this.DataContext = invItemLoc;
             tgl_manually.IsChecked = false;
@@ -341,7 +357,7 @@ namespace POS.View.storage
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
             }
@@ -351,7 +367,7 @@ namespace POS.View.storage
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
             }
@@ -361,7 +377,7 @@ namespace POS.View.storage
 
         private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
             }
@@ -402,6 +418,9 @@ namespace POS.View.storage
             DataContext = new InventoryItemLocation();
             cb_item.SelectedIndex =
             cb_unit.SelectedIndex = -1;
+            tb_notes.Clear();
+            tb_reasonOfDestroy.Clear();
+            tb_notes.Clear();
         }
         private void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
         {
@@ -427,6 +446,7 @@ namespace POS.View.storage
             {
                 tb_itemUnit.Visibility = Visibility.Collapsed;
                 grid_itemUnit.Visibility = Visibility.Visible;
+                tb_amount.IsEnabled = true;
             }
             else
             {
@@ -434,7 +454,8 @@ namespace POS.View.storage
                 grid_itemUnit.Visibility = Visibility.Collapsed;
             }
             grid_serial.Visibility = Visibility.Collapsed;
-            tb_amount.IsEnabled = true;
+
+            Btn_clear_Click(null, null);
         }
         private void Tgl_manually_Checked(object sender, RoutedEventArgs e)
         {
@@ -451,6 +472,7 @@ namespace POS.View.storage
             if (e.Key == Key.Return)
             {
                 string s = tb_serialNum.Text;
+                int itemCount = int.Parse( tb_amount.Text);
                 if (_serialCount == itemCount)
                 {
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningItemCountIs:") + " " + itemCount, animation: ToasterAnimation.FadeIn);

@@ -221,7 +221,7 @@ namespace POS.View
         //******************* update property***************
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
             {
                 //update
                 property.name = tb_name.Text;
@@ -261,7 +261,7 @@ namespace POS.View
         //******************* delete property***************
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
             {
                 if ((!property.canDelete) && (property.isActive == 0))
             {
@@ -394,7 +394,7 @@ namespace POS.View
         private async void Btn_addValue_Click(object sender, RoutedEventArgs e)
             {
                 //add
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
                     var bc = new BrushConverter();
             if (tb_valueName.Text.Equals(""))
@@ -439,7 +439,7 @@ namespace POS.View
 
         private async void Btn_deleteValue_Click(object sender, RoutedEventArgs e)
         {
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete"))
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
                     if ((!propertyItem.canDelete) && (propertyItem.isActive == 0))
                await activatePropertyItem();
@@ -468,7 +468,7 @@ namespace POS.View
             private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {
             //add
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
             {
                 var bc = new BrushConverter();
             if (tb_valueName.Text.Equals(""))
@@ -515,7 +515,7 @@ namespace POS.View
 
         private async void Btn_updateValue_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
             {
                 //check mandatory values
                 var bc = new BrushConverter();
@@ -568,7 +568,7 @@ namespace POS.View
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
             {
                 if (properties is null)
                 await RefreshPropertiesList();
@@ -579,7 +579,7 @@ namespace POS.View
         }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
             {
 
                 RefreshPropertiesList();
@@ -606,7 +606,7 @@ namespace POS.View
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report"))
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
                 this.Dispatcher.Invoke(() =>
             {

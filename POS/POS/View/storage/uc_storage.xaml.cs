@@ -38,7 +38,17 @@ namespace POS.View
         {
             InitializeComponent();
         }
-
+        private void translate()
+        {
+            btn_locations.Content = MainWindow.resourcemanager.GetString("trLocation");
+            btn_section.Content = MainWindow.resourcemanager.GetString("trSection");
+            btn_reciptOfInvoice.Content = MainWindow.resourcemanager.GetString("trInvoice");
+            btn_itemsStorage.Content = MainWindow.resourcemanager.GetString("trStorage");
+            btn_importExport.Content = MainWindow.resourcemanager.GetString("trMovements");
+            btn_itemsDestroy.Content = MainWindow.resourcemanager.GetString("trDestructive");
+            btn_inventory.Content = MainWindow.resourcemanager.GetString("trStocktaking");
+            btn_storageStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
+        }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
@@ -51,12 +61,13 @@ namespace POS.View
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucStorage.FlowDirection = FlowDirection.RightToLeft;
             }
-
+            translate();
             Btn_locations_Click(null, null);
             permission();
         }
         void permission()
         {
+            if (!SectionData.isAdminPermision())
             foreach (Button button in FindControls.FindVisualChildren<Button>(this))
             {
                 if (button.Tag != null)

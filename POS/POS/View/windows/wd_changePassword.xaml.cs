@@ -163,6 +163,7 @@ namespace POS.View.windows
                         string s = await userModel.saveUser(MainWindow.userLogin);
                         if (!s.Equals("0"))
                         {
+                            userID = int.Parse(s);
                             if (!Properties.Settings.Default.password.Equals(""))
                             {
                                 Properties.Settings.Default.password = pb_newPassword.Password;
