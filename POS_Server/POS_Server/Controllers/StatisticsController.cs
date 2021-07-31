@@ -1885,13 +1885,16 @@ else
                                         I.updateUserId,
                                         I.branchId,
                                          discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                         couponTotalValue = (C.discountType == 1 || C.discountType == null) ? C.discountValue : (C.discountType == 2 ? ((C.discountValue / 100) * I.total) : 0),
+
                                          I.discountType,
                                         I.tax,
                                         I.name,
                                         I.isApproved,
 
-                                        //
-                                        I.branchCreatorId,
+                                         // discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
+
+                                         I.branchCreatorId,
                                         branchCreatorName = JBCC.name,
                                         //
                                         //  branchName = JBB.name,
@@ -1969,12 +1972,13 @@ else
                                     join P in entity.pos on I.posId equals P.posId into JP
                                     join ITO in entity.itemTransferOffer on IT.itemsTransId equals ITO.itemTransId
                                     join O in entity.offers on ITO.offerId equals O.offerId
+                                   
                                     //join ITOF in entity.itemsTransfer on ITO.itemTransId equals ITOF.itemsTransId 
-                                 //   from  IUO in entity.itemsOffers.Where(X=> X.offerId == O.offerId).Distinct()
+                                    //   from  IUO in entity.itemsOffers.Where(X=> X.offerId == O.offerId).Distinct()
 
 
-                                    // from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
+                                   // from JBB in JB
+                                   from JPP in JP.DefaultIfEmpty()
                                     from JUU in JU.DefaultIfEmpty()
                                     from JUPUS in JUPUSR.DefaultIfEmpty()
                                     from JIMM in JIM.DefaultIfEmpty()
@@ -1985,7 +1989,8 @@ else
                                     select new
                                     {
                                         // offer
-                                        Oname = O.name,
+                                       
+                                       Oname = O.name,
                                         OofferId = O.offerId,
                                         Oitemofferid = ITO.id,
                                         //Oquantity = IUO.quantity,
@@ -2000,7 +2005,7 @@ else
                                         OcreateUserId = O.createUserId,
                                         OupdateUserId = O.updateUserId,
                                         Onotes = O.notes,
-
+                                     
                                         //itemtransfer
                                         ITitemName = ITEM.name,
                                         ITunitName = UNIT.name,
@@ -2057,7 +2062,7 @@ else
                                         branchCreatorName = JBCC.name,
                                         //
                                         //  branchName = JBB.name,
-
+                                      
                                         //  branchType = JBB.type,
                                         posName = JPP.name,
                                         posCode = JPP.code,
@@ -2073,6 +2078,9 @@ else
                                         agentCompany = JAA.company,
 
                                         subTotal = (IT.price * IT.quantity),
+                                        // couponTotalValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
+                                        offerTotalValue = (O.discountType == "1" || O.discountType == null) ? (O.discountValue * (IT.price * IT.quantity)) : (O.discountType == "2" ? ((O.discountValue / 100) * (IT.price * IT.quantity)) : 0),
+
                                     }).ToList();
 
                     /*
@@ -2217,9 +2225,11 @@ notes
                                         IU.storageCostId,
                                     
                                      storageCostName= IU.storageCostId != null ? entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().name :"" ,
-                                      storageCostValue = IU.storageCostId != null ? entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().cost:0,
+                                      storageCostValue = IU.storageCostId != null ?
+                                      entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().cost
+                                      :0,
 
-
+                                    //  IUL.updateDate.
                                         cuserName = JUU.name,
                                         cuserLast = JUU.lastname,
                                         cUserAccName = JUU.username,
@@ -2752,6 +2762,83 @@ notes
             //else
             return NotFound();
         }
+
+        #endregion
+
+        // الجرد
+        #region
+        // عناصر الجرد
+        [HttpGet]
+        [Route("GetInventory")]
+        public IHttpActionResult GetInventory()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var List = (from c in entity.inventoryItemLocation
+                                join i in entity.Inventory on c.inventoryId equals i.inventoryId
+                                join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
+                                join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
+                                join un in entity.units on u.unitId equals un.unitId
+                                join lo in entity.locations on l.locationId equals lo.locationId
+                             //   join s in entity.sections on lo.sectionId equals s.sectionId
+                                select new 
+                                {
+                                    inventoryILId=  c.id,
+                                    c.isDestroyed,
+                                    c.amount,
+                                    c.amountDestroyed,
+                                   c.realAmount,
+                                    c.itemLocationId,
+                                    c.inventoryId,
+                                    c.isActive,
+                                   c.notes,
+                                    c.createDate,
+                                    c.updateDate,
+                                    c.createUserId,
+                                     c.updateUserId,
+                                   i.branchId,
+                                    branchName=i.branches.name,
+                                    u.items.itemId,
+                                    itemName = u.items.name,
+                                    un.unitId,
+                                    u.itemUnitId,
+                                    unitName = un.name,
+
+                                    Secname = lo.sections.name,
+                                   lo.sectionId,
+                                    lo.x,
+                                    lo.y,
+                                    lo.z,
+                                    itemType = u.items.type,
+                                    inventoryDate = c.Inventory.createDate,
+                                  
+                                    inventoryNum = c.Inventory.num,
+                                  c.Inventory.inventoryType,
+                                })
+                       .ToList();
+
+                    if (List == null)
+                        return NotFound();
+                    else
+                        return Ok(List);
+                }
+            }
+            return NotFound();
+        }
+
 
         #endregion
     }

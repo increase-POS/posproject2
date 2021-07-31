@@ -72,6 +72,92 @@ namespace POS_Server.Controllers
             }
             return NotFound();
         }
+        [HttpGet]
+        [Route("GetByCreator")]
+        public IHttpActionResult GetByCreator(string inventoryType, int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var List = entity.Inventory 
+                  .Where(c => c.inventoryType.Contains(inventoryType) && c.createUserId == userId)
+                   .Select(c => new InventoryModel
+                   {
+                       inventoryId = c.inventoryId,
+                       num = c.num,
+                       notes = c.notes,
+                       createDate = c.createDate,
+                       updateDate = c.updateDate,
+                       createUserId = c.createUserId,
+                       updateUserId = c.updateUserId,
+                       isActive = c.isActive,
+                       inventoryType = c.inventoryType,
+
+                   })
+                   .ToList();
+                   
+                    if (List == null)
+                        return NotFound();
+                    else
+                        return Ok(List);
+                }
+            }
+            return NotFound();
+        }
+         [HttpGet]
+        [Route("getByBranch")]
+        public IHttpActionResult getByBranch(string inventoryType, int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var List = entity.Inventory 
+                  .Where(c => c.inventoryType.Contains(inventoryType) && c.branchId == branchId)
+                   .Select(c => new InventoryModel
+                   {
+                       inventoryId = c.inventoryId,
+                       num = c.num,
+                       notes = c.notes,
+                       createDate = c.createDate,
+                       updateDate = c.updateDate,
+                       createUserId = c.createUserId,
+                       updateUserId = c.updateUserId,
+                       isActive = c.isActive,
+                       inventoryType = c.inventoryType,
+
+                   })
+                   .ToList();
+                   
+                    if (List == null)
+                        return NotFound();
+                    else
+                        return Ok(List);
+                }
+            }
+            return NotFound();
+        }
 
 
 

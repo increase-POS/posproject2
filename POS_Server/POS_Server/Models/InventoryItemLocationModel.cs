@@ -31,5 +31,7 @@ namespace POS_Server.Models
         public string unitName { get; set; }
         public string inventoryNum { get; set; }
         public Nullable<System.DateTime> inventoryDate { get; set; }
+        public string itemType { get; set; }
+
     }
 }

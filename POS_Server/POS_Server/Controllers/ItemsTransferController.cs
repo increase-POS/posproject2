@@ -130,15 +130,15 @@ namespace POS_Server.Controllers
                         entity.itemsTransfer.Add(transferObj[i]);
                      
                     }
-                  //  try
-                  //  {
+                    try
+                    {
                         entity.SaveChanges();
-                    //}
+                    }
 
-                  //  catch
-                  //  {
-                  //      return false;
-                   // }
+                    catch
+                    {
+                        return false;
+                    }
                 }
 
             }

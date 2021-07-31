@@ -123,7 +123,7 @@ namespace POS_Server.Controllers
                                     unitName = un.name,
                                     section = lo.sections.name,
                                     location = lo.x + "-" + lo.y + "-" + lo.z,
-
+                                    itemType = u.items.type,
                                     inventoryDate = c.Inventory.createDate,
                                     inventoryNum = c.Inventory.num,
                                 })

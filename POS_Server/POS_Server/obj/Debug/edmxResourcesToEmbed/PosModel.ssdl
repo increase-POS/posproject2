@@ -388,20 +388,6 @@
     <Property Name="shipUserId" Type="int" />
     <Property Name="prevStatus" Type="nvarchar" MaxLength="10" />
   </EntityType>
-  <EntityType Name="invoicesOrders">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="invoiceId" Type="int" />
-    <Property Name="orderId" Type="int" />
-    <Property Name="ordercase" Type="nvarchar" MaxLength="50" />
-    <Property Name="notes" Type="ntext" />
-    <Property Name="createDate" Type="datetime2" Precision="7" />
-    <Property Name="updateDate" Type="datetime2" Precision="7" />
-    <Property Name="createUserId" Type="int" />
-    <Property Name="updateUserId" Type="int" />
-  </EntityType>
   <EntityType Name="invoiceStatus">
     <Key>
       <PropertyRef Name="invStatusId" />
@@ -454,7 +440,6 @@
     <Property Name="endDate" Type="date" />
     <Property Name="itemUnitId" Type="int" />
     <Property Name="note" Type="ntext" />
-    <Property Name="storeCost" Type="decimal" Precision="20" Scale="2" />
   </EntityType>
   <EntityType Name="itemsMaterials">
     <Key>
@@ -642,35 +627,6 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="notes" Type="ntext" />
-  </EntityType>
-  <EntityType Name="orders">
-    <Key>
-      <PropertyRef Name="orderId" />
-    </Key>
-    <Property Name="orderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="invoiceId" Type="int" />
-    <Property Name="ordercase" Type="nvarchar" MaxLength="50" />
-    <Property Name="userId" Type="int" />
-    <Property Name="prior" Type="int" />
-    <Property Name="type" Type="smallint" />
-    <Property Name="createDate" Type="datetime2" Precision="7" />
-    <Property Name="updateDate" Type="datetime2" Precision="7" />
-    <Property Name="createUserId" Type="int" />
-    <Property Name="updateUserId" Type="int" />
-  </EntityType>
-  <EntityType Name="orderscontents">
-    <Key>
-      <PropertyRef Name="contentId" />
-    </Key>
-    <Property Name="contentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="orderId" Type="int" />
-    <Property Name="itemId" Type="int" />
-    <Property Name="quantity" Type="decimal" Precision="20" Scale="2" />
-    <Property Name="invoiceId" Type="int" />
-    <Property Name="createDate" Type="datetime2" Precision="7" />
-    <Property Name="updateDate" Type="datetime2" Precision="7" />
-    <Property Name="createUserId" Type="int" />
-    <Property Name="updateUserId" Type="int" />
   </EntityType>
   <EntityType Name="packages">
     <Key>
@@ -1866,54 +1822,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_invoicesOrders_invoices">
-    <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
-    <End Role="invoicesOrders" Type="Self.invoicesOrders" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="invoices">
-        <PropertyRef Name="invoiceId" />
-      </Principal>
-      <Dependent Role="invoicesOrders">
-        <PropertyRef Name="invoiceId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_invoicesOrders_orders">
-    <End Role="orders" Type="Self.orders" Multiplicity="0..1" />
-    <End Role="invoicesOrders" Type="Self.invoicesOrders" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="orders">
-        <PropertyRef Name="orderId" />
-      </Principal>
-      <Dependent Role="invoicesOrders">
-        <PropertyRef Name="orderId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_invoicesOrders_users">
-    <End Role="users" Type="Self.users" Multiplicity="0..1" />
-    <End Role="invoicesOrders" Type="Self.invoicesOrders" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="invoicesOrders">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_invoicesOrders_users1">
-    <End Role="users" Type="Self.users" Multiplicity="0..1" />
-    <End Role="invoicesOrders" Type="Self.invoicesOrders" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="invoicesOrders">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_invoiceStatus_invoices">
     <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
     <End Role="invoiceStatus" Type="Self.invoiceStatus" Multiplicity="*" />
@@ -2574,114 +2482,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_orders_invoices">
-    <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
-    <End Role="orders" Type="Self.orders" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="invoices">
-        <PropertyRef Name="invoiceId" />
-      </Principal>
-      <Dependent Role="orders">
-        <PropertyRef Name="invoiceId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_orders_users">
-    <End Role="users" Type="Self.users" Multiplicity="0..1" />
-    <End Role="orders" Type="Self.orders" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="orders">
-        <PropertyRef Name="userId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_orders_users1">
-    <End Role="users" Type="Self.users" Multiplicity="0..1" />
-    <End Role="orders" Type="Self.orders" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="orders">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_orders_users2">
-    <End Role="users" Type="Self.users" Multiplicity="0..1" />
-    <End Role="orders" Type="Self.orders" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="orders">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_orderscontents_invoices">
-    <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
-    <End Role="orderscontents" Type="Self.orderscontents" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="invoices">
-        <PropertyRef Name="invoiceId" />
-      </Principal>
-      <Dependent Role="orderscontents">
-        <PropertyRef Name="invoiceId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_orderscontents_items">
-    <End Role="items" Type="Self.items" Multiplicity="0..1" />
-    <End Role="orderscontents" Type="Self.orderscontents" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="items">
-        <PropertyRef Name="itemId" />
-      </Principal>
-      <Dependent Role="orderscontents">
-        <PropertyRef Name="itemId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_orderscontents_orders">
-    <End Role="orders" Type="Self.orders" Multiplicity="0..1" />
-    <End Role="orderscontents" Type="Self.orderscontents" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="orders">
-        <PropertyRef Name="orderId" />
-      </Principal>
-      <Dependent Role="orderscontents">
-        <PropertyRef Name="orderId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_orderscontents_users">
-    <End Role="users" Type="Self.users" Multiplicity="0..1" />
-    <End Role="orderscontents" Type="Self.orderscontents" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="orderscontents">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_orderscontents_users1">
-    <End Role="users" Type="Self.users" Multiplicity="0..1" />
-    <End Role="orderscontents" Type="Self.orderscontents" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="orderscontents">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_packages_itemsUnits">
     <End Role="itemsUnits" Type="Self.itemsUnits" Multiplicity="0..1" />
     <End Role="packages" Type="Self.packages" Multiplicity="*" />
@@ -3209,7 +3009,6 @@
     <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="inventoryItemLocation" EntityType="Self.inventoryItemLocation" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="invoices" EntityType="Self.invoices" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="invoicesOrders" EntityType="Self.invoicesOrders" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="invoiceStatus" EntityType="Self.invoiceStatus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="items" EntityType="Self.items" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="itemsLocations" EntityType="Self.itemsLocations" Schema="dbo" store:Type="Tables" />
@@ -3225,8 +3024,6 @@
     <EntitySet Name="memberships" EntityType="Self.memberships" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="objects" EntityType="Self.objects" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="offers" EntityType="Self.offers" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="orders" EntityType="Self.orders" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="orderscontents" EntityType="Self.orderscontents" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="packages" EntityType="Self.packages" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Points" EntityType="Self.Points" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="pos" EntityType="Self.pos" Schema="dbo" store:Type="Tables" />
@@ -3547,22 +3344,6 @@
       <End Role="users" EntitySet="users" />
       <End Role="invoices" EntitySet="invoices" />
     </AssociationSet>
-    <AssociationSet Name="FK_invoicesOrders_invoices" Association="Self.FK_invoicesOrders_invoices">
-      <End Role="invoices" EntitySet="invoices" />
-      <End Role="invoicesOrders" EntitySet="invoicesOrders" />
-    </AssociationSet>
-    <AssociationSet Name="FK_invoicesOrders_orders" Association="Self.FK_invoicesOrders_orders">
-      <End Role="orders" EntitySet="orders" />
-      <End Role="invoicesOrders" EntitySet="invoicesOrders" />
-    </AssociationSet>
-    <AssociationSet Name="FK_invoicesOrders_users" Association="Self.FK_invoicesOrders_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="invoicesOrders" EntitySet="invoicesOrders" />
-    </AssociationSet>
-    <AssociationSet Name="FK_invoicesOrders_users1" Association="Self.FK_invoicesOrders_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="invoicesOrders" EntitySet="invoicesOrders" />
-    </AssociationSet>
     <AssociationSet Name="FK_invoiceStatus_invoices" Association="Self.FK_invoiceStatus_invoices">
       <End Role="invoices" EntitySet="invoices" />
       <End Role="invoiceStatus" EntitySet="invoiceStatus" />
@@ -3782,42 +3563,6 @@
     <AssociationSet Name="FK_objects_users1" Association="Self.FK_objects_users1">
       <End Role="users" EntitySet="users" />
       <End Role="objects" EntitySet="objects" />
-    </AssociationSet>
-    <AssociationSet Name="FK_orders_invoices" Association="Self.FK_orders_invoices">
-      <End Role="invoices" EntitySet="invoices" />
-      <End Role="orders" EntitySet="orders" />
-    </AssociationSet>
-    <AssociationSet Name="FK_orders_users" Association="Self.FK_orders_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="orders" EntitySet="orders" />
-    </AssociationSet>
-    <AssociationSet Name="FK_orders_users1" Association="Self.FK_orders_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="orders" EntitySet="orders" />
-    </AssociationSet>
-    <AssociationSet Name="FK_orders_users2" Association="Self.FK_orders_users2">
-      <End Role="users" EntitySet="users" />
-      <End Role="orders" EntitySet="orders" />
-    </AssociationSet>
-    <AssociationSet Name="FK_orderscontents_invoices" Association="Self.FK_orderscontents_invoices">
-      <End Role="invoices" EntitySet="invoices" />
-      <End Role="orderscontents" EntitySet="orderscontents" />
-    </AssociationSet>
-    <AssociationSet Name="FK_orderscontents_items" Association="Self.FK_orderscontents_items">
-      <End Role="items" EntitySet="items" />
-      <End Role="orderscontents" EntitySet="orderscontents" />
-    </AssociationSet>
-    <AssociationSet Name="FK_orderscontents_orders" Association="Self.FK_orderscontents_orders">
-      <End Role="orders" EntitySet="orders" />
-      <End Role="orderscontents" EntitySet="orderscontents" />
-    </AssociationSet>
-    <AssociationSet Name="FK_orderscontents_users" Association="Self.FK_orderscontents_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="orderscontents" EntitySet="orderscontents" />
-    </AssociationSet>
-    <AssociationSet Name="FK_orderscontents_users1" Association="Self.FK_orderscontents_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="orderscontents" EntitySet="orderscontents" />
     </AssociationSet>
     <AssociationSet Name="FK_packages_itemsUnits" Association="Self.FK_packages_itemsUnits">
       <End Role="itemsUnits" EntitySet="itemsUnits" />

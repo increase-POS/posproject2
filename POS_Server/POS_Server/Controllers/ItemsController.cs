@@ -10,6 +10,7 @@ using POS_Server.Models;
 using System.Web;
 using System.IO;
 using LinqKit;
+using Microsoft.Ajax.Utilities;
 
 namespace POS_Server.Controllers
 {
@@ -172,11 +173,11 @@ namespace POS_Server.Controllers
                         unitPredicate = unitPredicate.Or(unit => unit.defaultSale == 1);
                  
                         var itemsList = (from I in entity.items.Where(searchPredicate)
-                                         join u in entity.itemsUnits.Where(unitPredicate) on I.itemId equals u.itemId
+                                         join u in entity.itemsUnits on I.itemId equals u.itemId
                                          join il in entity.itemsLocations on u.itemUnitId equals il.itemUnitId
                                          join l in entity.locations on il.locationId equals l.locationId
                                          join s in entity.sections.Where(x => x.branchId == branchId) on l.sectionId equals s.sectionId
-                                         where il.quantity > 0
+                                         where il.quantity > 0 
                                          select new ItemModel()
                                          {
                                              itemId = I.itemId,
@@ -200,10 +201,11 @@ namespace POS_Server.Controllers
                                              createUserId = I.createUserId,
                                              updateUserId = I.updateUserId,
                                              isNew = 0,
-                                             price = u.price,
+                                            price = I.itemsUnits.Where(iu => iu.itemId == I.itemId && iu.defaultPurchase == 1).Select(iu => iu.price).FirstOrDefault(),
 
-                                         })
+                                         }).DistinctBy(x => x.itemId)
                                   .ToList();
+                      
                         if (itemsList == null)
                             return NotFound();
                         else
@@ -213,7 +215,7 @@ namespace POS_Server.Controllers
                     {
                         unitPredicate = unitPredicate.Or(unit => unit.defaultPurchase == 1);
                         var itemsList = (from I in entity.items.Where(searchPredicate)
-                                         join u in entity.itemsUnits.Where(unitPredicate) on I.itemId equals u.itemId
+                                         join u in entity.itemsUnits on I.itemId equals u.itemId
                                          select new ItemModel()
                                          {
                                              itemId = I.itemId,
@@ -237,9 +239,9 @@ namespace POS_Server.Controllers
                                              createUserId = I.createUserId,
                                              updateUserId = I.updateUserId,
                                              isNew = 0,
-                                             price = u.price,
+                                             //price = u.price,
 
-                                         })
+                                         }).DistinctBy(x => x.itemId)
                                        .ToList();
                         if (itemsList == null)
                             return NotFound();
