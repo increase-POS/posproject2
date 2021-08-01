@@ -36,7 +36,7 @@ namespace POS.View.accounts
         public uc_accounts()
         {
             InitializeComponent();
-            Btn_pos_Click(null, null);
+            //Btn_pos_Click(null, null);
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {

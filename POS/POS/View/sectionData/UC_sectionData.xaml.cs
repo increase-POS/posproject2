@@ -39,7 +39,7 @@ namespace POS.View
         {
             InitializeComponent();
 
-            Btn_suppliers_Click(null, null);
+            //Btn_suppliers_Click(null, null);
         }
         void refreashBackground()
         {

@@ -62,7 +62,7 @@ namespace POS.View
                 grid_ucStorage.FlowDirection = FlowDirection.RightToLeft;
             }
             translate();
-            Btn_locations_Click(null, null);
+            //Btn_locations_Click(null, null);
             permission();
         }
         void permission()
@@ -119,6 +119,9 @@ namespace POS.View
             grid_main.Children.Add(uc_locations.Instance);
             //uc_locations uc = new uc_locations();
             //grid_main.Children.Add(uc);
+
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_section_Click(object sender, RoutedEventArgs e)
         {
@@ -127,6 +130,9 @@ namespace POS.View
             grid_main.Children.Add(uc_section.Instance);
             //uc_section uc = new uc_section();
             //grid_main.Children.Add(uc);
+
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_receiptOfPurchaseInvoice_Click(object sender, RoutedEventArgs e)
         {
@@ -135,6 +141,9 @@ namespace POS.View
             grid_main.Children.Add(uc_receiptOfPurchaseInvoice.Instance);
             //uc_receiptOfPurchaseInvoice uc = new uc_receiptOfPurchaseInvoice();
             //grid_main.Children.Add(uc);
+
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_itemsStorage_Click(object sender, RoutedEventArgs e)
         {
@@ -143,6 +152,9 @@ namespace POS.View
             grid_main.Children.Add(uc_itemsStorage.Instance);
             //uc_itemsStorage uc = new uc_itemsStorage();
             //grid_main.Children.Add(uc);
+
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         //private void Btn_itemsImport_Click(object sender, RoutedEventArgs e)
         //{
@@ -159,8 +171,10 @@ namespace POS.View
             grid_main.Children.Add(uc_itemsExport.Instance);
             //uc_itemsExport uc = new uc_itemsExport();
             //grid_main.Children.Add(uc);
-        }
 
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+        }
         private void Btn_itemsDestroy_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_itemsDestroy);
@@ -168,15 +182,18 @@ namespace POS.View
             grid_main.Children.Add(uc_itemsDestroy.Instance);
             //uc_itemsDestroy uc = new uc_itemsDestroy();
             //grid_main.Children.Add(uc);
+
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
-
-    
-
         private void Btn_inventory_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_inventory);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_inventory.Instance);
+
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
        

@@ -54,33 +54,14 @@
 	L5.4,25.5z"/>
                         </Button>
                     </Border>
-
-
-
-
-
-
-
-
                     <StackPanel Margin="15,0,0,0"  Grid.Column="1" x:Name="grid_categoryControlPath" Orientation="Horizontal">
                     </StackPanel>
                     <Border Grid.Row="1"  BorderThickness="15,0,15,0" BorderBrush="White" Grid.Column="1">
                     <ScrollViewer Grid.Row="1"  Grid.Column="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Height="auto" 
                                           ScrollViewer.CanContentScroll="True">
-                       
-                        <Grid  x:Name="grid_categoryCards" >
-
-                            
-                        </Grid>
-
+                            <Grid  x:Name="grid_categoryCards" />
                         </ScrollViewer>
                     </Border>
-
-
-
-
-
-
                 </Grid>
             </Border>
             <!--***********************************************-->

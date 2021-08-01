@@ -36,7 +36,7 @@ namespace POS.View.Settings
         public uc_settings()
         {
             InitializeComponent();
-            btn_general_Click(null, null);
+            //btn_general_Click(null, null);
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {

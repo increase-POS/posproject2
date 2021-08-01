@@ -62,7 +62,7 @@ namespace POS.View
             }
 
             translate();
-            btn_payInvoice_Click(null, null);
+            //btn_payInvoice_Click(null, null);
 
             permission();
         }

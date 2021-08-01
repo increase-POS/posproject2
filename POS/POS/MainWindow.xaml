@@ -94,6 +94,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75"/>
                     <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
                 <Path   Fill="White"  Stretch="Fill"   FlowDirection="LeftToRight"
@@ -123,6 +124,9 @@
                        VerticalAlignment="Center" Margin="5,5,5,5"/>
                 <materialDesign:PackIcon  Grid.Column="1" Foreground="Silver" Kind="InfoCircle"  FlowDirection="LeftToRight"
                                          Width="20" Height="20"   Margin="110,22,5,5" />
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal"
+                                x:Name="sp_mainTrack"/>
+                
             </Grid>
             <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="5">
                 <TextBlock Name="txtTime" HorizontalAlignment="Center" Foreground="White"  FontSize="12" ></TextBlock>

@@ -61,7 +61,7 @@ namespace POS.View
             }
 
             translate();
-            Btn_receiptInvoice_Click(null, null);
+            //Btn_receiptInvoice_Click(null, null);
             permission();
         }
         void permission()

@@ -645,7 +645,7 @@ namespace POS.View
                                 {
                                     canSave = false;
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorMaxDeservedExceeded"), animation: ToasterAnimation.FadeIn);
-                                    return;
+
                                 }
                             }
                             //if (customer != null)

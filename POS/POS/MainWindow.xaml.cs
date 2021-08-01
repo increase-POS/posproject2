@@ -277,7 +277,15 @@ namespace POS
             groupObjects = await groupObject.GetUserpermission(userLogin.userId);
 
             #endregion
-
+            //#region
+            //Pos pos = new Pos();
+            //pos = await pos.getPosById((int)posID);
+            //txt_posLogin.Text = pos.code;
+            ///////////////////////////////////////////
+            //Branch branch = new Branch();
+            // branch = await branch.getBranchById((int)MainWindow.branchID);
+            //txt_branchLogin.Text = branch.name;
+            //#endregion
             BTN_Home_Click(null, null);
             grid_mainWindow.IsEnabled = true;
             EndAwait();
@@ -468,7 +476,7 @@ namespace POS
             txt_home.Text = resourcemanager.GetString("trHome");
             tt_catalog.Content = resourcemanager.GetString("trCatalog");
             txt_catalog.Text = resourcemanager.GetString("trCatalog");
-            tt_storage.Content = resourcemanager.GetString("trStorage");
+            tt_storage.Content = resourcemanager.GetString("trStore");
             txt_storage.Text = resourcemanager.GetString("trStore");
             tt_purchase.Content = resourcemanager.GetString("trPurchases");
             txt_purchases.Text = resourcemanager.GetString("trPurchases");
@@ -631,11 +639,66 @@ namespace POS
                 //UC_SectionData uc = new UC_SectionData();
                 //grid_main.Children.Add(uc);
                 isHome = true;
+            Button button = sender as Button;
+            initializationMainTrack(button.Tag.ToString(), 0);
             //}
             //else
             //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+        public void initializationMainTrack(string tag, int level)
+        {
+            if (level == 0)
+                sp_mainTrack.Children.Clear();
+            // mainWindow
+            if (tag == "catalog")
+                initializationMainTrackChildren(resourcemanager.GetString("trCatalog"));
+            else if (tag == "storage")
+                initializationMainTrackChildren(resourcemanager.GetString("trStore"));
+            else if (tag == "purchase")
+                initializationMainTrackChildren(resourcemanager.GetString("trPurchases"));
+            else if (tag == "sales")
+                initializationMainTrackChildren(resourcemanager.GetString("trSales"));
+            else if (tag == "accounts")
+                initializationMainTrackChildren(resourcemanager.GetString("trAccounting"));
+            else if (tag == "reports")
+                initializationMainTrackChildren(resourcemanager.GetString("trReports"));
+            else if (tag == "sectionData")
+                initializationMainTrackChildren(resourcemanager.GetString("trSectionData"));
+            else if (tag == "settings")
+                initializationMainTrackChildren(resourcemanager.GetString("trSettings"));
+            // storage
+            else if (tag == "locations")
+                initializationMainTrackChildren(resourcemanager.GetString("trLocation"));
+            else if (tag == "section")
+                initializationMainTrackChildren(resourcemanager.GetString("trSection"));
+            else if (tag == "reciptOfInvoice")
+                initializationMainTrackChildren(resourcemanager.GetString("trInvoice"));
+            else if (tag == "itemsStorage")
+                initializationMainTrackChildren(resourcemanager.GetString("trStorage"));
+            else if (tag == "importExport")
+                initializationMainTrackChildren(resourcemanager.GetString("trMovements"));
+            else if (tag == "itemsDestroy")
+                initializationMainTrackChildren(resourcemanager.GetString("trDestructive"));
+            else if (tag == "inventory")
+                initializationMainTrackChildren(resourcemanager.GetString("trStocktaking"));
+            else if (tag == "storageStatistic")
+                initializationMainTrackChildren(resourcemanager.GetString("trStatistic"));
 
+            
+
+
+
+        }
+         void initializationMainTrackChildren(string text)
+        {
+            var titleText = new TextBlock();
+            titleText.Text = "> "+text;
+            titleText.FontSize = 14;
+            titleText.FontWeight = FontWeights.Regular;
+            titleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            titleText.Margin = new Thickness(2.5, 1, 2.5, 1);
+            sp_mainTrack.Children.Add(titleText);
+        }
         private void BTN_catalog_Click(object sender, RoutedEventArgs e)
         {
             colorTextRefreash(txt_catalog);
@@ -647,6 +710,8 @@ namespace POS
             //grid_main.Children.Add(uc);
             isHome = true;
 
+            Button button = sender as Button;
+            initializationMainTrack(button.Tag.ToString(), 0);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -733,7 +798,8 @@ namespace POS
             //uc_purchases uc = new uc_purchases();
             //grid_main.Children.Add(uc);
             isHome = true;
-
+            Button button = sender as Button;
+            initializationMainTrack(button.Tag.ToString(), 0);
         }
 
         public void BTN_sales_Click(object sender, RoutedEventArgs e)
@@ -746,7 +812,8 @@ namespace POS
             //uc_sales uc = new uc_sales();
             //grid_main.Children.Add(uc);
             isHome = true;
-
+            Button button = sender as Button;
+            initializationMainTrack(button.Tag.ToString(), 0);
         }
 
         private void BTN_accounts_Click(object sender, RoutedEventArgs e)
@@ -760,7 +827,8 @@ namespace POS
             //uc_accounts uc = new uc_accounts();
             //grid_main.Children.Add(uc);
             isHome = true;
-
+            Button button = sender as Button;
+            initializationMainTrack(button.Tag.ToString(), 0);
         }
 
         private void BTN_reports_Click(object sender, RoutedEventArgs e)
@@ -771,6 +839,8 @@ namespace POS
             isHome = true;
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_reports.Instance);
+            Button button = sender as Button;
+            initializationMainTrack(button.Tag.ToString(), 0);
         }
 
         public void BTN_settings_Click(object sender, RoutedEventArgs e)
@@ -781,10 +851,14 @@ namespace POS
             isHome = true;
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_settings.Instance);
+            Button button = sender as Button;
+            initializationMainTrack(button.Tag.ToString(), 0);
         }
 
         private void BTN_storage_Click(object sender, RoutedEventArgs e)
         {
+            Button button = sender as Button;
+            initializationMainTrack(button.Tag.ToString(), 0);
             colorTextRefreash(txt_storage);
             FN_pathVisible(path_openStorage);
             fn_ColorIconRefreash(path_iconStorage);

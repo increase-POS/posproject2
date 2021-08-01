@@ -53,7 +53,7 @@ namespace POS.View
       
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            Btn_categorie_Click(null, null);
+            //Btn_categorie_Click(null, null);
 
             if (MainWindow.lang.Equals("en"))
             {
