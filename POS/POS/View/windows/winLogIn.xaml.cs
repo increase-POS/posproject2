@@ -46,12 +46,12 @@ namespace POS.View.windows
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Application.Current.Shutdown();
         }
         UserSetValues usLanguage = new UserSetValues();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-         //bdrLogIn.RenderTransform = Animations.borderAnimation(-100, bdrLogIn, true);
+         bdrLogIn.RenderTransform = Animations.borderAnimation(-100, bdrLogIn, true);
 
             //get user default language
             //var person = (from p in db.People

@@ -375,7 +375,9 @@ namespace POS.View
             
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
-                if (pos.posId != 0)
+                if (pos.posId != 1)
+                {
+                    if (pos.posId != 0)
             {
                 if ((!pos.canDelete) && (pos.isActive == 0))
                 {
@@ -424,6 +426,9 @@ namespace POS.View
                 Btn_clear_Click(sender, e);
 
             }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCannotDeleteTheMainPos"), animation: ToasterAnimation.FadeIn);
 
             }
             else

@@ -43,6 +43,7 @@ namespace POS.Classes
         public string parentName { get; set; }
         public string minUnitName { get; set; }
         public string maxUnitName { get; set; }
+        public Nullable<int> itemCount { get; set; }
         // new units and offers an is new
         //units
         public Nullable<int> unitId { get; set; }

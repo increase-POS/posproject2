@@ -625,55 +625,59 @@ namespace POS.View
             
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
-                if (user.userId != 0)
-            {
-
-                if ((!user.canDelete) && (user.isActive == 0))
+                if (user.userId != 1 && user.userId != 2)
                 {
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
-                        activate();
-                }
-                else
-                {
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    if (user.canDelete)
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                    if (!user.canDelete)
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
+                    if (user.userId != 0)
                     {
-                        string popupContent = "";
-                        if (user.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                        if ((!user.canDelete) && (user.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-                        bool b = await userModel.deleteUser(user.userId, MainWindow.userID.Value, user.canDelete);
 
-                        if (b) //SectionData.popUpResponse("", popupContent);
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        if ((!user.canDelete) && (user.isActive == 0))
+                        {
+                            #region
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                            w.ShowDialog();
+                            Window.GetWindow(this).Opacity = 1;
+                            #endregion
+                            if (w.isOk)
+                                activate();
+                        }
+                        else
+                        {
+                            #region
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                            if (user.canDelete)
+                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                            if (!user.canDelete)
+                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                            w.ShowDialog();
+                            Window.GetWindow(this).Opacity = 1;
+                            #endregion
+                            if (w.isOk)
+                            {
+                                string popupContent = "";
+                                if (user.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                                if ((!user.canDelete) && (user.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                                bool b = await userModel.deleteUser(user.userId, MainWindow.userID.Value, user.canDelete);
+
+                                if (b) //SectionData.popUpResponse("", popupContent);
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            }
+                        }
+
+                        await RefreshUsersList();
+                        Tb_search_TextChanged(null, null);
+
+                        fillJobCombo();
+                        //clear textBoxs
+                        Btn_clear_Click(sender, e);
                     }
                 }
-
-                await RefreshUsersList();
-                Tb_search_TextChanged(null, null);
-
-                fillJobCombo();
-            }
-
-            //clear textBoxs
-            Btn_clear_Click(sender, e);
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCannotDeleteTheMainUser"), animation: ToasterAnimation.FadeIn);
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

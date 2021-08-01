@@ -443,7 +443,10 @@ namespace POS.View.sales
         {
             bool valid = true;
             SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
-            if(cb_customer.SelectedIndex == -1)
+            if (billDetails.Count == 0)
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trAddInvoiceWithoutItems"), animation: ToasterAnimation.FadeIn);
+
+            if (billDetails.Count == 0 || cb_customer.SelectedIndex == -1)
             {
                 valid = false;
                 return valid;

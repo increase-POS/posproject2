@@ -444,6 +444,9 @@ namespace POS.View.purchases
         {
             bool valid = true;
             SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
+            if (billDetails.Count == 0)
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trAddInvoiceWithoutItems"), animation: ToasterAnimation.FadeIn);
+
             if (cb_vendor.SelectedIndex != -1 && billDetails.Count > 0)
                 valid = true;
             else

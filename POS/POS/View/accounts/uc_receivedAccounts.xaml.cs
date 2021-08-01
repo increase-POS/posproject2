@@ -189,6 +189,7 @@ namespace POS.View.accounts
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
             tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
             tt_docDate.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
+            tt_docNumCard.Content = MainWindow.resourcemanager.GetString("trProcessNumTooltip");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");

@@ -645,6 +645,7 @@ namespace POS.View
                                 {
                                     canSave = false;
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorMaxDeservedExceeded"), animation: ToasterAnimation.FadeIn);
+                                    return;
                                 }
                             }
                             //if (customer != null)
@@ -2044,7 +2045,8 @@ namespace POS.View
                 if (columnName == MainWindow.resourcemanager.GetString("trAmount"))
                 {
                     newCount = int.Parse(t.Text);
-                    billDetails[index].valid = false;
+                    if(row.type == "sn")
+                        billDetails[index].valid = false;
                 }
                 else
                     newCount = row.Count;

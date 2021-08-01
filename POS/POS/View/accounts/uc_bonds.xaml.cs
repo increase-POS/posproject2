@@ -194,7 +194,8 @@ namespace POS.View.accounts
 
                     cash.transType = bond.type;
                     cash.posId = MainWindow.posID.Value;
-                    cash.transNum = await SectionData.generateNumber(char.Parse(bond.type), "bnd");
+                    //cash.transNum = await SectionData.generateNumber(char.Parse(bond.type), "bnd");
+                    cash.transNum = await cashModel.generateDocNumber(bond.type + "bnd");
                     cash.cash = decimal.Parse(tb_amount.Text);
                     cash.notes = tb_note.Text;
                     cash.createUserId = MainWindow.userID;

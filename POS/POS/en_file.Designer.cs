@@ -142,6 +142,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t add an invoice without items.
+        /// </summary>
+        internal static string trAddInvoiceWithoutItems {
+            get {
+                return ResourceManager.GetString("trAddInvoiceWithoutItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Range.
         /// </summary>
         internal static string trAddRange {
@@ -417,6 +426,33 @@ namespace POS {
         internal static string trBranchs_Stores {
             get {
                 return ResourceManager.GetString("trBranchs/Stores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete the main branch.
+        /// </summary>
+        internal static string trCannotDeleteTheMainBranch {
+            get {
+                return ResourceManager.GetString("trCannotDeleteTheMainBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete the main Pos.
+        /// </summary>
+        internal static string trCannotDeleteTheMainPos {
+            get {
+                return ResourceManager.GetString("trCannotDeleteTheMainPos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete the main user.
+        /// </summary>
+        internal static string trCannotDeleteTheMainUser {
+            get {
+                return ResourceManager.GetString("trCannotDeleteTheMainUser", resourceCulture);
             }
         }
         
@@ -2451,6 +2487,24 @@ namespace POS {
         internal static string trInventoryAmount {
             get {
                 return ResourceManager.GetString("trInventoryAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory date.
+        /// </summary>
+        internal static string trInventoryDate {
+            get {
+                return ResourceManager.GetString("trInventoryDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory number.
+        /// </summary>
+        internal static string trInventoryNum {
+            get {
+                return ResourceManager.GetString("trInventoryNum", resourceCulture);
             }
         }
         
@@ -4962,6 +5016,15 @@ namespace POS {
         internal static string trWarningItemCountIs_ {
             get {
                 return ResourceManager.GetString("trWarningItemCountIs:", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serial already exists.
+        /// </summary>
+        internal static string trWarningSerialExists {
+            get {
+                return ResourceManager.GetString("trWarningSerialExists", resourceCulture);
             }
         }
         

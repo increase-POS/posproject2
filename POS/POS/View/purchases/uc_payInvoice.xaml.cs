@@ -478,7 +478,11 @@ namespace POS.View
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
             }
-            if(invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
+            if(invoice.invType == "po")
+            {
+                invoice.invNumber = await invoice.generateInvNumber("pi");
+            }
+            if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
@@ -599,11 +603,8 @@ namespace POS.View
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            if ((
-                (MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()) 
-                &&
-                (invoice.invType == "pd" || invoice.invType == "pw" || invoice.invType == "p"))
-                || (invoice.invType != "pd" && invoice.invType != "pw" && invoice.invType != "p"))
+            if (MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()) 
+              
             {
             if (logInProcessing)
             {
@@ -619,8 +620,8 @@ namespace POS.View
                 {
                     if (_InvoiceType == "pbd") //pbd means purchase bounse draft
                         await addInvoice("pbw", "pb"); // pbw means waiting purchase bounce 
-                    //else if (_InvoiceType == "pbw")//pbw  purchase invoice
-                    //    await addInvoice("pb", "pb");
+                    else if (_InvoiceType == "po")//po  purchase order
+                        await addInvoice("pw", "pi");
                     else//pw  waiting purchase invoice
                         await addInvoice("pw", "pi");
 
@@ -769,6 +770,35 @@ namespace POS.View
             }
             Window.GetWindow(this).Opacity = 1;
         }
+        private async void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_invoice w = new wd_invoice();
+
+            // purchase orders
+            w.invoiceType = "po";
+            w.userId = MainWindow.userLogin.userId;
+           // w.duration = 1; // view drafts which created during 1 last days 
+
+            w.title = MainWindow.resourcemanager.GetString("trPurchaseOrders");
+
+            if (w.ShowDialog() == true)
+            {
+                if (w.invoice != null)
+                {
+                    invoice = w.invoice;
+
+                    this.DataContext = invoice;
+
+                    _InvoiceType = invoice.invType;
+                    // set title to bill
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
+                    brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                    await fillInvoiceInputs(invoice);
+                }
+            }
+            Window.GetWindow(this).Opacity = 1;
+        }
         public async Task fillInvoiceInputs(Invoice invoice)
         {
             _Sum = (decimal)invoice.total;
@@ -912,7 +942,7 @@ namespace POS.View
                 tb_invoiceNumber.IsEnabled = false;
                 tb_taxValue.IsEnabled = false;
             }
-            else if (_InvoiceType == "pd")
+            else if (_InvoiceType == "pd" || _InvoiceType == "po") // purchase draft or purchase order
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                 dg_billDetails.Columns[5].IsReadOnly = false;
@@ -927,7 +957,6 @@ namespace POS.View
                 tb_discount.IsEnabled = true;
                 cb_typeDiscount.IsEnabled = true;
                 btn_save.IsEnabled = true;
-                //btn_updateVendor.IsEnabled = true;
                 tb_invoiceNumber.IsEnabled = true;
                 tb_taxValue.IsEnabled = true;
             }
@@ -946,7 +975,6 @@ namespace POS.View
                 tb_discount.IsEnabled = false;
                 cb_typeDiscount.IsEnabled = false;
                 btn_save.IsEnabled = false;
-                //btn_updateVendor.IsEnabled = true;
                 tb_invoiceNumber.IsEnabled = false;
                 tb_taxValue.IsEnabled = false;
             }
@@ -1645,9 +1673,6 @@ namespace POS.View
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
-        private void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+       
     }
 }

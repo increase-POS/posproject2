@@ -335,7 +335,7 @@ namespace POS.View.accounts
 
                 cash1.transType = "p";//pull
                 //cash1.transNum = await SectionData.generateNumber('p', "p");//first parameter is pull , second is pos
-                cash1.transNum = await cashModel.generateCashNumber("pp");
+                cash1.transNum = await cashModel.generateCashNumber(cash1.transType + "p");
                 cash1.cash = decimal.Parse(tb_cash.Text);
                 cash1.createUserId = MainWindow.userID.Value;
                 cash1.notes = tb_note.Text;
@@ -354,7 +354,8 @@ namespace POS.View.accounts
                     CashTransfer cash2 = new CashTransfer();
 
                     cash2.transType = "d";//deposite
-                    cash2.transNum = await SectionData.generateNumber('p', "p");//first parameter is deposit , second is pos
+                    //cash2.transNum = await SectionData.generateNumber('d', "p");//first parameter is deposit , second is pos
+                    cash2.transNum = await cashModel.generateCashNumber(cash2.transType + "p");
                     cash2.cash = decimal.Parse(tb_cash.Text);
                     cash2.createUserId = MainWindow.userID.Value;
                     cash2.posIdCreator = MainWindow.posID.Value;

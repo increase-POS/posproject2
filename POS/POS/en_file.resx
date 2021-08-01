@@ -1782,4 +1782,25 @@
   <data name="trStoreBtn" xml:space="preserve">
     <value>store</value>
   </data>
+  <data name="trCannotDeleteTheMainUser" xml:space="preserve">
+    <value>Cannot delete the main user</value>
+  </data>
+  <data name="trInventoryDate" xml:space="preserve">
+    <value>Inventory date</value>
+  </data>
+  <data name="trInventoryNum" xml:space="preserve">
+    <value>Inventory number</value>
+  </data>
+  <data name="trWarningSerialExists" xml:space="preserve">
+    <value>Serial already exists</value>
+  </data>
+  <data name="trAddInvoiceWithoutItems" xml:space="preserve">
+    <value>Can't add an invoice without items</value>
+  </data>
+  <data name="trCannotDeleteTheMainBranch" xml:space="preserve">
+    <value>Cannot delete the main branch</value>
+  </data>
+  <data name="trCannotDeleteTheMainPos" xml:space="preserve">
+    <value>Cannot delete the main Pos</value>
+  </data>
 </root>

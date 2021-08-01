@@ -59,6 +59,7 @@ namespace POS.View.windows
         }
         private void Txb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
+            dg_Invoice.ItemsSource = invoices.Where(x => x.invNumber.ToLower().Contains(txb_search.Text)).ToList();
 
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -76,6 +77,7 @@ namespace POS.View.windows
             txt_Invoices.Text = title;
 
             await refreshInvoices();
+            Txb_search_TextChanged(null, null);
         }
         private async Task refreshInvoices()
         {
@@ -93,8 +95,7 @@ namespace POS.View.windows
                 invoices = await invoice.getDeliverOrders(invoiceType, invoiceStatus, userId);
             else
                 invoices = await invoice.GetInvoicesByType(invoiceType, branchId);
-
-            dg_Invoice.ItemsSource = invoices.ToList();
+            
 
         }
         private void Dg_Invoice_SelectionChanged(object sender, SelectionChangedEventArgs e)

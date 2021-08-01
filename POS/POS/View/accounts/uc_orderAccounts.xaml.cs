@@ -64,7 +64,7 @@ namespace POS.View.accounts
         IEnumerable<Invoice> invoiceQueryExcel;
         IEnumerable<CashTransfer> cashes;
         IEnumerable<Invoice> invoices;
-
+        int agentId, userId;
         string searchText = "";
         private void Btn_confirm_Click(object sender, RoutedEventArgs e)
         {//confirm
@@ -187,6 +187,7 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_docNum, MainWindow.resourcemanager.GetString("trDocNumHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_docDate, MainWindow.resourcemanager.GetString("trDocDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_docNumCheque, MainWindow.resourcemanager.GetString("trDocNumHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_docNumCard, MainWindow.resourcemanager.GetString("trProcessNumHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_docDateCheque, MainWindow.resourcemanager.GetString("trDocDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
@@ -210,6 +211,7 @@ namespace POS.View.accounts
             tt_docDate.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
             tt_docNumCheque.Content = MainWindow.resourcemanager.GetString("trDocNumTooltip");
             tt_docDateCheque.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
+            tt_docNumCard.Content = MainWindow.resourcemanager.GetString("trProcessNumTooltip");
             tt_card.Content = MainWindow.resourcemanager.GetString("trCardTooltip");
             tt_cash.Content = MainWindow.resourcemanager.GetString("trCashTooltip");
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
@@ -217,6 +219,7 @@ namespace POS.View.accounts
             tt_startDate.Content = MainWindow.resourcemanager.GetString("trSartDate");
             tt_endDate.Content = MainWindow.resourcemanager.GetString("trEndDate");
             tt_state.Content = MainWindow.resourcemanager.GetString("trState");
+
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
@@ -237,7 +240,6 @@ namespace POS.View.accounts
         }
         private void Dg_orderAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
-
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
             SectionData.clearComboBoxValidate(cb_card, p_errorpaymentProcessType);
             TextBox tbDocDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
@@ -252,8 +254,6 @@ namespace POS.View.accounts
                 this.DataContext = cashtrans;
                 //if (cashtrans != null)
                 //{
-                //    // MessageBox.Show(cashtrans.cashTransId.ToString() + "-" + cashtrans.bondId.ToString());
-
                 //    btn_save.IsEnabled = false;
 
 
@@ -270,6 +270,10 @@ namespace POS.View.accounts
                     //cb_paymentProcessType.SelectedValue = invoice.processType;
 
                     //cb_card.SelectedValue = cashtrans.cardId;
+
+                    tb_invoiceNum.Text = invoice.invNumber;
+                    //agentId = invoice.agentId.Value;
+                    //userId = invoice.shipUserId.Value;
 
                 }
             }
@@ -314,36 +318,22 @@ namespace POS.View.accounts
             invoiceQueryExcel = invoiceQuery;
             RefreshInvoiceView();
         }
-        private async void saveBond(string num, decimal ammount, Nullable<DateTime> date, string type, int? cashId)
+        private async Task<string> saveBond(string num, decimal ammount, Nullable<DateTime> date, string type)
         {
-            Bonds bond =
-                new Bonds();
+            Bonds bond = new Bonds();
             bond.number = num;
             bond.amount = ammount;
             bond.deserveDate = date;
             bond.type = type;
             bond.isRecieved = 0;
             bond.createUserId = MainWindow.userID.Value;
-            bond.cashTransId = cashId;
 
             string s = await bondModel.Save(bond);
 
-            if (!s.Equals("0"))
-            {
-                //MessageBox.Show(s);
-                //MessageBox.Show(cashId.Value.ToString());
-                CashTransfer c = await cashModel.GetByID(cashId.Value);
-
-                c.bondId = int.Parse(s);
-
-                string x = await cashModel.Save(c);
-
-                //MessageBox.Show(c.bondId.ToString());
-            }
-            //    MessageBox.Show("ok");
-            //else MessageBox.Show("error");
+            return s;
         }
-        private async void calcBalance(decimal ammount, string depositor, int agentid)
+
+        private async void calcBalance(decimal ammount)
         {
             string s = "";
             //increase pos balance
@@ -353,20 +343,6 @@ namespace POS.View.accounts
 
             s = await pos.savePos(pos);
 
-            if (s.Equals("Pos Is Updated Successfully"))
-            {
-                //decrease depositor balance if agent
-                if ((depositor.Equals("v")) || (depositor.Equals("c")))
-                {
-                    Agent agent = await agentModel.getAgentById(agentid);
-
-                    agent.balance = agent.balance - Convert.ToSingle(ammount);
-
-                    s = await agent.saveAgent(agent);
-
-                    // if (!s.Equals("0")) MessageBox.Show(agent.balance.ToString());
-                }
-            }
         }
         private void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
@@ -378,15 +354,18 @@ namespace POS.View.accounts
         }
         private async void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            btn_save.IsEnabled = true;
-            cb_card.SelectedIndex = -1;
-            cb_paymentProcessType.SelectedIndex = -1;
-            tb_cash.Clear();
-            tb_note.Clear();
-            SectionData.clearValidate(tb_cash, p_errorCash);
-            SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
-            SectionData.clearComboBoxValidate(cb_card, p_errorCard);
-
+         /////////////////////////
+            cb_paymentProcessType.IsEnabled = true;
+            cb_card.IsEnabled = true;
+            tb_docNum.IsEnabled = true;
+            dp_docDate.IsEnabled = true;
+            tb_docNumCheque.IsEnabled = true;
+            tb_docNumCard.IsEnabled = true;
+            dp_docDateCheque.IsEnabled = true;
+            tb_cash.IsEnabled = true;
+            tb_note.IsEnabled = true;
+            /////////////////////////
+            ///
             if (grid_doc.IsVisible)
             {
                 TextBox tbDocDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
@@ -395,7 +374,6 @@ namespace POS.View.accounts
                 tb_docNum.Clear();
                 SectionData.clearValidate(tb_docNum, p_errorDocNum);
             }
-
             if (grid_cheque.IsVisible)
             {
                 tb_docNumCheque.Clear();
@@ -404,6 +382,25 @@ namespace POS.View.accounts
                 // SectionData.clearValidate(tbDocDateCheque, p_errorDocDate);
                 SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
             }
+            cb_card.Visibility = Visibility.Collapsed;
+            cb_paymentProcessType.SelectedIndex = -1;
+            tb_cash.Clear();
+            tb_note.Clear();
+            tb_docNumCard.Clear();
+            tb_docNum.Clear();
+            tb_docNumCheque.Clear();
+            tb_invoiceNum.Text = "";
+            tb_cash.IsReadOnly = false;
+            grid_doc.Visibility = Visibility.Collapsed;
+            tb_docNumCard.Visibility = Visibility.Collapsed;
+            grid_cheque.Visibility = Visibility.Collapsed;
+            SectionData.clearValidate(tb_cash, p_errorCash);
+            SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
+            SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+            SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+            SectionData.clearValidate(tb_docNum, p_errorDocNum);
+            SectionData.clearValidate(tb_docNum, p_errorDocNum);
+            SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
 
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -504,20 +501,22 @@ namespace POS.View.accounts
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");
                 else if ((sender as TextBox).Name == "tb_docNumCheque")
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorDocNumCheque, tt_errorDocNumCheque, "trEmptyDocNumToolTip");
+                else if ((sender as TextBox).Name == "tb_docNumCard")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorDocCard, tt_errorDocCard, "trEmptyProcessNumToolTip");
             }
             else if (name == "ComboBox")
             {
-               if ((sender as ComboBox).Name == "cb_paymentProcessType")
+                if ((sender as ComboBox).Name == "cb_paymentProcessType")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
                 else if ((sender as ComboBox).Name == "cb_card")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCard, tt_errorCard, "trErrorEmptyCardToolTip");
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
             }
             else if (name == "DatePicker")
             {
                 if ((sender as DatePicker).Name == "dp_docDate")
-                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorDocDate, tt_errorDocDate, "trErrorEmptyDocDateToolTip");
+                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
                 if ((sender as DatePicker).Name == "dp_docDateCheque")
-                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorDocDateCheque, tt_errorDocDateCheque, "trErrorEmptyDocDateToolTip");
+                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorDocDateCheque, tt_errorDocDateCheque, "trEmptyDocDateToolTip");
             }
         }
         private void PreventSpaces(object sender, KeyEventArgs e)
@@ -550,6 +549,8 @@ namespace POS.View.accounts
                     grid_doc.Visibility = Visibility.Collapsed;
                     grid_cheque.Visibility = Visibility.Collapsed;
                     cb_card.Visibility = Visibility.Collapsed;
+                    tb_docNumCard.Visibility = Visibility.Collapsed;
+                    SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                     SectionData.clearValidate(tb_docNum, p_errorDocNum);
                     SectionData.clearValidate(tb_docNumCheque, p_errorDocNum);
                     SectionData.clearComboBoxValidate(cb_card, p_errorCard);
@@ -569,6 +570,8 @@ namespace POS.View.accounts
                     grid_doc.Visibility = Visibility.Visible;
                     grid_cheque.Visibility = Visibility.Collapsed;
                     cb_card.Visibility = Visibility.Collapsed;
+                    tb_docNumCard.Visibility = Visibility.Collapsed;
+                    SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                     SectionData.clearValidate(tb_docNumCheque, p_errorDocNum);
                     SectionData.clearComboBoxValidate(cb_card, p_errorCard);
                     if (grid_cheque.IsVisible)
@@ -582,6 +585,8 @@ namespace POS.View.accounts
                     grid_doc.Visibility = Visibility.Collapsed;
                     grid_cheque.Visibility = Visibility.Visible;
                     cb_card.Visibility = Visibility.Collapsed;
+                    tb_docNumCard.Visibility = Visibility.Collapsed;
+                    SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                     SectionData.clearValidate(tb_docNum, p_errorDocNum);
                     SectionData.clearComboBoxValidate(cb_card, p_errorCard);
                     if (grid_doc.IsVisible)
@@ -595,6 +600,7 @@ namespace POS.View.accounts
                     grid_doc.Visibility = Visibility.Collapsed;
                     grid_cheque.Visibility = Visibility.Collapsed;
                     cb_card.Visibility = Visibility.Visible;
+                    tb_docNumCard.Visibility = Visibility.Visible;
                     SectionData.clearValidate(tb_docNum, p_errorDocNum);
                     SectionData.clearValidate(tb_docNumCheque, p_errorDocNum);
                     SectionData.clearComboBoxValidate(cb_card, p_errorCard);
@@ -612,7 +618,7 @@ namespace POS.View.accounts
             }
 
         }
-       
+
         private async void fillCustomers()
         {
             agents = await agentModel.GetAgentsActive("c");
@@ -675,15 +681,113 @@ namespace POS.View.accounts
             Tb_search_TextChanged(null, null);
         }
 
-        private void Btn_save_Click(object sender, RoutedEventArgs e)
-        {
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
+        {//save
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
             {
+                #region validate
+                //chk empty cash
+                SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
 
+                //chk empty doc num
+                if (grid_doc.IsVisible)
+                {
+                    TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
 
+                    SectionData.validateEmptyTextBox(tb_docNum, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");
+                    SectionData.validateEmptyTextBox(dpDate, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
+                }
+                else
+                {
+                }
+
+                //chk empty cheque num
+                if (grid_cheque.IsVisible)
+                {
+                    SectionData.validateEmptyTextBox(tb_docNumCheque, p_errorDocNumCheque, tt_errorDocNumCheque, "trEmptyDocNumToolTip");
+                }
+                else
+                {
+                }
+                //chk empty process num
+                if (tb_docNumCard.IsVisible)
+                {
+                    SectionData.validateEmptyTextBox(tb_docNumCard, p_errorDocCard, tt_docNumCard, "trEmptyProcessNumToolTip");
+                }
+                else
+                {
+                    SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                }
+                //chk empty payment type
+                SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
+
+                //chk empty card 
+                if (cb_card.IsVisible)
+                    SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
+                else
+                    SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                #endregion
+
+                //if ((!tb_cash.Text.Equals("")) &&  (!cb_paymentProcessType.Text.Equals("")) &&
+                // (((grid_cheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!grid_cheque.IsVisible)) &&
+                // (((grid_doc.IsVisible) && (!dp_docDate.Text.Equals("")) && (!tb_docNum.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
+                // (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
+                // (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible))
+                // )
+                //{
+                //    CashTransfer cash = new CashTransfer();
+
+                //    cash.transType = "d";
+                //    cash.posId = MainWindow.posID.Value;
+                //    cash.transNum = await cashModel.generateCashNumber(cash.transType + "c");
+                //    cash.transNum = "";
+                //    cash.cash = decimal.Parse(tb_cash.Text);
+                //    cash.notes = tb_note.Text;
+                //    cash.createUserId = MainWindow.userID;
+                //    cash.side = "c";
+                //    cash.processType = cb_paymentProcessType.SelectedValue.ToString();
+
+                //    cash.agentId = agentId;
+
+                //    cash.userId = userId;
+
+                //    if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                //    {
+                //        cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
+                //        cash.docNum = tb_docNumCard.Text;
+                //    }
+                //    if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
+                //        cash.docNum = await cashModel.generateDocNumber("pbnd");
+
+                //    if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
+                //        cash.docNum = tb_docNumCheque.Text;
+
+                //    if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
+                //    {
+                //        string res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d");
+                //        cash.bondId = int.Parse(res);
+                //    }
+
+                //    string s = await cashModel.payOrderInvoice(invoice.invoiceId, cash.cash.Value, "0", cash);
+                //    MessageBox.Show(s);
+                //    if (!s.Equals(""))
+                //    {
+                //        if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
+                //            calcBalance(cash.cash.Value);
+
+                //        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                //        Btn_clear_Click(null, null);
+
+                //        await RefreshInvoiceList();
+                //        Tb_search_TextChanged(null, null);
+                //    }
+                //    else
+                //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                //}
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+
     }
 }

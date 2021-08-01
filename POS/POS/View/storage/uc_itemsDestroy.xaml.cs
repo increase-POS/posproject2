@@ -59,10 +59,10 @@ namespace POS.View.storage
         public byte tglItemState = 1;
         public string txtItemSearch;
         private static int _serialCount = 0;
-
-
+        string searchText = "";
+        IEnumerable<InventoryItemLocation> invItemsQuery;
         private async  void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
            
             if (MainWindow.lang.Equals("en"))
             {
@@ -79,7 +79,12 @@ namespace POS.View.storage
             await refreshDestroyDetails();
             fillItemCombo();
             //Txb_searchitems_TextChanged(null, null);
+
+            //for excel
+            await RefreshinvItemList();
+            Tb_search_TextChanged(null, null);
         }
+
         IEnumerable<Item> items;
         // item object
         Item item = new Item();
@@ -107,6 +112,7 @@ namespace POS.View.storage
                     }
 
                 }
+            Btn_clearSerial_Click(null,null);
         }
 
         async Task<IEnumerable<Item>> RefrishItems()
@@ -141,13 +147,38 @@ namespace POS.View.storage
       
         #region Excel
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
+        {//export to excel
             if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
-
+                this.Dispatcher.Invoke(() =>
+                {
+                    Thread t1 = new Thread(FN_ExportToExcel);
+                    t1.SetApartmentState(ApartmentState.STA);
+                    t1.Start();
+                });
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+
+        private void FN_ExportToExcel()
+        {
+            var QueryExcel = invItemsQuery.AsEnumerable().Select(x => new
+            {
+                InventoryNumber = x.inventoryNum,
+                Date = x.inventoryDate,
+                SectionLocation = x.section+"-"+x.location,
+                ItemUnit = x.itemName+"-"+x.unitName,
+                Ammount = x.amount
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trInventoryNum");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trInventoryDate");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trSectionLocation");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trItemUnit");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trAmount");
+          
+            ExportToExcel.Export(DTForExcel);
         }
         #endregion
         private void input_LostFocus(object sender, RoutedEventArgs e)
@@ -336,9 +367,34 @@ namespace POS.View.storage
             dg_itemDestroy.ItemsSource = inventoriesItems;
         }
 
-        private void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {//search
+            if (inventoriesItems is null)
+                await RefreshinvItemList();
+            searchText = tb_search.Text.ToLower();
+            invItemsQuery = inventoriesItems.Where(s => (s.inventoryNum.ToLower().Contains(searchText)
+            || s.section.ToLower().Contains(searchText)
+            || s.location.ToLower().Contains(searchText)
+            || s.itemName.ToLower().Contains(searchText)
+            || s.unitName.ToLower().Contains(searchText)
+            || s.amount.ToString().ToLower().Contains(searchText)
+            )
+            //&& s.isActive == tgl_offerState
+            );
+            RefreshinvItemView();
+        }
 
+        async Task<IEnumerable<InventoryItemLocation>> RefreshinvItemList()
+        {
+            MainWindow.mainWindow.StartAwait();
+            inventoriesItems = await invItemLocModel.GetItemToDestroy(MainWindow.branchID.Value);
+            MainWindow.mainWindow.EndAwait();
+            return inventoriesItems;
+        }
+        void RefreshinvItemView()
+        {
+            dg_itemDestroy.ItemsSource = invItemsQuery;
+            txt_count.Text = invItemsQuery.Count().ToString();
         }
 
         private void Dg_itemDestroy_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -418,6 +474,7 @@ namespace POS.View.storage
             DataContext = new InventoryItemLocation();
             cb_item.SelectedIndex =
             cb_unit.SelectedIndex = -1;
+            grid_serial.Visibility = Visibility.Collapsed;
             tb_notes.Clear();
             tb_reasonOfDestroy.Clear();
             tb_notes.Clear();
@@ -469,18 +526,26 @@ namespace POS.View.storage
 
         private void Tb_serialNum_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            if (e.Key == Key.Return && !tb_amount.Text.Equals(""))
             {
                 string s = tb_serialNum.Text;
                 int itemCount = int.Parse( tb_amount.Text);
-                if (_serialCount == itemCount)
+
+                if (!s.Equals(""))
                 {
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningItemCountIs:") + " " + itemCount, animation: ToasterAnimation.FadeIn);
-                }
-                else
-                {
-                    lst_serials.Items.Add(tb_serialNum.Text);
-                    _serialCount++;
+                    int found = lst_serials.Items.IndexOf(s);
+
+                    if (_serialCount == itemCount)
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningItemCountIs:") + " " + itemCount, animation: ToasterAnimation.FadeIn);
+                    }
+                    else if (found == -1)
+                    {
+                        lst_serials.Items.Add(tb_serialNum.Text);
+                        _serialCount++;
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningSerialExists"), animation: ToasterAnimation.FadeIn);
                 }
                 tb_serialNum.Clear();
             }

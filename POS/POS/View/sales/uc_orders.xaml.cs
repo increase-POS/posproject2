@@ -463,7 +463,12 @@ namespace POS.View.sales
         {
             bool valid = true;
             SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
-            if (cb_customer.SelectedIndex == -1 || billDetails.Count == 0)
+            SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+            if (billDetails.Count == 0)
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trAddInvoiceWithoutItems"), animation: ToasterAnimation.FadeIn);
+
+            if (cb_customer.SelectedIndex == -1 || billDetails.Count == 0
+                || cb_branch.SelectedIndex == -1)
                 valid = false;         
             if(valid)
                  valid = validateItemUnits();
@@ -1274,7 +1279,8 @@ namespace POS.View.sales
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") ||
+                SectionData.isAdminPermision())
             {
                 //check mandatory inputs
                 bool valid = await validateInvoiceValues();

@@ -1758,4 +1758,25 @@
   <data name="trStoreBtn" xml:space="preserve">
     <value>تخزين</value>
   </data>
+  <data name="trCannotDeleteTheMainUser" xml:space="preserve">
+    <value>لا يمكن حذف المستخدم الرئيسي</value>
+  </data>
+  <data name="trInventoryDate" xml:space="preserve">
+    <value>تاريخ الجرد</value>
+  </data>
+  <data name="trInventoryNum" xml:space="preserve">
+    <value>رقم الجرد</value>
+  </data>
+  <data name="trWarningSerialExists" xml:space="preserve">
+    <value>السيريال موجود مسبقاً</value>
+  </data>
+  <data name="trAddInvoiceWithoutItems" xml:space="preserve">
+    <value>لا يمكن إضافة فاتورة بدون عناصر</value>
+  </data>
+  <data name="trCannotDeleteTheMainBranch" xml:space="preserve">
+    <value>لا يمكن حذف الفرع الرئيسي</value>
+  </data>
+  <data name="trCannotDeleteTheMainPos" xml:space="preserve">
+    <value>لا يمكن حذف نقطة البيع الرئيسية</value>
+  </data>
 </root>

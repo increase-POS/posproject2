@@ -71,6 +71,7 @@ namespace POS.View.windows
         }
         private void fillSerialList()
         {
+            _serialCount = 0;
             if (serialList != null)
             {
                 for (int i = 0; i < serialList.Count; i++)
@@ -143,14 +144,21 @@ namespace POS.View.windows
             if (e.Key == Key.Return)
             {
                 string s = tb_serialNum.Text;
-                if (_serialCount == itemCount)
+                if (!s.Equals(""))
                 {
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningItemCountIs:") +" "+ itemCount, animation: ToasterAnimation.FadeIn);
-                }
-                else
-                {
-                    lst_serials.Items.Add(tb_serialNum.Text);
-                    _serialCount++;
+                    int found = lst_serials.Items.IndexOf(s);
+                    if (_serialCount == itemCount)
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningItemCountIs:") + " " + itemCount, animation: ToasterAnimation.FadeIn);
+                    }
+                    else if (found == -1)
+                    {
+                        lst_serials.Items.Add(tb_serialNum.Text);
+                        _serialCount++;
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningSerialExists") , animation: ToasterAnimation.FadeIn);
+
                 }
                 tb_serialNum.Clear();
             }
