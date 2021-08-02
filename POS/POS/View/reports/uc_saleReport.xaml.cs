@@ -122,22 +122,29 @@ namespace POS.View.reports
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             MainWindow.mainWindow.StartAwait();
-            Invoices = await statisticModel.GetSaleitemcount();
-            rowChartInvoice = await statisticModel.GetSaleitemcount();
+            try
+            {
+                Invoices = await statisticModel.GetSaleitemcount();
+                rowChartInvoice = await statisticModel.GetSaleitemcount();
 
-            Items = await statisticModel.GetSaleitem();
-            rowChartItems = await statisticModel.GetSaleitem();
+                Items = await statisticModel.GetSaleitem();
+                rowChartItems = await statisticModel.GetSaleitem();
 
-            coupons = await statisticModel.GetSalecoupon();
-            rowChartCoupons = await statisticModel.GetSalecoupon();
+                coupons = await statisticModel.GetSalecoupon();
+                rowChartCoupons = await statisticModel.GetSalecoupon();
 
-            Offers = await statisticModel.GetSaleOffer();
-            rowChartOffers = await statisticModel.GetSaleOffer();
+                Offers = await statisticModel.GetSaleOffer();
+                rowChartOffers = await statisticModel.GetSaleOffer();
 
-            comboBranches = await branchModel.GetAllWithoutMain("b");
-            comboPoss = await posModel.GetPosAsync();
-            comboVendors = await agentModel.GetAgentsAsync("c");
-            comboUsers = await userModel.GetUsersAsync();
+                comboBranches = await branchModel.GetAllWithoutMain("b");
+                comboPoss = await posModel.GetPosAsync();
+                comboVendors = await agentModel.GetAgentsAsync("c");
+                comboUsers = await userModel.GetUsersAsync();
+            }
+               catch (Exception)
+            {
+                MessageBox.Show("No Internat Connection");
+            }
             MainWindow.mainWindow.EndAwait();
             itemUnitCombos = statisticModel.GetIUComboList(Items);
             comboCoupon = statisticModel.GetCopComboList(coupons);

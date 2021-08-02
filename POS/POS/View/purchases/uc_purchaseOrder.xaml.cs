@@ -179,6 +179,7 @@ namespace POS.View.purchases
         }
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            MainWindow.mainWindow.StartAwait();
 
             // for pagination
             MainWindow.mainWindow.KeyDown += HandleKeyPress;
@@ -205,6 +206,7 @@ namespace POS.View.purchases
             CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
             ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
             #endregion
+            MainWindow.mainWindow.EndAwait();
         }
 
         #region bill

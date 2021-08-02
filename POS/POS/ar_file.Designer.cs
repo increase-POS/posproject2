@@ -430,6 +430,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to بطاقات.
+        /// </summary>
+        internal static string trCard {
+            get {
+                return ResourceManager.GetString("trCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to بطاقة الائتمان....
         /// </summary>
         internal static string trCardHint {
@@ -2356,6 +2365,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لا يمكن أن يكون المبلغ أكبر من المبلغ المسستحق للدفع.
+        /// </summary>
+        internal static string trGreaterAmmount {
+            get {
+                return ResourceManager.GetString("trGreaterAmmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تاريخ صلاحية.
         /// </summary>
         internal static string trHaveExpirationDate {
@@ -2487,6 +2505,15 @@ namespace POS {
         internal static string trInvoiceCountPointsHint {
             get {
                 return ResourceManager.GetString("trInvoiceCountPointsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ الفاتورة.
+        /// </summary>
+        internal static string trInvoiceDate {
+            get {
+                return ResourceManager.GetString("trInvoiceDate", resourceCulture);
             }
         }
         
@@ -2829,6 +2856,15 @@ namespace POS {
         internal static string trMedia {
             get {
                 return ResourceManager.GetString("trMedia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to العضويات.
+        /// </summary>
+        internal static string trMembership {
+            get {
+                return ResourceManager.GetString("trMembership", resourceCulture);
             }
         }
         
@@ -4273,6 +4309,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to يجب إدخال رقم تسلسلي واحد على الأقل.
+        /// </summary>
+        internal static string trShouldInputOneSerialNumberAtLeast {
+            get {
+                return ResourceManager.GetString("trShouldInputOneSerialNumberAtLeast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to عرض كلمة المرور.
         /// </summary>
         internal static string trShowPassword {
@@ -4471,6 +4516,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الاشتراكات.
+        /// </summary>
+        internal static string trSubscriptions {
+            get {
+                return ResourceManager.GetString("trSubscriptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to المجموع.
         /// </summary>
         internal static string trSum {
@@ -4534,7 +4588,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to الإجمالي.
+        ///   Looks up a localized string similar to الإجمالي:.
         /// </summary>
         internal static string trTotal {
             get {
@@ -5034,6 +5088,15 @@ namespace POS {
         internal static string trZ {
             get {
                 return ResourceManager.GetString("trZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يمكن أن يكون المبلغ مساو للصفر.
+        /// </summary>
+        internal static string trZeroAmmount {
+            get {
+                return ResourceManager.GetString("trZeroAmmount", resourceCulture);
             }
         }
         

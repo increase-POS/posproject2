@@ -676,17 +676,17 @@
                 <!--red D22A17-->
                 <Border BorderThickness="0"  Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="3"   Height="70" Margin="10,10,10,10"
                     CornerRadius="7" BorderBrush="Black" Background="#FFA926" Padding="0" x:Name="brd_total">
-                    <StackPanel Orientation="Horizontal" Margin="5,0" >
+                    <StackPanel Orientation="Horizontal" Margin="5,0" VerticalAlignment="Center" >
 
-                        <TextBlock Text="TOTAL" x:Name="txt_total" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" 
-                               Margin="2,2,5,2" FontSize="22"/>
-                        <TextBlock  Grid.Column="1" Margin="0" FontWeight="Bold" FontSize="22"  VerticalAlignment="Center"
-                                        TextAlignment="Center" Name="tb_total" Foreground="White" HorizontalAlignment="Right" 
+                        <TextBlock Text="TOTAL" x:Name="txt_total" Foreground="White" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Left" 
+                               Margin="2,0,5,0" FontSize="22"/>
+                        <TextBlock  Grid.Column="1" Margin="5,0,0,0" FontWeight="Bold" FontSize="18"  VerticalAlignment="Bottom"
+                                   TextAlignment="Center" Name="tb_total" Foreground="White" HorizontalAlignment="Right" 
                                                 />
-                        <TextBlock Grid.Row="1"   x:Name="tb_moneyIconTotal" Grid.Column="1" Margin="5" 
-                       Foreground="#4E4E4E" Text="{Binding Path=MainWindow.Currency,  Mode=OneWay}"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                                  FontWeight="Bold"  FontSize="12"/>
+                        <TextBlock   Foreground="White" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Center" 
+                               Margin="5,0,0,0" FontSize="18"
+                            Grid.Row="1"   x:Name="tb_moneyIconTotal" Grid.Column="1"  
+                      Text="{Binding Path=MainWindow.Currency,  Mode=OneWay}"/>
 
                     </StackPanel>
                 </Border>
@@ -697,10 +697,7 @@
                 <Grid.RowDefinitions >
                     <RowDefinition Height="*" />
                     <RowDefinition Height="2*"/>
-
-
                     <RowDefinition Height="*" />
-                    <!--<RowDefinition Height="1*"/>-->
                 </Grid.RowDefinitions>
                 <Border BorderThickness="0"   Grid.Column="0" Grid.Row="0"    Margin="5,10,5,5"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
@@ -735,7 +732,7 @@
 
                     </Grid>
                 </Border>
-                <Border BorderThickness="0"   Grid.Column="0" Grid.Row="1"      Margin="5,10,5,5"
+               <Border BorderThickness="0"   Grid.Column="0" Grid.Row="1"      Margin="5,10,5,5"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
                     <Grid   Margin="0" >
                         <Grid.RowDefinitions >
@@ -792,7 +789,7 @@
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Regular"  FontSize="12"/>
                             <TextBlock Grid.Row="1"   x:Name="tb_discountMoneyIcon" Grid.Column="1" 
-                       Foreground="#4E4E4E" Text="$"
+                       Foreground="#4E4E4E" Text="{Binding Path=MainWindow.Currency,Mode=OneWay}" Margin="5,0,0,0"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Regular"  FontSize="12"/>
                         </StackPanel>
@@ -815,24 +812,6 @@
 
                     </Grid>
                 </Border>
-                <!--<Border BorderThickness="0"   Grid.Column="0" Grid.Row="3"    Margin="10"
-                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
-                <Grid   Margin="0" >
-                    <Grid.RowDefinitions >
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0"  Text="SUM" x:Name="txt_sum" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
-                                  VerticalAlignment="Center" 
-                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
-
-                    <TextBlock Grid.Row="1"   x:Name="tb_sum" Grid.Column="1" Margin="10,5,5,5" 
-                       Foreground="#4E4E4E" Text="{Binding total, Mode=OneWay}"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                                  FontWeight="Bold"  FontSize="12"/>
-                </Grid>
-            </Border>-->
             </Grid>
 
             <Grid Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Margin="0,5,0,5">
@@ -937,19 +916,21 @@
                             </DataGrid.Columns>
                         </DataGrid>
                         <Separator Margin="5,0" Grid.Row="2"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
-                        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,5">
+                        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                    Margin="0,0,10,5"  >
                             <TextBlock Grid.Row="0"  Text="SUM" x:Name="txt_sum" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
                             <!--Text="{Binding total, Mode=OneWay}"-->
-                            <TextBlock Grid.Row="1"   x:Name="tb_sum" Grid.Column="1" Margin="10,5,0,5" 
+                            <TextBlock Grid.Row="1"   x:Name="tb_sum" Grid.Column="1" Margin="10,5,0,7.5" 
                        Foreground="#4E4E4E" Text="{Binding total, Mode=OneWay}"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                        HorizontalAlignment="Left" VerticalAlignment="Bottom"
                                   FontWeight="Bold"  FontSize="12"/>
-                            <TextBlock Grid.Row="1"   x:Name="tb_moneyIcon" Grid.Column="1" Margin="0,0,5,0" 
-                       Foreground="#4E4E4E" Text="{Binding Path=MainWindow.Currency, 
-                                                                Mode=OneWay}"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                            <!--Text="{Binding Path=MainWindow.Currency,Mode=OneWay}"-->
+                            <TextBlock Grid.Row="1"   x:Name="tb_moneyIcon" Grid.Column="1" Margin="5,5,0,7.5" 
+                       Foreground="#4E4E4E" Text="{Binding Path=MainWindow.Currency,Mode=OneWay}"
+                                                               
+                        HorizontalAlignment="Left" VerticalAlignment="Bottom"
                                   FontWeight="Bold"  FontSize="12"/>
                         </StackPanel>
                     </Grid>

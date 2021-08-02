@@ -44,6 +44,7 @@ namespace POS.View
         private void translate()
         {
             btn_payInvoice.Content = MainWindow.resourcemanager.GetString("trInvoice");
+            btn_purchaseOrder.Content = MainWindow.resourcemanager.GetString("trOrders");
             btn_purchaseStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
            
 
@@ -63,7 +64,6 @@ namespace POS.View
 
             translate();
             //btn_payInvoice_Click(null, null);
-
             permission();
         }
         void permission()
@@ -105,18 +105,24 @@ namespace POS.View
             grid_main.Children.Add(uc_payInvoice.Instance);
             //uc_payInvoice uc = new uc_payInvoice();
             //grid_main.Children.Add(uc);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_purchaseOrder);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_purchaseOrder.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_purchaseStatistic);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_statistic.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         

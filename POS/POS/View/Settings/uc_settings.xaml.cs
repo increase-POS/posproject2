@@ -63,7 +63,8 @@ namespace POS.View.Settings
             btn_general.Content = MainWindow.resourcemanager.GetString("trGeneral");
             btn_reportsSettings.Content = MainWindow.resourcemanager.GetString("trReports");
             btn_permissions.Content = MainWindow.resourcemanager.GetString("trPermission");
-
+            btn_emails.Content = MainWindow.resourcemanager.GetString("trEmail");
+            
         }
         void refreashBackground()
         {
@@ -92,13 +93,16 @@ namespace POS.View.Settings
             refreashBachgroundClick(btn_general);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_general.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         private void btn_reports_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_reportsSettings);
             grid_main.Children.Clear();
-
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         private void btn_permission_Click(object sender, RoutedEventArgs e)
@@ -106,6 +110,8 @@ namespace POS.View.Settings
             refreashBachgroundClick(btn_permissions);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_permissions.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         private void Btn_emails_Click(object sender, RoutedEventArgs e)
@@ -113,6 +119,8 @@ namespace POS.View.Settings
             refreashBachgroundClick(btn_emails);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_emailsSetting.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
     }
 }

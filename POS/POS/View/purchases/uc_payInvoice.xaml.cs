@@ -166,6 +166,7 @@ namespace POS.View
         }
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            MainWindow.mainWindow.StartAwait();
 
             // for pagination
             //btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
@@ -212,6 +213,7 @@ namespace POS.View
             CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
             ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
             #endregion
+            MainWindow.mainWindow.EndAwait();
         }
         private void configureDiscountType()
         {

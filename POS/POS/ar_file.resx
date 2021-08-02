@@ -655,7 +655,7 @@
     <value>الضريبة</value>
   </data>
   <data name="trTotal" xml:space="preserve">
-    <value>الإجمالي</value>
+    <value>الإجمالي:</value>
   </data>
   <data name="trTotal:" xml:space="preserve">
     <value>الإجمالي:</value>
@@ -1778,5 +1778,26 @@
   </data>
   <data name="trCannotDeleteTheMainPos" xml:space="preserve">
     <value>لا يمكن حذف نقطة البيع الرئيسية</value>
+  </data>
+  <data name="trCard" xml:space="preserve">
+    <value>بطاقات</value>
+  </data>
+  <data name="trGreaterAmmount" xml:space="preserve">
+    <value>لا يمكن أن يكون المبلغ أكبر من المبلغ المسستحق للدفع</value>
+  </data>
+  <data name="trMembership" xml:space="preserve">
+    <value>العضويات</value>
+  </data>
+  <data name="trSubscriptions" xml:space="preserve">
+    <value>الاشتراكات</value>
+  </data>
+  <data name="trZeroAmmount" xml:space="preserve">
+    <value>لا يمكن أن يكون المبلغ مساو للصفر</value>
+  </data>
+  <data name="trInvoiceDate" xml:space="preserve">
+    <value>تاريخ الفاتورة</value>
+  </data>
+  <data name="trShouldInputOneSerialNumberAtLeast" xml:space="preserve">
+    <value>يجب إدخال رقم تسلسلي واحد على الأقل</value>
   </data>
 </root>

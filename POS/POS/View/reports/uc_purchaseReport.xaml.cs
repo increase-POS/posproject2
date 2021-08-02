@@ -102,15 +102,22 @@ namespace POS.View.purchases
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             MainWindow.mainWindow.StartAwait();
-            Invoices = await statisticModel.GetPuritemcount();
-            rowChartInvoice = await statisticModel.GetPuritemcount();
-            Items = await statisticModel.GetPuritem();
-            rowChartItems = await statisticModel.GetPuritem();
+            try
+            {
+                Invoices = await statisticModel.GetPuritemcount();
+                rowChartInvoice = await statisticModel.GetPuritemcount();
+                Items = await statisticModel.GetPuritem();
+                rowChartItems = await statisticModel.GetPuritem();
 
-            comboBranches = await branchModel.GetAllWithoutMain("b");
-            comboPoss = await posModel.GetPosAsync();
-            comboVendors = await agentModel.GetAgentsAsync("v");
-            comboUsers = await userModel.GetUsersAsync();
+                comboBranches = await branchModel.GetAllWithoutMain("b");
+                comboPoss = await posModel.GetPosAsync();
+                comboVendors = await agentModel.GetAgentsAsync("v");
+                comboUsers = await userModel.GetUsersAsync();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No Internat Connection");
+            }
             MainWindow.mainWindow.EndAwait();
             itemUnitCombos = statisticModel.GetIUComboList(Items);
 

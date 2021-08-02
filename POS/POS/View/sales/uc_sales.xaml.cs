@@ -46,6 +46,13 @@ namespace POS.View
             btn_offer.Content = MainWindow.resourcemanager.GetString("trOffer");
             btn_medals.Content = MainWindow.resourcemanager.GetString("trMedals");
 
+            btn_package.Content = MainWindow.resourcemanager.GetString("trPackage");
+            btn_quotation.Content = MainWindow.resourcemanager.GetString("trQuotations");
+            btn_salesOrders.Content = MainWindow.resourcemanager.GetString("trOrders");
+            btn_membership.Content = MainWindow.resourcemanager.GetString("trMembership");
+
+
+
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -121,13 +128,16 @@ namespace POS.View
             //grid_main.Children.Add(uc);
             //uc_payInvoice1 uc = new uc_payInvoice1();
             //grid_main.Children.Add(uc);
-
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_salesStatistic);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_salesStatistic.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_coupon_Click(object sender, RoutedEventArgs e)
         {
@@ -136,6 +146,8 @@ namespace POS.View
             grid_main.Children.Add(uc_coupon.Instance);
             //uc_coupon uc = new uc_coupon();
             //grid_main.Children.Add(uc);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_offer_Click(object sender, RoutedEventArgs e)
         {
@@ -144,6 +156,8 @@ namespace POS.View
             grid_main.Children.Add(uc_offer.Instance);
             //uc_offer uc = new uc_offer();
             //grid_main.Children.Add(uc);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_package_Click(object sender, RoutedEventArgs e)
         {
@@ -152,6 +166,8 @@ namespace POS.View
             grid_main.Children.Add(uc_packageOfItems.Instance);
             //uc_packageOfItems uc = new uc_packageOfItems();
             //grid_main.Children.Add(uc);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         private void Btn_quotations_Click(object sender, RoutedEventArgs e)
@@ -159,12 +175,16 @@ namespace POS.View
             refreashBachgroundClick(btn_quotation);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_quotations.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_orders_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_salesOrders);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_orders.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         private void Btn_medals_Click(object sender, RoutedEventArgs e)
@@ -172,6 +192,9 @@ namespace POS.View
             refreashBachgroundClick(btn_medals);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_medals.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+
         }
 
         private void Btn_membership_Click(object sender, RoutedEventArgs e)
@@ -179,6 +202,8 @@ namespace POS.View
             refreashBachgroundClick(btn_membership);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_membership.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         

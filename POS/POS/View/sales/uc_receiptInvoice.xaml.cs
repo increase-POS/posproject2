@@ -79,7 +79,8 @@ namespace POS.View
         Coupon couponModel = new Coupon();
         IEnumerable<Coupon> coupons;
         List<CouponInvoice> selectedCoupons = new List<CouponInvoice>();
-
+        Branch branchModel = new Branch();
+        IEnumerable<Branch> branches;
         Pos posModel = new Pos();
         Pos pos;
         List<ItemTransfer> invoiceItems;
@@ -195,6 +196,7 @@ namespace POS.View
         }
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            MainWindow.mainWindow.StartAwait();
 
             MainWindow.mainWindow.KeyDown += HandleKeyPress;
             tb_moneyIcon.Text = MainWindow.Currency;
@@ -219,7 +221,6 @@ namespace POS.View
             catigoriesAndItemsView.ucReceiptInvoice = this;
 
             pos = await posModel.getPosById(MainWindow.posID.Value);
-
             configurProcessType();
             await RefrishItems();
             await RefrishCustomers();
@@ -227,7 +228,7 @@ namespace POS.View
             await fillCouponsList();
             await fillShippingCompanies();
             await fillUsers();
-
+            //await RefrishBranches();
             #region fill card combo
             cards = await cardModel.GetAll();
             cb_card.ItemsSource = cards;
@@ -235,11 +236,9 @@ namespace POS.View
             cb_card.SelectedValuePath = "cardId";
             cb_card.SelectedIndex = -1;
             #endregion
-
             #region Style Date
             SectionData.defaultDatePickerStyle(dp_desrvedDate);
             #endregion
-
             if (MainWindow.isInvTax == 1)
                 tb_taxValue.Text = MainWindow.tax.ToString();
             tb_barcode.Focus();
@@ -247,8 +246,17 @@ namespace POS.View
             CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
             ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
             #endregion
-        }
 
+            MainWindow.mainWindow.EndAwait();
+
+        }
+        //async Task RefrishBranches()
+        //{
+        //    branches = await branchModel.GetBranchesActive("all");
+        //    cb_branch.ItemsSource = branches;
+        //    cb_branch.DisplayMemberPath = "name";
+        //    cb_branch.SelectedValuePath = "branchId";
+        //}
         async Task RefrishCustomers()
         {
             customers = await agentModel.GetAgentsActive("c");
@@ -2393,7 +2401,6 @@ namespace POS.View
 
 
         }
-
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
@@ -2405,7 +2412,6 @@ namespace POS.View
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
-
         private void serialItemsRow(object sender, RoutedEventArgs e)
         {
             BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
@@ -2431,7 +2437,5 @@ namespace POS.View
                 Window.GetWindow(this).Opacity = 1;
             }
         }
-
-       
     }
 }

@@ -211,10 +211,12 @@ namespace POS.View
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            SectionData.genRandomCode("c");
-            tb_code.Text = SectionData.code;
+            //SectionData.genRandomCode("c");
+            //tb_code.Text = SectionData.code;
 
             agent.agentId = 0;
+
+            tb_code.Text = "";
             tb_address.Clear();
             tb_fax.Clear();
             tb_company.Clear();
@@ -296,9 +298,9 @@ namespace POS.View
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
                     else
                     {
-                        SectionData.genRandomCode("c");
-                        tb_code.Text = SectionData.code;
-
+                        //SectionData.genRandomCode("c");
+                        //tb_code.Text = SectionData.code;
+                        tb_code.Text = await agentModel.generateCodeNumber("c");
                         //Agent customer = new Agent
                         //{
                         agent.name = tb_name.Text;
@@ -369,6 +371,7 @@ namespace POS.View
             //CreateGridCardContainer();
             catigoriesAndItemsView.ucCustomer = this;
 
+            #region translate
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -381,6 +384,7 @@ namespace POS.View
             }
 
             translate();
+            #endregion
 
             this.Dispatcher.Invoke(() =>
             {
@@ -393,8 +397,8 @@ namespace POS.View
 
             Keyboard.Focus(tb_name);
 
-            SectionData.genRandomCode("c");
-            tb_code.Text = SectionData.code;
+            //SectionData.genRandomCode("c");
+            //tb_code.Text = SectionData.code;
 
         }
 

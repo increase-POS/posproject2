@@ -88,6 +88,8 @@ namespace POS.View
 
             //UC_Customer uc = new UC_Customer();
             //grid_main.Children.Add(uc);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         private void Btn_suppliers_Click(object sender, RoutedEventArgs e)
@@ -100,7 +102,8 @@ namespace POS.View
 
             //UC_vendors uc = new UC_vendors();
             //grid_main.Children.Add(uc);
-
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -132,6 +135,7 @@ namespace POS.View
             btn_stores.Content = MainWindow.resourcemanager.GetString("trStores");
             btn_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
             btn_banks.Content = MainWindow.resourcemanager.GetString("trBanks");
+            btn_cards.Content = MainWindow.resourcemanager.GetString("trCard");
             btn_shippingCompany.Content = MainWindow.resourcemanager.GetString("trShippingCompanies");
         }
         
@@ -146,6 +150,8 @@ namespace POS.View
 
             //UC_users uc = new UC_users();
             //grid_main.Children.Add(uc);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         private void Btn_branches_Click(object sender, RoutedEventArgs e)
@@ -158,6 +164,8 @@ namespace POS.View
 
             //UC_branch uc = new UC_branch();
             //grid_main.Children.Add(uc);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         private void Btn_stores_Click(object sender, RoutedEventArgs e)
@@ -170,6 +178,8 @@ namespace POS.View
 
             //UC_store uc = new UC_store();
             //grid_main.Children.Add(uc);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         private void Btn_pos_Click(object sender, RoutedEventArgs e)
@@ -182,6 +192,8 @@ namespace POS.View
 
             //UC_posAccounts uc = new UC_posAccounts();
             //grid_main.Children.Add(uc);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         private void Btn_banks_Click(object sender, RoutedEventArgs e)
@@ -192,6 +204,8 @@ namespace POS.View
 
             //UC_bank uc = new UC_bank();
             //grid_main.Children.Add(uc);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         private void Btn_cards_Click(object sender, RoutedEventArgs e)
@@ -199,7 +213,8 @@ namespace POS.View
             refreashBachgroundClick(btn_cards);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_card.Instance);
-
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
         private void Btn_shippingCompany_Click(object sender, RoutedEventArgs e)
@@ -207,13 +222,9 @@ namespace POS.View
             refreashBachgroundClick(btn_shippingCompany);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_shippingCompany.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
-
-        //private void Btn_shippingCompany_Click(object sender, RoutedEventArgs e)
-        //{
-        //    refreashBachgroundClick(btn_shippingCompany);
-        //    grid_main.Children.Clear();
-        //    grid_main.Children.Add(uc_shippingCompany.Instance);
-        //}
+ 
     }
 }

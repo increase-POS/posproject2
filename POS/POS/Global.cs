@@ -18,9 +18,9 @@ namespace POS
         public static string ScannedImageLocation = "Thumb/Scan/scan.jpg";
         public const string TMPFolder = "Thumb";
         public const string TMPItemsFolder = "Thumb/items"; // folder to save items photos locally 
-        public const string TMPAgentsFolder = "Thumb/agents";// folder to save agents photos locally 
-        public const string TMPUsersFolder = "Thumb/users";// folder to save users photos locally 
-        public const string TMPSettingFolder = "Thumb/setting";// folder to save Logo photos locally 
+        public const string TMPAgentsFolder = "Thumb/agents"; // folder to save agents photos locally 
+        public const string TMPUsersFolder = "Thumb/users"; // folder to save users photos locally 
+        public const string TMPSettingFolder = "Thumb/setting"; // folder to save Logo photos locally 
 
     }
 }

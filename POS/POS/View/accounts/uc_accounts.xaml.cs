@@ -74,6 +74,10 @@ namespace POS.View.accounts
             btn_payments.Content = MainWindow.resourcemanager.GetString("trPayments");
             btn_received.Content = MainWindow.resourcemanager.GetString("trReceived");
             btn_bonds.Content = MainWindow.resourcemanager.GetString("trBonds");
+            btn_ordersAccounting.Content = MainWindow.resourcemanager.GetString("trOrders");
+            btn_subscriptions.Content = MainWindow.resourcemanager.GetString("trSubscriptions");
+            btn_accountsStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
+
         }
         void refreashBackground()
         {
@@ -117,6 +121,8 @@ namespace POS.View.accounts
             grid_main.Children.Add(uc_posAccounts.Instance);
             //uc_posAccounts uc = new uc_posAccounts();
             //grid_main.Children.Add(uc);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
         {
@@ -126,6 +132,8 @@ namespace POS.View.accounts
             grid_main.Children.Add(uc_paymentsAccounts.Instance);
             //uc_paymentsAccounts uc = new uc_paymentsAccounts();
             //grid_main.Children.Add(uc);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_received_Click(object sender, RoutedEventArgs e)
         {
@@ -135,6 +143,8 @@ namespace POS.View.accounts
             grid_main.Children.Add(uc_receivedAccounts.Instance);
             //uc_receivedAccounts uc = new uc_receivedAccounts();
             //grid_main.Children.Add(uc);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_bonds_Click(object sender, RoutedEventArgs e)
         {
@@ -142,6 +152,8 @@ namespace POS.View.accounts
 
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_bonds.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_banks_Click(object sender, RoutedEventArgs e)
         {
@@ -150,22 +162,29 @@ namespace POS.View.accounts
             grid_main.Children.Add(uc_banksAccounts.Instance);
             //uc_banksAccounts uc = new uc_banksAccounts();
             //grid_main.Children.Add(uc);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_orders_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_ordersAccounting);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_orderAccounts.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_subscriptions_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_subscriptions);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_subscriptions.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
         private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {
-
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
        

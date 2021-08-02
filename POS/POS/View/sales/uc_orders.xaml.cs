@@ -153,6 +153,8 @@ namespace POS.View.sales
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            MainWindow.mainWindow.StartAwait();
+
             MainWindow.mainWindow.KeyDown += HandleKeyPress;
             tb_moneyIcon.Text = MainWindow.Currency;
 
@@ -168,8 +170,10 @@ namespace POS.View.sales
             }
             tb_moneyIcon.Text = MainWindow.Currency;
             tb_discountMoneyIcon.Text = MainWindow.Currency;
-            translate();
 
+
+
+            translate();
             await RefrishItems();
             await RefrishCustomers();
             await fillBarcodeList();
@@ -194,6 +198,7 @@ namespace POS.View.sales
             CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
             ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
             #endregion
+            MainWindow.mainWindow.EndAwait();
         }
         async Task RefrishCustomers()
         {

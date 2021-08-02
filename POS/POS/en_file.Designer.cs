@@ -457,6 +457,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cards.
+        /// </summary>
+        internal static string trCard {
+            get {
+                return ResourceManager.GetString("trCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Credit card....
         /// </summary>
         internal static string trCardHint {
@@ -2401,6 +2410,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The amount cannot be greater than the deserved one.
+        /// </summary>
+        internal static string trGreaterAmmount {
+            get {
+                return ResourceManager.GetString("trGreaterAmmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Have Expiration date.
         /// </summary>
         internal static string trHaveExpirationDate {
@@ -2532,6 +2550,15 @@ namespace POS {
         internal static string trInvoiceCountPointsHint {
             get {
                 return ResourceManager.GetString("trInvoiceCountPointsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invoice Date.
+        /// </summary>
+        internal static string trInvoiceDate {
+            get {
+                return ResourceManager.GetString("trInvoiceDate", resourceCulture);
             }
         }
         
@@ -2874,6 +2901,15 @@ namespace POS {
         internal static string trMedia {
             get {
                 return ResourceManager.GetString("trMedia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Membership.
+        /// </summary>
+        internal static string trMembership {
+            get {
+                return ResourceManager.GetString("trMembership", resourceCulture);
             }
         }
         
@@ -4336,6 +4372,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Should input one serial number at least.
+        /// </summary>
+        internal static string trShouldInputOneSerialNumberAtLeast {
+            get {
+                return ResourceManager.GetString("trShouldInputOneSerialNumberAtLeast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show password.
         /// </summary>
         internal static string trShowPassword {
@@ -4534,7 +4579,16 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sum.
+        ///   Looks up a localized string similar to Subscriptions.
+        /// </summary>
+        internal static string trSubscriptions {
+            get {
+                return ResourceManager.GetString("trSubscriptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SubTotal.
         /// </summary>
         internal static string trSum {
             get {
@@ -4597,7 +4651,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total.
+        ///   Looks up a localized string similar to Total:.
         /// </summary>
         internal static string trTotal {
             get {
@@ -5106,6 +5160,15 @@ namespace POS {
         internal static string trZ {
             get {
                 return ResourceManager.GetString("trZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ammount cann&apos;t be zero.
+        /// </summary>
+        internal static string trZeroAmmount {
+            get {
+                return ResourceManager.GetString("trZeroAmmount", resourceCulture);
             }
         }
         

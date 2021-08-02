@@ -661,13 +661,13 @@
     <value>Save</value>
   </data>
   <data name="trSum" xml:space="preserve">
-    <value>Sum</value>
+    <value>SubTotal</value>
   </data>
   <data name="trTax" xml:space="preserve">
     <value>Tax</value>
   </data>
   <data name="trTotal" xml:space="preserve">
-    <value>Total</value>
+    <value>Total:</value>
   </data>
   <data name="trTotal:" xml:space="preserve">
     <value>Total:</value>
@@ -1802,5 +1802,26 @@
   </data>
   <data name="trCannotDeleteTheMainPos" xml:space="preserve">
     <value>Cannot delete the main Pos</value>
+  </data>
+  <data name="trCard" xml:space="preserve">
+    <value>Cards</value>
+  </data>
+  <data name="trGreaterAmmount" xml:space="preserve">
+    <value>The amount cannot be greater than the deserved one</value>
+  </data>
+  <data name="trMembership" xml:space="preserve">
+    <value>Membership</value>
+  </data>
+  <data name="trSubscriptions" xml:space="preserve">
+    <value>Subscriptions</value>
+  </data>
+  <data name="trZeroAmmount" xml:space="preserve">
+    <value>Ammount cann't be zero</value>
+  </data>
+  <data name="trInvoiceDate" xml:space="preserve">
+    <value>Invoice Date</value>
+  </data>
+  <data name="trShouldInputOneSerialNumberAtLeast" xml:space="preserve">
+    <value>Should input one serial number at least</value>
   </data>
 </root>

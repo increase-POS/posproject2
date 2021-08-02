@@ -104,11 +104,13 @@ namespace POS.View.windows
                     DialogResult = true;
                     this.Close();
                 }
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trShouldInputOneSerialNumberAtLeast"), animation: ToasterAnimation.FadeIn);
+
+
             }
             else
-            {
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorSerialMoreItemCountToolTip"), animation: ToasterAnimation.FadeIn);
-            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

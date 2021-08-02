@@ -22,6 +22,7 @@ using POS.View.windows;
 using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
 using static POS.Classes.Statistics;
+using System.Globalization;
 
 namespace POS.View.reports
 {
@@ -29,13 +30,20 @@ namespace POS.View.reports
     {
         private int selectedFatherTab = 0;
         List<Storage> storages;
+
         List<ItemTransferInvoice> itemsTransfer;
         List<ItemTransferInvoice> itemsInternalTransfer;
+
         IEnumerable<ItemTransferInvoice> agentsCount;
         IEnumerable<ItemTransferInvoice> invTypeCount;
         IEnumerable<ItemTransferInvoice> invCount;
 
+        IEnumerable<InventoryClass> archiveCount;
+
         List<InventoryClass> inventory;
+        List<InventoryClass> falls;
+        List<ItemTransferInvoice> Destroied;
+
         private static uc_storageReports _instance;
         public static uc_storageReports Instance
         {
@@ -50,11 +58,21 @@ namespace POS.View.reports
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             MainWindow.mainWindow.StartAwait();
-            inventory = await statisticModel.GetInventory();
-            storages = await statisticModel.GetStorage();
-            itemsTransfer = await statisticModel.GetExternalMov();
-            itemsInternalTransfer = await statisticModel.GetInternalMov();
-            comboBranches = await branchModel.GetAllWithoutMain("all");
+            try
+            {
+                inventory = await statisticModel.GetInventory();
+                falls = await statisticModel.GetInventoryItems();
+                Destroied = await statisticModel.GetDesItems();
+                storages = await statisticModel.GetStorage();
+                itemsTransfer = await statisticModel.GetExternalMov();
+                itemsInternalTransfer = await statisticModel.GetInternalMov();
+                comboBranches = await branchModel.GetAllWithoutMain("all");
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No Internat Connection");
+            }
+
             MainWindow.mainWindow.EndAwait();
             comboItems = statisticModel.getItemCombo(storages);
             comboUnits = statisticModel.getUnitCombo(storages);
@@ -74,6 +92,8 @@ namespace POS.View.reports
             comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
 
             cbStockType = statisticModel.getStocktakingArchivesTypeCombo(inventory);
+            comboDestroiedItemmsUnits = statisticModel.getDestroiedCombo(Destroied);
+            comboShortFalls = statisticModel.getshortFalls(falls);
 
             fillComboBranches(cb_branchesItem);
             fillComboItems(cb_branchesItem, cb_itemsItem);
@@ -97,6 +117,7 @@ namespace POS.View.reports
             dgStock.ItemsSource = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
             fillPieChart();
             fillColumnChart();
+
         }
 
 
@@ -136,16 +157,19 @@ namespace POS.View.reports
             grid_external.Visibility = Visibility.Hidden;
             grid_internal.Visibility = Visibility.Hidden;
             grid_stocktaking.Visibility = Visibility.Hidden;
+            grid_detroied.Visibility = Visibility.Hidden;
 
             bdr_stock.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_external.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_internal.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_stocktaking.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_destroied.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
             path_stock.Fill = Brushes.White;
             path_external.Fill = Brushes.White;
             path_internal.Fill = Brushes.White;
             path_stocktaking.Fill = Brushes.White;
+            path_destroied.Fill = Brushes.White;
         }
         #endregion
 
@@ -1965,6 +1989,15 @@ namespace POS.View.reports
             col_stockTakeNum.Visibility = Visibility.Hidden;
             col_stockTakingCoastType.Visibility = Visibility.Hidden;
             col_stockTakingDate.Visibility = Visibility.Hidden;
+            col_diffPercentage.Visibility = Visibility.Hidden;
+            col_itemCountAr.Visibility = Visibility.Hidden;
+            col_DestroyedCount.Visibility = Visibility.Hidden;
+
+            col_destroiedNumber.Visibility = Visibility.Hidden;
+            col_destroiedDate.Visibility = Visibility.Hidden;
+            col_destroiedItemsUnits.Visibility = Visibility.Hidden;
+            col_destroiedReason.Visibility = Visibility.Hidden;
+            col_destroiedAmount.Visibility = Visibility.Hidden;
         }
         private void showSelectedTabColumn()
         {
@@ -2359,7 +2392,7 @@ namespace POS.View.reports
         }
         private void Btn_stocktaking_Click(object sender, RoutedEventArgs e)
         {
-            selectedFatherTab = 2;
+            selectedFatherTab = 3;
             txt_search.Text = "";
             paint();
             grid_stocktaking.Visibility = Visibility.Visible;
@@ -2375,7 +2408,31 @@ namespace POS.View.reports
             col_stockTakingCoastType.Visibility = Visibility.Visible;
             col_stockTakingDate.Visibility = Visibility.Visible;
             col_branch.Visibility = Visibility.Visible;
+            col_diffPercentage.Visibility = Visibility.Visible;
+            col_itemCountAr.Visibility = Visibility.Visible;
+            col_DestroyedCount.Visibility = Visibility.Visible;
+
             fillSocktakingEvents();
+        }
+        private void Btn_destroied_Click(object sender, RoutedEventArgs e)
+        {
+            selectedFatherTab = 4;
+            txt_search.Text = "";
+            paint();
+            grid_detroied.Visibility = Visibility.Visible;
+            bdr_destroied.Background = Brushes.White;
+            path_destroied.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            fillComboBranches(cb_destroiedBranch);
+            isEnabledButtons();
+            hideAllColumn();
+            fillDestroidEvents();
+            col_branch.Visibility = Visibility.Visible;
+            col_destroiedItemsUnits.Visibility = Visibility.Visible;
+            col_destroiedNumber.Visibility = Visibility.Visible;
+            col_destroiedDate.Visibility = Visibility.Visible;
+            col_destroiedReason.Visibility = Visibility.Visible;
+            col_destroiedAmount.Visibility = Visibility.Visible;
+
         }
         private void fillComboInternalItemsItems()
         {
@@ -2702,22 +2759,45 @@ namespace POS.View.reports
         /*44444444444444444444444444444444444444444444444444444444444444444444444444444444444444444*/
         private int selectedStocktakingTab = 0;
         List<StocktakingArchivesTypeCombo> cbStockType;
+        List<ShortFalls> comboShortFalls;
+        private IEnumerable<InventoryClass> fillListshortFalls(ComboBox branch, ComboBox cb, DatePicker startDate, DatePicker endDate)
+        {
+            var selectedBranch = branch.SelectedItem as Branch;
+            var selectedType1 = cb.SelectedItem as DestroiedCombo;
+            var result = falls.Where(x => (
+
+                         (branch.SelectedItem != null ? (x.branchId == selectedBranch.branchId) : true)
+                        && (cb.SelectedItem != null ? (x.itemUnitId == selectedType1.ItemsUnitsId) : true)
+                        && (dp_stocktakingFalseStartDate.SelectedDate != null ? (x.updateDate >= startDate.SelectedDate) : true)
+                        && (dp_stocktakingFalseEndDate.SelectedDate != null ? (x.updateDate <= endDate.SelectedDate) : true)
+          ));
+            return result;
+        }
+
+       
 
         private void Btn_stocktakeArchived_Click(object sender, RoutedEventArgs e)
         {
-           selectedStocktakingTab = 0;
+            selectedStocktakingTab = 0;
             txt_search.Text = "";
             paintStockTakingChilds();
             grid_stocktakingArchived.Visibility = Visibility.Visible;
             txt_stocktakeArchived.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             path_stocktakeArchived.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            hideAllColumn();
+            col_stockTakeNum.Visibility = Visibility.Visible;
+            col_stockTakingCoastType.Visibility = Visibility.Visible;
+            col_stockTakingDate.Visibility = Visibility.Visible;
+            col_branch.Visibility = Visibility.Visible;
+            col_diffPercentage.Visibility = Visibility.Visible;
+            col_itemCountAr.Visibility = Visibility.Visible;
+            col_DestroyedCount.Visibility = Visibility.Visible;
 
-         
             fillComboBranches(cb_stocktakingArchivedBranch);
+            fillSocktakingEvents();
         }
         private void Btn_stocktakeShortfalse_Click(object sender, RoutedEventArgs e)
         {
-
             selectedStocktakingTab = 1;
             txt_search.Text = "";
             paintStockTakingChilds();
@@ -2725,8 +2805,17 @@ namespace POS.View.reports
             txt_stocktakeShortfalse.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             path_stocktakeShortfalse.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
 
+            hideAllColumn();
+            col_stockTakeNum.Visibility = Visibility.Visible;
+            col_stockTakingCoastType.Visibility = Visibility.Visible;
+            col_stockTakingDate.Visibility = Visibility.Visible;
+            col_branch.Visibility = Visibility.Visible;
+            col_itemCountAr.Visibility = Visibility.Visible;
+            col_itemUnits.Visibility = Visibility.Visible;
 
             fillComboBranches(cb_stocktakingFalseBranch);
+            fillShortFallsEvents();
+            fillComboItemsUnitsFalls();
         }
         public void paintStockTakingChilds()
         {
@@ -2741,7 +2830,7 @@ namespace POS.View.reports
             path_stocktakeArchived.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             path_stocktakeShortfalse.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
         }
-       
+
         private void fillComboArchivedTypeType()
         {
             var temp = cb_stocktakingArchivedBranch.SelectedItem as Branch;
@@ -2784,8 +2873,12 @@ namespace POS.View.reports
         }
         private void fillSocktakingEvents()
         {
-            dgStock.ItemsSource = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate).GroupBy(x=>x.inventoryId);
+            dgStock.ItemsSource = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
+            fillStocktakingColumnChart();
+            fillStocktakingPieChart();
+            fillStocktakingRowChart();
         }
+
 
         private void Cb_stocktakingArchivedBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -2829,47 +2922,642 @@ namespace POS.View.reports
             fillSocktakingEvents();
         }
 
+
+        private void fillComboItemsUnitsFalls()
+        {
+            var temp = cb_stocktakingFalseBranch.SelectedItem as Branch;
+            cb_stocktakingFalseType.SelectedValuePath = "ItemsUnitsId";
+            cb_stocktakingFalseType.DisplayMemberPath = "ItemsUnits";
+            if (temp == null)
+            {
+                cb_stocktakingFalseType.ItemsSource = comboShortFalls
+                    .GroupBy(x => x.ItemsUnitsId)
+                    .Select(g => new DestroiedCombo
+                    {
+                        ItemsUnits = g.FirstOrDefault().ItemsUnits,
+                        BranchId = g.FirstOrDefault().BranchId,
+                        ItemsUnitsId = g.FirstOrDefault().ItemsUnitsId
+                    }).ToList();
+            }
+            else
+            {
+                cb_stocktakingFalseType.ItemsSource = comboShortFalls
+                   .Where(x => x.BranchId == temp.branchId)
+                    .GroupBy(x => x.ItemsUnitsId)
+                    .Select(g => new DestroiedCombo
+                    {
+                        ItemsUnits = g.FirstOrDefault().ItemsUnits,
+                        BranchId = g.FirstOrDefault().BranchId,
+                        ItemsUnitsId = g.FirstOrDefault().ItemsUnitsId
+                    }).ToList();
+            }
+        }
+
+
+
+
         private void Dp_stocktakingFalseStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            fillShortFallsEvents();
         }
 
         private void Dp_stocktakingFalseEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            fillShortFallsEvents();
         }
 
         private void Chk_stocktakingFalseAllTypes_Checked(object sender, RoutedEventArgs e)
         {
-
+            fillShortFallsEvents();
         }
 
         private void Chk_stocktakingFalseAllTypes_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            fillShortFallsEvents();
         }
 
         private void Cb_stocktakingFalseType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            fillShortFallsEvents();
         }
 
         private void Chk_stocktakingFalseAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
+            fillShortFallsEvents();
 
         }
 
         private void Chk_stocktakingFalseAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-
+            fillShortFallsEvents();
         }
 
         private void Cb_stocktakingFalseBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            fillComboItemsUnitsFalls();
+            fillShortFallsEvents();
+        }
+
+        private IEnumerable<InventoryClass> fillListStockTakingRowChart(ComboBox branch, ComboBox cb, DateTime startDate, DateTime endDate)
+        {
+            var selectedBranch = branch.SelectedItem as Branch;
+            var selectedType = cb.SelectedItem as StocktakingArchivesTypeCombo;
+            var result = inventory.Where(x => (
+
+                         (branch.SelectedItem != null ? (x.branchId == selectedBranch.branchId) : true)
+                        && (cb.SelectedItem != null ? (x.inventoryType == selectedType.InventoryType) : true)
+                        && ((x.inventoryDate >= startDate))
+                        && ((x.inventoryDate <= endDate))
+          ));
+            return result;
+        }
+
+        private void fillStocktakingRowChart()
+        {
+            List<int> cP = new List<int>();
+
+            MyAxis.Labels = new List<string>();
+
+            List<string> names = new List<string>();
+
+            for (int month = 1; month <= 12; month++)
+            {
+                var firstOfThisMonth = new DateTime(DateTime.Now.Year, month, 1);
+                var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
+
+                var Draw = fillListStockTakingRowChart(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, firstOfThisMonth, firstOfNextMonth).Count();
+                cP.Add(Draw);
+                MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
+            }
+
+            List<string> lable = new List<string>();
+            SeriesCollection rowChartData = new SeriesCollection();
+
+            rowChartData.Add(
+             new LineSeries
+             {
+                 Values = cP.AsChartValues(),
+
+                 DataLabels = true,
+             });
+            DataContext = this;
+            rowChart.Series = rowChartData;
 
         }
 
-     
+        private void fillStocktakingColumnChart()
+        {
+            axcolumn.Labels = new List<string>();
+            List<string> names = new List<string>();
+
+            var temp = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
+            if (selectedStocktakingTab == 1)
+            {
+                temp = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
+            }
+
+            var result = temp.GroupBy(s => new { s.inventoryId }).Select(s => new InventoryClass
+            {
+                branchId = s.FirstOrDefault().branchId,
+                branchName = s.FirstOrDefault().branchName,
+                inventoryId = s.FirstOrDefault().inventoryId,
+                inventoryType = s.FirstOrDefault().inventoryType
+            });
+            archiveCount = result.GroupBy(x => x.branchId).Select(x => new InventoryClass
+            {
+                branchId = x.FirstOrDefault().branchId,
+                inventoryType = x.FirstOrDefault().inventoryType,
+                branchName = x.FirstOrDefault().branchName,
+                aCount = x.Where(g => g.inventoryType == "a").Count(),
+                nCount = x.Where(g => g.inventoryType == "n").Count(),
+                dCount = x.Where(g => g.inventoryType == "d").Count(),
+                inventoryId = x.FirstOrDefault().inventoryId
+            }
+            );
+
+            var tempName = result.GroupBy(s => new { s.branchId }).Select(s => new
+            {
+                itemName = s.FirstOrDefault().branchName,
+            });
+            names.AddRange(tempName.Select(nn => nn.itemName));
+
+            List<string> lable = new List<string>();
+            SeriesCollection columnChartData = new SeriesCollection();
+            List<int> cPa = new List<int>();
+            List<int> cPn = new List<int>();
+            List<int> cPd = new List<int>();
+
+
+            for (int i = 0; i < archiveCount.Count(); i++)
+            {
+                cPa.Add(archiveCount.ToList().Skip(i).FirstOrDefault().aCount);
+                cPn.Add(archiveCount.ToList().Skip(i).FirstOrDefault().nCount);
+                cPd.Add(archiveCount.ToList().Skip(i).FirstOrDefault().dCount);
+                axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+
+            columnChartData.Add(
+            new StackedColumnSeries
+            {
+                Values = cPa.AsChartValues(),
+                DataLabels = true,
+                Title = "Archived"
+            });
+            columnChartData.Add(
+            new StackedColumnSeries
+            {
+                Values = cPn.AsChartValues(),
+                DataLabels = true,
+                Title = "Normal"
+            });
+            columnChartData.Add(
+new StackedColumnSeries
+{
+    Values = cPd.AsChartValues(),
+    DataLabels = true,
+    Title = "Drafts"
+});
+
+            DataContext = this;
+            cartesianChart.Series = columnChartData;
+        }
+
+        private void fillStocktakingPieChart()
+        {
+            List<string> titles = new List<string>();
+            List<int> x = new List<int>();
+            int d;
+            int n;
+            int a;
+            titles.Clear();
+            var temp = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
+            if (selectedStocktakingTab == 1)
+            {
+                temp = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
+            }
+
+
+
+            var result = temp.GroupBy(s => new { s.inventoryId }).Select(s => new InventoryClass
+            {
+                branchId = s.FirstOrDefault().branchId,
+                branchName = s.FirstOrDefault().branchName,
+                inventoryId = s.FirstOrDefault().inventoryId,
+                inventoryType = s.FirstOrDefault().inventoryType
+            });
+
+            d = result.Where(m => m.inventoryType == "d").Count();
+            n = result.Where(m => m.inventoryType == "n").Count();
+            a = result.Where(m => m.inventoryType == "a").Count();
+            x.Add(d);
+            x.Add(n);
+            x.Add(a);
+            titles.Add("Drafts");
+            titles.Add("Normal");
+            titles.Add("Archives");
+            SeriesCollection piechartData = new SeriesCollection();
+            for (int i = 0; i < x.Count(); i++)
+            {
+                List<decimal> final = new List<decimal>();
+                List<string> lable = new List<string>();
+                final.Add(x.ToList().Skip(i).FirstOrDefault());
+                piechartData.Add(
+                  new PieSeries
+                  {
+                      Values = final.AsChartValues(),
+                      Title = titles.Skip(i).FirstOrDefault(),
+                      DataLabels = true,
+                  }
+              );
+            }
+            chart1.Series = piechartData;
+            fillStocktakingRowChart();
+        }
+
+
+
+
+
+
+        /************************************اتلاف*************************************/
+        List<DestroiedCombo> comboDestroiedItemmsUnits;
+
+        private void fillDestroidEvents()
+        {
+            dgStock.ItemsSource = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
+            fillDestroyColumnChart();
+            fillDestroyRowChart();
+            fillDestroyPieChart();
+        }
+        private void fillComboItemsUnits()
+        {
+            var temp = cb_destroiedBranch.SelectedItem as Branch;
+            cb_destroiedItemsUnits.SelectedValuePath = "ItemsUnitsId";
+            cb_destroiedItemsUnits.DisplayMemberPath = "ItemsUnits";
+            if (temp == null)
+            {
+                cb_destroiedItemsUnits.ItemsSource = comboDestroiedItemmsUnits
+                    .GroupBy(x => x.ItemsUnitsId)
+                    .Select(g => new DestroiedCombo
+                    {
+                        ItemsUnits = g.FirstOrDefault().ItemsUnits,
+                        BranchId = g.FirstOrDefault().BranchId,
+                        ItemsUnitsId = g.FirstOrDefault().ItemsUnitsId
+                    }).ToList();
+            }
+            else
+            {
+                cb_destroiedItemsUnits.ItemsSource = comboDestroiedItemmsUnits
+                   .Where(x => x.BranchId == temp.branchId)
+                    .GroupBy(x => x.ItemsUnitsId)
+                    .Select(g => new DestroiedCombo
+                    {
+                        ItemsUnits = g.FirstOrDefault().ItemsUnits,
+                        BranchId = g.FirstOrDefault().BranchId,
+                        ItemsUnitsId = g.FirstOrDefault().ItemsUnitsId
+                    }).ToList();
+            }
+        }
+
+        private IEnumerable<ItemTransferInvoice> fillListDestroied(ComboBox branch, ComboBox cb, DatePicker startDate, DatePicker endDate)
+        {
+            var selectedBranch = branch.SelectedItem as Branch;
+            var selectedType = cb.SelectedItem as DestroiedCombo;
+            var result = Destroied.Where(x => (
+
+                         (branch.SelectedItem != null ? (x.branchId == selectedBranch.branchId) : true)
+                        && (cb.SelectedItem != null ? (x.itemUnitId == selectedType.ItemsUnitsId) : true)
+                        && (dp_stocktakingFalseStartDate.SelectedDate != null ? (x.IupdateDate >= startDate.SelectedDate) : true)
+                        && (dp_stocktakingFalseEndDate.SelectedDate != null ? (x.IupdateDate <= endDate.SelectedDate) : true)
+          ));
+            return result;
+        }
+
+        private void Cb_destroiedBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillComboItemsUnits();
+            fillDestroidEvents();
+        }
+
+        private void Chk_destroiedAllBranches_Unchecked(object sender, RoutedEventArgs e)
+        {
+            cb_destroiedBranch.IsEnabled = true;
+        }
+
+        private void Chk_destroiedAllBranches_Checked(object sender, RoutedEventArgs e)
+        {
+            cb_destroiedBranch.SelectedItem = null;
+            cb_destroiedBranch.IsEnabled = false;
+        }
+
+        private void Cb_destroiedItemsUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillDestroidEvents();
+        }
+
+        private void Chk_destroiedAllItemsUnits_Checked(object sender, RoutedEventArgs e)
+        {
+            cb_destroiedItemsUnits.SelectedItem = null;
+            cb_destroiedItemsUnits.IsEnabled = false;
+        }
+
+        private void Chk_destroiedAllItemsUnits_Unchecked(object sender, RoutedEventArgs e)
+        {
+            cb_destroiedItemsUnits.IsEnabled = true;
+        }
+
+        private void Dp_destroiedEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillDestroidEvents();
+        }
+
+        private void Dp_destroiedStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillDestroidEvents();
+        }
+
+        private void fillDestroyRowChart()
+        {
+            List<long> cP = new List<long>();
+
+            MyAxis.Labels = new List<string>();
+
+            List<string> names = new List<string>();
+
+            var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
+
+            var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new ItemTransferInvoice
+            {
+                branchId = s.FirstOrDefault().branchId,
+                branchName = s.FirstOrDefault().branchName,
+                quantity = s.Sum(x => x.quantity),
+                ItemUnits=s.FirstOrDefault().ItemUnits,
+                itemUnitId=s.FirstOrDefault().itemUnitId,
+                itemName=s.FirstOrDefault().itemName,
+                unitName=s.FirstOrDefault().unitName
+            });
+            var tempName = result.GroupBy(s => new { s.itemUnitId }).Select(s => new
+            {
+                itemName = s.FirstOrDefault().itemName+s.FirstOrDefault().unitName,
+            });
+            names.AddRange(tempName.Select(nn => nn.itemName));
+            for (int i = 0; i < result.Count(); i++)
+            {
+                cP.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().quantity.ToString()));
+                MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+            SeriesCollection rowChartData = new SeriesCollection();
+
+            rowChartData.Add(
+             new LineSeries
+             {
+                 Values = cP.AsChartValues(),
+
+                 DataLabels = true,
+             });
+            DataContext = this;
+            rowChart.Series = rowChartData;
+
+        }
+
+        private void fillDestroyColumnChart()
+        {
+            axcolumn.Labels = new List<string>();
+            List<string> names = new List<string>();
+
+
+            var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
+
+            var result = temp.GroupBy(s => new { s.branchId }).Select(s => new ItemTransferInvoice
+            {
+                branchId = s.FirstOrDefault().branchId,
+                branchName = s.FirstOrDefault().branchName,
+                quantity = s.Sum(x=>x.quantity),
+            });
+
+            var tempName = result.GroupBy(s => new { s.branchId }).Select(s => new
+            {
+                itemName = s.FirstOrDefault().branchName,
+            });
+            names.AddRange(tempName.Select(nn => nn.itemName));
+
+            SeriesCollection columnChartData = new SeriesCollection();
+            List<long> cPa = new List<long>();
+           
+
+
+            for (int i = 0; i < result.Count(); i++)
+            {
+                cPa.Add(long.Parse( result.ToList().Skip(i).FirstOrDefault().quantity.ToString()));
+                axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+
+            columnChartData.Add(
+            new StackedColumnSeries
+            {
+                Values = cPa.AsChartValues(),
+                DataLabels = true,
+                Title = "Amount"
+            });
+           
+
+            DataContext = this;
+            cartesianChart.Series = columnChartData;
+        }
+
+        private void fillDestroyPieChart()
+        {
+            List<string> titles = new List<string>();
+            List<long> cP = new List<long>();
+          
+            titles.Clear();
+            var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
+
+            var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new ItemTransferInvoice
+            {
+                branchId = s.FirstOrDefault().branchId,
+                branchName = s.FirstOrDefault().branchName,
+                quantity = s.Sum(x => x.quantity),
+                ItemUnits = s.FirstOrDefault().ItemUnits,
+                itemUnitId = s.FirstOrDefault().itemUnitId,
+                itemName = s.FirstOrDefault().itemName,
+                unitName = s.FirstOrDefault().unitName
+            });
+            var tempName = result.GroupBy(s => new { s.itemUnitId }).Select(s => new
+            {
+                itemName = s.FirstOrDefault().itemName + s.FirstOrDefault().unitName,
+            });
+            titles.AddRange(tempName.Select(nn => nn.itemName));
+            for (int i = 0; i < result.Count(); i++)
+            {
+                cP.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().quantity.ToString()));
+                MyAxis.Labels.Add(titles.ToList().Skip(i).FirstOrDefault());
+            }
+            SeriesCollection piechartData = new SeriesCollection();
+            for (int i = 0; i < cP.Count(); i++)
+            {
+                List<decimal> final = new List<decimal>();
+                List<string> lable = new List<string>();
+                final.Add(cP.ToList().Skip(i).FirstOrDefault());
+                piechartData.Add(
+                  new PieSeries
+                  {
+                      Values = final.AsChartValues(),
+                      Title = titles.Skip(i).FirstOrDefault(),
+                      DataLabels = true,
+                  }
+              );
+            }
+            chart1.Series = piechartData;
+        }
+
+
+
+
+        private void fillFalsRowChart()
+        {
+            List<long> cP = new List<long>();
+
+            MyAxis.Labels = new List<string>();
+
+            List<string> names = new List<string>();
+
+            var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
+
+            var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new InventoryClass
+            {
+                branchId = s.FirstOrDefault().branchId,
+                branchName = s.FirstOrDefault().branchName,
+                shortfalls = s.Sum(x => x.shortfalls),
+                ItemUnits = s.FirstOrDefault().ItemUnits,
+                itemUnitId = s.FirstOrDefault().itemUnitId,
+                itemName = s.FirstOrDefault().itemName,
+                unitName = s.FirstOrDefault().unitName
+            });
+            var tempName = result.GroupBy(s => new { s.itemUnitId }).Select(s => new
+            {
+                itemName = s.FirstOrDefault().itemName + s.FirstOrDefault().unitName,
+            });
+            names.AddRange(tempName.Select(nn => nn.itemName));
+            for (int i = 0; i < result.Count(); i++)
+            {
+                cP.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().shortfalls.ToString()));
+                MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+            SeriesCollection rowChartData = new SeriesCollection();
+
+            rowChartData.Add(
+             new LineSeries
+             {
+                 Values = cP.AsChartValues(),
+
+                 DataLabels = true,
+             });
+            DataContext = this;
+            rowChart.Series = rowChartData;
+
+        }
+
+        private void fillFalsColumnChart()
+        {
+            axcolumn.Labels = new List<string>();
+            List<string> names = new List<string>();
+
+
+            var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
+
+            var result = temp.GroupBy(s => new { s.branchId }).Select(s => new InventoryClass
+            {
+                branchId = s.FirstOrDefault().branchId,
+                branchName = s.FirstOrDefault().branchName,
+                shortfalls = s.Sum(x => x.shortfalls),
+            });
+
+            var tempName = result.GroupBy(s => new { s.branchId }).Select(s => new
+            {
+                itemName = s.FirstOrDefault().branchName,
+            });
+            names.AddRange(tempName.Select(nn => nn.itemName));
+
+            SeriesCollection columnChartData = new SeriesCollection();
+            List<long> cPa = new List<long>();
+
+
+
+            for (int i = 0; i < result.Count(); i++)
+            {
+                cPa.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().shortfalls.ToString()));
+                axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+
+            columnChartData.Add(
+            new StackedColumnSeries
+            {
+                Values = cPa.AsChartValues(),
+                DataLabels = true,
+                Title = "Amount"
+            });
+
+
+            DataContext = this;
+            cartesianChart.Series = columnChartData;
+        }
+
+        private void fillFalsPieChart()
+        {
+            List<string> titles = new List<string>();
+            List<long> cP = new List<long>();
+
+            titles.Clear();
+            var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
+
+            var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new InventoryClass
+            {
+                branchId = s.FirstOrDefault().branchId,
+                branchName = s.FirstOrDefault().branchName,
+                shortfalls = s.Sum(x => x.shortfalls),
+                ItemUnits = s.FirstOrDefault().ItemUnits,
+                itemUnitId = s.FirstOrDefault().itemUnitId,
+                itemName = s.FirstOrDefault().itemName,
+                unitName = s.FirstOrDefault().unitName
+            });
+            var tempName = result.GroupBy(s => new { s.itemUnitId }).Select(s => new
+            {
+                itemName = s.FirstOrDefault().itemName + s.FirstOrDefault().unitName,
+            });
+            titles.AddRange(tempName.Select(nn => nn.itemName));
+            for (int i = 0; i < result.Count(); i++)
+            {
+                cP.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().shortfalls.ToString()));
+                MyAxis.Labels.Add(titles.ToList().Skip(i).FirstOrDefault());
+            }
+            SeriesCollection piechartData = new SeriesCollection();
+            for (int i = 0; i < cP.Count(); i++)
+            {
+                List<decimal> final = new List<decimal>();
+                List<string> lable = new List<string>();
+                final.Add(cP.ToList().Skip(i).FirstOrDefault());
+                piechartData.Add(
+                  new PieSeries
+                  {
+                      Values = final.AsChartValues(),
+                      Title = titles.Skip(i).FirstOrDefault(),
+                      DataLabels = true,
+                  }
+              );
+            }
+            chart1.Series = piechartData;
+        }
+
+
+        private void fillShortFallsEvents()
+        {
+            dgStock.ItemsSource = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
+
+            fillFalsColumnChart();
+            fillFalsRowChart();
+            fillFalsPieChart();
+        }
     }
 }
 

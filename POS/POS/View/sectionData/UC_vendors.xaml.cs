@@ -211,10 +211,12 @@ namespace POS.View
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            SectionData.genRandomCode("v");
-            tb_code.Text = SectionData.code;
+            //SectionData.genRandomCode("v");
+            //tb_code.Text = SectionData.code;
 
             agent.agentId = 0;
+
+            tb_code.Text = "";
             tb_address.Clear();
             tb_fax.Clear();
             tb_company.Clear();
@@ -250,6 +252,8 @@ namespace POS.View
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             //CreateGridCardContainer();
             catigoriesAndItemsView.ucVendors = this;
+
+            #region translate
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -262,11 +266,7 @@ namespace POS.View
             }
 
             translate();
-
-            //var agents = await agentModel.GetAgentsAsync("v");
-            //dg_vendor.ItemsSource = agents;
-
-
+            #endregion
 
             this.Dispatcher.Invoke(() =>
             {
@@ -279,8 +279,8 @@ namespace POS.View
 
             Keyboard.Focus(tb_name);
 
-            SectionData.genRandomCode("v");
-            tb_code.Text = SectionData.code;
+            //SectionData.genRandomCode("v");
+            //tb_code.Text = SectionData.code;
 
             //default img
             Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
@@ -327,8 +327,9 @@ namespace POS.View
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
                     else
                     {
-                        SectionData.genRandomCode("v");
-                        tb_code.Text = SectionData.code;
+                        //SectionData.genRandomCode("v");
+                        //tb_code.Text = SectionData.code;
+                        tb_code.Text = await agentModel.generateCodeNumber("v");
 
                         agent.name = tb_name.Text;
                         agent.code = tb_code.Text;
@@ -819,9 +820,9 @@ namespace POS.View
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
-            
+
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
-                {
+            {
                 this.Dispatcher.Invoke(() =>
             {
                 Thread t1 = new Thread(FN_ExportToExcel);
@@ -831,6 +832,9 @@ namespace POS.View
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+            //string s = await agentModel.generateCodeNumber("v");
+            // MessageBox.Show(s);
 
         }
 

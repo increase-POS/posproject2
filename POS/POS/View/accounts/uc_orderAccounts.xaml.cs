@@ -78,13 +78,11 @@ namespace POS.View.accounts
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_ucOrderAccounts.FlowDirection = FlowDirection.LeftToRight;
-
             }
             else
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucOrderAccounts.FlowDirection = FlowDirection.RightToLeft;
-
             }
             translate();
             #endregion
@@ -104,10 +102,11 @@ namespace POS.View.accounts
 
             #region fill process type
             var typelist = new[] {
+            new { Text = MainWindow.resourcemanager.GetString("trBalance")    , Value = "balance" },
             new { Text = MainWindow.resourcemanager.GetString("trCash")       , Value = "cash" },
             new { Text = MainWindow.resourcemanager.GetString("trDocument")   , Value = "doc" },
             new { Text = MainWindow.resourcemanager.GetString("trCheque")     , Value = "cheque" },
-            new { Text = MainWindow.resourcemanager.GetString("trCreditCard") , Value = "card" },
+            new { Text = MainWindow.resourcemanager.GetString("trCreditCard") , Value = "card" }
              };
             cb_paymentProcessType.DisplayMemberPath = "Text";
             cb_paymentProcessType.SelectedValuePath = "Value";
@@ -128,14 +127,15 @@ namespace POS.View.accounts
             customers = await agentModel.GetAgentsActive("c");
             agents = await agentModel.GetAgentsActive("v");
             agents.AddRange(customers);
-            foreach(var a in agents)
-            {
-                if (a.type == "v")
-                    a.name = MainWindow.resourcemanager.GetString("trVendor")+ " " + a.name;
-                else if(a.type == "c")
-                    a.name = MainWindow.resourcemanager.GetString("trCustomer")+ " " + a.name;
-            }
-            cb_customer.ItemsSource = agents;
+            //foreach(var a in agents)
+            //{
+            //    if (a.type == "v")
+            //        a.name = MainWindow.resourcemanager.GetString("trVendor")+ " " + a.name;
+            //    else if(a.type == "c")
+            //        a.name = MainWindow.resourcemanager.GetString("trCustomer")+ " " + a.name;
+            //}
+            //cb_customer.ItemsSource = agents;
+            cb_customer.ItemsSource = customers;
             cb_customer.DisplayMemberPath = "name";
             cb_customer.SelectedValuePath = "agentId";
             cb_customer.SelectedIndex = -1;
@@ -159,20 +159,17 @@ namespace POS.View.accounts
             cb_state.ItemsSource = statuslist;
             #endregion
 
-            //await RefreshCashesList();
             await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
 
         }
         private async void dp_SelectedEndDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            //await RefreshCashesList();
             await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
         }
         private async void dp_SelectedStartDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            //await RefreshCashesList();
             await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
         }
@@ -193,7 +190,8 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_salesMan, MainWindow.resourcemanager.GetString("trSalesManHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trVendor/CustomerHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trVendor/CustomerHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trCustomerHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startSearchDate, MainWindow.resourcemanager.GetString("trSartDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endSearchDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_state, MainWindow.resourcemanager.GetString("trStateHint"));
@@ -201,7 +199,7 @@ namespace POS.View.accounts
             //dg_orderAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dg_orderAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
             dg_orderAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trSalesMan");
-            dg_orderAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trVendor/Customer");
+            dg_orderAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trCustomer");
             dg_orderAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
             dg_orderAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trState");
 
@@ -249,22 +247,12 @@ namespace POS.View.accounts
 
             if (dg_orderAccounts.SelectedIndex != -1)
             {
-                //cashtrans = dg_orderAccounts.SelectedItem as CashTransfer;
                 invoice = dg_orderAccounts.SelectedItem as Invoice;
                 this.DataContext = cashtrans;
-                //if (cashtrans != null)
-                //{
-                //    btn_save.IsEnabled = false;
-
-
-                //    cb_paymentProcessType.SelectedValue = cashtrans.processType;
-
-                //    cb_card.SelectedValue = cashtrans.cardId;
-
-                //}
 
                 if (invoice != null)
                 {
+                    tb_cash.IsEnabled = true;
                     //btn_save.IsEnabled = false;
 
                     //cb_paymentProcessType.SelectedValue = invoice.processType;
@@ -272,45 +260,36 @@ namespace POS.View.accounts
                     //cb_card.SelectedValue = cashtrans.cardId;
 
                     tb_invoiceNum.Text = invoice.invNumber;
-                    //agentId = invoice.agentId.Value;
-                    //userId = invoice.shipUserId.Value;
+                    agentId = invoice.agentId.Value;
+                    userId = invoice.shipUserId.Value;
 
+                    if (cb_paymentProcessType.SelectedIndex == 0)
+                    {
+                        tb_cash.Text = invoice.deserved.ToString();
+                        tb_cash.IsEnabled = false;
+                    }
+                    else
+                    {
+                        tb_cash.IsEnabled = true;
+                        tb_cash.Clear();
+                    }
                 }
             }
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-         //if (cashes is null)
-         //    await RefreshCashesList();
-         //this.Dispatcher.Invoke(() =>
-         //{
-         //    searchText = tb_search.Text.ToLower();
-         //    cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
-         //    || s.cash.ToString().ToLower().Contains(searchText)
-         //    )
-         //    && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "m")
-         //    && s.transType == "d"
-         //    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-         //    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-         //    );
-
-            //});
-
-            //cashesQueryExcel = cashesQuery;
-            //RefreshCashesView();
-
             if (invoices is null)
                 await RefreshInvoiceList();
             this.Dispatcher.Invoke(() =>
             {
                 searchText = tb_search.Text.ToLower();
                 invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
-                //|| s.cash.ToString().ToLower().Contains(searchText)
+                || s.shipUserName.ToLower().Contains(searchText)
+                || s.agentName.ToLower().Contains(searchText)
+                || s.totalNet.ToString().ToLower().Contains(searchText)
                 )
-                //&& (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "m")
-                //&& s.transType == "d"
-                //&& s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                //&& s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
                 );
 
             });
@@ -419,20 +398,20 @@ namespace POS.View.accounts
         }
         void FN_ExportToExcel()
         {
-            var QueryExcel = cashesQueryExcel.AsEnumerable().Select(x => new
+            var QueryExcel = invoiceQuery.AsEnumerable().Select(x => new
             {
-                TransNum = x.transNum,
-                DepositFrom = x.side,
-                Depositor = x.agentName,
-                OpperationType = x.processType,
-                Cash = x.cash
+                InvoiceNumber = x.invNumber,
+                SalesMan = x.shipUserName,
+                Customer = x.agentName,
+                Cash = x.totalNet,
+                Status = x.status
             });
             var DTForExcel = QueryExcel.ToDataTable();
-            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trDepositFrom");
-            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trDepositor");
-            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
-            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trCashTooltip");
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trInvoiceNumber");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trSalesMan");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trCustomer");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trCashTooltip");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trState");
 
             ExportToExcel.Export(DTForExcel);
 
@@ -462,27 +441,19 @@ namespace POS.View.accounts
         }
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
-            //await RefreshCashesList();
             await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
         }
-        //async Task<IEnumerable<CashTransfer>> RefreshCashesList()
+
         async Task<IEnumerable<Invoice>> RefreshInvoiceList()
         {
-            //invoice.getOrdersForPay(int branchId)
-
-            //cashes = await cashModel.GetCashTransferAsync("d", "all");
-            //cashes = cashes.Where(x => x.processType != "balance");
-            //return cashes;
             invoices = await invoiceModel.getOrdersForPay(MainWindow.branchID.Value);
             return invoices;
 
         }
-        //void RefreshCashView()
+
         void RefreshInvoiceView()
         {
-            //dg_orderAccounts.ItemsSource = cashesQuery;
-            //txt_count.Text = cashesQuery.Count().ToString();
             dg_orderAccounts.ItemsSource = invoiceQuery;
             txt_count.Text = invoiceQuery.Count().ToString();
         }
@@ -541,11 +512,13 @@ namespace POS.View.accounts
             string name = sender.GetType().Name;
             validateEmpty(name, sender);
         }
+
+        string processType = "";
         private void Cb_paymentProcessType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//type selection
             switch (cb_paymentProcessType.SelectedIndex)
             {
-                case 0://cash
+                case 0://balance
                     grid_doc.Visibility = Visibility.Collapsed;
                     grid_cheque.Visibility = Visibility.Collapsed;
                     cb_card.Visibility = Visibility.Collapsed;
@@ -564,9 +537,40 @@ namespace POS.View.accounts
                         TextBox dpDateCheque = (TextBox)dp_docDateCheque.Template.FindName("PART_TextBox", dp_docDateCheque);
                         SectionData.clearValidate(dpDateCheque, p_errorDocNumCheque);
                     }
+                    if (invoice != null)
+                    {
+                        tb_cash.Text = invoice.deserved.ToString();
+                        tb_cash.IsEnabled = false;
+                    }
+                    processType = "1";
                     break;
 
-                case 1://doc
+                case 1://cash
+                    grid_doc.Visibility = Visibility.Collapsed;
+                    grid_cheque.Visibility = Visibility.Collapsed;
+                    cb_card.Visibility = Visibility.Collapsed;
+                    tb_docNumCard.Visibility = Visibility.Collapsed;
+                    SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                    SectionData.clearValidate(tb_docNum, p_errorDocNum);
+                    SectionData.clearValidate(tb_docNumCheque, p_errorDocNum);
+                    SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                    if (grid_doc.IsVisible)
+                    {
+                        TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
+                        SectionData.clearValidate(dpDate, p_errorDocDate);
+                    }
+                    if (grid_cheque.IsVisible)
+                    {
+                        TextBox dpDateCheque = (TextBox)dp_docDateCheque.Template.FindName("PART_TextBox", dp_docDateCheque);
+                        SectionData.clearValidate(dpDateCheque, p_errorDocNumCheque);
+                    }
+                    tb_cash.IsEnabled = true;
+                    tb_cash.Clear();
+                    SectionData.clearValidate(tb_cash, p_errorCash);
+                    processType = "0";
+                    break;
+
+                case 2://doc
                     grid_doc.Visibility = Visibility.Visible;
                     grid_cheque.Visibility = Visibility.Collapsed;
                     cb_card.Visibility = Visibility.Collapsed;
@@ -579,9 +583,13 @@ namespace POS.View.accounts
                         TextBox dpDateCheque = (TextBox)dp_docDateCheque.Template.FindName("PART_TextBox", dp_docDateCheque);
                         SectionData.clearValidate(dpDateCheque, p_errorDocNumCheque);
                     }
+                    tb_cash.IsEnabled = true;
+                    tb_cash.Clear();
+                    SectionData.clearValidate(tb_cash, p_errorCash);
+                    processType = "0";
                     break;
 
-                case 2://cheque
+                case 3://cheque
                     grid_doc.Visibility = Visibility.Collapsed;
                     grid_cheque.Visibility = Visibility.Visible;
                     cb_card.Visibility = Visibility.Collapsed;
@@ -594,9 +602,13 @@ namespace POS.View.accounts
                         TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
                         SectionData.clearValidate(dpDate, p_errorDocDate);
                     }
+                    tb_cash.IsEnabled = true;
+                    tb_cash.Clear();
+                    SectionData.clearValidate(tb_cash, p_errorCash);
+                    processType = "0";
                     break;
 
-                case 3://card
+                case 4://card
                     grid_doc.Visibility = Visibility.Collapsed;
                     grid_cheque.Visibility = Visibility.Collapsed;
                     cb_card.Visibility = Visibility.Visible;
@@ -614,6 +626,10 @@ namespace POS.View.accounts
                         TextBox dpDateCheque = (TextBox)dp_docDateCheque.Template.FindName("PART_TextBox", dp_docDateCheque);
                         SectionData.clearValidate(dpDateCheque, p_errorDocNumCheque);
                     }
+                    tb_cash.IsEnabled = true;
+                    tb_cash.Clear();
+                    SectionData.clearValidate(tb_cash, p_errorCash);
+                    processType = "0";
                     break;
             }
 
@@ -662,21 +678,18 @@ namespace POS.View.accounts
 
         private async void Cb_salesMan_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select salesman
-         //await RefreshCashesList();
             await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
         }
 
         private async void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select agent
-            //await RefreshCashesList();
             await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
         }
 
         private async void Cb_state_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select state
-            //await RefreshCashesList();
             await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
         }
@@ -687,13 +700,29 @@ namespace POS.View.accounts
             {
                 #region validate
                 //chk empty cash
-                SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+                bool acceptedAmmount = true;
+              
+                if(tb_cash.Text.Equals(""))
+                    SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+                else
+                {
+                    decimal ammount = decimal.Parse(tb_cash.Text);
 
+                    if (ammount == 0)
+                    {
+                        acceptedAmmount = false;
+                        SectionData.showTextBoxValidate(tb_cash, p_errorCash, tt_errorCash, "trZeroAmmount");
+                    }
+                    else if(ammount > invoice.deserved)
+                    {
+                        acceptedAmmount = false;
+                        SectionData.showTextBoxValidate(tb_cash, p_errorCash, tt_errorCash, "trGreaterAmmount");
+                    }
+                }
                 //chk empty doc num
                 if (grid_doc.IsVisible)
                 {
                     TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
-
                     SectionData.validateEmptyTextBox(tb_docNum, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");
                     SectionData.validateEmptyTextBox(dpDate, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
                 }
@@ -712,7 +741,7 @@ namespace POS.View.accounts
                 //chk empty process num
                 if (tb_docNumCard.IsVisible)
                 {
-                    SectionData.validateEmptyTextBox(tb_docNumCard, p_errorDocCard, tt_docNumCard, "trEmptyProcessNumToolTip");
+                    SectionData.validateEmptyTextBox(tb_docNumCard, p_errorDocCard, tt_errorDocCard, "trEmptyProcessNumToolTip");
                 }
                 else
                 {
@@ -726,15 +755,18 @@ namespace POS.View.accounts
                     SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
                 else
                     SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+
                 #endregion
 
-                //if ((!tb_cash.Text.Equals("")) &&  (!cb_paymentProcessType.Text.Equals("")) &&
-                // (((grid_cheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!grid_cheque.IsVisible)) &&
-                // (((grid_doc.IsVisible) && (!dp_docDate.Text.Equals("")) && (!tb_docNum.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
-                // (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
-                // (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible))
-                // )
-                //{
+                if ((!tb_cash.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
+                 (((grid_cheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!grid_cheque.IsVisible)) &&
+                 (((grid_doc.IsVisible) && (!dp_docDate.Text.Equals("")) && (!tb_docNum.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
+                 (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
+                 (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible)) &&
+                    acceptedAmmount
+                 )
+                {
+                    MessageBox.Show(processType);
                 //    CashTransfer cash = new CashTransfer();
 
                 //    cash.transType = "d";
@@ -768,7 +800,7 @@ namespace POS.View.accounts
                 //        cash.bondId = int.Parse(res);
                 //    }
 
-                //    string s = await cashModel.payOrderInvoice(invoice.invoiceId, cash.cash.Value, "0", cash);
+                //    string s = await cashModel.payOrderInvoice(invoice.invoiceId, cash.cash.Value, processType , cash);
                 //    MessageBox.Show(s);
                 //    if (!s.Equals(""))
                 //    {
@@ -783,7 +815,7 @@ namespace POS.View.accounts
                 //    }
                 //    else
                 //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                //}
+                }
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

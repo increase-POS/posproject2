@@ -87,7 +87,8 @@
                     <ToggleButton DockPanel.Dock="Right"  x:Name="tgl_vendorIsActive"  
                           VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                       Margin="0" Height="13" Width="28"  TabIndex="15" 
-                                      Checked="tgl_vendorIsActive_Checked" Unchecked="tgl_vendorIsActive_Unchecked" />
+                                      Checked="tgl_vendorIsActive_Checked" 
+                                      Unchecked="tgl_vendorIsActive_Unchecked" />
                     <TextBlock  DockPanel.Dock="Right"
                                    Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
@@ -259,7 +260,7 @@
                             </Button>
                             <Button   Background="{x:Null}"    Margin="5,0,5,0"
                           Padding="0" Height="35"  x:Name="btn_print"
-                          BorderBrush="{x:Null}" Click="Btn_print_Click" Tag="suppliers_basics"> 
+                          BorderBrush="{x:Null}" Click="Btn_print_Click" Tag="suppliers_basics">
                                 <materialDesign:PackIcon Foreground="#313131" Kind="Printer"  
                               HorizontalAlignment="Center" 
                       Width="22" Height="22">
@@ -464,6 +465,7 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
 
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
@@ -558,6 +560,18 @@
                                     <ToolTip x:Name="tt_error_company" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
+
+                            <ToggleButton DockPanel.Dock="Right"  x:Name="tgl_vendorIsCustomer"  Grid.Row="3"
+                                          VerticalAlignment="Center" Padding="10,15,5,5" 
+                                          Margin="86,8,37,5" Height="13" Width="28"  
+                                          IsChecked="False" Visibility="Collapsed" />
+                            <TextBlock  DockPanel.Dock="Right"  Grid.Row="4"  Margin="10,5,10,5"
+                                        Text="isCustomer" Foreground="#6e6e6e"
+                                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                                        FontSize="12" Visibility="Collapsed"/>
+
+
+
                         </Grid>
                         <!--**************************************************************************-->
 
@@ -781,7 +795,7 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"  TextWrapping="Wrap" AcceptsReturn="True"
-       
+      
                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="auto" MinHeight="70" Margin="10,5,10,5" 
                                      TabIndex="12">

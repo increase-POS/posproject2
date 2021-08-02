@@ -647,47 +647,140 @@ namespace POS
         }
         public void initializationMainTrack(string tag, int level)
         {
+            //sp_mainTrack.Children.Clear();
+
             if (level == 0)
-                sp_mainTrack.Children.Clear();
-            // mainWindow
-            if (tag == "catalog")
-                initializationMainTrackChildren(resourcemanager.GetString("trCatalog"));
-            else if (tag == "storage")
-                initializationMainTrackChildren(resourcemanager.GetString("trStore"));
-            else if (tag == "purchase")
-                initializationMainTrackChildren(resourcemanager.GetString("trPurchases"));
-            else if (tag == "sales")
-                initializationMainTrackChildren(resourcemanager.GetString("trSales"));
-            else if (tag == "accounts")
-                initializationMainTrackChildren(resourcemanager.GetString("trAccounting"));
-            else if (tag == "reports")
-                initializationMainTrackChildren(resourcemanager.GetString("trReports"));
-            else if (tag == "sectionData")
-                initializationMainTrackChildren(resourcemanager.GetString("trSectionData"));
-            else if (tag == "settings")
-                initializationMainTrackChildren(resourcemanager.GetString("trSettings"));
-            // storage
-            else if (tag == "locations")
-                initializationMainTrackChildren(resourcemanager.GetString("trLocation"));
-            else if (tag == "section")
-                initializationMainTrackChildren(resourcemanager.GetString("trSection"));
-            else if (tag == "reciptOfInvoice")
-                initializationMainTrackChildren(resourcemanager.GetString("trInvoice"));
-            else if (tag == "itemsStorage")
-                initializationMainTrackChildren(resourcemanager.GetString("trStorage"));
-            else if (tag == "importExport")
-                initializationMainTrackChildren(resourcemanager.GetString("trMovements"));
-            else if (tag == "itemsDestroy")
-                initializationMainTrackChildren(resourcemanager.GetString("trDestructive"));
-            else if (tag == "inventory")
-                initializationMainTrackChildren(resourcemanager.GetString("trStocktaking"));
-            else if (tag == "storageStatistic")
-                initializationMainTrackChildren(resourcemanager.GetString("trStatistic"));
-
-            
-
-
-
+            {
+                txt_secondLevelTrack.Visibility = Visibility.Collapsed;
+                #region  mainWindow
+                if (tag == "catalog")
+                    txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trCatalog");
+                else if (tag == "storage")
+                    txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trStore");
+                else if (tag == "purchase")
+                    txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trPurchases");
+                else if (tag == "sales")
+                    txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trSales");
+                else if (tag == "accounts")
+                    txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trAccounting");
+                else if (tag == "reports")
+                    txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trReports");
+                else if (tag == "sectionData")
+                    txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trSectionData");
+                else if (tag == "settings")
+                    txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trSettings");
+                #endregion
+            }
+            else if (level == 1)
+            {
+                txt_secondLevelTrack.Visibility = Visibility.Visible;
+                #region  storage
+                if (tag == "locations")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trLocation");
+                else if (tag == "section")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trSection");
+                else if (tag == "reciptOfInvoice")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trInvoice");
+                else if (tag == "itemsStorage")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStorage");
+                else if (tag == "importExport")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trMovements");
+                else if (tag == "itemsDestroy")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trDestructive");
+                else if (tag == "inventory")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStocktaking");
+                else if (tag == "storageStatistic")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStatistic");
+                #endregion
+                #region  Account
+                else if (tag == "posAccounting")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trPOS");
+                else if (tag == "payments")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trPayments");
+                else if (tag == "received")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trReceived");
+                else if (tag == "bonds")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trBonds");
+                else if (tag == "banksAccounting")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trBanks");
+                else if (tag == "ordersAccounting")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trOrders");
+                else if (tag == "subscriptions")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trSubscriptions");
+                else if (tag == "accountsStatistic")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStatistic");
+                #endregion
+                #region  catalog
+                else if (tag == "categories")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trCategories");
+                else if (tag == "item")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trItems");
+                else if (tag == "properties")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trProperties");
+                else if (tag == "units")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trUnits");
+                else if (tag == "storageCost")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStorageCost");
+                #endregion
+                #region  purchase
+                if (tag == "payInvoice")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trInvoice");
+                else if (tag == "purchaseOrder")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trOrders");
+                else if (tag == "purchaseStatistic")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStatistic");
+                #endregion
+                #region  sales
+                if (tag == "reciptInvoice")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trInvoice");
+                else if (tag == "coupon")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trCoupon");
+                else if (tag == "offer")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trOffer");
+                else if (tag == "package")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trPackage");
+                else if (tag == "quotation")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trQuotations");
+                else if (tag == "salesOrders")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trOrders");
+                else if (tag == "medals")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trMedals");
+                else if (tag == "membership")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trMembership");
+                else if (tag == "salesStatistic")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStatistic");
+                #endregion
+                #region  sectionData
+                if (tag == "suppliers")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trSuppliers");
+                else if (tag == "customers")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trCustomers");
+                else if (tag == "users")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trUsers");
+                else if (tag == "branches")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trBranches");
+                else if (tag == "stores")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStores");
+                else if (tag == "pos")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trPOS");
+                else if (tag == "banks")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trBanks");
+                else if (tag == "cards")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trCard");
+                else if (tag == "shippingCompany")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trShippingCompanies");
+                #endregion
+                #region  settings
+                if (tag == "general")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trGeneral");
+                else if (tag == "reportsSettings")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trReports");
+                else if (tag == "permissions")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trPermission");
+                else if (tag == "emailsSetting")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trEmail");
+                #endregion
+            }
         }
          void initializationMainTrackChildren(string text)
         {
@@ -706,8 +799,6 @@ namespace POS
             fn_ColorIconRefreash(path_iconCatalog);
             grid_main.Children.Clear();
             grid_main.Children.Add(UC_catalog.Instance);
-            //UC_catalog uc = new UC_catalog();
-            //grid_main.Children.Add(uc);
             isHome = true;
 
             Button button = sender as Button;
