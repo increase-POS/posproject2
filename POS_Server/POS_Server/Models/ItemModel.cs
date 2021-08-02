@@ -27,6 +27,7 @@ namespace POS_Server.Models
         public Nullable<int> minUnitId { get; set; }
         public Nullable<int> maxUnitId { get; set; }
         public Boolean canDelete { get; set; }
+        public Nullable<int> itemCount { get; set; }
 
         // new units and offers an is new
         //units

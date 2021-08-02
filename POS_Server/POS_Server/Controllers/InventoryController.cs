@@ -73,6 +73,41 @@ namespace POS_Server.Controllers
             return NotFound();
         }
         [HttpGet]
+        [Route("GetLastNumOfInv")]
+        public IHttpActionResult GetLastNumOfInv()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                List<string> numberList;
+                int lastNum = 0;
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    numberList = entity.Inventory.Select(b => b.num).ToList();
+
+                    for (int i = 0; i < numberList.Count; i++)
+                    {
+                        string code = numberList[i];
+                        string s = code.Substring(code.LastIndexOf("-") + 1);
+                        numberList[i] = s;
+                    }
+                    numberList.Sort();
+                    lastNum = int.Parse(numberList[numberList.Count - 1]);
+                }
+                return Ok(lastNum);
+            }
+            return NotFound();
+        }
+        [HttpGet]
         [Route("GetByCreator")]
         public IHttpActionResult GetByCreator(string inventoryType, int userId)
         {

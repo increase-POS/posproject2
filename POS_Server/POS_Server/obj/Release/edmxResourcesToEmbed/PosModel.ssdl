@@ -493,7 +493,7 @@
     <Property Name="notes" Type="ntext" />
     <Property Name="price" Type="decimal" Precision="20" Scale="2" />
     <Property Name="itemUnitId" Type="int" />
-    <Property Name="itemSerial" Type="nvarchar" MaxLength="200" />
+    <Property Name="itemSerial" Type="nvarchar" MaxLength="200" Nullable="false" />
   </EntityType>
   <EntityType Name="itemsUnits">
     <Key>

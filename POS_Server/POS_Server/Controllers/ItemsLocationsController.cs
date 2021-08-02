@@ -465,8 +465,8 @@ namespace POS_Server.Controllers
                     oldItemL.updateDate = DateTime.Now;
                    oldItemL.updateUserId = userId;
 
-                    if (oldItemL.quantity == 0)
-                        entity.itemsLocations.Remove(oldItemL);
+                   // if (oldItemL.quantity == 0)
+                        //entity.itemsLocations.Remove(oldItemL);
                  
                    
                     var newtemLocation = (from il in entity.itemsLocations

@@ -2800,16 +2800,16 @@ notes
                                     c.isDestroyed,
                                     c.amount,
                                     c.amountDestroyed,
-                                   c.realAmount,
+                                    c.realAmount,
                                     c.itemLocationId,
                                     c.inventoryId,
                                     c.isActive,
-                                   c.notes,
+                                    c.notes,
                                     c.createDate,
                                     c.updateDate,
                                     c.createUserId,
                                      c.updateUserId,
-                                   i.branchId,
+                                     i.branchId,
                                     branchName=i.branches.name,
                                     u.items.itemId,
                                     itemName = u.items.name,
@@ -2823,22 +2823,153 @@ notes
                                     lo.y,
                                     lo.z,
                                     itemType = u.items.type,
-                                    inventoryDate = c.Inventory.createDate,
-                                  
+                                    inventoryDate = c.Inventory.createDate,                                 
                                     inventoryNum = c.Inventory.num,
                                   c.Inventory.inventoryType,
-                                })
-                       .ToList();
+                                  // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
+                                   //diffPercentage = (c.realAmount == 0) ? 0 : (((int)c.amount / (decimal)(int)c.realAmount) * 100),
+                                }) .ToList();
 
-                    if (List == null)
+
+                    var list2 = List.GroupBy(S=>S.inventoryId).Select(X=>new {
+
+                        X.FirstOrDefault().inventoryId,
+                        X.FirstOrDefault().isDestroyed,
+                       DestroyedCount =  X.Where(a => a.isDestroyed == true ? true : false).Count(),
+
+                        X.FirstOrDefault().branchName,
+                        X.FirstOrDefault().branchId,
+                        X.FirstOrDefault().inventoryNum,
+                        X.FirstOrDefault().inventoryType,
+                        X.FirstOrDefault().inventoryDate,
+                        //diffsum= (X.Sum(a=>a.diffPercentage )),
+                       // diffPercentage = (X.Sum(a => a.diffPercentage)) / X.Count(),
+                        diffPercentage = ((X.Sum(a => (decimal)(int)a.amount) / X.Sum(a => (decimal)(int)a.realAmount))*100),
+                        itemCount = X.Count(),
+                    
+
+                    }).ToList();
+
+                    if (list2 == null)
                         return NotFound();
                     else
-                        return Ok(List);
+                        return Ok(list2);
                 }
             }
             return NotFound();
         }
 
+
+        // العناصر التالفة
+        [HttpGet]
+        [Route("GetDesItems")]
+        public IHttpActionResult GetDesItems()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invListm = (from IT in entity.itemsTransfer
+                                    from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+                                    from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+                                  
+                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId                             
+                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                     join U in entity.users on I.createUserId equals U.userId into JU
+                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                   from JPP in entity.pos.Where(X => X.posId == I.posId)
+                                    join BP in entity.branches on JPP.branchId equals BP.branchId
+               
+                                        //   from JPP into  JP.DefaultIfEmpty
+                                    from JUU in JU.DefaultIfEmpty()
+                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+                                   
+                                    from JBCC in JBC.DefaultIfEmpty()
+                                    where I.invType == "d" 
+
+                                    select new
+                                    {
+                                        itemName = ITEM.name,
+                                        unitName = UNIT.name,
+                                        IT.itemsTransId,
+                                        IT.itemUnitId,
+
+                                        IU.itemId,
+                                        IU.unitId,
+                                        IT.quantity,                                    
+                                        IT.price,
+                                        IU.barcode,
+                                       
+                                        I.invoiceId,
+                                        I.invNumber,
+
+                                        I.posId,
+                                        I.invType,
+                                        I.total,
+                                        I.totalNet,
+                                        I.paid,
+                                        I.deserved,
+                                        I.deservedDate,
+                                        I.invDate,
+                                        I.invoiceMainId,
+                                        I.invCase,
+                                        I.invTime,
+                                        I.notes,
+                                        I.vendorInvNum,
+                                        I.vendorInvDate,
+                                        I.createUserId,
+                                        I.updateDate,
+                                        I.updateUserId,
+                                        // I.branchId,
+                                        I.discountValue ,
+                                        I.discountType,
+                                        I.tax,
+                                        I.name,
+                                        I.isApproved,
+                                        IT.itemSerial,
+                                        //
+                                        I.branchCreatorId,
+                                       
+                                        //
+                                        branchName =  JBCC.name ,
+                                        branchId = I.branchCreatorId,
+
+                                        branchType = JBCC.type,
+                                        posName = JPP.name,
+                                        posCode = JPP.code,
+              
+                                        cuserName = JUU.name,
+                                        cuserLast = JUU.lastname,
+                                        cUserAccName = JUU.username,
+                                        uuserName = JUPUS.name,
+                                        uuserLast = JUPUS.lastname,
+                                        uUserAccName = JUPUS.username,
+                                   
+                                    }).ToList();
+
+                    if (invListm == null)
+                        return NotFound();
+                    else
+                        return Ok(invListm);
+                }
+
+            }
+
+            //else
+            return NotFound();
+        }
 
         #endregion
     }

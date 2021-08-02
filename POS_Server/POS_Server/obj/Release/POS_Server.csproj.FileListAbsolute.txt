@@ -633,7 +633,7 @@ C:\Users\Administrator\Documents\POS-Server\POS_Server\obj\Release\POS_Server.cs
 C:\Users\Administrator\Documents\POS-Server\POS_Server\obj\Release\POS_Server.csproj.CopyComplete
 C:\Users\Administrator\Documents\POS-Server\POS_Server\obj\Release\POS_Server.dll
 C:\Users\Administrator\Documents\POS-Server\POS_Server\obj\Release\POS_Server.pdb
-C:\Users\Administrator\Documents\POS-Server\POS_Server\obj\Release\POS_Server.csproj.AssemblyReference.cache
 F:\increase\sales\POS_Server\POS_Server\bin\LinqKit.dll
 F:\increase\sales\POS_Server\POS_Server\bin\LinqKit.xml
 D:\Project\ser\POS_Server\POS_Server\obj\Release\POS_Server.csprojAssemblyReference.cache
+C:\Users\Administrator\Documents\POS-Server\POS_Server\obj\Release\POS_Server.csproj.AssemblyReference.cache

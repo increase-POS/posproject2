@@ -123,6 +123,42 @@ namespace POS_Server.Controllers
             else
                 return NotFound();
         }
+        private int getItemUnitAmount(int itemUnitId, int branchId)
+        {
+            int amount = 0;
+
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                var itemInLocs = (from b in entity.branches
+                                  where b.branchId == branchId
+                                  join s in entity.sections on b.branchId equals s.branchId
+                                  join l in entity.locations on s.sectionId equals l.sectionId
+                                  join il in entity.itemsLocations on l.locationId equals il.locationId
+                                  where il.itemUnitId == itemUnitId && il.quantity > 0
+                                  select new
+                                  {
+                                      il.itemsLocId,
+                                      il.quantity,
+                                      il.itemUnitId,
+                                      il.locationId,
+                                      s.sectionId,
+                                  }).ToList();
+                for (int i = 0; i < itemInLocs.Count; i++)
+                {
+                    amount += (int)itemInLocs[i].quantity;
+                }
+
+                var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+
+                if (upperUnit != null && itemUnitId == upperUnit.itemUnitId)
+                    return amount;
+                if (upperUnit != null)
+                    amount += (int)upperUnit.unitValue * getItemUnitAmount(upperUnit.itemUnitId, branchId);
+
+                return amount;
+            }
+        }
         [HttpGet]
         [Route("GetSaleOrPurItems")]
         public IHttpActionResult GetSaleOrPurItems(int categoryId, short defaultSale, short defaultPurchase,int branchId)
@@ -143,7 +179,6 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var searchPredicate = PredicateBuilder.New<items>();
-                    //searchPredicate = searchPredicate.Or(item => false);
 
                     var unitPredicate = PredicateBuilder.New<itemsUnits>();
 
@@ -202,10 +237,21 @@ namespace POS_Server.Controllers
                                              updateUserId = I.updateUserId,
                                              isNew = 0,
                                             price = I.itemsUnits.Where(iu => iu.itemId == I.itemId && iu.defaultPurchase == 1).Select(iu => iu.price).FirstOrDefault(),
+                                            itemUnitId = I.itemsUnits.Where(iu => iu.itemId == I.itemId && iu.defaultPurchase == 1).Select(iu => iu.itemUnitId).FirstOrDefault(),
 
                                          }).DistinctBy(x => x.itemId)
                                   .ToList();
-                      
+  
+                        for (int i = 0; i< itemsList.Count; i++)
+                        {
+                            if (itemsList[i].itemUnitId != null && itemsList[i].itemUnitId != 0)
+                            {
+                                int itemUnitId = (int)itemsList[i].itemUnitId.Value;
+                                int count = getItemUnitAmount(itemUnitId, branchId);
+                                itemsList[i].itemCount = count;
+                            }
+                            
+                        }
                         if (itemsList == null)
                             return NotFound();
                         else
