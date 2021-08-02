@@ -2805,10 +2805,10 @@ notes
                                     c.inventoryId,
                                     c.isActive,
                                     c.notes,
-                                    c.createDate,
-                                    c.updateDate,
-                                    c.createUserId,
-                                     c.updateUserId,
+                                    i.createDate,
+                                    i.updateDate,
+                                   i.createUserId,
+                                     i.updateUserId,
                                      i.branchId,
                                     branchName=i.branches.name,
                                     u.items.itemId,
@@ -2850,6 +2850,137 @@ notes
 
                     }).ToList();
 
+                    if (list2 == null)
+                        return NotFound();
+                    else
+                        return Ok(list2);
+                }
+            }
+            return NotFound();
+        }
+        //
+        [HttpGet]
+        [Route("GetInventoryItems")]
+        public IHttpActionResult GetInventoryItems()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var List = (from c in entity.inventoryItemLocation
+                                join i in entity.Inventory on c.inventoryId equals i.inventoryId
+                                join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
+                                join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
+                                join un in entity.units on u.unitId equals un.unitId
+                                join lo in entity.locations on l.locationId equals lo.locationId
+                                //   join s in entity.sections on lo.sectionId equals s.sectionId
+                                select new
+                                {
+                                    inventoryILId = c.id,
+                                    c.isDestroyed,
+                                    c.amount,
+                                    c.amountDestroyed,
+                                    c.realAmount,
+                                    c.itemLocationId,
+                                    c.inventoryId,
+                                    c.isActive,
+                                    c.notes,
+                                    i.createDate,
+                                    i.updateDate,
+                                    i.createUserId,
+                                    i.updateUserId,
+                                    i.branchId,
+                             
+                                    branchName = i.branches.name,
+                                    u.items.itemId,
+                                    itemName = u.items.name,
+                                    un.unitId,
+                                    u.itemUnitId,
+                                    unitName = un.name,
+
+                                    Secname = lo.sections.name,
+                                    lo.sectionId,
+                                    lo.x,
+                                    lo.y,
+                                    lo.z,
+                                    l.startDate,
+                                    l.endDate,
+                                    l.itemsLocId,
+                                    l.locationId,
+                                    itemType = u.items.type,
+                                    inventoryDate = c.Inventory.createDate,
+                                    inventoryNum = c.Inventory.num,
+                                    c.Inventory.inventoryType,
+                                    shortfalls= (int)c.realAmount - (int)c.amount,
+                                    shortfallspercent= (c.realAmount == 0) ? 0 : ((((decimal)(int)c.realAmount - (decimal)(int)c.amount) * 100) / (decimal)(int)c.realAmount)
+                                    // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
+                                    //diffPercentage = (c.realAmount == 0) ? 0 : (((int)c.amount / (decimal)(int)c.realAmount) * 100),
+                                }).ToList();
+                    var list2 = List.GroupBy(S => new { S.itemUnitId, S.locationId ,S.inventoryId} ).Select(X => new {
+
+                        X.FirstOrDefault().inventoryId,
+                        X.FirstOrDefault().isDestroyed,
+                        DestroyedCount = X.Where(a => a.isDestroyed == true ? true : false).Count(),
+
+                        X.FirstOrDefault().branchName,
+                        X.FirstOrDefault().branchId,
+                        X.FirstOrDefault().inventoryNum,
+                        X.FirstOrDefault().inventoryType,
+                        X.FirstOrDefault().inventoryDate,
+                        //
+ 
+                        amount=(X.Sum(a => (int)a.amount)),
+                        amountDestroyed = (X.Sum(a => (int)a.amountDestroyed)),
+                        realAmount= (X.Sum(a => (int)a.realAmount)),
+                       
+                        X.FirstOrDefault().itemLocationId,
+                  
+
+                        X.FirstOrDefault().notes,
+                        X.FirstOrDefault().createDate,
+                        X.FirstOrDefault().updateDate,
+                        X.FirstOrDefault().createUserId,
+                        X.FirstOrDefault().updateUserId,
+
+
+
+                         X.FirstOrDefault().itemId,
+                        X.FirstOrDefault().itemName,
+                        X.FirstOrDefault().unitId,
+                        X.FirstOrDefault().itemUnitId,
+                         X.FirstOrDefault().unitName ,
+
+                        X.FirstOrDefault().Secname ,
+                        X.FirstOrDefault().sectionId,
+                        X.FirstOrDefault().x,
+                        X.FirstOrDefault().y,
+                        X.FirstOrDefault().z,
+
+                       X.FirstOrDefault().itemsLocId,
+                        X.FirstOrDefault().locationId,
+                        X.FirstOrDefault().itemType ,
+                       
+                        shortfalls = (int)(X.Sum(a => (int)a.realAmount)) - (int)(X.Sum(a => (int)a.amount)),
+                        shortfallspercent = ((X.Sum(a => (int)a.realAmount)) == 0) ? 0 : ((((decimal)(int)(X.Sum(a => (int)a.realAmount)) - (decimal)(int)(X.Sum(a => (int)a.amount))) * 100) / (decimal)(int)(X.Sum(a => (int)a.realAmount))),
+
+
+                        //diffsum= (X.Sum(a=>a.diffPercentage )),
+                        // diffPercentage = (X.Sum(a => a.diffPercentage)) / X.Count(),
+                          itemCount = X.Count(),
+
+
+                    }).ToList();
                     if (list2 == null)
                         return NotFound();
                     else
@@ -2930,7 +3061,7 @@ notes
                                         I.vendorInvNum,
                                         I.vendorInvDate,
                                         I.createUserId,
-                                        I.updateDate,
+                                        IupdateDate=I.updateDate,
                                         I.updateUserId,
                                         // I.branchId,
                                         I.discountValue ,
