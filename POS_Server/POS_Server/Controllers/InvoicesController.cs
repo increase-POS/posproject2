@@ -97,9 +97,11 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var itemUnits =(from i in entity.itemsUnits where (i.itemId == itemId) select(i.itemUnitId)).ToList();
+                   
                     price += getItemUnitSumPrice(itemUnits);
                     totalNum = getItemUnitTotalNum(itemUnits);
-                    smallUnitPrice = price / totalNum;
+                    if(totalNum != 0)
+                        smallUnitPrice = price / totalNum;
 
                     var smallestUnitId = (from iu in entity.itemsUnits
                                           where (itemUnits.Contains((int)iu.itemUnitId) && iu.unitId == iu.subUnitId)
@@ -131,7 +133,9 @@ namespace POS_Server.Controllers
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
                 var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
-                if (upperUnit.itemUnitId == basicItemUnitId)
+                if (upperUnit == null)
+                    return 1;
+                else if (upperUnit.itemUnitId == basicItemUnitId)
                     return (int)upperUnit.unitValue;
                 else
                   unitValue *=  getUpperUnitValue(upperUnit.itemUnitId, basicItemUnitId);
@@ -146,7 +150,10 @@ namespace POS_Server.Controllers
                                   join s in entity.itemsTransfer.Where(x => itemUnits.Contains((int)x.itemUnitId)) on b.invoiceId equals s.invoiceId 
                                   select  s.quantity * s.price).Sum();
 
-                return (decimal)sumPrice;
+                if (sumPrice != null)
+                    return (decimal)sumPrice;
+                else
+                    return 0;
             }
         }
         private long getItemUnitNum(int itemUnitId)
@@ -158,7 +165,9 @@ namespace POS_Server.Controllers
                               join s in entity.itemsTransfer.Where(x => x.itemUnitId == itemUnitId) on b.invoiceId equals s.invoiceId
                               select s.quantity).Sum();
 
-                return (long)sumNum;
+               if(sumNum != null) return (long)sumNum;
+                  else
+                    return 0;
             }
         }
         private int getItemUnitTotalNum(List<int> itemUnits)
@@ -187,7 +196,10 @@ namespace POS_Server.Controllers
                 if (upperUnit != null)
                     sumNum += (int)upperUnit.unitValue * getItemUnitNum(upperUnit.itemUnitId);
 
-                return (int)sumNum;
+                if (sumNum != null)
+                    return (int)sumNum;
+                else
+                    return 0;
             }
         }
         [HttpGet]
@@ -898,12 +910,14 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invoicesList = (from b in entity.invoices.Where(x => x.invType == "s" && x.branchCreatorId == branchId)
+                                        join a in entity.agents on b.agentId equals a.agentId
                                         join s in entity.invoiceStatus on b.invoiceId equals s.invoiceId
                                         join u in entity.users on b.shipUserId equals u.userId into lj
                                         from y in lj.DefaultIfEmpty()
                                         where (statusL.Contains(s.status) && s.invStatusId == entity.invoiceStatus.Where(x => x.invoiceId == b.invoiceId).Max(x => x.invStatusId))
                                         select new InvoiceModel()
                                         {
+                                            invStatusId = s.invStatusId,
                                             invoiceId = b.invoiceId,
                                             invNumber = b.invNumber,
                                             agentId = b.agentId,
@@ -934,7 +948,7 @@ namespace POS_Server.Controllers
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId = b.shipUserId,
                                             agentName = b.agents.name,
-                                            shipUserName = y.name,
+                                            shipUserName = y.username,
                                             status = s.status,
                                         })
                     .ToList();
@@ -1185,12 +1199,12 @@ namespace POS_Server.Controllers
                 int lastNum = 0;
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    numberList = entity.invoices.Where(b => b.invNumber.Contains(invCode + "-")).Select(b => b.invNumber).ToList();
-
-                    for (int i = 0; i < numberList.Count; i++)
+                    numberList = entity.invoices.Where(b => b.invNumber.Contains(invCode+"-")).Select(b => b.invNumber).ToList();
+                     
+                    for(int i=0; i< numberList.Count; i++)
                     {
                         string code = numberList[i];
-                        string s = code.Substring(code.LastIndexOf("-") + 1);
+                        string s = code.Substring(code.LastIndexOf("-")+1);
                         numberList[i] = s;
                     }
                     if (numberList.Count > 0)

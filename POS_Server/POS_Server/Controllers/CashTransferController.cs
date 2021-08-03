@@ -1576,7 +1576,7 @@ namespace POS_Server.Controllers
             }
         [HttpPost]
         [Route("payOrderInvoice")]
-        public IHttpActionResult payOrderInvoice(int invoiceId, decimal amount, string payType, string cashTransfer)
+        public IHttpActionResult payOrderInvoice(int invoiceId, int invStatusId , decimal amount, string payType, string cashTransfer)
         {
             var re = Request;
             var headers = re.Headers;
@@ -1599,6 +1599,9 @@ namespace POS_Server.Controllers
 
                     invoices inv = entity.invoices.Find(invoiceId);
                     agents agent = entity.agents.Find(inv.agentId);
+                    invoiceStatus invStatus = entity.invoiceStatus.Find(invStatusId);
+
+                    invStatus.status = "tr";
 
                     cashTr.invId = inv.invoiceId;
                     cashTr.cash = amount;
