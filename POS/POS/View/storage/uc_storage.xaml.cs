@@ -102,6 +102,9 @@ namespace POS.View
             btn_itemsDestroy.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_itemsDestroy.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
+            btn_shortage.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_shortage.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
 
             btn_inventory.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_inventory.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -186,6 +189,15 @@ namespace POS.View
             Button button = sender as Button;
             MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
+        private void Btn_shortage_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_shortage);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_itemsShortage.Instance);
+
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+        }
         private void Btn_inventory_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_inventory);
@@ -196,6 +208,6 @@ namespace POS.View
             MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }
 
-       
+        
     }
 }

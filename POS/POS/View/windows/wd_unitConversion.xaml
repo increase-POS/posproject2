@@ -8,7 +8,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
-        Title="wd_itemsList" Height="250" Width="350" Background="Transparent" AllowsTransparency="True"
+        Title="wd_itemsList" Height="300" Width="350" Background="Transparent" AllowsTransparency="True"
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
     <Grid Grid.Column="1" Grid.Row="1"  >
         <Grid.RowDefinitions>
@@ -96,21 +96,22 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="45"/>
                 </Grid.RowDefinitions>
 
                 <ComboBox x:Name="cb_item"  Grid.Row="1" Grid.ColumnSpan="3"
-                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                                            Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                          Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                          Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                              materialDesign:HintAssist.Hint="Select  Item "  
                            TextBlock.FontSize="12"   Background="#f8f8f8"
-              Height="40"   Margin="10,5,10,5"
+                            Height="40"   Margin="10,5,10,5"
                            BorderBrush="#737373" BorderThickness="0" 
-                                       IsEditable="True"
-                                         IsTextSearchEnabled="False"
-                                  StaysOpenOnEdit="True"
-                                  KeyUp="Cb_item_KeyUp" SelectionChanged="Cb_item_SelectionChanged">
+                             IsEditable="True"
+                             IsTextSearchEnabled="False"
+                             StaysOpenOnEdit="True"
+                             KeyUp="Cb_item_KeyUp" SelectionChanged="Cb_item_SelectionChanged">
                 </ComboBox>
                 <Path Fill="#E81123" Grid.Row="1" x:Name="p_errorParentItem" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -127,7 +128,7 @@
                              materialDesign:HintAssist.Hint="from Unit"  
                            TextBlock.FontSize="12"   Background="#f8f8f8"
               Height="40"   Margin="10,5,10,5"
-                           BorderBrush="#737373" BorderThickness="0" >
+                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_fromUnit_SelectionChanged" >
                 </ComboBox>
                 <Path Fill="#E81123" Grid.Row="2" x:Name="p_errorFromUnit" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right"   Visibility="Collapsed"   Grid.Column="0" 
@@ -137,7 +138,26 @@
                         <ToolTip x:Name="tt_errorFromUnit" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                     </Path.ToolTip>
                 </Path>
-                <TextBox x:Name="tb_fromQuantity"  Grid.Row="3"  Grid.Column="0" 
+
+                <ComboBox x:Name="cb_sectionLocation"  Grid.Row="3" Grid.Column="0"
+                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                            Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                             materialDesign:HintAssist.Hint="from Location"  
+                           TextBlock.FontSize="12"   Background="#f8f8f8"
+              Height="40"   Margin="10,5,10,5"
+                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_sectionLocation_SelectionChanged" >
+                </ComboBox>
+                <Path Fill="#E81123" Grid.Row="3" x:Name="p_errorSectionLocation" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right"   Visibility="Collapsed"   Grid.Column="0" 
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                    <Path.ToolTip>
+                        <ToolTip x:Name="tt_errorSectionLocation" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                    </Path.ToolTip>
+                </Path>
+                
+                
+                <TextBox x:Name="tb_fromQuantity"   Grid.Row="4"  Grid.Column="0" 
                                   Padding="10,10,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="quantity..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
@@ -155,7 +175,7 @@
                     </TextBox.ToolTip>
                 </TextBox>
                 <Path Fill="#E81123" x:Name="p_errorFromQuantity" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Row="3" Visibility="Collapsed"   
+                              HorizontalAlignment="Right" Grid.Row="4" Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15" Grid.Column="0" 
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                     <Path.ToolTip>
@@ -174,7 +194,7 @@
                              materialDesign:HintAssist.Hint="to Unit"  
                            TextBlock.FontSize="12"   Background="#f8f8f8"
               Height="40"   Margin="10,5,10,5"
-                           BorderBrush="#737373" BorderThickness="0" >
+                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_toUnit_SelectionChanged" >
                 </ComboBox>
                 <Path Fill="#E81123" Grid.Row="2" x:Name="p_errorToUnit" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right"   Visibility="Collapsed"   Grid.Column="2" 
@@ -184,21 +204,16 @@
                         <ToolTip x:Name="tt_errorToUnit" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                     </Path.ToolTip>
                 </Path>
-                <TextBlock Grid.Row="3"  Grid.Column="2"  Text="2 Box, 4 pice" x:Name="txt_toQuantity"  Foreground="#4E4E4E" 
+                <TextBlock Grid.Row="3"  Grid.Column="2"  Text="2 Box" x:Name="txt_toQuantity"  Foreground="#4E4E4E" 
                            FontWeight="Regular" FontSize="14"  
                     VerticalAlignment="Center"     Margin="10,5,10,5"/>
-                <Path Fill="#E81123" x:Name="p_errorToQuantity" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Row="3" Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15" Grid.Column="2" 
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                    <Path.ToolTip>
-                        <ToolTip x:Name="tt_errorToQuantity" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                    </Path.ToolTip>
-                </Path>
+                <TextBlock Grid.Row="4"  Grid.Column="2"  Text=" 4 pice" x:Name="txt_toQuantityRemainder"  Foreground="#4E4E4E" 
+                           FontWeight="Regular" FontSize="14"  
+                    VerticalAlignment="Center"     Margin="10,5,10,5"/>
 
 
 
-                <Button Content="Convert" Grid.Row="5" Grid.ColumnSpan="5"
+                <Button Content="Convert" Grid.Row="6" Grid.ColumnSpan="5"
                        Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"
                           Background="#178DD2" BorderBrush="{x:Null}"  />
             </Grid>

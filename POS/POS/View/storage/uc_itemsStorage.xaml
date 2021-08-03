@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:POS.View.storage"
              mc:Ignorable="d" 
+             xmlns:converters="clr-namespace:POS.converters"
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              Loaded="UserControl_Loaded"
              d:DesignHeight="675" d:DesignWidth="985">
@@ -108,6 +109,7 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
+                        <converters:SectionLocationFreeZoneConverter x:Key="SectionLocationFreeZoneConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Item-Unit"   >
@@ -127,7 +129,13 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Quantity"     Binding="{Binding Path=quantity}">
+                        <DataGridTextColumn Width="*"  Header="Section-Location" >
+                            <DataGridTextColumn.Binding>
+                                <MultiBinding StringFormat="{}{0}-{1}" Converter="{StaticResource SectionLocationFreeZoneConverter}">
+                                    <Binding Path="section"></Binding>
+                                    <Binding Path="location"></Binding>
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -138,13 +146,8 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Section-Location" >
-                            <DataGridTextColumn.Binding>
-                                <MultiBinding StringFormat="{}{0}-{1}">
-                                    <Binding Path="section"></Binding>
-                                    <Binding Path="location"></Binding>
-                                </MultiBinding>
-                            </DataGridTextColumn.Binding>
+
+                        <DataGridTextColumn Width="*"  Header="Quantity"     Binding="{Binding Path=quantity}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>

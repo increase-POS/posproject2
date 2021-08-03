@@ -1824,4 +1824,10 @@
   <data name="trShouldInputOneSerialNumberAtLeast" xml:space="preserve">
     <value>Should input one serial number at least</value>
   </data>
+  <data name="trTotalNet" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="trCount:" xml:space="preserve">
+    <value>Count:</value>
+  </data>
 </root>

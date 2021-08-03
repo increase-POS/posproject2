@@ -97,6 +97,7 @@ namespace POS.Classes
         public Nullable<int> shipUserId { get; set; }
         public string shipUserName { get; set; }
         public string status { get; set; }
+        public int invStatusId { get; set; }
         // for report
         public int countP { get; set; }
         public int countS { get; set; }

@@ -230,11 +230,15 @@
     <Compile Include="converters\depositorNameConverter.cs" />
     <Compile Include="converters\depositorTypeConverter.cs" />
     <Compile Include="converters\discountTypeConverter.cs" />
+    <Compile Include="converters\invoiceStatusConverter.cs" />
     <Compile Include="converters\invoiceTypeConverter.cs" />
     <Compile Include="converters\invoiceTypeVisibilityConverter.cs" />
     <Compile Include="converters\levelGroupConverter.cs" />
+    <Compile Include="converters\LocationFreeZoneConverter.cs" />
     <Compile Include="converters\permissionsNameConverter.cs" />
     <Compile Include="converters\processTypeConverter.cs" />
+    <Compile Include="converters\SectionFreeZoneConverter.cs" />
+    <Compile Include="converters\SectionLocationFreeZoneConverter.cs" />
     <Compile Include="converters\transTypeConverter.cs" />
     <Compile Include="converters\unitItemsListConverter.cs" />
     <Compile Include="Keyboard\AnimationHelper.cs" />
@@ -341,6 +345,9 @@
     </Compile>
     <Compile Include="View\storage\uc_itemsExport.xaml.cs">
       <DependentUpon>uc_itemsExport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\storage\uc_itemsShortage.xaml.cs">
+      <DependentUpon>uc_itemsShortage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\storage\uc_itemsStorage.xaml.cs">
       <DependentUpon>uc_itemsStorage.xaml</DependentUpon>
@@ -654,6 +661,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\storage\uc_itemsExport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\storage\uc_itemsShortage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -31,12 +31,14 @@ namespace POS.View.storage
 
         ItemLocation itemLocation = new ItemLocation();
         IEnumerable<ItemLocation> itemLocationList;
+        IEnumerable<ItemLocation> itemLocationListQuery;
 
         Classes.Section sectionModel = new Classes.Section();
         IEnumerable<Classes.Section> sections;
 
         Location locationModel = new Location();
         IEnumerable<Location> locations;
+        string searchText = "";
         string transferPermission = "itemsStorage_transfer";
         string reportsPermission = "itemsStorage_reports";
         public static uc_itemsStorage Instance
@@ -51,35 +53,6 @@ namespace POS.View.storage
         public uc_itemsStorage()
         {
             InitializeComponent();
-            //if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
-            //{
-            //    txt_deleteButton.Visibility = Visibility.Visible;
-            //    txt_addButton.Visibility = Visibility.Visible;
-            //    txt_updateButton.Visibility = Visibility.Visible;
-            //    txt_add_Icon.Visibility = Visibility.Visible;
-            //    txt_update_Icon.Visibility = Visibility.Visible;
-            //    txt_delete_Icon.Visibility = Visibility.Visible;
-            //}
-            //else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
-            //{
-            //    txt_add_Icon.Visibility = Visibility.Collapsed;
-            //    txt_update_Icon.Visibility = Visibility.Collapsed;
-            //    txt_delete_Icon.Visibility = Visibility.Collapsed;
-            //    txt_deleteButton.Visibility = Visibility.Visible;
-            //    txt_addButton.Visibility = Visibility.Visible;
-            //    txt_updateButton.Visibility = Visibility.Visible;
-
-            //}
-            //else
-            //{
-            //    txt_deleteButton.Visibility = Visibility.Collapsed;
-            //    txt_addButton.Visibility = Visibility.Collapsed;
-            //    txt_updateButton.Visibility = Visibility.Collapsed;
-            //    txt_add_Icon.Visibility = Visibility.Visible;
-            //    txt_update_Icon.Visibility = Visibility.Visible;
-            //    txt_delete_Icon.Visibility = Visibility.Visible;
-
-            //}
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -94,21 +67,12 @@ namespace POS.View.storage
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_ucItemsStorage.FlowDirection = FlowDirection.RightToLeft;
             }
-            //#region bill
-            //List<Bill> items = new List<Bill>();
-            //items.Add(new Bill() { Id = 336554944, Total = 255 });
-            //items.Add(new Bill() { Id = 336545142, Total = 260 });
-            //items.Add(new Bill() { Id = 336556165, Total = 1200 });
-            //items.Add(new Bill() { Id = 336551515, Total = 150 });
-            //items.Add(new Bill() { Id = 336555162, Total = 840 });
-            //items.Add(new Bill() { Id = 336558897, Total = 325 });
-            //dg_invoice.ItemsSource = items;
-            //billDetails = LoadCollectionData();
-            //dg_billDetails.ItemsSource = billDetails;
-            //#endregion
+           
             translate();
-            // await refreshItemsLocations();
-            // await refreshFreeZoneItemsLocations();
+            //await refreshItemsLocations();
+            //await refreshFreeZoneItemsLocations();
+            Tb_search_TextChanged(null,null);
+
             await fillSections();
             #region Style Date
             dp_startDate.Loaded += delegate
@@ -134,7 +98,50 @@ namespace POS.View.storage
 
             #endregion
         }
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //if (itemLocationList is null)
+                if (tgl_IsActive.IsChecked == true)
+            {
+                await refreshItemsLocations();
+                clearInputs();
+            }
+            else
+            {
+                await refreshFreeZoneItemsLocations();
+                clearInputs();
+            }
 
+
+            searchText = tb_search.Text.ToLower();
+
+            
+            itemLocationListQuery = itemLocationList.Where(s => (s.itemName.ToLower().Contains(searchText) ||
+            s.unitName.ToLower().Contains(searchText) ||
+            s.section.ToLower().Contains(searchText) ||
+            s.location.ToLower().Contains(searchText)) );
+            dg_itemsStorage.ItemsSource = itemLocationListQuery;
+
+        }
+        private  void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
+        {
+            Tb_search_TextChanged(null, null);
+        }
+
+        private async void Tgl_IsActive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Tb_search_TextChanged(null, null);
+        }
+        private async Task refreshItemsLocations()
+        {
+            itemLocationList = await itemLocation.get(MainWindow.branchID.Value);
+            //dg_itemsStorage.ItemsSource = itemLocationList;
+        }
+        private async Task refreshFreeZoneItemsLocations()
+        {
+            itemLocationList = await itemLocation.GetFreeZoneItems(MainWindow.branchID.Value);
+            //dg_itemsStorage.ItemsSource = itemLocationList;
+        }
         private void translate()
         {
             ////////////////////////////////----invoice----/////////////////////////////////
@@ -153,16 +160,7 @@ namespace POS.View.storage
             //tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
         }
-        private async Task refreshItemsLocations()
-        {
-            itemLocationList = await itemLocation.get(MainWindow.branchID.Value);
-            dg_itemsStorage.ItemsSource = itemLocationList;
-        }
-        private async Task refreshFreeZoneItemsLocations()
-        {
-            itemLocationList = await itemLocation.GetFreeZoneItems(MainWindow.branchID.Value);
-            dg_itemsStorage.ItemsSource = itemLocationList;
-        }
+        
         private async Task refreshLocations()
         {
             if (cb_section.SelectedIndex != -1)
@@ -199,50 +197,16 @@ namespace POS.View.storage
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
-        private void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
+        
 
         private void Tb_search_GotFocus(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private async void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
-        {
-            await refreshItemsLocations();
-            
-            clearInputs();
-        }
+       
 
-        private async void Tgl_IsActive_Unchecked(object sender, RoutedEventArgs e)
-        {
-           await refreshFreeZoneItemsLocations();
-         
-            clearInputs();
-        }
-
-        //private void Tgl_invoiceDropDown_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    grid_invoice.Visibility = Visibility.Visible;
-        //}
-        //private void Tgl_invoiceDropDown_Unchecked(object sender, RoutedEventArgs e)
-        //{
-        //    grid_invoice.Visibility = Visibility.Collapsed;
-        //}
-        //void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
-        //{
-        //    for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
-        //        if (vis is DataGridRow)
-        //        {
-        //            BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
-        //            ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)dg_billDetails.ItemsSource;
-        //            data.Remove(row);
-        //        }
-
-        //}
-      
+     
         private void Btn_add_Click(object sender, RoutedEventArgs e)
         {
 

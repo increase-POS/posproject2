@@ -55,8 +55,8 @@ namespace POS.controlTemplate
                 rd[i] = new RowDefinition();
             }
             rd[0].Height = new GridLength(5, GridUnitType.Star);
-            rd[1].Height = new GridLength(35, GridUnitType.Pixel);
-            rd[2].Height = new GridLength(13, GridUnitType.Star);
+            rd[1].Height = new GridLength(25, GridUnitType.Pixel);
+            rd[2].Height = new GridLength(25, GridUnitType.Pixel);
             //if (cardViewitem.cardType == "sales")
                 rd[3].Height = new GridLength(20, GridUnitType.Star);
             for (int i = 0; i < rowCount; i++)
@@ -112,11 +112,11 @@ namespace POS.controlTemplate
                 Grid gridPrice = new Grid();
                 Grid.SetRow(gridPrice, 3);
                 //70 
-                gridPrice.Width = gridContainer.Width / 3;
+                gridPrice.Width = gridContainer.Width / 2;
                 //25
                 gridPrice.Height = gridContainer.Height / 4;
                 gridPrice.HorizontalAlignment = HorizontalAlignment.Left;
-                gridPrice.Margin = new Thickness(5);
+                gridPrice.Margin = new Thickness(5,5,5,5);
                 /////////////////////////////
                 Rectangle rectanglePrice = new Rectangle();
                 rectanglePrice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
@@ -140,31 +140,21 @@ namespace POS.controlTemplate
             #region Image
             Button buttonImage = new Button();
             buttonImage.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-            //Grid.SetRowSpan(buttonImage, 4);
-            //Grid.SetColumn(buttonImage, 1);
-            //buttonImage.Height = 107;
-            buttonImage.Height = (gridContainer.Height) - 7.5;
-            //buttonImage.Width = 100;
-            buttonImage.Width = (gridContainer.Width / 2.2) - 7.5;
+            //buttonImage.Height = (gridContainer.Height) - 7.5;
+            //buttonImage.Width = (gridContainer.Width / 2.2) - 7.5;
+            buttonImage.Height = (gridContainer.Height / 1.1) - 7.5;
+            buttonImage.Width = ((gridContainer.Width / 2.2) / 1.2) - 7.5;
             buttonImage.BorderThickness = new Thickness(0);
             buttonImage.Padding = new Thickness(0);
-            //buttonImage.Margin = new Thickness(5);
             buttonImage.FlowDirection = FlowDirection.LeftToRight;
-            //buttonImage.HorizontalAlignment = HorizontalAlignment.Center;
-            //buttonImage.VerticalAlignment = VerticalAlignment.Center;
             MaterialDesignThemes.Wpf.ButtonAssist.SetCornerRadius(buttonImage, (new CornerRadius(10)));
             SectionData.getImg("Item", cardViewitem.item.image, buttonImage);
-
-
             Grid grid_image = new Grid();
             grid_image.Height = buttonImage.Height - 2;
             grid_image.Width = buttonImage.Width - 1;
-            //grid_image.HorizontalAlignment = HorizontalAlignment.Center;
-            //grid_image.VerticalAlignment = VerticalAlignment.Center;
             Grid.SetRowSpan(grid_image, 4);
             Grid.SetColumn(grid_image, 1);
             grid_image.Children.Add(buttonImage);
-
 
             gridContainer.Children.Add(grid_image);
 
@@ -241,6 +231,11 @@ namespace POS.controlTemplate
                 #endregion
                 gridContainer.Children.Add(pathOfferLabel);
                 gridContainer.Children.Add(pathOfferLabelText);
+            }
+            if (cardViewitem.item.itemCount > 0)
+            {
+                this.ToolTip = MainWindow.resourcemanager.GetString("trCount:") + cardViewitem.item.itemCount;
+                //tt_name.Content = "Count" + cardViewitem.item.itemCount;
             }
             gridContainer.Children.Add(titleText);
             gridContainer.Children.Add(subTitleText);
@@ -332,18 +327,11 @@ namespace POS.controlTemplate
             #region Image
             Button buttonImage = new Button();
             buttonImage.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-            //Grid.SetRowSpan(buttonImage, 4);
-            //Grid.SetColumn(buttonImage, 1);
-            //buttonImage.Height = 107;
             buttonImage.Height = (gridContainer.Height/1.1) - 7.5;
-            //buttonImage.Width = 100;
             buttonImage.Width = ((gridContainer.Width / 2.2)/1.2) - 7.5;
             buttonImage.BorderThickness = new Thickness(0);
             buttonImage.Padding = new Thickness(0);
-            //buttonImage.Margin = new Thickness(5);
             buttonImage.FlowDirection = FlowDirection.LeftToRight;
-            //buttonImage.HorizontalAlignment = HorizontalAlignment.Center;
-            //buttonImage.VerticalAlignment = VerticalAlignment.Center;
             MaterialDesignThemes.Wpf.ButtonAssist.SetCornerRadius(buttonImage, (new CornerRadius(10)));
             SectionData.getImg(type, Img, buttonImage);
             Grid grid_image = new Grid();

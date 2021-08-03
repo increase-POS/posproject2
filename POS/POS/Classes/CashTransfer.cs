@@ -498,7 +498,7 @@ namespace POS.Classes
             }
         }
 
-        public async Task<string> payOrderInvoice(int invoiceId, decimal ammount, string payType, CashTransfer cashTransfer)
+        public async Task<string> payOrderInvoice(int invoiceId, int invStatusId ,decimal ammount, string payType, CashTransfer cashTransfer)
         {
             string message = "";
             // ... Use HttpClient.
@@ -519,7 +519,7 @@ namespace POS.Classes
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
 
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payOrderInvoice?invoiceId=" + invoiceId + "&amount=" + ammount + "&payType=" + payType + "&cashtransfer=" + myContent);
+                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payOrderInvoice?invoiceId=" + invoiceId +"&invStatusId=" +invStatusId+ "&amount=" + ammount + "&payType=" + payType + "&cashtransfer=" + myContent);
 
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;

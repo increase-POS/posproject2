@@ -151,8 +151,8 @@ namespace POS.View.accounts
            
             #region fill status combo
             var statuslist = new[] {
-            new { Text = MainWindow.resourcemanager.GetString("trInDelivery")       , Value = "tr" },
-            new { Text = MainWindow.resourcemanager.GetString("trDelivered")   , Value = "rc" }
+            new { Text = MainWindow.resourcemanager.GetString("trInDelivery")  , Value = "rc" },
+            new { Text = MainWindow.resourcemanager.GetString("trDelivered")   , Value = "tr" }
              };
             cb_state.DisplayMemberPath = "Text";
             cb_state.SelectedValuePath = "Value";
@@ -287,6 +287,7 @@ namespace POS.View.accounts
                 || s.shipUserName.ToLower().Contains(searchText)
                 || s.agentName.ToLower().Contains(searchText)
                 || s.totalNet.ToString().ToLower().Contains(searchText)
+                || s.status.ToLower().Contains(searchText)
                 )
                 && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
                 && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
@@ -656,17 +657,7 @@ namespace POS.View.accounts
         {
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
             {
-
-
-            
-            Agent ag = new Agent();
-            ag = await ag.getAgentById(119);
-            MessageBox.Show(ag.balance.ToString() + " " + ag.address);
-            ag.balance = 5000;
-            ag.address = "halabb";
-            string msg = await ag.saveAgent(ag);
-            MessageBox.Show(ag.balance.ToString() + " " + ag.address);
-            MessageBox.Show(msg);
+           
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -678,20 +669,23 @@ namespace POS.View.accounts
 
         private async void Cb_salesMan_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select salesman
-            await RefreshInvoiceList();
-            Tb_search_TextChanged(null, null);
+            invoiceQuery = invoiceQuery.Where(u => u.shipUserId == Convert.ToInt32(cb_salesMan.SelectedValue));
+            invoiceQueryExcel = invoiceQuery;
+            RefreshInvoiceView();
         }
 
         private async void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select agent
-            await RefreshInvoiceList();
-            Tb_search_TextChanged(null, null);
+            invoiceQuery = invoiceQuery.Where(c => c.agentId == Convert.ToInt32(cb_customer.SelectedValue));
+            invoiceQueryExcel = invoiceQuery;
+            RefreshInvoiceView();
         }
 
         private async void Cb_state_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select state
-            await RefreshInvoiceList();
-            Tb_search_TextChanged(null, null);
+            invoiceQuery = invoiceQuery.Where(s => s.status == cb_state.SelectedValue.ToString());
+            invoiceQueryExcel = invoiceQuery;
+            RefreshInvoiceView();
         }
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
@@ -766,55 +760,53 @@ namespace POS.View.accounts
                     acceptedAmmount
                  )
                 {
-                    MessageBox.Show(processType);
-                //    CashTransfer cash = new CashTransfer();
+                    CashTransfer cash = new CashTransfer();
 
-                //    cash.transType = "d";
-                //    cash.posId = MainWindow.posID.Value;
-                //    cash.transNum = await cashModel.generateCashNumber(cash.transType + "c");
-                //    cash.transNum = "";
-                //    cash.cash = decimal.Parse(tb_cash.Text);
-                //    cash.notes = tb_note.Text;
-                //    cash.createUserId = MainWindow.userID;
-                //    cash.side = "c";
-                //    cash.processType = cb_paymentProcessType.SelectedValue.ToString();
+                    cash.transType = "d";
+                    cash.posId = MainWindow.posID.Value;
+                    cash.transNum = await cashModel.generateCashNumber(cash.transType + "c");
+                    cash.cash = decimal.Parse(tb_cash.Text);
+                    cash.notes = tb_note.Text;
+                    cash.createUserId = MainWindow.userID;
+                    cash.side = "c";
+                    cash.processType = cb_paymentProcessType.SelectedValue.ToString();
 
-                //    cash.agentId = agentId;
+                    cash.agentId = agentId;
 
-                //    cash.userId = userId;
+                    cash.userId = userId;
 
-                //    if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                //    {
-                //        cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
-                //        cash.docNum = tb_docNumCard.Text;
-                //    }
-                //    if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-                //        cash.docNum = await cashModel.generateDocNumber("pbnd");
+                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                    {
+                        cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
+                        cash.docNum = tb_docNumCard.Text;
+                    }
+                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
+                        cash.docNum = await cashModel.generateDocNumber("pbnd");
 
-                //    if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
-                //        cash.docNum = tb_docNumCheque.Text;
+                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
+                        cash.docNum = tb_docNumCheque.Text;
 
-                //    if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-                //    {
-                //        string res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d");
-                //        cash.bondId = int.Parse(res);
-                //    }
+                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
+                    {
+                        string res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d");
+                        cash.bondId = int.Parse(res);
+                    }
 
-                //    string s = await cashModel.payOrderInvoice(invoice.invoiceId, cash.cash.Value, processType , cash);
-                //    MessageBox.Show(s);
-                //    if (!s.Equals(""))
-                //    {
-                //        if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
-                //            calcBalance(cash.cash.Value);
+                    string s = await cashModel.payOrderInvoice(invoice.invoiceId, invoice.invStatusId, cash.cash.Value, processType, cash);
+                    MessageBox.Show(s);
+                    if (!s.Equals(""))
+                    {
+                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
+                            calcBalance(cash.cash.Value);
 
-                //        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                //        Btn_clear_Click(null, null);
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
 
-                //        await RefreshInvoiceList();
-                //        Tb_search_TextChanged(null, null);
-                //    }
-                //    else
-                //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        await RefreshInvoiceList();
+                        Tb_search_TextChanged(null, null);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
             }
             else

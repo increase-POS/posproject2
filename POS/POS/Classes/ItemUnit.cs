@@ -267,6 +267,70 @@ namespace POS.Classes
                 return items;
             }
         }
+        //*******************************
+        public async Task<List<ItemUnit>> getSmallItemUnits(int itemId, int itemUnitId)
+        {
+            List<ItemUnit> units = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "itemsUnits/getSmallItemUnits?itemId=" + itemId + "&itemUnitId=" + itemUnitId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+
+                    units = JsonConvert.DeserializeObject<List<ItemUnit>>(jsonString);
+
+                    return units;
+                }
+                else //web api sent error response 
+                {
+                    units = new List<ItemUnit>();
+                }
+                return units;
+            }
+
+        }
+        public async Task<int> getConversionQuantity(int fromItemUnit, int toItemUnit)
+        {
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "itemsUnits/getConversionQuantity?fromItemUnit=" + fromItemUnit + "&toItemUnit=" + toItemUnit);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var AvailableAmount = await response.Content.ReadAsStringAsync();
+                    return int.Parse(AvailableAmount);
+                }
+                return 0;
+            }
+        }
 
     }
 }

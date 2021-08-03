@@ -772,6 +772,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Count:.
+        /// </summary>
+        internal static string trCount_ {
+            get {
+                return ResourceManager.GetString("trCount:", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Count....
         /// </summary>
         internal static string trCountHint {
@@ -4665,6 +4674,15 @@ namespace POS {
         internal static string trTotal_ {
             get {
                 return ResourceManager.GetString("trTotal:", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        internal static string trTotalNet {
+            get {
+                return ResourceManager.GetString("trTotalNet", resourceCulture);
             }
         }
         

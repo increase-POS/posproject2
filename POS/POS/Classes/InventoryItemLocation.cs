@@ -40,6 +40,7 @@ namespace POS.Classes
         public string inventoryNum { get; set; }
         public Nullable<System.DateTime> inventoryDate { get; set; }
         public string itemType { get; set; }
+        public string cause { get; set; }
 
 
         public async Task<List<InventoryItemLocation>> GetAll( int inventoryId)

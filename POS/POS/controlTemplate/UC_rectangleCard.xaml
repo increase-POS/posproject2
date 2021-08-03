@@ -5,8 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:POS.controlTemplate"
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"  
                  d:DesignHeight="110" d:DesignWidth="220" Loaded="UserControl_Loaded">
+    <!--<UserControl.ToolTip>
+        <ToolTip x:Name="tt_name"
+                                             Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+    </UserControl.ToolTip>-->
     <UserControl.Resources>
         <Storyboard x:Key="Storyboard1">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="rectangle">

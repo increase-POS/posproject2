@@ -115,8 +115,6 @@ namespace POS
             mainWindow = this;
             windowFlowDirection();
 
-
-
         }
 
       async  void windowFlowDirection()
@@ -141,6 +139,7 @@ namespace POS
         {//load
             StartAwait();
             grid_mainWindow.IsEnabled = false;
+            
             #region bonni
 #pragma warning disable CS0436 // Type conflicts with imported type
             TabTipAutomation.IgnoreHardwareKeyboard = HardwareKeyboardIgnoreOptions.IgnoreAll;
@@ -175,8 +174,6 @@ namespace POS
 
             #endregion
 
-
-
             #region get default System info
 
 
@@ -195,6 +192,8 @@ namespace POS
             SettingCls set = new SettingCls();
             SetValues setV = new SetValues();
             //get company name
+            List<char> charsToRemove = new List<char>() { '@', '_', ',', '.', '-' };
+
             set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
             nameId = set.settingId;
             setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
@@ -213,16 +212,19 @@ namespace POS
             set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
             mobileId = set.settingId;
             setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
+            charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
             Mobile = setV.value;
             //get company phone
             set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
             phoneId = set.settingId;
             setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
+            charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
             Phone = setV.value;
             //get company fax
             set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
             faxId = set.settingId;
             setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
+            charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
             Fax = setV.value;
             //get company logo
             set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
@@ -230,11 +232,7 @@ namespace POS
             setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
             logoImage = setV.value;      
             await setV.getImg(logoImage);
-
-
-
             #endregion
-
 
             translate();
 

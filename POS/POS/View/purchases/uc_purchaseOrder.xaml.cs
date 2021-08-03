@@ -1274,5 +1274,10 @@ namespace POS.View.purchases
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
         }
+
+        private void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

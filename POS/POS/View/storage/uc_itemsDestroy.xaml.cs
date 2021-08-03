@@ -78,6 +78,7 @@ namespace POS.View.storage
             translate();
             await refreshDestroyDetails();
             fillItemCombo();
+            fillItemCombo();
             //Txb_searchitems_TextChanged(null, null);
 
             //for excel
@@ -91,7 +92,7 @@ namespace POS.View.storage
         ItemUnit itemUnit = new ItemUnit();
         private async void Cb_item_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_item.SelectedValue != null)
+            if (cb_item.SelectedValue != null && cb_item.SelectedIndex != -1)
                 if (int.Parse(cb_item.SelectedValue.ToString()) != -1)
                 { 
                     var list = await itemUnit.GetItemUnits(int.Parse(cb_item.SelectedValue.ToString()));
@@ -240,7 +241,8 @@ namespace POS.View.storage
                     }
                     if (_ItemType == "sn")
                         serialNum = tb_serialNum.Text;
-                  
+                    invItemLoc.cause = tb_reasonOfDestroy.Text;
+                    invItemLoc.notes = tb_notes.Text;
                     if (lst_serials.Items.Count > 0)
                     {
                         for (int j = 0; j < lst_serials.Items.Count; j++)
@@ -363,8 +365,9 @@ namespace POS.View.storage
         }
         private async Task refreshDestroyDetails()
         {
+            dg_itemDestroy.ItemsSource = null;
             inventoriesItems = await invItemLocModel.GetItemToDestroy(MainWindow.branchID.Value);
-            dg_itemDestroy.ItemsSource = inventoriesItems;
+            dg_itemDestroy.ItemsSource = inventoriesItems.ToList();
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -399,14 +402,17 @@ namespace POS.View.storage
 
         private void Dg_itemDestroy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            invItemLoc = dg_itemDestroy.SelectedItem as InventoryItemLocation;
-            tb_itemUnit.Visibility = Visibility.Visible;
-            grid_itemUnit.Visibility = Visibility.Collapsed;
-            if (invItemLoc.itemType == "sn")
-                grid_serial.Visibility = Visibility.Visible;
-            tb_amount.IsEnabled = false;
-            this.DataContext = invItemLoc;
-            tgl_manually.IsChecked = false;
+            if (dg_itemDestroy.SelectedItem != null)
+            {
+                invItemLoc = dg_itemDestroy.SelectedItem as InventoryItemLocation;
+                tb_itemUnit.Visibility = Visibility.Visible;
+                grid_itemUnit.Visibility = Visibility.Collapsed;
+                if (invItemLoc.itemType == "sn")
+                    grid_serial.Visibility = Visibility.Visible;
+                tb_amount.IsEnabled = false;
+                this.DataContext = invItemLoc;
+                tgl_manually.IsChecked = false;
+            }
         }
 
        
@@ -549,6 +555,11 @@ namespace POS.View.storage
                 }
                 tb_serialNum.Clear();
             }
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Btn_clear_Click(null,null);
         }
     } 
 }

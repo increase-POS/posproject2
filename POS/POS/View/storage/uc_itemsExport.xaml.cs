@@ -439,13 +439,44 @@ namespace POS.View.storage
                 if (w.invoice != null)
                 {
                     invoice = w.invoice;
-                    //  mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
                     _ProcessType = invoice.invType;
 
                     await fillOrderInputs(invoice);
                 }
             }
             Window.GetWindow(this).Opacity = 1;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+        private void Btn_package_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(packagePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            {
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_generatePackage w = new wd_generatePackage();
+
+                if (w.ShowDialog() == true)
+                {
+                   
+                }
+                Window.GetWindow(this).Opacity = 1;
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+        private void Btn_unitConversion_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(unitConversionPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            {
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_unitConversion w = new wd_unitConversion();
+                if (w.ShowDialog() == true)
+                {
+
+                }
+                Window.GetWindow(this).Opacity = 1;
+
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1135,25 +1166,7 @@ namespace POS.View.storage
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
-        private void Btn_package_Click(object sender, RoutedEventArgs e)
-        {
-            if (MainWindow.groupObject.HasPermissionAction(packagePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-            {
-
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
-
-        private void Btn_unitConversion_Click(object sender, RoutedEventArgs e)
-        {
-            if (MainWindow.groupObject.HasPermissionAction(unitConversionPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-            {
-
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
+        
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cmb = sender as ComboBox;

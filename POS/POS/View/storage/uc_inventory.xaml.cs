@@ -84,9 +84,9 @@ namespace POS.View.storage
             invItemsLocations.Clear();
             if (inventory.inventoryId == 0)
             {
-                string num = await inventory.generateInvNumber("in", MainWindow.posID.Value);
-                txt_inventoryNum.Text = num;
-                txt_inventoryDate.Text = DateTime.Now.ToString();
+               // string num = await inventory.generateInvNumber("in", MainWindow.posID.Value);
+                //txt_inventoryNum.Text = num;
+               // txt_inventoryDate.Text = DateTime.Now.ToString();
                 itemsLocations = await itemLocationModel.get(MainWindow.branchID.Value);
                 foreach(ItemLocation il in itemsLocations)
                 {
@@ -166,7 +166,7 @@ namespace POS.View.storage
         {
             if(inventory.inventoryId == 0)
             {
-                inventory.num = txt_inventoryNum.Text;
+                inventory.num =  await inventory.generateInvNumber("in", MainWindow.posID.Value);
                 inventory.branchId = MainWindow.branchID.Value;
                 inventory.posId = MainWindow.posID.Value;
                 inventory.createUserId = MainWindow.userLogin.userId;

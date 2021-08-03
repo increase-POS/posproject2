@@ -201,14 +201,17 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
+                        <converters:invoiceStatusConverter x:Key="invoiceStatusConverter"/>
                     </DataGrid.Resources>
+                    
                     <DataGrid.Columns>
                         <!--<DataGridCheckBoxColumn Width="50" Binding="{Binding Path=isChecked}" IsThreeState="False"/>-->
                         <DataGridTextColumn Width="*"   Header="Invoice Number" Binding="{Binding Path=invNumber}"/>
                         <DataGridTextColumn Width="*"   Header="sales man" Binding="{Binding Path=shipUserName}"/>
                         <DataGridTextColumn Width="*"   Header="customer" Binding="{Binding Path=agentName}"/>
                         <DataGridTextColumn Width="*"  Header="Cash" Binding="{Binding Path=deserved}"/>
-                        <DataGridTextColumn Width="*"  Header="Status" Binding="{Binding Path=status}"/>
+                        <!--<DataGridTextColumn Width="*"  Header="Status" Binding="{Binding Path=status}"/>-->
+                        <DataGridTextColumn Width="*"  Header="Status" Binding="{Binding status,Converter={StaticResource invoiceStatusConverter }}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>

@@ -160,3 +160,4 @@ E:\Pos\2021-07-24\POS\netoaster\obj\Debug\netoaster.csproj.CoreCompileInputs.cac
 E:\Pos\2021-07-24\POS\netoaster\obj\Debug\netoaster.dll
 E:\Pos\2021-07-24\POS\netoaster\obj\Debug\netoaster.pdb
 D:\myproj\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
+E:\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache

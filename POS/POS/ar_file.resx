@@ -1800,4 +1800,10 @@
   <data name="trShouldInputOneSerialNumberAtLeast" xml:space="preserve">
     <value>يجب إدخال رقم تسلسلي واحد على الأقل</value>
   </data>
+  <data name="trTotalNet" xml:space="preserve">
+    <value>الإجمالي</value>
+  </data>
+  <data name="trCount:" xml:space="preserve">
+    <value>العدد:</value>
+  </data>
 </root>

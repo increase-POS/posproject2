@@ -648,10 +648,9 @@
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="User..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
-                                 Visibility="Collapsed"
+                                 Visibility="Collapsed" SelectionChanged="Cb_user_SelectionChanged"
                                   Grid.Column="0" Height="40"  Margin="10,5,10,5"
-                                  BorderBrush="#737373" BorderThickness="0" 
-                                  LostFocus="Tb_validateEmptyLostFocus">
+                                  BorderBrush="#737373" BorderThickness="0"   >
                                 <ComboBox.ToolTip>
                                     <ToolTip x:Name="tt_user" Content="User"
                                                           Placement="left" 

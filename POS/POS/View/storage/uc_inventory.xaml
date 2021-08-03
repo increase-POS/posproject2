@@ -233,10 +233,10 @@
                         <TextBlock Text="Stocktaking Details" x:Name="txt_inventoryDetails" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
-                        <TextBlock Text="554866165" x:Name="txt_inventoryNum" Foreground="#4E4E4E" FontWeight="Regular" FontSize="14"  
+                        <TextBlock  x:Name="txt_inventoryNum" Foreground="#4E4E4E" FontWeight="Regular" FontSize="14"  
                                   VerticalAlignment="Center"  Grid.Row="1"
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
-                        <TextBlock Text="2021-6-23 10:55 am" x:Name="txt_inventoryDate" Foreground="#4E4E4E" FontWeight="Regular" FontSize="18"  
+                        <TextBlock  x:Name="txt_inventoryDate" Foreground="#4E4E4E" FontWeight="Regular" FontSize="18"  
                                   VerticalAlignment="Center" Grid.Row="2"
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
 
@@ -284,6 +284,7 @@
 
                                 <converters:unitItemsListConverter x:Key="unitItemsListConverter"/>
                                 <converters:unitItemsComboTagConverter x:Key="unitItemsComboTagConverter"/>
+                                <converters:SectionLocationFreeZoneConverter x:Key="SectionLocationFreeZoneConverter"/>
                             </DataGrid.Resources>
                             <DataGrid.Columns >
                                 <DataGridTextColumn Width="*"   Header="Num"     Binding="{Binding Path=sequence}" IsReadOnly="True">
@@ -299,7 +300,7 @@
                                 </DataGridTextColumn>
                                 <DataGridTextColumn Width="*" Header="Section-Location"  IsReadOnly="True">
                                     <DataGridTextColumn.Binding>
-                                        <MultiBinding StringFormat="{}{0}-{1}">
+                                        <MultiBinding StringFormat="{}{0}-{1}" Converter="{StaticResource SectionLocationFreeZoneConverter}">
                                             <Binding Path="section"></Binding>
                                             <Binding Path="location"></Binding>
                                         </MultiBinding>
