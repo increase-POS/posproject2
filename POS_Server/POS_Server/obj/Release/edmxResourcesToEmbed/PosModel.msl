@@ -831,6 +831,8 @@
     <EntitySetMapping Name="shippingCompanies">
       <EntityTypeMapping TypeName="incposdbModel.shippingCompanies">
         <MappingFragment StoreEntitySet="shippingCompanies">
+          <ScalarProperty Name="balanceType" ColumnName="balanceType" />
+          <ScalarProperty Name="balance" ColumnName="balance" />
           <ScalarProperty Name="shippingCompanyId" ColumnName="shippingCompanyId" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="RealDeliveryCost" ColumnName="RealDeliveryCost" />

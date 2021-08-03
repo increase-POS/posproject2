@@ -47,7 +47,9 @@ namespace POS_Server.Controllers
                                             updateDate = S.updateDate,
                                             createUserId = S.createUserId,
                                             updateUserId=S.updateUserId,
-                                            
+                                             balance=S.balance,
+balanceType =S.balanceType,
+
 
                                          }).ToList();
                     /*
@@ -129,7 +131,9 @@ namespace POS_Server.Controllers
                            S.createUserId,
                            S.updateUserId,
                            S.isActive,
-                          
+                       S.balance,
+                      S.balanceType,
+
 
                    })
                    .FirstOrDefault();
@@ -205,6 +209,10 @@ namespace POS_Server.Controllers
                             tmpObject.deliveryType  =newObject.deliveryType;
                             tmpObject.notes  =newObject.notes;
                             tmpObject.isActive=newObject.isActive;
+                            tmpObject.balance = newObject.balance;
+                            tmpObject.balanceType = newObject.balanceType;
+
+
                             entity.SaveChanges();
 
                             message = tmpObject.shippingCompanyId.ToString();

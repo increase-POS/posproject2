@@ -34,7 +34,7 @@
     <Property Name="image" Type="ntext" />
     <Property Name="type" Type="nvarchar" MaxLength="50" />
     <Property Name="accType" Type="nvarchar" MaxLength="50" />
-    <Property Name="balance" Type="decimal" Precision="20" Scale="2" />
+    <Property Name="balance" Type="decimal" Precision="20" Scale="3" />
     <Property Name="balanceType" Type="tinyint" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -794,6 +794,8 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
+    <Property Name="balance" Type="decimal" Precision="20" Scale="3" Nullable="false" />
+    <Property Name="balanceType" Type="tinyint" />
   </EntityType>
   <EntityType Name="storageCost">
     <Key>
@@ -2806,30 +2808,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_shippingCompanies_users1">
-    <End Role="users" Type="Self.users" Multiplicity="0..1" />
-    <End Role="shippingCompanies" Type="Self.shippingCompanies" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="shippingCompanies">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_shippingCompanies_users2">
-    <End Role="users" Type="Self.users" Multiplicity="0..1" />
-    <End Role="shippingCompanies" Type="Self.shippingCompanies" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="shippingCompanies">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_subscriptionFees_memberships">
     <End Role="memberships" Type="Self.memberships" Multiplicity="0..1" />
     <End Role="subscriptionFees" Type="Self.subscriptionFees" Multiplicity="*" />
@@ -3671,14 +3649,6 @@
     <AssociationSet Name="FK_setValues_setting" Association="Self.FK_setValues_setting">
       <End Role="setting" EntitySet="setting" />
       <End Role="setValues" EntitySet="setValues" />
-    </AssociationSet>
-    <AssociationSet Name="FK_shippingCompanies_users1" Association="Self.FK_shippingCompanies_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="shippingCompanies" EntitySet="shippingCompanies" />
-    </AssociationSet>
-    <AssociationSet Name="FK_shippingCompanies_users2" Association="Self.FK_shippingCompanies_users2">
-      <End Role="users" EntitySet="users" />
-      <End Role="shippingCompanies" EntitySet="shippingCompanies" />
     </AssociationSet>
     <AssociationSet Name="FK_subscriptionFees_memberships" Association="Self.FK_subscriptionFees_memberships">
       <End Role="memberships" EntitySet="memberships" />

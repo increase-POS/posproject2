@@ -19,5 +19,7 @@ namespace POS_Server.Models
         public Nullable<int> updateUserId { get; set; }
         public Nullable<byte> isActive { get; set; }
         public bool canDelete { get; set; }
+        public decimal balance { get; set; }
+        public Nullable<byte> balanceType { get; set; }
     }
 }
