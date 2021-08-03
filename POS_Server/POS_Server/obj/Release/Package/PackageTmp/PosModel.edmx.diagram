@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c2874a19dbf04f0fb003792a4b15879e" Name="Diagram1">
+        <EntityTypeShape EntityType="incposdbModel.agentMemberships" Width="1.5" PointX="7.5" PointY="92.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.agents" Width="1.5" PointX="6" PointY="82" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.banks" Width="1.5" PointX="16.5" PointY="69.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.bondes" Width="1.5" PointX="24" PointY="83.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.branches" Width="1.5" PointX="3" PointY="68.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.branchesUsers" Width="1.5" PointX="8.25" PointY="78.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.branchStore" Width="1.5" PointX="8.25" PointY="82.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.cards" Width="1.5" PointX="3" PointY="75.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.cashTransfer" Width="1.5" PointX="18.75" PointY="84.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.categories" Width="1.5" PointX="3" PointY="79.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.categoryuser" Width="1.5" PointX="5.25" PointY="89.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.cities" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.countriesCodes" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.coupons" Width="1.5" PointX="3" PointY="84.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.couponsInvoices" Width="1.5" PointX="21.75" PointY="88.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.docImages" Width="1.5" PointX="3" PointY="90.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.Expenses" Width="1.5" PointX="3" PointY="94.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.groupObject" Width="1.5" PointX="8.25" PointY="98.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.groups" Width="1.5" PointX="3" PointY="103.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.Inventory" Width="1.5" PointX="5.25" PointY="77" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.inventoryItemLocation" Width="1.5" PointX="13.5" PointY="78.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.invoices" Width="1.5" PointX="13.5" PointY="97.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.invoiceStatus" Width="1.5" PointX="21.75" PointY="83.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.items" Width="1.5" PointX="5.25" PointY="100.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.itemsLocations" Width="1.5" PointX="15.75" PointY="85.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.itemsMaterials" Width="1.5" PointX="7.5" PointY="115.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.itemsOffers" Width="1.5" PointX="17.75" PointY="93.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.itemsProp" Width="1.5" PointX="13.5" PointY="89.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.itemsTransfer" Width="1.5" PointX="15.75" PointY="98.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.itemsUnits" Width="1.5" PointX="10.5" PointY="103.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.itemTransferOffer" Width="1.5" PointX="24" PointY="89.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.locations" Width="1.5" PointX="10.5" PointY="81.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.medalAgent" Width="1.5" PointX="11.25" PointY="98.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.medals" Width="1.5" PointX="3" PointY="107.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.memberships" Width="1.5" PointX="3" PointY="112" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.objects" Width="1.5" PointX="3" PointY="116.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.offers" Width="1.5" PointX="15.5" PointY="109.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.packages" Width="1.5" PointX="20.75" PointY="94.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.Points" Width="1.5" PointX="16.25" PointY="75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.pos" Width="1.5" PointX="11.25" PointY="75.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.posUsers" Width="1.5" PointX="13.5" PointY="83.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.properties" Width="1.5" PointX="3" PointY="121.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.propertiesItems" Width="1.5" PointX="10.25" PointY="94.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.sections" Width="1.5" PointX="5.25" PointY="94.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.serials" Width="1.5" PointX="12.5" PointY="93.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.servicesCosts" Width="1.5" PointX="15.5" PointY="93.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.setting" Width="1.5" PointX="6.5" PointY="73.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.setValues" Width="1.5" PointX="8.75" PointY="73.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.shippingCompanies" Width="1.5" PointX="3" PointY="125.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.storageCost" Width="1.5" PointX="8.25" PointY="105.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.subscriptionFees" Width="1.5" PointX="5.25" PointY="112.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.sysEmails" Width="1.5" PointX="8.25" PointY="86.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.units" Width="1.5" PointX="3" PointY="129.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.users" Width="1.5" PointX="0.75" PointY="73.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.userSetValues" Width="1.5" PointX="11" PointY="87.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.usersLogs" Width="1.5" PointX="16.5" PointY="81.25" IsExpanded="true" />
+        <AssociationConnector Association="incposdbModel.FK_agentMemberships_agents" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_agentMemberships_cashTransfer" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_agentMemberships_memberships2" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_agentMemberships_subscriptionFees" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_agentMemberships_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_agentMemberships_users2" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_agentMemberships" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_agents_Points" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_agents_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_agents_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_agents" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoices_agents" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_medalAgent_agents" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_Points_agents" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_banks" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_bondes_cashTransfer" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_bondes_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_bondes_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_bondes" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_branches_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_branches_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_branchesUsers_branches" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_branchStore_branches" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_branchStore_branches2" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_Inventory_branches" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoices_branches" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoices_branches1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_locations_branches1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_pos_branches" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_sections_branches" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_sysEmails_branches" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_branchesUsers_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_branchStore_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_branchStore_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cards_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cards_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_cards" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_cashTransfer" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_invoices" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_pos" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_pos1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_users2" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_categories_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_categories_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_categoryuser_categories" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_items_categories" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_categoryuser_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_categoryuser_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_categoryuser_users2" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cities_countriesCodes" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_coupons_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_coupons_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_couponsInvoices_coupons" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_couponsInvoices_invoices" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_couponsInvoices_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_couponsInvoices_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_docImages_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_docImages_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_Expenses_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_groupObject_groups" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_groupObject_objects" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_groupObject_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_groupObject_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_groups_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_groups_users2" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_users_groups" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_Inventory_pos" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_Inventory_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_Inventory_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_inventoryItemLocation_Inventory" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_inventoryItemLocation_itemsLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_inventoryItemLocation_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_inventoryItemLocation_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoices_invoices" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoices_pos" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoices_shippingCompanies" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoices_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoices_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoices_users2" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoices_users3" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoices_users4" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoiceStatus_invoices" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsTransfer_invoices" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoiceStatus_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_invoiceStatus_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_items_units" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_items_units1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_items_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_items_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_items_users2" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_items_users3" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsMaterials_items" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsMaterials_items1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsProp_items" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsUnits_items" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_serials_items" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_servicesCosts_items" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsLocations_itemsUnits" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsLocations_locations" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsLocations_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsLocations_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsLocations_users2" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsLocations_users3" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsMaterials_units" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsOffers_itemsUnits" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsOffers_offers" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsOffers_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsOffers_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsProp_propertiesItems" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsProp_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsProp_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsTransfer_itemsUnits" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsTransfer_locations" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsTransfer_locations1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemTransferOffer_itemsTransfer" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsUnits_storageCost" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsUnits_units" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsUnits_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemsUnits_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_packages_itemsUnits" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_packages_itemsUnits1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemTransferOffer_offers" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemTransferOffer_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_itemTransferOffer_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_locations_sections" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_locations_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_locations_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_medalAgent_medals" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_medalAgent_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_medalAgent_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_medals_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_medals_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_memberships_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_memberships_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_subscriptionFees_memberships" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_objects_objects" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_objects_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_objects_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_packages_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_packages_users2" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_Points_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_Points_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_pos_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_pos_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_posUsers_pos" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_usersLogs_pos" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_posUsers_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_posUsers_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_posUsers_users2" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_properties_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_properties_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_propertiesItems_properties" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_propertiesItems_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_propertiesItems_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_serials_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_serials_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_servicesCosts_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_servicesCosts_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_setValues_setting" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_userSetValues_setValues" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_shippingCompanies_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_shippingCompanies_users2" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_sysEmails_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_sysEmails_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_units_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_units_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_userSetValues_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_userSetValues_users1" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_userSetValues_users2" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_usersLogs_users" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

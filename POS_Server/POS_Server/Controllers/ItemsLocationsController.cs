@@ -52,7 +52,7 @@ namespace POS_Server.Controllers
                                             updateDate = b.updateDate,
                                             updateUserId = b.updateUserId,
                                             itemName = i.name,
-                                            location = l.x+"-"+l.y+"-"+l.z,
+                                            location = l.x+l.y+l.z,
                                             section = s.name,
                                             sectionId = s.sectionId,
                                             itemType = i.type,
