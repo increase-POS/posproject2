@@ -26,6 +26,8 @@ using System.IO;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.Globalization;
+using System.Net.Mail;
+
 namespace POS.View.purchases
 {
     /// <summary>
@@ -1275,8 +1277,194 @@ namespace POS.View.purchases
 
         }
 
-        private void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
+        private async void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
         {
+
+            SysEmails emails = new SysEmails();
+            List<SysEmails> listemails = new List<SysEmails>();
+            EmailClass mailtosend = new EmailClass();
+
+            List<MailimageClass> imgs = new List<MailimageClass>();
+            MailimageClass img = new MailimageClass();
+            ReportCls repm = new ReportCls();
+            listemails = await emails.Get();
+            emails = listemails.Where(x => x.side == "if").FirstOrDefault();
+            mailtosend.from = emails.email;
+            mailtosend.smtpclient = emails.smtpClient;
+            mailtosend.port = (int)emails.port;
+
+            mailtosend.password = Encoding.UTF8.GetString(Convert.FromBase64String(emails.password));
+            mailtosend.isSSl = (bool)emails.isSSL;
+
+            mailtosend.AddTolist("mnasani79@gmail.com");
+            // mailtosend.AddTolist("najyms@gmail.com");//mnasani79@gmail.com
+            mailtosend.subject = "invoice " + DateTime.Now.ToString();
+            //  string FilePath = @"D:\temp.html";
+            //  string FilePath = @"D:\mailtemp\temp3.html";
+            //  string FilePath = repm.GetPath(@"EmailTemplates\temp3.tmp");
+
+            // data
+
+            string invheader = repm.ReadFile(@"EmailTemplates\invheader.tmp");
+            string invfooter = repm.ReadFile(@"EmailTemplates\invfooter.tmp");
+            string invbody = repm.ReadFile(@"EmailTemplates\invbody.tmp");
+            string invitemtable = repm.ReadFile(@"EmailTemplates\invitemtable.tmp");
+            string invitemrow = repm.ReadFile(@"EmailTemplates\invitemrow.tmp");
+
+
+            bool isArabic = ReportCls.checkLang();
+            invheader = invheader.Replace("[[companyname]]", MainWindow.companyName.Trim());
+            invheader = invheader.Replace("[[phone]]", MainWindow.Phone.Trim());
+            invheader = invheader.Replace("[[Email]]", MainWindow.Email.Trim());
+            invheader = invheader.Replace("[[fax]]", MainWindow.Fax.Trim());
+            invheader = invheader.Replace("[[address]]", MainWindow.Address.Trim());
+            invheader = invheader.Replace("[[trphone]]", MainWindow.resourcemanager.GetString("trPhone").Trim() + ": ");
+            invheader = invheader.Replace("[[trfax]]", MainWindow.resourcemanager.GetString("trFax").Trim() + ": ");
+            invheader = invheader.Replace("[[traddress]]", MainWindow.resourcemanager.GetString("trAddress").Trim() + ": ");
+            string title = "Purchase Order";
+            invheader = invheader.Replace("[[title]]", title.Trim());
+            //BODY
+            string thankstitle = title;
+            invbody = invbody.Replace("[[thankstitle]]", thankstitle);
+            string thankstext = "Please provideto us,with a price list,along with your terms and conditions of sale, applicable discounts, shipping dates and additional sales and corporate policies. Should the information you provide be acceptable and competitive. ";
+
+            invbody = invbody.Replace("[[thankstext]]", thankstext);
+            Invoice mailinvoice = new Invoice();
+            mailinvoice = invoice;
+            if (invoice.invoiceId > 0)
+            {
+                invbody = invbody.Replace("[[invoicecode]]", mailinvoice.invNumber);
+                invbody = invbody.Replace("[[invoicedate]]", repm.DateToString(mailinvoice.invDate));
+                invbody = invbody.Replace("[[invoicetotal]]", mailinvoice.total.ToString());
+                invbody = invbody.Replace("[[invoicediscount]]", mailinvoice.discountValue.ToString());
+                invbody = invbody.Replace("[[invoicetax]]", mailinvoice.tax.ToString());
+                invbody = invbody.Replace("[[totalnet]]", mailinvoice.totalNet.ToString());
+
+
+            }
+            /*
+            
+
+*/
+            //  invoiceItems.
+
+            invitemtable = invitemtable.Replace("[[tritems]]", MainWindow.resourcemanager.GetString("trItem").Trim());
+            invitemtable = invitemtable.Replace("[[trunit]]", MainWindow.resourcemanager.GetString("trUnit").Trim());
+            invitemtable = invitemtable.Replace("[[trquantity]]", MainWindow.resourcemanager.GetString("trQuantity").Trim());
+            invitemtable = invitemtable.Replace("[[trtotalrow]]", MainWindow.resourcemanager.GetString("trSum").Trim());
+
+
+
+
+            invbody = invbody.Replace("[[trinvoicecode]]", MainWindow.resourcemanager.GetString("trInvoiceNumber").Trim() + ": ");
+            invbody = invbody.Replace("[[trinvoicedate]]", MainWindow.resourcemanager.GetString("trInvoiceDate").Trim() + ": ");
+            invbody = invbody.Replace("[[trinvoicetotal]]", MainWindow.resourcemanager.GetString("trSum").Trim() + ": ");
+            invbody = invbody.Replace("[[currency]]", MainWindow.Currency);
+            //
+            invbody = invbody.Replace("[[trinvoicediscount]]", MainWindow.resourcemanager.GetString("trDiscount").Trim() + ": ");
+
+            invbody = invbody.Replace("[[trinvoicetax]]", MainWindow.resourcemanager.GetString("trTax").Trim() + ": ");
+
+            invbody = invbody.Replace("[[trtotalnet]]", MainWindow.resourcemanager.GetString("trTotal").Trim() + ": ");
+
+            string invoicenote = "Thank you for your cooperation. We have also enclosed our procurement specifications and conditions for your review <br/> Sincerely";
+            invbody = invbody.Replace("[[invoicenote]]", invoicenote);
+
+            invfooter = invfooter.Replace("[[supporturl]]", "#");
+            invfooter = invfooter.Replace("[[returnpolicyurl]]", "#");
+            invfooter = invfooter.Replace("[[aboutusurl]]", "#");
+
+            invfooter = invfooter.Replace("[[support]]", "Support");
+            invfooter = invfooter.Replace("[[returnpolicy]]", "Returnpolicy");
+            invfooter = invfooter.Replace("[[aboutus]]", "About Us");
+            invfooter = invfooter.Replace("[[year]]", DateTime.Now.Year.ToString());
+
+
+            //  invitemtable
+            // foreach
+            string datarows = "";
+            foreach (ItemTransfer row in invoiceItems)
+            {
+                string rowhtml = invitemrow;
+                rowhtml = rowhtml.Replace("[[col1]]", row.itemName.Trim());
+                rowhtml = rowhtml.Replace("[[col2]]", row.unitName.Trim());
+                rowhtml = rowhtml.Replace("[[col3]]", row.quantity.ToString());
+                rowhtml = rowhtml.Replace("[[col4]]", (row.quantity * row.price).ToString());
+                datarows += rowhtml;
+
+            }
+            invitemtable = invitemtable.Replace("[[invitemrow]]", datarows);
+            // end foreach
+            invbody = invbody.Replace("[[invitemtable]]", invitemtable);
+
+            string mailbody = invheader + invbody + invfooter;
+
+
+
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(mailbody, null, "text/html");
+            string testpath = repm.GetPath(@"EmailTemplates\mail.html");
+            //
+            if (!File.Exists(testpath))
+            {
+                // Create a file to write to.
+                string createText = mailbody;
+                File.WriteAllText(testpath, createText);
+            }
+            else
+            {
+                File.Delete(testpath);
+                // Create a file to write to.
+                string createText = mailbody;
+                File.WriteAllText(testpath, createText);
+            }
+         
+
+            /*
+             *    string path = @"c:\temp\MyTest.txt";
+
+        // This text is added only once to the file.
+        if (!File.Exists(path))
+        {
+            // Create a file to write to.
+            string createText = "Hello and Welcome" + Environment.NewLine;
+            File.WriteAllText(path, createText);
+        }
+
+        // This text is always added, making the file longer over time
+        // if it is not deleted.
+        string appendText = "This is extra text" + Environment.NewLine;
+        File.AppendAllText(path, appendText);
+
+             * */
+
+
+
+          
+
+            img.path = repm.GetLogoImagePath();
+            img.imageId = "logo";
+            imgs.Add(img);
+            img = new MailimageClass();
+            img.path = repm.GetPath(@"EmailTemplates\images\image-2.gif");
+            //img.path = @"D:\mailtemp\images\image-2.gif";
+            img.imageId = "image-2";
+            imgs.Add(img);
+
+            foreach (MailimageClass row in imgs)
+            {
+                htmlView.LinkedResources.Add(mailtosend.Linkimage(@row.path, row.imageId));
+            }
+
+            // 
+
+            mailtosend.htmlView = htmlView;
+
+            string msg = "ok";
+            //comment temporary
+            // string msg = mailtosend.Sendmail();
+
+            MessageBox.Show(msg);
+
 
         }
     }

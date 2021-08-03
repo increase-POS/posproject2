@@ -366,6 +366,28 @@ namespace POS.Classes
         }
 
         //
+
+        public string GetPath(string localpath)
+        {
+            //string imageName = MainWindow.logoImage;
+            string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            string tmpPath = Path.Combine(dir, localpath);
+
+
+
+            //string addpath = @"\Thumb\setting\" ;
+
+            return tmpPath;
+        }
+
+        public string ReadFile(string localpath)
+        {
+            string path = GetPath(localpath);
+            StreamReader str = new StreamReader(path);
+            string content = str.ReadToEnd();
+            str.Close();
+           return content;
+        }
         public List<ReportParameter> fillPurInvReport(Invoice invoice ,List<ReportParameter> paramarr)
         {
             checkLang();
