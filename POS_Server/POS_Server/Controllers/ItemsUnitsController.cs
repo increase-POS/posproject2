@@ -12,6 +12,7 @@ namespace POS_Server.Controllers
     [RoutePrefix("api/ItemsUnits")]
     public class ItemsUnitsController : ApiController
     {
+        List<int> itemUnitsIds = new List<int>();
         [HttpGet]
         [Route("Get")]
         public IHttpActionResult Get(int itemId)
@@ -376,6 +377,125 @@ namespace POS_Server.Controllers
             }
             //else
             return NotFound();
+        }
+
+        [HttpGet]
+        [Route("getSmallItemUnits")]
+        public IHttpActionResult getSmallItemUnits(int itemId, int itemUnitId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    // get all sub item units 
+                    List<itemsUnits> unitsList = entity.itemsUnits
+                     .ToList().Where(x => x.itemId == itemId)
+                      .Select(p => new itemsUnits
+                      {
+                          itemUnitId = p.itemUnitId,
+                          unitId = p.unitId,
+                          subUnitId = p.subUnitId,
+                      })
+                     .ToList();
+
+                    var unitId = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => x.unitId).Single();
+                    itemUnitsIds = new List<int>();
+                    itemUnitsIds.Add(itemUnitId);
+
+                    var result = Recursive(unitsList, (int)unitId);
+
+                    var units = (from iu in entity.itemsUnits.Where(x => x.itemId == itemId)
+                                 join  u in entity.units on iu.unitId equals u.unitId
+                                 select new ItemUnitModel()
+                                 {
+                                     unitId = iu.unitId,
+                                    itemUnitId = iu.itemUnitId,
+                                     subUnitId = iu.subUnitId,
+                                     mainUnit = u.name,
+
+                                 }).Where(p => !itemUnitsIds.Contains((int)p.itemUnitId)).ToList();
+
+                    if (units == null)
+                        return NotFound();
+                    else
+                        return Ok(units);
+                }
+
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
+        public IEnumerable<itemsUnits> Recursive(List<itemsUnits> unitsList, int smallLevelid)
+        {
+            List<itemsUnits> inner = new List<itemsUnits>();
+
+            foreach (var t in unitsList.Where(item => item.subUnitId == smallLevelid))
+            {
+               // if (t.unitId.Value != smallLevelid)
+               // {
+                    itemUnitsIds.Add(t.itemUnitId);
+                    inner.Add(t);
+               // }
+                if (t.unitId.Value == smallLevelid)
+                    return inner;
+                inner = inner.Union(Recursive(unitsList, t.unitId.Value)).ToList();
+            }
+
+            return inner;
+        }
+        [HttpGet]
+        [Route("getConversionQuantity")]
+        public int getConversionQuantity(int fromItemUnit, int toItemUnit)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            int amount = 0;
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                amount += getUnitConversionQuan(fromItemUnit, toItemUnit);
+            }
+            return amount;
+        }
+        private int getUnitConversionQuan(int fromItemUnit, int toItemUnit)
+        {
+            int amount = 0;
+
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                var unit = entity.itemsUnits.Where(x => x.itemUnitId == toItemUnit).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+                if (upperUnit != null)
+                    amount = (int)upperUnit.unitValue;
+                if (fromItemUnit == upperUnit.itemUnitId)
+                    return amount;
+                if (upperUnit != null)
+                    amount += (int)upperUnit.unitValue * getUnitConversionQuan(fromItemUnit,upperUnit.itemUnitId);
+
+                return amount;
+            }
         }
     }
 }

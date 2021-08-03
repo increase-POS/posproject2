@@ -1700,8 +1700,11 @@ namespace POS_Server.Controllers
                         string s = code.Substring(code.LastIndexOf("-") + 1);
                         numberList[i] = s;
                     }
-                    numberList.Sort();
-                    lastNum = int.Parse(numberList[numberList.Count - 1]);
+                    if (numberList.Count > 0)
+                    {
+                        numberList.Sort();
+                        lastNum = int.Parse(numberList[numberList.Count - 1]);
+                    }
                 }
                 return Ok(lastNum);
             }
@@ -1735,8 +1738,11 @@ namespace POS_Server.Controllers
                         string s = code.Substring(code.LastIndexOf("-") + 1);
                         numberList[i] = s;
                     }
-                    numberList.Sort();
-                    lastNum = int.Parse(numberList[numberList.Count - 1]);
+                    if (numberList.Count > 0)
+                    {
+                        numberList.Sort();
+                        lastNum = int.Parse(numberList[numberList.Count - 1]);
+                    }
                 }
                 return Ok(lastNum);
             }

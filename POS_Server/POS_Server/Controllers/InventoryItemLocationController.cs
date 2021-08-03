@@ -241,6 +241,7 @@ namespace POS_Server.Controllers
                             tmp.amountDestroyed = il.amountDestroyed;
                             tmp.isDestroyed = il.isDestroyed;
                             tmp.realAmount = il.quantity;
+                            tmp.cause = il.cause;
                             tmp.itemLocationId = il.itemLocationId;
                             tmp.createDate = DateTime.Now;
                             tmp.updateDate = DateTime.Now;
@@ -258,6 +259,7 @@ namespace POS_Server.Controllers
                             invItem.amount = il.amount;
                             invItem.isDestroyed = il.isDestroyed;
                             invItem.amountDestroyed = il.amountDestroyed;
+                            invItem.cause = il.cause;
                             invItem.updateDate = DateTime.Now;
                             invItem.updateUserId = il.updateUserId;
                         }

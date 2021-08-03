@@ -2922,12 +2922,13 @@ notes
                                     inventoryDate = c.Inventory.createDate,
                                     inventoryNum = c.Inventory.num,
                                     c.Inventory.inventoryType,
-                                    shortfalls= (int)c.realAmount - (int)c.amount,
-                                    shortfallspercent= (c.realAmount == 0) ? 0 : ((((decimal)(int)c.realAmount - (decimal)(int)c.amount) * 100) / (decimal)(int)c.realAmount)
+                                 //   shortfalls= (int)c.realAmount - (int)c.amount,
+                                   // shortfallspercent= (c.realAmount == 0) ? 0 : ((((decimal)(int)c.realAmount - (decimal)(int)c.amount) * 100) / (decimal)(int)c.realAmount)
                                     // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
                                     //diffPercentage = (c.realAmount == 0) ? 0 : (((int)c.amount / (decimal)(int)c.realAmount) * 100),
                                 }).ToList();
-                    var list2 = List.GroupBy(S => new { S.itemUnitId, S.locationId ,S.inventoryId} ).Select(X => new {
+                    var list2 = List.GroupBy(S => new { S.branchId,S.itemUnitId,S.inventoryId} )
+                        .Select(X => new {
 
                         X.FirstOrDefault().inventoryId,
                         X.FirstOrDefault().isDestroyed,
@@ -2961,11 +2962,11 @@ notes
                         X.FirstOrDefault().itemUnitId,
                          X.FirstOrDefault().unitName ,
 
-                        X.FirstOrDefault().Secname ,
-                        X.FirstOrDefault().sectionId,
-                        X.FirstOrDefault().x,
-                        X.FirstOrDefault().y,
-                        X.FirstOrDefault().z,
+                       // X.FirstOrDefault().Secname ,
+                       // X.FirstOrDefault().sectionId,
+                      //  X.FirstOrDefault().x,
+                      //  X.FirstOrDefault().y,
+                      //  X.FirstOrDefault().z,
 
                        X.FirstOrDefault().itemsLocId,
                         X.FirstOrDefault().locationId,
