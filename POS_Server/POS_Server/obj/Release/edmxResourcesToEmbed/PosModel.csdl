@@ -445,6 +445,7 @@
     <NavigationProperty Name="itemsLocations" Relationship="Self.FK_inventoryItemLocation_itemsLocations" FromRole="inventoryItemLocation" ToRole="itemsLocations" />
     <NavigationProperty Name="users" Relationship="Self.FK_inventoryItemLocation_users" FromRole="inventoryItemLocation" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_inventoryItemLocation_users1" FromRole="inventoryItemLocation" ToRole="users" />
+    <Property Name="isFalls" Type="Boolean" />
   </EntityType>
   <EntityType Name="invoices">
     <Key>

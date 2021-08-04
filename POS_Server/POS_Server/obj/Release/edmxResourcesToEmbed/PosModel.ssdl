@@ -352,6 +352,7 @@
     <Property Name="isActive" Type="tinyint" />
     <Property Name="notes" Type="ntext" />
     <Property Name="cause" Type="ntext" />
+    <Property Name="isFalls" Type="bit" />
   </EntityType>
   <EntityType Name="invoices">
     <Key>

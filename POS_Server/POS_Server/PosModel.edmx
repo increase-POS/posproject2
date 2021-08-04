@@ -357,6 +357,7 @@
           <Property Name="isActive" Type="tinyint" />
           <Property Name="notes" Type="ntext" />
           <Property Name="cause" Type="ntext" />
+          <Property Name="isFalls" Type="bit" />
         </EntityType>
         <EntityType Name="invoices">
           <Key>
@@ -4158,6 +4159,7 @@
           <NavigationProperty Name="itemsLocations" Relationship="Self.FK_inventoryItemLocation_itemsLocations" FromRole="inventoryItemLocation" ToRole="itemsLocations" />
           <NavigationProperty Name="users" Relationship="Self.FK_inventoryItemLocation_users" FromRole="inventoryItemLocation" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_inventoryItemLocation_users1" FromRole="inventoryItemLocation" ToRole="users" />
+          <Property Name="isFalls" Type="Boolean" />
         </EntityType>
         <EntityType Name="invoices">
           <Key>
@@ -8156,6 +8158,7 @@
           <EntitySetMapping Name="inventoryItemLocation">
             <EntityTypeMapping TypeName="incposdbModel.inventoryItemLocation">
               <MappingFragment StoreEntitySet="inventoryItemLocation">
+                <ScalarProperty Name="isFalls" ColumnName="isFalls" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="isDestroyed" ColumnName="isDestroyed" />
                 <ScalarProperty Name="amount" ColumnName="amount" />
