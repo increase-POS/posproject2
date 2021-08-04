@@ -22,11 +22,20 @@ using LiveCharts.Helpers;
 using POS.View.windows;
 using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
 
 namespace POS.View.purchases
 {
     public partial class uc_purchaseReport : UserControl
     {
+
+        //prin & pdf
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+
         private int selectedTab = 0;
 
         Statistics statisticModel = new Statistics();
@@ -68,6 +77,8 @@ namespace POS.View.purchases
         Agent agentModel = new Agent();
         User userModel = new User();
         Item itemModel = new Item();
+
+
         /*************************/
 
         Func<ChartPoint, string> labelPoint = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
@@ -230,7 +241,14 @@ namespace POS.View.purchases
                         && (endTime.SelectedTime != null ? x.invDate <= endTime.SelectedTime : true)));
             return result;
         }
+        public List<ItemTransferInvoice> filltoprint()
+        {
+            List<ItemTransferInvoice> xx = new List<ItemTransferInvoice>();
 
+            xx = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime).ToList();
+
+            return xx;
+        }
         private void fillPieChart(ComboBox comboBox, ObservableCollection<int> stackedButton)
         {
             List<string> titles = new List<string>();
@@ -1600,6 +1618,45 @@ namespace POS.View.purchases
                     MainWindow.mainWindow.EndAwait();
                 }
             }
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            //   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            //   {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+            List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
+            query = filltoprint();
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\StatisticReport\Ar\ArPurSts.rdlc";
+            }
+            else addpath = @"\Reports\StatisticReport\En\EnPurSts.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            //  getpuritemcount
+            clsReports.PurStsReport(query,rep,reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+            saveFileDialog.Filter = "PDF|*.pdf;";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filepath = saveFileDialog.FileName;
+                LocalReportExtensions.ExportToPDF(rep, filepath);
+            }
+            //   }
+            //  else
+            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
         }
     }
 }

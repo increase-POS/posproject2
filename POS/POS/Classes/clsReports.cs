@@ -38,6 +38,13 @@ namespace POS.Classes
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
         }
+        public static void PurStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetITinvoice", tempquery));
+        }
 
         public static void posReport(IEnumerable<Pos> possQuery, LocalReport rep, string reppath)
         {

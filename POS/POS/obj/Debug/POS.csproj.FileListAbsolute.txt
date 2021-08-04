@@ -2691,3 +2691,5 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_generatePackage.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_unitConversion.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsShortage.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsShortage.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsShortage.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsShortage.baml
