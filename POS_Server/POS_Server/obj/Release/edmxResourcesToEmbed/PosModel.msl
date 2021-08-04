@@ -358,6 +358,7 @@
     <EntitySetMapping Name="inventoryItemLocation">
       <EntityTypeMapping TypeName="incposdbModel.inventoryItemLocation">
         <MappingFragment StoreEntitySet="inventoryItemLocation">
+          <ScalarProperty Name="fallCause" ColumnName="fallCause" />
           <ScalarProperty Name="isFalls" ColumnName="isFalls" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="isDestroyed" ColumnName="isDestroyed" />

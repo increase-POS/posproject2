@@ -33,7 +33,9 @@ namespace POS_Server.Models
         public Nullable<System.DateTime> inventoryDate { get; set; }
         public string itemType { get; set; }
         public string cause { get; set; }
+        public string fallCause { get; set; }
 
+        public Nullable<bool> isFalls { get; set; }
 
     }
 }

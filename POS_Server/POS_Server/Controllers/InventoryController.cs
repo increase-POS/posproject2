@@ -74,7 +74,7 @@ namespace POS_Server.Controllers
         }
         [HttpGet]
         [Route("GetLastNumOfInv")]
-        public IHttpActionResult GetLastNumOfInv()
+        public IHttpActionResult GetLastNumOfInv(string invCode)
         {
             var re = Request;
             var headers = re.Headers;
@@ -92,7 +92,7 @@ namespace POS_Server.Controllers
                 int lastNum = 0;
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    numberList = entity.Inventory.Select(b => b.num).ToList();
+                    numberList = entity.Inventory.Where(b => b.num.Contains(invCode + "-")).Select(b => b.num).ToList();
 
                     for (int i = 0; i < numberList.Count; i++)
                     {
@@ -168,7 +168,7 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var List = entity.Inventory 
+                    var List = entity.Inventory
                   .Where(c => c.inventoryType.Contains(inventoryType) && c.branchId == branchId)
                    .Select(c => new InventoryModel
                    {
@@ -183,8 +183,8 @@ namespace POS_Server.Controllers
                        inventoryType = c.inventoryType,
 
                    })
-                   .ToList();
-                   
+                   .FirstOrDefault();
+
                     if (List == null)
                         return NotFound();
                     else
@@ -193,7 +193,6 @@ namespace POS_Server.Controllers
             }
             return NotFound();
         }
-
 
 
         // GET api/<controller>  Get medal By ID 
@@ -303,6 +302,7 @@ message = Object.inventoryId.ToString();
 
                             tmps.num = Object.num;
                             tmps.notes = Object.notes;
+                            tmps.inventoryType = Object.inventoryType;
                             tmps.isActive = Object.isActive;
                             tmps.createDate=Object.createDate;
                             tmps.updateDate = DateTime.Now;// server current date

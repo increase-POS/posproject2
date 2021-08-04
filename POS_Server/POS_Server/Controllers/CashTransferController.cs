@@ -1763,13 +1763,13 @@ namespace POS_Server.Controllers
                                 }
                                 else
                                 {
+                                    //invoice
+                                    inv.paid += agent.balance;
+                                    inv.deserved -= agent.balance;
                                     //agent
                                     newBalance = (decimal)amount - (decimal)agent.balance;
                                     agent.balance = newBalance;
                                     agent.balanceType = 1;
-                                    //invoice
-                                    inv.paid += newBalance;
-                                    inv.deserved -= newBalance;
                                     //cash
                                     cashTr.cash = newBalance;
                                 }

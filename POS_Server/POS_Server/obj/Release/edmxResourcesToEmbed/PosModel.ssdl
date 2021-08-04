@@ -353,6 +353,7 @@
     <Property Name="notes" Type="ntext" />
     <Property Name="cause" Type="ntext" />
     <Property Name="isFalls" Type="bit" />
+    <Property Name="fallCause" Type="ntext" />
   </EntityType>
   <EntityType Name="invoices">
     <Key>

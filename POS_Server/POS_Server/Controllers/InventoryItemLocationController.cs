@@ -57,9 +57,10 @@ namespace POS_Server.Controllers
                                     section = lo.sections.name,
                                     location = lo.x + "-" + lo.y + "-" + lo.z,
                                     unitName = un.name,
+                                    
 
                                 })
-                       .ToList();
+                       .ToList().OrderBy(x => x.location).ToList();
                     int sequence = 0;
                     for(int i = 0; i< List.Count; i++)
                     {
@@ -127,7 +128,70 @@ namespace POS_Server.Controllers
                                     inventoryDate = c.Inventory.createDate,
                                     inventoryNum = c.Inventory.num,
                                 })
-                       .ToList();
+                       .ToList().OrderBy(x => x.location).ToList();
+
+                    if (List == null)
+                        return NotFound();
+                    else
+                        return Ok(List);
+                }
+            }
+                return NotFound();
+        }
+
+         [HttpGet]
+        [Route("GetShortageItem")]
+        public IHttpActionResult GetShortageItem( int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {         
+                    var List = (from c in entity.inventoryItemLocation
+                                .Where(c => c.realAmount - c.amount > 0  && c.Inventory.branchId == branchId && c.isFalls == false  && c.Inventory.inventoryType =="n" )
+                                join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
+                                join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
+                                join un in entity.units on u.unitId equals un.unitId
+                                join lo in entity.locations on l.locationId equals lo.locationId
+                                select new InventoryItemLocationModel()
+                                {
+                                    id = c.id,
+                                    isDestroyed = c.isDestroyed,
+                                    amount = c.realAmount - c.amount,
+                                    amountDestroyed = c.amountDestroyed,
+                                    quantity = c.realAmount,
+                                    itemLocationId = c.itemLocationId,
+                                    inventoryId = c.inventoryId,
+                                    isActive = c.isActive,
+                                    notes = c.notes,
+                                    createDate = c.createDate,
+                                    updateDate = c.updateDate,
+                                    createUserId = c.createUserId,
+                                    updateUserId = c.updateUserId,
+                                    canDelete = true,
+                                    itemId = u.items.itemId,
+                                    itemName = u.items.name,
+                                    unitId = un.unitId,
+                                    itemUnitId = u.itemUnitId,
+                                    unitName = un.name,
+                                    section = lo.sections.name,
+                                    location = lo.x  + lo.y + lo.z,
+                                    itemType = u.items.type,
+                                    inventoryDate = c.Inventory.createDate,
+                                    inventoryNum = c.Inventory.num,
+                                })
+                       .ToList().OrderBy(x => x.location).ToList();
 
                     if (List == null)
                         return NotFound();
@@ -240,8 +304,10 @@ namespace POS_Server.Controllers
                             tmp.amount = il.amount;
                             tmp.amountDestroyed = il.amountDestroyed;
                             tmp.isDestroyed = il.isDestroyed;
+                            tmp.isFalls = il.isFalls;
                             tmp.realAmount = il.quantity;
                             tmp.cause = il.cause;
+                            tmp.notes = il.notes;
                             tmp.itemLocationId = il.itemLocationId;
                             tmp.createDate = DateTime.Now;
                             tmp.updateDate = DateTime.Now;
@@ -258,8 +324,10 @@ namespace POS_Server.Controllers
 
                             invItem.amount = il.amount;
                             invItem.isDestroyed = il.isDestroyed;
+                            invItem.isFalls = il.isFalls;
                             invItem.amountDestroyed = il.amountDestroyed;
                             invItem.cause = il.cause;
+                            invItem.notes = il.notes;
                             invItem.updateDate = DateTime.Now;
                             invItem.updateUserId = il.updateUserId;
                         }
@@ -304,6 +372,51 @@ namespace POS_Server.Controllers
                         tmpItem.updateDate = DateTime.Now;
                         tmpItem.updateUserId = Object.updateUserId;
                         tmpItem.cause = Object.cause;
+                        message = "Pos Is Updated Successfully";
+                      
+                        entity.SaveChanges();
+                    }
+                }
+                catch
+                {
+                    message = "an error ocurred";
+                }
+            }
+            return message;
+        }
+        [HttpPost]
+        [Route("fallItem")]
+        public string fallItem(string newObject)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            string message = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                newObject = newObject.Replace("\\", string.Empty);
+                newObject = newObject.Trim('"');
+                inventoryItemLocation Object = JsonConvert.DeserializeObject<inventoryItemLocation>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+              
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var unitEntity = entity.Set<pos>();
+                        
+                        var tmpItem = entity.inventoryItemLocation.Where(p => p.id == Object.id).FirstOrDefault();
+                        tmpItem.notes = Object.notes;
+                        tmpItem.isFalls = true;
+                        tmpItem.updateDate = DateTime.Now;
+                        tmpItem.updateUserId = Object.updateUserId;
+                        tmpItem.fallCause = Object.fallCause;
                         message = "Pos Is Updated Successfully";
                       
                         entity.SaveChanges();

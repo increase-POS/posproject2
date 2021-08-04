@@ -29,6 +29,7 @@ namespace POS_Server
         public string notes { get; set; }
         public string cause { get; set; }
         public Nullable<bool> isFalls { get; set; }
+        public string fallCause { get; set; }
     
         public virtual Inventory Inventory { get; set; }
         public virtual itemsLocations itemsLocations { get; set; }

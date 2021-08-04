@@ -19,5 +19,6 @@ namespace POS_Server.Models
         public string notes { get; set; }
         public Boolean canDelete { get; set; }
         public string inventoryType { get; set; }
+        public Nullable<int> mainInventoryId { get; set; }
     }
 }

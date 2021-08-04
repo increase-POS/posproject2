@@ -57,7 +57,7 @@ namespace POS_Server.Controllers
                                             sectionId = s.sectionId,
                                             itemType = i.type,
                                             unitName = u.units.name,
-                                        }).ToList();
+                                        }).ToList().OrderBy(x => x.location).ToList();
 
                     if (docImageList == null)
                         return NotFound();
