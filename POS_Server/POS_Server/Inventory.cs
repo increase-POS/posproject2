@@ -31,6 +31,7 @@ namespace POS_Server
         public string inventoryType { get; set; }
         public Nullable<int> branchId { get; set; }
         public Nullable<int> posId { get; set; }
+        public Nullable<int> mainInventoryId { get; set; }
     
         public virtual branches branches { get; set; }
         public virtual pos pos { get; set; }

@@ -332,6 +332,7 @@
     <Property Name="inventoryType" Type="nvarchar" MaxLength="10" />
     <Property Name="branchId" Type="int" />
     <Property Name="posId" Type="int" />
+    <Property Name="mainInventoryId" Type="int" />
   </EntityType>
   <EntityType Name="inventoryItemLocation">
     <Key>
