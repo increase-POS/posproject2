@@ -109,7 +109,34 @@ namespace POS.View.purchases
         {
             InitializeComponent();
         }
+        private List<ItemTransferInvoice> converter(List<ItemTransferInvoice> query)
+        {
+            foreach (var item in query)
+            {
+                if (item.invType == "p")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                }
+                else if (item.invType == "pw")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                }
+                else if (item.invType == "pb")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseReturnInvoice");
+                }
+                else if (item.invType == "pd")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                }
+                else if (item.invType == "pbd")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseReturnDraft");
+                }
+            }
+            return query;
 
+        }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             MainWindow.mainWindow.StartAwait();
@@ -243,31 +270,46 @@ namespace POS.View.purchases
         }
         public List<ItemTransferInvoice> filltoprint()
         {
+
+            /*
+       fillColumnChart(cb_branches, selectedBranchId);
+fillColumnChart(cb_vendors, selectedVendorsId);
+fillColumnChart(cb_users, selectedUserId);
+fillColumnChart(cb_Items, selectedItemId);
+
+      * */
             List<ItemTransferInvoice> xx = new List<ItemTransferInvoice>();
             if (selectedTab == 0)
             {
-                xx = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime).ToList();
+             //   xx = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime).ToList();
+           xx = fillPdfList(cb_branches, selectedBranchId);
 
             }
             else if (selectedTab == 1)
             {
-                xx = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime).ToList();
+                fillPdfList(cb_pos, selectedPosId);
+                //cb_pos, selectedPosId
+               // var temp1 = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
+              //  temp1 = temp1.Where(j => (selectedPosId.Count != 0 ? stackedButton.Contains((int)j.posId) : true));
+            //    xx = temp1.ToList();
+            xx= fillPdfList(cb_pos, selectedPosId);
+                //   xx = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime).ToList();
 
             }
             else if (selectedTab == 2)
             {
-                xx = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime).ToList();
-
+                //   xx = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime).ToList();
+                xx = fillPdfList(cb_vendors, selectedVendorsId);
             }
             else if (selectedTab == 3)
             {
-                xx = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime).ToList();
-
+                //   xx = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime).ToList();
+                xx = fillPdfList(cb_users, selectedUserId);
             }
-            else if (selectedTab == 4)
+            else //if (selectedTab == 4)
             {
-                xx = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime).ToList();
-
+             //   xx = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime).ToList();
+                xx = fillPdfList(cb_Items, selectedItemId);
             }
         
 
@@ -347,6 +389,7 @@ namespace POS.View.purchases
             }
             chart1.Series = piechartData;
         }
+
 
         private void fillColumnChart(ComboBox comboBox, ObservableCollection<int> stackedButton)
         {
@@ -500,6 +543,48 @@ namespace POS.View.purchases
 
             DataContext = this;
             cartesianChart.Series = columnChartData;
+        }
+
+
+        private List <ItemTransferInvoice> fillPdfList(ComboBox comboBox, ObservableCollection<int> stackedButton)
+        {
+            List<ItemTransferInvoice> list = new List<ItemTransferInvoice>();
+     
+
+            if (selectedTab == 0)
+            {
+                var temp = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
+                temp = temp.Where(j => (selectedBranchId.Count != 0 ? stackedButton.Contains((int)j.branchCreatorId) : true));
+                list = temp.ToList();
+            }
+            else if (selectedTab == 1)
+            {
+                var temp = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
+                temp = temp.Where(j => (selectedPosId.Count != 0 ? stackedButton.Contains((int)j.posId) : true));
+                list = temp.ToList();
+            }
+            else if (selectedTab == 2)
+            {
+                var temp = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime);
+                temp = temp.Where(j => (selectedVendorsId.Count != 0 ? stackedButton.Contains((int)j.agentId) : true));
+                list = temp.ToList();
+            }
+            else if (selectedTab == 3)
+            {
+                var temp = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
+                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.updateUserId) : true));
+                list = temp.ToList();
+            }
+            else //if (selectedTab == 4)
+            {
+                var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
+                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
+                list = temp.ToList();
+            }
+
+            return list;
+
+
         }
 
         private void fillRowChart(ComboBox comboBox, ObservableCollection<int> stackedButton)
@@ -1650,15 +1735,57 @@ namespace POS.View.purchases
             //   {
             List<ReportParameter> paramarr = new List<ReportParameter>();
             List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
-            query = filltoprint();
-            string addpath;
+            query = converter( filltoprint());
+
+          string addpath="";
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-                addpath = @"\Reports\StatisticReport\Ar\ArPurSts.rdlc";
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Ar\ArPurSts.rdlc";
+                }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Ar\ArPurPosSts.rdlc";
+                }
+                else if (selectedTab == 2)
+                {
+                    addpath = @"\Reports\StatisticReport\Ar\ArPurVendorSts.rdlc";
+                }
+                else if (selectedTab == 3)
+                {
+                    addpath = @"\Reports\StatisticReport\Ar\ArPurUserSts.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\Ar\ArPurItemSts.rdlc";
+                }
             }
-            else addpath = @"\Reports\StatisticReport\En\EnPurSts.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            else
+            {
+                //english
+                if (selectedTab == 0)
+                { addpath = @"\Reports\StatisticReport\En\EnPurSts.rdlc"; }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\En\EnPurPosSts.rdlc";
+                }
+                else if (selectedTab == 2)
+                {
+                    addpath = @"\Reports\StatisticReport\En\EnPurVendorSts.rdlc";
+                }
+                else if (selectedTab == 3)
+                {
+                    addpath = @"\Reports\StatisticReport\En\EnPurUserSts.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\En\EnPurItemSts.rdlc";
+                }
+
+            }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
             //  getpuritemcount

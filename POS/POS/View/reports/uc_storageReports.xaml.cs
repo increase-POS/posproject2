@@ -1008,7 +1008,7 @@ namespace POS.View.reports
         private void fillPieChart()
         {
             List<string> titles = new List<string>();
-            IEnumerable<decimal> x = null;
+            List<decimal> x = new List<decimal>();
             titles.Clear();
 
             var temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
@@ -1024,24 +1024,48 @@ namespace POS.View.reports
 
             var titleTemp = temp.GroupBy(m => m.branchName);
             titles.AddRange(titleTemp.Select(jj => jj.Key));
-            var result = temp.GroupBy(s => s.branchId).Select(s => new Storage { branchId = s.FirstOrDefault().branchId, quantity = s.Sum(g => g.quantity) });
-            x = result.Select(m => (decimal)m.quantity);
-
+            var result = temp.GroupBy(s => s.branchId).Select(s => new Storage
+            {
+                branchId = s.FirstOrDefault().branchId,
+                quantity = s.Sum(g => g.quantity),
+                branchName=s.FirstOrDefault().branchName,
+            }).OrderByDescending(s=>s.quantity);
+            x = result.Select(m => (decimal)m.quantity).ToList();
+            int count = x.Count();
+            titles = result.Select(m => m.branchName).ToList();
             SeriesCollection piechartData = new SeriesCollection();
-            for (int i = 0; i < x.Count(); i++)
+            for (int i = 0; i < count; i++)
             {
                 List<decimal> final = new List<decimal>();
                 List<string> lable = new List<string>();
-                final.Add(x.ToList().Skip(i).FirstOrDefault());
-                piechartData.Add(
-                  new PieSeries
-                  {
-                      Values = final.AsChartValues(),
-                      Title = titles.Skip(i).FirstOrDefault(),
-                      DataLabels = true,
+                if (i < 5)
+                {
+                    final.Add(x.Max());
+                    lable.Add(titles.Skip(i).FirstOrDefault() );
+                    piechartData.Add(
+                      new PieSeries
+                      {
+                          Values = final.AsChartValues(),
+                          Title = lable.FirstOrDefault(),
+                          DataLabels = true,
+                      }
+                  );
+                    x.Remove(x.Max());
+                }
+                else
+                {
+                    final.Add(x.Sum());
+                    piechartData.Add(
+                      new PieSeries
+                      {
+                          Values = final.AsChartValues(),
+                          Title = "Others",
+                          DataLabels = true,
+                      }
+                  );
+                    break;
+                }
 
-                  }
-              );
             }
             chart1.Series = piechartData;
             fillColumnChart();
@@ -1897,8 +1921,10 @@ namespace POS.View.reports
         private void fillExternalPieChart()
         {
             List<string> titles = new List<string>();
-            IEnumerable<decimal> x = null;
+            List<string> titles1 = new List<string>();
+            List<decimal> x = new List<decimal>();
             titles.Clear();
+            titles1.Clear();
             var temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
             if (selectedExternalTab == 1)
             {
@@ -1909,35 +1935,53 @@ namespace POS.View.reports
                 temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null);
             }
 
-            var titleTemp = temp.GroupBy(m => new { m.itemId, m.unitId }).Select(m => new
-            {
-                agentName = m.FirstOrDefault().itemName + "\n" + m.FirstOrDefault().unitName
-            });
-            titles.AddRange(titleTemp.Select(jj => jj.agentName));
             var result = temp
                 .GroupBy(s => new { s.itemId, s.unitId })
                 .Select(s => new ItemTransferInvoice
                 {
                     itemId = s.FirstOrDefault().itemId,
                     unitId = s.FirstOrDefault().unitId,
-                    quantity = s.Sum(g => g.quantity)
-                });
-            x = result.Select(m => (decimal)m.quantity);
-
+                    quantity = s.Sum(g => g.quantity),
+                    itemName = s.FirstOrDefault().itemName,
+                    unitName = s.FirstOrDefault().unitName,
+                }).OrderByDescending(s => s.quantity);
+            x = result.Select(m => (decimal)m.quantity).ToList();
+            titles = result.Select(m => m.itemName).ToList();
+            titles1 = result.Select(m => m.unitName).ToList();
+            int count = x.Count();
             SeriesCollection piechartData = new SeriesCollection();
-            for (int i = 0; i < x.Count(); i++)
+            for (int i = 0; i < count; i++)
             {
                 List<decimal> final = new List<decimal>();
                 List<string> lable = new List<string>();
-                final.Add(x.ToList().Skip(i).FirstOrDefault());
-                piechartData.Add(
-                  new PieSeries
-                  {
-                      Values = final.AsChartValues(),
-                      Title = titles.Skip(i).FirstOrDefault(),
-                      DataLabels = true,
-                  }
-              );
+                if (i < 5)
+                {
+                    final.Add(x.Max());
+                    lable.Add(titles.Skip(i).FirstOrDefault() + titles1.Skip(i).FirstOrDefault());
+                    piechartData.Add(
+                      new PieSeries
+                      {
+                          Values = final.AsChartValues(),
+                          Title = lable.FirstOrDefault(),
+                          DataLabels = true,
+                      }
+                  );
+                    x.Remove(x.Max());
+                }
+                else
+                {
+                    final.Add(x.Sum());
+                    piechartData.Add(
+                      new PieSeries
+                      {
+                          Values = final.AsChartValues(),
+                          Title = "Others",
+                          DataLabels = true,
+                      }
+                  );
+                    break;
+                }
+
             }
             chart1.Series = piechartData;
             fillExternalColumnChart();
@@ -2774,7 +2818,7 @@ namespace POS.View.reports
             return result;
         }
 
-       
+
 
         private void Btn_stocktakeArchived_Click(object sender, RoutedEventArgs e)
         {
@@ -3291,14 +3335,14 @@ new StackedColumnSeries
                 branchId = s.FirstOrDefault().branchId,
                 branchName = s.FirstOrDefault().branchName,
                 quantity = s.Sum(x => x.quantity),
-                ItemUnits=s.FirstOrDefault().ItemUnits,
-                itemUnitId=s.FirstOrDefault().itemUnitId,
-                itemName=s.FirstOrDefault().itemName,
-                unitName=s.FirstOrDefault().unitName
+                ItemUnits = s.FirstOrDefault().ItemUnits,
+                itemUnitId = s.FirstOrDefault().itemUnitId,
+                itemName = s.FirstOrDefault().itemName,
+                unitName = s.FirstOrDefault().unitName
             });
             var tempName = result.GroupBy(s => new { s.itemUnitId }).Select(s => new
             {
-                itemName = s.FirstOrDefault().itemName+s.FirstOrDefault().unitName,
+                itemName = s.FirstOrDefault().itemName + s.FirstOrDefault().unitName,
             });
             names.AddRange(tempName.Select(nn => nn.itemName));
             for (int i = 0; i < result.Count(); i++)
@@ -3332,7 +3376,7 @@ new StackedColumnSeries
             {
                 branchId = s.FirstOrDefault().branchId,
                 branchName = s.FirstOrDefault().branchName,
-                quantity = s.Sum(x=>x.quantity),
+                quantity = s.Sum(x => x.quantity),
             });
 
             var tempName = result.GroupBy(s => new { s.branchId }).Select(s => new
@@ -3343,12 +3387,12 @@ new StackedColumnSeries
 
             SeriesCollection columnChartData = new SeriesCollection();
             List<long> cPa = new List<long>();
-           
+
 
 
             for (int i = 0; i < result.Count(); i++)
             {
-                cPa.Add(long.Parse( result.ToList().Skip(i).FirstOrDefault().quantity.ToString()));
+                cPa.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().quantity.ToString()));
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
 
@@ -3359,7 +3403,7 @@ new StackedColumnSeries
                 DataLabels = true,
                 Title = "Amount"
             });
-           
+
 
             DataContext = this;
             cartesianChart.Series = columnChartData;
@@ -3369,7 +3413,7 @@ new StackedColumnSeries
         {
             List<string> titles = new List<string>();
             List<long> cP = new List<long>();
-          
+
             titles.Clear();
             var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
 

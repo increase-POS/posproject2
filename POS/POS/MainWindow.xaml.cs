@@ -42,7 +42,7 @@ namespace POS
         bool menuState = false;
         //ToolTip="{Binding Properties.Settings.Default.Lang}"
         public static string lang;
-        public static string Reportlang = "en";
+        public static string Reportlang = "ar";
         public static string companyName;
         public static string Email;
         public static string Fax;
