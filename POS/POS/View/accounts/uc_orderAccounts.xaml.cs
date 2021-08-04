@@ -252,6 +252,10 @@ namespace POS.View.accounts
 
                 if (invoice != null)
                 {
+                    if (invoice.status == "tr")
+                        btn_save.IsEnabled = false;
+                    else
+                        btn_save.IsEnabled = true;
                     tb_cash.IsEnabled = true;
                     //btn_save.IsEnabled = false;
 
@@ -312,7 +316,7 @@ namespace POS.View.accounts
 
             return s;
         }
-
+        
         private async void calcBalance(decimal ammount)
         {
             string s = "";
@@ -322,7 +326,6 @@ namespace POS.View.accounts
             pos.balance += ammount;
 
             s = await pos.savePos(pos);
-
         }
         private void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
@@ -793,11 +796,11 @@ namespace POS.View.accounts
                     }
 
                     string s = await cashModel.payOrderInvoice(invoice.invoiceId, invoice.invStatusId, cash.cash.Value, processType, cash);
-                    MessageBox.Show(s);
+                   // MessageBox.Show(s);
                     if (!s.Equals(""))
                     {
                         if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
-                            calcBalance(cash.cash.Value);
+                            calcBalance(decimal.Parse(tb_cash.Text));
 
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         Btn_clear_Click(null, null);

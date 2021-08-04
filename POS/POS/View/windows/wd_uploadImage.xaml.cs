@@ -168,21 +168,17 @@ namespace POS.View.windows
 
             try
             {
-                System.Windows.MessageBox.Show("try");
                 if (docImgModel.image.Equals(""))
                 {
                     SectionData.clearImg(img_upload);
-                    System.Windows.MessageBox.Show("empty");
                 }
                 else
                 {
-                    System.Windows.MessageBox.Show("full");
                     byte[] imageBuffer = await docImgModel.downloadImage(imageName); // read this as BLOB from your DB
 
                     var bitmapImage = new BitmapImage();
                     if (imageBuffer != null)
                     {
-                        System.Windows.MessageBox.Show("not null");
                         using (var memoryStream = new MemoryStream(imageBuffer))
                         {
                             bitmapImage.BeginInit();
@@ -199,7 +195,7 @@ namespace POS.View.windows
                         openFileDialog.FileName = tmpPath;
                     }
                     else
-                    { SectionData.clearImg(img_upload); System.Windows.MessageBox.Show("null"); }
+                     SectionData.clearImg(img_upload);
                 }
             }
             catch { }
