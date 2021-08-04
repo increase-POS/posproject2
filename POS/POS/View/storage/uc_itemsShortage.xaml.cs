@@ -45,15 +45,12 @@ namespace POS.View.storage
         string reportsPermission = "itemsShortage_reports";
         
        
-        Category categoryModel = new Category();
-        Category category = new Category();
-        IEnumerable<Category> categories;
         InventoryItemLocation invItemLocModel = new InventoryItemLocation();
         InventoryItemLocation invItemLoc = new InventoryItemLocation();
         ItemLocation itemLocationModel = new ItemLocation();
         Invoice invoiceModel = new Invoice();
+        Inventory inventory;
         IEnumerable<InventoryItemLocation> inventoriesItems;
-        int? categoryParentId = 0;
         private string _ItemType = "";
         public byte tglCategoryState = 1;
         public byte tglItemState = 1;
@@ -81,7 +78,7 @@ namespace POS.View.storage
 
             //for excel
             //await RefreshinvItemList();
-            //Tb_search_TextChanged(null, null);
+            Tb_search_TextChanged(null, null);
         }
         IEnumerable<Item> items;
         // item object
@@ -180,7 +177,6 @@ namespace POS.View.storage
         }
         private async void Btn_shortage_Click(object sender, RoutedEventArgs e)
         {
-            /*
             if (MainWindow.groupObject.HasPermissionAction(shortagePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 bool valid = validateDistroy();
@@ -190,57 +186,83 @@ namespace POS.View.storage
                     int itemId = 0;
                     int invoiceId = 0;
                     string serialNum = "";
-                    if (invItemLoc.id != 0)
-                    {
-                        itemUnitId = invItemLoc.itemUnitId;
-                        itemId = invItemLoc.itemId;
-                    }
-                    //else
-                    //{
-                    //    itemUnitId = (int)cb_unit.SelectedValue;
-                    //    itemId = (int)cb_item.SelectedValue;
-                    //}
-                    if (_ItemType == "sn")
-                        serialNum = tb_serialNum.Text;
 
-                    if (lst_serials.Items.Count > 0)
-                    {
-                        for (int j = 0; j < lst_serials.Items.Count; j++)
-                        {
-                            serialNum += lst_serials.Items[j];
-                            if (j != lst_serials.Items.Count - 1)
-                                serialNum += ",";
-                        }
-                    }
+                    itemUnitId = invItemLoc.itemUnitId;
+                    itemId = invItemLoc.itemId;
+                    invItemLoc.notes = tb_notes.Text;
+                    invItemLoc.fallCause = tb_reasonOfShortage.Text;
+                    #region add invoice
+
                     decimal price = await invoiceModel.GetAvgItemPrice(itemUnitId, itemId);
                     price = Math.Round(price, 2);
                     decimal total = price * int.Parse(tb_amount.Text);
 
-                    invoiceModel.invNumber = await invoiceModel.generateInvNumber("ds");
+                    
+                    invoiceModel.invNumber = await invoiceModel.generateInvNumber("sh");
                     invoiceModel.branchCreatorId = MainWindow.branchID.Value;
                     invoiceModel.posId = MainWindow.posID.Value;
                     invoiceModel.createUserId = MainWindow.userID.Value;
-                    invoiceModel.invType = "d"; // shortage
+                    invoiceModel.invType = "sh"; // shortage
                     invoiceModel.total = total;
                     invoiceModel.totalNet = total;
                     invoiceModel.paid = 0;
                     invoiceModel.deserved = invoiceModel.totalNet;
                     invoiceModel.notes = tb_notes.Text;
 
-                    List<ItemTransfer> orderList = new List<ItemTransfer>();
+                    #endregion
 
+                    #region add shortage inventory
+                    inventory = new Inventory();
+                    inventory.inventoryType = "sh";
+                    inventory.num = await inventory.generateInvNumber("sh");
+                    inventory.mainInventoryId = invItemLoc.inventoryId;
+                    inventory.branchId = MainWindow.branchID.Value;
+                    inventory.createUserId = MainWindow.userID.Value;
+                    inventory.posId = MainWindow.posID.Value;
+                    int invId = await inventory.Save(inventory);
+                    if (invId != 0)
+                    {
+                        List<InventoryItemLocation> invItemsLocations = new List<InventoryItemLocation>();
+                        invItemLocModel = new InventoryItemLocation();
+                        invItemLocModel.amount = invItemLoc.amount;
+                        invItemLocModel.itemUnitId = invItemLoc.itemUnitId;
+                        invItemLocModel.itemLocationId = invItemLoc.itemLocationId;
+                        invItemLocModel.inventoryId = invId;
+                        invItemLocModel.createUserId = MainWindow.userID.Value;
+                        invItemLocModel.fallCause = tb_reasonOfShortage.Text;
+                        
+                        
+                        invItemsLocations.Add(invItemLocModel);
+
+                        string res = await invItemLocModel.Save(invItemsLocations, invId);
+                    }
+                    #endregion
                     if (invItemLoc.id != 0)
                     {
+                        List<ItemTransfer> orderList = new List<ItemTransfer>();
                         int amount = await itemLocationModel.getAmountByItemLocId((int)invItemLoc.itemLocationId);
-                        if (amount >= invItemLoc.amountShortage)
+                        if (amount >= invItemLoc.amount)
                         {
+                            if (_ItemType == "sn")
+                                serialNum = tb_serialNum.Text;
+
+                            if (lst_serials.Items.Count > 0)
+                            {
+                                for (int j = 0; j < lst_serials.Items.Count; j++)
+                                {
+                                    serialNum += lst_serials.Items[j];
+                                    if (j != lst_serials.Items.Count - 1)
+                                        serialNum += ",";
+                                }
+                            }
+
                             orderList.Add(new ItemTransfer()
                             {
                                 itemName = invItemLoc.itemName,
                                 itemId = invItemLoc.itemId,
                                 unitName = invItemLoc.unitName,
                                 itemUnitId = invItemLoc.itemUnitId,
-                                quantity = invItemLoc.amountShortage,
+                                quantity = invItemLoc.amount,
                                 itemSerial = serialNum,
                                 price = price,
                             });
@@ -248,76 +270,24 @@ namespace POS.View.storage
                             if (invoiceId != 0)
                             {
                                 await invoiceModel.saveInvoiceItems(orderList, invoiceId);
-                                await invItemLoc.distroyItem(invItemLoc);
-                                await itemLocationModel.decreaseItemLocationQuantity((int)invItemLoc.itemLocationId, (int)invItemLoc.amountShortage, MainWindow.userID.Value);
+                                await invItemLoc.fallItem(invItemLoc);
                                 await refreshShortageDetails();
                                 Btn_clear_Click(null, null);
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                             }
                             else
                                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
                         }
                         else
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trShortageAmountMoreExist"), animation: ToasterAnimation.FadeIn);
                         }
-                    }
-                    //else
-                    //{
-                    //    orderList.Add(new ItemTransfer()
-                    //    {
-                    //        itemName = cb_item.SelectedItem.ToString(),
-                    //        itemId = (int)cb_item.SelectedValue,
-                    //        unitName = cb_unit.SelectedItem.ToString(),
-                    //        itemUnitId = (int)cb_unit.SelectedValue,
-                    //        quantity = long.Parse(tb_amount.Text),
-                    //        itemSerial = serialNum,
-                    //        price = price,
-                    //    });
-                    //    // اتلاف عنصر يدوياً بدون جرد
-                    //    Window.GetWindow(this).Opacity = 0.2;
-                    //    wd_transItemsLocation w;
-                    //    w = new wd_transItemsLocation();
-                    //    w.orderList = orderList;
-                    //    if (w.ShowDialog() == true)
-                    //    {
-                    //        if (w.selectedItemsLocations != null)
-                    //        {
-                    //            List<ItemLocation> itemsLocations = w.selectedItemsLocations;
-                    //            List<ItemLocation> readyItemsLoc = new List<ItemLocation>();
-
-                    //            // _ProcessType ="ex";
-                    //            for (int i = 0; i < itemsLocations.Count; i++)
-                    //            {
-                    //                if (itemsLocations[i].isSelected == true)
-                    //                    readyItemsLoc.Add(itemsLocations[i]);
-                    //            }
-
-                    //            invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
-                    //            if (invoiceId != 0)
-                    //            {
-                    //                await invoiceModel.saveInvoiceItems(orderList, invoiceId);
-                    //                for (int i = 0; i < readyItemsLoc.Count; i++)
-                    //                {
-                    //                    int itemLocId = readyItemsLoc[i].itemsLocId;
-                    //                    int quantity = (int)readyItemsLoc[i].quantity;
-                    //                    await itemLocationModel.decreaseItemLocationQuantity(itemLocId, quantity, MainWindow.userID.Value);
-                    //                }
-                    //                Btn_clear_Click(null, null);
-                    //                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                    //            }
-                    //            else
-                    //                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                    //        }
-                    //    }
-                    //    Window.GetWindow(this).Opacity = 1;
-                    //}
+                    }    
                 }
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-            */
+          
         }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
@@ -325,12 +295,18 @@ namespace POS.View.storage
         }
         private async Task refreshShortageDetails()
         {
-            //inventoriesItems = await invItemLocModel.GetItemShortage(MainWindow.branchID.Value);
-            //dg_itemShortage.ItemsSource = inventoriesItems;
+            inventoriesItems = await invItemLocModel.GetShortageItem(MainWindow.branchID.Value);
+            dg_itemShortage.ItemsSource = inventoriesItems;
+        }
+        async Task<IEnumerable<InventoryItemLocation>> RefreshinvItemList()
+        {
+            MainWindow.mainWindow.StartAwait();
+            inventoriesItems = await invItemLocModel.GetShortageItem(MainWindow.branchID.Value);
+            MainWindow.mainWindow.EndAwait();
+            return inventoriesItems;
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
-        {//search
-         /*
+        {//search       
 
              if (inventoriesItems is null)
                  await RefreshinvItemList();
@@ -345,8 +321,6 @@ namespace POS.View.storage
              //&& s.isActive == tgl_offerState
              );
              RefreshinvItemView();
-         */
-
         }
         /*
         async Task<IEnumerable<InventoryItemLocation>> RefreshinvItemList()
@@ -364,12 +338,15 @@ namespace POS.View.storage
         }
         private void Dg_itemShortage_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            invItemLoc = dg_itemShortage.SelectedItem as InventoryItemLocation;
-            tb_itemUnit.Visibility = Visibility.Visible;
-            if (invItemLoc.itemType == "sn")
-                grid_serial.Visibility = Visibility.Visible;
-            tb_amount.IsEnabled = false;
-            this.DataContext = invItemLoc;
+            if (dg_itemShortage.SelectedItem != null)
+            {
+                invItemLoc = dg_itemShortage.SelectedItem as InventoryItemLocation;
+                tb_itemUnit.Visibility = Visibility.Visible;
+                if (invItemLoc.itemType == "sn")
+                    grid_serial.Visibility = Visibility.Visible;
+                tb_amount.IsEnabled = false;
+                this.DataContext = invItemLoc;
+            }
         }
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {

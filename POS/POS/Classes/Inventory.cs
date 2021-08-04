@@ -27,6 +27,7 @@ namespace POS.Classes
         public string notes { get; set; }
         public Boolean canDelete { get; set; }
         public string inventoryType { get; set; }
+        public Nullable<int> mainInventoryId { get; set; }
         //*******************************************************
         /// <summary>
         /// ////////////////////////////////////////
@@ -72,9 +73,9 @@ namespace POS.Classes
                 return list;
             }
         }
-        public async Task<List<Inventory>> getByBranch(string inventoryType,int branchId)
+        public async Task<Inventory> getByBranch(string inventoryType,int branchId)
         {
-            List<Inventory> list = null;
+           Inventory inventory = new Inventory();
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -102,14 +103,10 @@ namespace POS.Classes
                         Converters = new List<JsonConverter> { new BadDateFixingConverter() },
                         DateParseHandling = DateParseHandling.None
                     };
-                    list = JsonConvert.DeserializeObject<List<Inventory>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return list;
+                    inventory = JsonConvert.DeserializeObject<Inventory>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return inventory;
                 }
-                else //web api sent error response 
-                {
-                    list = new List<Inventory>();
-                }
-                return list;
+                return inventory;
             }
         }
         public async Task<int> Save(Inventory newObject)
@@ -180,6 +177,7 @@ namespace POS.Classes
                 return Object;
             }
         }
+       
         public async Task<Boolean> Delete(int inventoryId, int userId, bool final)
         {
             // ... Use HttpClient.
@@ -207,7 +205,7 @@ namespace POS.Classes
                 return false;
             }
         }
-        public async Task<int> GetLastNumOfInv()
+        public async Task<int> GetLastNumOfInv(string invCode)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -219,7 +217,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Inventory/GetLastNumOfInv");
+                request.RequestUri = new Uri(Global.APIUri + "Inventory/GetLastNumOfInv?invCode="+ invCode);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -235,9 +233,9 @@ namespace POS.Classes
                 return 0;
             }
         }
-        public async Task<string> generateInvNumber(string invCode,int posId)
+        public async Task<string> generateInvNumber(string invCode)
         {         
-            int sequence = await GetLastNumOfInv();
+            int sequence = await GetLastNumOfInv(invCode); // in : inventory
             sequence++;
             string strSeq = sequence.ToString();
             if (sequence <= 999999)

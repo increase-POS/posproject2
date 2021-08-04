@@ -82,13 +82,13 @@ namespace POS.View.storage
         {
             int sequence = 0;
             invItemsLocations.Clear();
-            if (inventory.inventoryId == 0)
+            itemsLocations = await itemLocationModel.get(MainWindow.branchID.Value);
+
+            if (_InventoryType == "d")
+                inventory = await inventory.getByBranch("d", MainWindow.branchID.Value);
+            if (inventory.inventoryId == 0)// there is no draft in branch
             {
-               // string num = await inventory.generateInvNumber("in", MainWindow.posID.Value);
-                //txt_inventoryNum.Text = num;
-               // txt_inventoryDate.Text = DateTime.Now.ToString();
-                itemsLocations = await itemLocationModel.get(MainWindow.branchID.Value);
-                foreach(ItemLocation il in itemsLocations)
+                foreach (ItemLocation il in itemsLocations)
                 {
                     sequence++;
                     InventoryItemLocation iil = new InventoryItemLocation();
@@ -100,6 +100,7 @@ namespace POS.View.storage
                     iil.quantity = (int)il.quantity;
                     iil.itemLocationId = il.itemsLocId;
                     iil.isDestroyed = false;
+                    iil.isFalls = false;
                     iil.amountDestroyed = 0;
                     iil.amount = 0;
                     iil.createUserId = MainWindow.userLogin.userId;
@@ -155,22 +156,25 @@ namespace POS.View.storage
         private async Task clearInventory()
         {
             _InventoryType = "d";
-            string num = await inventory.generateInvNumber("in", MainWindow.posID.Value);
+            //string num = await inventory.generateInvNumber("in", MainWindow.posID.Value);
             inventory = new Inventory();
-            txt_inventoryDate.Text = DateTime.Now.ToString();
-            txt_inventoryNum.Text = num;
+            txt_inventoryDate.Text = "";
+            txt_inventoryNum.Text = "";
+            txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trInventoryDraft");
+
             inputEditable();
            await fillInventoryDetails();
         }
         private async Task addInventory(string invType)
         {
             if(inventory.inventoryId == 0)
-            {
-                inventory.num =  await inventory.generateInvNumber("in", MainWindow.posID.Value);
+            {               
                 inventory.branchId = MainWindow.branchID.Value;
                 inventory.posId = MainWindow.posID.Value;
                 inventory.createUserId = MainWindow.userLogin.userId;
-            }           
+            }   
+            if(invType == "n")
+                inventory.num = await inventory.generateInvNumber("in");
             inventory.inventoryType = invType;            
             inventory.updateUserId = MainWindow.userLogin.userId;
 
@@ -195,49 +199,79 @@ namespace POS.View.storage
         }
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
-            wd_inventory w = new wd_inventory();
+            //Window.GetWindow(this).Opacity = 0.2;
+            //wd_inventory w = new wd_inventory();
 
-            w.inventoryType = "d";
-            w.userId = MainWindow.userLogin.userId;
+            //w.inventoryType = "d";
+            //w.userId = MainWindow.userLogin.userId;
 
-            w.title = MainWindow.resourcemanager.GetString("trDrafts");
+            //w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
-            if (w.ShowDialog() == true)
+            //if (w.ShowDialog() == true)
+            //{
+            //    if (w.inventory != null)
+            //    {
+            //        inventory = w.inventory;
+            //        _InventoryType = "d";
+            //        await fillInventoryDetails();
+            //    }
+            //}
+            //Window.GetWindow(this).Opacity = 1;
+            inventory = await inventory.getByBranch("d", MainWindow.branchID.Value);
+            if (inventory.inventoryId == 0)
             {
-                if (w.inventory != null)
-                {
-                    inventory = w.inventory;
-                    _InventoryType = "d";
-                    await fillInventoryDetails();
-                }
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoDraft"), animation: ToasterAnimation.FadeIn);
+
             }
-            Window.GetWindow(this).Opacity = 1;
+            else
+            {
+                txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trInventoryDraft"); 
+                _InventoryType = "d";
+                await fillInventoryDetails();
+            }
         }
         private async void Btn_Inventory_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
-            wd_inventory w = new wd_inventory();
+            //Window.GetWindow(this).Opacity = 0.2;
+            //wd_inventory w = new wd_inventory();
 
-            w.inventoryType = "n";
-            w.branchId = MainWindow.branchID.Value;
-            w.title = MainWindow.resourcemanager.GetString("trDrafts");
+            //w.inventoryType = "n";
+            //w.branchId = MainWindow.branchID.Value;
+            //w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
-            if (w.ShowDialog() == true)
+            //if (w.ShowDialog() == true)
+            //{
+            //    if (w.inventory != null)
+            //    {
+            //        _InventoryType = "n";
+            //        inventory = w.inventory;
+            //        await fillInventoryDetails();  
+            //    }
+            //}
+            //Window.GetWindow(this).Opacity = 1;
+             inventory = await inventory.getByBranch("n", MainWindow.branchID.Value);
+            if (inventory.inventoryId == 0)
             {
-                if (w.inventory != null)
-                {
-                    _InventoryType = "n";
-                    inventory = w.inventory;
-                    await fillInventoryDetails();  
-                }
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInventory"), animation: ToasterAnimation.FadeIn);
+
             }
-            Window.GetWindow(this).Opacity = 1;
+            else
+            {
+                txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trStocktaking");
+                _InventoryType = "n";
+                await fillInventoryDetails();
+            }
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.groupObject.HasPermissionAction(createInventoryPermission, MainWindow.groupObjects, "one"))
-                await addInventory("n"); // n:normal
+            {
+                var inv = await inventory.getByBranch("n", MainWindow.branchID.Value);
+                if(inv.inventoryId == 0)
+                    await addInventory("n"); // n:normal
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningOneInventory"), animation: ToasterAnimation.FadeIn);
+            }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }

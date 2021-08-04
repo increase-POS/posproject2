@@ -1830,4 +1830,22 @@
   <data name="trCount:" xml:space="preserve">
     <value>Count:</value>
   </data>
+  <data name="trErrorEmptyDesUnitToToolTip" xml:space="preserve">
+    <value>The destination unit cannot be empty</value>
+  </data>
+  <data name="trErrorEmptySrcUnitToolTip" xml:space="preserve">
+    <value>The source unit cannot be empty</value>
+  </data>
+  <data name="trInventoryDraft" xml:space="preserve">
+    <value>Inventory Draft</value>
+  </data>
+  <data name="trNoDraft" xml:space="preserve">
+    <value>There is no draft</value>
+  </data>
+  <data name="trNoInventory" xml:space="preserve">
+    <value>There is no inventory</value>
+  </data>
+  <data name="trWarningOneInventory" xml:space="preserve">
+    <value>You cannot create more than one inventory in branch</value>
+  </data>
 </root>

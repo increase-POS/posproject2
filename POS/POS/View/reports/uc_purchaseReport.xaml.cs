@@ -244,8 +244,32 @@ namespace POS.View.purchases
         public List<ItemTransferInvoice> filltoprint()
         {
             List<ItemTransferInvoice> xx = new List<ItemTransferInvoice>();
+            if (selectedTab == 0)
+            {
+                xx = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime).ToList();
 
-            xx = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime).ToList();
+            }
+            else if (selectedTab == 1)
+            {
+                xx = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime).ToList();
+
+            }
+            else if (selectedTab == 2)
+            {
+                xx = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime).ToList();
+
+            }
+            else if (selectedTab == 3)
+            {
+                xx = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime).ToList();
+
+            }
+            else if (selectedTab == 4)
+            {
+                xx = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime).ToList();
+
+            }
+        
 
             return xx;
         }
@@ -1638,7 +1662,7 @@ namespace POS.View.purchases
 
             ReportCls.checkLang();
             //  getpuritemcount
-            clsReports.PurStsReport(query,rep,reppath);
+            clsReports.PurStsReport(query, rep, reppath);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 

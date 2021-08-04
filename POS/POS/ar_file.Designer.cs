@@ -1978,6 +1978,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الوحدة الوجهة لا يمكن أن تكون فارغة.
+        /// </summary>
+        internal static string trErrorEmptyDesUnitToToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyDesUnitToToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تاريخ الانتهاء لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trErrorEmptyEndDateToolTip {
@@ -2055,6 +2064,15 @@ namespace POS {
         internal static string trErrorEmptyRecipientToolTip {
             get {
                 return ResourceManager.GetString("trErrorEmptyRecipientToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الوحدة المصدر لا يمكن أن تكون فارغة.
+        /// </summary>
+        internal static string trErrorEmptySrcUnitToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptySrcUnitToolTip", resourceCulture);
             }
         }
         
@@ -2478,6 +2496,15 @@ namespace POS {
         internal static string trInventoryDate {
             get {
                 return ResourceManager.GetString("trInventoryDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مسودة جرد.
+        /// </summary>
+        internal static string trInventoryDraft {
+            get {
+                return ResourceManager.GetString("trInventoryDraft", resourceCulture);
             }
         }
         
@@ -3036,6 +3063,24 @@ namespace POS {
         internal static string trNewPasswordHint {
             get {
                 return ResourceManager.GetString("trNewPasswordHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يوجد مسودة.
+        /// </summary>
+        internal static string trNoDraft {
+            get {
+                return ResourceManager.GetString("trNoDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يوجد جرد.
+        /// </summary>
+        internal static string trNoInventory {
+            get {
+                return ResourceManager.GetString("trNoInventory", resourceCulture);
             }
         }
         
@@ -5016,6 +5061,15 @@ namespace POS {
         internal static string trWarningItemCountIs_ {
             get {
                 return ResourceManager.GetString("trWarningItemCountIs:", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يمكنك إنشاء أكثر من جرد في الفرع.
+        /// </summary>
+        internal static string trWarningOneInventory {
+            get {
+                return ResourceManager.GetString("trWarningOneInventory", resourceCulture);
             }
         }
         

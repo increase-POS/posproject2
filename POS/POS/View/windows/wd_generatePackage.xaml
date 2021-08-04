@@ -8,7 +8,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
-        Title="wd_itemsList" Height="200" Width="300" Background="Transparent" AllowsTransparency="True"
+        Title="wd_itemsList" Height="260" Width="300" Background="Transparent" AllowsTransparency="True"
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
     <Grid Grid.Column="1" Grid.Row="1"  >
         <Grid.RowDefinitions>
@@ -83,7 +83,7 @@
                     <RowDefinition Height="10"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="45"/>
                 </Grid.RowDefinitions>
 
@@ -107,7 +107,19 @@
                         <ToolTip x:Name="tt_errorParentItem" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                     </Path.ToolTip>
                 </Path>
-                <TextBox x:Name="tb_quantity"  Grid.Row="2"
+                <ComboBox x:Name="cb_location"  Grid.Row="2"
+                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                            Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                             materialDesign:HintAssist.Hint="Select Location "  
+                           TextBlock.FontSize="12"   Background="#f8f8f8"
+              Height="40"   Margin="10,5,10,5"
+                           BorderBrush="#737373" BorderThickness="0" 
+                                       IsEditable="True"
+                                         IsTextSearchEnabled="False"
+                                  StaysOpenOnEdit="True"
+                                 >
+                </ComboBox>
+                <TextBox x:Name="tb_quantity"  Grid.Row="3"
                                   Padding="10,10,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="quantity..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"

@@ -72,14 +72,14 @@ namespace POS.View.windows
         }
         private async Task refreshInventories()
         {
-            if (userId != 0)/// to display draft invoices
-                inventories = await inventory.GetByCreator(inventoryType, userId);
-            else if (branchId != 0)
-                inventories = await inventory.getByBranch(inventoryType, branchId);
-            //else if (condition == "" || condition == null)
-            //    invoices = await invoice.GetInvoicesByType(invoiceType, branchId);
-            //else // get export/ import orders
-            //    invoices = await invoice.GetOrderByType(invoiceType, branchId);
+            //if (userId != 0)/// to display draft invoices
+            //    inventories = await inventory.GetByCreator(inventoryType, userId);
+            //else if (branchId != 0)
+            //    inventories = await inventory.getByBranch(inventoryType, branchId);
+            ////else if (condition == "" || condition == null)
+            ////    invoices = await invoice.GetInvoicesByType(invoiceType, branchId);
+            ////else // get export/ import orders
+            ////    invoices = await invoice.GetOrderByType(invoiceType, branchId);
 
 
             dg_Inventory.ItemsSource = inventories.ToList();

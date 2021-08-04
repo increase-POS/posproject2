@@ -82,7 +82,7 @@ namespace POS.View.storage
             //Txb_searchitems_TextChanged(null, null);
 
             //for excel
-            await RefreshinvItemList();
+            //await RefreshinvItemList();
             Tb_search_TextChanged(null, null);
         }
 

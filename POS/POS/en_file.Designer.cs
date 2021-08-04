@@ -2014,6 +2014,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The destination unit cannot be empty.
+        /// </summary>
+        internal static string trErrorEmptyDesUnitToToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyDesUnitToToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End date cann&apos;t be empty.
         /// </summary>
         internal static string trErrorEmptyEndDateToolTip {
@@ -2091,6 +2100,15 @@ namespace POS {
         internal static string trErrorEmptyRecipientToolTip {
             get {
                 return ResourceManager.GetString("trErrorEmptyRecipientToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The source unit cannot be empty.
+        /// </summary>
+        internal static string trErrorEmptySrcUnitToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptySrcUnitToolTip", resourceCulture);
             }
         }
         
@@ -2523,6 +2541,15 @@ namespace POS {
         internal static string trInventoryDate {
             get {
                 return ResourceManager.GetString("trInventoryDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory Draft.
+        /// </summary>
+        internal static string trInventoryDraft {
+            get {
+                return ResourceManager.GetString("trInventoryDraft", resourceCulture);
             }
         }
         
@@ -3081,6 +3108,24 @@ namespace POS {
         internal static string trNewPasswordHint {
             get {
                 return ResourceManager.GetString("trNewPasswordHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is no draft.
+        /// </summary>
+        internal static string trNoDraft {
+            get {
+                return ResourceManager.GetString("trNoDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is no inventory.
+        /// </summary>
+        internal static string trNoInventory {
+            get {
+                return ResourceManager.GetString("trNoInventory", resourceCulture);
             }
         }
         
@@ -5088,6 +5133,15 @@ namespace POS {
         internal static string trWarningItemCountIs_ {
             get {
                 return ResourceManager.GetString("trWarningItemCountIs:", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot create more than one inventory in branch.
+        /// </summary>
+        internal static string trWarningOneInventory {
+            get {
+                return ResourceManager.GetString("trWarningOneInventory", resourceCulture);
             }
         }
         
