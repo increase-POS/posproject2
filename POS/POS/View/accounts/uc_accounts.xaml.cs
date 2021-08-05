@@ -36,7 +36,6 @@ namespace POS.View.accounts
         public uc_accounts()
         {
             InitializeComponent();
-            //Btn_pos_Click(null, null);
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -57,19 +56,31 @@ namespace POS.View.accounts
         }
         void permission()
         {
+            bool loadWindow = false;
             if (!SectionData.isAdminPermision())
             foreach (Button button in FindControls.FindVisualChildren<Button>(this))
                 {
-                if (button.Tag != null)
-                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
-                        button.Visibility = Visibility.Visible;
-                    else button.Visibility = Visibility.Collapsed;
+                    if (button.Tag != null)
+                        if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+
+                        {
+                            button.Visibility = Visibility.Visible;
+                        if (!loadWindow)
+                        {
+                                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                                loadWindow = true;
+                        }
+                        }
+                        else button.Visibility = Visibility.Collapsed;
             }
+            else
+            Btn_pos_Click(btn_posAccounting, null);
+
         }
         private void translate()
         {
 
-            btn_posAccounting.Content = MainWindow.resourcemanager.GetString("trPOS");
+            btn_posAccounting.Content = MainWindow.resourcemanager.GetString("trTransfers");
             btn_banksAccounting.Content = MainWindow.resourcemanager.GetString("trBanks");
             btn_payments.Content = MainWindow.resourcemanager.GetString("trPayments");
             btn_received.Content = MainWindow.resourcemanager.GetString("trReceived");

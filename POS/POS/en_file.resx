@@ -1848,4 +1848,13 @@
   <data name="trWarningOneInventory" xml:space="preserve">
     <value>You cannot create more than one inventory in branch</value>
   </data>
+  <data name="trScan" xml:space="preserve">
+    <value>Scan</value>
+  </data>
+  <data name="trSelectImage" xml:space="preserve">
+    <value>Select image</value>
+  </data>
+  <data name="trTransfers" xml:space="preserve">
+    <value>Transfers</value>
+  </data>
 </root>

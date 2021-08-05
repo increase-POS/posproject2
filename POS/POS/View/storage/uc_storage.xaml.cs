@@ -62,19 +62,30 @@ namespace POS.View
                 grid_ucStorage.FlowDirection = FlowDirection.RightToLeft;
             }
             translate();
-            //Btn_locations_Click(null, null);
             permission();
         }
         void permission()
         {
+            bool loadWindow = false;
             if (!SectionData.isAdminPermision())
-            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
-            {
-                if (button.Tag != null)
-                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
-                        button.Visibility = Visibility.Visible;
-                    else button.Visibility = Visibility.Collapsed;
-            }
+                foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+                {
+                    if (button.Tag != null)
+                        if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+
+                        {
+                            button.Visibility = Visibility.Visible;
+                            if (!loadWindow)
+                            {
+                                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                                loadWindow = true;
+                            }
+                        }
+                        else button.Visibility = Visibility.Collapsed;
+                }
+            else
+                Btn_locations_Click(btn_locations, null);
+
         }
         void refreashBackground()
         {

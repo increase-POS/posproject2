@@ -61,7 +61,7 @@ namespace POS.View.accounts
         {
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trTransaferDetails");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            txt_posAccounts.Text = MainWindow.resourcemanager.GetString("trPosAccounts");
+            txt_posAccounts.Text = MainWindow.resourcemanager.GetString("trTransfers");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos1, MainWindow.resourcemanager.GetString("trFromPosHint"));
@@ -137,17 +137,21 @@ namespace POS.View.accounts
             cb_fromBranch.ItemsSource = branches;
             cb_fromBranch.DisplayMemberPath = "name";
             cb_fromBranch.SelectedValuePath = "branchId";
-            cb_fromBranch.SelectedIndex = MainWindow.branchID.Value;
-            cb_fromBranch.IsEnabled = false;////////////permissions
+            cb_fromBranch.SelectedValue = MainWindow.branchID.Value;
             #endregion
 
             #region fill branch combo2
             cb_toBranch.ItemsSource = branches;
             cb_toBranch.DisplayMemberPath = "name";
             cb_toBranch.SelectedValuePath = "branchId";
-            cb_toBranch.SelectedIndex = MainWindow.branchID.Value;
-            cb_toBranch.IsEnabled = false;/////////////permissions
+            cb_toBranch.SelectedValue = MainWindow.branchID.Value;
             #endregion
+            if (!MainWindow.groupObject.HasPermissionAction(transAdminPermission, MainWindow.groupObjects, "one"))
+            {
+                cb_fromBranch.IsEnabled = false;////////////permissions
+                cb_toBranch.IsEnabled = false;/////////////permissions
+            }
+
 
             #region fill operation state
             var dislist = new[] {
@@ -158,6 +162,7 @@ namespace POS.View.accounts
             cb_state.DisplayMemberPath = "Text";
             cb_state.SelectedValuePath = "Value";
             cb_state.ItemsSource = dislist;
+            cb_state.SelectedIndex = 0;
             #endregion
 
             //dg_posAccounts.ItemsSource = await cashModel.GetCashTransferAsync("all", "p");
@@ -320,15 +325,15 @@ namespace POS.View.accounts
             SectionData.validateEmptyComboBox(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorEmptyToPosToolTip");
             //chk if 2 pos is the same
             bool isSame = false;
-            if (cb_pos1.SelectedIndex == cb_pos2.SelectedIndex)
+            if (cb_pos1.SelectedValue == cb_pos2.SelectedValue)
                 isSame = true;
-            if ((cb_pos1.SelectedIndex != -1) && (cb_pos2.SelectedIndex != -1) && (cb_pos1.SelectedIndex == cb_pos2.SelectedIndex))
+            if ((cb_pos1.SelectedIndex != -1) && (cb_pos2.SelectedIndex != -1) && (cb_pos1.SelectedValue == cb_pos2.SelectedValue))
             {
                 SectionData.showComboBoxValidate(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorSamePos");
                 SectionData.showComboBoxValidate(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorSamePos");
             }
 
-            if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")) && !isSame && !validTransAdmin())
+            if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")) && !isSame /*&& !validTransAdmin()*/)
             {
                 //first operation
                 CashTransfer cash1 = new CashTransfer();
@@ -386,7 +391,7 @@ namespace POS.View.accounts
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
+            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
             {
                 //chk empty cash
                 SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
@@ -396,9 +401,9 @@ namespace POS.View.accounts
             SectionData.validateEmptyComboBox(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorEmptyToPosToolTip");
             //chk if 2 pos is the same
             bool isSame = false;
-            if (cb_pos1.SelectedIndex == cb_pos2.SelectedIndex)
+            if (cb_pos1.SelectedValue == cb_pos2.SelectedValue)
                 isSame = true;
-            if ((cb_pos1.SelectedIndex != -1) && (cb_pos2.SelectedIndex != -1) && (cb_pos1.SelectedIndex == cb_pos2.SelectedIndex))
+            if ((cb_pos1.SelectedIndex != -1) && (cb_pos2.SelectedIndex != -1) && (cb_pos1.SelectedValue  == cb_pos2.SelectedValue))
             {
                 SectionData.showComboBoxValidate(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorSamePos");
                 SectionData.showComboBoxValidate(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorSamePos");
@@ -474,6 +479,7 @@ namespace POS.View.accounts
         }
         private async void Btn_confirm_Click(object sender, RoutedEventArgs e)
         {//confirm
+
             if (cashtrans.cashTransId != 0)
             {
                 //if another operation not confirmed then just confirm this
@@ -491,7 +497,9 @@ namespace POS.View.accounts
                     //there is enough balance
                     if (pos.balance > cashtrans2.cash)
                     {
-                        string s = await cashModel.MovePosCash(cashtrans2.cashTransId, MainWindow.userID.Value);
+                        cashtrans2.isConfirm = 1;
+                        string s =await cashModel.Save(cashtrans2);
+                        s = await cashModel.MovePosCash(cashtrans2.cashTransId, MainWindow.userID.Value);
 
                         if (s.Equals("transdone"))//tras done so confirm
                             confirmOpr();
@@ -644,18 +652,18 @@ namespace POS.View.accounts
             cb_pos2.SelectedIndex = -1;
         }
 
-        bool validTransAdmin()
-        {
-            if (!MainWindow.groupObject.HasPermissionAction(transAdminPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-                if (cb_pos1.SelectedValue != null && cb_pos2.SelectedValue != null)
-                    if (int.Parse(cb_pos1.SelectedValue.ToString()) != MainWindow.posID
-                        && int.Parse(cb_pos2.SelectedValue.ToString()) != MainWindow.posID)
-                    {
-                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                        return false;
-                    }
-                        return true;
-        }
+        //bool validTransAdmin()
+        //{
+        //    if (!MainWindow.groupObject.HasPermissionAction(transAdminPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+        //        if (cb_pos1.SelectedValue != null && cb_pos2.SelectedValue != null)
+        //            if (int.Parse(cb_pos1.SelectedValue.ToString()) != MainWindow.posID
+        //                && int.Parse(cb_pos2.SelectedValue.ToString()) != MainWindow.posID)
+        //            {
+        //                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        //                return false;
+        //            }
+        //                return true;
+        //}
         private void Cb_pos2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 

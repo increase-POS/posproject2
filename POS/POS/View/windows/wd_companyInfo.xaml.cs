@@ -438,7 +438,7 @@ namespace POS.View.windows
 
                 //  save logo
                 // image
-
+                string sLogo = "";
                 if (isImgPressed)
                 {
                     int valId = setVLogo.valId;
@@ -452,7 +452,7 @@ namespace POS.View.windows
                         setVLogo.isSystem = 1;
                         setVLogo.isDefault = 1;
                         setVLogo.settingId = logoId;
-                        string sLogo = await valueModel.Save(setVLogo);
+                        sLogo = await valueModel.Save(setVLogo);
 
                         // brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
                         // img_user.Background = brush;
@@ -462,13 +462,24 @@ namespace POS.View.windows
                         MessageBox.Show("حدث خطأ في تحميل الصورة");
                     }
                 }
-
                 
-            
                 //MessageBox.Show("logo : " + sLogo);
 
                 if ((!sName.Equals("0")) && (!sAddress.Equals("0")) && (!sEmail.Equals("0")) && (!sMobile.Equals("0")) && (!sPhone.Equals("")) && (!sFax.Equals("")))
+                {
+                    MainWindow.companyName = tb_name.Text;
+                    MainWindow.Address = tb_address.Text;
+                    MainWindow.Mobile = cb_areaMobile.Text + tb_mobile.Text;
+                    MainWindow.Email = tb_email.Text;
+                    MainWindow.Fax = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
+                    MainWindow.Phone = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
+                    MainWindow.logoImage = setVLogo.value;
+                    await valueModel.getImg(setVLogo.value);
+
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                    await Task.Delay(1500);
+                    this.Close();
+                }
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 

@@ -100,6 +100,8 @@ namespace POS.View.accounts
             dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
             dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
 
+            btn_image.IsEnabled = false;
+
             #region fill process type
             var typelist = new[] {
             new { Text = MainWindow.resourcemanager.GetString("trBalance")    , Value = "balance" },
@@ -257,7 +259,8 @@ namespace POS.View.accounts
                     else
                         btn_save.IsEnabled = true;
                     tb_cash.IsEnabled = true;
-                    //btn_save.IsEnabled = false;
+
+                    btn_image.IsEnabled = true;
 
                     //cb_paymentProcessType.SelectedValue = invoice.processType;
 
@@ -347,6 +350,8 @@ namespace POS.View.accounts
             dp_docDateCheque.IsEnabled = true;
             tb_cash.IsEnabled = true;
             tb_note.IsEnabled = true;
+
+            btn_image.IsEnabled = false;
             /////////////////////////
             ///
             if (grid_doc.IsVisible)
@@ -433,9 +438,9 @@ namespace POS.View.accounts
 
                 wd_uploadImage w = new wd_uploadImage();
 
-                w.tableName = "cashTransfer";
-                w.tableId = cashtrans.cashTransId;
-                w.docNum = cashtrans.docNum;
+                w.tableName = "invoices";
+                w.tableId = invoice.invoiceId;
+                w.docNum = invoice.invNumber;
                 w.ShowDialog();
                 // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
             }

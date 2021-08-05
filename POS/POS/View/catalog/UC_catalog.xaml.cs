@@ -52,7 +52,6 @@ namespace POS.View
       
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //Btn_categorie_Click(null, null);
 
             if (MainWindow.lang.Equals("en"))
             {
@@ -70,14 +69,25 @@ namespace POS.View
         }
         void permission()
         {
+            bool loadWindow = false;
             if (!SectionData.isAdminPermision())
-            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+                foreach (Button button in FindControls.FindVisualChildren<Button>(this))
                 {
-                if (button.Tag != null)
-                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
-                        button.Visibility = Visibility.Visible;
-                    else button.Visibility = Visibility.Collapsed;
-            }
+                    if (button.Tag != null)
+                        if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+
+                        {
+                            button.Visibility = Visibility.Visible;
+                            if (!loadWindow)
+                            {
+                                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                                loadWindow = true;
+                            }
+                        }
+                        else button.Visibility = Visibility.Collapsed;
+                }
+            else
+            Btn_categorie_Click(btn_categories, null);
         }
 
         void refreashBackground()

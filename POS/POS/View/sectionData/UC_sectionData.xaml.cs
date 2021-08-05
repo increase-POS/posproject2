@@ -39,7 +39,6 @@ namespace POS.View
         {
             InitializeComponent();
 
-            //Btn_suppliers_Click(null, null);
         }
         void refreashBackground()
         {
@@ -117,14 +116,25 @@ namespace POS.View
         }
         void permission()
         {
+            bool loadWindow = false;
             if (!SectionData.isAdminPermision())
-            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+                foreach (Button button in FindControls.FindVisualChildren<Button>(this))
                 {
-                if (button.Tag != null)
-                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
-                        button.Visibility = Visibility.Visible;
-                    else button.Visibility = Visibility.Collapsed;
-            }
+                    if (button.Tag != null)
+                        if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+
+                        {
+                            button.Visibility = Visibility.Visible;
+                            if (!loadWindow)
+                            {
+                                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                                loadWindow = true;
+                            }
+                        }
+                        else button.Visibility = Visibility.Collapsed;
+                }
+            else
+                Btn_suppliers_Click(btn_suppliers, null);
         }
         private void translate()
         {

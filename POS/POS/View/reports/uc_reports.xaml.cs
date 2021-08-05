@@ -64,17 +64,30 @@ namespace POS.View.reports
 
             translate();
             btn_salesReports_Click(null, null);
+
             //permission();
         }
         void permission()
         {
-            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
-            {
-                if (button.Tag != null)
-                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
-                        button.Visibility = Visibility.Visible;
-                    else button.Visibility = Visibility.Collapsed;
-            }
+            bool loadWindow = false;
+            if (!SectionData.isAdminPermision())
+                foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+                {
+                    if (button.Tag != null)
+                        if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+
+                        {
+                            button.Visibility = Visibility.Visible;
+                            if (!loadWindow)
+                            {
+                                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                                loadWindow = true;
+                            }
+                        }
+                        else button.Visibility = Visibility.Collapsed;
+                }
+            else
+            btn_salesReports_Click(btn_salesReports, null);
         }
 
         void refreashBackground()

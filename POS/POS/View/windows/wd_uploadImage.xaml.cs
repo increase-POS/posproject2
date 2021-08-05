@@ -20,6 +20,8 @@ using System.Windows.Shapes;
 using WIA;
 using System.Web.UI.WebControls;
 using System.Windows.Resources;
+using System.Resources;
+using System.Reflection;
 
 namespace POS.View.windows
 {
@@ -46,9 +48,44 @@ namespace POS.View.windows
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
+
+            #region translate
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_imageUpload.FlowDirection = System.Windows.FlowDirection.LeftToRight;
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_imageUpload.FlowDirection = System.Windows.FlowDirection.RightToLeft;
+            }
+            translate();
+            #endregion
+
             await refreshImageList();
+
         }
+
+        private void translate()
+        {
+            txt_image.Text = MainWindow.resourcemanager.GetString("trImage");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
+
+            tt_name.Content = MainWindow.resourcemanager.GetString("trName");
+            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+            tt_file.Content = MainWindow.resourcemanager.GetString("trSelectImage");
+            tt_scanner.Content = MainWindow.resourcemanager.GetString("trScan");
+            tt_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
+            tt_pdf.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
+            tt_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            tt_save.Content = MainWindow.resourcemanager.GetString("trAdd");
+        }
+
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
@@ -75,7 +112,7 @@ namespace POS.View.windows
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
-        {
+        {//add
             validateDocValues();
             if (!tb_name.Text.Equals(""))
             {
@@ -105,7 +142,7 @@ namespace POS.View.windows
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
-        {
+        {//delete
             if (docImgModel.id != 0)
             {
                 Boolean res = await docImgModel.delete(docId);
@@ -134,6 +171,9 @@ namespace POS.View.windows
             tb_notes.Clear();
             openFileDialog.FileName = "";
             docImgModel = new DocImage();
+
+            SectionData.clearValidate(tb_name , p_errorName);
+            SectionData.clearImg(img_upload);
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
@@ -303,7 +343,7 @@ namespace POS.View.windows
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
-        {
+        {//update
             validateDocValues();
             if (!tb_name.Text.Equals(""))
             {
@@ -316,7 +356,7 @@ namespace POS.View.windows
 
                 string res = await docImgModel.saveDocImage(docImgModel);
                 if (!res.Equals("0"))
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                 else
                     Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
@@ -327,7 +367,6 @@ namespace POS.View.windows
 
                 //refresh image list
                 await refreshImageList();
-                clear();
             }
         }
 

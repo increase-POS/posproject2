@@ -436,6 +436,22 @@
                                                           VerticalOffset="20"/>
                             </ComboBox.ToolTip>
                         </ComboBox>
+                        <ComboBox x:Name="cb_recipientSh"  Grid.Row="3"
+                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                  materialDesign:HintAssist.Hint="Recipient..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                 Visibility="Collapsed"
+                                  Grid.Column="0" Height="40"  Margin="10,5,10,5"
+                                  BorderBrush="#737373" BorderThickness="0" 
+                                  LostFocus="Tb_validateEmptyLostFocus">
+                            <ComboBox.ToolTip>
+                                <ToolTip x:Name="tt_recepientSh" Content="Recipient"
+                                                          Placement="left" 
+                                                          HorizontalOffset="35"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="20"/>
+                            </ComboBox.ToolTip>
+                        </ComboBox>
                         <Button DockPanel.Dock="Right" x:Name="btn_invoices" Grid.Row="3" Visibility="Collapsed"   Padding="0"    HorizontalAlignment="Right"
                                     Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_invoices_Click" VerticalAlignment="Center"      
                                     Margin="5,1,10,1"   ToolTip="invoices" TabIndex="13" IsEnabled="False">

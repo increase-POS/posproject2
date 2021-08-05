@@ -54,7 +54,7 @@ namespace POS
         internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
-        internal static int? posID = 2;
+        internal static int? posID = 1;
         //مخزن الجميلية الرئيسي
         internal static int? branchID ;
         //مخزن الجميلية الفرقان
@@ -289,6 +289,8 @@ namespace POS
             EndAwait();
             permission();
             btn_reports.Visibility = Visibility.Visible;
+
+           
         }
         void permission()
         {
@@ -627,9 +629,11 @@ namespace POS
        
         private void BTN_SectionData_Click(object sender, RoutedEventArgs e)
         {
+            // BranchStore branchStore = new BranchStore();
+            //var lst = branchStore.GetByBranchIdtable(2);
             //if (MainWindow.groupObject.HasPermission(BTN_sectionData.Tag.ToString(), MainWindow.groupObjects))
             //{
-                colorTextRefreash(txt_sectiondata);
+            colorTextRefreash(txt_sectiondata);
                 FN_pathVisible(path_openSectionData);
                 fn_ColorIconRefreash(path_iconSectionData);
                 grid_main.Children.Clear();

@@ -4138,6 +4138,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scan.
+        /// </summary>
+        internal static string trScan {
+            get {
+                return ResourceManager.GetString("trScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         internal static string trSearch {
@@ -4269,6 +4278,15 @@ namespace POS {
         internal static string trSelectedUsers {
             get {
                 return ResourceManager.GetString("trSelectedUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select image.
+        /// </summary>
+        internal static string trSelectImage {
+            get {
+                return ResourceManager.GetString("trSelectImage", resourceCulture);
             }
         }
         
@@ -4809,6 +4827,15 @@ namespace POS {
         internal static string trTransferNumberTooltip {
             get {
                 return ResourceManager.GetString("trTransferNumberTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transfers.
+        /// </summary>
+        internal static string trTransfers {
+            get {
+                return ResourceManager.GetString("trTransfers", resourceCulture);
             }
         }
         

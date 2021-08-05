@@ -187,6 +187,8 @@ namespace POS.View.accounts
             dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
             dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
 
+            btn_image.IsEnabled = false;
+
             await RefreshCashesList();
             Tb_search_TextChanged(null, null);
         }
@@ -217,6 +219,8 @@ namespace POS.View.accounts
 
                 if (cashtrans != null)
                 {
+                    btn_image.IsEnabled = true;
+
                     cb_opperationType.SelectedValue = cashtrans.transType;
                     cb_user.SelectedValue = cashtrans.userId;
                     cb_bank.SelectedValue = cashtrans.bankId;
@@ -396,6 +400,7 @@ namespace POS.View.accounts
             tb_cash.IsEnabled = true;
             tb_depositNumber.IsEnabled = false;
             tb_note.IsEnabled = true;
+            btn_image.IsEnabled = false;
 
             tb_cash.Clear();
             tb_depositNumber.Clear();

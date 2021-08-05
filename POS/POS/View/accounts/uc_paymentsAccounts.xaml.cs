@@ -32,6 +32,7 @@ namespace POS.View.accounts
     {
         Agent agentModel = new Agent();
         User userModel = new User();
+        ShippingCompanies shCompanyModel = new ShippingCompanies();
         Card cardModel = new Card();
         Bonds bondModel = new Bonds();
         Pos posModel = new Pos();
@@ -40,6 +41,7 @@ namespace POS.View.accounts
 
         IEnumerable<Agent> agents;
         IEnumerable<User> users;
+        IEnumerable<ShippingCompanies> shCompanies;
         IEnumerable<Card> cards;
         IEnumerable<CashTransfer> cashesQuery;
         IEnumerable<CashTransfer> cashesQueryExcel;
@@ -80,6 +82,7 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_recipientV, MainWindow.resourcemanager.GetString("trRecipientHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_recipientC, MainWindow.resourcemanager.GetString("trRecipientHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_recipientU, MainWindow.resourcemanager.GetString("trRecipientHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_recipientSh, MainWindow.resourcemanager.GetString("trShippingCompaniesHint"));
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentProcessType, MainWindow.resourcemanager.GetString("trPaymentTypeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
@@ -100,6 +103,7 @@ namespace POS.View.accounts
             tt_recepientV.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
             tt_recepientC.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
             tt_recepientU.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
+            tt_recepientSh.Content = MainWindow.resourcemanager.GetString("trShippingCompany");
 
             tt_paymentType.Content = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
             tt_docNum.Content = MainWindow.resourcemanager.GetString("trDocNumTooltip");
@@ -139,6 +143,7 @@ namespace POS.View.accounts
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
+
             #region translate
             if (MainWindow.lang.Equals("en"))
             {
@@ -190,7 +195,8 @@ namespace POS.View.accounts
             new { Text = MainWindow.resourcemanager.GetString("trUser")       , Value = "u" },
             new { Text = MainWindow.resourcemanager.GetString("trSalary")     , Value = "s" },
             new { Text = MainWindow.resourcemanager.GetString("trGeneralExpenses")     , Value = "e" },
-            new { Text = MainWindow.resourcemanager.GetString("trAdministrativePull")  , Value = "m" }
+            new { Text = MainWindow.resourcemanager.GetString("trAdministrativePull")  , Value = "m" },
+            new { Text = MainWindow.resourcemanager.GetString("trShippingCompanies")  , Value = "sh" }
              };
             cb_depositTo.DisplayMemberPath = "Text";
             cb_depositTo.SelectedValuePath = "Value";
@@ -202,6 +208,8 @@ namespace POS.View.accounts
             fillCustomers();
 
             fillUsers();
+
+            fillShippingCompanies();
 
             #region fill process type
             var typelist = new[] {
@@ -226,6 +234,7 @@ namespace POS.View.accounts
             dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
             dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
 
+            btn_image.IsEnabled = false;
 
             //dg_paymentsAccounts.ItemsSource = await cashModel.GetCashTransferAsync("p", "v");
             await RefreshCashesList();
@@ -257,6 +266,7 @@ namespace POS.View.accounts
             SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
             SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
             SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
+            SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
             SectionData.clearComboBoxValidate(cb_card, p_errorCard);
 
@@ -267,6 +277,8 @@ namespace POS.View.accounts
 
                 if (cashtrans != null)
                 {
+                    btn_image.IsEnabled = true;
+
                     cb_depositTo.SelectedValue = cashtrans.side;
                     ///////////////////////////
                     //tb_transNum.IsEnabled = false;
@@ -275,6 +287,7 @@ namespace POS.View.accounts
                     cb_recipientV.IsEnabled = false;
                     cb_recipientC.IsEnabled = false;
                     cb_recipientU.IsEnabled = false;
+                    cb_recipientSh.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
                     tb_docNum.IsEnabled = false;
                     dp_docDate.IsEnabled = false;
@@ -292,12 +305,14 @@ namespace POS.View.accounts
                             cb_recipientV.SelectedValue = cashtrans.agentId.Value;
                             cb_recipientC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                             cb_recipientU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
+                            cb_recipientSh.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
                             break;
                         case "c":
                             cb_recipientC.SelectedIndex = -1;
                             cb_recipientC.SelectedValue = cashtrans.agentId.Value;
                             cb_recipientV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                             cb_recipientU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
+                            cb_recipientSh.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
                             break;
                         case "u":
                         case "s":
@@ -305,12 +320,21 @@ namespace POS.View.accounts
                             cb_recipientU.SelectedValue = cashtrans.userId.Value;
                             cb_recipientV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                             cb_recipientC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
+                            cb_recipientSh.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
+                            break;
+                        case "sh":
+                            cb_recipientSh.SelectedIndex = -1;
+                            //cb_recipientSh.SelectedValue = cashtrans.co.Value;?????????????????????
+                            cb_recipientC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
+                            cb_recipientV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
+                            cb_recipientU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
                             break;
                         case "e":
                         case "m":
                             cb_recipientV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                             cb_recipientC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                             cb_recipientU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
+                            cb_recipientSh.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
                             break;
                     }
 
@@ -335,7 +359,7 @@ namespace POS.View.accounts
                 cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
                 || s.cash.ToString().ToLower().Contains(searchText)
                 )
-                && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m")
+                && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m" || s.side == "sh")
                 && s.transType == "p" 
                 && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
                 && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
@@ -408,7 +432,12 @@ namespace POS.View.accounts
                     SectionData.validateEmptyComboBox(cb_recipientU, p_errorRecipient, tt_errorRecipient, "trErrorEmptyRecipientToolTip");
                 else
                     SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
-            
+
+                if (cb_recipientSh.IsVisible)
+                    SectionData.validateEmptyComboBox(cb_recipientSh, p_errorRecipient, tt_errorRecipient, "trErrorEmptyRecipientToolTip");
+                else
+                    SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
+
                 //chk empty payment type
                 SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
 
@@ -426,6 +455,7 @@ namespace POS.View.accounts
                      (((cb_recipientV.IsVisible) && (!cb_recipientV.Text.Equals(""))) || (!cb_recipientV.IsVisible)) &&
                      (((cb_recipientC.IsVisible) && (!cb_recipientC.Text.Equals(""))) || (!cb_recipientC.IsVisible)) &&
                      (((cb_recipientU.IsVisible) && (!cb_recipientU.Text.Equals(""))) || (!cb_recipientU.IsVisible)) &&
+                     (((cb_recipientSh.IsVisible) && (!cb_recipientSh.Text.Equals(""))) || (!cb_recipientSh.IsVisible)) &&
                      (((tb_docNumCheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!tb_docNumCheque.IsVisible)) &&
                      (((dp_docDate.IsVisible) && (!dp_docDate.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
                      (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible)) &&
@@ -457,11 +487,15 @@ namespace POS.View.accounts
                     if (cb_recipientU.IsVisible)
                         cash.userId = Convert.ToInt32(cb_recipientU.SelectedValue);
 
+                    //if (cb_recipientSh.IsVisible)
+                    //    cash. = Convert.ToInt32(cb_recipientSh.SelectedValue);
+
                     if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
                     {
                         cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
                         cash.docNum = tb_docNumCard.Text;
                     }
+
                     if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
                         //cash.docNum = await SectionData.generateNumberBond('p', "bnd");
                         cash.docNum = await cashModel.generateDocNumber("pbnd");
@@ -529,15 +563,6 @@ namespace POS.View.accounts
 
             return s;
 
-            //if(!s.Equals("0"))
-            //{
-            //    MessageBox.Show(s);
-            //    CashTransfer c = await cashModel.GetByID(cashId.Value);
-
-            //    c.bondId = int.Parse(s);
-
-            //    string x = await cashModel.Save(c);
-            //}
 
         }
 
@@ -550,22 +575,6 @@ namespace POS.View.accounts
             pos.balance -= ammount;
 
             s = await pos.savePos(pos);
-            //if (s.Equals("Pos Is Updated Successfully"))
-            //{
-            //    //MessageBox.Show(pos.balance.ToString());
-            //    //decrease depositor balance if agent
-            //    if ((recipient.Equals("v")) || (recipient.Equals("c")))
-            //    {
-            //        Agent agent = await agentModel.getAgentById(agentid);
-            //        //MessageBox.Show(agent.balance.ToString());
-            //        agent.balance = agent.balance + Convert.ToSingle(ammount);
-
-            //        s = await agent.saveAgent(agent);
-
-            //        //if (!s.Equals("0")) MessageBox.Show(agent.balance.ToString());
-            //    }
-            //}
-           
 
         }
 
@@ -580,6 +589,7 @@ namespace POS.View.accounts
 
         private async void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
+            btn_image.IsEnabled = false;
             btn_add.IsEnabled = true;
             btn_invoices.Visibility = Visibility.Collapsed;
             btn_invoices.IsEnabled = false;
@@ -600,6 +610,7 @@ namespace POS.View.accounts
             cb_recipientV.Visibility = Visibility.Collapsed;
             cb_recipientC.Visibility = Visibility.Collapsed;
             cb_recipientU.Visibility = Visibility.Collapsed;
+            cb_recipientSh.Visibility = Visibility.Collapsed;
             if (grid_document.IsVisible)
             {
                 TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
@@ -615,6 +626,7 @@ namespace POS.View.accounts
             SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
             SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
             SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
+            SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
             SectionData.clearComboBoxValidate(cb_card, p_errorCard);
             ///////////////////////////
@@ -624,6 +636,7 @@ namespace POS.View.accounts
             cb_recipientV.IsEnabled = true;
             cb_recipientC.IsEnabled = true;
             cb_recipientU.IsEnabled = true;
+            cb_recipientSh.IsEnabled = true;
             cb_paymentProcessType.IsEnabled = true;
             tb_docNum.IsEnabled = true;
             dp_docDate.IsEnabled = true;
@@ -640,18 +653,18 @@ namespace POS.View.accounts
         {
             cashes = await cashModel.GetCashTransferAsync("p", "all");
         
-            foreach (CashTransfer cashItem in cashes)
-            {
-                if (cashItem.agentId > 0)
-                {
-                    cashItem.reciveName = cashItem.agentName;
-                }
-                else
-                {
-                    cashItem.reciveName = cashItem.usersName + " " + cashItem.usersLName;
-                }
+            //foreach (CashTransfer cashItem in cashes)
+            //{
+            //    if (cashItem.agentId > 0)
+            //    {
+            //        cashItem.reciveName = cashItem.agentName;
+            //    }
+            //    else
+            //    {
+            //        cashItem.reciveName = cashItem.usersName + " " + cashItem.usersLName;
+            //    }
              
-            }
+            //}
             cashes = cashes.Where(x => x.processType != "balance");
             return cashes;
             
@@ -808,64 +821,85 @@ namespace POS.View.accounts
         {//deposit selection
             switch(cb_depositTo.SelectedIndex)
             {
-                case 0:
+                case 0://vendor
                     cb_recipientV.SelectedIndex = -1;
                     cb_recipientV.Visibility = Visibility.Visible;
                     btn_invoices.Visibility = Visibility.Visible;
                     btn_invoices.IsEnabled = false;
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Collapsed;
+                    cb_recipientSh.Visibility = Visibility.Collapsed;
                     //btn_salaries.Visibility = Visibility.Collapsed;
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
+                    SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
                     break;
-                case 1:
+                case 1://customer
                     cb_recipientC.SelectedIndex = -1;
                     cb_recipientV.Visibility = Visibility.Collapsed;
                     btn_invoices.Visibility = Visibility.Visible;
                     btn_invoices.IsEnabled = false;
                     cb_recipientC.Visibility = Visibility.Visible;
                     cb_recipientU.Visibility = Visibility.Collapsed;
+                    cb_recipientSh.Visibility = Visibility.Collapsed;
                     //btn_salaries.Visibility = Visibility.Collapsed;
                     SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
+                    SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
                     break;
-                case 2:
+                case 2://user
                     cb_recipientU.SelectedIndex = -1;
                     cb_recipientV.Visibility = Visibility.Collapsed;
                     btn_invoices.Visibility = Visibility.Collapsed;
                     btn_invoices.IsEnabled = false;
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Visible;
+                    cb_recipientSh.Visibility = Visibility.Collapsed;
                     cb_recipientU.Margin = new Thickness(10, 5, 10, 5);
                     SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
+                    SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
                     break;
-                case 3:
+                case 3://salary
                     cb_recipientU.SelectedIndex = -1;
                     cb_recipientV.Visibility = Visibility.Collapsed;
                     btn_invoices.Visibility = Visibility.Collapsed;
                     btn_invoices.IsEnabled = false;
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Visible;
-                    cb_recipientU.Margin = new Thickness(10, 5, 35, 5);
+                    cb_recipientU.Margin = new Thickness(10, 5, 0, 5);
+                    cb_recipientSh.Visibility = Visibility.Collapsed;
                     //btn_salaries.Visibility = Visibility.Collapsed;
                     SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
+                    SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
                     break;
-                case 4: 
-                case 5:
+                case 4: //general expenses
+                case 5://administrative pull
                     cb_recipientV.Visibility = Visibility.Collapsed;
                     btn_invoices.Visibility = Visibility.Collapsed;
                     btn_invoices.IsEnabled = false;
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Collapsed;
+                    cb_recipientSh.Visibility = Visibility.Collapsed;
                     //btn_salaries.Visibility = Visibility.Collapsed;
                     cb_recipientV.Text = ""; cb_recipientC.Text = ""; cb_recipientU.Text = "";
                     SectionData.clearComboBoxValidate(cb_recipientV , p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
-
+                    SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
+                    break;
+                case 6://shipping company
+                    cb_recipientSh.SelectedIndex = -1;
+                    cb_recipientV.Visibility = Visibility.Collapsed;
+                    btn_invoices.Visibility = Visibility.Collapsed;
+                    btn_invoices.IsEnabled = false;
+                    cb_recipientC.Visibility = Visibility.Collapsed;
+                    cb_recipientU.Visibility = Visibility.Collapsed;
+                    cb_recipientSh.Visibility = Visibility.Visible;
+                    SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
+                    SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
+                    SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
                     break;
             }
         }
@@ -897,6 +931,16 @@ namespace POS.View.accounts
             cb_recipientU.ItemsSource = users;
             cb_recipientU.DisplayMemberPath = "username";
             cb_recipientU.SelectedValuePath = "userId";
+            //cb_recipient.SelectedIndex = -1;
+        }
+
+        private async void fillShippingCompanies()
+        {
+            shCompanies = await shCompanyModel.Get();
+
+            cb_recipientSh.ItemsSource = shCompanies;
+            cb_recipientSh.DisplayMemberPath = "name";
+            cb_recipientSh.SelectedValuePath = "shippingCompanyId";
             //cb_recipient.SelectedIndex = -1;
         }
 
@@ -936,10 +980,13 @@ namespace POS.View.accounts
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorRecipient, tt_errorRecipient, "trErrorEmptyRecipientToolTip");
                 else if ((sender as ComboBox).Name == "cb_recipientU")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorRecipient, tt_errorRecipient, "trErrorEmptyRecipientToolTip");
+                else if ((sender as ComboBox).Name == "cb_recipientSh")
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorRecipient, tt_errorRecipient, "trErrorEmptyRecipientToolTip");
                 else if ((sender as ComboBox).Name == "cb_paymentProcessType")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
                 else if ((sender as ComboBox).Name == "cb_card")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
+               
             }
             else if (name == "DatePicker")
             {

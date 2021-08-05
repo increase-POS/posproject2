@@ -36,7 +36,6 @@ namespace POS.View.Settings
         public uc_settings()
         {
             InitializeComponent();
-            //btn_general_Click(null, null);
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -49,14 +48,25 @@ namespace POS.View.Settings
         }
         void permission()
         {
+            bool loadWindow = false;
             if (!SectionData.isAdminPermision())
                 foreach (Button button in FindControls.FindVisualChildren<Button>(this))
-            {
-                if (button.Tag != null)
-                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
-                        button.Visibility = Visibility.Visible;
-                    else button.Visibility = Visibility.Collapsed;
-            }
+                {
+                    if (button.Tag != null)
+                        if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+
+                        {
+                            button.Visibility = Visibility.Visible;
+                            if (!loadWindow)
+                            {
+                                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                                loadWindow = true;
+                            }
+                        }
+                        else button.Visibility = Visibility.Collapsed;
+                }
+            else
+            btn_general_Click(btn_general, null);
         }
         private void translate()
         {

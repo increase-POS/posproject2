@@ -30,15 +30,15 @@
                                           ScrollViewer.CanContentScroll="True">
                 <Grid Margin="0,7,0,0" Width="90">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Button x:Name="btn_reciptInvoice" Click="Btn_receiptInvoice_Click" Style="{StaticResource SmallButton}"   Grid.Row="0" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5" FlowDirection="LeftToRight"

@@ -4075,6 +4075,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مسح.
+        /// </summary>
+        internal static string trScan {
+            get {
+                return ResourceManager.GetString("trScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to بحث.
         /// </summary>
         internal static string trSearch {
@@ -4206,6 +4215,15 @@ namespace POS {
         internal static string trSelectedUsers {
             get {
                 return ResourceManager.GetString("trSelectedUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اختيار صورة.
+        /// </summary>
+        internal static string trSelectImage {
+            get {
+                return ResourceManager.GetString("trSelectImage", resourceCulture);
             }
         }
         
@@ -4746,6 +4764,15 @@ namespace POS {
         internal static string trTransferNumberTooltip {
             get {
                 return ResourceManager.GetString("trTransferNumberTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to التحويلات.
+        /// </summary>
+        internal static string trTransfers {
+            get {
+                return ResourceManager.GetString("trTransfers", resourceCulture);
             }
         }
         

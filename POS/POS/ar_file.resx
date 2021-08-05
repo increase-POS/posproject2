@@ -1824,4 +1824,13 @@
   <data name="trWarningOneInventory" xml:space="preserve">
     <value>لا يمكنك إنشاء أكثر من جرد في الفرع</value>
   </data>
+  <data name="trScan" xml:space="preserve">
+    <value>مسح</value>
+  </data>
+  <data name="trSelectImage" xml:space="preserve">
+    <value>اختيار صورة</value>
+  </data>
+  <data name="trTransfers" xml:space="preserve">
+    <value>التحويلات</value>
+  </data>
 </root>

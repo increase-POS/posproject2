@@ -29,18 +29,18 @@
                                           ScrollViewer.CanContentScroll="True">
                 <Grid Margin="0,7,0,0" Width="90">
             <Grid.RowDefinitions>
-                <RowDefinition Height="87"/>
-                <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
-                        <RowDefinition Height="87"/>
-                <RowDefinition Height="87"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
                     <Button x:Name="btn_posAccounting" Click="Btn_pos_Click" Style="{StaticResource SmallButton}"   Grid.Row="0" Grid.Column="0"
                 Height="75" Width="75" Background="White"  FlowDirection="LeftToRight"
-                  Content="POS"    BorderBrush="#67686D"  Tag="posAccounting"
+                  Content="transfers"    BorderBrush="#67686D"  Tag="posAccounting"
                 DataContext="M33,12c0-0.6,0.4-1,1-1h5c0.6,0,1,0.4,1,1c0,0.6-0.4,1-1,1h-5C33.4,13,33,12.6,33,12z M34,17h5c0.6,0,1-0.4,1-1
 	c0-0.6-0.4-1-1-1h-5c-0.6,0-1,0.4-1,1C33,16.6,33.4,17,34,17z M58,50v8H0v-8H58z M20,54c0-0.6-0.4-1-1-1H5c-0.6,0-1,0.4-1,1
 	s0.4,1,1,1h14C19.6,55,20,54.6,20,54z M55,54c0-0.6-0.4-1-1-1h-1c-0.6,0-1,0.4-1,1s0.4,1,1,1h1C54.6,55,55,54.6,55,54z M4,50h50v-4
@@ -62,7 +62,7 @@
 	C6.5,5.9,6.7,6,7,6z M25,0v13H3V0H25z M23,2H5v9h18V2z"/>
                     <Button x:Name="btn_payments" Click="Btn_payments_Click" Style="{StaticResource SmallButton}"   Grid.Row="1" Grid.Column="0"
                 Height="75" Width="75" Background="White" FlowDirection="LeftToRight"
-                  Content="Payments"    BorderBrush="#67686D"  Tag="payments"
+                  Content="Payments"    BorderBrush="#67686D"  Tag="payments" 
                 DataContext="M151.7,134.3l29.4-94.1l32.9-12l-46.4,106.1H151.7z M75,42.7L50.4,40l37.2,74.4L75,42.7z M134.8,134.3l33.1-105.8l-40,17.2
 	c-2.5,1.1-5.3,0.8-7.6-0.7L87.9,23.4l19.5,110.9H134.8z M265.7,360.4c-1.7,24.8-17.1,46.5-39.9,56.4l5.9,13.6h-73.4l-81.3,0H34
 	l5.9-13.6C17.1,406.9,1.7,385.2,0,360.4c-0.5-10.7,1.9-21.3,6.9-30.7l46.2-91.3l44.5-87.9h8.3L87.7,211c-2,6.8-0.2,14.2,4.9,19.3

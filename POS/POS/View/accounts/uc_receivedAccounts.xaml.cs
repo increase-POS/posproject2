@@ -136,6 +136,8 @@ namespace POS.View.accounts
             cb_card.SelectedIndex = -1;
             #endregion
 
+            btn_image.IsEnabled = false;
+
             await RefreshCashesList();
             Tb_search_TextChanged(null, null);
         }
@@ -230,8 +232,8 @@ namespace POS.View.accounts
                 this.DataContext = cashtrans;
                 if (cashtrans != null)
                 {
-                   // MessageBox.Show(cashtrans.cashTransId.ToString() + "-" + cashtrans.bondId.ToString());
-                   ///////////////////////////
+                    btn_image.IsEnabled = true;
+                    ///////////////////////////
                     btn_add.IsEnabled = false;
                     cb_depositFrom.IsEnabled = false;
                     cb_depositorV.IsEnabled = false;
@@ -538,6 +540,8 @@ namespace POS.View.accounts
             dp_docDateCheque.IsEnabled = true;
             tb_cash.IsEnabled = true;
             tb_note.IsEnabled = true;
+
+            btn_image.IsEnabled = false;
             /////////////////////////
             ///
             if (grid_doc.IsVisible)
@@ -656,6 +660,7 @@ namespace POS.View.accounts
         {
             cashes = await cashModel.GetCashTransferAsync("d", "all");
             cashes = cashes.Where(x => x.processType != "balance");
+            cashes = cashes.Where(c => c.agentId != null && c.userId != null);
             return cashes;
         }
 

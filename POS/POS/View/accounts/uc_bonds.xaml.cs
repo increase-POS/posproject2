@@ -85,6 +85,8 @@ namespace POS.View.accounts
 
                 if (bond != null)
                 {
+                    btn_image.IsEnabled = true;
+
                     tb_number.Text = bond.number;
                  
                     if (bond.isRecieved == 1)
@@ -303,6 +305,7 @@ namespace POS.View.accounts
             tb_number.Text = "";
             tb_amount.Clear();
             tb_note.Clear();
+            btn_image.IsEnabled = false;
 
             cb_depositorV.SelectedIndex = -1;
             cb_depositorC.SelectedIndex = -1;
@@ -407,6 +410,8 @@ namespace POS.View.accounts
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
+
+            #region translate
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -419,6 +424,8 @@ namespace POS.View.accounts
                 grid_ucBonds.FlowDirection = FlowDirection.RightToLeft;
 
             }
+            translate();
+            #endregion
 
             fillVendors();
 
@@ -449,8 +456,6 @@ namespace POS.View.accounts
             cb_card.SelectedIndex = -1;
             #endregion
 
-            translate();
-
             dp_endSearchDate.SelectedDate = DateTime.Now;
             dp_startSearchDate.SelectedDate = DateTime.Now;
 
@@ -464,6 +469,7 @@ namespace POS.View.accounts
             //dpDate.IsReadOnly = true;
 
             btn_pay.IsEnabled = false;
+            btn_image.IsEnabled = false;
 
             await RefreshBondsList();
             Tb_search_TextChanged(null, null);

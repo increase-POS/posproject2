@@ -10,7 +10,7 @@
         ResizeMode="NoResize" Margin="0"
         Title="wd_itemsList" Height="500" Width="500" Background="Transparent" AllowsTransparency="True"
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
-    <Grid Grid.Column="1" Grid.Row="1"  >
+    <Grid Grid.Column="1" Grid.Row="1" x:Name="grid_imageUpload" >
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
@@ -154,9 +154,9 @@
                             <Path.ToolTip>
                                 <ToolTip x:Name="tt_file" Content="File"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                             </Path.ToolTip>
                         </Path>
                     </Button>
@@ -181,9 +181,9 @@
                             <Path.ToolTip>
                                 <ToolTip x:Name="tt_scanner" Content="Scanner"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                             </Path.ToolTip>
                         </Path>
                     </Button>
@@ -221,9 +221,9 @@
                             <Path.ToolTip>
                                 <ToolTip x:Name="tt_preview" Content="Preview"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                             </Path.ToolTip>
                         </Path>
                     </Button>
@@ -250,9 +250,9 @@
                             <Path.ToolTip>
                                 <ToolTip x:Name="tt_pdf" Content="PDF"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                             </Path.ToolTip>
                         </Path>
                     </Button>
@@ -268,9 +268,9 @@
                             <Path.ToolTip>
                                 <ToolTip x:Name="tt_printInvoice" Content="Print"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                             </Path.ToolTip>
                         </Path>
                     </Button>
@@ -284,9 +284,9 @@
                             <Path.ToolTip>
                                 <ToolTip x:Name="tt_delete" Content="Delete"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                             </Path.ToolTip>
                         </Path>
                     </Button>
@@ -309,9 +309,9 @@
                             <Path.ToolTip>
                                 <ToolTip x:Name="tt_update" Content="Update"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                             </Path.ToolTip>
                         </Path>
                     </Button>
@@ -338,9 +338,9 @@
                             <Path.ToolTip>
                                 <ToolTip x:Name="tt_save" Content="Save"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                             </Path.ToolTip>
                         </Path>
                     </Button>
