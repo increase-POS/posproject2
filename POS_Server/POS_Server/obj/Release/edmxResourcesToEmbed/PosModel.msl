@@ -151,6 +151,7 @@
     <EntitySetMapping Name="cashTransfer">
       <EntityTypeMapping TypeName="incposdbModel.cashTransfer">
         <MappingFragment StoreEntitySet="cashTransfer">
+          <ScalarProperty Name="shippingCompanyId" ColumnName="shippingCompanyId" />
           <ScalarProperty Name="cashTransId" ColumnName="cashTransId" />
           <ScalarProperty Name="agentMembershipsId" ColumnName="agentMembershipsId" />
           <ScalarProperty Name="transType" ColumnName="transType" />

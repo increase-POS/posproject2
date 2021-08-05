@@ -47,6 +47,7 @@ namespace POS_Server
         public string processType { get; set; }
         public Nullable<int> cardId { get; set; }
         public Nullable<int> bondId { get; set; }
+        public Nullable<int> shippingCompanyId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<agentMemberships> agentMemberships { get; set; }
@@ -66,5 +67,6 @@ namespace POS_Server
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
         public virtual users users2 { get; set; }
+        public virtual shippingCompanies shippingCompanies { get; set; }
     }
 }

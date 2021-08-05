@@ -234,6 +234,7 @@
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users2" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_usersLogs_users" ManuallyRouted="false" />
+        <AssociationConnector Association="incposdbModel.FK_cashTransfer_shippingCompanies" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

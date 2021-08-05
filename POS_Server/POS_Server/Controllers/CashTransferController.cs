@@ -162,6 +162,7 @@ namespace POS_Server.Controllers
                                                             cardName = jcrd.name,
                                                             bondDeserveDate = jbbo.deserveDate,
                                                             bondIsRecieved = jbbo.isRecieved,
+                                                            shippingCompanyId = C.shippingCompanyId,
 
                                                         }).Where(C => ((type == "all") ? true : C.transType == type)
             && ((side == "all") ? true : C.side == side)).ToList();
@@ -253,7 +254,7 @@ namespace POS_Server.Controllers
                                                             processType = C.processType,
                                                             cardId = C.cardId,
                                                             bondId = C.bondId,
-                                                           
+                                                            shippingCompanyId = C.shippingCompanyId,
                                                         }).ToList();
 
 
@@ -328,6 +329,7 @@ namespace POS_Server.Controllers
             processType = C.processType,
             cardId = C.cardId,
             bondId = C.bondId,
+            shippingCompanyId=C.shippingCompanyId,
 
         }).FirstOrDefault();
 
@@ -393,6 +395,7 @@ namespace POS_Server.Controllers
                        C.processType,
                        C.cardId,
                        C.bondId,
+                       C.shippingCompanyId,
                    })
                    .ToList();
 
@@ -507,6 +510,7 @@ namespace POS_Server.Controllers
                             cashtr.processType = Obj.processType;
                             cashtr.cardId = Obj.cardId;
                             cashtr.bondId = Obj.bondId;
+                            cashtr.shippingCompanyId = Obj.shippingCompanyId;
 
                         }
                         entity.SaveChanges();
@@ -661,6 +665,7 @@ namespace POS_Server.Controllers
                                         processType = C.processType,
                                         cardId = C.cardId,
                                         bondId = C.bondId,
+                                        shippingCompanyId = C.shippingCompanyId,
                                     }).Where(C => ((type == "all") ? true : C.transType == type)
                                 && ((side == "all") ? true : C.side == side) && (C.cashTransId == sourceId || C.cashTransIdSource == sourceId)).ToList();
 
@@ -966,6 +971,7 @@ namespace POS_Server.Controllers
                                     processType = C.processType,
                                     cardId = C.cardId,
                                     bondId = C.bondId,
+                                    shippingCompanyId = C.shippingCompanyId,
                                 }).Where(C => ((type == "all") ? true : C.transType == type)
         && ((side == "all") ? true : C.side == side) && (C.cashTransId == cashTransId || C.cashTransIdSource == cashTransId)).ToList();
 
@@ -1017,6 +1023,7 @@ namespace POS_Server.Controllers
                                        processType = C.processType,
                                        cardId = C.cardId,
                                        bondId = C.bondId,
+                                       shippingCompanyId = C.shippingCompanyId,
                                    }).Where(C => ((type == "all") ? true : C.transType == type)
                       && ((side == "all") ? true : C.side == side) && (C.cashTransId == pullposcashtransid)).ToList();
 
@@ -1106,7 +1113,8 @@ namespace POS_Server.Controllers
                                                        processType = C.processType,
                                                        cardId = C.cardId,
                                                        bondId = C.bondId,
-                                                   }).Where(C => ((type == "all") ? true : C.transType == type)
+                                                      shippingCompanyId= C.shippingCompanyId,
+    }).Where(C => ((type == "all") ? true : C.transType == type)
                            && ((side == "all") ? true : C.side == side) && C.invId == invId).FirstOrDefault();
 
 

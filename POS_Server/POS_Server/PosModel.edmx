@@ -173,6 +173,7 @@
           <Property Name="processType" Type="nvarchar" MaxLength="50" />
           <Property Name="cardId" Type="int" />
           <Property Name="bondId" Type="int" />
+          <Property Name="shippingCompanyId" Type="int" />
         </EntityType>
         <EntityType Name="categories">
           <Key>
@@ -1301,6 +1302,18 @@
             </Principal>
             <Dependent Role="cashTransfer">
               <PropertyRef Name="posIdCreator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cashTransfer_shippingCompanies">
+          <End Role="shippingCompanies" Type="Self.shippingCompanies" Multiplicity="0..1" />
+          <End Role="cashTransfer" Type="Self.cashTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="shippingCompanies">
+              <PropertyRef Name="shippingCompanyId" />
+            </Principal>
+            <Dependent Role="cashTransfer">
+              <PropertyRef Name="shippingCompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3154,6 +3167,10 @@
             <End Role="pos" EntitySet="pos" />
             <End Role="cashTransfer" EntitySet="cashTransfer" />
           </AssociationSet>
+          <AssociationSet Name="FK_cashTransfer_shippingCompanies" Association="Self.FK_cashTransfer_shippingCompanies">
+            <End Role="shippingCompanies" EntitySet="shippingCompanies" />
+            <End Role="cashTransfer" EntitySet="cashTransfer" />
+          </AssociationSet>
           <AssociationSet Name="FK_cashTransfer_users" Association="Self.FK_cashTransfer_users">
             <End Role="users" EntitySet="users" />
             <End Role="cashTransfer" EntitySet="cashTransfer" />
@@ -3939,6 +3956,8 @@
           <NavigationProperty Name="users" Relationship="Self.FK_cashTransfer_users" FromRole="cashTransfer" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_cashTransfer_users1" FromRole="cashTransfer" ToRole="users" />
           <NavigationProperty Name="users2" Relationship="Self.FK_cashTransfer_users2" FromRole="cashTransfer" ToRole="users" />
+          <Property Name="shippingCompanyId" Type="Int32" />
+          <NavigationProperty Name="shippingCompanies" Relationship="incposdbModel.FK_cashTransfer_shippingCompanies" FromRole="cashTransfer" ToRole="shippingCompanies" />
         </EntityType>
         <EntityType Name="categories">
           <Key>
@@ -4743,6 +4762,7 @@
           <NavigationProperty Name="users1" Relationship="Self.FK_shippingCompanies_users2" FromRole="shippingCompanies" ToRole="users" />
           <Property Name="balance" Type="Decimal" Nullable="false" Precision="20" Scale="3" />
           <Property Name="balanceType" Type="Byte" />
+          <NavigationProperty Name="cashTransfer" Relationship="incposdbModel.FK_cashTransfer_shippingCompanies" FromRole="shippingCompanies" ToRole="cashTransfer" />
         </EntityType>
         <EntityType Name="storageCost">
           <Key>
@@ -7796,7 +7816,23 @@
             <End Role="users" EntitySet="users" />
             <End Role="usersLogs" EntitySet="usersLogs" />
           </AssociationSet>
+          <AssociationSet Name="FK_cashTransfer_shippingCompanies" Association="incposdbModel.FK_cashTransfer_shippingCompanies">
+            <End Role="shippingCompanies" EntitySet="shippingCompanies" />
+            <End Role="cashTransfer" EntitySet="cashTransfer" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_cashTransfer_shippingCompanies">
+          <End Type="incposdbModel.shippingCompanies" Role="shippingCompanies" Multiplicity="0..1" />
+          <End Type="incposdbModel.cashTransfer" Role="cashTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="shippingCompanies">
+              <PropertyRef Name="shippingCompanyId" />
+            </Principal>
+            <Dependent Role="cashTransfer">
+              <PropertyRef Name="shippingCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7953,6 +7989,7 @@
           <EntitySetMapping Name="cashTransfer">
             <EntityTypeMapping TypeName="incposdbModel.cashTransfer">
               <MappingFragment StoreEntitySet="cashTransfer">
+                <ScalarProperty Name="shippingCompanyId" ColumnName="shippingCompanyId" />
                 <ScalarProperty Name="cashTransId" ColumnName="cashTransId" />
                 <ScalarProperty Name="agentMembershipsId" ColumnName="agentMembershipsId" />
                 <ScalarProperty Name="transType" ColumnName="transType" />

@@ -168,6 +168,7 @@
     <Property Name="processType" Type="nvarchar" MaxLength="50" />
     <Property Name="cardId" Type="int" />
     <Property Name="bondId" Type="int" />
+    <Property Name="shippingCompanyId" Type="int" />
   </EntityType>
   <EntityType Name="categories">
     <Key>
@@ -1296,6 +1297,18 @@
       </Principal>
       <Dependent Role="cashTransfer">
         <PropertyRef Name="posIdCreator" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_cashTransfer_shippingCompanies">
+    <End Role="shippingCompanies" Type="Self.shippingCompanies" Multiplicity="0..1" />
+    <End Role="cashTransfer" Type="Self.cashTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="shippingCompanies">
+        <PropertyRef Name="shippingCompanyId" />
+      </Principal>
+      <Dependent Role="cashTransfer">
+        <PropertyRef Name="shippingCompanyId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3147,6 +3160,10 @@
     </AssociationSet>
     <AssociationSet Name="FK_cashTransfer_pos1" Association="Self.FK_cashTransfer_pos1">
       <End Role="pos" EntitySet="pos" />
+      <End Role="cashTransfer" EntitySet="cashTransfer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_cashTransfer_shippingCompanies" Association="Self.FK_cashTransfer_shippingCompanies">
+      <End Role="shippingCompanies" EntitySet="shippingCompanies" />
       <End Role="cashTransfer" EntitySet="cashTransfer" />
     </AssociationSet>
     <AssociationSet Name="FK_cashTransfer_users" Association="Self.FK_cashTransfer_users">

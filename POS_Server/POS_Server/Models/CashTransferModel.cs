@@ -44,10 +44,17 @@ namespace POS_Server.Models
         public Nullable<int> cardId { get; set; }
         public Nullable<int> bondId { get; set; }
         public string createUserName { get; set; }
+        public string updateUserName { get; set; }
+        public string updateUserJob { get; set; }
+        public string updateUserAcc { get; set; }
         public string createUserJob { get; set; }
         public string createUserLName { get; set; }
+        public string updateUserLName { get; set; }
         public string cardName { get; set; }
         public Nullable<System.DateTime> bondDeserveDate { get; set; }
         public Nullable<byte> bondIsRecieved { get; set; }
+        public string agentCompany { get; set; }
+        public Nullable<int> shippingCompanyId { get; set; }
+
     }
 }
