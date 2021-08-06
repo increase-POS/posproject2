@@ -311,7 +311,7 @@ namespace POS.View.Settings
                     sysEmail.email = tb_email.Text;
                  //   sysEmail.password = pb_password.Password;
                     sysEmail.password = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(pb_password.Password));
-
+                    sysEmail.name = tb_name.Text;
                     sysEmail.port = int.Parse(tb_port.Text);
                     sysEmail.isSSL = tgl_isSSL.IsChecked;
                     sysEmail.isMajor = tgl_isMajor.IsChecked;
