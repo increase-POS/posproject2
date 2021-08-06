@@ -416,6 +416,34 @@ namespace POS.Classes
 
             return paramarr;
         }
+        public  static List<ItemTransferInvoice> converter(List<ItemTransferInvoice> query)
+        {
+            foreach (ItemTransferInvoice item in query)
+            {
+                if (item.invType == "p")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                }
+                else if (item.invType == "pw")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                }
+                else if (item.invType == "pb")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseReturnInvoice");
+                }
+                else if (item.invType == "pd")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                }
+                else if (item.invType == "pbd")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseReturnDraft");
+                }
+            }
+            return query;
+
+        }
     }
 }
 

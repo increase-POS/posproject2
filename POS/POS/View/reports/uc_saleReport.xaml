@@ -861,7 +861,7 @@
 
                             <Button x:Name="btn_pdf"   Background="{x:Null}"   Margin="10,0,5,0"
                           Padding="0" Height="35" 
-                          BorderBrush="{x:Null}" >
+                          BorderBrush="{x:Null}" Click="Btn_pdf_Click" >
                                 <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
                                 
                           Width="22" Height="22">
