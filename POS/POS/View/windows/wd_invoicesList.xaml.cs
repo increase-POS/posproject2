@@ -37,7 +37,7 @@ namespace POS.View.windows
         Invoice invoiceModel = new Invoice();
         Invoice invoice = new Invoice();
 
-        public int agentId = 0;
+        public int agentId = 0 , userId = 0, shippingCompanyId = 0;
         public decimal sum = 0;
         public string invType, invTypeB , invTypC;
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -57,13 +57,24 @@ namespace POS.View.windows
             tb_moneyIcon.Text = MainWindow.Currency;
             translat();
             #endregion
-            //need method
+            
             allInvoicesSource = await invoiceModel.GetAll();
-            //var query = allInvoicesSource.Where(i => i.agentId == agentId && i.paid < i.deserved && (i.invType == invType || i.invType == invTypeB));
-            var query = allInvoicesSource.Where(i => i.agentId == agentId && i.deserved > 0 && (i.invType == invType || i.invType == invTypeB || i.invType == invTypC));
 
-            allInvoicesSource = query.ToList();
-
+            if (agentId != 0)
+            {
+                var query = allInvoicesSource.Where(i => i.agentId == agentId && i.deserved > 0 && (i.invType == invType || i.invType == invTypeB || i.invType == invTypC));
+                allInvoicesSource = query.ToList();
+            }
+            else if(userId != 0)
+            {
+                var query = allInvoicesSource.Where(i => i.userId == userId && i.deserved > 0 && (i.invType == invType || i.invType == invTypeB || i.invType == invTypC));
+                allInvoicesSource = query.ToList();
+            }
+            else if(shippingCompanyId != 0)
+            {
+                var query = allInvoicesSource.Where(i => i.shippingCompanyId == shippingCompanyId && i.deserved > 0 && (i.invType == invType || i.invType == invTypeB || i.invType == invTypC));
+                allInvoicesSource = query.ToList();
+            }
             allInvoices.AddRange(allInvoicesSource);
            
             lst_allInvoices.ItemsSource = allInvoices;

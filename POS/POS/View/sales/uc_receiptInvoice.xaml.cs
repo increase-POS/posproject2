@@ -202,10 +202,6 @@ namespace POS.View
             tb_moneyIcon.Text = MainWindow.Currency;
             tb_moneyIconTotal.Text = MainWindow.Currency;
 
-            //var window = Window.GetWindow(this);
-            //window.KeyDown -= HandleKeyPress;
-            //window.KeyDown += HandleKeyPress;
-
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -520,7 +516,7 @@ namespace POS.View
 
             if (valid)
             {
-                if (cb_paymentProcessType.SelectedIndex == 1)
+                if (cb_paymentProcessType.SelectedIndex == 1 && (companyModel == null || companyModel.deliveryType != "com"))
                 {
                     int agentId = (int)cb_customer.SelectedValue;
                     Agent customer = customers.ToList().Find(b => b.agentId == agentId);
@@ -657,8 +653,8 @@ namespace POS.View
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
 
-                // build invoice NUM like si-storCode-posCode-sequence exp: 123_PI_2
-                if (invoice.invNumber == null || invoice.invType == "or")
+                // build invoice NUM 
+                if (invoice.invNumber == null || invoice.invType == "or" || invoice.invType == "q")
                 {
                     invoice.invNumber = await invoice.generateInvNumber("si");
                 }
@@ -763,7 +759,7 @@ namespace POS.View
                         // edit vendor balance , add cach transfer
                         if (invType == "s")
                         {
-                            await itemLocationModel.decreaseAmounts(invoiceItems, MainWindow.branchID.Value); // update item quantity in DB
+                            await itemLocationModel.decreaseAmounts(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value); // update item quantity in DB
                             //if (paid > 0)
                             //{
                             switch (cb_paymentProcessType.SelectedIndex)
@@ -791,6 +787,9 @@ namespace POS.View
                                     await cashTrasnfer.Save(cashTrasnfer); //add cash transfer  
                                     break;
                                 case 1:// balance: update customer balance
+                                if(cb_company.SelectedIndex != -1 && companyModel.deliveryType.Equals("com"))
+                                    await invoice.recordCompanyCashTransfer(invoice, "si");
+                                else
                                     await invoice.recordCashTransfer(invoice, "si");
                                     // await agentModel.updateBalance((int)invoice.agentId, balance);//update customer balance
                                     break;
@@ -892,9 +891,6 @@ namespace POS.View
                     awaitSaveBtn(true);
                     //check mandatory inputs
                     bool valid = await validateInvoiceValues();
-                    // Boolean available = true;
-                    //if (_InvoiceType == "sd" || _InvoiceType == "or")
-                    //    available = await checkItemsAmounts();
 
                     if (valid)
                     {
@@ -936,8 +932,6 @@ namespace POS.View
         }
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
-            //check mandatory inputs
-            //validateInvoiceValues();
             Boolean available = true;
             if (_InvoiceType == "sd")
                 available = await checkItemsAmounts();
@@ -986,6 +980,7 @@ namespace POS.View
             cb_user.SelectedIndex = -1;
             tb_processNum.Clear();
             cb_paymentProcessType.SelectedIndex = 0;
+            cb_paymentProcessType.IsEnabled = true;
             lst_coupons.Items.Clear();
             tb_discount.Text = "0";
             //btn_updateCustomer.IsEnabled = false;
@@ -1265,7 +1260,6 @@ namespace POS.View
                     tb_barcode.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     btn_save.IsEnabled = true;
-                    //btn_updateCustomer.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = true;
                     cb_card.IsEnabled = false;
                     cb_company.IsEnabled = false;
@@ -1285,14 +1279,21 @@ namespace POS.View
                     tb_barcode.IsEnabled = true;
                     tb_discount.IsEnabled = true;
                     btn_save.IsEnabled = true;
-                    //btn_updateCustomer.IsEnabled = true;
-                    cb_paymentProcessType.IsEnabled = true;
                     cb_card.IsEnabled = true;
                     cb_company.IsEnabled = true;
                     cb_user.IsEnabled = true;
                     tb_processNum.IsEnabled = true;
                     tb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
+                    if (cb_company.SelectedIndex != -1)
+                    {
+                        cb_paymentProcessType.IsEnabled = false;
+                        cb_paymentProcessType.SelectedIndex = 1;
+                    }
+                    else
+                    {
+                        cb_paymentProcessType.IsEnabled = true;
+                    }
                     break;
                 case "or": //sales order
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
@@ -1305,13 +1306,23 @@ namespace POS.View
                     tb_barcode.IsEnabled = true;
                     tb_discount.IsEnabled = true;
                     btn_save.IsEnabled = true;
-                    cb_paymentProcessType.IsEnabled = true;
+                    //cb_paymentProcessType.IsEnabled = true;
                     cb_card.IsEnabled = true;
                     cb_company.IsEnabled = true;
                     cb_user.IsEnabled = true;
                     tb_processNum.IsEnabled = true;
                     tb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
+                    if (cb_company.SelectedIndex != -1)
+                    {
+                        cb_paymentProcessType.IsEnabled = false;
+                        cb_paymentProcessType.SelectedIndex = 1;
+                    }
+                    else
+                    {
+                        cb_paymentProcessType.IsEnabled = true;
+                    }
+
                     break;
                 case "s": //sales invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
@@ -1350,6 +1361,15 @@ namespace POS.View
                     tb_processNum.IsEnabled = false;
                     tb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
+                    if (cb_company.SelectedIndex != -1)
+                    {
+                        cb_paymentProcessType.IsEnabled = false;
+                        cb_paymentProcessType.SelectedIndex = 1;
+                    }
+                    else
+                    {
+                        cb_paymentProcessType.IsEnabled = true;
+                    }
                     break;
             }
         }
@@ -2414,6 +2434,8 @@ namespace POS.View
                 _DeliveryCost = (decimal)companyModel.deliveryCost;
                 refreshTotalValue();
 
+                cb_paymentProcessType.SelectedIndex = 1; // balance
+                cb_paymentProcessType.IsEnabled = false;
                 if (companyModel.deliveryType == "local")
                 {
                     cb_user.Visibility = Visibility.Visible;

@@ -137,16 +137,19 @@
                     <DataGrid.RowStyle>
                         <Style TargetType="DataGridRow">
                             <Style.Triggers>
-                                <!--<DataTrigger Binding="{Binding invType}" Value="pd">
-                                    --><!--<Setter Property="Background" Value="PaleGreen"></Setter>-->
-                                    <!--<Setter Property="Background" Value="#90EE90"></Setter>--><!--
-                                </DataTrigger>-->
                                 <DataTrigger Binding="{Binding invType}" Value="pbd">
-                                    <!--<Setter Property="Background" Value="PaleVioletRed"></Setter>-->
                                     <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding invType}" Value="pw">
-                                    <!--<Setter Property="Background" Value="PaleVioletRed"></Setter>-->
+                                <DataTrigger Binding="{Binding invType}" Value="pbw">
+                                    <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding invType}" Value="pb">
+                                    <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding invType}" Value="spd">
+                                    <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding invType}" Value="sd">
                                     <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
                                 </DataTrigger>
                             </Style.Triggers>

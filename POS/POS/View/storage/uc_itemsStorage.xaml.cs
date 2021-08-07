@@ -224,7 +224,7 @@ namespace POS.View.storage
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-
+            Tb_search_TextChanged(null, null);
         }
 
         private void Expander_Expanded(object sender, RoutedEventArgs e)
@@ -289,7 +289,8 @@ namespace POS.View.storage
                     if (res)
                     {
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                    }
+                                
+                            }
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
@@ -302,8 +303,8 @@ namespace POS.View.storage
                     }
                     else
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTranseToSameLocation"), animation: ToasterAnimation.FadeIn);
-                    
-                }
+                        Tb_search_TextChanged(null, null);
+                    }
             }
             }
             else

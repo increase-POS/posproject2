@@ -199,7 +199,7 @@ namespace POS.Classes
                 return items;
             }
         }
-        public async Task<Boolean> decreaseAmounts(List<ItemTransfer> invoiceItems, int branchId)
+        public async Task<Boolean> decreaseAmounts(List<ItemTransfer> invoiceItems, int branchId, int userId)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -216,7 +216,7 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/decraseAmounts?itemLocationObject=" + myContent + "&branchId=" + branchId);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/decraseAmounts?itemLocationObject=" + myContent + "&branchId=" + branchId+ "&userId="+userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

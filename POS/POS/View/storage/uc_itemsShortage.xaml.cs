@@ -265,11 +265,12 @@ namespace POS.View.storage
                     invoiceModel.paid = 0;
                     invoiceModel.deserved = invoiceModel.totalNet;
                     invoiceModel.notes = tb_notes.Text;
+                    if (cb_user.SelectedIndex != -1)
+                        invoiceModel.userId = (int)cb_user.SelectedValue;
+                        #endregion
 
-                    #endregion
-
-                    #region add shortage inventory
-                    inventory = new Inventory();
+                        #region add shortage inventory
+                        inventory = new Inventory();
                     inventory.inventoryType = "sh";
                     inventory.num = await inventory.generateInvNumber("sh");
                     inventory.mainInventoryId = invItemLoc.inventoryId;

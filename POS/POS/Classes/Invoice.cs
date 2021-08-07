@@ -65,6 +65,7 @@ namespace POS.Classes
         public int invoiceId { get; set; }
         public string invNumber { get; set; }
         public Nullable<int> agentId { get; set; }
+        public Nullable<int> userId { get; set; }
         public Nullable<int> createUserId { get; set; }
         public string invType { get; set; }
         public string discountType { get; set; }
@@ -966,7 +967,10 @@ namespace POS.Classes
                         cashTrasnfer.transType = "d"; //deposit
 
                         await invoice.saveInvoice(invoice);
-                        await cashTrasnfer.Save(cashTrasnfer); //add cash transfer
+                        if (invoice.paid > 0)
+                        {
+                            await cashTrasnfer.Save(cashTrasnfer); //add cash transfer     
+                        }
                         await agent.saveAgent(agent);
                     }
                     else if (agent.balanceType == 1)
@@ -979,6 +983,57 @@ namespace POS.Classes
                 #endregion  
             }
 
+            return invoice;
+        }
+        public async Task<Invoice> recordCompanyCashTransfer(Invoice invoice,string invType)
+        {
+            ShippingCompanies company = new ShippingCompanies();
+            decimal newBalance = 0;
+            company = await company.GetByID(invoice.shippingCompanyId.Value);
+
+            CashTransfer cashTrasnfer = new CashTransfer();
+            cashTrasnfer.posId = MainWindow.posID;
+            cashTrasnfer.shippingCompanyId = invoice.shippingCompanyId;
+            cashTrasnfer.invId = invoice.invoiceId;
+            cashTrasnfer.createUserId = invoice.createUserId; 
+            cashTrasnfer.processType = "balance";
+            cashTrasnfer.transType = "d"; //deposit
+            cashTrasnfer.side = "sh"; // vendor
+            cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("dsh");
+
+            if (company.balanceType == 0)
+            {
+                if (invoice.totalNet <= (decimal)company.balance)
+                {
+                    invoice.paid = invoice.totalNet;
+                    invoice.deserved = 0;
+                    newBalance = (decimal) company.balance - (decimal)invoice.totalNet;
+                    company.balance = newBalance;
+                }
+                else
+                {
+                    invoice.paid = (decimal)company.balance;
+                    invoice.deserved = invoice.totalNet - (decimal)company.balance;
+                    newBalance = (decimal) invoice.totalNet - company.balance;
+                    company.balance = newBalance;
+                    company.balanceType = 1;
+                }
+
+                cashTrasnfer.cash = invoice.paid;
+                cashTrasnfer.transType = "d"; //deposit
+                if (invoice.paid > 0)
+                {                  
+                    await cashTrasnfer.Save(cashTrasnfer); //add cash transfer
+                    await invoice.saveInvoice(invoice);
+                }             
+                await company.Save(company);
+            }
+            else if (company.balanceType == 1)
+            {
+                newBalance = (decimal) company.balance + (decimal)invoice.totalNet;
+                company.balance = newBalance;
+                await company.Save(company);
+            }
             return invoice;
         }
         public async Task<List<Invoice>> GetAll()

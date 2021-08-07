@@ -61,7 +61,9 @@ namespace POS.Classes
         public Nullable<int> bondId { get; set; }
         public Nullable<System.DateTime> bondDeserveDate { get; set; }
         public Nullable<byte> bondIsRecieved { get; set; }
-
+        public Nullable<int> shippingCompanyId { get; set; }
+        public string shippingCompanyName { get; set; }
+        public string userAcc { get; set; }
 
         public async Task<List<CashTransfer>> GetCashTransferAsync(string type, string side)
         {

@@ -889,6 +889,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        internal static string trDate {
+            get {
+                return ResourceManager.GetString("trDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         internal static string trDelete {

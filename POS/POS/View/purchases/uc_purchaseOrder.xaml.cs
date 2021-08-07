@@ -122,7 +122,7 @@ namespace POS.View.purchases
         static private int _SequenceNum = 0;
         static private decimal _Sum = 0;
         static public string _InvoiceType = "pod"; // purchase order draft
-
+        static private decimal _Count = 0;
         // for report
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
@@ -134,9 +134,9 @@ namespace POS.View.purchases
         }
         private void translate()
         {
-            ////////////////////////////////----invoice----/////////////////////////////////
-            //txt_invoiceHeader.Text = MainWindow.resourcemanager.GetString("trInvoice");
-            //txt_invoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
+        ////////////////////////////////----invoice----/////////////////////////////////
+        //txt_invoiceHeader.Text = MainWindow.resourcemanager.GetString("trInvoice");
+        //txt_invoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
@@ -144,10 +144,12 @@ namespace POS.View.purchases
             //dg_billDetails.Columns[5].Header = MainWindow.resourcemanager.GetString("trPrice");
             //dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trTotal");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
-            txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
-            btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
-            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
-            btn_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tb_count.Text = MainWindow.resourcemanager.GetString("trCount:");
+            //txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
+            tt_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
+            tt_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
+            tt_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
+        
 
             ////////////////////////////////----vendor----/////////////////////////////////
 
@@ -240,6 +242,7 @@ namespace POS.View.purchases
                     BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
                     int index = dg_billDetails.SelectedIndex;
                     // calculate new sum
+                    _Count-= row.Count;
                     _Sum -= row.Total;
 
                     // remove item from bill
@@ -341,6 +344,8 @@ namespace POS.View.purchases
                         billDetails[index].Count++;
                         billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
 
+
+                        _Count += billDetails[index].Count;
                         _Sum += billDetails[index].Price;
                     }
                     refreshTotalValue();
@@ -352,6 +357,7 @@ namespace POS.View.purchases
                     refrishBillDetails();
                 }
             }
+            tb_total.Text = _Count.ToString();
         }
 
         #endregion
@@ -449,7 +455,7 @@ namespace POS.View.purchases
             bool valid = true;
             SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
             if (billDetails.Count == 0)
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trAddInvoiceWithoutItems"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trAddInvoiceWithoutItems"), animation: ToasterAnimation.FadeIn);
 
             if (cb_vendor.SelectedIndex != -1 && billDetails.Count > 0)
                 valid = true;
@@ -532,6 +538,7 @@ namespace POS.View.purchases
         private void clearInvoice()
         {
             _Sum = 0;
+            _Count = 0;
             txt_invNumber.Text = "";
             _SequenceNum = 0;
             _SelectedVendor = -1;
@@ -626,6 +633,8 @@ namespace POS.View.purchases
 
         private async Task buildInvoiceDetails()
         {
+            //_Count = 0;
+
             //get invoice items
             invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
             // build invoice details grid
@@ -633,6 +642,7 @@ namespace POS.View.purchases
             billDetails.Clear();
             foreach (ItemTransfer itemT in invoiceItems)
             {
+                _Count += (int)itemT.quantity;
                 _SequenceNum++;
                 decimal total = (decimal)(itemT.price * itemT.quantity);
                 billDetails.Add(new BillDetails()
@@ -648,6 +658,7 @@ namespace POS.View.purchases
                 });
             }
 
+            tb_count.Text = _Count.ToString();
             tb_barcode.Focus();
 
             refrishBillDetails();
@@ -765,8 +776,8 @@ namespace POS.View.purchases
                 taxValue = SectionData.calcPercentage(total, taxInputVal);
 
             tb_sum.Text = _Sum.ToString();
-            total = total + taxValue;
-            tb_total.Text = Math.Round(total, 2).ToString();
+            //total = total + taxValue;
+            //tb_total.Text = Math.Round(total, 2).ToString();
         }
 
 
@@ -775,7 +786,7 @@ namespace POS.View.purchases
         {
             dg_billDetails.ItemsSource = null;
             dg_billDetails.ItemsSource = billDetails;
-
+            tb_total.Text = _Count.ToString();
             tb_sum.Text = _Sum.ToString();
         }
 
@@ -1024,6 +1035,7 @@ namespace POS.View.purchases
                 Price = price,
                 Total = total,
             });
+            _Count ++;
             _Sum += total;
         }
         #endregion billdetails
@@ -1113,20 +1125,24 @@ namespace POS.View.purchases
                 }
 
 
-                // old total for changed item
-                decimal total = oldCount;
-                _Sum -= total;
+                _Count -= oldCount;
+                _Count += newCount;
+                tb_total.Text = _Count.ToString();
 
-                // new total for changed item
-                total = newCount;
-                _Sum += total;
+                //// old total for changed item
+                //decimal total = oldCount;
+                //_Sum -= total;
 
-                //  refresh sum and total text box
-                refreshTotalValue();
+                //// new total for changed item
+                //total = newCount;
+                //_Sum += total;
+
+                ////  refresh sum and total text box
+                //refreshTotalValue();
 
                 // update item in billdetails           
                 billDetails[index].Count = (int)newCount;
-                billDetails[index].Total = total;
+                //billDetails[index].Total = total;
             }
         }
 

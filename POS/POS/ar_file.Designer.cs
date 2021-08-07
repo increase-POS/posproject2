@@ -862,6 +862,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to التاريخ.
+        /// </summary>
+        internal static string trDate {
+            get {
+                return ResourceManager.GetString("trDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to حذف.
         /// </summary>
         internal static string trDelete {

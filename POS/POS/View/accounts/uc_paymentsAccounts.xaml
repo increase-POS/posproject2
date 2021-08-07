@@ -404,14 +404,14 @@
                                                           VerticalOffset="20"/>
                             </ComboBox.ToolTip>
                         </ComboBox>
-                        <ComboBox x:Name="cb_recipientC"  Grid.Row="3"
+                        <ComboBox x:Name="cb_recipientC"  Grid.Row="2"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="Recipient..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                  Visibility="Collapsed"
-                                  Grid.Column="0" Height="40"  Margin="10,5,10,5"
+                                  Grid.Column="0" Height="40" Margin="10,5,35,5"
                                   BorderBrush="#737373" BorderThickness="0" 
-                                  LostFocus="Tb_validateEmptyLostFocus" SelectionChanged="Cb_recipientC_SelectionChanged">
+                                  LostFocus="Tb_validateEmptyLostFocus" SelectionChanged="Cb_recipientC_SelectionChanged" Grid.RowSpan="3">
                             <ComboBox.ToolTip>
                                 <ToolTip x:Name="tt_recepientC" Content="Recipient"
                                                           Placement="left" 
@@ -425,7 +425,7 @@
                                   materialDesign:HintAssist.Hint="Recipient..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                  Visibility="Collapsed"
-                                  Grid.Column="0" Height="40"  Margin="10,5,35,5"
+                                  Grid.Column="0" Height="40"  Margin="10,5,10,5"
                                   BorderBrush="#737373" BorderThickness="0" 
                                   LostFocus="Tb_validateEmptyLostFocus">
                             <ComboBox.ToolTip>

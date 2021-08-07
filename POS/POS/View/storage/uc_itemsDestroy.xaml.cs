@@ -277,6 +277,8 @@ namespace POS.View.storage
                     invoiceModel.paid = 0;
                     invoiceModel.deserved = invoiceModel.totalNet;
                     invoiceModel.notes = tb_notes.Text;
+                    if (cb_user.SelectedIndex != -1)
+                        invoiceModel.userId = (int)cb_user.SelectedValue;
 
                     List<ItemTransfer> orderList = new List<ItemTransfer>();
                     

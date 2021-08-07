@@ -324,7 +324,7 @@ namespace POS.View.windows
                 if (!ValidatorExtensions.IsValid(tb_email.Text))
                     emailError = true;
 
-            decimal maxDeserveValue = 0;
+            //decimal maxDeserveValue = 0;
 
             if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
             {
@@ -333,8 +333,7 @@ namespace POS.View.windows
                 else
                 {
                     SectionData.genRandomCode("v");
-                    tb_code.Text = SectionData.code;
-
+                    //tb_code.Text = SectionData.code;
                     agent.name = tb_name.Text;
                     agent.code = tb_code.Text;
                     agent.company = tb_company.Text;
@@ -343,15 +342,15 @@ namespace POS.View.windows
                     agent.phone = phoneStr;
                     agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
                     agent.image = "";
-                    agent.type = "v";
-                    agent.accType = "";
-                    agent.balance = 0;
+                    //agent.type = "v";
+                    //agent.accType = "";
+                    //agent.balance = 0;
                     agent.createUserId = MainWindow.userID;
                     agent.updateUserId = MainWindow.userID;
                     agent.notes = tb_notes.Text;
-                    agent.isActive = 1;
+                    //agent.isActive = 1;
                     agent.fax = faxStr;
-                    agent.maxDeserve = maxDeserveValue;
+                    //agent.maxDeserve = maxDeserveValue;
 
                     string s = await agentModel.saveAgent(agent);
 

@@ -1833,4 +1833,7 @@
   <data name="trTransfers" xml:space="preserve">
     <value>التحويلات</value>
   </data>
+  <data name="trDate" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
 </root>

@@ -578,8 +578,7 @@ namespace POS.View.sales
                 invoice.posId = MainWindow.posID.Value;
             }
             invoice.invType = invType;
-            //invoice.name = tb_name.Text;
-            //invoice.posId = MainWindow.posID;
+
             if (!tb_discount.Text.Equals(""))
                 invoice.discountValue = decimal.Parse(tb_discount.Text);
 
@@ -603,7 +602,7 @@ namespace POS.View.sales
             // build invoice NUM like storCode_PI_sequence exp: 123_PI_2
             if (invType == "q")
             {
-                invoice.invNumber = await invoice.generateInvNumber("si");
+                invoice.invNumber = await invoice.generateInvNumber("qt");
             }
 
             // save invoice in DB
@@ -1268,7 +1267,8 @@ namespace POS.View.sales
         {
 
             MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-            if (billDetails.Count > 0)
+
+            if (billDetails.Count > 0 && _InvoiceType == "qd")
             {
                 #region Accept
                 MainWindow.mainWindow.Opacity = 0.2;

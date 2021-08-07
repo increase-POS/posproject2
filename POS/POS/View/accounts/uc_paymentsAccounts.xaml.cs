@@ -82,7 +82,7 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_recipientV, MainWindow.resourcemanager.GetString("trRecipientHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_recipientC, MainWindow.resourcemanager.GetString("trRecipientHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_recipientU, MainWindow.resourcemanager.GetString("trRecipientHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_recipientSh, MainWindow.resourcemanager.GetString("trShippingCompaniesHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_recipientSh, MainWindow.resourcemanager.GetString("trRecipientHint"));
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentProcessType, MainWindow.resourcemanager.GetString("trPaymentTypeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
@@ -324,7 +324,7 @@ namespace POS.View.accounts
                             break;
                         case "sh":
                             cb_recipientSh.SelectedIndex = -1;
-                            //cb_recipientSh.SelectedValue = cashtrans.co.Value;?????????????????????
+                            cb_recipientSh.SelectedValue = cashtrans.shippingCompanyId.Value;
                             cb_recipientC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                             cb_recipientV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                             cb_recipientU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
@@ -487,8 +487,8 @@ namespace POS.View.accounts
                     if (cb_recipientU.IsVisible)
                         cash.userId = Convert.ToInt32(cb_recipientU.SelectedValue);
 
-                    //if (cb_recipientSh.IsVisible)
-                    //    cash. = Convert.ToInt32(cb_recipientSh.SelectedValue);
+                    if (cb_recipientSh.IsVisible)
+                        cash.shippingCompanyId = Convert.ToInt32(cb_recipientSh.SelectedValue);
 
                     if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
                     {
@@ -505,7 +505,6 @@ namespace POS.View.accounts
 
                     if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
                     {
-                        //saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "p", int.Parse(s));
                         string res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "p");
                         cash.bondId = int.Parse(res);
                     }
@@ -523,6 +522,9 @@ namespace POS.View.accounts
                     {
                         if(cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
                             calcBalance(cash.cash.Value, recipient, agentid);
+
+                        if ((cb_recipientU.IsVisible) && (cash.side == "u"))
+                            calcUserBalance(Convert.ToSingle(cash.cash.Value), cash.userId.Value);
 
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         Btn_clear_Click(null, null);
@@ -563,11 +565,10 @@ namespace POS.View.accounts
 
             return s;
 
-
         }
 
         private async void calcBalance(decimal ammount, string recipient, int agentid)
-        {
+        {//balance for pos
             string s = "";
             //increase pos balance
             Pos pos = await posModel.getPosById(MainWindow.posID.Value);
@@ -575,6 +576,15 @@ namespace POS.View.accounts
             pos.balance -= ammount;
 
             s = await pos.savePos(pos);
+        }
+
+        private async void calcUserBalance(float value, int userId)
+        {//balance for user
+            User user = await userModel.getUserById(userId);
+
+            user.balance += value;
+
+            string s = await userModel.saveUser(user);
 
         }
 
@@ -652,20 +662,8 @@ namespace POS.View.accounts
         async Task<IEnumerable<CashTransfer>> RefreshCashesList()
         {
             cashes = await cashModel.GetCashTransferAsync("p", "all");
-        
-            //foreach (CashTransfer cashItem in cashes)
-            //{
-            //    if (cashItem.agentId > 0)
-            //    {
-            //        cashItem.reciveName = cashItem.agentName;
-            //    }
-            //    else
-            //    {
-            //        cashItem.reciveName = cashItem.usersName + " " + cashItem.usersLName;
-            //    }
-             
-            //}
             cashes = cashes.Where(x => x.processType != "balance");
+            //cashes = cashes.Where(c => c.shippingCompanyId == null);???????????????
             return cashes;
             
         }
@@ -673,6 +671,7 @@ namespace POS.View.accounts
         void RefreshCashView()
         {
             dg_paymentsAccounts.ItemsSource = cashesQuery;
+            cashes = cashes.Where(x => x.processType != "balance");
             txt_count.Text = cashesQuery.Count().ToString();
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -855,7 +854,6 @@ namespace POS.View.accounts
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Visible;
                     cb_recipientSh.Visibility = Visibility.Collapsed;
-                    cb_recipientU.Margin = new Thickness(10, 5, 10, 5);
                     SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
@@ -867,7 +865,6 @@ namespace POS.View.accounts
                     btn_invoices.IsEnabled = false;
                     cb_recipientC.Visibility = Visibility.Collapsed;
                     cb_recipientU.Visibility = Visibility.Visible;
-                    cb_recipientU.Margin = new Thickness(10, 5, 0, 5);
                     cb_recipientSh.Visibility = Visibility.Collapsed;
                     //btn_salaries.Visibility = Visibility.Collapsed;
                     SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
@@ -883,7 +880,7 @@ namespace POS.View.accounts
                     cb_recipientU.Visibility = Visibility.Collapsed;
                     cb_recipientSh.Visibility = Visibility.Collapsed;
                     //btn_salaries.Visibility = Visibility.Collapsed;
-                    cb_recipientV.Text = ""; cb_recipientC.Text = ""; cb_recipientU.Text = "";
+                    cb_recipientV.Text = ""; cb_recipientC.Text = ""; cb_recipientU.Text = ""; cb_recipientSh.Text = "";
                     SectionData.clearComboBoxValidate(cb_recipientV , p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                     SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);

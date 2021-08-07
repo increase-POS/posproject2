@@ -387,7 +387,7 @@
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   materialDesign:HintAssist.Hint="Depositor..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
-                                  Height="40"   Margin="10,5,10,5"
+                                  Height="40"   Margin="10,5,35,5"
                                   Visibility="Collapsed"
                                   BorderBrush="#737373" BorderThickness="0" 
                                   LostFocus="Tb_validateEmptyLostFocus" 
@@ -422,12 +422,29 @@
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   materialDesign:HintAssist.Hint="Depositor..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
-                                  Height="40"   Margin="10,5,10,5"
+                                  Height="40"    Margin="10,5,35,5"
                                   Visibility="Collapsed"
                                   BorderBrush="#737373" BorderThickness="0" 
-                                  LostFocus="Tb_validateEmptyLostFocus">
+                                  LostFocus="Tb_validateEmptyLostFocus" SelectionChanged="Cb_depositorU_SelectionChanged">
                             <ComboBox.ToolTip>
                                 <ToolTip x:Name="tt_depositorU" Content="Depositor"
+                                                          Placement="left" 
+                                                          HorizontalOffset="35"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="20"/>
+                            </ComboBox.ToolTip>
+                        </ComboBox>
+                        <ComboBox x:Name="cb_depositorSh"  Grid.Row="3"
+                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  materialDesign:HintAssist.Hint="Depositor..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                  Height="40"    Margin="10,5,35,5"
+                                  Visibility="Collapsed"
+                                  BorderBrush="#737373" BorderThickness="0" 
+                                  LostFocus="Tb_validateEmptyLostFocus" SelectionChanged="Cb_depositorSh_SelectionChanged">
+                            <ComboBox.ToolTip>
+                                <ToolTip x:Name="tt_depositorSh" Content="Depositor"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
