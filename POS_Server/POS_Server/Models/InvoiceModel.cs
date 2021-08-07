@@ -10,6 +10,7 @@ namespace POS_Server.Models
         public int invoiceId { get; set; }
         public string invNumber { get; set; }
         public Nullable<int> agentId { get; set; }
+        public Nullable<int> userId { get; set; }
         public Nullable<int> createUserId { get; set; }
         public string invType { get; set; }
         public string discountType { get; set; }

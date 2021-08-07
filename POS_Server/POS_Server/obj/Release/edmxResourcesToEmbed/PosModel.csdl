@@ -501,6 +501,8 @@
     <NavigationProperty Name="users4" Relationship="Self.FK_invoices_users4" FromRole="invoices" ToRole="users" />
     <NavigationProperty Name="invoiceStatus" Relationship="Self.FK_invoiceStatus_invoices" FromRole="invoices" ToRole="invoiceStatus" />
     <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_invoices" FromRole="invoices" ToRole="itemsTransfer" />
+    <Property Name="userId" Type="Int32" />
+    <NavigationProperty Name="users5" Relationship="incposdbModel.FK_invoices_users5" FromRole="invoices" ToRole="users" />
   </EntityType>
   <EntityType Name="invoiceStatus">
     <Key>
@@ -1244,6 +1246,7 @@
     <NavigationProperty Name="userSetValues1" Relationship="Self.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
     <NavigationProperty Name="userSetValues2" Relationship="Self.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
     <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
+    <NavigationProperty Name="invoices5" Relationship="incposdbModel.FK_invoices_users5" FromRole="users" ToRole="invoices" />
   </EntityType>
   <EntityType Name="userSetValues">
     <Key>
@@ -4088,6 +4091,10 @@
       <End Role="shippingCompanies" EntitySet="shippingCompanies" />
       <End Role="cashTransfer" EntitySet="cashTransfer" />
     </AssociationSet>
+    <AssociationSet Name="FK_invoices_users5" Association="incposdbModel.FK_invoices_users5">
+      <End Role="users" EntitySet="users" />
+      <End Role="invoices" EntitySet="invoices" />
+    </AssociationSet>
   </EntityContainer>
   <Association Name="FK_cashTransfer_shippingCompanies">
     <End Type="incposdbModel.shippingCompanies" Role="shippingCompanies" Multiplicity="0..1" />
@@ -4098,6 +4105,18 @@
       </Principal>
       <Dependent Role="cashTransfer">
         <PropertyRef Name="shippingCompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoices_users5">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.invoices" Role="invoices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="invoices">
+        <PropertyRef Name="userId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

@@ -113,6 +113,7 @@ namespace POS_Server
             this.userSetValues1 = new HashSet<userSetValues>();
             this.userSetValues2 = new HashSet<userSetValues>();
             this.usersLogs = new HashSet<usersLogs>();
+            this.invoices5 = new HashSet<invoices>();
         }
     
         public int userId { get; set; }
@@ -332,5 +333,7 @@ namespace POS_Server
         public virtual ICollection<userSetValues> userSetValues2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<usersLogs> usersLogs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<invoices> invoices5 { get; set; }
     }
 }

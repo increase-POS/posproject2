@@ -55,6 +55,7 @@ namespace POS_Server
         public Nullable<int> branchCreatorId { get; set; }
         public Nullable<int> shipUserId { get; set; }
         public string prevStatus { get; set; }
+        public Nullable<int> userId { get; set; }
     
         public virtual agents agents { get; set; }
         public virtual branches branches { get; set; }
@@ -77,5 +78,6 @@ namespace POS_Server
         public virtual ICollection<invoiceStatus> invoiceStatus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsTransfer> itemsTransfer { get; set; }
+        public virtual users users5 { get; set; }
     }
 }

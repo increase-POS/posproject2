@@ -54,9 +54,9 @@ namespace POS_Server.Controllers
                             if (List[i].isActive == 1)
                             {
                                 int groupId = (int)List[i].groupId;
-                                var operationsL = entity.groupObject.Where(x => x.groupId == groupId).Select(b => new { b.id }).FirstOrDefault();
-
-                                if (operationsL is null)
+                               // var operationsL = entity.groupObject.Where(x => x.groupId == groupId).Select(b => new { b.id }).FirstOrDefault();
+                                var operationsu = entity.users.Where(x => x.groupId == groupId).Select(b => new { b.groupId }).FirstOrDefault();
+                                if (operationsu is null)
                                     canDelete = true;
                             }
                             List[i].canDelete = canDelete;
@@ -297,6 +297,10 @@ message = Object.groupId.ToString();
                         {
 
                             groups Deleterow = entity.groups.Find(groupId);
+
+                            List<groupObject> delGrObject = entity.groupObject.Where(x => x.groupId == groupId).ToList();
+                            entity.groupObject.RemoveRange(delGrObject);
+                            entity.SaveChanges();
                             entity.groups.Remove(Deleterow);
                             entity.SaveChanges();
                             return Ok("OK");
@@ -315,7 +319,7 @@ message = Object.groupId.ToString();
                         {
 
                             groups Obj = entity.groups.Find(groupId);
-                           Obj.isActive = 0;
+                            Obj.isActive = 0;
                             Obj.updateUserId = userId;
                             Obj.updateDate = DateTime.Now;
                             entity.SaveChanges();

@@ -63,6 +63,7 @@ namespace POS_Server.Controllers
                         b.branchCreatorId,
                         b.shippingCompanyId,
                         b.shipUserId,
+                        b.userId,
                     })
                     .ToList();
 
@@ -99,7 +100,9 @@ namespace POS_Server.Controllers
                     var itemUnits =(from i in entity.itemsUnits where (i.itemId == itemId) select(i.itemUnitId)).ToList();
                    
                     price += getItemUnitSumPrice(itemUnits);
+                   
                     totalNum = getItemUnitTotalNum(itemUnits);
+
                     if(totalNum != 0)
                         smallUnitPrice = price / totalNum;
 
@@ -161,11 +164,20 @@ namespace POS_Server.Controllers
             using (incposdbEntities entity = new incposdbEntities())
             {
                 var sumNum = (from b in entity.invoices
-                              where b.invType == "p"
+                              where b.invType.Contains("p")
                               join s in entity.itemsTransfer.Where(x => x.itemUnitId == itemUnitId) on b.invoiceId equals s.invoiceId
                               select s.quantity).Sum();
 
-               if(sumNum != null) return (long)sumNum;
+                if (sumNum == null)
+                    sumNum = 0;
+
+                var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+              
+                if (upperUnit != null)
+                    sumNum += (int)upperUnit.unitValue * getItemUnitNum(upperUnit.itemUnitId);
+
+                if (sumNum != null) return (long)sumNum;
                   else
                     return 0;
             }
@@ -190,9 +202,11 @@ namespace POS_Server.Controllers
                                 join s in entity.itemsTransfer.Where(x => x.itemUnitId == smallestUnitId) on b.invoiceId equals s.invoiceId
                                 select s.quantity).Sum();
 
+                if (sumNum == null)
+                    sumNum = 0;
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == smallestUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
                 var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
-
+               
                 if (upperUnit != null)
                     sumNum += (int)upperUnit.unitValue * getItemUnitNum(upperUnit.itemUnitId);
 
@@ -250,6 +264,7 @@ namespace POS_Server.Controllers
                         b.branchCreatorId,
                         b.shippingCompanyId,
                         b.shipUserId,
+                        b.userId,
                     })
                     .FirstOrDefault();
 
@@ -310,6 +325,7 @@ namespace POS_Server.Controllers
                         b.branchCreatorId,
                         b.shippingCompanyId,
                         b.shipUserId,
+                        b.userId,
                     })
                     .FirstOrDefault();
 
@@ -369,6 +385,7 @@ namespace POS_Server.Controllers
                         b.branchCreatorId,
                         b.shippingCompanyId,
                         b.shipUserId,
+                        b.userId,
                     })
                     .FirstOrDefault();
 
@@ -435,6 +452,7 @@ namespace POS_Server.Controllers
                                             branchCreatorId=b.branchCreatorId,
                                            shippingCompanyId = b.shippingCompanyId,
                                            shipUserId = b.shipUserId,
+                                           userId = b.userId,
                                         })
 
                                .FirstOrDefault();
@@ -481,6 +499,7 @@ namespace POS_Server.Controllers
                                              branchCreatorId=b.branchCreatorId,
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId =  b.shipUserId,
+                                            userId = b.userId,
                                          })
 
                                .FirstOrDefault();
@@ -554,6 +573,7 @@ namespace POS_Server.Controllers
                                 branchCreatorId=b.branchCreatorId,
                                   shippingCompanyId =   b.shippingCompanyId,
                                    shipUserId =  b.shipUserId,
+                                   userId = b.userId,
                                  })
                         .ToList();
                         if (invoicesList != null)
@@ -607,6 +627,7 @@ namespace POS_Server.Controllers
                                                 branchCreatorId=b.branchCreatorId,
                                                shippingCompanyId = b.shippingCompanyId,
                                                shipUserId = b.shipUserId,
+                                               userId = b.userId,
                                             })
                         .ToList();
                         if (invoicesList != null)
@@ -695,6 +716,7 @@ namespace POS_Server.Controllers
                                             branchCreatorId=b.branchCreatorId,
                                            shippingCompanyId =  b.shippingCompanyId,
                                            shipUserId =  b.shipUserId,
+                                           userId = b.userId,
                                         })
                     .ToList();
                   
@@ -793,6 +815,7 @@ namespace POS_Server.Controllers
                                             branchCreatorId=b.branchCreatorId,
                                            shippingCompanyId =  b.shippingCompanyId,
                                            shipUserId = b.shipUserId,
+                                           userId = b.userId,
                                         })
                     .ToList();
                     if (invoicesList != null)
@@ -869,6 +892,7 @@ namespace POS_Server.Controllers
                                             branchCreatorId=b.branchCreatorId,
                                            shippingCompanyId =  b.shippingCompanyId,
                                            shipUserId = b.shipUserId,
+                                           userId = b.userId,
                                         })
                     .ToList();
                     if (invoicesList != null)
@@ -950,6 +974,7 @@ namespace POS_Server.Controllers
                                             agentName = b.agents.name,
                                             shipUserName = y.username,
                                             status = s.status,
+                                            userId = b.userId,
                                         })
                     .ToList();
                     if (invoicesList != null)
@@ -1029,6 +1054,7 @@ namespace POS_Server.Controllers
                                 branchCreatorId=b.branchCreatorId,
                                 shippingCompanyId = b.shippingCompanyId,
                                 shipUserId = b.shipUserId,
+                                userId = b.userId,
                                  })
                         .ToList();
                         if (invoicesList != null)
@@ -1082,6 +1108,7 @@ namespace POS_Server.Controllers
                                                 branchCreatorId=b.branchCreatorId,
                                                 shippingCompanyId = b.shippingCompanyId,
                                                 shipUserId = b.shipUserId,
+                                                userId = b.userId,
                                             })
                         .ToList();
                         if (invoicesList != null)
@@ -1166,6 +1193,7 @@ namespace POS_Server.Controllers
                             tmpInvoice.branchCreatorId = newObject.branchCreatorId;
                             tmpInvoice.shippingCompanyId = newObject.shippingCompanyId;
                             tmpInvoice.shipUserId = newObject.shipUserId;
+                            tmpInvoice.userId = newObject.userId;
                         }
                         entity.SaveChanges();
                         return Ok( tmpInvoice.invoiceId);

@@ -3109,7 +3109,7 @@ notes
         #region
         [HttpGet]
         [Route("GetPayments")]
-        public IHttpActionResult GetPayments(string Side)
+        public IHttpActionResult GetPayments()
         {
             var re = Request;
             var headers = re.Headers;
@@ -3148,7 +3148,7 @@ notes
                                                         from jucc in juc.DefaultIfEmpty()
                                                         from jcrd in jcr.DefaultIfEmpty()
                                                         from jbbo in jbo.DefaultIfEmpty()
-                                                        where( C.transType == "p" && C.side==Side)
+                                                        where( C.transType == "p" )//( C.transType == "p" && C.side==Side)
                                                         select new CashTransferModel()
                                                         {
                                                             cashTransId = C.cashTransId,
@@ -3177,7 +3177,7 @@ notes
                                                             agentName = jaa.name,
 
                                                             usersName = juu.name,// side =u
-
+                                                            userAcc = juu.username,// side =u
                                                             posName = jpp.name,
                                                             posCreatorName = jpcc.name,
                                                             processType = C.processType,
@@ -3192,6 +3192,9 @@ notes
                                                             bondDeserveDate = jbbo.deserveDate,
                                                             bondIsRecieved = jbbo.isRecieved,
                                                             agentCompany = jaa.company,
+                                                            shippingCompanyId= C.shippingCompanyId,
+                                                            shippingCompanyName = C.shippingCompanies.name,
+
                                                         }).ToList();
 
                     /*

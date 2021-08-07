@@ -391,6 +391,7 @@
     <Property Name="branchCreatorId" Type="int" />
     <Property Name="shipUserId" Type="int" />
     <Property Name="prevStatus" Type="nvarchar" MaxLength="10" />
+    <Property Name="userId" Type="int" />
   </EntityType>
   <EntityType Name="invoiceStatus">
     <Key>
@@ -1837,6 +1838,18 @@
       </Principal>
       <Dependent Role="invoices">
         <PropertyRef Name="shipUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoices_users5">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="invoices" Type="Self.invoices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="invoices">
+        <PropertyRef Name="userId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3339,6 +3352,10 @@
       <End Role="invoices" EntitySet="invoices" />
     </AssociationSet>
     <AssociationSet Name="FK_invoices_users4" Association="Self.FK_invoices_users4">
+      <End Role="users" EntitySet="users" />
+      <End Role="invoices" EntitySet="invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoices_users5" Association="Self.FK_invoices_users5">
       <End Role="users" EntitySet="users" />
       <End Role="invoices" EntitySet="invoices" />
     </AssociationSet>

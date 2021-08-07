@@ -36,22 +36,22 @@ namespace POS_Server.Controllers
 
                     var branchesList = entity.branches
                         .Where(b => b.type == type)
-                   .Select(b => new BranchModel{
-                      branchId= b.branchId,
-                       address=b.address,
-                       createDate= b.createDate,
-                       createUserId= b.createUserId,
-                       email=b.email,
-                       mobile= b.mobile,
-                       name= b.name,
-                       code=b.code,
-                       notes=b.notes,
-                       parentId= b.parentId,
-                       phone=b.phone,
-                       updateDate= b.updateDate,
-                       updateUserId= b.updateUserId,
-                       isActive=b.isActive,
-                       type= b.type})
+                   .Select(b => new BranchModel {
+                       branchId = b.branchId,
+                       address = b.address,
+                       createDate = b.createDate,
+                       createUserId = b.createUserId,
+                       email = b.email,
+                       mobile = b.mobile,
+                       name = b.name,
+                       code = b.code,
+                       notes = b.notes,
+                       parentId = b.parentId,
+                       phone = b.phone,
+                       updateDate = b.updateDate,
+                       updateUserId = b.updateUserId,
+                       isActive = b.isActive,
+                       type = b.type })
                    .ToList();
 
                     if (branchesList.Count > 0)
@@ -64,9 +64,9 @@ namespace POS_Server.Controllers
                                 int branchId = (int)branchesList[i].branchId;
                                 var parentBrancheL = entity.branches.Where(x => x.parentId == branchId).Select(x => new { x.branchId }).FirstOrDefault();
                                 var posL = entity.pos.Where(x => x.branchId == branchId).Select(b => new { b.posId }).FirstOrDefault();
-                               // var locationsL = entity.locations.Where(x => x.branchId == branchId).Select(x => new { x.locationId }).FirstOrDefault();
+                                // var locationsL = entity.locations.Where(x => x.branchId == branchId).Select(x => new { x.locationId }).FirstOrDefault();
                                 var usersL = entity.branchesUsers.Where(x => x.branchId == branchId).Select(x => new { x.branchsUsersId }).FirstOrDefault();
-                                if ((parentBrancheL is null)&&(posL is null)  && (usersL is null))
+                                if ((parentBrancheL is null) && (posL is null) && (usersL is null))
                                     canDelete = true;
                             }
                             branchesList[i].canDelete = canDelete;
@@ -136,7 +136,7 @@ namespace POS_Server.Controllers
 
         [HttpGet]
         [Route("Search")]
-        public IHttpActionResult Search(string type,string searchWords)
+        public IHttpActionResult Search(string type, string searchWords)
         {
             var re = Request;
             var headers = re.Headers;
@@ -374,9 +374,9 @@ namespace POS_Server.Controllers
                             entity.SaveChanges();
                             return newObject.branchId.ToString();
                         }
-                       // entity.SaveChanges();
+                        // entity.SaveChanges();
                     }
-                   
+
                 }
 
                 catch
@@ -390,7 +390,7 @@ namespace POS_Server.Controllers
 
         [HttpPost]
         [Route("Delete")]
-        public bool Delete(int branchId, int userId,Boolean final)
+        public bool Delete(int branchId, int userId, Boolean final)
         {
             var re = Request;
             var headers = re.Headers;
@@ -409,20 +409,20 @@ namespace POS_Server.Controllers
                 {
                     //try
                     //{
-                        using (incposdbEntities entity = new incposdbEntities())
-                        {
-                            var tmpBranch = entity.branches.Where(p => p.branchId == branchId).First();
-                            entity.branches.Remove(tmpBranch);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var tmpBranch = entity.branches.Where(p => p.branchId == branchId).First();
+                        entity.branches.Remove(tmpBranch);
 
-                            entity.SaveChanges();
-                        }
+                        entity.SaveChanges();
+                    }
 
-                        return true;
-                   // }
-                   // catch
-                   // {
-                   //     return false;
-                   // }
+                    return true;
+                    // }
+                    // catch
+                    // {
+                    //     return false;
+                    // }
                 }
                 else
                 {
@@ -496,12 +496,12 @@ namespace POS_Server.Controllers
                     int parentid = (int)category1.parentId;
                     */
                     int parentid = branchID; // if want to show the last category 
-                    while (parentid > 0 )
+                    while (parentid > 0)
                     {
                         branches tempbranch = new branches();
                         var branch = entity.branches.Where(c => c.branchId == parentid)
                             .Select(p => new {
-                               
+
                                 p.branchId,
                                 p.code,
                                 p.name,
@@ -535,7 +535,7 @@ namespace POS_Server.Controllers
                         tempbranch.parentId = branch.parentId;
                         tempbranch.isActive = branch.isActive;
                         tempbranch.type = branch.type;
-                        
+
 
 
                         parentid = (int)tempbranch.parentId;
@@ -580,7 +580,7 @@ namespace POS_Server.Controllers
                 {
 
                     var branchesList = entity.branches
-                        .Where(b => (type=="all"? true: b.type == type) && b.branchId != 1)                      
+                        .Where(b => (type == "all" ? true : b.type == type) && b.branchId != 1)
                    .Select(b => new BranchModel
                    {
                        branchId = b.branchId,
@@ -648,17 +648,17 @@ namespace POS_Server.Controllers
             if (valid)
             {
                 using (incposdbEntities entity = new incposdbEntities())
-                {               
+                {
                     var branchesList = (from p in entity.pos
                                         join b in entity.branches on p.branchId equals b.branchId into Jb
                                         from Jbb in Jb.DefaultIfEmpty()
-                                        where  type == "all" ? true : Jbb.type == type
+                                        where type == "all" ? true : Jbb.type == type
                                         group new { p, Jbb } by (Jbb.branchId) into g
                                         select new
                                         {
                                             //DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0
                                             branchId = g.Key,
-                                           name=g.Select(t => t.Jbb.name).FirstOrDefault(),
+                                            name = g.Select(t => t.Jbb.name).FirstOrDefault(),
                                             balance = g.Sum(x => x.p.balance)
                                         }).ToList();
 
@@ -689,43 +689,248 @@ namespace POS_Server.Controllers
             bool valid = validation.CheckApiKey(token);
             if (valid)
             {
-             
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {
-                        var branchesList =(from b in entity.branches
-                                         
-                                          join S in entity.branchStore on b.branchId equals S.storeId into JS
-                                           from JSS in JS.DefaultIfEmpty()
-                                           where JSS.branchId==branchId
-                                          select new BranchModel
-                        {
-                            branchId = b.branchId,
-                            address = b.address,
-                            createDate = b.createDate,
-                            createUserId = b.createUserId,
-                            email = b.email,
-                            mobile = b.mobile,
-                            name = b.name,
-                            code = b.code,
-                            notes = b.notes,
-                            parentId = b.parentId,
-                            phone = b.phone,
-                            updateDate = b.updateDate,
-                            updateUserId = b.updateUserId,
-                            isActive = b.isActive,
-                            type = b.type
 
-                        })
-                            .ToList();
-                        if (branchesList == null)
-                            return NotFound();
-                        else
-                            return Ok(branchesList);
-                    }
-                
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var branchesList = (from b in entity.branches
+
+                                        join S in entity.branchStore on b.branchId equals S.storeId into JS
+                                        from JSS in JS.DefaultIfEmpty()
+                                        where JSS.branchId == branchId
+                                        select new BranchModel
+                                        {
+                                            branchId = b.branchId,
+                                            address = b.address,
+                                            createDate = b.createDate,
+                                            createUserId = b.createUserId,
+                                            email = b.email,
+                                            mobile = b.mobile,
+                                            name = b.name,
+                                            code = b.code,
+                                            notes = b.notes,
+                                            parentId = b.parentId,
+                                            phone = b.phone,
+                                            updateDate = b.updateDate,
+                                            updateUserId = b.updateUserId,
+                                            isActive = b.isActive,
+                                            type = b.type
+
+                                        })
+                        .ToList();
+                    if (branchesList == null)
+                        return NotFound();
+                    else
+                        return Ok(branchesList);
+                }
+
             }
             else
                 return NotFound();
         }
+
+
+
+
+        [HttpGet]
+        [Route("BranchesByBranchandUser")]
+        public IHttpActionResult BranchesByBranchandUser(int mainBranchId, int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+           
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                List<BranchModel> Listb = new List<BranchModel>();
+                List<BranchModel> Listu = new List<BranchModel>();
+                List<BranchModel> List = new List<BranchModel>();
+                Listb = BranchesByBranch(mainBranchId);
+                Listu = BranchesByUser(userId);
+
+                List = Listb.Union(Listu).ToList().GroupBy(X => X.branchId).Select(X => new BranchModel
+                {
+                    branchId = X.FirstOrDefault().branchId,
+
+                    code = X.FirstOrDefault().code,
+                    name = X.FirstOrDefault().name,
+                    address = X.FirstOrDefault().address,
+                    email = X.FirstOrDefault().email,
+                    phone = X.FirstOrDefault().phone,
+                    mobile = X.FirstOrDefault().mobile,
+                    createDate = X.FirstOrDefault().createDate,
+                    updateDate = X.FirstOrDefault().updateDate,
+                    createUserId = X.FirstOrDefault().createUserId,
+                    updateUserId = X.FirstOrDefault().updateUserId,
+                    notes = X.FirstOrDefault().notes,
+                    parentId = X.FirstOrDefault().parentId,
+                    isActive = X.FirstOrDefault().isActive,
+                    type = X.FirstOrDefault().type,
+
+                }).ToList();
+                if (List == null)
+                    return NotFound();
+                else
+                    return Ok(List);
+            }
+            else
+                return NotFound();
+
+        }
+
+
+        //
+        [HttpGet]
+        [Route("GetByBranchStor")]
+        public IHttpActionResult GetByBranchStor(int mainBranchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+        
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                var List = BranchesByBranch(mainBranchId);
+                if (List == null)
+                    return NotFound();
+                else
+                    return Ok(List);
+            }
+            else
+                return NotFound();
+
+        }
+
+
+        //
+        //
+        [HttpGet]
+        [Route("GetByBranchUser")]
+        public IHttpActionResult GetByBranchUser(int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+          
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                var List = BranchesByUser(userId);
+                if (List == null)
+                    return NotFound();
+                else
+                    return Ok(List);
+            }
+            else
+                return NotFound();
+
+        }
+//
+
+        public List<BranchModel> BranchesByBranch(int mainBranchId)
+        {
+            // List<branches> blist = new List<branches>();
+
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                List<BranchModel> List = (from S in entity.branchStore
+                                          join B in entity.branches on S.branchId equals B.branchId into JBB
+                                          join BB in entity.branches on S.storeId equals BB.branchId into JSB
+                                          from JBBR in JBB.DefaultIfEmpty()
+                                          from JSBB in JSB.DefaultIfEmpty()
+                                          where S.branchId == mainBranchId
+
+                                          select new BranchModel
+                                          {
+
+
+                                              //  isActive = S.isActive,
+
+                                              //store
+                                              branchId = JSBB.branchId,//
+                                              code = JSBB.code,//
+                                              name = JSBB.name,//
+                                              address = JSBB.address,//
+                                              email = JSBB.email,//
+                                              phone = JSBB.phone,//
+                                              mobile = JSBB.mobile,//
+                                              createDate = JSBB.createDate,//
+                                              updateDate = JSBB.updateDate,//
+                                              createUserId = JSBB.createUserId,//
+                                              updateUserId = JSBB.updateUserId,//
+                                              notes = JSBB.notes,//
+                                              parentId = JSBB.parentId,//
+                                              isActive = JSBB.isActive,//
+                                              type = JSBB.type,//
+
+                                          }).ToList();
+
+                return List;
+
+            }
+
+        }
+
+
+    public List<BranchModel> BranchesByUser(int userId)
+    {
+        using (incposdbEntities entity = new incposdbEntities())
+        {
+            List<BranchModel> List = (from S in entity.branchesUsers
+                                      join B in entity.branches on S.branchId equals B.branchId into JB
+                                      join U in entity.users on S.userId equals U.userId into JU
+                                      from JBB in JB.DefaultIfEmpty()
+                                      from JUU in JU.DefaultIfEmpty()
+                                      where S.userId == userId
+                                      select new BranchModel()
+                                      {
+
+                                          // branch
+                                          branchId = JBB.branchId,
+                                          code = JBB.code,
+                                          name = JBB.name,
+                                          address = JBB.address,
+                                          email = JBB.email,
+                                          phone = JBB.phone,
+                                          mobile = JBB.mobile,
+                                          createDate = JBB.createDate,
+                                          updateDate = JBB.updateDate,
+                                          createUserId = JBB.createUserId,
+                                          updateUserId = JBB.updateUserId,
+                                          notes = JBB.notes,
+                                          parentId = JBB.parentId,
+                                          isActive = JBB.isActive,
+                                          type = JBB.type,
+
+                                      }).ToList();
+            return List;
+        }
+
     }
+
+
+
+}
 }

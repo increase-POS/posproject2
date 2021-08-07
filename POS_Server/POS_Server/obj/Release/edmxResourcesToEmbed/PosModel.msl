@@ -381,6 +381,7 @@
     <EntitySetMapping Name="invoices">
       <EntityTypeMapping TypeName="incposdbModel.invoices">
         <MappingFragment StoreEntitySet="invoices">
+          <ScalarProperty Name="userId" ColumnName="userId" />
           <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
           <ScalarProperty Name="invNumber" ColumnName="invNumber" />
           <ScalarProperty Name="agentId" ColumnName="agentId" />

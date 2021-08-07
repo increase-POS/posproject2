@@ -55,6 +55,7 @@ namespace POS_Server.Models
         public Nullable<byte> bondIsRecieved { get; set; }
         public string agentCompany { get; set; }
         public Nullable<int> shippingCompanyId { get; set; }
-
+        public string shippingCompanyName { get; set; }
+        public string userAcc { get; set; }
     }
 }

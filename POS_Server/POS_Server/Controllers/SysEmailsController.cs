@@ -126,6 +126,95 @@ namespace POS_Server.Controllers
                 return NotFound();
         }
 
+        //
+        // get 
+        [HttpGet]
+        [Route("GetByBranchIdandSide")]
+        public IHttpActionResult GetByBranchIdandSide(int branchId,string side)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {// return email with same branch and side or 
+                    // return email with same side and isMajor
+                    var row = entity.sysEmails
+                   .Where(u => u.branchId == branchId && u.side==side)
+                   .Select(S => new
+                   {
+                       S.emailId,
+                       S.name,
+                       S.email,
+                       S.password,
+                       S.port,
+                       S.isSSL,
+                       S.smtpClient,
+                       S.side,
+                       S.notes,
+                       S.branchId,
+                       S.isMajor,
+                       S.isActive,
+                       S.createDate,
+                       S.updateDate,
+                       S.createUserId,
+                       S.updateUserId,
+
+
+                   })
+                   .FirstOrDefault();
+
+                    if (row == null)
+                    {
+                        var row2 = entity.sysEmails
+                     .Where(u =>  u.side == side && u.isMajor==true)
+                     .Select(S => new
+                     {
+                         S.emailId,
+                         S.name,
+                         S.email,
+                         S.password,
+                         S.port,
+                         S.isSSL,
+                         S.smtpClient,
+                         S.side,
+                         S.notes,
+                         S.branchId,
+                         S.isMajor,
+                         S.isActive,
+                         S.createDate,
+                         S.updateDate,
+                         S.createUserId,
+                         S.updateUserId,
+                     }).FirstOrDefault();
+
+                        if (row2 == null)
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+
+                            return Ok(row2);
+                        }
+                    }
+
+                    else
+                        return Ok(row);
+                }
+            }
+            else
+                return NotFound();
+        }
+
         // add or update location
         [HttpPost]
         [Route("Save")]
@@ -166,6 +255,7 @@ namespace POS_Server.Controllers
                         // check if there is other same side in same branch
                         var sidebranch = entity.sysEmails
                           .Where(e => e.branchId == newObject.branchId && e.side == newObject.side && e.emailId != newObject.emailId).ToList();
+                        //if not exist continue save
                         if (sidebranch == null || sidebranch.Count()==0)
                         { 
                             var locationEntity = entity.Set<sysEmails>();
