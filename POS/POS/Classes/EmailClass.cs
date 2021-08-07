@@ -256,10 +256,10 @@ public void AddrangeTolist(List<string> value)
             invitemtable = invitemtable.Replace("[[tritems]]", MainWindow.resourcemanager.GetString("trItem").Trim());
             invitemtable = invitemtable.Replace("[[trunit]]", MainWindow.resourcemanager.GetString("trUnit").Trim());
             invitemtable = invitemtable.Replace("[[trquantity]]", MainWindow.resourcemanager.GetString("trQuantity").Trim());
-            invitemtable = invitemtable.Replace("[[trtotalrow]]", MainWindow.resourcemanager.GetString("trSum").Trim());
+            invitemtable = invitemtable.Replace("[[trtotalrow]]", MainWindow.resourcemanager.GetString("trPrice").Trim());
 
             invbody = invbody.Replace("[[trinvoicecode]]", MainWindow.resourcemanager.GetString("trInvoiceNumber").Trim() + ": ");
-            invbody = invbody.Replace("[[trinvoicedate]]", MainWindow.resourcemanager.GetString("trInvoiceDate").Trim() + ": ");
+            invbody = invbody.Replace("[[trinvoicedate]]", MainWindow.resourcemanager.GetString("trDate").Trim() + ": ");
             invbody = invbody.Replace("[[trinvoicetotal]]", MainWindow.resourcemanager.GetString("trSum").Trim() + ": ");
             invbody = invbody.Replace("[[currency]]", MainWindow.Currency);
             //
@@ -291,7 +291,8 @@ public void AddrangeTolist(List<string> value)
                 rowhtml = rowhtml.Replace("[[col1]]", row.itemName.Trim());
                 rowhtml = rowhtml.Replace("[[col2]]", row.unitName.Trim());
                 rowhtml = rowhtml.Replace("[[col3]]", row.quantity.ToString());
-                rowhtml = rowhtml.Replace("[[col4]]", (row.quantity * row.price).ToString());
+                //     rowhtml = rowhtml.Replace("[[col4]]", (row.quantity * row.price).ToString());
+                rowhtml = rowhtml.Replace("[[col4]]", "");
                 datarows += rowhtml;
 
             }

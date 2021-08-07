@@ -13,10 +13,12 @@ using System.Web;
 
 namespace POS.Classes
 {
-
-
     public class CashTransferSts
     {
+
+        public Nullable<int> shippingCompanyId { get; set; }
+        public string shippingCompanyName { get; set; }
+        public string userAcc { get; set; }
         public int cashTransId { get; set; }
         public string transType { get; set; }
         public Nullable<int> posId { get; set; }
@@ -51,6 +53,13 @@ namespace POS.Classes
 
         public string pos2Name { get; set; }
         public string processType { get; set; }
+        public int processTypeCount { get; set; }
+        public decimal cashTotal { get ; set; }
+        public decimal cardTotal { get; set; }
+        public decimal docTotal { get; set; }
+        public decimal chequeTotal { get; set; }
+        public decimal balanceTotal { get; set; }
+      
         public Nullable<int> cardId { get; set; }
         public Nullable<int> bondId { get; set; }
         public string createUserName { get; set; }
@@ -1385,8 +1394,54 @@ namespace POS.Classes
                 }
                 return list;
             }
-        }
 
+        }
+        public class VendorCombo
+        {
+            private int? vendorId;
+            private string vendorName;
+            private string side;
+
+            public int? VendorId { get => vendorId; set => vendorId = value; }
+            public string VendorName { get => vendorName; set => vendorName = value; }
+            public string Side { get => side; set => side = value; }
+        }
+        public List<VendorCombo> getVendorCombo(List<CashTransferSts> ITInvoice)
+        {
+            List<VendorCombo> iulist = new List<VendorCombo>();
+
+            iulist = ITInvoice.GroupBy(g=>g.agentId).Select(g => new VendorCombo { VendorId = g.FirstOrDefault().agentId, VendorName = g.FirstOrDefault().agentName }).ToList();
+            return iulist;
+
+        }
+        public class PaymentsTypeCombo
+        {
+            private string paymentsTypeName;
+
+            public string PaymentsTypeName { get => paymentsTypeName; set => paymentsTypeName = value; }
+        }
+        public List<PaymentsTypeCombo> getPaymentsTypeCombo(List<CashTransferSts> ITInvoice)
+        {
+            List<PaymentsTypeCombo> iulist = new List<PaymentsTypeCombo>();
+
+            iulist = ITInvoice.GroupBy(g=>g.processType).Select(g => new PaymentsTypeCombo { PaymentsTypeName = g.FirstOrDefault().processType }).ToList();
+            return iulist;
+
+        }
+        public class AccountantCombo
+        {
+            private string accountant;
+
+            public string Accountant { get => accountant; set => accountant = value; }
+        }
+        public List<AccountantCombo> getAccounantCombo(List<CashTransferSts> ITInvoice)
+        {
+            List<AccountantCombo> iulist = new List<AccountantCombo>();
+
+            iulist = ITInvoice.GroupBy(g=>g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
+            return iulist;
+
+        }
         #endregion
 
         // Combo
