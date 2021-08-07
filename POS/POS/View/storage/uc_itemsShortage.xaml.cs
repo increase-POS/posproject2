@@ -51,6 +51,9 @@ namespace POS.View.storage
         Invoice invoiceModel = new Invoice();
         Inventory inventory;
         IEnumerable<InventoryItemLocation> inventoriesItems;
+        User userModel = new User();
+        List<User> users;
+
         private string _ItemType = "";
         public byte tglCategoryState = 1;
         public byte tglItemState = 1;
@@ -74,11 +77,18 @@ namespace POS.View.storage
 
             translate();
             await refreshShortageDetails();
-            //Txb_searchitems_TextChanged(null, null);
+            await fillUsers();
 
             //for excel
             //await RefreshinvItemList();
             Tb_search_TextChanged(null, null);
+        }
+        private async Task fillUsers()
+        {
+            users = await userModel.GetUsersActive();
+            cb_user.ItemsSource = users;
+            cb_user.DisplayMemberPath = "name";
+            cb_user.SelectedValuePath = "userId";
         }
         IEnumerable<Item> items;
         // item object
@@ -175,6 +185,53 @@ namespace POS.View.storage
             }
             return valid;
         }
+        private async Task recordCash(Invoice invoice)
+        {
+            User user = new User();
+            float newBalance = 0;
+            user = await user.getUserById((int)cb_user.SelectedValue);
+
+            CashTransfer cashTrasnfer = new CashTransfer();
+            cashTrasnfer.posId = MainWindow.posID;
+            cashTrasnfer.userId = (int)cb_user.SelectedValue;
+            cashTrasnfer.invId = invoice.invoiceId;
+            cashTrasnfer.createUserId = invoice.createUserId;
+            cashTrasnfer.processType = "balance";
+            cashTrasnfer.side = "u"; // user
+            cashTrasnfer.transType = "d"; //deposit
+            cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("du");
+
+            if (user.balanceType == 0)
+            {
+                if (invoice.totalNet <= (decimal)user.balance)
+                {
+                    invoice.paid = invoice.totalNet;
+                    invoice.deserved = 0;
+                    newBalance = user.balance - (float)invoice.totalNet;
+                    user.balance = newBalance;
+                }
+                else
+                {
+                    invoice.paid = (decimal)user.balance;
+                    invoice.deserved = invoice.totalNet - (decimal)user.balance;
+                    newBalance = (float)invoice.totalNet - user.balance;
+                    user.balance = newBalance;
+                    user.balanceType = 1;
+                }
+
+                cashTrasnfer.cash = invoice.paid;    
+
+                await invoice.saveInvoice(invoice);
+                await cashTrasnfer.Save(cashTrasnfer); //add cash transfer
+                await user.saveUser(user);
+            }
+            else if (user.balanceType == 1)
+            {
+                newBalance = user.balance + (float)invoice.totalNet;
+                user.balance = newBalance;
+                await user.saveUser(user);
+            }
+        }
         private async void Btn_shortage_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.groupObject.HasPermissionAction(shortagePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
@@ -269,8 +326,11 @@ namespace POS.View.storage
                             invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
                             if (invoiceId != 0)
                             {
+                                invoiceModel.invoiceId = invoiceId;
                                 await invoiceModel.saveInvoiceItems(orderList, invoiceId);
                                 await invItemLoc.fallItem(invItemLoc);
+                                if (cb_user.SelectedIndex != -1)
+                                  await recordCash(invoiceModel);
                                 await refreshShortageDetails();
                                 Btn_clear_Click(null, null);
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);

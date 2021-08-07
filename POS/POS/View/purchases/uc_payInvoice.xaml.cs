@@ -489,6 +489,7 @@ namespace POS.View
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
             }
+
             if (invoice.invType != "pw" || invoice.invoiceId == 0)
             {
                 invoice.invType = invType;
@@ -500,7 +501,8 @@ namespace POS.View
 
                 invoice.total = _Sum;
                 invoice.totalNet = decimal.Parse(tb_total.Text);
-
+                invoice.paid = 0;
+                invoice.deserved = invoice.totalNet;
                 if (cb_vendor.SelectedIndex != -1)
                     invoice.agentId = (int)cb_vendor.SelectedValue;
 

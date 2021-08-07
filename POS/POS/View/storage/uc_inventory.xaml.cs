@@ -82,7 +82,7 @@ namespace POS.View.storage
         {
             int sequence = 0;
             invItemsLocations.Clear();
-            itemsLocations = await itemLocationModel.get(MainWindow.branchID.Value);
+            itemsLocations = await itemLocationModel.getAll(MainWindow.branchID.Value);
 
             if (_InventoryType == "d")
                 inventory = await inventory.getByBranch("d", MainWindow.branchID.Value);

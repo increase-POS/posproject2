@@ -108,15 +108,15 @@
                     </Path.ToolTip>
                 </Path>
                 <ComboBox x:Name="cb_location"  Grid.Row="2"
-                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                                            Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
-                             materialDesign:HintAssist.Hint="Select Location "  
-                           TextBlock.FontSize="12"   Background="#f8f8f8"
-              Height="40"   Margin="10,5,10,5"
+                        Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                        Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                        materialDesign:HintAssist.Hint="Select Location "  
+                        TextBlock.FontSize="12"   Background="#f8f8f8"
+                        Height="40"   Margin="10,5,10,5"
                            BorderBrush="#737373" BorderThickness="0" 
-                                       IsEditable="True"
-                                         IsTextSearchEnabled="False"
-                                  StaysOpenOnEdit="True"
+                          IsEditable="True"
+                          StaysOpenOnEdit="True"
+                          LostFocus="Tb_validateEmptyLostFocus"
                                  >
                 </ComboBox>
                 <TextBox x:Name="tb_quantity"  Grid.Row="3"
@@ -126,8 +126,8 @@
                                   Grid.Column="0" Height="40"  Margin="10,10,10,5"
                                   BorderBrush="#737373" BorderThickness="0" 
                                   LostFocus="Tb_validateEmptyLostFocus"
-                                        PreviewTextInput="NumberValidationTextBox"
-                                          TextChanged="tb_quantity_TextChanged">
+                                  PreviewTextInput="NumberValidationTextBox"
+                                  TextChanged="tb_quantity_TextChanged">
                     <TextBox.ToolTip>
                         <ToolTip x:Name="tt_quantity" Content="quantity"
                                                           Placement="left" 

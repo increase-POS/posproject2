@@ -345,6 +345,7 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
 
 
@@ -471,7 +472,30 @@
                                     <ToolTip x:Name="tt_errorAmount" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
-                            <TextBox x:Name="tb_reasonOfDestroy" Grid.Row="5"  Text="{Binding test, Mode=OneWay}" 
+                            <ComboBox x:Name="cb_user"  Grid.Row="5"
+                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                  materialDesign:HintAssist.Hint="User..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                 Visibility="Visible" 
+                                  Grid.Column="0" Height="40"  Margin="10,5,10,5"
+                                  BorderBrush="#737373" BorderThickness="0"   >
+                                <ComboBox.ToolTip>
+                                    <ToolTip x:Name="tt_user" Content="User"
+                                                          Placement="left" 
+                                                          HorizontalOffset="35"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="20"/>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
+                            <Path Fill="#E81123" x:Name="p_errorUser" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Row="5" Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorUser" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                            <TextBox x:Name="tb_reasonOfDestroy" Grid.Row="6"  Text="{Binding test, Mode=OneWay}" 
                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" Padding="10,0,5,0" 
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Reason of destroy..."   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
@@ -479,7 +503,7 @@
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                      
                   Height="40"   Margin="10,5,10,5" />
-                            <Path x:Name="p_errorReasonOfDestroy" Grid.Row="5"  Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                            <Path x:Name="p_errorReasonOfDestroy" Grid.Row="6"  Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -487,7 +511,7 @@
                                     <ToolTip  x:Name="tt_errorReasonOfDestroy" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
                             </Path>
-                            <Grid x:Name="grid_serial"  Grid.Row="6" Visibility="Collapsed">
+                            <Grid x:Name="grid_serial"  Grid.Row="7" Visibility="Collapsed">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
@@ -528,7 +552,7 @@
                                 <ListView Grid.Row="2" x:Name="lst_serials"/>
 
                             </Grid>
-                            <TextBox x:Name="tb_notes" Grid.Row="7" Text="{Binding notes, Mode=OneWay}" 
+                            <TextBox x:Name="tb_notes" Grid.Row="8" Text="{Binding notes, Mode=OneWay}" 
                                  Padding="10,0,5,0"   
                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
@@ -545,7 +569,7 @@
                                               VerticalOffset="20"/>
                                 </TextBox.ToolTip>
                             </TextBox>
-                            <Path Fill="#E81123" Grid.Row="7" Stretch="Fill" Margin="15,12,15,5"
+                            <Path Fill="#E81123" Grid.Row="8" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
                          VerticalAlignment="Top" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">

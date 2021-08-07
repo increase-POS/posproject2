@@ -53,6 +53,9 @@ namespace POS.View.storage
         ItemLocation itemLocationModel = new ItemLocation();
         Invoice invoiceModel = new Invoice();
         IEnumerable<InventoryItemLocation> inventoriesItems;
+        User userModel = new User();
+        List<User> users;
+
         int? categoryParentId = 0;
         private string _ItemType = "";
         public byte tglCategoryState = 1;
@@ -78,7 +81,8 @@ namespace POS.View.storage
             translate();
             await refreshDestroyDetails();
             fillItemCombo();
-            fillItemCombo();
+           // fillItemCombo();
+            await fillUsers();
             //Txb_searchitems_TextChanged(null, null);
 
             //for excel
@@ -90,6 +94,13 @@ namespace POS.View.storage
         // item object
         Item item = new Item();
         ItemUnit itemUnit = new ItemUnit();
+        private async Task fillUsers()
+        {
+            users = await userModel.GetUsersActive();
+            cb_user.ItemsSource = users;
+            cb_user.DisplayMemberPath = "name";
+            cb_user.SelectedValuePath = "userId";
+        }
         private async void Cb_item_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cb_item.SelectedValue != null && cb_item.SelectedIndex != -1)
@@ -287,8 +298,11 @@ namespace POS.View.storage
                             invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
                             if (invoiceId != 0)
                             {
+                                invoiceModel.invoiceId = invoiceId;
                                 await invoiceModel.saveInvoiceItems(orderList, invoiceId);
                                 await invItemLoc.distroyItem(invItemLoc);
+                                if (cb_user.SelectedIndex != -1)
+                                    await recordCash(invoiceModel);
                                 await itemLocationModel.decreaseItemLocationQuantity((int)invItemLoc.itemLocationId, (int)invItemLoc.amountDestroyed, MainWindow.userID.Value);
                                 await refreshDestroyDetails();
                                 Btn_clear_Click(null, null);
@@ -556,7 +570,53 @@ namespace POS.View.storage
                 tb_serialNum.Clear();
             }
         }
+        private async Task recordCash(Invoice invoice)
+        {
+            User user = new User();
+            float newBalance = 0;
+            user = await user.getUserById((int)cb_user.SelectedValue);
 
+            CashTransfer cashTrasnfer = new CashTransfer();
+            cashTrasnfer.posId = MainWindow.posID;
+            cashTrasnfer.userId = (int)cb_user.SelectedValue;
+            cashTrasnfer.invId = invoice.invoiceId;
+            cashTrasnfer.createUserId = invoice.createUserId;
+            cashTrasnfer.processType = "balance";
+            cashTrasnfer.side = "u"; // user
+            cashTrasnfer.transType = "d"; //deposit
+            cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("du");
+
+            if (user.balanceType == 0)
+            {
+                if (invoice.totalNet <= (decimal)user.balance)
+                {
+                    invoice.paid = invoice.totalNet;
+                    invoice.deserved = 0;
+                    newBalance = user.balance - (float)invoice.totalNet;
+                    user.balance = newBalance;
+                }
+                else
+                {
+                    invoice.paid = (decimal)user.balance;
+                    invoice.deserved = invoice.totalNet - (decimal)user.balance;
+                    newBalance = (float)invoice.totalNet - user.balance;
+                    user.balance = newBalance;
+                    user.balanceType = 1;
+                }
+
+                cashTrasnfer.cash = invoice.paid;
+
+                await invoice.saveInvoice(invoice);
+                await cashTrasnfer.Save(cashTrasnfer); //add cash transfer
+                await user.saveUser(user);
+            }
+            else if (user.balanceType == 1)
+            {
+                newBalance = user.balance + (float)invoice.totalNet;
+                user.balance = newBalance;
+                await user.saveUser(user);
+            }
+        }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             Btn_clear_Click(null,null);
