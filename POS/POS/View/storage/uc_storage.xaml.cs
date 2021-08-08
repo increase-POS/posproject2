@@ -46,6 +46,7 @@ namespace POS.View
             btn_itemsStorage.Content = MainWindow.resourcemanager.GetString("trStorage");
             btn_importExport.Content = MainWindow.resourcemanager.GetString("trMovements");
             btn_itemsDestroy.Content = MainWindow.resourcemanager.GetString("trDestructive");
+            btn_shortage.Content = MainWindow.resourcemanager.GetString("trShortage");
             btn_inventory.Content = MainWindow.resourcemanager.GetString("trStocktaking");
             btn_storageStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
         }

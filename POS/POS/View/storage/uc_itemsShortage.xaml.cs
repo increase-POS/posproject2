@@ -41,8 +41,8 @@ namespace POS.View.storage
         {
             InitializeComponent();
         }
-        string shortagePermission = "itemsShortage_shortage";
-        string reportsPermission = "itemsShortage_reports";
+        string savePermission = "shortage_save";
+        string reportsPermission = "shortage_reports";
         
        
         InventoryItemLocation invItemLocModel = new InventoryItemLocation();
@@ -234,7 +234,7 @@ namespace POS.View.storage
         }
         private async void Btn_shortage_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(shortagePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            if (MainWindow.groupObject.HasPermissionAction(savePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 bool valid = validateDistroy();
                 if (valid)

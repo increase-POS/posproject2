@@ -530,7 +530,6 @@
 
                 </ScrollViewer>
                 <Border Grid.Row="2">
-
                     <Button x:Name="btn_shortage" TabIndex="10" 
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="6,0,6,10" Click="Btn_shortage_Click" Content="Shortage " VerticalAlignment="Bottom">

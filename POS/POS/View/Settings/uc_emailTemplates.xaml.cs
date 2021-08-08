@@ -26,7 +26,7 @@ namespace POS.View.Settings
     public partial class uc_emailTemplates : UserControl
     {
 
-        string addRangePermission = "setValuess_addRange";
+        string savePermission = "emailTemplates_save";
         private static uc_emailTemplates _instance;
         public static uc_emailTemplates Instance
         {
@@ -135,7 +135,7 @@ namespace POS.View.Settings
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//update
 
-            //if (MainWindow.groupObject.HasPermissionAction(addRangePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            //if (MainWindow.groupObject.HasPermissionAction(savePermission, MainWindow.groupObjects, "one"))
             //{
 
             //write here Mr.Naji

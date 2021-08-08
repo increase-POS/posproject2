@@ -1330,6 +1330,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to قوالب الايميلات.
+        /// </summary>
+        internal static string trEmailTemplates {
+            get {
+                return ResourceManager.GetString("trEmailTemplates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رقم الحساب لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyAccNumberToolTip {
@@ -4468,6 +4477,15 @@ namespace POS {
         internal static string trShippingCompany {
             get {
                 return ResourceManager.GetString("trShippingCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to النواقص.
+        /// </summary>
+        internal static string trShortage {
+            get {
+                return ResourceManager.GetString("trShortage", resourceCulture);
             }
         }
         

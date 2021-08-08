@@ -74,7 +74,8 @@ namespace POS.View.Settings
             btn_reportsSettings.Content = MainWindow.resourcemanager.GetString("trReports");
             btn_permissions.Content = MainWindow.resourcemanager.GetString("trPermission");
             btn_emails.Content = MainWindow.resourcemanager.GetString("trEmail");
-            
+            btn_emailTemplates.Content = MainWindow.resourcemanager.GetString("trEmailTemplates");
+
         }
         void refreashBackground()
         {

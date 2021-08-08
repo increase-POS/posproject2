@@ -1029,6 +1029,7 @@ namespace POS.View.Settings
             path_itemsStorage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_importExport.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_itemsDestroy.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_shortage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_inventory.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_storageStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
@@ -1038,6 +1039,7 @@ namespace POS.View.Settings
             txt_itemsStorage.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_importExport.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_itemsDestroy.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_shortage.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_inventory.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_storageStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
         }
@@ -1136,11 +1138,13 @@ namespace POS.View.Settings
             path_reportsSettings.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_general.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_emailsSetting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_emailTemplates.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
             txt_permissions.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_reportsSettings.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_general.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_emailsSetting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_emailsSetting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_emailTemplates.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
         }
 
 

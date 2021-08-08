@@ -1897,4 +1897,10 @@ Please add Email in setting</value>
   <data name="trMajor" xml:space="preserve">
     <value>Major</value>
   </data>
+  <data name="trEmailTemplates" xml:space="preserve">
+    <value>Email Templates</value>
+  </data>
+  <data name="trShortage" xml:space="preserve">
+    <value>Shortages</value>
+  </data>
 </root>

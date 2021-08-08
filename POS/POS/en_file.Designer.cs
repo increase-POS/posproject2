@@ -1357,6 +1357,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email Templates.
+        /// </summary>
+        internal static string trEmailTemplates {
+            get {
+                return ResourceManager.GetString("trEmailTemplates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account Number can not be empty.
         /// </summary>
         internal static string trEmptyAccNumberToolTip {
@@ -4531,6 +4540,15 @@ namespace POS {
         internal static string trShippingCompany {
             get {
                 return ResourceManager.GetString("trShippingCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shortages.
+        /// </summary>
+        internal static string trShortage {
+            get {
+                return ResourceManager.GetString("trShortage", resourceCulture);
             }
         }
         

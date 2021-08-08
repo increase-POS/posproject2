@@ -1873,4 +1873,10 @@
   <data name="trTheVendorHasNoEmail" xml:space="preserve">
     <value>لا يوجد بريد الكتروني للمورد</value>
   </data>
+  <data name="trEmailTemplates" xml:space="preserve">
+    <value>قوالب الايميلات</value>
+  </data>
+  <data name="trShortage" xml:space="preserve">
+    <value>النواقص</value>
+  </data>
 </root>
