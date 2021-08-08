@@ -1322,19 +1322,26 @@ namespace POS.View.purchases
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
                         else
                         {
-                            mailtosend = mailtosend.fillOrderTempData(invoice, invoiceItems, email, toAgent);
+                            SetValues setvmodel = new SetValues();
+
+
+                            List<SetValues> setvlist = new List<SetValues>();
+                            setvlist = await setvmodel.GetBySetName("pur_order_email_temp");
+
+                            mailtosend = mailtosend.fillOrderTempData(invoice, invoiceItems, email, toAgent, setvlist);
                             string msg = mailtosend.Sendmail();
                             if (msg == "Failure sending mail.")
                             {
                                 // msg = "No Internet connection";
-                                MessageBox.Show("");
+                              //  MessageBox.Show("");
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
                             }
                             else if (msg == "mailsent")
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
-                            else
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
+                            else  
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString(msg), animation: ToasterAnimation.FadeIn);
+                            
+                       
                         }
                     }
                 }

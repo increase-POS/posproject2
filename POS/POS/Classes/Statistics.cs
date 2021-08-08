@@ -15,10 +15,6 @@ namespace POS.Classes
 {
     public class CashTransferSts
     {
-
-        public Nullable<int> shippingCompanyId { get; set; }
-        public string shippingCompanyName { get; set; }
-        public string userAcc { get; set; }
         public int cashTransId { get; set; }
         public string transType { get; set; }
         public Nullable<int> posId { get; set; }
@@ -54,12 +50,13 @@ namespace POS.Classes
         public string pos2Name { get; set; }
         public string processType { get; set; }
         public int processTypeCount { get; set; }
-        public decimal cashTotal { get ; set; }
+        public decimal cashTotal { get; set; }
         public decimal cardTotal { get; set; }
         public decimal docTotal { get; set; }
         public decimal chequeTotal { get; set; }
         public decimal balanceTotal { get; set; }
-      
+
+
         public Nullable<int> cardId { get; set; }
         public Nullable<int> bondId { get; set; }
         public string createUserName { get; set; }
@@ -73,7 +70,9 @@ namespace POS.Classes
         public Nullable<byte> bondIsRecieved { get; set; }
         public string agentCompany { get; set; }
 
-
+        public Nullable<int> shippingCompanyId { get; set; }
+        public string shippingCompanyName { get; set; }
+        public string userAcc { get; set; }
     }
     public class Storage
     {
@@ -1354,7 +1353,7 @@ namespace POS.Classes
 
         // المحاسبة
         #region Accountant
-
+            // المدفوعات
         public async Task<List<CashTransferSts>> GetPayments()
         {
             List<CashTransferSts> list = null;
@@ -1396,21 +1395,79 @@ namespace POS.Classes
             }
 
         }
+
+        //المقبوضات
+        public async Task<List<CashTransferSts>> GetReceipt()
+        {
+            List<CashTransferSts> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetReceipt");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<CashTransferSts>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<CashTransferSts>();
+                }
+                return list;
+            }
+
+        }
+
+
+
         public class VendorCombo
         {
             private int? vendorId;
             private string vendorName;
             private string side;
+            private string userAcc;
+            private int? userId;
 
             public int? VendorId { get => vendorId; set => vendorId = value; }
             public string VendorName { get => vendorName; set => vendorName = value; }
             public string Side { get => side; set => side = value; }
+            public string UserAcc { get => userAcc; set => userAcc = value; }
+            public int? UserId { get => userId; set => userId = value; }
         }
-        public List<VendorCombo> getVendorCombo(List<CashTransferSts> ITInvoice)
+        public List<VendorCombo> getVendorCombo(List<CashTransferSts> ITInvoice, string x)
         {
             List<VendorCombo> iulist = new List<VendorCombo>();
 
-            iulist = ITInvoice.GroupBy(g=>g.agentId).Select(g => new VendorCombo { VendorId = g.FirstOrDefault().agentId, VendorName = g.FirstOrDefault().agentName }).ToList();
+            iulist = ITInvoice.Where(g => g.side == x).GroupBy(g => g.agentId).Select(g => new VendorCombo { VendorId = g.FirstOrDefault().agentId, VendorName = g.FirstOrDefault().agentName }).ToList();
+            return iulist;
+
+        }
+        public List<VendorCombo> getUserAcc(List<CashTransferSts> ITInvoice, string x)
+        {
+            List<VendorCombo> iulist = new List<VendorCombo>();
+
+            iulist = ITInvoice.Where(g => g.side == x).GroupBy(g => g.userId).Select(g => new VendorCombo { UserId = g.FirstOrDefault().userId, UserAcc = g.FirstOrDefault().userAcc }).ToList();
             return iulist;
 
         }
@@ -1424,7 +1481,7 @@ namespace POS.Classes
         {
             List<PaymentsTypeCombo> iulist = new List<PaymentsTypeCombo>();
 
-            iulist = ITInvoice.GroupBy(g=>g.processType).Select(g => new PaymentsTypeCombo { PaymentsTypeName = g.FirstOrDefault().processType }).ToList();
+            iulist = ITInvoice.Where(g=>g.processType!=null).GroupBy(g => g.processType).Select(g => new PaymentsTypeCombo { PaymentsTypeName = g.FirstOrDefault().processType }).ToList();
             return iulist;
 
         }
@@ -1434,11 +1491,11 @@ namespace POS.Classes
 
             public string Accountant { get => accountant; set => accountant = value; }
         }
-        public List<AccountantCombo> getAccounantCombo(List<CashTransferSts> ITInvoice)
+        public List<AccountantCombo> getAccounantCombo(List<CashTransferSts> ITInvoice, string x)
         {
             List<AccountantCombo> iulist = new List<AccountantCombo>();
 
-            iulist = ITInvoice.GroupBy(g=>g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
+            iulist = ITInvoice.Where(g => g.side == x).GroupBy(g => g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
             return iulist;
 
         }

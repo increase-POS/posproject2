@@ -146,12 +146,12 @@ namespace POS.Classes
             bool isArabic;
             if (MainWindow.Reportlang.Equals("en"))
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                MainWindow.resourcemanagerreport = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 isArabic = false;
             }
             else
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                MainWindow.resourcemanagerreport = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 isArabic = true;
             }
             return isArabic;
@@ -161,7 +161,7 @@ namespace POS.Classes
         {
             checkLang();
 
-            string title = MainWindow.resourcemanager.GetString("trPayVocher");
+            string title = MainWindow.resourcemanagerreport.GetString("trPayVocher");
             string company_name = MainWindow.companyName;
             string comapny_address = MainWindow.Address;
             string company_phone = MainWindow.Address;
@@ -422,23 +422,23 @@ namespace POS.Classes
             {
                 if (item.invType == "p")
                 {
-                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                    item.invType = MainWindow.resourcemanagerreport.GetString("trPurchaseInvoice");
                 }
                 else if (item.invType == "pw")
                 {
-                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                    item.invType = MainWindow.resourcemanagerreport.GetString("trPurchaseInvoice");
                 }
                 else if (item.invType == "pb")
                 {
-                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseReturnInvoice");
+                    item.invType = MainWindow.resourcemanagerreport.GetString("trPurchaseReturnInvoice");
                 }
                 else if (item.invType == "pd")
                 {
-                    item.invType = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                    item.invType = MainWindow.resourcemanagerreport.GetString("trDraftPurchaseBill");
                 }
                 else if (item.invType == "pbd")
                 {
-                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseReturnDraft");
+                    item.invType = MainWindow.resourcemanagerreport.GetString("trPurchaseReturnDraft");
                 }
             }
             return query;

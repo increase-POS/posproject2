@@ -17,25 +17,25 @@ namespace POS.Classes
         public string objectId { get; set; }
 
     }
-        class EmailClass
+    class EmailClass
     {
         public string smtpclient { get; set; }
         public string from { get; set; }
 
         public string password { get; set; }
-       public List<string> Toemails=new List<string>();
+        public List<string> Toemails = new List<string>();
         public List<string> CCemails = new List<string>();
         public List<string> BCCemails = new List<string>();
         public string subject { get; set; }
         public List<string> attachfiles = new List<string>();
-   
+
         public string body { get; set; }
         public int port { get; set; }
         public bool isSSl { get; set; }
 
         public static string force_email = "no";
         public AlternateView htmlView;
-        
+
 
 
         public string Sendmail()
@@ -44,14 +44,14 @@ namespace POS.Classes
 
             try
             {
-          
 
-             
+
+
                 MailMessage mail = new MailMessage();
 
                 SmtpClient Smtpserver = new SmtpClient(smtpclient);
                 mail.From = new MailAddress(from);
-            
+
                 if (Toemails != null)
                 {
                     foreach (string to in Toemails)
@@ -75,34 +75,35 @@ namespace POS.Classes
                 }
                 if (attachfiles != null)
                 {
-                   
-                 
+
+
                     foreach (string attachfile in attachfiles)
-                    { Attachment attachment = new Attachment(attachfile);
-                       
+                    {
+                        Attachment attachment = new Attachment(attachfile);
+
                         mail.Attachments.Add(attachment);
                     }
                 }
 
                 // replace placeholder
-             
+
 
                 mail.Subject = subject;
                 mail.IsBodyHtml = true;
-              //  mail.BodyEncoding = Encoding.UTF8;
-               mail.Body = body;
+                //  mail.BodyEncoding = Encoding.UTF8;
+                mail.Body = body;
 
-                if (htmlView !=null)
+                if (htmlView != null)
                 {
-                        mail.AlternateViews.Add(htmlView);
+                    mail.AlternateViews.Add(htmlView);
                 }
-              
+
 
                 Smtpserver.Port = port;
                 Smtpserver.Credentials = new System.Net.NetworkCredential(from, password);
                 Smtpserver.EnableSsl = isSSl;
                 Smtpserver.Send(mail);
-                res = "mail sent";
+                res = "mailsent";
                 return res;
             }
             catch (Exception ex)
@@ -111,52 +112,52 @@ namespace POS.Classes
             }
 
 
-        // System.Threading.Thread.Sleep(1000);
+            // System.Threading.Thread.Sleep(1000);
 
         }
 
-        public  void AddTolist(string value)
+        public void AddTolist(string value)
         {
-          
+
             Toemails.Add(value);
-            
+
         }
-public void AddrangeTolist(List<string> value)
-            {
-                
-                Toemails.AddRange(value);
-            }
+        public void AddrangeTolist(List<string> value)
+        {
+
+            Toemails.AddRange(value);
+        }
 
         public void AddAttachTolist(string value)
         {
-            
+
             attachfiles.Add(value);
 
         }
         public void AddAttachrangeTolist(List<string> value)
-        {         
+        {
             attachfiles.AddRange(value);
         }
         public void AddCCTolist(string value)
         {
-            
+
             CCemails.Add(value);
 
         }
         public void AddCCrangeTolist(List<string> value)
         {
-           
+
             CCemails.AddRange(value);
         }
         public void AddBCCTolist(string value)
         {
-         
+
             BCCemails.Add(value);
 
         }
         public void AddBCCrangeTolist(List<string> value)
         {
-           
+
             BCCemails.AddRange(value);
         }
         public void ResetBCClist()
@@ -171,7 +172,7 @@ public void AddrangeTolist(List<string> value)
         }
         public void ResetTolist()
         {
-           Toemails = new List<string>();
+            Toemails = new List<string>();
 
         }
         public void Resetattachfileslist()
@@ -180,10 +181,10 @@ public void AddrangeTolist(List<string> value)
 
         }
 
-        
-        public LinkedResource Linkimage(string path,string ContentId)
+
+        public LinkedResource Linkimage(string path, string ContentId)
         {
-           
+
             LinkedResource LinkedImage = new LinkedResource(@path);
             LinkedImage.ContentId = ContentId;
             //Added the patch for Thunderbird as suggested by Jorge
@@ -192,9 +193,14 @@ public void AddrangeTolist(List<string> value)
         }
 
 
-
-        public EmailClass fillOrderTempData(Invoice invoice,List<ItemTransfer> invoiceItems,SysEmails email,Agent toAgent)
+        public EmailClass fillOrderTempData(Invoice invoice, List<ItemTransfer> invoiceItems, SysEmails email, Agent toAgent, List<SetValues> setvlist)
         {
+            string invheader;
+            string invfooter;
+            string invbody;
+            string invitemtable;
+            string invitemrow;
+
             EmailClass mailtosend = new EmailClass();
 
             mailtosend.from = email.email;
@@ -207,35 +213,56 @@ public void AddrangeTolist(List<string> value)
             mailtosend.subject = "Order" + DateTime.Now.ToString();
 
 
+
             // data
             ReportCls repm = new ReportCls();
             List<MailimageClass> imgs = new List<MailimageClass>();
             MailimageClass img = new MailimageClass();
-            string invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\invheader.tmp");
-            string invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\invfooter.tmp");
-            string invbody = repm.ReadFile(@"EmailTemplates\ordertemplate\invbody.tmp");
-            string invitemtable = repm.ReadFile(@"EmailTemplates\ordertemplate\invitemtable.tmp");
-            string invitemrow = repm.ReadFile(@"EmailTemplates\ordertemplate\invitemrow.tmp");
-
-            //header info
             bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+              invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invheader.tmp");
+                invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invfooter.tmp");
+                 invbody = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invbody.tmp");
+                 invitemtable = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invitemtable.tmp");
+                invitemrow = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invitemrow.tmp");
+
+
+            }
+            else
+            { // en
+                invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invheader.tmp");
+                invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invfooter.tmp");
+                 invbody = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invbody.tmp");
+                 invitemtable = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invitemtable.tmp");
+               invitemrow = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invitemrow.tmp");
+
+            }
+
+    
+            //header info
+
             invheader = invheader.Replace("[[companyname]]", MainWindow.companyName.Trim());
             invheader = invheader.Replace("[[phone]]", MainWindow.Phone.Trim());
             invheader = invheader.Replace("[[Email]]", MainWindow.Email.Trim());
             invheader = invheader.Replace("[[fax]]", MainWindow.Fax.Trim());
             invheader = invheader.Replace("[[address]]", MainWindow.Address.Trim());
-            invheader = invheader.Replace("[[trphone]]", MainWindow.resourcemanager.GetString("trPhone").Trim() + ": ");
-            invheader = invheader.Replace("[[trfax]]", MainWindow.resourcemanager.GetString("trFax").Trim() + ": ");
-            invheader = invheader.Replace("[[traddress]]", MainWindow.resourcemanager.GetString("trAddress").Trim() + ": ");
+            invheader = invheader.Replace("[[trphone]]", MainWindow.resourcemanagerreport.GetString("trPhone").Trim() + ": ");
+            invheader = invheader.Replace("[[trfax]]", MainWindow.resourcemanagerreport.GetString("trFax").Trim() + ": ");
+            invheader = invheader.Replace("[[traddress]]", MainWindow.resourcemanagerreport.GetString("trAddress").Trim() + ": ");
 
 
             //BODY
-            string title = "Purchase Order";
+       
+            // string title = "Purchase Order";
+            string title = setvlist.Where(x => x.notes == "title").FirstOrDefault() is null ? ""
+                : setvlist.Where(x => x.notes == "title").FirstOrDefault().value.ToString();
             invheader = invheader.Replace("[[title]]", title.Trim());
 
             invbody = invbody.Replace("[[thankstitle]]", title);
-            string thankstext = "Please provide to us,with a price list,along with your terms and conditions of sale, applicable discounts, shipping dates and additional sales and corporate policies. Should the information you provide be acceptable and competitive. ";
-
+            //   string thankstext = "Please provide to us,with a price list,along with your terms and conditions of sale, applicable discounts, shipping dates and additional sales and corporate policies. Should the information you provide be acceptable and competitive. ";
+            string thankstext = setvlist.Where(x => x.notes == "text1").FirstOrDefault() is null ? ""
+                  : setvlist.Where(x => x.notes == "text1").FirstOrDefault().value.ToString();
             invbody = invbody.Replace("[[thankstext]]", thankstext);
 
 
@@ -253,33 +280,50 @@ public void AddrangeTolist(List<string> value)
 
             //  invoiceItems.
 
-            invitemtable = invitemtable.Replace("[[tritems]]", MainWindow.resourcemanager.GetString("trItem").Trim());
-            invitemtable = invitemtable.Replace("[[trunit]]", MainWindow.resourcemanager.GetString("trUnit").Trim());
-            invitemtable = invitemtable.Replace("[[trquantity]]", MainWindow.resourcemanager.GetString("trQuantity").Trim());
-            invitemtable = invitemtable.Replace("[[trtotalrow]]", MainWindow.resourcemanager.GetString("trPrice").Trim());
+            invitemtable = invitemtable.Replace("[[tritems]]", MainWindow.resourcemanagerreport.GetString("trItem").Trim());
+            invitemtable = invitemtable.Replace("[[trunit]]", MainWindow.resourcemanagerreport.GetString("trUnit").Trim());
+            invitemtable = invitemtable.Replace("[[trquantity]]", MainWindow.resourcemanagerreport.GetString("trQuantity").Trim());
+            invitemtable = invitemtable.Replace("[[trtotalrow]]", MainWindow.resourcemanagerreport.GetString("trPrice").Trim());
 
-            invbody = invbody.Replace("[[trinvoicecode]]", MainWindow.resourcemanager.GetString("trInvoiceNumber").Trim() + ": ");
-            invbody = invbody.Replace("[[trinvoicedate]]", MainWindow.resourcemanager.GetString("trDate").Trim() + ": ");
-            invbody = invbody.Replace("[[trinvoicetotal]]", MainWindow.resourcemanager.GetString("trSum").Trim() + ": ");
+            invbody = invbody.Replace("[[trinvoicecode]]", MainWindow.resourcemanagerreport.GetString("trInvoiceNumber").Trim() + ": ");
+            invbody = invbody.Replace("[[trinvoicedate]]", MainWindow.resourcemanagerreport.GetString("trDate").Trim() + ": ");
+            invbody = invbody.Replace("[[trinvoicetotal]]", MainWindow.resourcemanagerreport.GetString("trSum").Trim() + ": ");
             invbody = invbody.Replace("[[currency]]", MainWindow.Currency);
             //
-            invbody = invbody.Replace("[[trinvoicediscount]]", MainWindow.resourcemanager.GetString("trDiscount").Trim() + ": ");
+            invbody = invbody.Replace("[[trinvoicediscount]]", MainWindow.resourcemanagerreport.GetString("trDiscount").Trim() + ": ");
 
-            invbody = invbody.Replace("[[trinvoicetax]]", MainWindow.resourcemanager.GetString("trTax").Trim() + ": ");
+            invbody = invbody.Replace("[[trinvoicetax]]", MainWindow.resourcemanagerreport.GetString("trTax").Trim() + ": ");
 
-            invbody = invbody.Replace("[[trtotalnet]]", MainWindow.resourcemanager.GetString("trTotal").Trim() + ": ");
+            invbody = invbody.Replace("[[trtotalnet]]", MainWindow.resourcemanagerreport.GetString("trTotal").Trim() + ": ");
 
-            string invoicenote = "Thank you for your cooperation. We have also enclosed our procurement specifications and conditions for your review <br/> Sincerely";
+            // string invoicenote = "Thank you for your cooperation. We have also enclosed our procurement specifications and conditions for your review <br/> Sincerely";
+            string invoicenote = setvlist.Where(x => x.notes == "text2").FirstOrDefault() is null ? ""
+                : setvlist.Where(x => x.notes == "text2").FirstOrDefault().value.ToString();
             invbody = invbody.Replace("[[invoicenote]]", invoicenote);
+            string link1 = setvlist.Where(x => x.notes == "link1text").FirstOrDefault() is null ? ""
+                : setvlist.Where(x => x.notes == "link1text").FirstOrDefault().value.ToString();
 
-            invfooter = invfooter.Replace("[[supporturl]]", "#");
-            invfooter = invfooter.Replace("[[returnpolicyurl]]", "#");
-            invfooter = invfooter.Replace("[[aboutusurl]]", "#");
+            string link2 = setvlist.Where(x => x.notes == "link2text").FirstOrDefault() is null ? ""
+                 : setvlist.Where(x => x.notes == "link2text").FirstOrDefault().value.ToString();
+            string link3 = setvlist.Where(x => x.notes == "link3text").FirstOrDefault() is null ? ""
+                : setvlist.Where(x => x.notes == "link3text").FirstOrDefault().value.ToString();
 
-            invfooter = invfooter.Replace("[[support]]", "Support");
-            invfooter = invfooter.Replace("[[returnpolicy]]", "Returnpolicy");
-            invfooter = invfooter.Replace("[[aboutus]]", "About Us");
+            invfooter = invfooter.Replace("[[support]]", link1);
+            invfooter = invfooter.Replace("[[returnpolicy]]", link2);
+            invfooter = invfooter.Replace("[[aboutus]]", link3);
+            string link1url = setvlist.Where(x => x.notes == "link1url").FirstOrDefault() is null ? ""
+                       : setvlist.Where(x => x.notes == "link1url").FirstOrDefault().value.ToString();
+            string link2url = setvlist.Where(x => x.notes == "link2url").FirstOrDefault() is null ? ""
+                       : setvlist.Where(x => x.notes == "link2url").FirstOrDefault().value.ToString();
+            string link3url = setvlist.Where(x => x.notes == "link3url").FirstOrDefault() is null ? ""
+                       : setvlist.Where(x => x.notes == "link3url").FirstOrDefault().value.ToString();
+
+            invfooter = invfooter.Replace("[[supporturl]]", link1url);
+            invfooter = invfooter.Replace("[[returnpolicyurl]]", link2url);
+            invfooter = invfooter.Replace("[[aboutusurl]]", link3url);
+
             invfooter = invfooter.Replace("[[year]]", DateTime.Now.Year.ToString());
+
 
 
             //  invitemtable
@@ -328,7 +372,7 @@ public void AddrangeTolist(List<string> value)
             imgs.Add(img);
             img = new MailimageClass();
             img.path = repm.GetPath(@"EmailTemplates\images\image-2.gif");
-        
+
             img.imageId = "image-2";
             imgs.Add(img);
 
@@ -341,9 +385,9 @@ public void AddrangeTolist(List<string> value)
 
             mailtosend.htmlView = htmlView;
 
-            
+
             return mailtosend;
-          
+
 
 
 

@@ -2695,3 +2695,5 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsShortage.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\storage\uc_itemsShortage.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_emailTemplates.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_emailTemplates.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_emailTemplates.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_emailTemplates.baml
