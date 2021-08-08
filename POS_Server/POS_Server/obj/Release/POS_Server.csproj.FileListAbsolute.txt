@@ -636,3 +636,4 @@ C:\Users\Administrator\Documents\POS-Server\POS_Server\obj\Release\POS_Server.cs
 C:\Users\Administrator\Documents\POS-Server\POS_Server\obj\Release\POS_Server.csproj.CopyComplete
 C:\Users\Administrator\Documents\POS-Server\POS_Server\obj\Release\POS_Server.dll
 C:\Users\Administrator\Documents\POS-Server\POS_Server\obj\Release\POS_Server.pdb
+C:\Users\Administrator\Documents\POS-Server\POS_Server\obj\Release\POS_Server.csproj.AssemblyReference.cache

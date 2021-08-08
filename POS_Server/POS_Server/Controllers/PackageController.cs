@@ -63,6 +63,68 @@ namespace POS_Server.Controllers
         }
 
 
+        //
+        [HttpGet]
+        [Route("GetPackwithNames")]
+        public IHttpActionResult GetPackwithNames()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+        
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var List = (from S in entity.packages
+                                join CIU in entity.itemsUnits on S.childIUId equals CIU.itemUnitId
+                                join PIU in entity.itemsUnits on S.parentIUId equals PIU.itemUnitId
+
+                                select new PackageModel()
+                                {
+                                    packageId = S.packageId,
+                                    parentIUId = S.parentIUId,
+                                    childIUId = S.childIUId,
+                                    quantity = S.quantity,
+                                    isActive = S.isActive,
+                                    notes = S.notes,
+                                    createUserId = S.createUserId,
+                                    updateUserId = S.updateUserId,
+                                    createDate = S.createDate,
+                                    updateDate = S.updateDate,
+                                    // parent
+                                    pitemId=PIU.itemId,
+                                    pitemName=PIU.items.name,
+                                    punitId=PIU.unitId,
+                                    punitName=PIU.units.name,
+                                    // child
+                                    citemId = CIU.itemId,
+                                    citemName = CIU.items.name,
+                                    cunitId = CIU.unitId,
+                                   cunitName = CIU.units.name,
+
+                                }).ToList();
+
+                    if (List == null)
+                        return NotFound();
+                    else
+                        return Ok(List);
+                }
+            }
+            //else
+            return NotFound();
+        }
+
+
+
         [HttpGet]
         [Route("GetPackages")]
         public IHttpActionResult GetPackages()

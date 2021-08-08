@@ -995,6 +995,246 @@ namespace POS_Server.Controllers
             return NotFound();
         }
         [HttpGet]
+        [Route("getAgentInvoices")]
+        public IHttpActionResult getAgentInvoices(int branchId , int agentId , string type)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                List<string> typesList = new List<string>();
+                if (type.Equals("feed"))
+                {
+                    typesList.Add("pb");
+                    typesList.Add("s");
+                }
+                else if(type.Equals("pay"))
+                {
+                    typesList.Add("p");
+                    typesList.Add("sb");
+                    typesList.Add("pw");
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invoicesList = (from b in entity.invoices.Where(x => x.agentId == agentId && x.shipUserId == null && typesList.Contains(x.invType)
+                                        && x.deserved > 0 && x.branchCreatorId == branchId)
+                                        select new InvoiceModel()
+                                        {
+                                            invoiceId = b.invoiceId,
+                                            invNumber = b.invNumber,
+                                            agentId = b.agentId,
+                                            invType = b.invType,
+                                            total = b.total,
+                                            totalNet = b.totalNet,
+                                            paid = b.paid,
+                                            deserved = b.deserved,
+                                            deservedDate = b.deservedDate,
+                                            invDate = b.invDate,
+                                            invoiceMainId = b.invoiceMainId,
+                                            invCase = b.invCase,
+                                            invTime = b.invTime,
+                                            notes = b.notes,
+                                            vendorInvNum = b.vendorInvNum,
+                                            vendorInvDate = b.vendorInvDate,
+                                            createUserId = b.createUserId,
+                                            updateDate = b.updateDate,
+                                            updateUserId = b.updateUserId,
+                                            branchId = b.branchId,
+                                            discountValue = b.discountValue,
+                                            discountType = b.discountType,
+                                            tax = b.tax,
+                                            taxtype = b.taxtype,
+                                            name = b.name,
+                                            isApproved = b.isApproved,
+                                            branchCreatorId = b.branchCreatorId,
+                                            shippingCompanyId = b.shippingCompanyId,
+                                            shipUserId = b.shipUserId,
+                                        }).ToList();
+                    if (invoicesList != null)
+                    {
+                        for (int i = 0; i < invoicesList.Count; i++)
+                        {
+                            int invoiceId = invoicesList[i].invoiceId;
+                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                            invoicesList[i].itemsCount = itemCount;
+                        }
+                    }
+                    if (invoicesList == null)
+                        return NotFound();
+                    else
+                        return Ok(invoicesList);
+                }
+            }
+            return NotFound();
+        }
+        [HttpGet]
+        [Route("getShipCompanyInvoices")]
+        public IHttpActionResult getShipCompanyInvoices(int branchId, int shippingCompanyId, string type)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                List<string> typesList = new List<string>();
+                if (type.Equals("feed"))
+                {
+                    typesList.Add("pb");
+                    typesList.Add("s");
+                }
+                else if (type.Equals("pay"))
+                {
+                    typesList.Add("p");
+                    typesList.Add("sb");
+                    typesList.Add("pw");
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invoicesList = (from b in entity.invoices.Where(x =>  x.shippingCompanyId == shippingCompanyId && typesList.Contains(x.invType) 
+                                        && x.deserved > 0 && x.branchCreatorId == branchId)
+                                   select new InvoiceModel()
+                                   {
+                                       invoiceId = b.invoiceId,
+                                       invNumber = b.invNumber,
+                                       agentId = b.agentId,
+                                       invType = b.invType,
+                                       total = b.total,
+                                       totalNet = b.totalNet,
+                                       paid = b.paid,
+                                       deserved = b.deserved,
+                                       deservedDate = b.deservedDate,
+                                       invDate = b.invDate,
+                                       invoiceMainId = b.invoiceMainId,
+                                       invCase = b.invCase,
+                                       invTime = b.invTime,
+                                       notes = b.notes,
+                                       vendorInvNum = b.vendorInvNum,
+                                       vendorInvDate = b.vendorInvDate,
+                                       createUserId = b.createUserId,
+                                       updateDate = b.updateDate,
+                                       updateUserId = b.updateUserId,
+                                       branchId = b.branchId,
+                                       discountValue = b.discountValue,
+                                       discountType = b.discountType,
+                                       tax = b.tax,
+                                       taxtype = b.taxtype,
+                                       name = b.name,
+                                       isApproved = b.isApproved,
+                                       branchCreatorId = b.branchCreatorId,
+                                       shippingCompanyId = b.shippingCompanyId,
+                                       shipUserId = b.shipUserId,
+                                   }).ToList();
+                    if (invoicesList != null)
+                    {
+                        for (int i = 0; i < invoicesList.Count; i++)
+                        {
+                            int invoiceId = invoicesList[i].invoiceId;
+                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                            invoicesList[i].itemsCount = itemCount;
+                        }
+                    }
+                    if (invoicesList == null)
+                        return NotFound();
+                    else
+                        return Ok(invoicesList);
+                }
+            }
+            return NotFound();
+        }
+        [HttpGet]
+        [Route("getUserInvoices")]
+        public IHttpActionResult getUserInvoices(int branchId , int userId , string type)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                List<string> typesList = new List<string>();
+                if (type.Equals("feed"))
+                {
+                    typesList.Add("pb");
+                    typesList.Add("s");
+                }
+                else if (type.Equals("pay"))
+                {
+                    typesList.Add("p");
+                    typesList.Add("sb");
+                    typesList.Add("pw");
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invoicesList = (from b in entity.invoices.Where(x =>  x.userId == userId && typesList.Contains(x.invType) &&
+                                                                              x.deserved > 0     && x.branchCreatorId == branchId)
+                                         select new InvoiceModel()
+                                   {
+                                       invoiceId = b.invoiceId,
+                                       invNumber = b.invNumber,
+                                       agentId = b.agentId,
+                                       invType = b.invType,
+                                       total = b.total,
+                                       totalNet = b.totalNet,
+                                       paid = b.paid,
+                                       deserved = b.deserved,
+                                       deservedDate = b.deservedDate,
+                                       invDate = b.invDate,
+                                       invoiceMainId = b.invoiceMainId,
+                                       invCase = b.invCase,
+                                       invTime = b.invTime,
+                                       notes = b.notes,
+                                       createUserId = b.createUserId,
+                                       updateDate = b.updateDate,
+                                       updateUserId = b.updateUserId,
+                                       branchId = b.branchId,
+                                       discountValue = b.discountValue,
+                                       discountType = b.discountType,
+                                       tax = b.tax,
+                                       taxtype = b.taxtype,
+                                       name = b.name,
+                                       isApproved = b.isApproved,
+                                       branchCreatorId = b.branchCreatorId,
+                                       userId = b.userId,
+                                   }).ToList();
+                    if (invoicesList != null)
+                    {
+                        for (int i = 0; i < invoicesList.Count; i++)
+                        {
+                            int invoiceId = invoicesList[i].invoiceId;
+                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                            invoicesList[i].itemsCount = itemCount;
+                        }
+                    }
+                    if (invoicesList == null)
+                        return NotFound();
+                    else
+                        return Ok(invoicesList);
+                }
+            }
+            return NotFound();
+        }
+        [HttpGet]
         [Route("GetOrderByType")]
         public IHttpActionResult GetOrderByType(string invType,int branchId)
         {

@@ -459,8 +459,8 @@ namespace POS_Server.Controllers
             return inner;
         }
         [HttpGet]
-        [Route("getConversionQuantity")]
-        public int getConversionQuantity(int fromItemUnit, int toItemUnit)
+        [Route("largeToSmallUnitQuan")]
+        public int largeToSmallUnitQuan(int fromItemUnit, int toItemUnit)
         {
             var re = Request;
             var headers = re.Headers;
@@ -493,6 +493,49 @@ namespace POS_Server.Controllers
                     return amount;
                 if (upperUnit != null)
                     amount += (int)upperUnit.unitValue * getUnitConversionQuan(fromItemUnit,upperUnit.itemUnitId);
+
+                return amount;
+            }
+        }
+        [HttpGet]
+        [Route("smallToLargeUnitQuan")]
+        public int smallToLargeUnitQuan(int fromItemUnit, int toItemUnit)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            int amount = 0;
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                amount = getLargeUnitConversionQuan(fromItemUnit, toItemUnit);
+            }
+            return amount;
+        }
+        private int getLargeUnitConversionQuan(int fromItemUnit, int toItemUnit)
+        {
+            int amount = 0;
+
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                var unit = entity.itemsUnits.Where(x => x.itemUnitId == toItemUnit).Select(x => new { x.unitId, x.itemId ,x.subUnitId, x.unitValue}).FirstOrDefault();
+                var smallUnit = entity.itemsUnits.Where(x => x.unitId == unit.subUnitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+             
+                if (toItemUnit == smallUnit.itemUnitId)
+                {
+                    amount = 1;
+                    return amount;
+                }
+              
+                if (smallUnit != null)
+                    amount += (int)unit.unitValue * getLargeUnitConversionQuan(fromItemUnit, smallUnit.itemUnitId);
+
 
                 return amount;
             }

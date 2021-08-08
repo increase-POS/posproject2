@@ -67,6 +67,47 @@ namespace POS_Server.Controllers
             //else
                 return NotFound();
         }
+        // email
+        [HttpGet]
+        [Route("GetBySetName")]
+        public IHttpActionResult GetBySetName(string name)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    setting sett = entity.setting.Where(s => s.name == name).FirstOrDefault();
+                   var setValuesList = entity.setValues.Where(x => sett.settingId == x.settingId)
+                        .Select(X=> new { X.valId,
+                            X.value,
+                            X.isDefault,
+                            X.isSystem,
+                            X.settingId,
+                            X.notes,
+                           
+                        })
+                        .ToList();
+
+                    if (setValuesList == null)
+                        return NotFound();
+                    else
+                        return Ok(setValuesList);
+                }
+            }
+            //else
+            return NotFound();
+        }
 
 
 
@@ -186,7 +227,7 @@ namespace POS_Server.Controllers
                             tmps.value = Object.value;
                             tmps.isDefault=Object.isDefault;
                             tmps.isSystem=Object.isSystem;
-                            tmps.notes = Object.notes;
+                       
                             tmps.settingId=Object.settingId;
                             entity.SaveChanges();
                             message = tmps.valId.ToString();
@@ -204,6 +245,96 @@ namespace POS_Server.Controllers
             }
             else
                 return "-1";
+        }
+
+
+
+        //email temp  
+        [HttpPost]
+        [Route("SaveValueByNotes")]
+        public String SaveValueByNotes(string newObject)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            string message = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                newObject = newObject.Replace("\\", string.Empty);
+                newObject = newObject.Trim('"');
+                setValues Object = JsonConvert.DeserializeObject<setValues>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                try
+                {
+                    if (Object.settingId == 0 || Object.settingId == null)
+                    {
+                        Nullable<int> id = null;
+                        Object.settingId = id;
+                    }
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var sEntity = entity.Set<setValues>();
+                        setValues defItem = entity.setValues.Where(p => p.settingId == Object.settingId && p.isDefault == 1).FirstOrDefault();
+
+                        if (Object.valId == 0)
+                        {
+                            if (Object.isDefault == 1)
+                            {
+                                // get the row with same settingId of newObject
+                                if (defItem != null)
+                                {
+                                    defItem.isDefault = 0;
+                                    entity.SaveChanges();
+                                }
+                            }
+                            else //Object.isDefault ==0 
+                            {
+                                if (defItem == null)//other values isDefault not 1 
+                                {
+                                    Object.isDefault = 1;
+                                }
+
+                            }
+                            sEntity.Add(Object);
+                            message = Object.valId.ToString();
+                            entity.SaveChanges();
+                        }
+                        else
+                        {
+                            if (Object.isDefault == 1)
+                            {
+                                defItem.isDefault = 0;//reset the other default to 0 if exist
+                            }
+                            var tmps = entity.setValues.Where(p => p.notes == Object.notes).FirstOrDefault();
+                            tmps.valId = Object.valId;
+                           // tmps.notes = Object.notes;
+                            tmps.value = Object.value;
+                            tmps.isDefault = Object.isDefault;
+                            tmps.isSystem = Object.isSystem;
+                         
+                            tmps.settingId = Object.settingId;
+                            entity.SaveChanges();
+                            message = tmps.valId.ToString();
+                        }
+
+
+                    }
+                    return message; ;
+                }
+
+                catch
+                {
+                    return "-1";
+                }
+            }
+            else
+                return "-2";
         }
 
         [HttpPost]

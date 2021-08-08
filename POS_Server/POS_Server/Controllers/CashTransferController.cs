@@ -168,7 +168,7 @@ namespace POS_Server.Controllers
                                                             shippingCompanyName = jssh.name
 
                                                         }).Where(C => ((type == "all") ? true : C.transType == type)
-            && ((side == "all") ? true : C.side == side)).ToList();
+            && ((side == "all") ? true : C.side == side) && !(C.agentId == null && C.userId == null && C.shippingCompanyId == null)).ToList();
 
                     if (cachlist.Count > 0 && side == "p")
                     {
