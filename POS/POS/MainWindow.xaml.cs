@@ -39,11 +39,11 @@ namespace POS
     {
 
         public static ResourceManager resourcemanager;
-        public static ResourceManager resourcemanagerreport;
+		public static ResourceManager resourcemanagerreport;
         bool menuState = false;
         //ToolTip="{Binding Properties.Settings.Default.Lang}"
         public static string lang;
-        public static string Reportlang = "ar";
+        public static string Reportlang = "en";
         public static string companyName;
         public static string Email;
         public static string Fax;
@@ -690,6 +690,8 @@ namespace POS
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trMovements");
                 else if (tag == "itemsDestroy")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trDestructive");
+                else if (tag == "shortage")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trShortage");
                 else if (tag == "inventory")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStocktaking");
                 else if (tag == "storageStatistic")
@@ -782,6 +784,8 @@ namespace POS
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trPermission");
                 else if (tag == "emailsSetting")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trEmail");
+                else if (tag == "emailTemplates")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trEmailTemplates");
                 #endregion
             }
         }
