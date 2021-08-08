@@ -204,10 +204,10 @@
                         <ToolTip x:Name="tt_errorToUnit" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                     </Path.ToolTip>
                 </Path>
-                <TextBlock Grid.Row="3"  Grid.Column="2"  Text="2 Box" x:Name="txt_toQuantity"  Foreground="#4E4E4E" 
+                <TextBlock Grid.Row="3"  Grid.Column="2"   x:Name="txt_toQuantity"  Foreground="#4E4E4E" 
                            FontWeight="Regular" FontSize="14"  
                     VerticalAlignment="Center"     Margin="10,5,10,5"/>
-                <TextBlock Grid.Row="4"  Grid.Column="2"  Text=" 4 pice" x:Name="txt_toQuantityRemainder"  Foreground="#4E4E4E" 
+                <TextBlock Grid.Row="4"  Grid.Column="2"   x:Name="txt_toQuantityRemainder"  Foreground="#4E4E4E" 
                            FontWeight="Regular" FontSize="14"  
                     VerticalAlignment="Center"     Margin="10,5,10,5"/>
 

@@ -328,6 +328,9 @@
     <Compile Include="View\Settings\uc_emailsSetting.xaml.cs">
       <DependentUpon>uc_emailsSetting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Settings\uc_emailTemplates.xaml.cs">
+      <DependentUpon>uc_emailTemplates.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Settings\uc_general.xaml.cs">
       <DependentUpon>uc_general.xaml</DependentUpon>
     </Compile>
@@ -637,6 +640,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Settings\uc_emailsSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings\uc_emailTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

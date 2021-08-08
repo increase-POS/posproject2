@@ -367,6 +367,7 @@
                         <ComboBox x:Name="cb_depositTo"  Grid.Row="2" 
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="Deposit To..."  
+                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                   Grid.Column="0" Height="40"   Margin="10,5,10,5"
                                   BorderBrush="#737373" BorderThickness="0" 
@@ -390,7 +391,8 @@
                         </Path>
                         <ComboBox x:Name="cb_recipientV"  Grid.Row="3"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                                  materialDesign:HintAssist.Hint="Recipient..."  
+                                  materialDesign:HintAssist.Hint="Recipient..."
+                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                  Visibility="Collapsed"
                                   Grid.Column="0" Height="40"  Margin="10,5,35,5"
@@ -406,7 +408,8 @@
                         </ComboBox>
                         <ComboBox x:Name="cb_recipientC"  Grid.Row="2"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                                  materialDesign:HintAssist.Hint="Recipient..."  
+                                  materialDesign:HintAssist.Hint="Recipient..." 
+                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                  Visibility="Collapsed"
                                   Grid.Column="0" Height="40" Margin="10,5,35,5"
@@ -422,7 +425,8 @@
                         </ComboBox>
                         <ComboBox x:Name="cb_recipientU"  Grid.Row="3"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                                  materialDesign:HintAssist.Hint="Recipient..."  
+                                  materialDesign:HintAssist.Hint="Recipient..."
+                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                  Visibility="Collapsed"
                                   Grid.Column="0" Height="40"  Margin="10,5,10,5"
@@ -438,7 +442,8 @@
                         </ComboBox>
                         <ComboBox x:Name="cb_recipientSh"  Grid.Row="3"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                                  materialDesign:HintAssist.Hint="Recipient..."  
+                                  materialDesign:HintAssist.Hint="Recipient..." 
+                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                  Visibility="Collapsed"
                                   Grid.Column="0" Height="40"  Margin="10,5,10,5"
@@ -509,7 +514,8 @@
 
                         <ComboBox x:Name="cb_paymentProcessType"  Grid.Row="4"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                                  materialDesign:HintAssist.Hint="Payment Process Type..."  
+                                  materialDesign:HintAssist.Hint="Payment Process Type..." 
+                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                   Grid.Column="0" Height="40"  Margin="10,5,10,5"
                                   BorderBrush="#737373" BorderThickness="0" 
@@ -539,8 +545,9 @@
 
                             <TextBox x:Name="tb_docNum"  MaxLength="20"  Grid.Column="0"
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Text="{Binding docNum, Mode=OneWay}" 
-                                     Visibility="Collapsed"
+                                  Visibility="Collapsed"
                                   Padding="10,0,5,0" 
                                  BorderThickness="1" 
                                  materialDesign:HintAssist.Hint="Document Number..."  
@@ -550,7 +557,7 @@
                                  TextChanged="Tb_validateEmptyTextChange" 
                                  LostFocus="Tb_validateEmptyLostFocus"
                                  PreviewKeyDown="PreventSpaces" 
-                                 PreviewTextInput="Tb_docNum_PreviewTextInput">
+                                 PreviewTextInput="Tb_EnglishDigit_PreviewTextInput">
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_docNum" Content="Document Number"
                                                          Placement="left" 
@@ -604,6 +611,7 @@
 
                             <TextBox x:Name="tb_docNumCheque"  MaxLength="20"  Grid.Column="0"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      Text="{Binding docNum, Mode=OneWay}" 
                                      Visibility="Visible"
                                      Padding="10,0,5,0" Grid.ColumnSpan="2"
@@ -615,7 +623,7 @@
                                  TextChanged="Tb_validateEmptyTextChange" 
                                  LostFocus="Tb_validateEmptyLostFocus"
                                  PreviewKeyDown="PreventSpaces" 
-                                 PreviewTextInput="Tb_docNum_PreviewTextInput">
+                                 PreviewTextInput="Tb_EnglishDigit_PreviewTextInput">
                                 <TextBox.ToolTip>
                                     <ToolTip x:Name="tt_docNumCheque" Content="Document Number"
                                                          Placement="left" 
@@ -665,6 +673,7 @@
                         <ComboBox x:Name="cb_card"   Grid.Row="7"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="Card..."  
+                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                   Visibility="Collapsed"
                                   Grid.Column="0" Height="40"  Margin="10,5,10,5"
@@ -688,6 +697,7 @@
                         </Path>
                         <TextBox x:Name="tb_docNumCard"  MaxLength="20"  Grid.Row="8"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Text="{Binding docNum, Mode=OneWay}" 
                                  Visibility="Collapsed"
                                  Padding="10,0,5,0" Grid.ColumnSpan="2"
@@ -699,7 +709,7 @@
                                  TextChanged="Tb_validateEmptyTextChange" 
                                  LostFocus="Tb_validateEmptyLostFocus"
                                  PreviewKeyDown="PreventSpaces" 
-                                 PreviewTextInput="Tb_docNum_PreviewTextInput">
+                                 PreviewTextInput="Tb_EnglishDigit_PreviewTextInput">
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_docNumCard" Content="Process Number"
                                                          Placement="left" 
@@ -719,6 +729,7 @@
 
                         <TextBox x:Name="tb_cash" MaxLength="20"  Grid.Row="9"
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Text="{Binding cash, Mode=OneWay}" 
                                  Padding="10,0,5,0"
                                  BorderThickness="1" 
@@ -749,6 +760,7 @@
 
                         <TextBox  x:Name="tb_note" Text="{Binding notes , Mode=OneWay}" Padding="10,0,5,0"  
                                   materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                   BorderThickness="1" Grid.Row="10" materialDesign:HintAssist.Hint="Note..."  
                                   Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                   BorderBrush="#f8f8f8"

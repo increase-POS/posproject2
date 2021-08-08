@@ -326,7 +326,7 @@ namespace POS.View
         {//selection
             p_errorX.Visibility = Visibility.Collapsed;
             p_errorY.Visibility = Visibility.Collapsed;
-            p_errorX.Visibility = Visibility.Collapsed;
+            p_errorZ.Visibility = Visibility.Collapsed;
 
             tb_x.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_y.Background = (Brush)bc.ConvertFrom("#f8f8f8");

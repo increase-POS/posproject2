@@ -35,10 +35,14 @@ namespace POS.View.windows
         ItemLocation ItemLocation = new ItemLocation();
         List<ItemLocation> locations;
 
-              List<ItemUnit> toUnits;
+        List<ItemUnit> units;
+        List<ItemUnit> smallUnits;
+        ItemUnit isSmall = null;
         private static string _FromUnit = "";
         private static string _ToUnit = "";
         private static int _ToQuantity = 0;
+        private static int  _FromQuantity = 0;
+        private static int _ConversionQuantity = 0;
         private void Cb_item_KeyUp(object sender, KeyEventArgs e)
         {
             cb_item.ItemsSource = items.Where(x => x.name.Contains(cb_item.Text));
@@ -54,22 +58,54 @@ namespace POS.View.windows
         }
 
         private async void setToquantityMessage()
-        {
-            int conversionQuantity = 0;
-            int quantity = 0;
+        { 
+            int quantity = 0;            
+            int remain = 0;
+
             if (tb_fromQuantity.Text != "")
                 quantity = int.Parse(tb_fromQuantity.Text);
             if (quantity != 0 && tb_fromQuantity.Text != "" && cb_fromUnit.SelectedIndex != -1 && cb_toUnit.SelectedIndex != -1)
-                conversionQuantity = await itemUnit.getConversionQuantity((int)cb_fromUnit.SelectedValue, (int)cb_toUnit.SelectedValue);
+            {
+                isSmall = smallUnits.Find(x => x.itemUnitId == (int)cb_toUnit.SelectedValue);
+                if (isSmall != null) // from-unit is bigger than to-unit
+                {
+                    _ConversionQuantity = await itemUnit.largeToSmallUnitQuan((int)cb_fromUnit.SelectedValue, (int)cb_toUnit.SelectedValue);
+                    _ToQuantity = quantity * _ConversionQuantity;
+                    _FromUnit = "";
+                    _FromQuantity = quantity;
+                   
+                }
+                else
+                {
+                    _ConversionQuantity = await itemUnit.smallToLargeUnit((int)cb_fromUnit.SelectedValue, (int)cb_toUnit.SelectedValue);
 
-            _ToQuantity = quantity * conversionQuantity;
+                    if (_ConversionQuantity != 0)
+                    {
+                        _ToQuantity = quantity / _ConversionQuantity;
+                        remain = quantity - (_ToQuantity * _ConversionQuantity); // get remain quantity which cannot be changeed
+                    }
+                    _FromUnit = remain.ToString() + " " + cb_fromUnit.Text;
+                    _FromQuantity = quantity - remain;
+                }
+                _ToUnit = _ToQuantity.ToString() + " " + cb_toUnit.Text;
+            }
 
-            if (cb_fromUnit.SelectedIndex != -1)
-                _FromUnit = tb_fromQuantity.Text + " " + cb_fromUnit.Text;
+            //_ToQuantity = quantity * conversionQuantity;
+
+            //if (cb_fromUnit.SelectedIndex != -1 && isSmall != null)
+            //{
+            //    _FromUnit = _ToQuantity.ToString() + " " + cb_fromUnit.Text;
+            //    txt_toQuantity.Text = _FromUnit;
+            //}
+
+            //if (cb_toUnit.SelectedIndex != -1)
+            //{
+            //    if(isSmall != null) // from large to small
+            //        _ToUnit = _ToQuantity.ToString() + " " + units[cb_toUnit.SelectedIndex].mainUnit;
+            //    else if(cb_fromUnit.SelectedIndex != -1)
+            //        _FromUnit = remain.ToString() + " " + units[cb_fromUnit.SelectedIndex].mainUnit;
+            //}
             txt_toQuantity.Text = _FromUnit;
-
-            if (cb_toUnit.SelectedIndex != -1)
-            _ToUnit = _ToQuantity.ToString() + " " + toUnits[cb_toUnit.SelectedIndex].mainUnit;
             txt_toQuantityRemainder.Text = _ToUnit;
         }
         private void clearConversionInputs()
@@ -82,6 +118,11 @@ namespace POS.View.windows
             txt_toQuantity.Text = "";
             txt_toQuantityRemainder.Text = "";
             _ToQuantity = 0;
+            _ConversionQuantity = 0;
+            _FromUnit = "";
+            _ToUnit = "";
+            isSmall = null;
+            SectionData.clearValidate(tb_fromQuantity, p_errorFromQuantity);
         }
         private  void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
@@ -137,10 +178,11 @@ namespace POS.View.windows
                 valid = false;
                 return valid;
             }
-            if(cb_sectionLocation.SelectedIndex == -1)
+            int quantity = int.Parse(tb_fromQuantity.Text);
+            if (cb_sectionLocation.SelectedIndex == -1)
             {
-                int branchQuantity = await ItemLocation.getAmountInBranch((int)cb_fromUnit.SelectedValue, MainWindow.branchID.Value);
-                int quantity = int.Parse(tb_fromQuantity.Text);
+                int branchQuantity = await ItemLocation.getUnitAmount((int)cb_fromUnit.SelectedValue, MainWindow.branchID.Value);
+                
                 if(branchQuantity < quantity)
                 {
                     tb_fromQuantity.Text = branchQuantity.ToString();
@@ -149,6 +191,12 @@ namespace POS.View.windows
                     valid = false;
                     return valid;
                 }
+            }
+            if(isSmall == null && _ConversionQuantity > quantity)
+            {
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorNoEnoughQuantityToolTip"), animation: ToasterAnimation.FadeIn);
+                valid = false;
+                return valid;
             }
             return valid;
         }
@@ -159,12 +207,12 @@ namespace POS.View.windows
             bool valid = await validateInputs();
             if (valid)
             {
-                int fromQuantity = int.Parse(tb_fromQuantity.Text);
+                //int fromQuantity = int.Parse(tb_fromQuantity.Text);
 
                 if (cb_sectionLocation.SelectedIndex != -1)
                 {
                     var locationId = locations.Find(x => x.itemsLocId == (int)cb_sectionLocation.SelectedValue).locationId;
-                    bool res = await ItemLocation.transferAmountbetweenUnits((int)locationId, (int)cb_sectionLocation.SelectedValue, (int)cb_toUnit.SelectedValue, fromQuantity, _ToQuantity, MainWindow.userID.Value);
+                    bool res = await ItemLocation.transferAmountbetweenUnits((int)locationId, (int)cb_sectionLocation.SelectedValue, (int)cb_toUnit.SelectedValue, _FromQuantity, _ToQuantity, MainWindow.userID.Value);
                     if (res)
                     {
                         clearConversionInputs();
@@ -175,7 +223,7 @@ namespace POS.View.windows
                 }
                 else
                 {
-                    bool res = await ItemLocation.unitsConversion(MainWindow.branchID.Value, (int)cb_fromUnit.SelectedValue, (int)cb_toUnit.SelectedValue, fromQuantity, MainWindow.userID.Value);
+                    bool res = await ItemLocation.unitsConversion(MainWindow.branchID.Value, (int)cb_fromUnit.SelectedValue, (int)cb_toUnit.SelectedValue, _FromQuantity,_ToQuantity, MainWindow.userID.Value,isSmall);
                     if (res)
                     {
                         clearConversionInputs();
@@ -243,12 +291,16 @@ namespace POS.View.windows
         {
             if (cb_item.SelectedIndex != -1)
             {
-                var list = await itemUnit.GetItemUnits(int.Parse(cb_item.SelectedValue.ToString()));
+                 units = await itemUnit.GetItemUnits(int.Parse(cb_item.SelectedValue.ToString()));
 
-                cb_fromUnit.ItemsSource = list;
+                cb_fromUnit.ItemsSource = units;
                 cb_fromUnit.SelectedValuePath = "itemUnitId";
                 cb_fromUnit.DisplayMemberPath = "mainUnit";
                 cb_fromUnit.SelectedIndex = 0;
+
+                cb_toUnit.ItemsSource = units;
+                cb_toUnit.SelectedValuePath = "itemUnitId";
+                cb_toUnit.DisplayMemberPath = "mainUnit";
             }
         }
 
@@ -256,11 +308,7 @@ namespace POS.View.windows
         {
             if (cb_fromUnit.SelectedIndex != -1)
             {
-                toUnits = await itemUnit.getSmallItemUnits((int)cb_item.SelectedValue, (int)cb_fromUnit.SelectedValue);
-
-                cb_toUnit.ItemsSource = toUnits;
-                cb_toUnit.SelectedValuePath = "itemUnitId";
-                cb_toUnit.DisplayMemberPath = "mainUnit";
+                smallUnits = await itemUnit.getSmallItemUnits((int)cb_item.SelectedValue, (int)cb_fromUnit.SelectedValue);
 
                 string itemUnitStr = cb_fromUnit.SelectedValue.ToString();
                 locations = await ItemLocation.getSpecificItemLocation(itemUnitStr, MainWindow.branchID.Value);

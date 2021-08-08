@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using netoaster;
 using POS.Classes;
 
 namespace POS.View.windows
@@ -31,6 +32,9 @@ namespace POS.View.windows
         Item item = new Item();
         IEnumerable<Location> locations;
         Location location = new Location();
+        ItemLocation itemLocation = new ItemLocation();
+        Package package = new Package();
+        List<Package> packages;
         private void Cb_item_KeyUp(object sender, KeyEventArgs e)
         {
             cb_item.ItemsSource = items.Where(x => x.name.Contains(cb_item.Text));
@@ -59,18 +63,44 @@ namespace POS.View.windows
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-        private void tb_quantity_TextChanged(object sender, TextChangedEventArgs e)
+        private async void tb_quantity_TextChanged(object sender, TextChangedEventArgs e)
         {
             SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
-            bool validQan = true;
+            bool validQan = await checkAmount();
 
         }
-        private bool checkAmount()
+        private async Task<bool> checkAmount()
         {
             bool valid = true;
-            if(cb_item.SelectedIndex != -1)
+            int quantity = int.Parse(tb_quantity.Text);
+            if(cb_item.SelectedIndex != -1 && quantity > 0)
             {
+                ItemUnit itemUnit = new ItemUnit();
+                List< ItemUnit> itemUnits = new List<ItemUnit>();
+                itemUnits = await itemUnit.GetItemUnits((int)cb_item.SelectedValue);
+                int itemUnitId = itemUnits[0].itemUnitId;
 
+                packages = await package.GetChildsByParentId(itemUnitId);
+                foreach(Package p in packages)
+                {
+                    int branchQuantity = 0;
+                    int itemQuanP = p.quantity;
+                    itemUnitId = (int)p.childIUId;
+                    int requireQuan = itemQuanP * quantity;
+
+                    if (cb_location.SelectedIndex == -1)
+                        branchQuantity = await itemLocation.getUnitAmount(itemUnitId, MainWindow.branchID.Value);
+                    else
+                        branchQuantity = await itemLocation.getAmountInLocation(itemUnitId,MainWindow.branchID.Value,(int) cb_location.SelectedValue);
+
+                    if (requireQuan > branchQuantity)
+                    {
+                        valid = false;                      
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemAmntNotAvailableToolTip")+" "+p.childIUId, animation: ToasterAnimation.FadeIn);
+                        return valid;
+                    }
+
+                }
             }
             return valid;
         }
@@ -123,6 +153,12 @@ namespace POS.View.windows
             }
         }
 
-        
+        private async void Cb_location_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(cb_location.SelectedIndex != -1)
+            {
+               await checkAmount();
+            }
+        }
     }
 }

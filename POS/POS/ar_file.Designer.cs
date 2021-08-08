@@ -943,6 +943,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to القسم.
+        /// </summary>
+        internal static string trDepartment {
+            get {
+                return ResourceManager.GetString("trDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to القسم....
+        /// </summary>
+        internal static string trDepartmentHent {
+            get {
+                return ResourceManager.GetString("trDepartmentHent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to إيداع.
         /// </summary>
         internal static string trDeposit {
@@ -2617,7 +2635,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to الوحدة الافتراضية للبيع.
+        ///   Looks up a localized string similar to الوحدة الافتراضية للشراء .
         /// </summary>
         internal static string trIsDefaultPurchases {
             get {
@@ -2626,7 +2644,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to الوحدة الافتراضية للشراء.
+        ///   Looks up a localized string similar to الوحدة الافتراضية للبيع .
         /// </summary>
         internal static string trIsDefaultSales {
             get {
@@ -2797,6 +2815,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لم يتم ارسال البريد الالكتروني.
+        /// </summary>
+        internal static string trMailNotSent {
+            get {
+                return ResourceManager.GetString("trMailNotSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تم ارسال البريد الالكتروني بنجاح.
+        /// </summary>
+        internal static string trMailSent {
+            get {
+                return ResourceManager.GetString("trMailSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الخاصية الأساسية.
         /// </summary>
         internal static string trMainProperty {
@@ -2815,11 +2851,20 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to رئيسي.
+        /// </summary>
+        internal static string trMajor {
+            get {
+                return ResourceManager.GetString("trMajor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to يوجد ايميل رئيسي مسبقاً.
         /// </summary>
-        internal static string trMajorEmail {
+        internal static string trMajorEmaillAlreadyExists {
             get {
-                return ResourceManager.GetString("trMajorEmail", resourceCulture);
+                return ResourceManager.GetString("trMajorEmaillAlreadyExists", resourceCulture);
             }
         }
         
@@ -3081,6 +3126,25 @@ namespace POS {
         internal static string trNoDraft {
             get {
                 return ResourceManager.GetString("trNoDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يوجد بريد الكتروني لهذا القسم
+        ///يرجى اضافة بريد الكتروني في الاعدادات.
+        /// </summary>
+        internal static string trNoEmailForThisDept {
+            get {
+                return ResourceManager.GetString("trNoEmailForThisDept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يوجد اتصال بالانترنت.
+        /// </summary>
+        internal static string trNoInternetConnection {
+            get {
+                return ResourceManager.GetString("trNoInternetConnection", resourceCulture);
             }
         }
         
@@ -3760,6 +3824,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to فاتورة مشتريات بانتظار التخزين.
+        /// </summary>
+        internal static string trPurchaseInvoiceWaiting {
+            get {
+                return ResourceManager.GetString("trPurchaseInvoiceWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to طلب شراء.
         /// </summary>
         internal static string trPurchaseOrder {
@@ -3792,6 +3865,15 @@ namespace POS {
         internal static string trPurchaseReturnInvoice {
             get {
                 return ResourceManager.GetString("trPurchaseReturnInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مرتجع مشتريات بانتظار الإخراج.
+        /// </summary>
+        internal static string trPurchaseReturnInvoiceWaiting {
+            get {
+                return ResourceManager.GetString("trPurchaseReturnInvoiceWaiting", resourceCulture);
             }
         }
         
@@ -4647,6 +4729,33 @@ namespace POS {
         internal static string trTaxesHint {
             get {
                 return ResourceManager.GetString("trTaxesHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لايمكن ارسال طلب بدون عناصر.
+        /// </summary>
+        internal static string trThereIsNoItemsToSend {
+            get {
+                return ResourceManager.GetString("trThereIsNoItemsToSend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يمكن ارسال طلب فارغ, يرجى حفظ الطلب ثم ارساله.
+        /// </summary>
+        internal static string trThereIsNoOrderToSen {
+            get {
+                return ResourceManager.GetString("trThereIsNoOrderToSen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يوجد بريد الكتروني للمورد.
+        /// </summary>
+        internal static string trTheVendorHasNoEmail {
+            get {
+                return ResourceManager.GetString("trTheVendorHasNoEmail", resourceCulture);
             }
         }
         

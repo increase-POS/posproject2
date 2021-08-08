@@ -20,8 +20,9 @@ namespace POS.converters
                 //مشتريات 
                 case "p":  value = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
                     break;
+                //فاتورة مشتريات بانتظار الادخال
                 case "pw":
-                    value = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                    value = MainWindow.resourcemanager.GetString("trPurchaseInvoiceWaiting");
                     break;
                 //مبيعات
                 case "s": value = MainWindow.resourcemanager.GetString("trSalesInvoice");
@@ -31,6 +32,10 @@ namespace POS.converters
                     break;
                 //مرتجع مشتريات
                 case "pb": value = MainWindow.resourcemanager.GetString("trPurchaseReturnInvoice");
+                    break;
+                //فاتورة مرتجع مشتريات بانتظار الاخراج
+                case "pbw":
+                    value = MainWindow.resourcemanager.GetString("trPurchaseReturnInvoiceWaiting");
                     break;
                 //مسودة مشتريات 
                 case "pd": value = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");

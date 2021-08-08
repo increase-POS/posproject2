@@ -226,9 +226,11 @@ namespace POS.View.sectionData
                 shCom.RealDeliveryCost = decimal.Parse(tb_realDeliveryCost.Text);
                 shCom.deliveryCost = decimal.Parse(tb_deliveryCost.Text);
                 shCom.deliveryType = cb_deliveryType.SelectedValue.ToString();
+                shCom.balance = 0;
+                shCom.balanceType = 0;
                 shCom.notes = tb_notes.Text;
-                shCom.createUserId = MainWindow.userID;
-                shCom.isActive = 1;
+                    shCom.createUserId = MainWindow.userID;
+                    shCom.isActive = 1;
 
                 string s = await shCompaniesModel.Save(shCom);
                 //MessageBox.Show(s);

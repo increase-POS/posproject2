@@ -39,7 +39,7 @@ namespace POS.View.windows
 
         public int agentId = 0 , userId = 0, shippingCompanyId = 0;
         public decimal sum = 0;
-        public string invType, invTypeB , invTypC;
+        public string invType ;
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             //MessageBox.Show(agentId.ToString());
@@ -57,24 +57,14 @@ namespace POS.View.windows
             tb_moneyIcon.Text = MainWindow.Currency;
             translat();
             #endregion
-            
-            allInvoicesSource = await invoiceModel.GetAll();
 
             if (agentId != 0)
-            {
-                var query = allInvoicesSource.Where(i => i.agentId == agentId && i.deserved > 0 && (i.invType == invType || i.invType == invTypeB || i.invType == invTypC));
-                allInvoicesSource = query.ToList();
-            }
+                allInvoicesSource = await invoiceModel.getAgentInvoices(MainWindow.branchID.Value , agentId , invType);
             else if(userId != 0)
-            {
-                var query = allInvoicesSource.Where(i => i.userId == userId && i.deserved > 0 && (i.invType == invType || i.invType == invTypeB || i.invType == invTypC));
-                allInvoicesSource = query.ToList();
-            }
+                allInvoicesSource = await invoiceModel.getUserInvoices(MainWindow.branchID.Value , userId , invType);
             else if(shippingCompanyId != 0)
-            {
-                var query = allInvoicesSource.Where(i => i.shippingCompanyId == shippingCompanyId && i.deserved > 0 && (i.invType == invType || i.invType == invTypeB || i.invType == invTypC));
-                allInvoicesSource = query.ToList();
-            }
+                allInvoicesSource = await invoiceModel.getShipCompanyInvoices(MainWindow.branchID.Value , shippingCompanyId , invType);
+
             allInvoices.AddRange(allInvoicesSource);
            
             lst_allInvoices.ItemsSource = allInvoices;
@@ -164,7 +154,7 @@ namespace POS.View.windows
                 lst_allInvoices.Items.Refresh();
                 lst_selectedInvoices.Items.Refresh();
 
-                decimal x = invoice.deserved.Value - invoice.paid.Value;
+                decimal x = invoice.deserved.Value ;
 
                 sum += x;
 
@@ -190,7 +180,7 @@ namespace POS.View.windows
                 lst_allInvoices.Items.Refresh();
                 lst_selectedInvoices.Items.Refresh();
 
-                decimal x = invoice.deserved.Value - invoice.paid.Value;
+                decimal x = invoice.deserved.Value;
 
                 sum -= x;
 

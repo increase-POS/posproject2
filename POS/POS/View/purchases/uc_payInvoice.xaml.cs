@@ -750,7 +750,7 @@ namespace POS.View
 
             // purchase invoices
             //w.invoiceType = "pw";
-            w.invoiceType = "p , pw , pb";
+            w.invoiceType = "p , pw , pb, pbw";
             w.userId = MainWindow.userLogin.userId;
             w.duration = 1; // view drafts which created during 1 last days 
 

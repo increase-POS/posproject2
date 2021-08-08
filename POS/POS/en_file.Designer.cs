@@ -970,6 +970,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Department.
+        /// </summary>
+        internal static string trDepartment {
+            get {
+                return ResourceManager.GetString("trDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Department....
+        /// </summary>
+        internal static string trDepartmentHent {
+            get {
+                return ResourceManager.GetString("trDepartmentHent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deposit.
         /// </summary>
         internal static string trDeposit {
@@ -2842,6 +2860,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mail not sent.
+        /// </summary>
+        internal static string trMailNotSent {
+            get {
+                return ResourceManager.GetString("trMailNotSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mail sent successfully.
+        /// </summary>
+        internal static string trMailSent {
+            get {
+                return ResourceManager.GetString("trMailSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Main Property.
         /// </summary>
         internal static string trMainProperty {
@@ -2856,6 +2892,15 @@ namespace POS {
         internal static string trMainPropertyHint {
             get {
                 return ResourceManager.GetString("trMainPropertyHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Major.
+        /// </summary>
+        internal static string trMajor {
+            get {
+                return ResourceManager.GetString("trMajor", resourceCulture);
             }
         }
         
@@ -3126,6 +3171,25 @@ namespace POS {
         internal static string trNoDraft {
             get {
                 return ResourceManager.GetString("trNoDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is no email for this department
+        ///Please add Email in setting.
+        /// </summary>
+        internal static string trNoEmailForThisDept {
+            get {
+                return ResourceManager.GetString("trNoEmailForThisDept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Internet connection.
+        /// </summary>
+        internal static string trNoInternetConnection {
+            get {
+                return ResourceManager.GetString("trNoInternetConnection", resourceCulture);
             }
         }
         
@@ -3823,6 +3887,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Purchase Invoice Waiting for storage.
+        /// </summary>
+        internal static string trPurchaseInvoiceWaiting {
+            get {
+                return ResourceManager.GetString("trPurchaseInvoiceWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Purchase Order.
         /// </summary>
         internal static string trPurchaseOrder {
@@ -3855,6 +3928,15 @@ namespace POS {
         internal static string trPurchaseReturnInvoice {
             get {
                 return ResourceManager.GetString("trPurchaseReturnInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchase Return invoice awaiting export.
+        /// </summary>
+        internal static string trPurchaseReturnInvoiceWaiting {
+            get {
+                return ResourceManager.GetString("trPurchaseReturnInvoiceWaiting", resourceCulture);
             }
         }
         
@@ -4710,6 +4792,33 @@ namespace POS {
         internal static string trTaxesHint {
             get {
                 return ResourceManager.GetString("trTaxesHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no items to send.
+        /// </summary>
+        internal static string trThereIsNoItemsToSend {
+            get {
+                return ResourceManager.GetString("trThereIsNoItemsToSend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is no order to send, please save order then send the email.
+        /// </summary>
+        internal static string trThereIsNoOrderToSen {
+            get {
+                return ResourceManager.GetString("trThereIsNoOrderToSen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The vendor Does not Have email..
+        /// </summary>
+        internal static string trTheVendorHasNoEmail {
+            get {
+                return ResourceManager.GetString("trTheVendorHasNoEmail", resourceCulture);
             }
         }
         

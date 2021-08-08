@@ -1860,4 +1860,41 @@
   <data name="trDate" xml:space="preserve">
     <value>Date</value>
   </data>
+  <data name="trDepartment" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="trMailNotSent" xml:space="preserve">
+    <value>Mail not sent</value>
+  </data>
+  <data name="trMailSent" xml:space="preserve">
+    <value>Mail sent successfully</value>
+  </data>
+  <data name="trNoEmailForThisDept" xml:space="preserve">
+    <value>There is no email for this department
+Please add Email in setting</value>
+  </data>
+  <data name="trNoInternetConnection" xml:space="preserve">
+    <value>No Internet connection</value>
+  </data>
+  <data name="trPurchaseInvoiceWaiting" xml:space="preserve">
+    <value>Purchase Invoice Waiting for storage</value>
+  </data>
+  <data name="trPurchaseReturnInvoiceWaiting" xml:space="preserve">
+    <value>Purchase Return invoice awaiting export</value>
+  </data>
+  <data name="trThereIsNoItemsToSend" xml:space="preserve">
+    <value>There are no items to send</value>
+  </data>
+  <data name="trThereIsNoOrderToSen" xml:space="preserve">
+    <value>There is no order to send, please save order then send the email</value>
+  </data>
+  <data name="trTheVendorHasNoEmail" xml:space="preserve">
+    <value>The vendor Does not Have email.</value>
+  </data>
+  <data name="trDepartmentHent" xml:space="preserve">
+    <value>Department...</value>
+  </data>
+  <data name="trMajor" xml:space="preserve">
+    <value>Major</value>
+  </data>
 </root>

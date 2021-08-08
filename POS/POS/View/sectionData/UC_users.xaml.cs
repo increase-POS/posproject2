@@ -373,127 +373,129 @@ namespace POS.View
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            
+
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
-                {
+            {
                 user.userId = 0;
 
-            //chk empty name
-            SectionData.validateEmptyTextBox(tb_firstName, p_errorFirstName, tt_errorFirstName, "trEmptyNameToolTip");
-            //chk empty last name
-            SectionData.validateEmptyTextBox(tb_lastName, p_errorLastName, tt_errorLastName, "trEmptyLastNameToolTip");
-            //chk empty job
-            SectionData.validateEmptyComboBox(cb_job, p_errorJob, tt_errorJob, "trEmptyJobToolTip");
-            //chk empty mobile
-            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-            //chk empty username
-            SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
-            //chk empty password
-            //SectionData.validateEmptyTextBox(tb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
-            //if (tb_password.Text.Equals(""))
-            //{ p_showPassword.Visibility = Visibility.Collapsed; pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000"); }
-            if (pb_password.Password.Equals(""))
-            { SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip"); p_showPassword.Visibility = Visibility.Collapsed; }
-            //validate email
-            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-            //chk duplicate userName
-            bool duplicateUserName = false;
-            duplicateUserName = await chkIfUserNameIsExists(tb_userName.Text , 0);
-            //chk password length
-            bool passLength = false;
-            passLength = chkPasswordLength(pb_password.Password);
-            string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+                //chk empty name
+                SectionData.validateEmptyTextBox(tb_firstName, p_errorFirstName, tt_errorFirstName, "trEmptyNameToolTip");
+                //chk empty last name
+                SectionData.validateEmptyTextBox(tb_lastName, p_errorLastName, tt_errorLastName, "trEmptyLastNameToolTip");
+                //chk empty job
+                SectionData.validateEmptyComboBox(cb_job, p_errorJob, tt_errorJob, "trEmptyJobToolTip");
+                //chk empty mobile
+                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                //chk empty username
+                SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
+                //chk empty password
+                //SectionData.validateEmptyTextBox(tb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
+                //if (tb_password.Text.Equals(""))
+                //{ p_showPassword.Visibility = Visibility.Collapsed; pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000"); }
+                if (pb_password.Password.Equals(""))
+                { SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip"); p_showPassword.Visibility = Visibility.Collapsed; }
+                //validate email
+                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                //chk duplicate userName
+                bool duplicateUserName = false;
+                duplicateUserName = await chkIfUserNameIsExists(tb_userName.Text, 0);
+                //chk password length
+                bool passLength = false;
+                passLength = chkPasswordLength(pb_password.Password);
+                string phoneStr = "";
+                if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
 
-            bool emailError = false;
+                bool emailError = false;
 
-            if (!tb_email.Text.Equals(""))
-                if (!SectionData.IsValid(tb_email.Text))
-                    emailError = true;
+                if (!tb_email.Text.Equals(""))
+                    if (!SectionData.IsValid(tb_email.Text))
+                        emailError = true;
 
-            if ((!tb_firstName.Text.Equals("")) && (!tb_lastName.Text.Equals("")) && (!tb_userName.Text.Equals("")) &&
-                                                   (!tb_mobile.Text.Equals("")) &&
-                                                   (!pb_password.Password.Equals("")) && (!cb_job.Text.Equals("")))
-            {
-                if ((emailError) || (duplicateUserName) || (passLength))
+                if ((!tb_firstName.Text.Equals("")) && (!tb_lastName.Text.Equals("")) && (!tb_userName.Text.Equals("")) &&
+                                                       (!tb_mobile.Text.Equals("")) &&
+                                                       (!pb_password.Password.Equals("")) && (!cb_job.Text.Equals("")))
                 {
-                    if (emailError)
-                        SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-                    if (duplicateUserName)
+                    if ((emailError) || (duplicateUserName) || (passLength))
                     {
-                        p_errorUserName.Visibility = Visibility.Visible;
-                        tt_errorUserName.Content = MainWindow.resourcemanager.GetString("trErrorDuplicateUserNameToolTip");
-                        tb_userName.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                    }
-                    if (passLength)
-                    {
-                        p_errorPassword.Visibility = Visibility.Visible;
-                        p_showPassword.Visibility = Visibility.Collapsed;
-                        tt_errorPassword.Content = MainWindow.resourcemanager.GetString("trErrorPasswordLengthToolTip");
-                        tb_password.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                        pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                    }
-                }
-                else
-                {
-                    tb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                    pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                    user.username = tb_userName.Text;
-                    //user.password = pb_password.Password;
-                    user.password = Md5Encription.MD5Hash("Inc-m" + pb_password.Password);
-                    user.name = tb_firstName.Text;
-                    user.lastname = tb_lastName.Text;
-                    user.job = cb_job.Text;
-                    user.workHours = tb_workHours.Text;
-                    user.details = "";
-                    user.phone = phoneStr;
-                    user.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
-                    user.email = tb_email.Text;
-                    user.address = tb_address.Text;
-                    user.isActive = 1;
-                    user.createUserId = MainWindow.userID.Value;
-                    user.updateUserId = MainWindow.userID.Value;
-                    user.notes = tb_details.Text;
-                    user.role = "";
-
-                    string s = await userModel.saveUser(user);
-                    //if (s.Equals("User Is Added Successfully")) { //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
-                    if (!s.Equals("0"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);  
-                    {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                        Btn_clear_Click(null, null);
-                    }
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                    if (isImgPressed)
-                    {
-                        int userId = int.Parse(s);
-                        string b = await userModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
-                        user.image = b;
-                        isImgPressed = false;
-                        if (!b.Equals(""))
+                        if (emailError)
+                            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                        if (duplicateUserName)
                         {
-                           // brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                           // img_user.Background = brush;
+                            p_errorUserName.Visibility = Visibility.Visible;
+                            tt_errorUserName.Content = MainWindow.resourcemanager.GetString("trErrorDuplicateUserNameToolTip");
+                            tb_userName.Background = (Brush)bc.ConvertFrom("#15FF0000");
                         }
-                        else
+                        if (passLength)
                         {
-                            MessageBox.Show("حدث خطأ في تحميل الصورة");
+                            p_errorPassword.Visibility = Visibility.Visible;
+                            p_showPassword.Visibility = Visibility.Collapsed;
+                            tt_errorPassword.Content = MainWindow.resourcemanager.GetString("trErrorPasswordLengthToolTip");
+                            tb_password.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                            pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000");
                         }
                     }
+                    else
+                    {
+                        tb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                        pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                        user.username = tb_userName.Text;
+                        //user.password = pb_password.Password;
+                        user.password = Md5Encription.MD5Hash("Inc-m" + pb_password.Password);
+                        user.name = tb_firstName.Text;
+                        user.lastname = tb_lastName.Text;
+                        user.job = cb_job.Text;
+                        user.workHours = tb_workHours.Text;
+                        user.details = "";
+                        user.phone = phoneStr;
+                        user.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
+                        user.email = tb_email.Text;
+                        user.address = tb_address.Text;
+                        user.balance = 0;
+                        user.balanceType = 0;
+                        user.isActive = 1;
+                        user.createUserId = MainWindow.userID.Value;
+                        user.updateUserId = MainWindow.userID.Value;
+                        user.notes = tb_details.Text;
+                        user.role = "";
 
-                    await RefreshUsersList();
-                    Tb_search_TextChanged(null, null);
+                        string s = await userModel.saveUser(user);
+                        //if (s.Equals("User Is Added Successfully")) { //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
+                        if (!s.Equals("0"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);  
+                        {
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                            Btn_clear_Click(null, null);
+                        }
+                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    fillJobCombo();
+                        if (isImgPressed)
+                        {
+                            int userId = int.Parse(s);
+                            string b = await userModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
+                            user.image = b;
+                            isImgPressed = false;
+                            if (!b.Equals(""))
+                            {
+                                // brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                                // img_user.Background = brush;
+                            }
+                            else
+                            {
+                                MessageBox.Show("حدث خطأ في تحميل الصورة");
+                            }
+                        }
 
-                    SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
+                        await RefreshUsersList();
+                        Tb_search_TextChanged(null, null);
 
-                    SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+                        fillJobCombo();
 
+                        SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
+
+                        SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
+                    }
                 }
-            }
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

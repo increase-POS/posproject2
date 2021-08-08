@@ -243,20 +243,20 @@ namespace POS.View.Settings
         {
             if (SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip") == false)
                 return false;
-            if (SectionData.validateEmptyTextBox(tb_email, p_errorEmail, tt_errorEmail, "ssssssssssssssssssssss") == false)
+            if (SectionData.validateEmptyTextBox(tb_email, p_errorEmail, tt_errorEmail, "trEmptyEmailToolTip") == false)
                 return false;
             if (SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail) == false)
                 return false;
-            if (SectionData.validateEmptyTextBox(tb_port, p_errorPort, tt_errorPort, "sssssssssssssssssssssssssssss") == false)
+            if (SectionData.validateEmptyTextBox(tb_port, p_errorPort, tt_errorPort, "trEmptyError") == false)
                 return false;
-            if (SectionData.validateEmptyTextBox(tb_smtpClient, p_errorSmtpClient, tt_errorSmtpClient, "sssssssssssssssssssssssssssss") == false)
+            if (SectionData.validateEmptyTextBox(tb_smtpClient, p_errorSmtpClient, tt_errorSmtpClient, "trEmptyError") == false)
                 return false;
-            if (SectionData.validateEmptyComboBox(cb_side, p_errorSide, tt_errorSide, "sssssssssssssss") == false)
+            if (SectionData.validateEmptyComboBox(cb_side, p_errorSide, tt_errorSide, "trEmptyError") == false)
                 return false;
-            if (SectionData.validateEmptyComboBox(cb_branchId, p_errorBranchId, tt_errorBranchId, "sssssssssssssss") == false||
+            if (SectionData.validateEmptyComboBox(cb_branchId, p_errorBranchId, tt_errorBranchId, "trEmptyError") == false||
                 cb_branchId.SelectedValue == null)
                 return false;
-            if (SectionData.validateEmptyPassword(pb_password, p_errorPassword, tt_errorPassword, "ssssssssssssssssssssssss") == false)
+            if (SectionData.validateEmptyPassword(pb_password, p_errorPassword, tt_errorPassword, "trEmptyError") == false)
                 return false;
             return true;
         }
@@ -285,7 +285,7 @@ namespace POS.View.Settings
 
                     string s = await sysEmail.Save(sysEmail);
                     if (s.Equals("-4"))
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmail"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmaillAlreadyExists"), animation: ToasterAnimation.FadeIn);
                     else  if (!s.Equals("-1"))
                     {
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -324,7 +324,7 @@ namespace POS.View.Settings
                     //sysEmail.isActive = 1;
                     string s = await sysEmail.Save(sysEmail);
                       if (s.Equals("-4"))
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmail"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmaillAlreadyExists"), animation: ToasterAnimation.FadeIn);
                     else if (!s.Equals("-1"))
                     {
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
@@ -497,7 +497,9 @@ namespace POS.View.Settings
             new { Text = MainWindow.resourcemanager.GetString("trManager")       , Value = "mg" },
             new { Text = MainWindow.resourcemanager.GetString("trMarket")     , Value = "mk" },
             new { Text = MainWindow.resourcemanager.GetString("trSupport")     , Value = "sp" },
-            new { Text = MainWindow.resourcemanager.GetString("trInfo")  , Value = "if" }
+            new { Text = MainWindow.resourcemanager.GetString("trInfo")  , Value = "if" },
+            new { Text = MainWindow.resourcemanager.GetString("trSales")  , Value = "Sales" },
+            new { Text = MainWindow.resourcemanager.GetString("trPurchases")  , Value = "Purchase" }
              };
             cb_side.DisplayMemberPath = "Text";
             cb_side.SelectedValuePath = "Value";
@@ -507,6 +509,7 @@ namespace POS.View.Settings
         }
         private void translat()
         {
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_side, MainWindow.resourcemanager.GetString("trDepartmentHent"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branchId, MainWindow.resourcemanager.GetString("trSelectPosBranchHint"));
             txt_active.Text = MainWindow.resourcemanager.GetString("trActive");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
@@ -516,9 +519,9 @@ namespace POS.View.Settings
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
 
             dg_sysEmail.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
-            //dg_sysEmail.Columns[1].Header = MainWindow.resourcemanager.GetString("sssssssssssssss");
-            //dg_sysEmail.Columns[2].Header = MainWindow.resourcemanager.GetString("ssssssssssssss");
-            //dg_sysEmail.Columns[3].Header = MainWindow.resourcemanager.GetString("sssssssssssss");
+            dg_sysEmail.Columns[1].Header = MainWindow.resourcemanager.GetString("trEmail");
+            dg_sysEmail.Columns[2].Header = MainWindow.resourcemanager.GetString("trBranch");
+            dg_sysEmail.Columns[3].Header = MainWindow.resourcemanager.GetString("trMajor");
 
             tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
             tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
@@ -601,7 +604,7 @@ namespace POS.View.Settings
 
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_email, p_errorEmail, tt_errorEmail,"sssssssssssssssssssss");
+            SectionData.validateEmptyTextBox(tb_email, p_errorEmail, tt_errorEmail, "trEmptyEmailToolTip");
             SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
         }
     }

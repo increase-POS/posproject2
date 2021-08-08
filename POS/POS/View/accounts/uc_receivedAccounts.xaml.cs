@@ -452,20 +452,20 @@ namespace POS.View.accounts
                     else
                         s1 = await cashModel.PayByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
                 }
-                else if (cb_depositorU.IsVisible)
-                {
+                //else if (cb_depositorU.IsVisible)
+                //{
                     //if (tb_cash.IsReadOnly)
                     //    s1 = await cashModel.PayUserListOfInvoices(cash.agentId.Value, invoicesLst, "feed", cash);
                     //else
                     //    s1 = await cashModel.PayUserByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
-                }
-                else if (cb_depositorSh.IsVisible)
-                {
+                //}
+                //else if (cb_depositorSh.IsVisible)
+                //{
                     //if (tb_cash.IsReadOnly)
                     //    s1 = await cashModel.PayShComListOfInvoices(cash.agentId.Value, invoicesLst, "feed", cash);
                     //else
                     //    s1 = await cashModel.PayShComByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
-                }
+                //}
                 else
                 s = await cashModel.Save(cash);
 
@@ -476,6 +476,9 @@ namespace POS.View.accounts
 
                     if(cb_depositorU.IsVisible)
                             calcUserBalance(Convert.ToSingle(cash.cash.Value), cash.userId.Value);
+
+                    if (cb_depositorSh.IsVisible)
+                        calcShippingComBalance(cash.cash.Value, cash.shippingCompanyId.Value);
 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     Btn_clear_Click(null, null);
@@ -521,11 +524,43 @@ namespace POS.View.accounts
         {//balance for user
             User user = await userModel.getUserById(userId);
 
-            user.balance += value;
+            if(user.balanceType == 0)
+                user.balance += value;
+            else
+            {
+                if (value > user.balance)
+                {
+                    value -= user.balance;
+                    user.balance = value;
+                    user.balanceType = 0;
+                }
+                else
+                    user.balance -= value;
+            }
 
             string s = await userModel.saveUser(user);
 
-            MessageBox.Show(s);
+        }
+
+        private async void calcShippingComBalance(decimal value, int shippingcompanyId)
+        {//balance for shipping company
+            ShippingCompanies shCom = await shCompanyModel.GetByID(shippingcompanyId);
+
+            if (shCom.balanceType == 0)
+                shCom.balance += value;
+            else
+            {
+                if (value > shCom.balance)
+                {
+                    value -= shCom.balance;
+                    shCom.balance = value;
+                    shCom.balanceType = 0;
+                }
+                else
+                    shCom.balance -= value;
+            }
+            string s = await shCompanyModel.Save(shCom);
+
         }
 
         private void Btn_update_Click(object sender, RoutedEventArgs e)
@@ -681,7 +716,7 @@ namespace POS.View.accounts
         {
             cashes = await cashModel.GetCashTransferAsync("d", "all");
             cashes = cashes.Where(x => x.processType != "balance");
-            cashes = cashes.Where(c => !(c.agentId == null && c.userId == null && c.shippingCompanyId == null));
+            //cashes = cashes.Where(c => !(c.agentId == null && c.userId == null && c.shippingCompanyId == null));
             return cashes;
         }
 
@@ -974,9 +1009,7 @@ namespace POS.View.accounts
             else if (cb_depositFrom.SelectedValue == "sh")
                 w.shippingCompanyId = Convert.ToInt32(cb_depositorSh.SelectedValue);
 
-            w.invType = "s";
-            w.invTypeB = "pb";
-            w.invTypC = "s";
+            w.invType = "feed";
 
             w.ShowDialog();
             if (w.isActive)
@@ -1051,5 +1084,12 @@ namespace POS.View.accounts
 
         }
 
+        private void Tb_EnglishDigit_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {//only english and digits
+            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+            if (!regex.IsMatch(e.Text))
+                e.Handled = true;
+
+        }
     }
 }

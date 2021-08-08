@@ -303,7 +303,7 @@ namespace POS.Classes
             }
 
         }
-        public async Task<int> getConversionQuantity(int fromItemUnit, int toItemUnit)
+        public async Task<int> largeToSmallUnitQuan(int fromItemUnit, int toItemUnit)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -316,7 +316,35 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "itemsUnits/getConversionQuantity?fromItemUnit=" + fromItemUnit + "&toItemUnit=" + toItemUnit);
+                request.RequestUri = new Uri(Global.APIUri + "itemsUnits/largeToSmallUnitQuan?fromItemUnit=" + fromItemUnit + "&toItemUnit=" + toItemUnit);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var AvailableAmount = await response.Content.ReadAsStringAsync();
+                    return int.Parse(AvailableAmount);
+                }
+                return 0;
+            }
+        }
+        public async Task<int> smallToLargeUnit(int fromItemUnit, int toItemUnit)
+        {
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "itemsUnits/smallToLargeUnitQuan?fromItemUnit=" + fromItemUnit + "&toItemUnit=" + toItemUnit);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 //set content type

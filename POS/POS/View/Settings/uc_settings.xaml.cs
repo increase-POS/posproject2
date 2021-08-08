@@ -89,7 +89,10 @@ namespace POS.View.Settings
 
             btn_emails.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_emails.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-            
+
+            btn_emailTemplates.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_emailTemplates.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
         }
 
         void refreashBachgroundClick(Button btn)
@@ -129,6 +132,15 @@ namespace POS.View.Settings
             refreashBachgroundClick(btn_emails);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_emailsSetting.Instance);
+            Button button = sender as Button;
+            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+        }
+
+        private void Btn_emailTemplates_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_emailTemplates);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_emailTemplates.Instance);
             Button button = sender as Button;
             MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
         }

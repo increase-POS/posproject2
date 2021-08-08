@@ -505,10 +505,10 @@
     <value>عدد الوحدة</value>
   </data>
   <data name="trIsDefaultPurchases" xml:space="preserve">
-    <value>الوحدة الافتراضية للبيع</value>
+    <value>الوحدة الافتراضية للشراء </value>
   </data>
   <data name="trIsDefaultSales" xml:space="preserve">
-    <value>الوحدة الافتراضية للشراء</value>
+    <value>الوحدة الافتراضية للبيع </value>
   </data>
   <data name="trPriceHint" xml:space="preserve">
     <value>السعر...</value>
@@ -1689,7 +1689,7 @@
   <data name="trSupport" xml:space="preserve">
     <value>دعم تقني</value>
   </data>
-  <data name="trMajorEmail" xml:space="preserve">
+  <data name="trMajorEmaillAlreadyExists" xml:space="preserve">
     <value>يوجد ايميل رئيسي مسبقاً</value>
   </data>
   <data name="trDelivered" xml:space="preserve">
@@ -1835,5 +1835,42 @@
   </data>
   <data name="trDate" xml:space="preserve">
     <value>التاريخ</value>
+  </data>
+  <data name="trDepartment" xml:space="preserve">
+    <value>القسم</value>
+  </data>
+  <data name="trDepartmentHent" xml:space="preserve">
+    <value>القسم...</value>
+  </data>
+  <data name="trMailNotSent" xml:space="preserve">
+    <value>لم يتم ارسال البريد الالكتروني</value>
+  </data>
+  <data name="trMailSent" xml:space="preserve">
+    <value>تم ارسال البريد الالكتروني بنجاح</value>
+  </data>
+  <data name="trMajor" xml:space="preserve">
+    <value>رئيسي</value>
+  </data>
+  <data name="trNoEmailForThisDept" xml:space="preserve">
+    <value>لا يوجد بريد الكتروني لهذا القسم
+يرجى اضافة بريد الكتروني في الاعدادات</value>
+  </data>
+  <data name="trNoInternetConnection" xml:space="preserve">
+    <value>لا يوجد اتصال بالانترنت</value>
+  </data>
+  <data name="trPurchaseInvoiceWaiting" xml:space="preserve">
+    <value>فاتورة مشتريات بانتظار التخزين</value>
+  </data>
+  <data name="trPurchaseReturnInvoiceWaiting" xml:space="preserve">
+    <value>مرتجع مشتريات بانتظار الإخراج</value>
+  </data>
+  <data name="trThereIsNoItemsToSend" xml:space="preserve">
+    <value>لايمكن ارسال طلب بدون عناصر</value>
+  </data>
+  <data name="trThereIsNoOrderToSen" xml:space="preserve">
+    <value>لا يمكن ارسال طلب فارغ, يرجى حفظ الطلب ثم ارساله</value>
+  </data>
+  <data name="trTheVendorHasNoEmail" xml:space="preserve">
+    <value>لا يوجد بريد الكتروني للمورد</value>
   </data>
 </root>

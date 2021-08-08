@@ -470,7 +470,6 @@ namespace POS.View.accounts
 
                     cash.transType = "p";
                     cash.posId = MainWindow.posID.Value;
-                    //cash.transNum = await SectionData.generateNumber('p', cb_depositTo.SelectedValue.ToString());
                     cash.transNum = await cashModel.generateCashNumber(cash.transType+ cb_depositTo.SelectedValue.ToString());
                     cash.cash = decimal.Parse(tb_cash.Text);
                     cash.notes = tb_note.Text;
@@ -497,7 +496,6 @@ namespace POS.View.accounts
                     }
 
                     if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-                        //cash.docNum = await SectionData.generateNumberBond('p', "bnd");
                         cash.docNum = await cashModel.generateDocNumber("pbnd");
 
                     if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
@@ -525,6 +523,9 @@ namespace POS.View.accounts
 
                         if ((cb_recipientU.IsVisible) && (cash.side == "u"))
                             calcUserBalance(Convert.ToSingle(cash.cash.Value), cash.userId.Value);
+
+                        if (cb_recipientSh.IsVisible)
+                            calcShippingComBalance(cash.cash.Value, cash.shippingCompanyId.Value);
 
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         Btn_clear_Click(null, null);
@@ -582,10 +583,46 @@ namespace POS.View.accounts
         {//balance for user
             User user = await userModel.getUserById(userId);
 
-            user.balance += value;
+            if (user.balanceType == 0)
+            {
+                if (value > user.balance)
+                {
+                    value -= user.balance;
+                    user.balance = value;
+                    user.balanceType = 1;
+                }
+                else
+                    user.balance -= value;
+            }
+            else
+            {
+                user.balance += value;
+            }
 
             string s = await userModel.saveUser(user);
+        }
 
+        private async void calcShippingComBalance(decimal value, int shippingcompanyId)
+        {//balance for shipping company
+            ShippingCompanies shCom = await shCompanyModel.GetByID(shippingcompanyId);
+
+            if (shCom.balanceType == 0)
+            {
+                if (value > shCom.balance)
+                {
+                    value -= shCom.balance;
+                    shCom.balance = value;
+                    shCom.balanceType = 1;
+                }
+                else
+                    shCom.balance -= value;
+            }
+            else
+            {
+                shCom.balance += value;
+            }
+
+            string s = await shCompanyModel.Save(shCom);
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
@@ -1112,9 +1149,8 @@ namespace POS.View.accounts
                 w.agentId = Convert.ToInt32(cb_recipientV.SelectedValue);
             else if (cb_depositTo.SelectedValue == "c")
                 w.agentId = Convert.ToInt32(cb_recipientC.SelectedValue);
-            w.invType = "p";
-            w.invTypeB = "sb";
-            w.invTypC = "pw";
+
+            w.invType = "pay";
 
             w.ShowDialog();
             if (w.isActive)
@@ -1154,6 +1190,13 @@ namespace POS.View.accounts
 
             string res = await bondModel.Save(bond);
             MessageBox.Show(res);
+        }
+
+        private void Tb_EnglishDigit_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {//only english and digits
+            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+            if (!regex.IsMatch(e.Text))
+                e.Handled = true;
         }
 
         private void Cb_recipientC_SelectionChanged(object sender, SelectionChangedEventArgs e)

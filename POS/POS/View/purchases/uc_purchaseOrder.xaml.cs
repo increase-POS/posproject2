@@ -409,9 +409,8 @@ namespace POS.View.purchases
             invoice.posId = MainWindow.posID.Value;
 
             invoice.invType = invType;
-            invoice.total = _Sum;
-            if (!tb_total.Text.Equals(""))
-                invoice.totalNet = decimal.Parse(tb_total.Text);
+            invoice.total = 0;
+            invoice.totalNet = 0;
 
             if (cb_vendor.SelectedIndex != -1)
                 invoice.agentId = (int)cb_vendor.SelectedValue;
@@ -1308,53 +1307,38 @@ namespace POS.View.purchases
             //  int? itemcount = invoiceItems.Count();
 
             if (email.emailId == 0)
-            {
-                MessageBox.Show("noemailformanager");
-            }
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
             else
             {
-
                 if (invoice.invoiceId == 0)
-                {
-                    MessageBox.Show("thereisnoordertosend");
-                }
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoOrderToSen"), animation: ToasterAnimation.FadeIn);
                 else
                 {
                     if (invoiceItems == null || invoiceItems.Count() == 0)
-                    {
-                        MessageBox.Show("thereisnoitemstosend");
-                    }
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
                     else
                     {
                         if (toAgent.email.Trim() == "")
-                        {
-                            MessageBox.Show("thevendorhasnoemail");
-                        }
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
                         else
                         {
                             mailtosend = mailtosend.fillOrderTempData(invoice, invoiceItems, email, toAgent);
-
-
                             string msg = mailtosend.Sendmail();
                             if (msg == "Failure sending mail.")
                             {
-                                msg = "No Internet connection";
+                                // msg = "No Internet connection";
+                                MessageBox.Show("");
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
                             }
-
-                            MessageBox.Show(msg);
+                            else if (msg == "mailsent")
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString(msg), animation: ToasterAnimation.FadeIn);
                         }
-
-
                     }
                 }
-
-
-
             }
-
-
-
-
         }
     }
 }
