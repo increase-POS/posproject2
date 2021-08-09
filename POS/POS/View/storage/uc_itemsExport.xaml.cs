@@ -98,7 +98,7 @@ namespace POS.View.storage
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
-            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
+            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
 
 
 
@@ -146,7 +146,8 @@ namespace POS.View.storage
 
             configureProcessType();
             pos = await pos.getPosById(MainWindow.posID.Value);
-            await RefrishBranches();
+            SectionData.fillBranches(cb_branch, "bs");
+            //await RefrishBranches();
             await RefrishItems();
             #region datagridChange
             CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
@@ -154,13 +155,13 @@ namespace POS.View.storage
             #endregion
 
         }
-        async Task RefrishBranches()
-        {
-            branches = await branchModel.GetBranchesActive("all");
-            cb_branch.ItemsSource = branches;
-            cb_branch.DisplayMemberPath = "name";
-            cb_branch.SelectedValuePath = "branchId";
-        }
+        //async Task RefrishBranches()
+        //{
+        //    branches = await branchModel.GetBranchesActive("all");
+        //    cb_branch.ItemsSource = branches;
+        //    cb_branch.DisplayMemberPath = "name";
+        //    cb_branch.SelectedValuePath = "branchId";
+        //}
         async Task RefrishItems()
         {
             items = await itemModel.GetAllItems();

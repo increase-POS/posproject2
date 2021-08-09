@@ -66,7 +66,7 @@ namespace POS.View.windows
             translat();
             //MessageBox.Show(Id.ToString());
             allStoresSource = await branchModel.GetAll();////active branch and store 
-            allStores.AddRange(allStoresSource);
+            allStores.AddRange(allStoresSource.Where(x => x.branchId !=1));
              //chk user or branch
             var dgtc = dg_selectedStores.Columns[0] as DataGridTextColumn;
 

@@ -113,22 +113,17 @@ namespace POS.View
         private void translate()
         {
             ////////////////////////////////----invoice----/////////////////////////////////
-            //txt_invoiceHeader.Text = MainWindow.resourcemanager.GetString("trInvoice");
-            //txt_invoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trBranchHint"));
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
-            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
+            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
             dg_billDetails.Columns[5].Header = MainWindow.resourcemanager.GetString("trPrice");
-            dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trTotal");
+            dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trAmount");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
             txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
-            //btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
-            //btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
-            //btn_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
 
             ////////////////////////////////----vendor----/////////////////////////////////
 
@@ -198,7 +193,8 @@ namespace POS.View
             //RefrishCategoriesCard();
             //Txb_searchitems_TextChanged(null, null);
             configureDiscountType();
-            await RefrishBranches();
+            SectionData.fillBranches(cb_branch, "bs");
+            //await RefrishBranches();
             await RefrishVendors();
             await fillBarcodeList();
 
@@ -339,13 +335,13 @@ namespace POS.View
             cb_vendor.DisplayMemberPath = "name";
             cb_vendor.SelectedValuePath = "agentId";
         }
-        async Task RefrishBranches()
-        {
-            branches = await branchModel.GetBranchesActive("all");
-            cb_branch.ItemsSource = branches;
-            cb_branch.DisplayMemberPath = "name";
-            cb_branch.SelectedValuePath = "branchId";
-        }
+        //async Task RefrishBranches()
+        //{
+        //    branches = await branchModel.GetBranchesActive("all");
+        //    cb_branch.ItemsSource = branches;
+        //    cb_branch.DisplayMemberPath = "name";
+        //    cb_branch.SelectedValuePath = "branchId";
+        //}
         async Task RefrishItems()
         {
             items = await itemModel.GetAllItems();

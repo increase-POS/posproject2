@@ -139,7 +139,8 @@ namespace POS.View
             }
 
             translate();
-            fillBranches();
+            SectionData.fillBranches(cb_branch, "bs");
+            //fillBranches();
             cb_branch.SelectedIndex = 0;
             Keyboard.Focus(tb_name);
 
@@ -483,18 +484,14 @@ namespace POS.View
             
             ExportToExcel.Export(DTForExcel);
         }
-
-        private async void fillBranches()
-        {
-            var branchesWithMain = await branchModel.GetAll();
-            cb_branch.ItemsSource = branchesWithMain.Where(b => b.type != "bs");
-            //var branches = await branchModel.GetBranchesAsync("b");
-            //var branches = await branchModel.Get();
-            //cb_branch.ItemsSource = branches;
-            cb_branch.SelectedValuePath = "branchId";
-            cb_branch.DisplayMemberPath = "name";
-            cb_branch.SelectedIndex = -1;
-        }
+        //private async void fillBranches()
+        //{
+        //    var branchesWithMain = await branchModel.GetAll();
+        //    cb_branch.ItemsSource = branchesWithMain.Where(b => b.type != "bs");
+        //    cb_branch.SelectedValuePath = "branchId";
+        //    cb_branch.DisplayMemberPath = "name";
+        //    cb_branch.SelectedIndex = -1;
+        //}
 
         private async void Btn_locations_Click(object sender, RoutedEventArgs e)
         {//locations

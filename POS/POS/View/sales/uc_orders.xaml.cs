@@ -128,14 +128,14 @@ namespace POS.View.sales
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
-            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
+            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
             dg_billDetails.Columns[5].Header = MainWindow.resourcemanager.GetString("trPrice");
-            dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trTotal");
+            dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trAmount");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
             txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
-            txt_total.Text = MainWindow.resourcemanager.GetString("trTotal:");
+            txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
             //btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             //btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
 
@@ -178,7 +178,8 @@ namespace POS.View.sales
             await RefrishCustomers();
             await fillBarcodeList();
             await fillCouponsList();
-            await fillBranches();
+            SectionData.fillBranches(cb_branch, "bs");
+            //await fillBranches();
             await fillShippingCompanies();
             await fillUsers();
 
@@ -211,13 +212,13 @@ namespace POS.View.sales
         {
             items = await itemModel.GetAllItems();
         }
-        async Task fillBranches()
-        {
-            branches = await branchModel.GetBranchesActive("all");
-            cb_branch.ItemsSource = branches;
-            cb_branch.DisplayMemberPath = "name";
-            cb_branch.SelectedValuePath = "branchId";
-        }
+        //async Task fillBranches()
+        //{
+        //    branches = await branchModel.GetBranchesActive("all");
+        //    cb_branch.ItemsSource = branches;
+        //    cb_branch.DisplayMemberPath = "name";
+        //    cb_branch.SelectedValuePath = "branchId";
+        //}
         async Task fillBarcodeList()
         {
             barcodesList = await itemUnitModel.Getall();

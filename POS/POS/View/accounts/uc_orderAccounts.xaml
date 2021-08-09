@@ -58,6 +58,18 @@
                                     VerticalOffset="30"/>
                             </TextBox.ToolTip>
                         </TextBox>
+                        <ComboBox  x:Name="cb_branch"   
+                                     BorderBrush="#737373"  BorderThickness="0" 
+                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                     TextBlock.Foreground="#4E4E4E"
+                                     Grid.Row="2" Padding="10,0,5,0"  
+                                     materialDesign:HintAssist.Hint="Store/Branch... "  
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
+                                   VerticalAlignment="Center" 
+                                     Grid.Column="2"  Height="40" Width="125"  Margin="5,5" 
+                                   SelectionChanged="Cb_branch_SelectionChanged" >
+
+                        </ComboBox>
                         <ComboBox  x:Name="cb_salesMan"   
                                      BorderBrush="#737373"  BorderThickness="0" 
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
@@ -68,13 +80,7 @@
                                    VerticalAlignment="Center" 
                                      Grid.Column="2"  Height="40" Width="125"  Margin="5,5" 
                                    SelectionChanged="Cb_salesMan_SelectionChanged" >
-                            <ComboBox.ToolTip>
-                                <ToolTip x:Name="tt_salesMan" Content="salesMan"
-                                                          Placement="left" 
-                                                          HorizontalOffset="25"
-                                                          PlacementRectangle="50,0,0,0"
-                                                          VerticalOffset="25"/>
-                            </ComboBox.ToolTip>
+                           
                         </ComboBox>
                         <ComboBox  x:Name="cb_customer"   
                                      BorderBrush="#737373"  BorderThickness="0" 

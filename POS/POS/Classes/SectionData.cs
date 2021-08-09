@@ -669,5 +669,19 @@ namespace POS.Classes
                 return true;
             return false;
         }
+
+        static List<Branch> branches;
+        static public async void fillBranches(ComboBox combo, string type )
+        {
+            if (isAdminPermision())
+            branches = await branchModel.GetAll();
+            else
+                branches = await branchModel.BranchesByBranchandUser(MainWindow.branchID.Value, MainWindow.userLogin.userId);
+
+            combo.ItemsSource = branches.Where(b => b.type != type && b.branchId != 1);
+            combo.SelectedValuePath = "branchId";
+            combo.DisplayMemberPath = "name";
+            combo.SelectedIndex = -1;
+        }
     }
 }

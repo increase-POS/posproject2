@@ -18,7 +18,7 @@ namespace POS.converters
                 case "cash": return MainWindow.resourcemanager.GetString("trCash"); break;
                 case "doc": return MainWindow.resourcemanager.GetString("trDocument"); break;
                 case "cheque": return MainWindow.resourcemanager.GetString("trCheque"); break;
-                case "balance": return MainWindow.resourcemanager.GetString("trBalance"); break;
+                case "balance": return MainWindow.resourcemanager.GetString("trCredit"); break;
                 //case "card": return MainWindow.resourcemanager.GetString("trCreditCard"); break;
                 default : return MainWindow.resourcemanager.GetString("trCreditCard"); break;
             }

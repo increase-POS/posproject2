@@ -104,7 +104,7 @@ namespace POS.View.accounts
 
             #region fill process type
             var typelist = new[] {
-            new { Text = MainWindow.resourcemanager.GetString("trBalance")    , Value = "balance" },
+            new { Text = MainWindow.resourcemanager.GetString("trCredit")    , Value = "balance" },
             new { Text = MainWindow.resourcemanager.GetString("trCash")       , Value = "cash" },
             new { Text = MainWindow.resourcemanager.GetString("trDocument")   , Value = "doc" },
             new { Text = MainWindow.resourcemanager.GetString("trCheque")     , Value = "cheque" },
@@ -160,6 +160,8 @@ namespace POS.View.accounts
             cb_state.SelectedValuePath = "Value";
             cb_state.ItemsSource = statuslist;
             #endregion
+            SectionData.fillBranches(cb_branch, "bs");
+
 
             await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
@@ -179,7 +181,8 @@ namespace POS.View.accounts
         {
             txt_order.Text = MainWindow.resourcemanager.GetString("trOrders");
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trTransaferDetails");
-            
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trBranchHint"));
+
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_invoiceNum, MainWindow.resourcemanager.GetString("trInvoiceNumberHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentProcessType, MainWindow.resourcemanager.GetString("trPaymentTypeHint"));
@@ -229,7 +232,7 @@ namespace POS.View.accounts
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
             tt_startDate.Content = MainWindow.resourcemanager.GetString("trStartDate");
             tt_endDate.Content = MainWindow.resourcemanager.GetString("trEndDate");
-            tt_salesMan.Content = MainWindow.resourcemanager.GetString("trSalesMan");
+            //tt_salesMan.Content = MainWindow.resourcemanager.GetString("trSalesMan");
             tt_customer.Content = MainWindow.resourcemanager.GetString("trVendor/Customer");
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
             btn_image.Content = MainWindow.resourcemanager.GetString("trImage");
@@ -694,6 +697,11 @@ namespace POS.View.accounts
             invoiceQuery = invoiceQuery.Where(s => s.status == cb_state.SelectedValue.ToString());
             invoiceQueryExcel = invoiceQuery;
             RefreshInvoiceView();
+        }
+
+        private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)

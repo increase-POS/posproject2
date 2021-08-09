@@ -49,11 +49,38 @@ namespace POS.converters
                 //مسودة مرتجع مشتريات
                 case "pbd": value = MainWindow.resourcemanager.GetString("trPurchaseReturnDraft");
                     break;
-                //فاتورة عرض اسعار
-                case "q": value = MainWindow.resourcemanager.GetString("trQuotations");
+                // مسودة طلبية مبيعات 
+                case "ord":
+                    value = MainWindow.resourcemanager.GetString("trSaleOrderDraft");
                     break;
-                //اتلاف
-                //case "dis": value = MainWindow.resourcemanager.GetString("trGeneralExpenses"); break;
+                //   طلبية مبيعات 
+                case "or":
+                    value = MainWindow.resourcemanager.GetString("trSaleOrder");
+                    break;
+                // مسودة طلبية شراء 
+                case "pod":
+                    value = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");
+                    break;
+                // طلبية شراء 
+                case "po":
+                    value = MainWindow.resourcemanager.GetString("trPurchaceOrder");
+                    break;
+                //مسودة عرض 
+                case "qd":
+                    value = MainWindow.resourcemanager.GetString("trQuotationsDraft");
+                    break;
+                //فاتورة عرض اسعار
+                case "q":
+                    value = MainWindow.resourcemanager.GetString("trQuotations");
+                    break;
+                //الإتلاف
+                case "d":
+                    value = MainWindow.resourcemanager.GetString("trDestructive");
+                    break;
+                //النواقص
+                case "sh":
+                    value = MainWindow.resourcemanager.GetString("trShortage");
+                    break;
                 default: break;
             }
             return value;

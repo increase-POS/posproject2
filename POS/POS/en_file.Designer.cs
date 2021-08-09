@@ -88,6 +88,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string String3 {
+            get {
+                return ResourceManager.GetString("String3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account Number.
         /// </summary>
         internal static string trAccNumber {
@@ -826,7 +835,16 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Credit Card.
+        ///   Looks up a localized string similar to Credit.
+        /// </summary>
+        internal static string trCredit {
+            get {
+                return ResourceManager.GetString("trCredit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Card.
         /// </summary>
         internal static string trCreditCard {
             get {
@@ -1029,6 +1047,15 @@ namespace POS {
         internal static string trDepositOperation {
             get {
                 return ResourceManager.GetString("trDepositOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Depositor.
+        /// </summary>
+        internal static string trDepositor {
+            get {
+                return ResourceManager.GetString("trDepositor", resourceCulture);
             }
         }
         
@@ -3869,6 +3896,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Purchace Order.
+        /// </summary>
+        internal static string trPurchaceOrder {
+            get {
+                return ResourceManager.GetString("trPurchaceOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchace Order Draft.
+        /// </summary>
+        internal static string trPurchaceOrderDraft {
+            get {
+                return ResourceManager.GetString("trPurchaceOrderDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Purchase Bill.
         /// </summary>
         internal static string trPurchaseBill {
@@ -3982,6 +4027,15 @@ namespace POS {
         internal static string trQuotations {
             get {
                 return ResourceManager.GetString("trQuotations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quotations Draft.
+        /// </summary>
+        internal static string trQuotationsDraft {
+            get {
+                return ResourceManager.GetString("trQuotationsDraft", resourceCulture);
             }
         }
         
@@ -4153,6 +4207,24 @@ namespace POS {
         internal static string trSalary {
             get {
                 return ResourceManager.GetString("trSalary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sale Order.
+        /// </summary>
+        internal static string trSaleOrder {
+            get {
+                return ResourceManager.GetString("trSaleOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sale Order Draft.
+        /// </summary>
+        internal static string trSaleOrderDraft {
+            get {
+                return ResourceManager.GetString("trSaleOrderDraft", resourceCulture);
             }
         }
         
@@ -4769,7 +4841,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SubTotal.
+        ///   Looks up a localized string similar to Subtotal.
         /// </summary>
         internal static string trSum {
             get {
@@ -4859,7 +4931,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total:.
+        ///   Looks up a localized string similar to TOTAL.
         /// </summary>
         internal static string trTotal {
             get {

@@ -91,7 +91,7 @@ namespace POS.View.storage
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
-            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
+            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {

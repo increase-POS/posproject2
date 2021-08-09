@@ -132,20 +132,12 @@ namespace POS.View.accounts
 
             poss = await posModel.GetPosAsync();
 
-            #region fill branch combo1
-            branches = await branchModel.GetBranchesActive("b");
-            cb_fromBranch.ItemsSource = branches;
-            cb_fromBranch.DisplayMemberPath = "name";
-            cb_fromBranch.SelectedValuePath = "branchId";
+            SectionData.fillBranches(cb_fromBranch, "bs");
             cb_fromBranch.SelectedValue = MainWindow.branchID.Value;
-            #endregion
-
-            #region fill branch combo2
-            cb_toBranch.ItemsSource = branches;
-            cb_toBranch.DisplayMemberPath = "name";
-            cb_toBranch.SelectedValuePath = "branchId";
+            SectionData.fillBranches(cb_toBranch, "bs");
             cb_toBranch.SelectedValue = MainWindow.branchID.Value;
-            #endregion
+
+
             if (!MainWindow.groupObject.HasPermissionAction(transAdminPermission, MainWindow.groupObjects, "one"))
             {
                 cb_fromBranch.IsEnabled = false;////////////permissions

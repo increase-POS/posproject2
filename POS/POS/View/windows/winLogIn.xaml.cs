@@ -2,10 +2,12 @@
 using POS.View.Settings;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -99,6 +101,11 @@ namespace POS.View.windows
                 Keyboard.Focus(txtPassword);
 
             translate();
+            #region Arabic Number
+            CultureInfo ci = CultureInfo.CreateSpecificCulture(Thread.CurrentThread.CurrentCulture.Name);
+            ci.NumberFormat.DigitSubstitution = DigitShapes.NativeNational;
+            Thread.CurrentThread.CurrentCulture = ci;
+            #endregion
         }
 
         private async Task<string> getUserLanguage(int userId)

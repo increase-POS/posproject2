@@ -140,7 +140,7 @@ namespace POS.View.purchases
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
-            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
+            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
             //dg_billDetails.Columns[5].Header = MainWindow.resourcemanager.GetString("trPrice");
             //dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trTotal");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");

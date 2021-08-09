@@ -589,7 +589,7 @@
     <value>مبلغ</value>
   </data>
   <data name="trCreditCard" xml:space="preserve">
-    <value>بطاقة ائتمان</value>
+    <value>بطاقة</value>
   </data>
   <data name="trDeservedDateHint" xml:space="preserve">
     <value>تاريخ الإستحقاق...</value>
@@ -655,7 +655,7 @@
     <value>الضريبة</value>
   </data>
   <data name="trTotal" xml:space="preserve">
-    <value>الإجمالي:</value>
+    <value>الإجمالي</value>
   </data>
   <data name="trTotal:" xml:space="preserve">
     <value>الإجمالي:</value>
@@ -1878,5 +1878,32 @@
   </data>
   <data name="trShortage" xml:space="preserve">
     <value>النواقص</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trCredit" xml:space="preserve">
+    <value>رصيد</value>
+  </data>
+  <data name="trDepositor" xml:space="preserve">
+    <value>المودع</value>
+  </data>
+  <data name="String2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trPurchaceOrder" xml:space="preserve">
+    <value>طلبية شراء</value>
+  </data>
+  <data name="trPurchaceOrderDraft" xml:space="preserve">
+    <value>مسودة طلبية شراء</value>
+  </data>
+  <data name="trQuotationsDraft" xml:space="preserve">
+    <value>مسودة عرض سعر</value>
+  </data>
+  <data name="trSaleOrder" xml:space="preserve">
+    <value>طلبية مبيعات</value>
+  </data>
+  <data name="trSaleOrderDraft" xml:space="preserve">
+    <value>مسودة طلبية مبيعات</value>
   </data>
 </root>

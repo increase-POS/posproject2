@@ -338,6 +338,7 @@ namespace POS.View.accounts
                     SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositNumberToolTip");
                     if (!tb_depositNumber.Text.Equals(""))
                     {
+                        cashtrans.isConfirm = 1;
                         cashtrans.docNum = tb_depositNumber.Text;
 
                         string s = await cashModel.Save(cashtrans);
