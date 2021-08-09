@@ -6,7 +6,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-
+using System.Threading;
+using System.Globalization;
 namespace POS
 {
     /// <summary>
@@ -15,23 +16,15 @@ namespace POS
     public partial class App : Application
     {
         private void Application_Startup(object sender, StartupEventArgs e)
-        {//set startup window
-            //user21-6-2021
-            //if(somecase)
-            //{
-            //MainWindow mainWindow = new MainWindow();
-            //mainWindow.Show();
-            //}
-            //else
-            //{
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+
+
             winLogIn logIn = new winLogIn();
             logIn.Show();
-            //}
 
         }
-        //protected override void OnStartup(StartupEventArgs e)
-        //{
-
-        //}
+       
     }
 }

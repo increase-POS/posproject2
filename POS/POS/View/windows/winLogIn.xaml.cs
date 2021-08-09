@@ -18,7 +18,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
 namespace POS.View.windows
 {
     /// <summary>
@@ -53,7 +52,10 @@ namespace POS.View.windows
         UserSetValues usLanguage = new UserSetValues();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-         bdrLogIn.RenderTransform = Animations.borderAnimation(-100, bdrLogIn, true);
+
+
+
+            bdrLogIn.RenderTransform = Animations.borderAnimation(-100, bdrLogIn, true);
 
             //get user default language
             //var person = (from p in db.People
@@ -183,6 +185,8 @@ namespace POS.View.windows
         }
         private async void btnLogIn_Click(object sender, RoutedEventArgs e)
         {//login
+        
+            
             if (logInProcessing)
             {
 
@@ -256,6 +260,7 @@ namespace POS.View.windows
                 awaitSaveBtn(false);
                 logInProcessing = true;
             }
+            
         }
 
         private  void HandleKeyPress(object sender, KeyEventArgs e)

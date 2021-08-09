@@ -29,6 +29,7 @@ namespace POS.converters
                     if (s.cttransType == "p")
                         name = MainWindow.resourcemanager.GetString("trAdministrativePull");
                     break;
+                case "sh": name = MainWindow.resourcemanager.GetString("trShippingCompany"); break;
                 default: break;
             }
 
@@ -36,6 +37,8 @@ namespace POS.converters
                 return name + " " + s.ctagentName;
             else if (!string.IsNullOrEmpty(s.ctusersName))
                 return name + " " + s.ctusersName;
+            else if (!string.IsNullOrEmpty(s.ctshippingCompanyName))
+                return name + " " + s.ctshippingCompanyName;
             else
                 return name;
 

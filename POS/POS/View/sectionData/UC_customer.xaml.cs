@@ -364,7 +364,7 @@ namespace POS.View
 
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
             // for pagination onTop Always
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
@@ -390,7 +390,8 @@ namespace POS.View
             {
                 Tb_search_TextChanged(null, null);
             });
-
+            if (citynum == null)
+                await RefreshCity();
 
             fillCountries();
             fillCity();
@@ -762,7 +763,7 @@ namespace POS.View
 
         }
 
-        private void Cb_areaFax_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Cb_areaFax_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // MessageBox.Show(cb_areaPhone.SelectedValue.ToString());
             if (firstchangefax == true)
@@ -771,7 +772,8 @@ namespace POS.View
                 {
                     if (cb_areaFax.SelectedIndex >= 0)
                         countryid = int.Parse(cb_areaFax.SelectedValue.ToString());
-
+                    if (citynum == null)
+                        await RefreshCity();
                     citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
 
                     cb_areaFaxLocal.ItemsSource = citynumofcountry;

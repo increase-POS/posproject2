@@ -75,6 +75,8 @@ namespace POS.Classes
         public string ctcardName { get; set; }
         public Nullable<System.DateTime> ctbondDeserveDate { get; set; }
         public Nullable<byte> ctbondIsRecieved { get; set; }
+        public Nullable<int> ctshippingCompanyId { get; set; }
+        public string ctshippingCompanyName { get; set; }
 
         public async Task<List<Bonds>> GetAll()
         {

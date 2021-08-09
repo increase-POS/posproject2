@@ -178,7 +178,7 @@ namespace POS.View.accounts
 
             dg_receivedAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             //dg_receivedAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositTo");
-            dg_receivedAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecepient");
+            dg_receivedAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositor");
             dg_receivedAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
             dg_receivedAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
@@ -312,6 +312,8 @@ namespace POS.View.accounts
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//save
             string s = "0" , s1 = "";
+
+            #region validate
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
             
@@ -387,17 +389,18 @@ namespace POS.View.accounts
                 SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
             else
                 SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+            #endregion
 
             if ((!tb_cash.Text.Equals("")) && (!cb_depositFrom.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
-                 (((cb_depositorV.IsVisible) && (!cb_depositorV.Text.Equals(""))) || (!cb_depositorV.IsVisible)) &&
-                 (((cb_depositorC.IsVisible) && (!cb_depositorC.Text.Equals(""))) || (!cb_depositorC.IsVisible)) &&
-                 (((cb_depositorU.IsVisible) && (!cb_depositorU.Text.Equals(""))) || (!cb_depositorU.IsVisible)) &&
-                 (((cb_depositorSh.IsVisible) && (!cb_depositorSh.Text.Equals(""))) || (!cb_depositorSh.IsVisible)) &&
-                 (((grid_cheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!grid_cheque.IsVisible)) &&
-                 (((grid_doc.IsVisible) && (!dp_docDate.Text.Equals("")) && (!tb_docNum.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
-                 (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
-                 (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible))
-                 )
+                (((cb_depositorV.IsVisible) && (!cb_depositorV.Text.Equals(""))) || (!cb_depositorV.IsVisible)) &&
+                (((cb_depositorC.IsVisible) && (!cb_depositorC.Text.Equals(""))) || (!cb_depositorC.IsVisible)) &&
+                (((cb_depositorU.IsVisible) && (!cb_depositorU.Text.Equals(""))) || (!cb_depositorU.IsVisible)) &&
+                (((cb_depositorSh.IsVisible) && (!cb_depositorSh.Text.Equals(""))) || (!cb_depositorSh.IsVisible)) &&
+                (((grid_cheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!grid_cheque.IsVisible)) &&
+                (((grid_doc.IsVisible) && (!dp_docDate.Text.Equals("")) && (!tb_docNum.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
+                (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
+                (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible))
+                )
             {
                 string depositor = cb_depositFrom.SelectedValue.ToString();
                 int agentid = 0;
@@ -452,20 +455,20 @@ namespace POS.View.accounts
                     else
                         s1 = await cashModel.PayByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
                 }
-                //else if (cb_depositorU.IsVisible)
-                //{
-                    //if (tb_cash.IsReadOnly)
-                    //    s1 = await cashModel.PayUserListOfInvoices(cash.agentId.Value, invoicesLst, "feed", cash);
-                    //else
-                    //    s1 = await cashModel.PayUserByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
-                //}
-                //else if (cb_depositorSh.IsVisible)
-                //{
-                    //if (tb_cash.IsReadOnly)
-                    //    s1 = await cashModel.PayShComListOfInvoices(cash.agentId.Value, invoicesLst, "feed", cash);
-                    //else
-                    //    s1 = await cashModel.PayShComByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
-                //}
+                else if (cb_depositorU.IsVisible)
+                {
+                    if (tb_cash.IsReadOnly)
+                        s1 = await cashModel.PayUserListOfInvoices(cash.userId.Value, invoicesLst, "feed", cash);
+                    else
+                        s1 = await cashModel.PayUserByAmmount(cash.userId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
+                }
+                else if (cb_depositorSh.IsVisible)
+                {
+                    if (tb_cash.IsReadOnly)
+                        s1 = await cashModel.PayShippingCompanyListOfInvoices(cash.shippingCompanyId.Value, invoicesLst, "feed", cash);
+                    else
+                        s1 = await cashModel.payShippingCompanyByAmount(cash.shippingCompanyId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
+                }
                 else
                 s = await cashModel.Save(cash);
 
@@ -474,11 +477,11 @@ namespace POS.View.accounts
                     if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
                         calcBalance(cash.cash.Value, depositor, agentid);
 
-                    if(cb_depositorU.IsVisible)
-                            calcUserBalance(Convert.ToSingle(cash.cash.Value), cash.userId.Value);
+                    //if(cb_depositorU.IsVisible)
+                    //        calcUserBalance(Convert.ToSingle(cash.cash.Value), cash.userId.Value);
 
-                    if (cb_depositorSh.IsVisible)
-                        calcShippingComBalance(cash.cash.Value, cash.shippingCompanyId.Value);
+                    //if (cb_depositorSh.IsVisible)
+                    //    calcShippingComBalance(cash.cash.Value, cash.shippingCompanyId.Value);
 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     Btn_clear_Click(null, null);
