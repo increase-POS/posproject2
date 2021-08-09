@@ -15,6 +15,24 @@ namespace POS.Classes
 {
     public class CashTransferSts
     {
+        public Nullable<int> fromposId { get; set; }
+        public string fromposName { get; set; }
+        public Nullable<int> frombranchId { get; set; }
+        public string frombranchName { get; set; }
+
+        public Nullable<int> toposId { get; set; }
+        public string toposName { get; set; }
+        public Nullable<int> tobranchId { get; set; }
+        public string tobranchName { get; set; }
+
+        public Nullable<int> branchId { get; set; }
+        public string branchName { get; set; }
+        public Nullable<int> branch2Id { get; set; }
+        public string branch2Name { get; set; }
+        public Nullable<int> branchCreatorId { get; set; }
+        public string branchCreator { get; set; }
+        public int depositCount { get; set; }
+        public int pullCount { get; set; }
         public int cashTransId { get; set; }
         public string transType { get; set; }
         public Nullable<int> posId { get; set; }
@@ -1440,6 +1458,93 @@ namespace POS.Classes
         }
 
 
+        // bank
+  
+        public async Task<List<CashTransferSts>> GetBankTrans()
+        {
+            List<CashTransferSts> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetBankTrans");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<CashTransferSts>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<CashTransferSts>();
+                }
+                return list;
+            }
+
+        }
+
+        //posTrans
+        public async Task<List<CashTransferSts>> GetPosTrans()
+        {
+            List<CashTransferSts> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPosTrans");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<CashTransferSts>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<CashTransferSts>();
+                }
+                return list;
+            }
+
+        }
+
 
         public class VendorCombo
         {
@@ -1499,6 +1604,23 @@ namespace POS.Classes
             return iulist;
 
         }
+        public class ShippingCombo
+        {
+            private string shippingName;
+            private int? shippingId;
+
+            public string ShippingName { get => shippingName; set => shippingName = value; }
+            public int? ShippingId { get => shippingId; set => shippingId = value; }
+        }
+        public List<ShippingCombo> getShippingCombo(List<CashTransferSts> ITInvoice)
+        {
+            List<ShippingCombo> iulist = new List<ShippingCombo>();
+
+            iulist = ITInvoice.GroupBy(g => g.shippingCompanyId).Select(g => new ShippingCombo { ShippingId = g.FirstOrDefault().shippingCompanyId,ShippingName=g.FirstOrDefault().shippingCompanyName }).ToList();
+            return iulist;
+
+        }
+      
         #endregion
 
         // Combo

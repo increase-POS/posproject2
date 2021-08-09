@@ -23,9 +23,6 @@ using POS.View.windows;
 using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.IO;
-using Microsoft.Reporting.WinForms;
-using Microsoft.Win32;
 
 namespace POS.View.reports
 {
@@ -34,13 +31,6 @@ namespace POS.View.reports
     /// </summary>
     public partial class uc_saleReport : UserControl
     {
-
-        //prin & pdf
-        ReportCls reportclass = new ReportCls();
-        LocalReport rep = new LocalReport();
-        SaveFileDialog saveFileDialog = new SaveFileDialog();
-
-        //
         private int selectedTab = 0;
 
         Statistics statisticModel = new Statistics();
@@ -96,8 +86,6 @@ namespace POS.View.reports
         Item itemModel = new Item();
         Coupon couponModel = new Coupon();
         Offer offerModel = new Offer();
-
-    
         /*************************/
 
         Func<ChartPoint, string> labelPoint = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
@@ -2219,175 +2207,5 @@ namespace POS.View.reports
             rowChart.Series = rowChartData;
         }
 
-        public List<ItemTransferInvoice> filltoprint()
-        {
-
-            /*
-       fillColumnChart(cb_branches, selectedBranchId);
-fillColumnChart(cb_vendors, selectedVendorsId);
-fillColumnChart(cb_users, selectedUserId);
-fillColumnChart(cb_Items, selectedItemId);
-
-      * */
-            List<ItemTransferInvoice> xx = new List<ItemTransferInvoice>();
-            if (selectedTab == 0)
-            {
-                //   xx = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime).ToList();
-                xx = fillPdfList(cb_branches, selectedBranchId);
-
-            }
-            else if (selectedTab == 1)
-            {
-                fillPdfList(cb_pos, selectedPosId);
-                //cb_pos, selectedPosId
-                // var temp1 = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
-                //  temp1 = temp1.Where(j => (selectedPosId.Count != 0 ? stackedButton.Contains((int)j.posId) : true));
-                //    xx = temp1.ToList();
-                xx = fillPdfList(cb_pos, selectedPosId);
-                //   xx = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime).ToList();
-
-            }
-            else if (selectedTab == 2)
-            {
-                //   xx = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime).ToList();
-                xx = fillPdfList(cb_vendors, selectedVendorsId);
-            }
-            else if (selectedTab == 3)
-            {
-                //   xx = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime).ToList();
-                xx = fillPdfList(cb_users, selectedUserId);
-            }
-            else //if (selectedTab == 4)
-            {
-                //   xx = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime).ToList();
-                xx = fillPdfList(cb_Items, selectedItemId);
-            }
-
-
-            return xx;
-        }
-        private List<ItemTransferInvoice> fillPdfList(ComboBox comboBox, ObservableCollection<int> stackedButton)
-        {
-            List<ItemTransferInvoice> list = new List<ItemTransferInvoice>();
-
-
-            if (selectedTab == 0)
-            {
-                var temp = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
-                temp = temp.Where(j => (selectedBranchId.Count != 0 ? stackedButton.Contains((int)j.branchCreatorId) : true));
-                list = temp.ToList();
-            }
-            else if (selectedTab == 1)
-            {
-                var temp = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
-                temp = temp.Where(j => (selectedPosId.Count != 0 ? stackedButton.Contains((int)j.posId) : true));
-                list = temp.ToList();
-            }
-            else if (selectedTab == 2)
-            {
-                var temp = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime);
-                temp = temp.Where(j => (selectedVendorsId.Count != 0 ? stackedButton.Contains((int)j.agentId) : true));
-                list = temp.ToList();
-            }
-            else if (selectedTab == 3)
-            {
-                var temp = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
-                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.updateUserId) : true));
-                list = temp.ToList();
-            }
-            else //if (selectedTab == 4)
-            {
-                var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
-                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
-                list = temp.ToList();
-            }
-
-            return list;
-
-
-        }
-
-
-        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
-            //   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
-            //   {
-            List<ReportParameter> paramarr = new List<ReportParameter>();
-            List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
-
-            query = ReportCls.converter(filltoprint());
-           
-            string addpath = "";
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                if (selectedTab == 0)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArSaleSts.rdlc";
-                }
-                else if (selectedTab == 1)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArSalePosSts.rdlc";
-                }
-                else if (selectedTab == 2)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArSaleVendorSts.rdlc";
-                }
-                else if (selectedTab == 3)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArSaleUserSts.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArSaleItemSts.rdlc";
-                }
-            }
-            else
-            {
-                //english
-                if (selectedTab == 0)
-                { addpath = @"\Reports\StatisticReport\Sale\En\EnSaleSts.rdlc"; }
-                else if (selectedTab == 1)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnSalePosSts.rdlc";
-                }
-                else if (selectedTab == 2)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnSaleVendorSts.rdlc";
-                }
-                else if (selectedTab == 3)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnSaleUserSts.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnSaleItemSts.rdlc";
-                }
-
-            }
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            ReportCls.checkLang();
-            //  getpuritemcount
-            clsReports.PurStsReport(query, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            saveFileDialog.Filter = "PDF|*.pdf;";
-
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                string filepath = saveFileDialog.FileName;
-                LocalReportExtensions.ExportToPDF(rep, filepath);
-            }
-            //   }
-            //  else
-            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
-        }
     }
 }

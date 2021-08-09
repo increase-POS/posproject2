@@ -42,6 +42,9 @@ namespace POS.View.reports
             btn_storageReports.Content = MainWindow.resourcemanager.GetString("trStorage");
             btn_accountsReports.Content = MainWindow.resourcemanager.GetString("trAccounts");
             btn_usersReports.Content = MainWindow.resourcemanager.GetString("trUsers");
+            btn_paymentsReports.Content = MainWindow.resourcemanager.GetString("trPayments");
+            btn_recipientReports.Content = MainWindow.resourcemanager.GetString("trReceived");
+            btn_bankReports.Content = MainWindow.resourcemanager.GetString("trBank");
         }
 
         public uc_reports()
@@ -64,33 +67,20 @@ namespace POS.View.reports
 
             translate();
             btn_salesReports_Click(null, null);
-
             //permission();
         }
         void permission()
         {
-            bool loadWindow = false;
-            if (!SectionData.isAdminPermision())
-                foreach (Button button in FindControls.FindVisualChildren<Button>(this))
-                {
-                    if (button.Tag != null)
-                        if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
-
-                        {
-                            button.Visibility = Visibility.Visible;
-                            if (!loadWindow)
-                            {
-                                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                                loadWindow = true;
-                            }
-                        }
-                        else button.Visibility = Visibility.Collapsed;
-                }
-            else
-            btn_salesReports_Click(btn_salesReports, null);
+            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+            {
+                if (button.Tag != null)
+                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+                        button.Visibility = Visibility.Visible;
+                    else button.Visibility = Visibility.Collapsed;
+            }
         }
 
-        void refreashBackground()
+        public void refreashBackground()
         {
 
             btn_salesReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
@@ -108,9 +98,18 @@ namespace POS.View.reports
             btn_usersReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_usersReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
+            btn_recipientReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_recipientReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_paymentsReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_paymentsReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_bankReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_bankReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
         }
 
-        void refreashBachgroundClick(Button btn)
+      public  void refreashBachgroundClick(Button btn)
         {
             refreashBackground();
             btn.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -128,7 +127,7 @@ namespace POS.View.reports
         {
             refreashBachgroundClick(btn_purchaseReports);
             grid_main.Children.Clear();
-               grid_main.Children.Add(uc_purchaseReport.Instance);
+            grid_main.Children.Add(uc_purchaseReport.Instance);
         }
 
         private void btn_storageReports_Click(object sender, RoutedEventArgs e)
@@ -142,14 +141,35 @@ namespace POS.View.reports
         {
             refreashBachgroundClick(btn_accountsReports);
             grid_main.Children.Clear();
-            //   grid_main.Children.Add(uc_.Instance);
+            grid_main.Children.Add(uc_accountant.Instance);
         }
 
         private void btn_usersReports_Click(object sender, RoutedEventArgs e)
         {
             refreashBachgroundClick(btn_usersReports);
             grid_main.Children.Clear();
-               grid_main.Children.Add(uc_usersReport.Instance);
+            grid_main.Children.Add(uc_usersReport.Instance);
+        }
+
+        private void Btn_paymentsReports_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_paymentsReports);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_paymentsReport.Instance);
+        }
+
+        private void Btn_recipientReports_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_recipientReports);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_recipientReport.Instance);
+        }
+
+        private void Btn_bankReports_Click(object sender, RoutedEventArgs e)
+        {
+            refreashBachgroundClick(btn_bankReports);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_banksReport.Instance);
         }
     }
 }

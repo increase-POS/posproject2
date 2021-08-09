@@ -1005,71 +1005,7 @@ namespace POS.View.reports
             fillRowChart();
         }
 
-        private void fillPieChart()
-        {
-            List<string> titles = new List<string>();
-            List<decimal> x = new List<decimal>();
-            titles.Clear();
 
-            var temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-
-            if (selectedStockTab == 1)
-            {
-                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-            }
-            if (selectedStockTab == 2)
-            {
-                temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null);
-            }
-
-            var titleTemp = temp.GroupBy(m => m.branchName);
-            titles.AddRange(titleTemp.Select(jj => jj.Key));
-            var result = temp.GroupBy(s => s.branchId).Select(s => new Storage
-            {
-                branchId = s.FirstOrDefault().branchId,
-                quantity = s.Sum(g => g.quantity),
-                branchName=s.FirstOrDefault().branchName,
-            }).OrderByDescending(s=>s.quantity);
-            x = result.Select(m => (decimal)m.quantity).ToList();
-            int count = x.Count();
-            titles = result.Select(m => m.branchName).ToList();
-            SeriesCollection piechartData = new SeriesCollection();
-            for (int i = 0; i < count; i++)
-            {
-                List<decimal> final = new List<decimal>();
-                List<string> lable = new List<string>();
-                if (i < 5)
-                {
-                    final.Add(x.Max());
-                    lable.Add(titles.Skip(i).FirstOrDefault() );
-                    piechartData.Add(
-                      new PieSeries
-                      {
-                          Values = final.AsChartValues(),
-                          Title = lable.FirstOrDefault(),
-                          DataLabels = true,
-                      }
-                  );
-                    x.Remove(x.Max());
-                }
-                else
-                {
-                    final.Add(x.Sum());
-                    piechartData.Add(
-                      new PieSeries
-                      {
-                          Values = final.AsChartValues(),
-                          Title = "Others",
-                          DataLabels = true,
-                      }
-                  );
-                    break;
-                }
-
-            }
-            chart1.Series = piechartData;
-            fillColumnChart();
-        }
 
 
 
@@ -2737,7 +2673,8 @@ namespace POS.View.reports
         private void fillInternalPieChart()
         {
             List<string> titles = new List<string>();
-            IEnumerable<decimal> x = null;
+            List<string> titles1 = new List<string>();
+            List<decimal> x = new List<decimal>();
             titles.Clear();
             var temp = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
             if (selectedInternalTab == 1)
@@ -2749,6 +2686,7 @@ namespace POS.View.reports
             {
                 agentName = m.FirstOrDefault().itemName + "\n" + m.FirstOrDefault().unitName
             });
+
             titles.AddRange(titleTemp.Select(jj => jj.agentName));
             var result = temp
                 .GroupBy(s => new { s.itemId, s.unitId })
@@ -2756,45 +2694,71 @@ namespace POS.View.reports
                 {
                     itemId = s.FirstOrDefault().itemId,
                     unitId = s.FirstOrDefault().unitId,
-                    quantity = s.Sum(g => g.quantity)
-                });
+                    quantity = s.Sum(g => g.quantity),
+                    itemName = s.FirstOrDefault().itemName,
+                    unitName = s.FirstOrDefault().unitName,
+                }).OrderByDescending(s => s.quantity);
             if (selectedInternalTab == 0)
             {
                 if (chk_internalItemsTwoWay.IsChecked == true)
                 {
-                    x = result.Select(m => (decimal)m.quantity / 2);
+                    x = result.Select(m => (decimal)m.quantity / 2).ToList();
+
                 }
                 else
                 {
-                    x = result.Select(m => (decimal)m.quantity);
+                    x = result.Select(m => (decimal)m.quantity).ToList();
+
                 }
             }
             else if (selectedInternalTab == 1)
             {
                 if (cb_internalOperaterFromBranches.SelectedItem != null)
                 {
-                    x = result.Select(m => (decimal)m.quantity);
+                    x = result.Select(m => (decimal)m.quantity).ToList();
+
                 }
                 else
                 {
-                    x = result.Select(m => (decimal)m.quantity / 2);
+                    x = result.Select(m => (decimal)m.quantity / 2).ToList();
+
                 }
             }
-
+            titles = result.Select(m => m.itemName).ToList();
+            titles1 = result.Select(m => m.unitName).ToList();
+            int count = x.Count();
             SeriesCollection piechartData = new SeriesCollection();
-            for (int i = 0; i < x.Count(); i++)
+            for (int i = 0; i < count; i++)
             {
                 List<decimal> final = new List<decimal>();
                 List<string> lable = new List<string>();
-                final.Add(x.ToList().Skip(i).FirstOrDefault());
-                piechartData.Add(
-                  new PieSeries
-                  {
-                      Values = final.AsChartValues(),
-                      Title = titles.Skip(i).FirstOrDefault(),
-                      DataLabels = true,
-                  }
-              );
+                if (i < 5)
+                {
+                    final.Add(x.Max());
+                    lable.Add(titles.Skip(i).FirstOrDefault() + titles1.Skip(i).FirstOrDefault());
+                    piechartData.Add(
+                      new PieSeries
+                      {
+                          Values = final.AsChartValues(),
+                          Title = lable.FirstOrDefault(),
+                          DataLabels = true,
+                      }
+                  );
+                    x.Remove(x.Max());
+                }
+                else
+                {
+                    final.Add(x.Sum());
+                    piechartData.Add(
+                      new PieSeries
+                      {
+                          Values = final.AsChartValues(),
+                          Title = "Others",
+                          DataLabels = true,
+                      }
+                  );
+                    break;
+                }
             }
             chart1.Series = piechartData;
         }
@@ -2827,7 +2791,7 @@ namespace POS.View.reports
             paintStockTakingChilds();
             grid_stocktakingArchived.Visibility = Visibility.Visible;
             txt_stocktakeArchived.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_stocktakeArchived.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_stocktakeArchived.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             hideAllColumn();
             col_stockTakeNum.Visibility = Visibility.Visible;
             col_stockTakingCoastType.Visibility = Visibility.Visible;
@@ -2871,7 +2835,7 @@ namespace POS.View.reports
             txt_stocktakeArchived.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             txt_stocktakeShortfalse.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
-            path_stocktakeArchived.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            path_stocktakeArchived.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             path_stocktakeShortfalse.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
         }
 
@@ -3179,9 +3143,6 @@ new StackedColumnSeries
             {
                 temp = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
             }
-
-
-
             var result = temp.GroupBy(s => new { s.inventoryId }).Select(s => new InventoryClass
             {
                 branchId = s.FirstOrDefault().branchId,
@@ -3408,6 +3369,71 @@ new StackedColumnSeries
             DataContext = this;
             cartesianChart.Series = columnChartData;
         }
+        private void fillPieChart()
+        {
+            List<string> titles = new List<string>();
+            List<decimal> x = new List<decimal>();
+            titles.Clear();
+
+            var temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
+
+            if (selectedStockTab == 1)
+            {
+                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
+            }
+            if (selectedStockTab == 2)
+            {
+                temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null);
+            }
+
+            var titleTemp = temp.GroupBy(m => m.branchName);
+            titles.AddRange(titleTemp.Select(jj => jj.Key));
+            var result = temp.GroupBy(s => s.branchId).Select(s => new Storage
+            {
+                branchId = s.FirstOrDefault().branchId,
+                quantity = s.Sum(g => g.quantity),
+                branchName = s.FirstOrDefault().branchName,
+            }).OrderByDescending(s => s.quantity);
+            x = result.Select(m => (decimal)m.quantity).ToList();
+            int count = x.Count();
+            titles = result.Select(m => m.branchName).ToList();
+            SeriesCollection piechartData = new SeriesCollection();
+            for (int i = 0; i < count; i++)
+            {
+                List<decimal> final = new List<decimal>();
+                List<string> lable = new List<string>();
+                if (i < 5)
+                {
+                    final.Add(x.Max());
+                    lable.Add(titles.Skip(i).FirstOrDefault());
+                    piechartData.Add(
+                      new PieSeries
+                      {
+                          Values = final.AsChartValues(),
+                          Title = lable.FirstOrDefault(),
+                          DataLabels = true,
+                      }
+                  );
+                    x.Remove(x.Max());
+                }
+                else
+                {
+                    final.Add(x.Sum());
+                    piechartData.Add(
+                      new PieSeries
+                      {
+                          Values = final.AsChartValues(),
+                          Title = "Others",
+                          DataLabels = true,
+                      }
+                  );
+                    break;
+                }
+
+            }
+            chart1.Series = piechartData;
+            fillColumnChart();
+        }
 
         private void fillDestroyPieChart()
         {
@@ -3432,25 +3458,41 @@ new StackedColumnSeries
                 itemName = s.FirstOrDefault().itemName + s.FirstOrDefault().unitName,
             });
             titles.AddRange(tempName.Select(nn => nn.itemName));
-            for (int i = 0; i < result.Count(); i++)
-            {
-                cP.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().quantity.ToString()));
-                MyAxis.Labels.Add(titles.ToList().Skip(i).FirstOrDefault());
-            }
+            cP = result.Select(m => (long)m.quantity).ToList();
+           int count = cP.Count();
             SeriesCollection piechartData = new SeriesCollection();
-            for (int i = 0; i < cP.Count(); i++)
+            for (int i = 0; i < count; i++)
             {
                 List<decimal> final = new List<decimal>();
                 List<string> lable = new List<string>();
-                final.Add(cP.ToList().Skip(i).FirstOrDefault());
-                piechartData.Add(
-                  new PieSeries
-                  {
-                      Values = final.AsChartValues(),
-                      Title = titles.Skip(i).FirstOrDefault(),
-                      DataLabels = true,
-                  }
-              );
+                if (i < 5)
+                {
+                    final.Add(cP.Max());
+                    lable.Add(titles.Skip(i).FirstOrDefault());
+                    piechartData.Add(
+                      new PieSeries
+                      {
+                          Values = final.AsChartValues(),
+                          Title = lable.FirstOrDefault(),
+                          DataLabels = true,
+                      }
+                  );
+                    cP.Remove(cP.Max());
+                }
+                else
+                {
+                    final.Add(cP.Sum());
+                    piechartData.Add(
+                      new PieSeries
+                      {
+                          Values = final.AsChartValues(),
+                          Title = "Others",
+                          DataLabels = true,
+                      }
+                  );
+                    break;
+                }
+
             }
             chart1.Series = piechartData;
         }
