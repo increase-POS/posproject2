@@ -103,7 +103,7 @@ namespace POS.View.windows
             translate();
             #region Arabic Number
             CultureInfo ci = CultureInfo.CreateSpecificCulture(Thread.CurrentThread.CurrentCulture.Name);
-            ci.NumberFormat.DigitSubstitution = DigitShapes.NativeNational;
+            ci.NumberFormat.DigitSubstitution = DigitShapes.Context;
             Thread.CurrentThread.CurrentCulture = ci;
             #endregion
         }
