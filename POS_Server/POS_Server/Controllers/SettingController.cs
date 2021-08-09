@@ -101,8 +101,46 @@ namespace POS_Server.Controllers
                 return NotFound();
         }
 
-   
 
+
+        // GET api/<controller> get all setting
+        [HttpGet]
+        [Route("GetByNotes")]
+        public IHttpActionResult GetByNotes(string notes)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    List<setting> settingList1 = entity.setting.ToList();
+                var    settingList = settingList1.Where(c => c.notes == notes).Select(c => new setting
+                    {
+                        settingId = c.settingId,
+                        name = c.name,
+                        notes = c.notes,
+                    }).ToList();
+
+
+                    if (settingList == null)
+                        return NotFound();
+                    else
+                        return Ok(settingList);
+                }
+            }
+            //else
+            return NotFound();
+        }
 
 
 

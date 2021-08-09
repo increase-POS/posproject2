@@ -1116,9 +1116,9 @@ namespace POS_Server.Controllers
                                                        processType = C.processType,
                                                        cardId = C.cardId,
                                                        bondId = C.bondId,
-                                                      shippingCompanyId= C.shippingCompanyId,
-    }).Where(C => ((type == "all") ? true : C.transType == type)
-                           && ((side == "all") ? true : C.side == side) && C.invId == invId).FirstOrDefault();
+                                                       shippingCompanyId = C.shippingCompanyId,
+                                                   }).Where(C => ((type == "all") ? true : C.transType == type)
+                                                                          && ((side == "all") ? true : C.side == side) && C.invId == invId).FirstOrDefault();
 
 
 
@@ -1133,6 +1133,97 @@ namespace POS_Server.Controllers
             else
                 return NotFound();
         }
+
+
+        [HttpGet]
+        [Route("GetListByInvId")]
+        public IHttpActionResult GetListByInvId(int invId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            /*
+            string type = "";
+            string side = "";
+            */
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+
+
+
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+
+                    List<CashTransferModel> cachtrans = (from C in entity.cashTransfer
+                                                         join b in entity.banks on C.bankId equals b.bankId into jb
+                                                         join a in entity.agents on C.agentId equals a.agentId into ja
+                                                         join p in entity.pos on C.posId equals p.posId into jp
+                                                         join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+                                                         join u in entity.users on C.userId equals u.userId into ju
+                                                         from jbb in jb.DefaultIfEmpty()
+                                                         from jaa in ja.DefaultIfEmpty()
+                                                         from jpp in jp.DefaultIfEmpty()
+                                                         from juu in ju.DefaultIfEmpty()
+                                                         from jpcc in jpcr.DefaultIfEmpty()
+                                                         select new CashTransferModel()
+                                                         {
+                                                             cashTransId = C.cashTransId,
+                                                             transType = C.transType,
+                                                             posId = C.posId,
+                                                             userId = C.userId,
+                                                             agentId = C.agentId,
+                                                             invId = C.invId,
+                                                             transNum = C.transNum,
+                                                             createDate = C.createDate,
+                                                             updateDate = C.updateDate,
+                                                             cash = C.cash,
+                                                             updateUserId = C.updateUserId,
+                                                             createUserId = C.createUserId,
+                                                             notes = C.notes,
+                                                             posIdCreator = C.posIdCreator,
+                                                             isConfirm = C.isConfirm,
+                                                             cashTransIdSource = C.cashTransIdSource,
+                                                             side = C.side,
+
+                                                             docName = C.docName,
+                                                             docNum = C.docNum,
+                                                             docImage = C.docImage,
+                                                             bankId = C.bankId,
+                                                             bankName = jbb.name,
+                                                             agentName = jaa.name,
+                                                             usersName = juu.username,
+                                                             posName = jpp.name,
+                                                             posCreatorName = jpcc.name,
+                                                             processType = C.processType,
+                                                             cardId = C.cardId,
+                                                             bondId = C.bondId,
+                                                             shippingCompanyId = C.shippingCompanyId,
+                                                         }).Where(C => C.invId == invId).ToList();
+
+
+
+
+                    if (cachtrans == null)
+                        return NotFound();
+                    else
+                        return Ok(cachtrans);
+
+                }
+            }
+            else
+                return NotFound();
+        }
+
+
+
         /// <summary>
         /// /////////////
         /// </summary>
@@ -1248,7 +1339,7 @@ namespace POS_Server.Controllers
                                     ct = entity.cashTransfer.Add(cashTr);
                                    
                                     // increase agent balance
-                                    if (agent.balanceType == 1)
+                                    if (agent.balanceType == 0)
                                     {
                                         if (paid <= (decimal)agent.balance)
                                         {
@@ -1257,7 +1348,7 @@ namespace POS_Server.Controllers
                                         else
                                         {
                                             agent.balance = paid - agentBalance;
-                                            agent.balanceType = 0;
+                                            agent.balanceType = 1;
                                         }
                                     }
                                     else
@@ -1282,7 +1373,7 @@ namespace POS_Server.Controllers
                                     ct = entity.cashTransfer.Add(cashTr);
 
                                     // increase agent balance
-                                    if (agent.balanceType == 1)
+                                    if (agent.balanceType == 0)
                                     {
                                         if (amount <= (decimal)agent.balance)
                                         {
@@ -1291,7 +1382,7 @@ namespace POS_Server.Controllers
                                         else
                                         {
                                             agent.balance = amount - agentBalance;
-                                            agent.balanceType = 0;
+                                            agent.balanceType = 1;
                                         }
                                     }
                                     else
@@ -1302,6 +1393,7 @@ namespace POS_Server.Controllers
                                 }
                                 break;
                             #endregion
+
                             #region feed
                             case "feed": //get s, pb
                                 foreach (InvoiceModel inv in invList)
@@ -1332,7 +1424,7 @@ namespace POS_Server.Controllers
                                     ct = entity.cashTransfer.Add(cashTr);
 
                                     // decrease agent balance
-                                    if (agent.balanceType == 0)
+                                    if (agent.balanceType == 1)
                                     {
                                         if (paid <= (decimal)agent.balance)
                                         {
@@ -1341,7 +1433,7 @@ namespace POS_Server.Controllers
                                         else
                                         {
                                             agent.balance = paid - agent.balance;
-                                            agent.balanceType = 1;
+                                            agent.balanceType = 0;
                                         }
                                     }
                                     else
@@ -1406,7 +1498,7 @@ namespace POS_Server.Controllers
                                     ct = entity.cashTransfer.Add(cashTr);
 
                                     // increase agent balance
-                                    if (agent.balanceType == 1)
+                                    if (agent.balanceType == 0)
                                     {
                                         if (amount <= (decimal)agent.balance)
                                         {
@@ -1415,7 +1507,7 @@ namespace POS_Server.Controllers
                                         else
                                         {
                                             agent.balance = amount - agentBalance;
-                                            agent.balanceType = 0;
+                                            agent.balanceType = 1;
                                         }
                                     }
                                     else
@@ -1434,7 +1526,7 @@ namespace POS_Server.Controllers
                                     cashTr.updateUserId = cashTr.createUserId;
                                     ct = entity.cashTransfer.Add(cashTr);
                                     // decrease agent balance
-                                    if (agent.balanceType == 0)
+                                    if (agent.balanceType == 1)
                                     {
                                         if (amount <= (decimal)agent.balance)
                                         {
@@ -1443,7 +1535,7 @@ namespace POS_Server.Controllers
                                         else
                                         {
                                             agent.balance = amount - agent.balance;
-                                            agent.balanceType = 1;
+                                            agent.balanceType = 0;
                                         }
                                     }
                                     else
@@ -1462,195 +1554,439 @@ namespace POS_Server.Controllers
             else
                 return Ok("false");
             }
+      
         
-        //[HttpPost]
-        //[Route("payUserByAmount")]
-        //public IHttpActionResult payUserByAmount(int userId, decimal amount, string payType, string cashTransfer)
-        //{
-        //    var re = Request;
-        //    var headers = re.Headers;
-        //    string token = "";
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="amount"></param>
+        /// <param name="payType">{feed}</param>
+        /// <param name="cashTransfer"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("payUserByAmount")]
+        public IHttpActionResult payUserByAmount(int userId, decimal amount, string payType, string cashTransfer)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
 
-        //    if (headers.Contains("APIKey"))
-        //    {
-        //        token = headers.GetValues("APIKey").First();
-        //    }
-        //    Validation validation = new Validation();
-        //    bool valid = validation.CheckApiKey(token);
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
 
-        //    if (valid)
-        //    {
-        //        List<string> typesList = new List<string>();
-        //        string cashIds = "";
+            if (valid)
+            {
+                List<string> typesList = new List<string>();
+                string cashIds = "";
+                switch (payType)
+                {
+                    //case "pay"://get pw,pi,sb invoices
 
-        //        typesList.Add("pb");
-        //        typesList.Add("s");
+                    //    typesList.Add("pw");
+                    //    typesList.Add("p");
+                    //    typesList.Add("sb");
+                    //    break;
+                    case "feed": //get si, pb
 
-        //        cashTransfer cashTr = JsonConvert.DeserializeObject<cashTransfer>(cashTransfer, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-        //        using (incposdbEntities entity = new incposdbEntities())
-        //        {
-        //            var invList = (from b in entity.invoices.Where(x => x.userId == userId && typesList.Contains(x.invType) && x.deserved > 0)
-        //                           select new InvoiceModel()
-        //                           {
-        //                               invoiceId = b.invoiceId,
-        //                               invNumber = b.invNumber,
-        //                               agentId = b.agentId,
-        //                               invType = b.invType,
-        //                               total = b.total,
-        //                               totalNet = b.totalNet,
-        //                               paid = b.paid,
-        //                               deserved = b.deserved,
-        //                               deservedDate = b.deservedDate,
-        //                               invDate = b.invDate,
-        //                               invoiceMainId = b.invoiceMainId,
-        //                               invCase = b.invCase,
-        //                               invTime = b.invTime,
-        //                               notes = b.notes,
-        //                               vendorInvNum = b.vendorInvNum,
-        //                               vendorInvDate = b.vendorInvDate,
-        //                               createUserId = b.createUserId,
-        //                               updateDate = b.updateDate,
-        //                               updateUserId = b.updateUserId,
-        //                               branchId = b.branchId,
-        //                               discountValue = b.discountValue,
-        //                               discountType = b.discountType,
-        //                               tax = b.tax,
-        //                               taxtype = b.taxtype,
-        //                               name = b.name,
-        //                               isApproved = b.isApproved,
-        //                               branchCreatorId = b.branchCreatorId,
-        //                               shippingCompanyId = b.shippingCompanyId,
-        //                               shipUserId = b.shipUserId,
-        //                               userId = b.userId
-        //                           }).ToList().OrderBy(b => b.deservedDate);
+                        typesList.Add("pb");
+                        typesList.Add("s");
+                        break;
+                }
+                cashTransfer cashTr = JsonConvert.DeserializeObject<cashTransfer>(cashTransfer, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invList = (from b in entity.invoices.Where(x => x.userId == userId && typesList.Contains(x.invType) && x.deserved > 0)
+                                   select new InvoiceModel()
+                                   {
+                                       invoiceId = b.invoiceId,
+                                       invNumber = b.invNumber,
+                                       agentId = b.agentId,
+                                       invType = b.invType,
+                                       total = b.total,
+                                       totalNet = b.totalNet,
+                                       paid = b.paid,
+                                       deserved = b.deserved,
+                                       deservedDate = b.deservedDate,
+                                       invDate = b.invDate,
+                                       invoiceMainId = b.invoiceMainId,
+                                       invCase = b.invCase,
+                                       invTime = b.invTime,
+                                       notes = b.notes,
+                                       vendorInvNum = b.vendorInvNum,
+                                       vendorInvDate = b.vendorInvDate,
+                                       createUserId = b.createUserId,
+                                       updateDate = b.updateDate,
+                                       updateUserId = b.updateUserId,
+                                       branchId = b.branchId,
+                                       discountValue = b.discountValue,
+                                       discountType = b.discountType,
+                                       tax = b.tax,
+                                       taxtype = b.taxtype,
+                                       name = b.name,
+                                       isApproved = b.isApproved,
+                                       branchCreatorId = b.branchCreatorId,
+                                       shippingCompanyId = b.shippingCompanyId,
+                                       shipUserId = b.shipUserId,
+                                       userId = b.userId
+                                   }).ToList().OrderBy(b => b.deservedDate);
 
-        //            cashTransfer ct;
-        //            users user;
-        //            if (invList.ToList().Count > 0)
-        //            {
-        //                foreach (InvoiceModel inv in invList)
-        //                {
-        //                    user = entity.users.Find(userId);
+                    cashTransfer ct;
+                    users user;
+                    if (invList.ToList().Count > 0)
+                    {
+                        switch (payType)
+                        {
+                            #region payments
+                            
+                            #region feed
+                            case "feed": //get s, pb
+                                foreach (InvoiceModel inv in invList)
+                                {
+                                    user = entity.users.Find(userId);
 
-        //                    decimal paid = 0;
-        //                    var invObj = entity.invoices.Find(inv.invoiceId);
-        //                    cashTr.invId = inv.invoiceId;
-        //                    if (amount >= inv.deserved)
-        //                    {
-        //                        paid = (decimal)inv.deserved;
-        //                        invObj.paid = invObj.paid + inv.deserved;
-        //                        invObj.deserved = 0;
-        //                        amount -= (decimal)inv.deserved;
-        //                    }
-        //                    else
-        //                    {
-        //                        paid = amount;
-        //                        invObj.paid = invObj.paid + amount;
-        //                        invObj.deserved -= amount;
-        //                        amount = 0;
-        //                    }
-        //                    cashTr.cash = paid;
-        //                    cashTr.createDate = DateTime.Now;
-        //                    cashTr.updateDate = DateTime.Now;
-        //                    cashTr.updateUserId = cashTr.createUserId;
-        //                    ct = entity.cashTransfer.Add(cashTr);
+                                    decimal paid = 0;
+                                    var invObj = entity.invoices.Find(inv.invoiceId);
+                                    cashTr.invId = inv.invoiceId;
+                                    if (amount >= inv.deserved)
+                                    {
+                                        paid = (decimal)inv.deserved;
+                                        invObj.paid = invObj.paid + inv.deserved;
+                                        invObj.deserved = 0;
+                                        amount -= (decimal)inv.deserved;
+                                    }
+                                    else
+                                    {
+                                        paid = amount;
+                                        invObj.paid = invObj.paid + amount;
+                                        invObj.deserved -= amount;
+                                        amount = 0;
+                                    }
+                                    cashTr.cash = paid;
+                                    cashTr.createDate = DateTime.Now;
+                                    cashTr.updateDate = DateTime.Now;
+                                    cashTr.updateUserId = cashTr.createUserId;
+                                    ct = entity.cashTransfer.Add(cashTr);
 
-        //                    // decrease user balance
-        //                    if (user.balanceType == 0)
-        //                    {
-        //                        if (paid <= (decimal)user.balance)
-        //                        {
-        //                            user.balance -= paid;
-        //                        }
-        //                        else
-        //                        {
-        //                            user.balance = paid - user.balance;
-        //                            user.balanceType = 1;
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        user.balance += paid;
-        //                    }
+                                    // decrease user balance
+                                    if (user.balanceType == 1)
+                                    {
+                                        if (paid <= (decimal)user.balance)
+                                        {
+                                            user.balance -= paid;
+                                        }
+                                        else
+                                        {
+                                            user.balance = paid - user.balance;
+                                            user.balanceType = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        user.balance += paid;
+                                    }
 
-        //                    entity.SaveChanges();
-        //                    cashIds += ct.cashTransId + ",";
-        //                    if (amount == 0)
-        //                        break;
-        //                }
-        //                if (amount > 0) // save remain amount
-        //                {
-        //                    user = entity.users.Find(userId);
+                                    entity.SaveChanges();
+                                    cashIds += ct.cashTransId + ",";
+                                    if (amount == 0)
+                                        break;
+                                }
+                                if (amount > 0) // save remain amount
+                                {
+                                    user = entity.users.Find(userId);
 
-        //                    cashTr.cash = amount;
-        //                    cashTr.invId = null;
-        //                    cashTr.createDate = DateTime.Now;
-        //                    cashTr.updateDate = DateTime.Now;
-        //                    cashTr.updateUserId = cashTr.createUserId;
-        //                    ct = entity.cashTransfer.Add(cashTr);
-        //                    // decrease agent balance
-        //                    if (user.balanceType == 0)
-        //                    {
-        //                        if (amount <= (decimal)user.balance)
-        //                        {
-        //                            user.balance = user.balance - amount;
-        //                        }
-        //                        else
-        //                        {
-        //                            user.balance = amount - user.balance;
-        //                            user.balanceType = 1;
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        user.balance += amount;
-        //                    }
+                                    cashTr.cash = amount;
+                                    cashTr.invId = null;
+                                    cashTr.createDate = DateTime.Now;
+                                    cashTr.updateDate = DateTime.Now;
+                                    cashTr.updateUserId = cashTr.createUserId;
+                                    ct = entity.cashTransfer.Add(cashTr);
+                                    // decrease user balance
+                                    if (user.balanceType == 1)
+                                    {
+                                        if (amount <= (decimal)user.balance)
+                                        {
+                                            user.balance = user.balance - amount;
+                                        }
+                                        else
+                                        {
+                                            user.balance = amount - user.balance;
+                                            user.balanceType = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        user.balance += amount;
+                                    }
 
-        //                    entity.SaveChanges();
-        //                    }
-        //                }
-        //                //return Ok(cashIds);
-        //            else
+                                    entity.SaveChanges();
+                                }
+                                break;
+                                #endregion
+                        }
+                        return Ok(cashIds);
+                    }
+                    else
+                    {
+                        if (amount > 0) // save remain amount
+                        {
+                            switch (payType)
+                            {
+                                case "feed":
+                                    user = entity.users.Find(userId);
 
-        //            {
-        //                if (amount > 0) // save remain amount
-        //                {
-        //                    user = entity.users.Find(userId);
+                                    cashTr.cash = amount;
+                                    cashTr.invId = null;
+                                    cashTr.createDate = DateTime.Now;
+                                    cashTr.updateDate = DateTime.Now;
+                                    cashTr.updateUserId = cashTr.createUserId;
+                                    ct = entity.cashTransfer.Add(cashTr);
+                                    // decrease user balance
+                                    if (user.balanceType == 1)
+                                    {
+                                        if (amount <= (decimal)user.balance)
+                                        {
+                                            user.balance = user.balance - amount;
+                                        }
+                                        else
+                                        {
+                                            user.balance = amount - user.balance;
+                                            user.balanceType = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        user.balance += amount;
+                                    }
 
-        //                    cashTr.cash = amount;
-        //                    cashTr.invId = null;
-        //                    cashTr.createDate = DateTime.Now;
-        //                    cashTr.updateDate = DateTime.Now;
-        //                    cashTr.updateUserId = cashTr.createUserId;
-        //                    ct = entity.cashTransfer.Add(cashTr);
-        //                    // decrease user balance
-        //                    if (user.balanceType == 0)
-        //                    {
-        //                        if (amount <= (decimal)user.balance)
-        //                        {
-        //                            user.balance = user.balance - amount;
-        //                        }
-        //                        else
-        //                        {
-        //                            user.balance = amount - user.balance;
-        //                            user.balanceType = 1;
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        user.balance += amount;
-        //                    }
+                                    entity.SaveChanges();
+                                    break;
+                            }
+                        }
+                        return Ok("-1");
+                    }
+                }
+            }
+            else
+                return Ok("false");
+        }
+        //
 
-        //                    entity.SaveChanges();
-        //                }
-        //                return Ok("-1");
-        //            }
-        //        }
-        //    }
-        //    else
-        //        return Ok("false");
-        //}
+        /// </summary>
+        /// <param name="shippingCompanyId"></param>
+        /// <param name="amount"></param>
+        /// <param name="payType">{feed}</param>
+        /// <param name="cashTransfer"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("payShippingCompanyByAmount")]
+        public IHttpActionResult payShippingCompanyByAmount(int shippingCompanyId, decimal amount, string payType, string cashTransfer)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
 
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                List<string> typesList = new List<string>();
+                string cashIds = "";
+                switch (payType)
+                {
+                    //case "pay"://get pw,pi,sb invoices
+
+                    //    typesList.Add("pw");
+                    //    typesList.Add("p");
+                    //    typesList.Add("sb");
+                    //    break;
+                    case "feed": //get si, pb
+
+                        typesList.Add("pb");
+                        typesList.Add("s");
+                        break;
+                }
+                cashTransfer cashTr = JsonConvert.DeserializeObject<cashTransfer>(cashTransfer, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invList = (from b in entity.invoices.Where(x => x.shippingCompanyId == shippingCompanyId && typesList.Contains(x.invType) && x.deserved > 0)
+                                   select new InvoiceModel()
+                                   {
+                                       invoiceId = b.invoiceId,
+                                       invNumber = b.invNumber,
+                                       agentId = b.agentId,
+                                       invType = b.invType,
+                                       total = b.total,
+                                       totalNet = b.totalNet,
+                                       paid = b.paid,
+                                       deserved = b.deserved,
+                                       deservedDate = b.deservedDate,
+                                       invDate = b.invDate,
+                                       invoiceMainId = b.invoiceMainId,
+                                       invCase = b.invCase,
+                                       invTime = b.invTime,
+                                       notes = b.notes,
+                                       vendorInvNum = b.vendorInvNum,
+                                       vendorInvDate = b.vendorInvDate,
+                                       createUserId = b.createUserId,
+                                       updateDate = b.updateDate,
+                                       updateUserId = b.updateUserId,
+                                       branchId = b.branchId,
+                                       discountValue = b.discountValue,
+                                       discountType = b.discountType,
+                                       tax = b.tax,
+                                       taxtype = b.taxtype,
+                                       name = b.name,
+                                       isApproved = b.isApproved,
+                                       branchCreatorId = b.branchCreatorId,
+                                       shippingCompanyId = b.shippingCompanyId,
+                                       shipUserId = b.shipUserId,
+                                       userId = b.userId
+                                   }).ToList().OrderBy(b => b.deservedDate);
+
+                    cashTransfer ct;
+                    shippingCompanies shippingCompany;
+                    if (invList.ToList().Count > 0)
+                    {
+                        switch (payType)
+                        {
+                            case "feed": //get s, pb
+                                foreach (InvoiceModel inv in invList)
+                                {
+                                    shippingCompany = entity.shippingCompanies.Find(shippingCompanyId);
+
+                                    decimal paid = 0;
+                                    var invObj = entity.invoices.Find(inv.invoiceId);
+                                    cashTr.invId = inv.invoiceId;
+                                    if (amount >= inv.deserved)
+                                    {
+                                        paid = (decimal)inv.deserved;
+                                        invObj.paid = invObj.paid + inv.deserved;
+                                        invObj.deserved = 0;
+                                        amount -= (decimal)inv.deserved;
+                                    }
+                                    else
+                                    {
+                                        paid = amount;
+                                        invObj.paid = invObj.paid + amount;
+                                        invObj.deserved -= amount;
+                                        amount = 0;
+                                    }
+                                    cashTr.cash = paid;
+                                    cashTr.createDate = DateTime.Now;
+                                    cashTr.updateDate = DateTime.Now;
+                                    cashTr.updateUserId = cashTr.createUserId;
+                                    ct = entity.cashTransfer.Add(cashTr);
+
+                                    // decrease shipping balance
+                                    if (shippingCompany.balanceType == 1)
+                                    {
+                                        if (paid <= (decimal)shippingCompany.balance)
+                                        {
+                                            shippingCompany.balance -= paid;
+                                        }
+                                        else
+                                        {
+                                            shippingCompany.balance = paid - shippingCompany.balance;
+                                            shippingCompany.balanceType = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        shippingCompany.balance += paid;
+                                    }
+
+                                    entity.SaveChanges();
+                                    cashIds += ct.cashTransId + ",";
+                                    if (amount == 0)
+                                        break;
+                                }
+                                if (amount > 0) // save remain amount
+                                {
+                                    shippingCompany = entity.shippingCompanies.Find(shippingCompanyId);
+
+                                    cashTr.cash = amount;
+                                    cashTr.invId = null;
+                                    cashTr.createDate = DateTime.Now;
+                                    cashTr.updateDate = DateTime.Now;
+                                    cashTr.updateUserId = cashTr.createUserId;
+                                    ct = entity.cashTransfer.Add(cashTr);
+                                    // decrease shipping balance
+                                    if (shippingCompany.balanceType == 1)
+                                    {
+                                        if (amount <= (decimal)shippingCompany.balance)
+                                        {
+                                            shippingCompany.balance = shippingCompany.balance - amount;
+                                        }
+                                        else
+                                        {
+                                            shippingCompany.balance = amount - shippingCompany.balance;
+                                            shippingCompany.balanceType = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        shippingCompany.balance += amount;
+                                    }
+
+                                    entity.SaveChanges();
+                                }
+                                break;
+                                #endregion
+                        }
+                        return Ok(cashIds);
+                    }
+                    else
+                    {
+                        if (amount > 0) // save remain amount
+                        {
+                            switch (payType)
+                            {
+                                case "feed":
+                                    shippingCompany = entity.shippingCompanies.Find(shippingCompanyId);
+
+                                    cashTr.cash = amount;
+                                    cashTr.invId = null;
+                                    cashTr.createDate = DateTime.Now;
+                                    cashTr.updateDate = DateTime.Now;
+                                    cashTr.updateUserId = cashTr.createUserId;
+                                    ct = entity.cashTransfer.Add(cashTr);
+                                    // decrease shipping balance
+                                    if (shippingCompany.balanceType == 1)
+                                    {
+                                        if (amount <= (decimal)shippingCompany.balance)
+                                        {
+                                            shippingCompany.balance = shippingCompany.balance - amount;
+                                        }
+                                        else
+                                        {
+                                            shippingCompany.balance = amount - shippingCompany.balance;
+                                            shippingCompany.balanceType = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        shippingCompany.balance += amount;
+                                    }
+
+                                    entity.SaveChanges();
+                                    break;
+                            }
+                        }
+                        return Ok("-1");
+                    }
+                }
+            }
+            else
+                return Ok("false");
+        }
         /// <summary>
         /// //////////////
         /// </summary>
@@ -1775,9 +2111,17 @@ namespace POS_Server.Controllers
            
             }
 
+        /// <summary>
+        /// //////////////
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="amount"></param>
+        /// <param name="payType">{feed}</param>
+        /// <param name="cashTransfer"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("PayUserListOfInvoices")]
-        public IHttpActionResult PayUserListOfInvoices(int userId, string invoices, string payType, string cashTransfer)
+        [Route("payUserListOfInvoices")]
+        public IHttpActionResult payUserListOfInvoices(int userId, string invoices, string payType, string cashTransfer)
         {
             var re = Request;
             var headers = re.Headers;
@@ -1801,45 +2145,49 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     users user = entity.users.Find(userId);
-                       
-                    foreach (invoices inv in invoiceList)
+
+                    switch (payType)
                     {
-                        decimal paid = 0;
-                        cashTransfer ct;
-                        var invObj = entity.invoices.Find(inv.invoiceId);
-                        cashTr.invId = inv.invoiceId;
-
-                        paid = (decimal)inv.deserved;
-                        invObj.paid = invObj.paid + inv.deserved;
-                        invObj.deserved = 0;
-
-                        cashTr.cash = paid;
-                        cashTr.createDate = DateTime.Now;
-                        cashTr.updateDate = DateTime.Now;
-                        cashTr.updateUserId = cashTr.createUserId;
-                        ct = entity.cashTransfer.Add(cashTr);
-                        cashIds += ct.cashTransId + ",";
-                        // decrease user balance
-                        if (user.balanceType == 0)
-                        {
-                            if (paid <= (decimal)user.balance)
+                        case "feed": //get s, pb
+                            foreach (invoices inv in invoiceList)
                             {
-                                user.balance = user.balance - paid;
+                                decimal paid = 0;
+                                cashTransfer ct;
+                                var invObj = entity.invoices.Find(inv.invoiceId);
+                                cashTr.invId = inv.invoiceId;
+
+                                paid = (decimal)inv.deserved;
+                                invObj.paid = invObj.paid + inv.deserved;
+                                invObj.deserved = 0;
+
+                                cashTr.cash = paid;
+                                cashTr.createDate = DateTime.Now;
+                                cashTr.updateDate = DateTime.Now;
+                                cashTr.updateUserId = cashTr.createUserId;
+                                ct = entity.cashTransfer.Add(cashTr);
+                                cashIds += ct.cashTransId + ",";
+                                // decrease user balance
+                                if (user.balanceType == 0)
+                                {
+                                    if (paid <= (decimal)user.balance)
+                                    {
+                                        user.balance = user.balance - paid;
+                                    }
+                                    else
+                                    {
+                                        user.balance = paid - user.balance;
+                                        user.balanceType = 1;
+                                    }
+                                }
+                                else if (user.balanceType == 1)
+                                {
+                                    user.balance += paid;
+                                }
+                                entity.SaveChanges();
                             }
-                            else
-                            {
-                                user.balance = paid - user.balance;
-                                user.balanceType = 1;
-                            }
-                        }
-                        else if (user.balanceType == 1)
-                        {
-                            user.balance += paid;
-                        }
-                        entity.SaveChanges();
+                            entity.SaveChanges();
+                            break;
                     }
-                    entity.SaveChanges();
-                    
                     return Ok(cashIds);
                 }
             }
@@ -1848,9 +2196,17 @@ namespace POS_Server.Controllers
 
         }
 
+        /// <summary>
+        /// //////////////
+        /// </summary>
+        /// <param name="shippingCompanyId"></param>
+        /// <param name="amount"></param>
+        /// <param name="payType">{feed}</param>
+        /// <param name="cashTransfer"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("PayShComListOfInvoices")]
-        public IHttpActionResult PayShComListOfInvoices(int shippingCompanyId, string invoices, string payType, string cashTransfer)
+        [Route("payShippingCompanyListOfInvoices")]
+        public IHttpActionResult payShippingCompanyListOfInvoices(int shippingCompanyId, string invoices, string payType, string cashTransfer)
         {
             var re = Request;
             var headers = re.Headers;
@@ -1873,46 +2229,50 @@ namespace POS_Server.Controllers
 
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    shippingCompanies com = entity.shippingCompanies.Find(shippingCompanyId);
+                    shippingCompanies shippingCompany = entity.shippingCompanies.Find(shippingCompanyId);
 
-                    foreach (invoices inv in invoiceList)
+                    switch (payType)
                     {
-                        decimal paid = 0;
-                        cashTransfer ct;
-                        var invObj = entity.invoices.Find(inv.invoiceId);
-                        cashTr.invId = inv.invoiceId;
-
-                        paid = (decimal)inv.deserved;
-                        invObj.paid = invObj.paid + inv.deserved;
-                        invObj.deserved = 0;
-
-                        cashTr.cash = paid;
-                        cashTr.createDate = DateTime.Now;
-                        cashTr.updateDate = DateTime.Now;
-                        cashTr.updateUserId = cashTr.createUserId;
-                        ct = entity.cashTransfer.Add(cashTr);
-                        cashIds += ct.cashTransId + ",";
-                        // decrease shipping company balance
-                        if (com.balanceType == 0)
-                        {
-                            if (paid <= (decimal)com.balance)
+                        case "feed": //get s, pb
+                            foreach (invoices inv in invoiceList)
                             {
-                                com.balance = com.balance - paid;
+                                decimal paid = 0;
+                                cashTransfer ct;
+                                var invObj = entity.invoices.Find(inv.invoiceId);
+                                cashTr.invId = inv.invoiceId;
+
+                                paid = (decimal)inv.deserved;
+                                invObj.paid = invObj.paid + inv.deserved;
+                                invObj.deserved = 0;
+
+                                cashTr.cash = paid;
+                                cashTr.createDate = DateTime.Now;
+                                cashTr.updateDate = DateTime.Now;
+                                cashTr.updateUserId = cashTr.createUserId;
+                                ct = entity.cashTransfer.Add(cashTr);
+                                cashIds += ct.cashTransId + ",";
+                                // decrease shippingCompany balance
+                                if (shippingCompany.balanceType == 0)
+                                {
+                                    if (paid <= (decimal)shippingCompany.balance)
+                                    {
+                                        shippingCompany.balance = shippingCompany.balance - paid;
+                                    }
+                                    else
+                                    {
+                                        shippingCompany.balance = paid - shippingCompany.balance;
+                                        shippingCompany.balanceType = 1;
+                                    }
+                                }
+                                else if (shippingCompany.balanceType == 1)
+                                {
+                                    shippingCompany.balance += paid;
+                                }
+                                entity.SaveChanges();
                             }
-                            else
-                            {
-                                com.balance = paid - com.balance;
-                                com.balanceType = 1;
-                            }
-                        }
-                        else if (com.balanceType == 1)
-                        {
-                            com.balance += paid;
-                        }
-                        entity.SaveChanges();
+                            entity.SaveChanges();
+                            break;
                     }
-                    entity.SaveChanges();
-
                     return Ok(cashIds);
                 }
             }
@@ -1920,6 +2280,7 @@ namespace POS_Server.Controllers
                 return Ok("false");
 
         }
+
         //[HttpPost]
         //[Route("payOrderInvoice")]
         //public IHttpActionResult payOrderInvoice(int invoiceId, int invStatusId , decimal amount, string payType, string cashTransfer)

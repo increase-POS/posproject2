@@ -311,7 +311,8 @@ namespace POS_Server.Controllers
                             {
                                 defItem.isDefault = 0;//reset the other default to 0 if exist
                             }
-                            var tmps = entity.setValues.Where(p => p.notes == Object.notes).FirstOrDefault();
+                            var tmps1 = sEntity.ToList();
+                            var tmps = tmps1.Where(p => p.notes == Object.notes).FirstOrDefault();
                             tmps.valId = Object.valId;
                            // tmps.notes = Object.notes;
                             tmps.value = Object.value;

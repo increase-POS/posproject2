@@ -46,17 +46,19 @@ namespace POS_Server.Controllers
                        join u in entity.users on C.userId equals u.userId into ju
                        join uc in entity.users on C.createUserId equals uc.userId into juc
                        join cr in entity.cards on C.cardId equals cr.cardId into jcr
+                       join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
 
-                   //  join b in entity.bondes on C.bondId  equals b.bondId  into jb
+                       //  join b in entity.bondes on C.bondId  equals b.bondId  into jb
 
 
-                   from jbb in jb.DefaultIfEmpty()
+                       from jbb in jb.DefaultIfEmpty()
                        from jaa in ja.DefaultIfEmpty()
                        from jpp in jp.DefaultIfEmpty()
                        from juu in ju.DefaultIfEmpty()
                        from jpcc in jpcr.DefaultIfEmpty()
                        from jucc in juc.DefaultIfEmpty()
                        from jcrd in jcr.DefaultIfEmpty()
+                       from jshd in jsh.DefaultIfEmpty()
                        where (C.side != "bnd")
                    // from jc in C.DefaultIfEmpty()
                    //   where C.bondId==jbbo.bondId 
@@ -118,8 +120,9 @@ namespace POS_Server.Controllers
                            ctcreateUserJob = jucc.job,
                            ctcreateUserLName = jucc.lastname,
                            ctcardName = jcrd.name,
-
-
+                          
+                           ctshippingCompanyId = jshd.shippingCompanyId,
+                           ctshippingCompanyName = jshd.name
                        }).ToList();
 
 
@@ -196,6 +199,8 @@ namespace POS_Server.Controllers
                             ctcreateUserJob = x.FirstOrDefault().ctcreateUserJob,
                             ctcreateUserLName = x.FirstOrDefault().ctcreateUserLName,
                             ctcardName = x.FirstOrDefault().ctcardName,
+                            ctshippingCompanyId =  x.FirstOrDefault().ctshippingCompanyId,
+                            ctshippingCompanyName = x.FirstOrDefault().ctshippingCompanyName
 
                         }).ToList();
 
