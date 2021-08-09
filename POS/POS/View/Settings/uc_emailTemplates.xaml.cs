@@ -48,6 +48,12 @@ namespace POS.View.Settings
         SetValues setValues = new SetValues();
         IEnumerable<SetValues> setValuessQuery;
         IEnumerable<SetValues> setValuess;
+
+        SettingCls setModel = new SettingCls();
+        SettingCls sett = new SettingCls();
+        IEnumerable<SettingCls> setQuery;
+
+
         byte tgl_setValuesState;
         string searchText = "";
         BrushConverter bc = new BrushConverter();
@@ -71,7 +77,7 @@ namespace POS.View.Settings
             dg_setValues.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
             if (MainWindow.lang.Equals("en"))
             {
@@ -91,6 +97,10 @@ namespace POS.View.Settings
             Keyboard.Focus(tb_title);
 
             SectionData.clearValidate(tb_title, p_errorTitle);
+
+            setQuery = await setModel.GetByNotes("emailtemp");
+
+            dg_setValues.ItemsSource = setQuery;
 
             this.Dispatcher.Invoke(() =>
             {
@@ -141,7 +151,37 @@ namespace POS.View.Settings
             //write here Mr.Naji
 
             /////
+            string msg = "";
+            setValues = setValuessQuery.Where(x => x.notes == "title").FirstOrDefault();
+            setValues.value = tb_title.Text;
+            msg += await setValuesModel.SaveValueByNotes(setValues);
+            //
 
+            setValues = setValuessQuery.Where(x => x.notes == "text1").FirstOrDefault();
+            setValues.value = tb_text1.Text;
+
+            msg += await setValuesModel.SaveValueByNotes(setValues);
+            setValues = setValuessQuery.Where(x => x.notes == "text2").FirstOrDefault();
+            setValues.value = tb_text2.Text;
+            msg += await setValuesModel.SaveValueByNotes(setValues);
+            setValues = setValuessQuery.Where(x => x.notes == "link1text").FirstOrDefault();
+            setValues.value = tb_link1text.Text;
+            msg += await setValuesModel.SaveValueByNotes(setValues);
+            setValues = setValuessQuery.Where(x => x.notes == "link2text").FirstOrDefault();
+            setValues.value = tb_link2text.Text;
+            msg += await setValuesModel.SaveValueByNotes(setValues);
+            setValues = setValuessQuery.Where(x => x.notes == "link3text").FirstOrDefault();
+            setValues.value = tb_link3text.Text;
+            msg += await setValuesModel.SaveValueByNotes(setValues);
+            setValues = setValuessQuery.Where(x => x.notes == "link1url").FirstOrDefault();
+            setValues.value = tb_link1url.Text;
+            msg += await setValuesModel.SaveValueByNotes(setValues);
+            setValues = setValuessQuery.Where(x => x.notes == "link2url").FirstOrDefault();
+            setValues.value = tb_link2url.Text;
+            msg += await setValuesModel.SaveValueByNotes(setValues);
+            setValues = setValuessQuery.Where(x => x.notes == "link3url").FirstOrDefault();
+            setValues.value = tb_link3url.Text;
+            msg += await setValuesModel.SaveValueByNotes(setValues);
 
             //}
             //else
