@@ -64,9 +64,9 @@ namespace POS_Server
         public virtual invoices invoices { get; set; }
         public virtual pos pos { get; set; }
         public virtual pos pos1 { get; set; }
+        public virtual shippingCompanies shippingCompanies { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
         public virtual users users2 { get; set; }
-        public virtual shippingCompanies shippingCompanies { get; set; }
     }
 }

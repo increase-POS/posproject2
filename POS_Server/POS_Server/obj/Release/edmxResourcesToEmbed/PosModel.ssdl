@@ -499,6 +499,7 @@
     <Property Name="price" Type="decimal" Precision="20" Scale="2" />
     <Property Name="itemUnitId" Type="int" />
     <Property Name="itemSerial" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="inventoryItemLocId" Type="int" />
   </EntityType>
   <EntityType Name="itemsUnits">
     <Key>
@@ -519,6 +520,7 @@
     <Property Name="subUnitId" Type="int" />
     <Property Name="purchasePrice" Type="decimal" Precision="20" Scale="2" />
     <Property Name="storageCostId" Type="int" />
+    <Property Name="isActive" Type="tinyint" />
   </EntityType>
   <EntityType Name="itemTransferOffer">
     <Key>
@@ -2177,6 +2179,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_itemsTransfer_inventoryItemLocation">
+    <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="0..1" />
+    <End Role="itemsTransfer" Type="Self.itemsTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="inventoryItemLocation">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="itemsTransfer">
+        <PropertyRef Name="inventoryItemLocId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_itemsTransfer_invoices">
     <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
     <End Role="itemsTransfer" Type="Self.itemsTransfer" Multiplicity="*" />
@@ -3466,6 +3480,10 @@
     <AssociationSet Name="FK_itemsProp_users1" Association="Self.FK_itemsProp_users1">
       <End Role="users" EntitySet="users" />
       <End Role="itemsProp" EntitySet="itemsProp" />
+    </AssociationSet>
+    <AssociationSet Name="FK_itemsTransfer_inventoryItemLocation" Association="Self.FK_itemsTransfer_inventoryItemLocation">
+      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+      <End Role="itemsTransfer" EntitySet="itemsTransfer" />
     </AssociationSet>
     <AssociationSet Name="FK_itemsTransfer_invoices" Association="Self.FK_itemsTransfer_invoices">
       <End Role="invoices" EntitySet="invoices" />

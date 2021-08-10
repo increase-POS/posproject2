@@ -26,6 +26,7 @@ namespace POS_Server.Models
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> minUnitId { get; set; }
         public Nullable<int> maxUnitId { get; set; }
+        public Nullable<int> itemCount { get; set; }
         public Boolean canDelete { get; set; }
 
 

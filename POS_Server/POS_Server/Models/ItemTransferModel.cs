@@ -28,6 +28,7 @@ namespace POS_Server.Models
         public string itemSerial { get; set; }
         public string itemType { get; set; }
 
+        public Nullable<int> inventoryItemLocId { get; set; }
 
     }
 }

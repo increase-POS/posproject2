@@ -17,8 +17,8 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public shippingCompanies()
         {
-            this.invoices = new HashSet<invoices>();
             this.cashTransfer = new HashSet<cashTransfer>();
+            this.invoices = new HashSet<invoices>();
         }
     
         public int shippingCompanyId { get; set; }
@@ -36,10 +36,8 @@ namespace POS_Server
         public Nullable<byte> balanceType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<invoices> invoices { get; set; }
-        public virtual users users { get; set; }
-        public virtual users users1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cashTransfer> cashTransfer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<invoices> invoices { get; set; }
     }
 }

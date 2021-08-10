@@ -202,6 +202,123 @@ namespace POS_Server.Controllers
                 return NotFound();
         }
 
+        [HttpGet]
+        [Route("GetBytypeAndSideForPos")]
+        public IHttpActionResult GetBytypeAndSideForPos(string type, string side)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+
+
+
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+            
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    List<CashTransferModel> cachlist = (from C in entity.cashTransfer
+                                                        join b in entity.banks on C.bankId equals b.bankId into jb
+                                                        join a in entity.agents on C.agentId equals a.agentId into ja
+                                                        join p in entity.pos on C.posId equals p.posId into jp
+                                                        join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+                                                        join u in entity.users on C.userId equals u.userId into ju
+                                                        join uc in entity.users on C.createUserId equals uc.userId into juc
+                                                        join cr in entity.cards on C.cardId equals cr.cardId into jcr
+                                                        join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+                                                        join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
+                                                        from jbb in jb.DefaultIfEmpty()
+                                                        from jaa in ja.DefaultIfEmpty()
+                                                        from jpp in jp.DefaultIfEmpty()
+                                                        from juu in ju.DefaultIfEmpty()
+                                                        from jpcc in jpcr.DefaultIfEmpty()
+                                                        from jucc in juc.DefaultIfEmpty()
+                                                        from jcrd in jcr.DefaultIfEmpty()
+                                                        from jbbo in jbo.DefaultIfEmpty()
+                                                        from jssh in jsh.DefaultIfEmpty()
+                                                        select new CashTransferModel()
+                                                        {
+                                                            cashTransId = C.cashTransId,
+                                                            transType = C.transType,
+                                                            posId = C.posId,
+                                                            userId = C.userId,
+                                                            agentId = C.agentId,
+                                                            invId = C.invId,
+                                                            transNum = C.transNum,
+                                                            createDate = C.createDate,
+                                                            updateDate = C.updateDate,
+                                                            cash = C.cash,
+                                                            updateUserId = C.updateUserId,
+                                                            createUserId = C.createUserId,
+                                                            notes = C.notes,
+                                                            posIdCreator = C.posIdCreator,
+                                                            isConfirm = C.isConfirm,
+                                                            cashTransIdSource = C.cashTransIdSource,
+                                                            side = C.side,
+
+                                                            docName = C.docName,
+                                                            docNum = C.docNum,
+                                                            docImage = C.docImage,
+                                                            bankId = C.bankId,
+                                                            bankName = jbb.name,
+                                                            agentName = jaa.name,
+                                                            usersName = juu.name,// side =u
+
+                                                            posName = jpp.name,
+                                                            posCreatorName = jpcc.name,
+                                                            processType = C.processType,
+                                                            cardId = C.cardId,
+                                                            bondId = C.bondId,
+                                                            usersLName = juu.lastname,// side =u
+                                                            createUserName = jucc.name,
+                                                            createUserLName = jucc.lastname,
+                                                            createUserJob = jucc.job,
+                                                            cardName = jcrd.name,
+                                                            bondDeserveDate = jbbo.deserveDate,
+                                                            bondIsRecieved = jbbo.isRecieved,
+                                                            shippingCompanyId = C.shippingCompanyId,
+                                                            shippingCompanyName = jssh.name
+
+                                                        }).Where(C => ((type == "all") ? true : C.transType == type)
+            && ((side == "all") ? true : C.side == side)).ToList();
+
+                    if (cachlist.Count > 0 && side == "p")
+                    {
+                        CashTransferModel tempitem = null;
+                        foreach (CashTransferModel cashtItem in cachlist)
+                        {
+                            tempitem = this.Getpostransmodel(cashtItem.cashTransId)
+                                .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
+                            cashtItem.cashTrans2Id = tempitem.cashTransId;
+                            cashtItem.pos2Id = tempitem.posId;
+                            cashtItem.pos2Name = tempitem.posName;
+                            cashtItem.isConfirm2 = tempitem.isConfirm;
+
+                        }
+
+                    }
+
+
+
+
+                    if (cachlist == null)
+                        return NotFound();
+                    else
+                        return Ok(cachlist);
+
+                }
+            }
+            else
+                return NotFound();
+        }
+
         // get by bondId
         [HttpGet]
         [Route("GetBybondId")]
@@ -1254,16 +1371,16 @@ namespace POS_Server.Controllers
                 switch (payType)
                 {
                     case "pay"://get pw,pi,sb invoices
- 
+
                         typesList.Add("pw");
                         typesList.Add("p");
                         typesList.Add("sb");
                         break;
                     case "feed": //get si, pb
-   
+
                         typesList.Add("pb");
                         typesList.Add("s");
-                        break;          
+                        break;
                 }
                 cashTransfer cashTr = JsonConvert.DeserializeObject<cashTransfer>(cashTransfer, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
                 using (incposdbEntities entity = new incposdbEntities())
@@ -1305,16 +1422,16 @@ namespace POS_Server.Controllers
                     cashTransfer ct;
                     agents agent;
                     if (invList.ToList().Count > 0)
-                    {     
+                    {
                         switch (payType)
                         {
                             #region payments
                             case "pay"://get pw,p,sb invoices
-                                
+
                                 foreach (InvoiceModel inv in invList)
-                                {                               
+                                {
                                     decimal paid = 0;
-                                     agent= entity.agents.Find(agentId);
+                                    agent = entity.agents.Find(agentId);
                                     decimal agentBalance = (decimal)agent.balance;
                                     var invObj = entity.invoices.Find(inv.invoiceId);
                                     cashTr.invId = inv.invoiceId;
@@ -1337,7 +1454,7 @@ namespace POS_Server.Controllers
                                     cashTr.updateDate = DateTime.Now;
                                     cashTr.updateUserId = cashTr.createUserId;
                                     ct = entity.cashTransfer.Add(cashTr);
-                                   
+
                                     // increase agent balance
                                     if (agent.balanceType == 0)
                                     {
@@ -1355,16 +1472,16 @@ namespace POS_Server.Controllers
                                     {
                                         agent.balance = agentBalance + paid;
                                     }
-                                   
+
                                     entity.SaveChanges();
                                     cashIds += ct.cashTransId + ",";
                                     if (amount == 0)
                                         break;
                                 }
-                                if(amount > 0) // save remain amount
+                                if (amount > 0) // save remain amount
                                 {
                                     agent = entity.agents.Find(agentId);
-                                    decimal agentBalance = (decimal) agent.balance;
+                                    decimal agentBalance = (decimal)agent.balance;
                                     cashTr.cash = amount;
                                     cashTr.invId = null;
                                     cashTr.createDate = DateTime.Now;
@@ -1377,7 +1494,7 @@ namespace POS_Server.Controllers
                                     {
                                         if (amount <= (decimal)agent.balance)
                                         {
-                                            agent.balance = agentBalance -  amount;
+                                            agent.balance = agentBalance - amount;
                                         }
                                         else
                                         {
@@ -1393,13 +1510,12 @@ namespace POS_Server.Controllers
                                 }
                                 break;
                             #endregion
-
                             #region feed
                             case "feed": //get s, pb
                                 foreach (InvoiceModel inv in invList)
                                 {
-                                     agent = entity.agents.Find(agentId);
-                                    
+                                    agent = entity.agents.Find(agentId);
+
                                     decimal paid = 0;
                                     var invObj = entity.invoices.Find(inv.invoiceId);
                                     cashTr.invId = inv.invoiceId;
@@ -1440,7 +1556,7 @@ namespace POS_Server.Controllers
                                     {
                                         agent.balance += paid;
                                     }
-                                   
+
                                     entity.SaveChanges();
                                     cashIds += ct.cashTransId + ",";
                                     if (amount == 0)
@@ -1448,7 +1564,7 @@ namespace POS_Server.Controllers
                                 }
                                 if (amount > 0) // save remain amount
                                 {
-                                   agent = entity.agents.Find(agentId);
+                                    agent = entity.agents.Find(agentId);
 
                                     cashTr.cash = amount;
                                     cashTr.invId = null;
@@ -1457,7 +1573,7 @@ namespace POS_Server.Controllers
                                     cashTr.updateUserId = cashTr.createUserId;
                                     ct = entity.cashTransfer.Add(cashTr);
                                     // decrease agent balance
-                                    if (agent.balanceType == 0)
+                                    if (agent.balanceType == 1)
                                     {
                                         if (amount <= (decimal)agent.balance)
                                         {
@@ -1466,7 +1582,7 @@ namespace POS_Server.Controllers
                                         else
                                         {
                                             agent.balance = amount - agent.balance;
-                                            agent.balanceType = 1;
+                                            agent.balanceType = 0;
                                         }
                                     }
                                     else
@@ -1476,7 +1592,7 @@ namespace POS_Server.Controllers
 
                                     entity.SaveChanges();
                                 }
-                                    break;
+                                break;
                                 #endregion
                         }
                         return Ok(cashIds);
@@ -1548,14 +1664,14 @@ namespace POS_Server.Controllers
                             }
                         }
                         return Ok("-1");
-                    }                  
+                    }
                 }
             }
             else
                 return Ok("false");
-            }
-      
-        
+        }
+
+
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="amount"></param>
@@ -1687,6 +1803,7 @@ namespace POS_Server.Controllers
                                     {
                                         user.balance += paid;
                                     }
+                                    
 
                                     entity.SaveChanges();
                                     cashIds += ct.cashTransId + ",";
@@ -1935,7 +2052,7 @@ namespace POS_Server.Controllers
                                     {
                                         shippingCompany.balance += amount;
                                     }
-
+                                   
                                     entity.SaveChanges();
                                 }
                                 break;

@@ -14,6 +14,12 @@ namespace POS_Server
     
     public partial class inventoryItemLocation
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public inventoryItemLocation()
+        {
+            this.itemsTransfer = new HashSet<itemsTransfer>();
+        }
+    
         public int id { get; set; }
         public Nullable<bool> isDestroyed { get; set; }
         public Nullable<int> amount { get; set; }
@@ -35,5 +41,7 @@ namespace POS_Server
         public virtual itemsLocations itemsLocations { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemsTransfer> itemsTransfer { get; set; }
     }
 }

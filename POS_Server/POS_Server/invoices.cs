@@ -74,10 +74,10 @@ namespace POS_Server
         public virtual users users2 { get; set; }
         public virtual users users3 { get; set; }
         public virtual users users4 { get; set; }
+        public virtual users users5 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<invoiceStatus> invoiceStatus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsTransfer> itemsTransfer { get; set; }
-        public virtual users users5 { get; set; }
     }
 }

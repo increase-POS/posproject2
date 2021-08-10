@@ -26,5 +26,8 @@ namespace POS_Server.Models
         public string itemCode { get; set; }
         public string unitName { get; set; }
         public Nullable<int> storageCostId { get; set; }
+        public Boolean canDelete { get; set; }
+        public Nullable<byte> isActive { get; set; }
+
     }
 }

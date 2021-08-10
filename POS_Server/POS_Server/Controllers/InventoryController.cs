@@ -292,7 +292,7 @@ namespace POS_Server.Controllers
                             entity.Inventory.Add(Object);
                              
                             entity.SaveChanges();
-message = Object.inventoryId.ToString();
+                            message = Object.inventoryId.ToString();
                         }
                         else
                         {
@@ -386,6 +386,42 @@ message = Object.inventoryId.ToString();
             }
             else
                 return NotFound();
+        }
+
+        [HttpGet]
+        [Route("shortageIsManipulated")]
+        public IHttpActionResult shortageIsManipulated(int inventoryId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var List = (from c in entity.inventoryItemLocation
+                                .Where(c => c.realAmount - c.amount > 0 && c.inventoryId == inventoryId && c.isFalls == false)
+                                select new InventoryItemLocationModel()
+                                {
+                                    id = c.id,
+                                })
+                       .ToList();
+ 
+                    if (List.Count == 0)
+                        return Ok(true);
+                    else
+                        return Ok(false);
+                }
+            }
+            return NotFound();
         }
     }
 }

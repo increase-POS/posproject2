@@ -32,7 +32,7 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var itemUnitsList = (from IU in entity.itemsUnits
-                                         where (IU.itemId == itemId)
+                                         where (IU.itemId == itemId && IU.isActive == 1)
                                          join u in entity.units on IU.unitId equals u.unitId into lj
                                          from v in lj.DefaultIfEmpty()
                                          join u1 in entity.units on IU.subUnitId equals u1.unitId into tj
@@ -67,10 +67,75 @@ namespace POS_Server.Controllers
             //else
             return NotFound();
         }
+        [HttpGet]
+        [Route("GetAll")]
+        public IHttpActionResult GetAll(int itemId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+            Boolean canDelete = false;
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var itemUnitsList = (from IU in entity.itemsUnits
+                                         where (IU.itemId == itemId )
+                                         join u in entity.units on IU.unitId equals u.unitId into lj
+                                         from v in lj.DefaultIfEmpty()
+                                         join u1 in entity.units on IU.subUnitId equals u1.unitId into tj
+                                         from v1 in tj.DefaultIfEmpty()
+                                         select new ItemUnitModel()
+                                         {
+                                             itemUnitId = IU.itemUnitId,
+                                             unitId = IU.unitId,
+                                             mainUnit = v.name,
+                                             createDate = IU.createDate,
+                                             createUserId = IU.createUserId,
+                                             defaultPurchase = IU.defaultPurchase,
+                                             defaultSale = IU.defaultSale,
+                                             price = IU.price,
+                                             subUnitId = IU.subUnitId,
+                                             smallUnit = v1.name,
+                                             unitValue = IU.unitValue,
+                                             barcode = IU.barcode,
+                                             updateDate = IU.updateDate,
+                                             updateUserId = IU.updateUserId,
+                                           storageCostId =IU.storageCostId,
+                                           isActive = IU.isActive,
+    })
+                                         .ToList();
+                    foreach(ItemUnitModel um in itemUnitsList)
+                    {
+                        canDelete = false;
+                        if (um.isActive == 1)
+                        {
+                            var purItem = entity.itemsTransfer.Where(x => x.itemUnitId == um.itemUnitId).Select(b => new { b.itemsTransId, b.itemUnitId }).FirstOrDefault();
+                            var packages = entity.packages.Where(x => x.childIUId == um.itemUnitId || x.packageId == um.itemUnitId).Select(x => new { x.packageId, x.parentIUId }).FirstOrDefault();
+                            if (purItem == null && packages == null)
+                                canDelete = true;
+                        }
+                        um.canDelete = canDelete;
+                    }
+                    if (itemUnitsList == null)
+                        return NotFound();
+                    else
+                        return Ok(itemUnitsList);
+                }
+            }
+            //else
+            return NotFound();
+        }
         // add or update item unit
         [HttpPost]
         [Route("Save")]
-        public string Save(string itemsUnitsObject)
+        public IHttpActionResult Save(string itemsUnitsObject)
         {
             var re = Request;
             var headers = re.Headers;
@@ -129,6 +194,7 @@ namespace POS_Server.Controllers
                             newObject.createDate = DateTime.Now;
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
+                            newObject.isActive = 1;
 
                             itemUnitEntity.Add(newObject);
                             message = "Item Unit Is Added Successfully";
@@ -137,22 +203,29 @@ namespace POS_Server.Controllers
                         {
                             //update
                             // set the other default sale or purchase to 0 if the new object.default is 1
-                            var tmpItemUnit = entity.itemsUnits.Where(p => p.itemUnitId == newObject.itemUnitId).FirstOrDefault();
+                            int itemUnitId = newObject.itemUnitId;
+                            var tmpItemUnit = entity.itemsUnits.Find(itemUnitId);
+                           
                             if (newObject.defaultSale == 1)
                             {
-                                itemsUnits defItemUnit = entity.itemsUnits.Where(p => p.itemId == newObject.itemId && p.defaultSale == 1).FirstOrDefault();
-
-                                defItemUnit.defaultSale = 0;
-                                entity.SaveChanges();
+                                itemsUnits saleItemUnit = entity.itemsUnits.Where(p => p.itemId == tmpItemUnit.itemId && p.defaultSale == 1).FirstOrDefault();
+                                if (saleItemUnit != null)
+                                {
+                                    saleItemUnit.defaultSale = 0;
+                                    entity.SaveChanges();
+                                }
                             }
                             if (newObject.defaultPurchase == 1)
                             {
-                                var defItemUnit = entity.itemsUnits.Where(p => p.itemId == newObject.itemId && p.defaultPurchase == 1).FirstOrDefault();
-                                defItemUnit.defaultPurchase = 0;
-                                entity.SaveChanges();
+                                var defItemUnit = entity.itemsUnits.Where(p => p.itemId == tmpItemUnit.itemId && p.defaultPurchase == 1).FirstOrDefault();
+                                if (defItemUnit != null)
+                                {
+                                    defItemUnit.defaultPurchase = 0;
+                                    entity.SaveChanges();
+                                }
                             }
                             tmpItemUnit.barcode = newObject.barcode;
-                            tmpItemUnit.itemId = newObject.itemId;
+                           // tmpItemUnit.itemId = newObject.itemId;
                             tmpItemUnit.price = newObject.price;
                             tmpItemUnit.subUnitId = newObject.subUnitId;
                             tmpItemUnit.unitId = newObject.unitId;
@@ -162,6 +235,7 @@ namespace POS_Server.Controllers
                             tmpItemUnit.updateDate = DateTime.Now;
                             tmpItemUnit.updateUserId = newObject.updateUserId;
                             tmpItemUnit.storageCostId = newObject.storageCostId;
+                            tmpItemUnit.isActive = newObject.isActive;
                             message = "Item Unit Is Updated Successfully";
                         }
                         entity.SaveChanges();
@@ -172,12 +246,12 @@ namespace POS_Server.Controllers
                     message = "an error ocurred";
                 }
             }
-            return message;
+            return Ok( message);
         }
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int ItemUnitId)
+        public IHttpActionResult Delete(int ItemUnitId,int userId, Boolean final)
         {
             var re = Request;
             var headers = re.Headers;
@@ -195,12 +269,26 @@ namespace POS_Server.Controllers
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-                        itemsUnits itemUnit = entity.itemsUnits.Find(ItemUnitId);
+                        if (final)
+                        {
+                            itemsUnits itemUnit = entity.itemsUnits.Find(ItemUnitId);
 
-                        entity.itemsUnits.Remove(itemUnit);
-                        entity.SaveChanges();
+                            entity.itemsUnits.Remove(itemUnit);
+                            entity.SaveChanges();
 
-                        return Ok("Item Unit is Deleted Successfully");
+                            return Ok("Item Unit is Deleted Successfully");
+
+                        }
+                        else
+                        {
+
+                            itemsUnits unitDelete = entity.itemsUnits.Find(ItemUnitId);
+                            unitDelete.isActive = 0;
+                            unitDelete.updateDate = DateTime.Now;
+                            unitDelete.updateUserId = userId;
+                            entity.SaveChanges();
+                            return Ok("Unit is Deleted Successfully");
+                        }
                     }
                 }
                 catch

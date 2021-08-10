@@ -419,6 +419,79 @@ namespace POS_Server.Controllers
             }
             return Ok(1);
         }
+        [HttpPost]
+        [Route("generatePackage")]
+        public IHttpActionResult generatePackage(int packageParentId, int quantity, int locationId, int branchId, int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var packageIems = (from s in entity.packages.Where(x => x.parentIUId == packageParentId)
+                                       select new PackageModel
+                                       {
+                                           childIUId = s.childIUId,
+                                           quantity = s.quantity
+                                       }).ToList();
+                    foreach (PackageModel item in packageIems)
+                    {
+                        int itemQuantity = item.quantity * quantity;
+                        int itemUnitId = (int)item.childIUId;
+
+                        var itemInLocs = (from b in entity.branches
+                                          where b.branchId == branchId
+                                          join s in entity.sections on b.branchId equals s.branchId
+                                          join l in entity.locations on s.sectionId equals l.sectionId
+                                          join il in entity.itemsLocations on l.locationId equals il.locationId
+                                          where il.itemUnitId == itemUnitId && il.quantity > 0
+                                          select new
+                                          {
+                                              il.itemsLocId,
+                                              il.quantity,
+                                              il.itemUnitId,
+                                              il.locationId,
+                                              s.sectionId,
+                                          }).ToList();
+                        //int unitValue = getUnitValue(fromItemUnit, toItemUnit);
+
+                        for (int i = 0; i < itemInLocs.Count; i++)
+                        {
+                            int availableAmount = (int)itemInLocs[i].quantity;
+                            var itemL = entity.itemsLocations.Find(itemInLocs[i].itemsLocId);
+                            itemL.updateDate = DateTime.Now;
+                            if (availableAmount >= itemQuantity)
+                            {
+                                itemL.quantity = availableAmount - itemQuantity;
+                                itemQuantity = 0;
+                                entity.SaveChanges();
+                            }
+                            else if (availableAmount > 0)
+                            {
+                                itemL.quantity = 0;
+                                itemQuantity = itemQuantity - availableAmount;
+                                entity.SaveChanges();
+                            }
+                            if (itemQuantity == 0)
+                                break;
+                        }
+                        increaseItemQuantity(packageParentId, locationId, quantity, userId);
+                    }
+                }
+                return Ok(1);
+            }
+            else
+                return NotFound();
+        }
 
         [HttpPost]
         [Route("receiptOrder")]
