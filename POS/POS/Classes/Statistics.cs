@@ -1545,6 +1545,48 @@ namespace POS.Classes
 
         }
 
+        //كشف حساب
+        public async Task<List<CashTransferSts>> GetStatement()
+        {
+            List<CashTransferSts> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetStatement");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<CashTransferSts>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<CashTransferSts>();
+                }
+                return list;
+            }
+
+        }
 
         public class VendorCombo
         {
@@ -1620,7 +1662,75 @@ namespace POS.Classes
             return iulist;
 
         }
-      
+        public class branchFromCombo
+        {
+            private string branchFromName;
+            private int? branchFromId;
+
+            public string BranchFromName { get => branchFromName; set => branchFromName = value; }
+            public int? BranchFromId { get => branchFromId; set => branchFromId = value; }
+        }
+        public List<branchFromCombo> getFromCombo(List<CashTransferSts> ITInvoice)
+        {
+            List<branchFromCombo> iulist = new List<branchFromCombo>();
+
+            iulist = ITInvoice.GroupBy(g=>g.frombranchId).Select(g => new branchFromCombo { BranchFromId = g.FirstOrDefault().frombranchId, BranchFromName = g.FirstOrDefault().frombranchName }).ToList();
+            return iulist;
+
+        }
+        public class branchToCombo
+        {
+            private string branchToName;
+            private int? branchToId;
+
+            public string BranchToName { get => branchToName; set => branchToName = value; }
+            public int? BranchToId { get => branchToId; set => branchToId = value; }
+        }
+        public List<branchToCombo> getToCombo(List<CashTransferSts> ITInvoice)
+        {
+            List<branchToCombo> iulist = new List<branchToCombo>();
+
+            iulist = ITInvoice.GroupBy(g => g.tobranchId).Select(g => new branchToCombo { BranchToId = g.FirstOrDefault().tobranchId, BranchToName = g.FirstOrDefault().tobranchName }).ToList();
+            return iulist;
+
+        }
+        public class posFromCombo
+        {
+            private string posFromName;
+            private int? posFromId;
+            private int? branchId;
+
+            public string PosFromName { get => posFromName; set => posFromName = value; }
+            public int? PosFromId { get => posFromId; set => posFromId = value; }
+            public int? BranchId { get => branchId; set => branchId = value; }
+        }
+        public List<posFromCombo> getFromPosCombo(List<CashTransferSts> ITInvoice)
+        {
+            List<posFromCombo> iulist = new List<posFromCombo>();
+
+            iulist = ITInvoice.GroupBy(g => g.fromposId).Select(g => new posFromCombo { PosFromId = g.FirstOrDefault().fromposId, PosFromName = g.FirstOrDefault().fromposName,BranchId=g.FirstOrDefault().frombranchId }).ToList();
+            return iulist;
+
+        }
+        public class posToCombo
+        {
+            private string posToName;
+            private int? posToId;
+            private int? branchId;
+
+            public string PosToName { get => posToName; set => posToName = value; }
+            public int? PosToId { get => posToId; set => posToId = value; }
+            public int? BranchId { get => branchId; set => branchId = value; }
+        }
+        public List<posToCombo> getToPosCombo(List<CashTransferSts> ITInvoice)
+        {
+            List<posToCombo> iulist = new List<posToCombo>();
+
+            iulist = ITInvoice.GroupBy(g => g.toposId).Select(g => new posToCombo { PosToId = g.FirstOrDefault().toposId, PosToName = g.FirstOrDefault().toposName ,BranchId=g.FirstOrDefault().tobranchId}).ToList();
+            return iulist;
+
+        }
+
         #endregion
 
         // Combo
