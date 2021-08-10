@@ -35,13 +35,14 @@ namespace POS.View.Settings
         static SettingCls set = new SettingCls();
         static SetValues language= new SetValues();
         static SetValues tax = new SetValues();
+        static SetValues dateForm = new SetValues();
         static SetValues cost = new SetValues();
         static public UserSetValues usLanguage = new UserSetValues();
         static UserSetValues usValue = new UserSetValues();
         static CountryCode region = new CountryCode();
         static List<SetValues> languages = new List<SetValues>();
 
-        static int taxId = 0 , costId = 0;
+        static int taxId = 0 , costId = 0 , dateFormId;
         string usersSettingsPermission = "general_usersSettings";
         string companySettingsPermission = "general_companySettings";
         private static uc_general _instance;
@@ -151,6 +152,14 @@ namespace POS.View.Settings
 
             #endregion
 
+            #region get default date form
+            await getDefaultDateForm();
+            if (dateForm != null)
+                cb_dateForm.Text = dateForm.value;
+            else
+                cb_dateForm.SelectedIndex = -1;
+            #endregion
+
         }
 
         public static async Task<SetValues> getDefaultCost()
@@ -178,6 +187,16 @@ namespace POS.View.Settings
             taxId = set.settingId;
             tax = settingsValues.Where(i => i.settingId == taxId).FirstOrDefault();
             return tax;
+        }
+
+        public static async Task<SetValues> getDefaultDateForm()
+        {
+            List<SettingCls> settingsCls = await setModel.GetAll();
+            List<SetValues> settingsValues = await valueModel.GetAll();
+            set = settingsCls.Where(s => s.name == "dateForm").FirstOrDefault<SettingCls>();
+            dateFormId = set.settingId;
+            dateForm = settingsValues.Where(i => i.settingId == dateFormId).FirstOrDefault();
+            return dateForm;
         }
         public static async Task<UserSetValues> getDefaultLanguage()
         {
@@ -237,6 +256,7 @@ namespace POS.View.Settings
             txt_language.Text = MainWindow.resourcemanager.GetString("trLanguage");
             txt_currency.Text = MainWindow.resourcemanager.GetString("trCurrency");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
+            txt_dateForm.Text = MainWindow.resourcemanager.GetString("trDateForm");
             //txt_notification.Text = MainWindow.resourcemanager.GetString("trNotification");
             //txt_storageCost.Text = MainWindow.resourcemanager.GetString("trStorageCost");
             //txt_notifhint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
@@ -259,6 +279,7 @@ namespace POS.View.Settings
             tt_language.Content = MainWindow.resourcemanager.GetString("trLanguage");
             tt_currency.Content = MainWindow.resourcemanager.GetString("trCurrency");
             tt_tax.Content = MainWindow.resourcemanager.GetString("trTax");
+            tt_dateForm.Content = MainWindow.resourcemanager.GetString("trDateForm");
             //tt_storageCost.Content = MainWindow.resourcemanager.GetString("trStorageCost");
         }
 
@@ -449,8 +470,32 @@ namespace POS.View.Settings
         User userModel = new User();
         User user = new User();
 
-        private void Btn_savedDateForm_Click(object sender, RoutedEventArgs e)
-        {
+        private async void Btn_savedDateForm_Click(object sender, RoutedEventArgs e)
+        {//save date form
+            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            {
+                SectionData.validateEmptyComboBox(cb_dateForm, p_errorDateForm, tt_errorDateForm, "trEmptyDateFormat");
+                if (!cb_dateForm.Text.Equals(""))
+                {
+                    if (dateForm == null)
+                        dateForm = new SetValues();
+                    dateForm.value = cb_dateForm.Text;
+                    dateForm.isSystem = 1;
+                    dateForm.settingId = dateFormId;
+                    string s = await valueModel.Save(dateForm);
+                    if (!s.Equals("0"))
+                    {
+                        //update dateForm in main window
+                        MainWindow.dateFormat = dateForm.value;
+
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
         }
 

@@ -225,6 +225,7 @@
       <DependentUpon>UC_squareCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\ValidatorExtensions.cs" />
+    <Compile Include="converters\dateFrameConverter.cs" />
     <Compile Include="converters\deliveryTypeConverter.cs" />
     <Compile Include="converters\depositorBondeConverter.cs" />
     <Compile Include="converters\depositorNameConverter.cs" />

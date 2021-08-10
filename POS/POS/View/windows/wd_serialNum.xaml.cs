@@ -131,7 +131,15 @@ namespace POS.View.windows
         private void Btn_skip_Click(object sender, RoutedEventArgs e)
         {
             valid = true;
-            serialList.Clear();
+            //serialList.Clear();
+            if (lst_serials.Items.Count > 0)
+            {
+                serialList = new List<string>();
+                for (int i = 0; i < lst_serials.Items.Count; i++)
+                    serialList.Add(lst_serials.Items[i].ToString());
+
+                _serialCount = 0;
+            }
             DialogResult = true;
             this.Close();
         }

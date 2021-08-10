@@ -109,7 +109,6 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
-                        <converters:SectionLocationFreeZoneConverter x:Key="SectionLocationFreeZoneConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Item-Unit"   >

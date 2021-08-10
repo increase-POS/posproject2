@@ -143,11 +143,6 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
-                        <converters:depositorTypeConverter x:Key="depositorTypeConverter"/>
-                        <converters:processTypeConverter   x:Key="processTypeConverter"/>
-                        <converters:depositorBondeConverter x:Key="depositorBondeConverter"/>
-                        <converters:transTypeConverter     x:Key="transTypeConverter"/>
-
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <!--Binding="{Binding Path=.,Converter={StaticResource depositorNameConverter }}"-->

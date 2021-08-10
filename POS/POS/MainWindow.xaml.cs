@@ -55,14 +55,15 @@ namespace POS
         internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
-        internal static int? posID = 2;
+        internal static int? posID = 3;
         //مخزن الجميلية الرئيسي
-        internal static int? branchID ;
+        internal static int? branchID = 2;
         //مخزن الجميلية الفرقان
         //internal static int? branchID = 12;
         bool isHome = false;
         internal static int? isInvTax = 1;
         internal static decimal? tax = 2;
+        internal static string dateFormat ;
         internal static decimal? StorageCost = 100;
         public static int Idletime = 5;
         public static int threadtime = 5;
@@ -180,6 +181,8 @@ namespace POS
 
             tax = decimal.Parse(await getDefaultTax());
 
+            dateFormat = await getDefaultDateForm();
+           
             CountryCode c = await getDefaultRegion();
             Region = c;
 
@@ -270,7 +273,7 @@ namespace POS
                 clearImg();
             }
             #endregion
-
+           
             #region 
 
             groupObjects = await groupObject.GetUserpermission(userLogin.userId);
@@ -858,6 +861,15 @@ namespace POS
         async Task<string> getDefaultTax()
         {
             SetValues v = await uc_general.getDefaultTax();
+            if (v != null)
+                return v.value;
+            else
+                return "";
+        }
+
+        async Task<string> getDefaultDateForm()
+        {
+            SetValues v = await uc_general.getDefaultDateForm();
             if (v != null)
                 return v.value;
             else

@@ -1918,4 +1918,16 @@
   <data name="trErrorQuantIsZeroToolTip" xml:space="preserve">
     <value>الكمية لا يمكن أن تكون صفر</value>
   </data>
+  <data name="trCreatedOper" xml:space="preserve">
+    <value>المنشأة</value>
+  </data>
+  <data name="trErrorEmptyPosToolTip" xml:space="preserve">
+    <value>نقطة البيع لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trDateForm" xml:space="preserve">
+    <value>صيغة التاريخ</value>
+  </data>
+  <data name="trEmptyDateFormat" xml:space="preserve">
+    <value>صيغة التاريخ لا يمكن أن فارغة</value>
+  </data>
 </root>

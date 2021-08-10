@@ -45,7 +45,7 @@ namespace POS.View.accounts
         }
         CashTransfer cashModel = new CashTransfer();
         Invoice invoiceModel = new Invoice();
-
+        Branch branchModel = new Branch();
         CashTransfer cashtrans = new CashTransfer();
         Invoice invoice = new Invoice();
 
@@ -64,6 +64,7 @@ namespace POS.View.accounts
         IEnumerable<Invoice> invoiceQueryExcel;
         IEnumerable<CashTransfer> cashes;
         IEnumerable<Invoice> invoices;
+        IEnumerable<Branch> branches;
         int agentId, userId;
         string searchText = "";
         private void Btn_confirm_Click(object sender, RoutedEventArgs e)
@@ -72,6 +73,17 @@ namespace POS.View.accounts
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
+         
+            //SectionData.fillBranches(cb_branch, "bs");/////permissions
+
+            #region fill branch combo1
+            branches = await branchModel.GetBranchesActive("b");
+            cb_branch.ItemsSource = branches;
+            cb_branch.DisplayMemberPath = "name";
+            cb_branch.SelectedValuePath = "branchId";
+            cb_branch.SelectedValue = MainWindow.branchID.Value;
+            cb_branch.IsEnabled = false;////////////permissions
+            #endregion
 
             #region translate
             if (MainWindow.lang.Equals("en"))
@@ -160,9 +172,8 @@ namespace POS.View.accounts
             cb_state.SelectedValuePath = "Value";
             cb_state.ItemsSource = statuslist;
             #endregion
-            SectionData.fillBranches(cb_branch, "bs");
 
-
+         
             await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
 
@@ -459,7 +470,7 @@ namespace POS.View.accounts
 
         async Task<IEnumerable<Invoice>> RefreshInvoiceList()
         {
-            invoices = await invoiceModel.getOrdersForPay(MainWindow.branchID.Value);
+            invoices = await invoiceModel.getOrdersForPay(Convert.ToInt32(cb_branch.SelectedValue));
             return invoices;
 
         }
@@ -700,8 +711,11 @@ namespace POS.View.accounts
         }
 
         private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
+        {//select branch
+            MessageBox.Show(cb_branch.SelectedValue.ToString());
+            //invoiceQuery = invoiceQuery.Where(u => u.branchId == Convert.ToInt32(cb_branch.SelectedValue));
+            //invoiceQueryExcel = invoiceQuery;
+            //RefreshInvoiceView();
         }
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)

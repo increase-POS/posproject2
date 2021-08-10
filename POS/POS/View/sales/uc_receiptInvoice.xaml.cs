@@ -1223,7 +1223,7 @@ namespace POS.View
                     foreach (string s in serialsArray)
                         serialNumLst.Add(s.Trim());
                 }
-                if (itemT.itemType == "sn" && serialNumLst.Count < itemT.quantity && _InvoiceType == "sd")
+                if (itemT.itemType == "sn" && serialNumLst.Count < itemT.quantity && (_InvoiceType == "sd" || _InvoiceType == "q" || _InvoiceType == "spd"))
                     isValid = false;
                 billDetails.Add(new BillDetails()
                 {

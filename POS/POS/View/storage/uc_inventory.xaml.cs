@@ -117,19 +117,25 @@ namespace POS.View.storage
             inputEditable();
             dg_items.ItemsSource = invItemsLocations.ToList();
         }
-        private void inputEditable()
+        private async void inputEditable()
         {
             if (_InventoryType == "d") // draft
             {
                 dg_items.Columns[4].IsReadOnly = false; 
                 dg_items.Columns[5].IsReadOnly = false;            
                 btn_save.IsEnabled = true;
+                btn_archive.IsEnabled = false;
             }
             else if (_InventoryType == "n") // normal saved
             {
                 dg_items.Columns[4].IsReadOnly = true; 
                 dg_items.Columns[5].IsReadOnly = true; 
                 btn_save.IsEnabled = false;
+                bool shortageManipulated = await inventory.shortageIsManipulated(inventory.inventoryId);
+                if (shortageManipulated)
+                    btn_archive.IsEnabled = true;
+                else
+                    btn_archive.IsEnabled = false;
             }
         }
             private void Dg_items_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)

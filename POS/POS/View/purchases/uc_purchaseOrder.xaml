@@ -477,9 +477,6 @@
                                     <Setter Property="BorderBrush" Value="White"/>
                                     <Setter Property="BorderThickness" Value="0 0 1 0"/>
                                 </Style>
-
-                                <converters:unitItemsListConverter x:Key="unitItemsListConverter"/>
-                                <converters:unitItemsComboTagConverter x:Key="unitItemsComboTagConverter"/>
                             </DataGrid.Resources>
                             <DataGrid.Columns >
                                 <DataGridTemplateColumn Width="20" Header="" IsReadOnly="True" >

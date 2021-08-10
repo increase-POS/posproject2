@@ -267,6 +267,7 @@ namespace POS.View.storage
                     price = Math.Round(price, 2);
                     decimal total = price * int.Parse( tb_amount.Text);
 
+                    #region invoice Object
                     invoiceModel.invNumber = await invoiceModel.generateInvNumber("ds");
                     invoiceModel.branchCreatorId = MainWindow.branchID.Value;
                     invoiceModel.posId = MainWindow.posID.Value;
@@ -279,7 +280,7 @@ namespace POS.View.storage
                     invoiceModel.notes = tb_notes.Text;
                     if (cb_user.SelectedIndex != -1)
                         invoiceModel.userId = (int)cb_user.SelectedValue;
-
+                    #endregion
                     List<ItemTransfer> orderList = new List<ItemTransfer>();
                     
                     if (invItemLoc.id != 0)
@@ -296,6 +297,8 @@ namespace POS.View.storage
                                 quantity = invItemLoc.amountDestroyed,
                                 itemSerial = serialNum,
                                 price = price,
+                                inventoryItemLocId = invItemLoc.id,
+                                createUserId = MainWindow.userID,
                             }) ;
                             invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
                             if (invoiceId != 0)
@@ -330,6 +333,8 @@ namespace POS.View.storage
                             quantity = long.Parse(tb_amount.Text),
                            itemSerial = serialNum,
                             price = price,
+                            
+                            createUserId = MainWindow.userID,
                         }) ;
                         // اتلاف عنصر يدوياً بدون جرد
                         Window.GetWindow(this).Opacity = 0.2;

@@ -1939,4 +1939,16 @@ Please add Email in setting</value>
   <data name="trErrorQuantIsZeroToolTip" xml:space="preserve">
     <value>Quantity cannot be zero</value>
   </data>
+  <data name="trCreatedOper" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="trErrorEmptyPosToolTip" xml:space="preserve">
+    <value>Pos cann't be empty</value>
+  </data>
+  <data name="trDateForm" xml:space="preserve">
+    <value>Date form</value>
+  </data>
+  <data name="trEmptyDateFormat" xml:space="preserve">
+    <value>Date format cann't be empty</value>
+  </data>
 </root>

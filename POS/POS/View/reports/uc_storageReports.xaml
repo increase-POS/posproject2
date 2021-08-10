@@ -1782,7 +1782,6 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
-                        <converters:invoiceTypeConverter x:Key="invoiceTypeConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
 
@@ -1803,7 +1802,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                         <DataGridTextColumn x:Name="col_unit" Width="*" Header="Unit" Binding="{Binding unitName}"/>
                         <DataGridTextColumn x:Name="col_quantity" Width="*" Header="Quantity" Binding="{Binding quantity}"/>
                         <DataGridTextColumn x:Name="col_locationSection" Width="*" Header="Location - Section" Binding="{Binding SectionLoactionName}"/>
-                        <DataGridTextColumn x:Name="col_startDate" Width="*" Header="Start Date" Binding="{Binding startDate}"/>
+                        <DataGridTextColumn x:Name="col_startDate" Width="*" Header="Start Date" Binding="{Binding startDate,Converter={StaticResource dateFrameConverter }}"/>
                         <DataGridTextColumn x:Name="col_endDate" Width="*" Header="End Date" Binding="{Binding endDate}"/>
                         <DataGridTextColumn x:Name="col_Min" Width="*" Header="Min" Binding="{Binding MinAll}"/>
                         <DataGridTextColumn x:Name="col_Max" Width="*" Header="Max" Binding="{Binding MaxAll}"/>

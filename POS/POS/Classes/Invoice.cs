@@ -20,6 +20,7 @@ namespace POS.Classes
         public string itemName { get; set; }
         public Nullable<long> quantity { get; set; }
         public Nullable<int> invoiceId { get; set; }
+        public Nullable<int> inventoryItemLocId { get; set; }
         public string invNumber { get; set; }
         public Nullable<int> locationIdNew { get; set; }
         public Nullable<int> locationIdOld { get; set; }
@@ -33,7 +34,8 @@ namespace POS.Classes
         public string itemSerial { get; set; }
         public string unitName { get; set; }
         public string barcode { get; set; }    
-        public string itemType { get; set; }    
+        public string itemType { get; set; }  
+
     }
     public  class CouponInvoice
     {
@@ -99,6 +101,7 @@ namespace POS.Classes
         public string shipUserName { get; set; }
         public string status { get; set; }
         public int invStatusId { get; set; }
+
         // for report
         public int countP { get; set; }
         public int countS { get; set; }

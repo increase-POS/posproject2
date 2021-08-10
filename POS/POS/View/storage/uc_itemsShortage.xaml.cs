@@ -254,7 +254,6 @@ namespace POS.View.storage
                     price = Math.Round(price, 2);
                     decimal total = price * int.Parse(tb_amount.Text);
 
-                    
                     invoiceModel.invNumber = await invoiceModel.generateInvNumber("sh");
                     invoiceModel.branchCreatorId = MainWindow.branchID.Value;
                     invoiceModel.posId = MainWindow.posID.Value;
@@ -269,32 +268,32 @@ namespace POS.View.storage
                         invoiceModel.userId = (int)cb_user.SelectedValue;
                         #endregion
 
-                        #region add shortage inventory
-                        inventory = new Inventory();
-                    inventory.inventoryType = "sh";
-                    inventory.num = await inventory.generateInvNumber("sh");
-                    inventory.mainInventoryId = invItemLoc.inventoryId;
-                    inventory.branchId = MainWindow.branchID.Value;
-                    inventory.createUserId = MainWindow.userID.Value;
-                    inventory.posId = MainWindow.posID.Value;
-                    int invId = await inventory.Save(inventory);
-                    if (invId != 0)
-                    {
-                        List<InventoryItemLocation> invItemsLocations = new List<InventoryItemLocation>();
-                        invItemLocModel = new InventoryItemLocation();
-                        invItemLocModel.amount = invItemLoc.amount;
-                        invItemLocModel.itemUnitId = invItemLoc.itemUnitId;
-                        invItemLocModel.itemLocationId = invItemLoc.itemLocationId;
-                        invItemLocModel.inventoryId = invId;
-                        invItemLocModel.createUserId = MainWindow.userID.Value;
-                        invItemLocModel.fallCause = tb_reasonOfShortage.Text;
+                    //    #region add shortage inventory
+                    //    inventory = new Inventory();
+                    //inventory.inventoryType = "sh";
+                    //inventory.num = await inventory.generateInvNumber("sh");
+                    //inventory.mainInventoryId = invItemLoc.inventoryId;
+                    //inventory.branchId = MainWindow.branchID.Value;
+                    //inventory.createUserId = MainWindow.userID.Value;
+                    //inventory.posId = MainWindow.posID.Value;
+                    //int invId = await inventory.Save(inventory);
+                    //if (invId != 0)
+                    //{
+                    //    List<InventoryItemLocation> invItemsLocations = new List<InventoryItemLocation>();
+                    //    invItemLocModel = new InventoryItemLocation();
+                    //    invItemLocModel.amount = invItemLoc.amount;
+                    //    invItemLocModel.itemUnitId = invItemLoc.itemUnitId;
+                    //    invItemLocModel.itemLocationId = invItemLoc.itemLocationId;
+                    //    invItemLocModel.inventoryId = invId;
+                    //    invItemLocModel.createUserId = MainWindow.userID.Value;
+                    //    invItemLocModel.fallCause = tb_reasonOfShortage.Text;
                         
                         
-                        invItemsLocations.Add(invItemLocModel);
+                    //    invItemsLocations.Add(invItemLocModel);
 
-                        string res = await invItemLocModel.Save(invItemsLocations, invId);
-                    }
-                    #endregion
+                    //    string res = await invItemLocModel.Save(invItemsLocations, invId);
+                    //}
+                    //#endregion
                     if (invItemLoc.id != 0)
                     {
                         List<ItemTransfer> orderList = new List<ItemTransfer>();
@@ -323,6 +322,8 @@ namespace POS.View.storage
                                 quantity = invItemLoc.amount,
                                 itemSerial = serialNum,
                                 price = price,
+                                inventoryItemLocId = invItemLoc.id,
+                                createUserId = MainWindow.userID,
                             });
                             invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
                             if (invoiceId != 0)

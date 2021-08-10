@@ -100,14 +100,6 @@
                        x:Name="dg_property"
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader" Grid.RowSpan="2"    AlternatingRowBackground="#f3f3f3" AlternationCount="2">
-                    <DataGrid.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
-                        <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="Background" Value="#e7f3fa" />
-                            <Setter Property="BorderBrush" Value="White"/>
-                            <Setter Property="BorderThickness" Value="0 0 1 0"/>
-                        </Style>
-                    </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Property"     Binding="{Binding Path=name}">
                             <DataGridTextColumn.ElementStyle>

@@ -132,10 +132,10 @@ namespace POS.View.accounts
 
             poss = await posModel.GetPosAsync();
 
-            SectionData.fillBranches(cb_fromBranch, "bs");
-            cb_fromBranch.SelectedValue = MainWindow.branchID.Value;
-            SectionData.fillBranches(cb_toBranch, "bs");
-            cb_toBranch.SelectedValue = MainWindow.branchID.Value;
+            //SectionData.fillBranches(cb_fromBranch, "bs");
+            //cb_fromBranch.SelectedValue = MainWindow.branchID.Value;
+            //SectionData.fillBranches(cb_toBranch, "bs");
+            //cb_toBranch.SelectedValue = MainWindow.branchID.Value;
 
 
             if (!MainWindow.groupObject.HasPermissionAction(transAdminPermission, MainWindow.groupObjects, "one"))
@@ -143,13 +143,31 @@ namespace POS.View.accounts
                 cb_fromBranch.IsEnabled = false;////////////permissions
                 cb_toBranch.IsEnabled = false;/////////////permissions
             }
+           
+            #region fill branch combo1
+            branches = await branchModel.GetBranchesActive("b");
+            cb_fromBranch.ItemsSource = branches;
+            cb_fromBranch.DisplayMemberPath = "name";
+            cb_fromBranch.SelectedValuePath = "branchId";
+            cb_fromBranch.SelectedValue = MainWindow.branchID.Value;
+            cb_fromBranch.IsEnabled = false;////////////permissions
+            #endregion
+
+            #region fill branch combo2
+            cb_toBranch.ItemsSource = branches;
+            cb_toBranch.DisplayMemberPath = "name";
+            cb_toBranch.SelectedValuePath = "branchId";
+            cb_toBranch.SelectedValue = MainWindow.branchID.Value;
+            cb_toBranch.IsEnabled = false;/////////////permissions
+            #endregion
 
 
             #region fill operation state
             var dislist = new[] {
-            new { Text = MainWindow.resourcemanager.GetString("trUnConfirmed"), Value = "0" },
-            new { Text = MainWindow.resourcemanager.GetString("trWaiting")    , Value = "1" },
-            new { Text = MainWindow.resourcemanager.GetString("trConfirmed")  , Value = "2" },
+            new { Text = MainWindow.resourcemanager.GetString("trUnConfirmed")  , Value = "0" },
+            new { Text = MainWindow.resourcemanager.GetString("trWaiting")      , Value = "1" },
+            new { Text = MainWindow.resourcemanager.GetString("trConfirmed")    , Value = "2" },
+            new { Text = MainWindow.resourcemanager.GetString("trCreatedOper")  , Value = "3" }
              };
             cb_state.DisplayMemberPath = "Text";
             cb_state.SelectedValuePath = "Value";
@@ -157,7 +175,7 @@ namespace POS.View.accounts
             cb_state.SelectedIndex = 0;
             #endregion
 
-            //dg_posAccounts.ItemsSource = await cashModel.GetCashTransferAsync("all", "p");
+            //dg_posAccounts.ItemsSource = await cashModel.GetCashTransferForPosAsync("all", "p");
             this.Dispatcher.Invoke(() =>
             {
                 Tb_search_TextChanged(null, null);
@@ -232,7 +250,7 @@ namespace POS.View.accounts
                         cashtrans2 = cashes2.ToList()[1] as CashTransfer;
                         cashtrans3 = cashes2.ToList()[0] as CashTransfer;
                     }
-                   
+
                     cb_pos1.SelectedValue = cashtrans2.posId;
                     cb_pos2.SelectedValue = cashtrans3.posId;
                     #endregion
@@ -247,9 +265,11 @@ namespace POS.View.accounts
                     await RefreshCashesList();
                 searchText = tb_search.Text;
 
-                switch (cb_state.Text)
+                //switch (cb_state.Text)
+                switch (Convert.ToInt32(cb_state.SelectedValue))
                 {
-                    case "غير مؤكدة"://inconfirmed
+                    //case "غير مؤكدة"://inconfirmed
+                    case 0://inconfirmed
                         cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
                          || s.transType.Contains(searchText)
                          || s.cash.ToString().Contains(searchText)
@@ -261,7 +281,8 @@ namespace POS.View.accounts
                         && s.isConfirm == 0
                         );
                         break;
-                    case "بانتظار التأكيد"://waiting
+                    //case "بانتظار التأكيد"://waiting
+                    case 1://waiting
                         cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
                         || s.transType.Contains(searchText)
                         || s.cash.ToString().Contains(searchText)
@@ -275,7 +296,8 @@ namespace POS.View.accounts
                         && s.isConfirm2 == 0
                         );
                         break;
-                    case "مؤكدة"://confirmed
+                    //case "مؤكدة"://confirmed
+                    case 2://confirmed
                         cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
                         || s.transType.Contains(searchText)
                         || s.cash.ToString().Contains(searchText)
@@ -287,6 +309,18 @@ namespace POS.View.accounts
                         && s.isConfirm == 1
                         //&& another is confirmed
                         && s.isConfirm2 == 1
+                        );
+                        break;
+                    //case "منشأة"://created by me
+                    case 3://created by me
+                        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                        || s.transType.Contains(searchText)
+                        || s.cash.ToString().Contains(searchText)
+                        || s.posName.Contains(searchText)
+                        )
+                        && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                        && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                        && s.posIdCreator == MainWindow.posID.Value
                         );
                         break;
                     default://no select
@@ -309,8 +343,9 @@ namespace POS.View.accounts
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
             {
 
-             //chk empty cash
-             SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+            #region validate
+            //chk empty cash
+            SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
             //chk empty pos1
             SectionData.validateEmptyComboBox(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorEmptyFromPosToolTip");
             //chk empty pos2
@@ -324,6 +359,7 @@ namespace POS.View.accounts
                 SectionData.showComboBoxValidate(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorSamePos");
                 SectionData.showComboBoxValidate(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorSamePos");
             }
+            #endregion
 
             if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")) && !isSame /*&& !validTransAdmin()*/)
             {
@@ -385,8 +421,10 @@ namespace POS.View.accounts
         {//update
             if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
             {
-                //chk empty cash
-                SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+
+            #region validate
+            //chk empty cash
+            SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
             //chk empty user
             SectionData.validateEmptyComboBox(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorEmptyFromPosToolTip");
             //chk empty bank
@@ -400,7 +438,9 @@ namespace POS.View.accounts
                 SectionData.showComboBoxValidate(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorSamePos");
                 SectionData.showComboBoxValidate(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorSamePos");
             }
-            if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")) && !isSame)
+            #endregion 
+
+                if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")) && !isSame)
             {
                 //first operation (pull)
                 cashtrans2.cash = decimal.Parse(tb_cash.Text);
@@ -487,7 +527,7 @@ namespace POS.View.accounts
                 {
                     Pos pos = await posModel.getPosById(cashtrans2.posId.Value);
                     //there is enough balance
-                    if (pos.balance > cashtrans2.cash)
+                    if (pos.balance >= cashtrans2.cash)
                     {
                         cashtrans2.isConfirm = 1;
                         string s =await cashModel.Save(cashtrans2);
@@ -563,7 +603,7 @@ namespace POS.View.accounts
         }
         async Task<IEnumerable<CashTransfer>> RefreshCashesList()
         {
-            cashes = await cashModel.GetCashTransferAsync("all", "p");
+            cashes = await cashModel.GetCashTransferForPosAsync("all", "p");
             return cashes;
         }
         void RefreshCashView()
@@ -581,9 +621,9 @@ namespace POS.View.accounts
             else if (name == "ComboBox")
             {
                 if ((sender as ComboBox).Name == "cb_pos1")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorPos1, tt_errorPos1, "trErrorEmptyPosToolTip");
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorPos1, tt_errorPos1, "trErrorEmptyFromPosToolTip");
                 else if ((sender as ComboBox).Name == "cb_pos2")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorPos2, tt_errorPos2, "trErrorEmptyPosToolTip");
+                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorPos2, tt_errorPos2, "trErrorEmptyToPosToolTip");
             }
         }
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)

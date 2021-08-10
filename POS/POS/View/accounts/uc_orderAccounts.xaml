@@ -207,7 +207,6 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
-                        <converters:invoiceStatusConverter x:Key="invoiceStatusConverter"/>
                     </DataGrid.Resources>
                     
                     <DataGrid.Columns>

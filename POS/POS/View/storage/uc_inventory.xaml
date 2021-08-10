@@ -245,7 +245,7 @@
 
                 <Border BorderThickness="0"  Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="3"   Height="70" Margin="10,10,10,10"
                     CornerRadius="7" BorderBrush="Black" Background="{StaticResource MainColorRed}" Padding="0">
-                    <Button Content="Archiving" Height="auto" BorderBrush="{x:Null}"  FontSize="14" x:Name="btn_delete"
+                    <Button Content="Archiving" Height="auto" BorderBrush="{x:Null}"  FontSize="14" x:Name="btn_archive"
                     Background="{x:Null}" Click="Btn_archive_Click"  />
                 </Border>
 
@@ -280,10 +280,6 @@
                                     <Setter Property="BorderBrush" Value="White"/>
                                     <Setter Property="BorderThickness" Value="0 0 1 0"/>
                                 </Style>
-
-                                <converters:unitItemsListConverter x:Key="unitItemsListConverter"/>
-                                <converters:unitItemsComboTagConverter x:Key="unitItemsComboTagConverter"/>
-                                <converters:SectionLocationFreeZoneConverter x:Key="SectionLocationFreeZoneConverter"/>
                             </DataGrid.Resources>
                             <DataGrid.Columns >
                                 <DataGridTextColumn Width="*"   Header="Num"     Binding="{Binding Path=sequence}" IsReadOnly="True">

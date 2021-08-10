@@ -541,15 +541,7 @@
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"
                             AlternatingRowBackground="#f3f3f3" AlternationCount="2">
-                    <DataGrid.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
-                        <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="Background" Value="#e7f3fa" />
-                            <Setter Property="BorderBrush" Value="White"/>
-                            <Setter Property="BorderThickness" Value="0 0 1 0"/>
-                        </Style>
-                        <converters:invoiceTypeConverter x:Key="invoiceTypeConverter"/>
-                    </DataGrid.Resources>
+                    
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*" Header="No." Binding="{Binding invNumber}"/>
                         <DataGridTextColumn x:Name="col_type" Width="*" Header="Type" Binding="{Binding Path=invType,Converter={StaticResource invoiceTypeConverter }}"  >

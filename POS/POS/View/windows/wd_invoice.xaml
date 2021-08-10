@@ -125,8 +125,6 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
-                        <converters:invoiceTypeConverter x:Key="invoiceTypeConverter"/>
-                        <converters:invoiceTypeVisibilityConverter x:Key="invoiceTypeVisibilityConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"   Header="Bill Number" Binding="{Binding Path=invNumber}"/>

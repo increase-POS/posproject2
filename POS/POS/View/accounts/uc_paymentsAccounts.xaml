@@ -135,10 +135,7 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
-                        <converters:depositorTypeConverter x:Key="depositorTypeConverter"/>
-                        <converters:processTypeConverter x:Key="processTypeConverter"/>
-                        <converters:depositorNameConverter x:Key="depositorNameConverter"/>
-                    </DataGrid.Resources>
+                       </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Transfer number" Binding="{Binding Path=transNum}"/>
                         <!--<DataGridTextColumn Width="*"   Header="Deposited To"  Binding="{Binding side,Converter={StaticResource depositorTypeConverter }}"  Visibility="Collapsed"/>-->

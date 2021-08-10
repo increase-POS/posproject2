@@ -116,7 +116,6 @@
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
                         </Style>
-                        <converters:deliveryTypeConverter   x:Key="deliveryTypeConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Name"     Binding="{Binding Path=name}">

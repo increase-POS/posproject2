@@ -817,6 +817,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المنشأة.
+        /// </summary>
+        internal static string trCreatedOper {
+            get {
+                return ResourceManager.GetString("trCreatedOper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رصيد.
         /// </summary>
         internal static string trCredit {
@@ -894,6 +903,15 @@ namespace POS {
         internal static string trDate {
             get {
                 return ResourceManager.GetString("trDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to صيغة التاريخ.
+        /// </summary>
+        internal static string trDateForm {
+            get {
+                return ResourceManager.GetString("trDateForm", resourceCulture);
             }
         }
         
@@ -1479,6 +1497,15 @@ namespace POS {
         internal static string trEmptyCustomerToolTip {
             get {
                 return ResourceManager.GetString("trEmptyCustomerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to صيغة التاريخ لا يمكن أن فارغة.
+        /// </summary>
+        internal static string trEmptyDateFormat {
+            get {
+                return ResourceManager.GetString("trEmptyDateFormat", resourceCulture);
             }
         }
         
@@ -2127,6 +2154,15 @@ namespace POS {
         internal static string trErrorEmptyPaymentTypeToolTip {
             get {
                 return ResourceManager.GetString("trErrorEmptyPaymentTypeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نقطة البيع لا يمكن أن تكون فارغة.
+        /// </summary>
+        internal static string trErrorEmptyPosToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyPosToolTip", resourceCulture);
             }
         }
         
